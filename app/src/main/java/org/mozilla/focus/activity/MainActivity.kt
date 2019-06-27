@@ -3,840 +3,717 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.activity;
+package org.mozilla.focus.activity
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.res.Resources;
-import android.database.ContentObserver;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
-import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.LocalBroadcastManager;
-import android.text.TextUtils;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
+import android.app.Activity
+import android.app.Dialog
+import android.app.PendingIntent
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.res.Resources
+import android.database.ContentObserver
+import android.net.Uri
+import android.os.Bundle
+import android.preference.PreferenceManager
+import android.support.annotation.UiThread
+import android.support.annotation.VisibleForTesting
+import android.support.design.widget.Snackbar
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.NotificationCompat
+import android.support.v4.app.NotificationManagerCompat
+import android.support.v4.content.LocalBroadcastManager
+import android.view.View
+import android.view.Window
+import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.container
+import org.mozilla.focus.Inject
+import org.mozilla.focus.R
+import org.mozilla.focus.download.DownloadInfoManager
+import org.mozilla.focus.fragment.BrowserFragment
+import org.mozilla.focus.fragment.FirstrunFragment
+import org.mozilla.focus.fragment.ListPanelDialog
+import org.mozilla.focus.home.HomeFragment
+import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.notification.NotificationId
+import org.mozilla.focus.notification.NotificationUtil
+import org.mozilla.focus.persistence.TabModelStore
+import org.mozilla.focus.provider.DownloadContract
+import org.mozilla.focus.screenshot.ScreenshotGridFragment
+import org.mozilla.focus.screenshot.ScreenshotViewerActivity
+import org.mozilla.focus.tabs.tabtray.TabTray
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.Browsers
+import org.mozilla.focus.utils.Constants
+import org.mozilla.focus.utils.DialogUtils
+import org.mozilla.focus.utils.IntentUtils
+import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.focus.utils.NoRemovableStorageException
+import org.mozilla.focus.utils.SafeIntent
+import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.utils.ShortcutUtils
+import org.mozilla.focus.utils.StorageUtils
+import org.mozilla.focus.utils.SupportUtils
+import org.mozilla.focus.web.GeoPermissionCache
+import org.mozilla.focus.web.WebViewProvider
+import org.mozilla.rocket.appupdate.InAppUpdateManager
+import org.mozilla.rocket.appupdate.InAppUpdateModelRepository
+import org.mozilla.rocket.appupdate.InAppUpdateViewDelegate
+import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.component.LaunchIntentDispatcher
+import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.download.DownloadIndicatorViewModel
+import org.mozilla.rocket.extension.nonNullObserve
+import org.mozilla.rocket.landing.DialogQueue
+import org.mozilla.rocket.landing.NavigationModel
+import org.mozilla.rocket.landing.OrientationState
+import org.mozilla.rocket.landing.PortraitComponent
+import org.mozilla.rocket.landing.PortraitStateModel
+import org.mozilla.rocket.menu.MenuDialog
+import org.mozilla.rocket.privately.PrivateMode
+import org.mozilla.rocket.promotion.PromotionModel
+import org.mozilla.rocket.promotion.PromotionPresenter
+import org.mozilla.rocket.promotion.PromotionViewContract
+import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.TabView
+import org.mozilla.rocket.tabs.TabViewProvider
+import org.mozilla.rocket.tabs.TabsSessionProvider
+import org.mozilla.rocket.theme.ThemeManager
+import org.mozilla.rocket.widget.enqueue
+import java.util.Locale
 
-import org.mozilla.focus.Inject;
-import org.mozilla.focus.R;
-import org.mozilla.focus.download.DownloadInfoManager;
-import org.mozilla.focus.fragment.BrowserFragment;
-import org.mozilla.focus.fragment.FirstrunFragment;
-import org.mozilla.focus.fragment.ListPanelDialog;
-import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.navigation.ScreenNavigator;
-import org.mozilla.focus.notification.NotificationId;
-import org.mozilla.focus.notification.NotificationUtil;
-import org.mozilla.focus.persistence.TabModelStore;
-import org.mozilla.focus.provider.DownloadContract;
-import org.mozilla.focus.screenshot.ScreenshotGridFragment;
-import org.mozilla.focus.screenshot.ScreenshotViewerActivity;
-import org.mozilla.focus.tabs.tabtray.TabTray;
-import org.mozilla.focus.tabs.tabtray.TabTrayFragment;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.urlinput.UrlInputFragment;
-import org.mozilla.focus.utils.AppConfigWrapper;
-import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.Browsers;
-import org.mozilla.focus.utils.Constants;
-import org.mozilla.focus.utils.DialogUtils;
-import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.focus.utils.NewFeatureNotice;
-import org.mozilla.focus.utils.NoRemovableStorageException;
-import org.mozilla.focus.utils.SafeIntent;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.ShortcutUtils;
-import org.mozilla.focus.utils.StorageUtils;
-import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.focus.web.GeoPermissionCache;
-import org.mozilla.focus.web.WebViewProvider;
-import org.mozilla.rocket.appupdate.InAppUpdateManager;
-import org.mozilla.rocket.appupdate.InAppUpdateModelRepository;
-import org.mozilla.rocket.appupdate.InAppUpdateViewDelegate;
-import org.mozilla.rocket.chrome.ChromeViewModel;
-import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
-import org.mozilla.rocket.component.LaunchIntentDispatcher;
-import org.mozilla.rocket.component.PrivateSessionNotificationService;
-import org.mozilla.rocket.content.ContentPortalViewState;
-import org.mozilla.rocket.download.DownloadIndicatorViewModel;
-import org.mozilla.rocket.landing.DialogQueue;
-import org.mozilla.rocket.landing.OrientationState;
-import org.mozilla.rocket.landing.PortraitComponent;
-import org.mozilla.rocket.landing.PortraitStateModel;
-import org.mozilla.rocket.menu.MenuDialog;
-import org.mozilla.rocket.privately.PrivateMode;
-import org.mozilla.rocket.promotion.PromotionModel;
-import org.mozilla.rocket.promotion.PromotionPresenter;
-import org.mozilla.rocket.promotion.PromotionViewContract;
-import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabView;
-import org.mozilla.rocket.tabs.TabViewProvider;
-import org.mozilla.rocket.tabs.TabsSessionProvider;
-import org.mozilla.rocket.theme.ThemeManager;
-import org.mozilla.rocket.widget.PromotionDialog;
-import org.mozilla.rocket.widget.PromotionDialogExt;
-
-import java.io.File;
-import java.util.List;
-import java.util.Locale;
-
-import static android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-
-public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost,
+class MainActivity : BaseActivity(),
+        ThemeManager.ThemeHost,
         TabsSessionProvider.SessionHost,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         PromotionViewContract {
 
-    public static final int REQUEST_CODE_IN_APP_UPDATE = 1024;
-    private static final String LOG_TAG = "MainActivity";
+    val portraitStateModel = PortraitStateModel()
+    private lateinit var chromeViewModel: ChromeViewModel
+    private lateinit var downloadIndicatorViewModel: DownloadIndicatorViewModel
+    private var promotionModel: PromotionModel? = null
 
-    private ChromeViewModel chromeViewModel;
-    private DownloadIndicatorViewModel downloadIndicatorViewModel;
-    private PortraitStateModel portraitStateModel = new PortraitStateModel();
-    private PromotionModel promotionModel;
+    private lateinit var menu: MenuDialog
+    private var mDialogFragment: DialogFragment? = null
+    private var myshotOnBoardingDialog: Dialog? = null
 
-    private DialogFragment mDialogFragment;
-    private MenuDialog menu;
-    private Dialog myshotOnBoardingDialog;
-    private View snackBarContainer;
+    private lateinit var screenNavigator: ScreenNavigator
+    private lateinit var uiMessageReceiver: BroadcastReceiver
+    private lateinit var appUpdateManager: InAppUpdateManager
+    private var themeManager: ThemeManager? = null
+    private var sessionManager: SessionManager? = null
+    private val dialogQueue = DialogQueue()
 
-    private ScreenNavigator screenNavigator;
-    private SessionManager sessionManager;
-    private BroadcastReceiver uiMessageReceiver;
-    private ThemeManager themeManager;
-    private DialogQueue dialogQueue = new DialogQueue();
-    private InAppUpdateManager appUpdateManager;
-    private ContentObserver downloadObserver = new ContentObserver(null) {
-        @Override
-        public void onChange(boolean selfChange) {
-            downloadIndicatorViewModel.updateIndicator();
+    private val downloadObserver = object : ContentObserver(null) {
+        override fun onChange(selfChange: Boolean) {
+            downloadIndicatorViewModel.updateIndicator()
         }
-    };
+    }
 
-    private OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
+    private val onSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { _, key ->
         // Only refresh when disabling turbo mode
-        if (this.getResources().getString(R.string.pref_key_turbo_mode).equals(key)) {
-            final boolean turboEnabled = chromeViewModel.isTurboModeEnabled().getValue();
-            BrowserFragment browserFragment = getBrowserFragment();
-            if (browserFragment != null) {
-                browserFragment.setContentBlockingEnabled(turboEnabled);
-            }
-            chromeViewModel.isTurboModeEnabled().setValue(turboEnabled);
-        } else if (this.getResources().getString(R.string.pref_key_performance_block_images).equals(key)) {
-            final boolean blockingImages = chromeViewModel.isBlockImageEnabled().getValue();
-            BrowserFragment browserFragment = getBrowserFragment();
-            if (browserFragment != null) {
-                browserFragment.setImageBlockingEnabled(blockingImages);
-            }
-            chromeViewModel.isBlockImageEnabled().setValue(blockingImages);
+        if (this.resources.getString(R.string.pref_key_turbo_mode) == key) {
+            val turboEnabled = chromeViewModel.isTurboModeEnabled.value == true
+            browserFragment?.setContentBlockingEnabled(turboEnabled)
+            chromeViewModel.isTurboModeEnabled.value = turboEnabled
+        } else if (this.resources.getString(R.string.pref_key_performance_block_images) == key) {
+            val blockingImages = chromeViewModel.isBlockImageEnabled.value == true
+            browserFragment?.setImageBlockingEnabled(blockingImages)
+            chromeViewModel.isBlockImageEnabled.value = blockingImages
         }
         // For turbo mode, a automatic refresh is done when we disable block image.
-    };
+    }
 
-    private TabModelStore.AsyncQueryListener asyncQueryListener = (states, currentTabId) -> {
-        chromeViewModel.onRestoreTabCountCompleted();
-        getSessionManager().restore(states, currentTabId);
-        Session currentTab = getSessionManager().getFocusSession();
-        if (!Settings.getInstance(this).shouldShowFirstrun() && currentTab != null && !getSupportFragmentManager().isStateSaved()) {
-            screenNavigator.restoreBrowserScreen(currentTab.getId());
+    private val asyncQueryListener = TabModelStore.AsyncQueryListener { states, currentTabId ->
+        chromeViewModel.onRestoreTabCountCompleted()
+        getSessionManager().restore(states, currentTabId)
+        val currentTab = getSessionManager().focusSession
+        if (currentTab != null && !Settings.getInstance(this).shouldShowFirstrun() && !supportFragmentManager.isStateSaved) {
+            screenNavigator.restoreBrowserScreen(currentTab.id)
         }
-    };
+    }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        chromeViewModel = Inject.obtainChromeViewModel(this);
-        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this);
-        themeManager = new ThemeManager(this);
-        screenNavigator = new ScreenNavigator(this);
+    private val surveyUrl: String
+        get() {
+            val currentLang = Locale.getDefault().language
+            val indonesiaLang = Locale("id").language
+            val isSameLang = currentLang.equals(indonesiaLang, ignoreCase = true)
 
-        asyncInitialize();
+            return getString(R.string.survey_notification_url, if (isSameLang) "id" else "en")
+        }
 
-        setContentView(R.layout.activity_main);
-        initViews();
-        initBroadcastReceivers();
+    @VisibleForTesting
+    val visibleBrowserFragment: BrowserFragment?
+        get() = if (screenNavigator.isBrowserInForeground) browserFragment else null
 
-        appUpdateManager = new InAppUpdateManager(
-                new InAppUpdateViewDelegate(this, snackBarContainer),
-                new InAppUpdateModelRepository(Settings.getInstance(this)));
+    @VisibleForTesting
+    val browserFragment: BrowserFragment?
+        get() = supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment?
 
-        SafeIntent intent = new SafeIntent(getIntent());
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        chromeViewModel = Inject.obtainChromeViewModel(this)
+        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this)
+        themeManager = ThemeManager(this)
+        screenNavigator = ScreenNavigator(this)
+
+        asyncInitialize()
+
+        setContentView(R.layout.activity_main)
+        initViews()
+        initBroadcastReceivers()
+
+        appUpdateManager = InAppUpdateManager(
+                InAppUpdateViewDelegate(this, container),
+                InAppUpdateModelRepository(Settings.getInstance(this)))
+
+        val intent = SafeIntent(intent)
         if (savedInstanceState == null) {
-            boolean handledExternalLink = handleExternalLink(intent);
+            val handledExternalLink = handleExternalLink(intent)
             if (!handledExternalLink) {
                 if (Settings.getInstance(this).shouldShowFirstrun()) {
-                    screenNavigator.addFirstRunScreen();
+                    screenNavigator.addFirstRunScreen()
                 } else {
-                    screenNavigator.popToHomeScreen(false);
+                    screenNavigator.popToHomeScreen(false)
                 }
             }
         }
         if (NewFeatureNotice.getInstance(this).shouldShowLiteUpdate()) {
-            themeManager.resetDefaultTheme();
+            themeManager?.resetDefaultTheme()
         }
-        restoreTabsFromPersistence();
-        WebViewProvider.preload(this);
+        restoreTabsFromPersistence()
+        WebViewProvider.preload(this)
 
-        promotionModel = new PromotionModel(this, intent);
-        checkAndRunPromotion();
+        promotionModel = PromotionModel(this, intent).also {
+            checkAndRunPromotion(it)
+        }
         PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
-        observeNavigation();
-        monitorOrientationState();
-        observeChromeAction();
+                .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
+        observeNavigation()
+        monitorOrientationState()
+        observeChromeAction()
     }
 
-    private void asyncInitialize() {
-        new Thread(this::checkRemovableStorage).start();
+    private fun asyncInitialize() {
+        Thread(Runnable { this.checkRemovableStorage() }).start()
     }
 
     /**
      * To check existence of removable storage, and write result to preference
      */
-    private void checkRemovableStorage() {
-        boolean exist;
-        try {
-            final File dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(this, "*/*");
-            exist = (dir != null);
-        } catch (NoRemovableStorageException e) {
-            exist = false;
+    private fun checkRemovableStorage() {
+        val exist = try {
+            val dir = StorageUtils.getTargetDirOnRemovableStorageForDownloads(this, "*/*")
+            dir != null
+        } catch (e: NoRemovableStorageException) {
+            false
         }
 
-        Settings.getInstance(this).setRemovableStorageStateOnCreate(exist);
+        Settings.getInstance(this).removableStorageStateOnCreate = exist
     }
 
-    private void initViews() {
-        int visibility = getWindow().getDecorView().getSystemUiVisibility();
+    private fun initViews() {
+        var visibility = window.decorView.systemUiVisibility
         // do not overwrite existing value
-        visibility |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
-        getWindow().getDecorView().setSystemUiVisibility(visibility);
-
-        snackBarContainer = findViewById(R.id.container);
-        setUpMenu();
+        visibility = visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+        window.decorView.systemUiVisibility = visibility
+        setUpMenu()
     }
 
-    private void setUpMenu() {
-        menu = new MenuDialog(this, R.style.BottomSheetTheme);
-        menu.setCanceledOnTouchOutside(true);
-        menu.setOnShowListener(dialog -> portraitStateModel.request(PortraitComponent.BottomMenu.INSTANCE));
-        menu.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.BottomMenu.INSTANCE));
+    private fun setUpMenu() {
+        menu = MenuDialog(this, R.style.BottomSheetTheme).apply {
+            setCanceledOnTouchOutside(true)
+            setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
+            setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.BottomMenu) }
+        }
     }
 
-    private void initBroadcastReceivers() {
-        uiMessageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case Constants.ACTION_NOTIFY_UI:
-                        final CharSequence msg = intent.getCharSequenceExtra(Constants.EXTRA_MESSAGE);
-                        if (!TextUtils.isEmpty(msg)) {
-                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+    private fun initBroadcastReceivers() {
+        uiMessageReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                when (intent.action) {
+                    Constants.ACTION_NOTIFY_UI -> {
+                        val msg = intent.getCharSequenceExtra(Constants.EXTRA_MESSAGE)
+                        if (!msg.isNullOrEmpty()) {
+                            Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
                         }
-                        break;
-                    case Constants.ACTION_NOTIFY_RELOCATE_FINISH:
-                        DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG);
-                        break;
-                    default:
-                        break;
+                    }
+                    Constants.ACTION_NOTIFY_RELOCATE_FINISH -> DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), container, LOG_TAG)
                 }
             }
-        };
+        }
     }
 
-    private void checkAndRunPromotion() {
+    private fun checkAndRunPromotion(promotionModel: PromotionModel) {
         if (Inject.getActivityNewlyCreatedFlag()) {
-            Inject.setActivityNewlyCreatedFlag();
-            PromotionPresenter.runPromotion(this, promotionModel);
+            Inject.setActivityNewlyCreatedFlag()
+            PromotionPresenter.runPromotion(this, promotionModel)
         }
     }
 
-    private void observeNavigation() {
-        screenNavigator.getNavigationState().observe(this, state ->
-                chromeViewModel.getNavigationState().setValue(state));
+    private fun observeNavigation() {
+        screenNavigator.navigationState.observe(this, Observer { state -> chromeViewModel.navigationState.setValue(state) })
     }
 
-    private void monitorOrientationState() {
-        OrientationState orientationState = new OrientationState(
-                () -> screenNavigator.getNavigationState(),
-                portraitStateModel);
+    private fun monitorOrientationState() {
+        val orientationState = OrientationState(
+                object : NavigationModel {
+                    override val navigationState: LiveData<ScreenNavigator.NavigationState>
+                        get() = screenNavigator.navigationState
+                }, portraitStateModel
+        )
 
-        orientationState.observe(this, orientation -> {
-            if (orientation == null) {
-                return;
+        orientationState.observe(this, Observer { orientation ->
+            if (orientation != null) {
+                requestedOrientation = orientation
             }
-            setRequestedOrientation(orientation);
-        });
+        })
     }
 
-    private void observeChromeAction() {
-        chromeViewModel.getShowToast().observe(this, toastMessage -> {
-            if (toastMessage != null) {
-                Toast.makeText(this, getString(toastMessage.getStringResId(), (Object[]) toastMessage.getArgs()), toastMessage.getDuration()).show();
+    private fun observeChromeAction() {
+        chromeViewModel.run {
+            showToast.nonNullObserve(this@MainActivity) { message ->
+                Toast.makeText(this@MainActivity, getString(message.stringResId, *message.args), message.duration).show()
             }
-        });
-        chromeViewModel.getOpenUrl().observe(this, action -> {
-            if (action != null) {
-                screenNavigator.showBrowserScreen(action.getUrl(), action.getWithNewTab(), action.isFromExternal());
+            openUrl.nonNullObserve(this@MainActivity) { action ->
+                screenNavigator.showBrowserScreen(action.url, action.withNewTab, action.isFromExternal)
             }
-        });
-        chromeViewModel.getShowTabTray().observe(this, unit -> {
-            TabTrayFragment tabTray = TabTray.show(getSupportFragmentManager());
-            if (tabTray != null) {
-                tabTray.setOnDismissListener(dialog -> portraitStateModel.cancelRequest(PortraitComponent.TabTray.INSTANCE));
-                portraitStateModel.request(PortraitComponent.TabTray.INSTANCE);
+            showTabTray.observe(this@MainActivity, Observer {
+                val tabTray = TabTray.show(supportFragmentManager)
+                if (tabTray != null) {
+                    tabTray.setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.TabTray) }
+                    portraitStateModel.request(PortraitComponent.TabTray)
+                }
+            })
+            showMenu.observe(this@MainActivity, Observer { menu.show() })
+            showNewTab.observe(this@MainActivity, Observer {
+                ContentPortalViewState.reset()
+                screenNavigator.addHomeScreen(true)
+            })
+            showUrlInput.observe(this@MainActivity, Observer { url ->
+                if (!supportFragmentManager.isStateSaved) {
+                    screenNavigator.addUrlScreen(url)
+                }
+            })
+            dismissUrlInput.observe(this@MainActivity, Observer { screenNavigator.popUrlScreen() })
+            pinShortcut.observe(this@MainActivity, Observer { onAddToHomeClicked() })
+            toggleBookmark.observe(this@MainActivity, Observer { onBookMarkClicked() })
+            share.observe(this@MainActivity, Observer {
+                val browserFragment = visibleBrowserFragment
+                if (browserFragment != null) {
+                    onShareClicked(browserFragment)
+                }
+            })
+            showDownloadPanel.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_DOWNLOADS) })
+            isMyShotOnBoardingPending.nonNullObserve(this@MainActivity) { isPending ->
+                if (isPending) {
+                    this@MainActivity.showMyShotOnBoarding()
+                }
             }
-        });
-        chromeViewModel.getShowMenu().observe(this, unit -> menu.show());
-        chromeViewModel.getShowNewTab().observe(this, unit -> {
-            ContentPortalViewState.reset();
-            screenNavigator.addHomeScreen(true);
-        });
-        chromeViewModel.getShowUrlInput().observe(this, url -> {
-            if (getSupportFragmentManager().isStateSaved()) {
-                return;
+            showNightModeOnBoarding.observe(this@MainActivity, Observer { showNightModeOnBoarding() })
+            isNightMode.nonNullObserve(this@MainActivity) { isNightMode ->
+                onNightModeEnabled(Settings.getInstance(this@MainActivity), isNightMode)
             }
-            screenNavigator.addUrlScreen(url);
-        });
-        chromeViewModel.getDismissUrlInput().observe(this, unit -> screenNavigator.popUrlScreen());
-        chromeViewModel.getPinShortcut().observe(this, unit -> onAddToHomeClicked());
-        chromeViewModel.getToggleBookmark().observe(this, unit -> onBookMarkClicked());
-        chromeViewModel.getShare().observe(this, unit -> {
-            BrowserFragment browserFragment = getVisibleBrowserFragment();
-            if (browserFragment != null) {
-                onShareClicked(browserFragment);
-            }
-        });
-        chromeViewModel.getShowDownloadPanel().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_DOWNLOADS));
-        chromeViewModel.isMyShotOnBoardingPending().observe(this, isPending -> {
-            if (isPending != null && isPending) {
-                showMyShotOnBoarding();
-            }
-        });
-        chromeViewModel.getShowNightModeOnBoarding().observe(this, unit -> showNightModeOnBoarding());
-        chromeViewModel.isNightMode().observe(this, isNightMode -> {
-            if (isNightMode != null) {
-                onNightModeEnabled(Settings.getInstance(this), isNightMode);
-            }
-        });
-        chromeViewModel.getDriveDefaultBrowser().observe(this, unit -> driveDefaultBrowser());
-        chromeViewModel.getExitApp().observe(this, unit -> onExitClicked());
-        chromeViewModel.getOpenPreference().observe(this, unit -> openPreferences());
-        chromeViewModel.getShowBookmarks().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_BOOKMARKS));
-        chromeViewModel.getShowHistory().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_HISTORY));
-        chromeViewModel.getShowScreenshots().observe(this, unit -> showListPanel(ListPanelDialog.TYPE_SCREENSHOTS));
+            driveDefaultBrowser.observe(this@MainActivity, Observer { driveDefaultBrowser() })
+            exitApp.observe(this@MainActivity, Observer { onExitClicked() })
+            openPreference.observe(this@MainActivity, Observer { openPreferences() })
+            showBookmarks.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_BOOKMARKS) })
+            showHistory.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_HISTORY) })
+            showScreenshots.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_SCREENSHOTS) })
+        }
     }
 
-    @Override
-    protected void onStart() {
+    override fun onStart() {
         if (!Settings.getInstance(this).shouldShowFirstrun()) {
-            appUpdateManager.update(this, AppConfigWrapper.getInAppUpdateConfig());
+            appUpdateManager.update(this, AppConfigWrapper.getInAppUpdateConfig())
         }
-        super.onStart();
+        super.onStart()
     }
 
-    protected void onResume() {
-        super.onResume();
+    override fun onResume() {
+        super.onResume()
+        TelemetryWrapper.startSession()
 
-        TelemetryWrapper.startSession();
-
-        final IntentFilter uiActionFilter = new IntentFilter(Constants.ACTION_NOTIFY_UI);
-        uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION);
-        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH);
-        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter);
-        getContentResolver().registerContentObserver(DownloadContract.Download.CONTENT_URI, true, downloadObserver);
-        downloadIndicatorViewModel.updateIndicator();
+        val uiActionFilter = IntentFilter(Constants.ACTION_NOTIFY_UI).apply {
+            addCategory(Constants.CATEGORY_FILE_OPERATION)
+            addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
+        }
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
+        contentResolver.registerContentObserver(DownloadContract.Download.CONTENT_URI, true, downloadObserver)
+        downloadIndicatorViewModel.updateIndicator()
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver);
-        getContentResolver().unregisterContentObserver(downloadObserver);
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
+        contentResolver.unregisterContentObserver(downloadObserver)
 
-        TelemetryWrapper.stopSession();
-        saveTabsToPersistence();
+        TelemetryWrapper.stopSession()
+        saveTabsToPersistence()
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        TelemetryWrapper.stopMainActivity();
+    override fun onStop() {
+        super.onStop()
+        TelemetryWrapper.stopMainActivity()
     }
 
-    @Override
-    public void onDestroy() {
+    public override fun onDestroy() {
         PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
-        if (sessionManager != null) {
-            sessionManager.destroy();
-        }
-        super.onDestroy();
+                .unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
+        sessionManager?.destroy()
+        super.onDestroy()
     }
 
-    @Override
-    protected void onNewIntent(Intent unsafeIntent) {
-        final SafeIntent intent = new SafeIntent(unsafeIntent);
-        if (promotionModel != null) {
-            promotionModel.parseIntent(intent);
-            if (PromotionPresenter.runPromotionFromIntent(this, promotionModel)) {
+    override fun onNewIntent(unsafeIntent: Intent) {
+        val intent = SafeIntent(unsafeIntent)
+        promotionModel?.let {
+            it.parseIntent(intent)
+            if (PromotionPresenter.runPromotionFromIntent(this, it)) {
                 // Don't run other promotion or other action if we already displayed above promotion
-                return;
+                return@onNewIntent
             }
         }
-        boolean handledExternalLink = handleExternalLink(intent);
+        val handledExternalLink = handleExternalLink(intent)
         if (handledExternalLink) {
             // We don't want to see any menu is visible when processing open url request from Intent.ACTION_VIEW
-            dismissAllMenus();
-            TabTray.dismiss(getSupportFragmentManager());
+            dismissAllMenus()
+            TabTray.dismiss(supportFragmentManager)
         }
 
         // We do not care about the previous intent anymore. But let's remember this one.
-        setIntent(unsafeIntent);
+        setIntent(unsafeIntent)
     }
 
-    private boolean handleExternalLink(SafeIntent intent) {
-        boolean handled = false;
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            String url = intent.getDataString();
-            String nonNullUrl = url != null ? url : "";
-            boolean openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true);
-            chromeViewModel.getOpenUrl().setValue(new OpenUrlAction(nonNullUrl, openInNewTab, true));
-            handled = true;
+    private fun handleExternalLink(intent: SafeIntent): Boolean {
+        var handled = false
+        if (Intent.ACTION_VIEW == intent.action) {
+            val url = intent.dataString
+            val nonNullUrl = url ?: ""
+            val openInNewTab = intent.getBooleanExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true)
+            chromeViewModel.openUrl.value = OpenUrlAction(nonNullUrl, openInNewTab, true)
+            handled = true
         }
 
-        return handled;
+        return handled
     }
 
-    @Override
-    public void applyLocale() {
+    override fun applyLocale() {
         // re-create bottom sheet menu
-        setUpMenu();
+        setUpMenu()
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ScreenshotViewerActivity.REQ_CODE_VIEW_SCREENSHOT) {
             if (resultCode == ScreenshotViewerActivity.RESULT_NOTIFY_SCREENSHOT_IS_DELETED) {
-                Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show();
-                if (mDialogFragment != null) {
-                    Fragment fragment = mDialogFragment.getChildFragmentManager().findFragmentById(R.id.main_content);
-                    if (fragment instanceof ScreenshotGridFragment && data != null) {
-                        long id = data.getLongExtra(ScreenshotViewerActivity.EXTRA_SCREENSHOT_ITEM_ID, -1);
-                        ((ScreenshotGridFragment) fragment).notifyItemDelete(id);
+                Toast.makeText(this, R.string.message_deleted_screenshot, Toast.LENGTH_SHORT).show()
+                mDialogFragment?.let {
+                    val fragment = it.childFragmentManager.findFragmentById(R.id.main_content)
+                    if (fragment is ScreenshotGridFragment && data != null) {
+                        val id = data.getLongExtra(ScreenshotViewerActivity.EXTRA_SCREENSHOT_ITEM_ID, -1)
+                        fragment.notifyItemDelete(id)
                     }
                 }
             } else if (resultCode == ScreenshotViewerActivity.RESULT_OPEN_URL) {
                 if (data != null) {
-                    String url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL);
-                    if (mDialogFragment != null) {
-                        mDialogFragment.dismissAllowingStateLoss();
-                    }
-                    screenNavigator.showBrowserScreen(url, true, false);
+                    val url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL)
+                    mDialogFragment?.dismissAllowingStateLoss()
+                    screenNavigator.showBrowserScreen(url, true, false)
                 }
             }
-
         } else if (requestCode == REQUEST_CODE_IN_APP_UPDATE) {
             if (resultCode == Activity.RESULT_OK) {
-                appUpdateManager.onInAppUpdateGranted();
+                appUpdateManager.onInAppUpdateGranted()
             } else {
-                appUpdateManager.onInAppUpdateDenied();
+                appUpdateManager.onInAppUpdateDenied()
             }
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().isStateSaved()) {
-            return;
+    override fun onBackPressed() {
+        when {
+            supportFragmentManager.isStateSaved -> return
+            screenNavigator.visibleBrowserScreen?.onBackPressed() == true -> return
+            dismissContentPortal() -> return
+            !screenNavigator.canGoBack() -> finish()
+            else -> super.onBackPressed()
         }
-
-        ScreenNavigator.BrowserScreen browserScreen = screenNavigator.getVisibleBrowserScreen();
-        if (browserScreen != null && browserScreen.onBackPressed()) {
-            return;
-        }
-
-        // if home panel has content portal displayed, hide that first.
-        if (dismissContentPortal()) {
-            return;
-        }
-
-        if (!screenNavigator.canGoBack()) {
-            finish();
-            return;
-        }
-
-        super.onBackPressed();
     }
 
-    private boolean dismissContentPortal() {
-        Fragment fragment = screenNavigator.getTopFragment();
-        if (fragment instanceof HomeFragment) {
-            return ((HomeFragment) fragment).hideContentPortal();
-        }
-        return false;
-    }
+    private fun dismissContentPortal(): Boolean =
+            (screenNavigator.topFragment as? HomeFragment)?.hideContentPortal() ?: false
 
-    private void saveTabsToPersistence() {
-        if (chromeViewModel.isTabRestoredComplete().getValue() != true) {
-            return;
+    private fun saveTabsToPersistence() {
+        if (chromeViewModel.isTabRestoredComplete.value != true) {
+            return
         }
 
-        List<Session> sessions = getSessionManager().getTabs();
-        for (Session s : sessions) {
-            if (s.getEngineSession() != null) {
-                s.getEngineSession().saveState();
-            }
+        val sessions = getSessionManager().getTabs()
+        for (s in sessions) {
+            s.engineSession?.saveState()
         }
 
-        final String currentTabId = (getSessionManager().getFocusSession() != null)
-                ? getSessionManager().getFocusSession().getId()
-                : null;
-
-        TabModelStore.getInstance(this).saveTabs(this, sessions, currentTabId, null);
+        val currentTabId = getSessionManager().focusSession?.id
+        TabModelStore.getInstance(this).saveTabs(this, sessions, currentTabId, null)
     }
 
-    private void restoreTabsFromPersistence() {
-        chromeViewModel.onRestoreTabCountStarted();
-        TabModelStore.getInstance(this).getSavedTabs(this, asyncQueryListener);
+    private fun restoreTabsFromPersistence() {
+        chromeViewModel.onRestoreTabCountStarted()
+        TabModelStore.getInstance(this).getSavedTabs(this, asyncQueryListener)
     }
 
-    @Override
-    public ThemeManager getThemeManager() {
-        return themeManager;
-    }
+    override fun getThemeManager(): ThemeManager? = themeManager
 
-    @Override
-    public Resources.Theme getTheme() {
-        Resources.Theme theme = super.getTheme();
+    override fun getTheme(): Resources.Theme {
+        val theme = super.getTheme()
 
         //  Oppo with android 5.1 call getTheme before activity onCreate invoked.
         //  So themeManager is not initialized and cause NPE
-        if (themeManager != null) {
-            themeManager.applyCurrentTheme(theme);
-        }
+        themeManager?.applyCurrentTheme(theme)
 
-        return theme;
+        return theme
     }
 
-    public void postSurveyNotification() {
-        Intent intent = IntentUtils.createInternalOpenUrlIntent(this,
-                getSurveyUrl(), true);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+    override fun postSurveyNotification() {
+        val intent = IntentUtils.createInternalOpenUrlIntent(this,
+                surveyUrl, true)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT)
 
-        final NotificationCompat.Builder builder = NotificationUtil.importantBuilder(this)
+        val builder = NotificationUtil.importantBuilder(this)
                 .setContentTitle(getString(R.string.survey_notification_title, "\uD83D\uDE4C"))
                 .setContentText(getString(R.string.survey_notification_description))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(
+                .setStyle(NotificationCompat.BigTextStyle().bigText(
                         getString(R.string.survey_notification_description)))
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
 
-        NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder);
+        NotificationUtil.sendNotification(this, NotificationId.SURVEY_ON_3RD_LAUNCH, builder)
     }
 
-    private String getSurveyUrl() {
-        String currentLang = Locale.getDefault().getLanguage();
-        String indonesiaLang = new Locale("id").getLanguage();
-
-        return getString(R.string.survey_notification_url,
-                currentLang.equalsIgnoreCase(indonesiaLang) ? "id" : "en");
-    }
-
-    public PortraitStateModel getPortraitStateModel() {
-        return portraitStateModel;
-    }
-
-    @VisibleForTesting
-    public BrowserFragment getVisibleBrowserFragment() {
-        return screenNavigator.isBrowserInForeground() ? getBrowserFragment() : null;
-    }
-
-    private void showListPanel(int type) {
-        ListPanelDialog dialogFragment = ListPanelDialog.newInstance(type);
-        dialogFragment.setCancelable(true);
-
-        portraitStateModel.request(PortraitComponent.ListPanelDialog.INSTANCE);
-        dialogFragment.setOnDismissListener(dialog ->
-                portraitStateModel.cancelRequest(PortraitComponent.ListPanelDialog.INSTANCE));
-
-        dialogFragment.show(getSupportFragmentManager(), "");
-        mDialogFragment = dialogFragment;
-    }
-
-    private void dismissAllMenus() {
-        if (menu != null) {
-            menu.dismiss();
+    private fun showListPanel(type: Int) {
+        val dialogFragment = ListPanelDialog.newInstance(type).apply {
+            isCancelable = true
+            setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.ListPanelDialog) }
         }
-        BrowserFragment browserFragment = getVisibleBrowserFragment();
-        if (browserFragment != null) {
-            browserFragment.dismissWebContextMenu();
-            browserFragment.dismissGeoDialog();
+        portraitStateModel.request(PortraitComponent.ListPanelDialog)
+        dialogFragment.show(supportFragmentManager, "")
+        mDialogFragment = dialogFragment
+    }
+
+    private fun dismissAllMenus() {
+        menu.dismiss()
+        visibleBrowserFragment?.run {
+            dismissWebContextMenu()
+            dismissGeoDialog()
         }
-        if (mDialogFragment != null) {
-            mDialogFragment.dismissAllowingStateLoss();
-        }
-        if (myshotOnBoardingDialog != null) {
-            myshotOnBoardingDialog.dismiss();
-            myshotOnBoardingDialog = null;
+        mDialogFragment?.dismissAllowingStateLoss()
+        myshotOnBoardingDialog?.run {
+            dismiss()
+            myshotOnBoardingDialog = null
         }
     }
 
-    private void driveDefaultBrowser() {
-        final Settings settings = Settings.getInstance(this);
-        if (settings.isDefaultBrowserSettingDidShow()) {
+    private fun driveDefaultBrowser() {
+        val settings = Settings.getInstance(this)
+        if (settings.isDefaultBrowserSettingDidShow) {
             // We don't need to accumulate the count after we've displayed the default browser promotion
-            return;
+            return
         } else {
-            settings.addMenuPreferenceClickCount();
+            settings.addMenuPreferenceClickCount()
         }
 
-        final int count = settings.getMenuPreferenceClickCount();
-        final int threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold();
+        val count = settings.menuPreferenceClickCount
+        val threshold = AppConfigWrapper.getDriveDefaultBrowserFromMenuSettingThreshold()
         // even if user above threshold and not set-as-default-browser, still don't show notification.
         if (count == threshold && !Browsers.isDefaultBrowser(this)) {
-            DialogUtils.showDefaultSettingNotification(this);
-            TelemetryWrapper.showDefaultSettingNotification();
+            DialogUtils.showDefaultSettingNotification(this)
+            TelemetryWrapper.showDefaultSettingNotification()
         }
     }
 
-    private void onExitClicked() {
-        GeoPermissionCache.clear();
+    private fun onExitClicked() {
+        GeoPermissionCache.clear()
         if (PrivateMode.getInstance(this).hasPrivateSession()) {
-            final Intent intent = PrivateSessionNotificationService.buildIntent(this.getApplicationContext(), true);
-            startActivity(intent);
+            val intent = PrivateSessionNotificationService.buildIntent(this.applicationContext, true)
+            startActivity(intent)
         }
-        finish();
+        finish()
     }
 
-    private void applyNightModeBrightness(boolean enable, Settings settings, Window window) {
-        final WindowManager.LayoutParams layoutParams = window.getAttributes();
-        final float screenBrightness;
-        if (enable) {
-            screenBrightness = settings.getNightModeBrightnessValue();
+    private fun applyNightModeBrightness(enable: Boolean, settings: Settings, window: Window) {
+        val layoutParams = window.attributes
+        layoutParams.screenBrightness = if (enable) {
+            settings.nightModeBrightnessValue
         } else {
             // Disable night mode, restore the screen brightness
-            screenBrightness = BRIGHTNESS_OVERRIDE_NONE;
+            BRIGHTNESS_OVERRIDE_NONE
         }
-        layoutParams.screenBrightness = screenBrightness;
-        window.setAttributes(layoutParams);
+        window.attributes = layoutParams
     }
 
-    private void onNightModeEnabled(Settings settings, boolean enabled) {
-        applyNightModeBrightness(enabled, settings, getWindow());
-
-        Fragment fragment = screenNavigator.getTopFragment();
-        if (fragment instanceof BrowserFragment) { // null fragment will not make instanceof to be true
-            ((BrowserFragment) fragment).setNightModeEnabled(enabled);
-        } else if (fragment instanceof HomeFragment) {
-            ((HomeFragment) fragment).setNightModeEnabled(enabled);
+    private fun onNightModeEnabled(settings: Settings, enabled: Boolean) {
+        applyNightModeBrightness(enabled, settings, window)
+        when (val fragment = screenNavigator.topFragment) {
+            is BrowserFragment -> fragment.setNightModeEnabled(enabled)
+            is HomeFragment -> fragment.setNightModeEnabled(enabled)
         }
     }
 
-    @VisibleForTesting
-    public BrowserFragment getBrowserFragment() {
-        return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
-    }
-
-    private void onBookMarkClicked() {
-        Boolean isActivated = chromeViewModel.isCurrentUrlBookmarked().getValue();
-        if (isActivated != null && isActivated) {
-            chromeViewModel.deleteBookmark();
-            Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show();
+    private fun onBookMarkClicked() {
+        if (chromeViewModel.isCurrentUrlBookmarked.value == true) {
+            chromeViewModel.deleteBookmark()
+            Toast.makeText(this, R.string.bookmark_removed, Toast.LENGTH_LONG).show()
         } else {
-            final String itemId = chromeViewModel.addBookmark();
+            val itemId = chromeViewModel.addBookmark()
             if (itemId != null) {
-                final Snackbar snackbar = Snackbar.make(snackBarContainer, R.string.bookmark_saved, Snackbar.LENGTH_LONG);
-                snackbar.setAction(R.string.bookmark_saved_edit, view -> startActivity(new Intent(this, EditBookmarkActivity.class).putExtra(EditBookmarkActivityKt.ITEM_UUID_KEY, itemId)));
-                snackbar.show();
+                Snackbar.make(container, R.string.bookmark_saved, Snackbar.LENGTH_LONG).apply {
+                    setAction(R.string.bookmark_saved_edit) {
+                        startActivity(Intent(this@MainActivity, EditBookmarkActivity::class.java).putExtra(ITEM_UUID_KEY, itemId))
+                    }
+                }.show()
             }
         }
     }
 
-    private void onShareClicked(final BrowserFragment browserFragment) {
-        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, browserFragment.getUrl());
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)));
+    private fun onShareClicked(browserFragment: BrowserFragment) {
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, browserFragment.url)
+        }
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
     }
 
-    private void onAddToHomeClicked() {
-        final Session focusTab = getSessionManager().getFocusSession();
-        if (focusTab == null) {
-            return;
-        }
-        final String url = focusTab.getUrl();
+    private fun onAddToHomeClicked() {
+        val focusTab = getSessionManager().focusSession ?: return
+        val url = focusTab.url ?: return
         // If we pin an invalid url as shortcut, the app will not function properly.
         // TODO: only enable the bottom menu item if the page is valid and loaded.
         if (!SupportUtils.isUrl(url)) {
-            return;
+            return
         }
-        final Bitmap bitmap = focusTab.getFavicon();
-        final Intent shortcut = new Intent(Intent.ACTION_VIEW);
-        // Use activity-alias name here so we can start whoever want to control launching behavior
-        // Besides, RocketLauncherActivity not exported so using the alias-name is required.
-        shortcut.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
-        shortcut.setData(Uri.parse(url));
-        shortcut.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.getValue(), true);
-
-        ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.getTitle(), url, bitmap);
-    }
-
-    public void firstrunFinished() {
-        screenNavigator.popToHomeScreen(false);
-    }
-
-    @Override
-    public ScreenNavigator getScreenNavigator() {
-        return screenNavigator;
-    }
-
-    @Override
-    public FirstrunFragment createFirstRunScreen() {
-        return FirstrunFragment.create();
-    }
-
-    @Override
-    public BrowserFragment getBrowserScreen() {
-        return (BrowserFragment) getSupportFragmentManager().findFragmentById(R.id.browser);
-    }
-
-    @Override
-    public UrlInputFragment createUrlInputScreen(@Nullable String url, String parentFragmentTag) {
-        return UrlInputFragment.create(url, parentFragmentTag, true);
-    }
-
-    @Override
-    public HomeFragment createHomeScreen() {
-        return HomeFragment.create();
-    }
-
-    @Override
-    public SessionManager getSessionManager() {
-        // TODO: Find a proper place to allocate and init SessionManager
-        if (sessionManager == null) {
-            final TabViewProvider provider = new MainTabViewProvider(this);
-            sessionManager = new SessionManager(provider);
+        val bitmap = focusTab.favicon
+        val shortcut = Intent(Intent.ACTION_VIEW).apply {
+            // Use activity-alias name here so we can start whoever want to control launching behavior
+            // Besides, RocketLauncherActivity not exported so using the alias-name is required.
+            setClassName(this@MainActivity, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
+            data = Uri.parse(url)
+            putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.value, true)
         }
-        return sessionManager;
+        ShortcutUtils.requestPinShortcut(this, shortcut, focusTab.title, url, bitmap)
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        Settings.EventHistory history = Settings.getInstance(this).getEventHistory();
-        history.add(Settings.Event.PostSurveyNotification);
+    fun firstrunFinished() {
+        screenNavigator.popToHomeScreen(false)
     }
 
-    @Override
-    public void showRateAppDialog() {
-        PromotionDialog dialog = DialogUtils.createRateAppDialog(this);
-        PromotionDialogExt.enqueue(dialogQueue, dialog, () -> {
-            TelemetryWrapper.showRateApp(false);
-            return null;
-        });
+    override fun getScreenNavigator(): ScreenNavigator? = screenNavigator
+
+    override fun createFirstRunScreen(): FirstrunFragment = FirstrunFragment.create()
+
+    override fun getBrowserScreen(): BrowserFragment? =
+            supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment?
+
+    override fun createUrlInputScreen(url: String?, parentFragmentTag: String): UrlInputFragment =
+            UrlInputFragment.create(url, parentFragmentTag, true)
+
+    override fun createHomeScreen(): HomeFragment = HomeFragment.create()
+
+    override fun getSessionManager(): SessionManager =
+            // TODO: Find a proper place to allocate and init SessionManager
+            sessionManager.takeIf { it != null } ?: SessionManager(MainTabViewProvider(this)).also {
+                sessionManager = it
+            }
+
+    override fun onPointerCaptureChanged(hasCapture: Boolean) {
+        val history = Settings.getInstance(this).eventHistory
+        history.add(Settings.Event.PostSurveyNotification)
     }
 
-    @Override
-    public void showRateAppNotification() {
-        DialogUtils.showRateAppNotification(this);
-        TelemetryWrapper.showRateApp(true);
+    override fun showRateAppDialog() {
+        val dialog = DialogUtils.createRateAppDialog(this)
+        dialogQueue.enqueue(dialog) { TelemetryWrapper.showRateApp(false) }
     }
 
-    @Override
-    public void showShareAppDialog() {
-        PromotionDialog dialog = DialogUtils.createShareAppDialog(this);
-        PromotionDialogExt.enqueue(dialogQueue, dialog, () -> {
-            TelemetryWrapper.showPromoteShareDialog();
-            return null;
-        });
+    override fun showRateAppNotification() {
+        DialogUtils.showRateAppNotification(this)
+        TelemetryWrapper.showRateApp(true)
     }
 
-    @Override
-    public void showPrivacyPolicyUpdateNotification() {
-        DialogUtils.showPrivacyPolicyUpdateNotification(this);
+    override fun showShareAppDialog() {
+        val dialog = DialogUtils.createShareAppDialog(this)
+        dialogQueue.enqueue(dialog) { TelemetryWrapper.showPromoteShareDialog() }
     }
 
-    @Override
-    public void showRateAppDialogFromIntent() {
-        PromotionDialog dialog = DialogUtils.createRateAppDialog(this);
-        PromotionDialogExt.enqueue(dialogQueue, dialog, () -> {
-            TelemetryWrapper.showRateApp(false);
-            return null;
-        });
+    override fun showPrivacyPolicyUpdateNotification() {
+        DialogUtils.showPrivacyPolicyUpdateNotification(this)
+    }
 
-        NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX);
+    override fun showRateAppDialogFromIntent() {
+        val dialog = DialogUtils.createRateAppDialog(this)
+        dialogQueue.enqueue(dialog) { TelemetryWrapper.showRateApp(false) }
+
+        NotificationManagerCompat.from(this).cancel(NotificationId.LOVE_FIREFOX)
 
         // Reset extra after dialog displayed.
-        if (getIntent().getExtras() != null) {
-            getIntent().getExtras().putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
-        }
+        intent.extras?.putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false)
     }
 
-    private void showNightModeOnBoarding() {
-        View view = menu.findViewById(R.id.menu_night_mode);
-        view.post(() -> DialogUtils.showSpotlight(
-                MainActivity.this,
-                view,
-                dialog -> {
-                },
-                R.string.night_mode_on_boarding_message));
+    private fun showNightModeOnBoarding() {
+        val view = menu.findViewById<View>(R.id.menu_night_mode)
+        view?.post {
+            DialogUtils.showSpotlight(
+                    this@MainActivity,
+                    view,
+                    {},
+                    R.string.night_mode_on_boarding_message)
+        }
     }
 
     @VisibleForTesting
     @UiThread
-    public void showMyShotOnBoarding() {
-        Settings.getInstance(this).setNightModeSpotlight(false);
-        View view = menu.findViewById(R.id.menu_screenshots);
-        view.post(() -> {
+    fun showMyShotOnBoarding() {
+        Settings.getInstance(this).setNightModeSpotlight(false)
+        val view = menu.findViewById<View>(R.id.menu_screenshots)
+        view?.post {
             myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
-                    MainActivity.this,
+                    this@MainActivity,
                     view,
-                    dialog -> dismissAllMenus(),
-                    v -> {
-                        final String url = SupportUtils.getSumoURLForTopic(MainActivity.this, "screenshot-telemetry");
-                        screenNavigator.showBrowserScreen(url, true, false);
-                        dismissAllMenus();
-                    });
-            chromeViewModel.onMyShotOnBoardingDisplayed();
-        });
-        menu.show();
+                    { dismissAllMenus() },
+                    {
+                        val url = SupportUtils.getSumoURLForTopic(this@MainActivity, "screenshot-telemetry")
+                        screenNavigator.showBrowserScreen(url, true, false)
+                        dismissAllMenus()
+                    })
+            chromeViewModel.onMyShotOnBoardingDisplayed()
+        }
+        menu.show()
     }
 
     // a TabViewProvider and it should only be used in this activity
-    private static class MainTabViewProvider extends TabViewProvider {
-        private Activity activity;
+    private class MainTabViewProvider internal constructor(private val activity: Activity) : TabViewProvider() {
 
-        MainTabViewProvider(@NonNull final Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        public TabView create() {
+        override fun create(): TabView {
             // FIXME: we should avoid casting here.
             // TabView and View is totally different, we know WebViewProvider returns a TabView for now,
             // but there is no promise about this.
-            return (TabView) WebViewProvider.create(this.activity, null);
+            return WebViewProvider.create(this.activity, null) as TabView
         }
+    }
+
+    companion object {
+        private const val LOG_TAG = "MainActivity"
+        const val REQUEST_CODE_IN_APP_UPDATE = 1024
     }
 }
