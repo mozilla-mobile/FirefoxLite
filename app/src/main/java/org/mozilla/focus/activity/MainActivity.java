@@ -109,6 +109,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         PromotionViewContract {
 
     public static final int REQUEST_CODE_IN_APP_UPDATE = 1024;
+    public static final String ACTION_INSTALL_IN_APP_UPDATE = "install_in_app_update";
 
     private PromotionModel promotionModel;
 
@@ -207,6 +208,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         observeChromeAction();
 
         monitorOrientationState();
+
+        installUpdateIfNeeded();
     }
 
     private void monitorOrientationState() {
@@ -258,7 +261,9 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         //if (urlInputFragment != null) {
         //    getUrlInputPresenter().setView(urlInputFragment);
         //}
-        if (!Settings.getInstance(this).shouldShowFirstrun()) {
+        boolean isFirstRunShowing = Settings.getInstance(this).shouldShowFirstrun();
+        boolean isInAppUpdateInstallIntent = isInAppUpdateInstallIntent(getIntent());
+        if (!isFirstRunShowing && !isInAppUpdateInstallIntent) {
             appUpdateManager.update(this, AppConfigWrapper.getInAppUpdateConfig());
         }
         super.onStart();
@@ -315,6 +320,8 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
 
         // We do not care about the previous intent anymore. But let's remember this one.
         setIntent(unsafeIntent);
+
+        installUpdateIfNeeded();
     }
 
     private boolean handleExternalLink(SafeIntent intent) {
@@ -837,6 +844,21 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         // Reset extra after dialog displayed.
         if (getIntent().getExtras() != null) {
             getIntent().getExtras().putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false);
+        }
+    }
+
+    private boolean isInAppUpdateInstallIntent(@Nullable Intent intent) {
+        if (intent == null) {
+            return false;
+        }
+
+        String action = intent.getAction();
+        return action != null && action.equals(ACTION_INSTALL_IN_APP_UPDATE);
+    }
+
+    private void installUpdateIfNeeded() {
+        if (isInAppUpdateInstallIntent(getIntent())) {
+            appUpdateManager.installUpdate(this);
         }
     }
 

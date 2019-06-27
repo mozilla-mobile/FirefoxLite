@@ -5,12 +5,19 @@
 
 package org.mozilla.rocket.appupdate
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.support.design.widget.Snackbar
+import android.support.v4.app.NotificationCompat
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.Toast
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.activity.MainActivity.ACTION_INSTALL_IN_APP_UPDATE
+import org.mozilla.focus.notification.NotificationId
+import org.mozilla.focus.notification.NotificationUtil
+import org.mozilla.focus.utils.AppConstants
 
 class InAppUpdateViewDelegate(
     private val activity: MainActivity,
@@ -36,6 +43,8 @@ class InAppUpdateViewDelegate(
     }
 
     override fun showInAppUpdateInstallPrompt(action: () -> Unit) {
+        postInstallPromptNotification()
+
         Snackbar.make(
                 snackBarAnchor,
                 activity.getString(R.string.update_to_latest_app_snack_bar_message),
@@ -46,6 +55,8 @@ class InAppUpdateViewDelegate(
     }
 
     override fun showInAppUpdateDownloadStartHint() {
+        postDownloadingNotification()
+
         Toast.makeText(
                 activity,
                 activity.getString(R.string.update_to_latest_app_toast),
@@ -55,5 +66,36 @@ class InAppUpdateViewDelegate(
 
     override fun closeOnInAppUpdateDenied() {
         activity.finish()
+    }
+
+    fun postInstallPromptNotification() {
+        val intent = Intent(ACTION_INSTALL_IN_APP_UPDATE).apply {
+            setClassName(activity, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+                activity,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val builder = NotificationUtil.baseBuilder(activity, NotificationUtil.Channel.LOW_PRIORITY)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentTitle(activity.getString(R.string.update_to_latest_app_notification))
+                .setLargeIcon(null)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+
+        NotificationUtil.sendNotification(activity, NotificationId.IN_APP_UPDATE, builder)
+    }
+
+    private fun postDownloadingNotification() {
+        val builder = NotificationUtil.baseBuilder(activity, NotificationUtil.Channel.LOW_PRIORITY)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentTitle(activity.getString(R.string.update_to_latest_app_toast))
+                .setAutoCancel(true)
+
+        NotificationUtil.sendNotification(activity, NotificationId.IN_APP_UPDATE, builder)
     }
 }
