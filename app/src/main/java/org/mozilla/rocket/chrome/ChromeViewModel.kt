@@ -15,6 +15,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.appupdate.InAppUpdateConfig
 import org.mozilla.rocket.chrome.ToastMessage.Companion.LENGTH_LONG
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.invalidate
@@ -50,6 +51,8 @@ class ChromeViewModel(
 
     val shouldShowFirstrun: Boolean
         get() = settings.shouldShowFirstrun()
+    val inAppUpdateConfig: InAppUpdateConfig?
+        get() = AppConfigWrapper.getInAppUpdateConfig()
 
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
