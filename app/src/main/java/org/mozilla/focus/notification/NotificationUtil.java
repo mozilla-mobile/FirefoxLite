@@ -22,10 +22,13 @@ public class NotificationUtil {
 
     public enum Channel {
         IMPORTANT,
-        PRIVATE
+        LOW_PRIORITY,
+        PRIVATE,
     }
 
     private static final String DEFAULT_CHANNEL_ID = "default_channel_id";
+    private static final String LOW_PRIORITY_CHANNEL_ID = "low_priority_channel_id";
+
     private static final String PRIVATE_MODE_CHANNEL_ID = "private_mode_channel_id";
 
     /**
@@ -86,6 +89,10 @@ public class NotificationUtil {
                 R.string.app_name,
                 NotificationManager.IMPORTANCE_HIGH);
 
+        createNotificationChannel(context, LOW_PRIORITY_CHANNEL_ID,
+                R.string.app_name,
+                NotificationManager.IMPORTANCE_LOW);
+
         createNotificationChannel(context, PRIVATE_MODE_CHANNEL_ID,
                 R.string.private_browsing_title,
                 NotificationManager.IMPORTANCE_LOW);
@@ -109,6 +116,8 @@ public class NotificationUtil {
         switch (channel) {
             case IMPORTANT:
                 return DEFAULT_CHANNEL_ID;
+            case LOW_PRIORITY:
+                return LOW_PRIORITY_CHANNEL_ID;
             case PRIVATE:
                 return PRIVATE_MODE_CHANNEL_ID;
         }
