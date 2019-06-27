@@ -18,9 +18,11 @@ import org.mozilla.focus.activity.MainActivity.ACTION_INSTALL_IN_APP_UPDATE
 import org.mozilla.focus.notification.NotificationId
 import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.rocket.landing.DialogQueue
 
 class InAppUpdateViewDelegate(
     private val activity: MainActivity,
+    private val dialogQueue: DialogQueue,
     private val snackBarAnchor: View
 ) : InAppUpdateManager.InAppUpdateUIDelegate {
 
@@ -28,8 +30,6 @@ class InAppUpdateViewDelegate(
         callback: InAppUpdateManager.InAppUpdateIntroCallback,
         data: InAppUpdateIntro
     ): Boolean {
-        // TODO: Implement intro dialog after PR#3709 is landed
-
         val dialog = AlertDialog.Builder(activity)
                 .setTitle(data.title)
                 .setMessage(data.description)
@@ -38,7 +38,17 @@ class InAppUpdateViewDelegate(
                 .setCancelable(false)
                 .create()
         dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
+        dialogQueue.tryShow(object : DialogQueue.DialogDelegate {
+            override fun setOnDismissListener(listener: () -> Unit) {
+                dialog.setOnDismissListener {
+                    listener()
+                }
+            }
+
+            override fun show() {
+                dialog.show()
+            }
+        })
         return true
     }
 

@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity implements ThemeManager.ThemeHost
         initBroadcastReceivers();
 
         appUpdateManager = new InAppUpdateManager(
-                new InAppUpdateViewDelegate(this, snackBarContainer),
+                new InAppUpdateViewDelegate(this, dialogQueue, snackBarContainer),
                 new InAppUpdateModelRepository(Settings.getInstance(this)));
 
         SafeIntent intent = new SafeIntent(getIntent());
