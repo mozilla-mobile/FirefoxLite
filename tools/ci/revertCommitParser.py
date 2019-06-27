@@ -7,12 +7,12 @@ commits = sys.stdin.readlines()
 
 pattern = "\[.+\]"
 
-last_commit = commits[0][:7]
+last_commit = commits[0][:8]
 try:
-    head = re.search(pattern, commits[0].rstrip()[8:]).group(0)
+    head = re.search(pattern, commits[0].rstrip()[9:]).group(0)
 
     for line in commits:
-        commit, comment = line[:7], line.rstrip()[8:]
+        commit, comment = line[:8], line.rstrip()[9:]
         if comment.startswith(head):
             last_commit = commit
         else:
