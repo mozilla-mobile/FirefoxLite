@@ -31,6 +31,8 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.Toast
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import kotlinx.android.synthetic.main.activity_main.container
 import org.mozilla.focus.Inject
 import org.mozilla.focus.R
@@ -55,13 +57,11 @@ import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.SafeIntent
-import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.web.GeoPermissionCache
 import org.mozilla.focus.web.WebViewProvider
-import org.mozilla.rocket.appupdate.InAppUpdateManager
-import org.mozilla.rocket.appupdate.InAppUpdateModelRepository
+import org.mozilla.rocket.appupdate.InAppUpdateController
 import org.mozilla.rocket.appupdate.InAppUpdateViewDelegate
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
@@ -106,7 +106,13 @@ class MainActivity : BaseActivity(),
 
     private lateinit var screenNavigator: ScreenNavigator
     private lateinit var uiMessageReceiver: BroadcastReceiver
-    private lateinit var appUpdateManager: InAppUpdateManager
+
+    private val appUpdateManager: AppUpdateManager by lazy {
+        AppUpdateManagerFactory.create(this)
+    }
+    private lateinit var appUpdateController: InAppUpdateController
+    private lateinit var appUpdateViewDelegate: InAppUpdateViewDelegate
+
     private var themeManager: ThemeManager? = null
     private var sessionManager: SessionManager? = null
     private val dialogQueue = DialogQueue()
@@ -168,9 +174,8 @@ class MainActivity : BaseActivity(),
         initViews()
         initBroadcastReceivers()
 
-        appUpdateManager = InAppUpdateManager(
-                InAppUpdateViewDelegate(this, container),
-                InAppUpdateModelRepository(Settings.getInstance(this)))
+        appUpdateController = InAppUpdateController(applicationContext)
+        appUpdateViewDelegate = InAppUpdateViewDelegate(this, container)
 
         val intent = SafeIntent(intent)
         if (savedInstanceState == null) {
@@ -308,9 +313,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onStart() {
-        if (!chromeViewModel.shouldShowFirstrun) {
-            appUpdateManager.update(this, chromeViewModel.inAppUpdateConfig)
-        }
+        startInAppUpdateController()
         super.onStart()
     }
 
@@ -408,9 +411,9 @@ class MainActivity : BaseActivity(),
             }
         } else if (requestCode == REQUEST_CODE_IN_APP_UPDATE) {
             if (resultCode == Activity.RESULT_OK) {
-                appUpdateManager.onInAppUpdateGranted()
+                appUpdateController.onUpdateAgreed()
             } else {
-                appUpdateManager.onInAppUpdateDenied()
+                appUpdateController.onUpdateDenied()
             }
         }
     }
@@ -649,6 +652,22 @@ class MainActivity : BaseActivity(),
             chromeViewModel.onMyShotOnBoardingDisplayed()
         }
         menu.show()
+    }
+
+    private fun startInAppUpdateController() = with(appUpdateController) {
+        val delegate = appUpdateViewDelegate
+        val manager = appUpdateManager
+        val owner = this@MainActivity
+
+        startUpdate.nonNullObserve(this@MainActivity) { startUpdate(owner, manager, it) }
+        startInstall.observe(owner, Observer { startInstall(manager) })
+        closeApp.observe(owner, Observer { finish() })
+
+        showIntroDialog.nonNullObserve(owner) { showIntroDialog(it, delegate) }
+        showInstallPrompt.observe(owner, Observer { showInstallPrompt(delegate) })
+        showDownloadStartHint.observe(owner, Observer { showDownloadStartHint(delegate) })
+
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { checkUpdate(it) }
     }
 
     // a TabViewProvider and it should only be used in this activity
