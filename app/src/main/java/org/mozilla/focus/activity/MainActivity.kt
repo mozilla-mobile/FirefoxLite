@@ -27,10 +27,12 @@ import android.support.v4.app.DialogFragment
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.LocalBroadcastManager
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.Window
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.Toast
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import kotlinx.android.synthetic.main.activity_main.container
 import org.mozilla.focus.Inject
 import org.mozilla.focus.R
@@ -55,14 +57,12 @@ import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.SafeIntent
-import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.web.GeoPermissionCache
 import org.mozilla.focus.web.WebViewProvider
-import org.mozilla.rocket.appupdate.InAppUpdateManager
-import org.mozilla.rocket.appupdate.InAppUpdateModelRepository
-import org.mozilla.rocket.appupdate.InAppUpdateViewDelegate
+import org.mozilla.rocket.appupdate.InAppUpdateController
+import org.mozilla.rocket.appupdate.InAppUpdateIntro
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.component.LaunchIntentDispatcher
@@ -93,7 +93,8 @@ class MainActivity : BaseActivity(),
         TabsSessionProvider.SessionHost,
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
-        PromotionViewContract {
+        PromotionViewContract,
+        InAppUpdateController.ViewDelegate {
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
@@ -106,7 +107,9 @@ class MainActivity : BaseActivity(),
 
     private lateinit var screenNavigator: ScreenNavigator
     private lateinit var uiMessageReceiver: BroadcastReceiver
-    private lateinit var appUpdateManager: InAppUpdateManager
+
+    private lateinit var appUpdateController: InAppUpdateController
+
     private var themeManager: ThemeManager? = null
     private var sessionManager: SessionManager? = null
     private val dialogQueue = DialogQueue()
@@ -163,14 +166,15 @@ class MainActivity : BaseActivity(),
         downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
+        appUpdateController = InAppUpdateController(
+                this,
+                AppUpdateManagerFactory.create(this),
+                this
+        )
 
         setContentView(R.layout.activity_main)
         initViews()
         initBroadcastReceivers()
-
-        appUpdateManager = InAppUpdateManager(
-                InAppUpdateViewDelegate(this, container),
-                InAppUpdateModelRepository(Settings.getInstance(this)))
 
         val intent = SafeIntent(intent)
         if (savedInstanceState == null) {
@@ -197,6 +201,8 @@ class MainActivity : BaseActivity(),
         observeNavigation()
         monitorOrientationState()
         observeChromeAction()
+
+        appUpdateController.onReceiveIntent(getIntent())
     }
 
     private fun initViews() {
@@ -308,9 +314,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onStart() {
-        if (!chromeViewModel.shouldShowFirstrun) {
-            appUpdateManager.update(this, chromeViewModel.inAppUpdateConfig)
-        }
+        checkInAppUpdate()
         super.onStart()
     }
 
@@ -366,6 +370,8 @@ class MainActivity : BaseActivity(),
 
         // We do not care about the previous intent anymore. But let's remember this one.
         setIntent(unsafeIntent)
+
+        appUpdateController.onReceiveIntent(getIntent())
     }
 
     private fun handleExternalLink(intent: SafeIntent): Boolean {
@@ -406,13 +412,9 @@ class MainActivity : BaseActivity(),
                     screenNavigator.showBrowserScreen(url, true, false)
                 }
             }
-        } else if (requestCode == REQUEST_CODE_IN_APP_UPDATE) {
-            if (resultCode == Activity.RESULT_OK) {
-                appUpdateManager.onInAppUpdateGranted()
-            } else {
-                appUpdateManager.onInAppUpdateDenied()
-            }
         }
+
+        appUpdateController.onActivityResult(requestCode, resultCode)
     }
 
     override fun onBackPressed() {
@@ -651,6 +653,60 @@ class MainActivity : BaseActivity(),
         menu.show()
     }
 
+    private fun checkInAppUpdate() {
+        appUpdateController.checkUpdate()
+    }
+
+    override fun showIntroDialog(
+        data: InAppUpdateIntro,
+        positiveCallback: () -> Unit,
+        negativeCallback: () -> Unit
+    ): Boolean {
+
+        val dialog = AlertDialog.Builder(this@MainActivity)
+                .setTitle(data.title)
+                .setMessage(data.description)
+                .setPositiveButton(data.positiveText) { _, _ ->
+                    positiveCallback.invoke()
+                }
+                .setNegativeButton(data.negativeText) { _, _ ->
+                    negativeCallback.invoke()
+                }
+                .setCancelable(false)
+                .create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialogQueue.tryShow(object : DialogQueue.DialogDelegate {
+            override fun setOnDismissListener(listener: () -> Unit) {
+                dialog.setOnDismissListener {
+                    listener()
+                }
+            }
+
+            override fun show() {
+                dialog.show()
+            }
+        })
+        return true
+    }
+
+    override fun showInstallPrompt(actionCallback: () -> Unit) {
+        Snackbar.make(
+                container,
+                getString(R.string.update_to_latest_app_snack_bar_message),
+                Snackbar.LENGTH_LONG
+        ).setAction(getString(R.string.update_to_latest_app_snack_bar_update)) {
+            actionCallback.invoke()
+        }.show()
+    }
+
+    override fun showDownloadStartHint() {
+        Toast.makeText(
+                this@MainActivity,
+                getString(R.string.update_to_latest_app_toast),
+                Toast.LENGTH_SHORT
+        ).show()
+    }
+
     // a TabViewProvider and it should only be used in this activity
     private class MainTabViewProvider internal constructor(private val activity: Activity) : TabViewProvider() {
 
@@ -664,6 +720,8 @@ class MainActivity : BaseActivity(),
 
     companion object {
         private const val LOG_TAG = "MainActivity"
+
         const val REQUEST_CODE_IN_APP_UPDATE = 1024
+        const val ACTION_INSTALL_IN_APP_UPDATE = "action_install_in_app_update"
     }
 }
