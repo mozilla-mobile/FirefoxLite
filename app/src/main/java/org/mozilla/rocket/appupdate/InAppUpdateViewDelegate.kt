@@ -11,9 +11,11 @@ import android.view.View
 import android.widget.Toast
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.rocket.landing.DialogQueue
 
 class InAppUpdateViewDelegate(
     private val activity: MainActivity,
+    private val dialogQueue: DialogQueue,
     private val snackBarAnchor: View
 ) {
 
@@ -22,8 +24,6 @@ class InAppUpdateViewDelegate(
         negative: (() -> Unit)?,
         data: InAppUpdateIntro
     ): Boolean {
-        // TODO: Implement intro dialog after PR#3709 is landed
-
         val dialog = AlertDialog.Builder(activity)
                 .setTitle(data.title)
                 .setMessage(data.description)
@@ -32,7 +32,17 @@ class InAppUpdateViewDelegate(
                 .setCancelable(false)
                 .create()
         dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
+        dialogQueue.tryShow(object : DialogQueue.DialogDelegate {
+            override fun setOnDismissListener(listener: () -> Unit) {
+                dialog.setOnDismissListener {
+                    listener()
+                }
+            }
+
+            override fun show() {
+                dialog.show()
+            }
+        })
         return true
     }
 

@@ -175,7 +175,7 @@ class MainActivity : BaseActivity(),
         initBroadcastReceivers()
 
         appUpdateController = InAppUpdateController(applicationContext)
-        appUpdateViewDelegate = InAppUpdateViewDelegate(this, container)
+        appUpdateViewDelegate = InAppUpdateViewDelegate(this, dialogQueue, container)
 
         val intent = SafeIntent(intent)
         if (savedInstanceState == null) {
