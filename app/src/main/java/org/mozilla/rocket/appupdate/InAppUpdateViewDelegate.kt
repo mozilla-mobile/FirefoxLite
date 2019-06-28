@@ -15,10 +15,11 @@ import org.mozilla.focus.activity.MainActivity
 class InAppUpdateViewDelegate(
     private val activity: MainActivity,
     private val snackBarAnchor: View
-) : InAppUpdateManager.InAppUpdateUIDelegate {
+) {
 
-    override fun showInAppUpdateIntro(
-        callback: InAppUpdateManager.InAppUpdateIntroCallback,
+    fun showIntroDialog(
+        positive: (() -> Unit)?,
+        negative: (() -> Unit)?,
         data: InAppUpdateIntro
     ): Boolean {
         // TODO: Implement intro dialog after PR#3709 is landed
@@ -26,8 +27,8 @@ class InAppUpdateViewDelegate(
         val dialog = AlertDialog.Builder(activity)
                 .setTitle(data.title)
                 .setMessage(data.description)
-                .setPositiveButton(data.positiveText) { _, _ -> callback.onPositive() }
-                .setNegativeButton(data.negativeText) { _, _ -> callback.onNegative() }
+                .setPositiveButton(data.positiveText) { _, _ -> positive?.invoke() }
+                .setNegativeButton(data.negativeText) { _, _ -> negative?.invoke() }
                 .setCancelable(false)
                 .create()
         dialog.setCanceledOnTouchOutside(false)
@@ -35,7 +36,7 @@ class InAppUpdateViewDelegate(
         return true
     }
 
-    override fun showInAppUpdateInstallPrompt(action: () -> Unit) {
+    fun showInstallPrompt(action: () -> Unit) {
         Snackbar.make(
                 snackBarAnchor,
                 activity.getString(R.string.update_to_latest_app_snack_bar_message),
@@ -45,15 +46,11 @@ class InAppUpdateViewDelegate(
         }.show()
     }
 
-    override fun showInAppUpdateDownloadStartHint() {
+    fun showDownloadStartHint() {
         Toast.makeText(
                 activity,
                 activity.getString(R.string.update_to_latest_app_toast),
                 Toast.LENGTH_SHORT
         ).show()
-    }
-
-    override fun closeOnInAppUpdateDenied() {
-        activity.finish()
     }
 }
