@@ -5,20 +5,13 @@
 
 package org.mozilla.rocket.appupdate
 
-import android.app.Activity
-import android.arch.lifecycle.Lifecycle
-import android.content.Context
-import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.InstallState
-import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import org.mozilla.focus.BuildConfig
+import org.mozilla.rocket.download.SingleLiveEvent
 
 data class InAppUpdateIntro(
     val title: String,
@@ -46,78 +39,45 @@ fun InAppUpdateConfig.getIntroIfAvailable(): InAppUpdateIntro? {
     return introData.takeIf { shouldShowIntro() }
 }
 
-class InAppUpdateManager(
-    private val delegate: InAppUpdateUIDelegate,
-    private val model: InAppUpdateModel
-) {
-    private var updateConfig: InAppUpdateConfig? = null
+class InAppUpdateManager(val model: InAppUpdateModel) {
+    private var updateConfig = model.getInAppUpdateConfig()
 
-    fun update(activity: FragmentActivity, config: InAppUpdateConfig?) {
-        updateConfig = config ?: return
+    val startUpdate = SingleLiveEvent<InAppUpdateData>()
+    val startInstall = SingleLiveEvent<Unit>()
+    val closeApp = SingleLiveEvent<Unit>()
+
+    val showIntroDialog = SingleLiveEvent<InAppUpdateData>()
+    val showInstallPrompt = SingleLiveEvent<Unit>()
+    val showDownloadStartHint = SingleLiveEvent<Unit>()
+
+    fun checkUpdate(info: AppUpdateInfo) {
+        val config = updateConfig ?: return
+        log("config: $config")
 
         if (!config.isUpdateRecommended()) {
             log("(current=${BuildConfig.VERSION_CODE} >= target=${config.targetVersion}), skip")
             return
         }
 
-        val updateManager = AppUpdateManagerFactory.create(activity)
-        updateManager.appUpdateInfo.addOnSuccessListener { info ->
-            if (!activity.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                log("ui is not visible, skip")
-                return@addOnSuccessListener
-            }
+        log("install status: ${info.installStatus()}, availability: ${info.updateAvailability()}")
 
-            log("install status: ${info.installStatus()}, availability: ${info.updateAvailability()}")
-
-            if (hasDownloadedUpdate(info)) {
-                log("detect a downloaded update")
-                delegate.showInAppUpdateInstallPrompt { installUpdate(updateManager) }
-                return@addOnSuccessListener
-            }
-
-            if (info.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
-                log("no update available")
-                return@addOnSuccessListener
-            }
-
-            if (info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
-                log("flexible type update allowed")
-                startInAppUpdate(activity, updateManager, info, config)
-            } else {
-                log("flexible type update not allowed")
-            }
+        if (hasDownloadedUpdate(info)) {
+            log("detect a downloaded update")
+            onUpdateDownloaded()
+            return
         }
-    }
 
-    fun onInAppUpdateDenied() {
-        val config = updateConfig ?: return
-
-        log("google play update dialog denied")
-        val forceClose = !config.shouldShowIntro() && config.forceCloseOnDenied
-        if (forceClose) {
-            log("google play update dialog denied, force close")
-            delegate.closeOnInAppUpdateDenied()
-        } else {
-            log("google play update dialog denied, skip")
+        if (info.updateAvailability() != UpdateAvailability.UPDATE_AVAILABLE) {
+            log("no update available")
+            return
         }
-    }
 
-    fun onInAppUpdateGranted() {
-        log("google play update dialog granted")
-        delegate.showInAppUpdateDownloadStartHint()
-    }
+        if (!info.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+            log("flexible type update not allowed")
+            return
+        }
 
-    fun installUpdate(context: Context) {
-        installUpdate(AppUpdateManagerFactory.create(context))
-    }
-
-    private fun startInAppUpdate(
-        activity: Activity,
-        manager: AppUpdateManager,
-        info: AppUpdateInfo,
-        config: InAppUpdateConfig
-    ) {
-        log("config: $config")
+        log("flexible type update allowed")
 
         val currentVersion = BuildConfig.VERSION_CODE
         val configVersion = config.targetVersion
@@ -126,98 +86,64 @@ class InAppUpdateManager(
         if (!config.forceCloseOnDenied && isVersionPromptBefore(availableVersion)) {
             log("version $availableVersion had been asked before, skip")
             return
-        } else {
-            log("first time prompt for version $availableVersion")
-            model.setLastPromptInAppUpdateVersion(availableVersion)
         }
+        log("first time prompt for version $availableVersion")
+        model.setLastPromptInAppUpdateVersion(availableVersion)
 
         log("Firebase target version: $configVersion")
         log("will update from $currentVersion to $availableVersion")
 
-        config.getIntroIfAvailable()?.let { introData ->
-            showIntro(activity, manager, info, config.forceCloseOnDenied, introData)
+        val data = InAppUpdateData(info, config)
+        config.getIntroIfAvailable()?.let { _ ->
+            showIntroDialog.value = data
         } ?: run {
-            startGooglePlayUpdate(activity, manager, info)
+            startGooglePlayUpdate(data)
         }
     }
 
-    private fun showIntro(
-        activity: Activity,
-        manager: AppUpdateManager,
-        info: AppUpdateInfo,
-        forceCloseOnDenied: Boolean,
-        introData: InAppUpdateIntro
-    ) {
-        delegate.showInAppUpdateIntro(object : InAppUpdateIntroCallback {
-            override fun onPositive() {
-                startGooglePlayUpdate(activity, manager, info)
-            }
-
-            override fun onNegative() {
-                if (forceCloseOnDenied) {
-                    log("intro denied, force close")
-                    delegate.closeOnInAppUpdateDenied()
-                } else {
-                    log("intro denied, skip")
-                }
-            }
-        }, introData)
+    fun onIntroAgreed(data: InAppUpdateData) {
+        startGooglePlayUpdate(data)
     }
 
-    private fun installUpdate(manager: AppUpdateManager) {
-        log("start install update")
-        manager.appUpdateInfo.addOnSuccessListener { info ->
-            if (info.installStatus() == InstallStatus.DOWNLOADED) {
-                manager.completeUpdate().addOnSuccessListener {
-                    log("install success")
-                }.addOnFailureListener {
-                    log("install failed")
-                }.addOnCompleteListener {
-                    log("install complete")
-                }
-            }
+    fun onIntroDenied(data: InAppUpdateData) {
+        if (data.config.forceCloseOnDenied) {
+            closeApp.call()
         }
     }
 
-    private fun startGooglePlayUpdate(
-        activity: Activity,
-        manager: AppUpdateManager,
-        info: AppUpdateInfo
-    ) {
+    fun onUpdateAgreed() {
+        showDownloadStartHint.call()
+    }
+
+    fun onUpdateDenied() {
+        val config = updateConfig ?: return
+
+        val forceClose = !config.shouldShowIntro() && config.forceCloseOnDenied
+        if (forceClose) {
+            log("intro denied, force close")
+            closeApp.call()
+        } else {
+            log("intro denied, skip")
+        }
+    }
+
+    fun onInstallAgreed() {
+        startInstall.call()
+    }
+
+    fun onInstallFailed() { /* nothing to do for now */ }
+    fun onInstallSuccess() { /* nothing to do for now */ }
+    fun onInstallComplete() { /* nothing to do for now */ }
+
+    fun onUpdateDownloadFailed() { /* nothing to do for now */ }
+    fun onUpdateDownloadCancelled() { /* nothing to do for now */ }
+    fun onUpdateDownloaded() {
+        showInstallPrompt.call()
+    }
+
+    private fun startGooglePlayUpdate(data: InAppUpdateData) {
         log("start google play update process")
-        manager.registerListener(createUpdateListener(manager))
-        manager.startUpdateFlowForResult(
-                info,
-                AppUpdateType.FLEXIBLE,
-                activity,
-                model.getInAppUpdateRequestCode()
-        )
-    }
-
-    private fun createUpdateListener(manager: AppUpdateManager): InstallStateUpdatedListener {
-        return object : InstallStateUpdatedListener {
-            override fun onStateUpdate(state: InstallState) {
-                log("install status updated: ${state.installStatus()}")
-                when (state.installStatus()) {
-                    InstallStatus.DOWNLOADED -> {
-                        log("install status: downloaded")
-                        manager.unregisterListener(this)
-                        delegate.showInAppUpdateInstallPrompt { installUpdate(manager) }
-                    }
-                    InstallStatus.FAILED -> {
-                        log("install status: failed")
-                        manager.unregisterListener(this)
-                    }
-                    InstallStatus.CANCELED -> {
-                        log("install status: failed")
-                        manager.unregisterListener(this)
-                    }
-                    else -> {
-                        log("install status: ${state.installStatus()}")
-                    }
-                }
-            }
-        }
+        startUpdate.value = data
     }
 
     private fun isVersionPromptBefore(version: Int): Boolean {
@@ -234,24 +160,14 @@ class InAppUpdateManager(
         }
     }
 
-    interface InAppUpdateIntroCallback {
-        fun onPositive()
-        fun onNegative()
-    }
-
-    interface InAppUpdateUIDelegate {
-        fun showInAppUpdateIntro(callback: InAppUpdateIntroCallback, data: InAppUpdateIntro): Boolean
-        fun showInAppUpdateInstallPrompt(action: () -> Unit)
-        fun showInAppUpdateDownloadStartHint()
-        fun closeOnInAppUpdateDenied()
-    }
-
     interface InAppUpdateModel {
-        fun getInAppUpdateRequestCode(): Int
         fun isInAppUpdateLogEnabled(): Boolean
         fun getLastPromptInAppUpdateVersion(): Int
         fun setLastPromptInAppUpdateVersion(version: Int)
+        fun getInAppUpdateConfig(): InAppUpdateConfig?
     }
+
+    data class InAppUpdateData(val info: AppUpdateInfo, val config: InAppUpdateConfig)
 
     companion object {
         private const val TAG = "InAppUpdateManager"
