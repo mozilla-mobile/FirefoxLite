@@ -413,9 +413,11 @@
     <!-- In-app message to update to latest build. -->
     <!-- Show a toast message when start downloading the new apk from google play. -->
     <string name="update_to_latest_app_toast">Downloading latest build…</string>
-    <!-- Show snack bar or notification so users can tap to update the apk-->
+    <!-- Show notification so users can tap to update the apk -->
     <string name="update_to_latest_app_notification">Latest build has been downloaded. Tap to update.</string>
-    <string name="update_to_latest_app_snack_bar_message">Latest build has been downloaded. Tap to update.</string>
+    <!-- Show snack bar so users can tap to update the apk -->
+    <string name="update_to_latest_app_snack_bar_message">Latest build downloaded</string>
+    <!-- Show snack bar so users can tap to update the apk -->
     <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
    
     <!-- In-app notification, Privacy policy update -->
