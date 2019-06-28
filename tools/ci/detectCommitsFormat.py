@@ -9,7 +9,6 @@ commits = []
 for commit in commits_list.split("\n"):
     if commit[0:8] != master_abbrev_commit:
         commits.append((commit[0:8], commit[9:]))
-        print(commit)
     else:
         break
 
