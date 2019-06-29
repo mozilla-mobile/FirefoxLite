@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">Không thể hiển thị ảnh chụp màn hình</string>
   <string name="remove">Xóa</string>
   <string name="pin_site">Ghim trang</string>
+  <string name="update_to_latest_app_toast">Đang tải bản dựng mới nhất…</string>
+  <string name="update_to_latest_app_notification">Bản dựng mới nhất đã được tải xuống. Nhấn để cập nhật.</string>
+  <string name="update_to_latest_app_snack_bar_message">Bản dựng mới nhất được tải xuống</string>
+  <string name="update_to_latest_app_snack_bar_update">CẬP NHẬT</string>
   <string name="privacy_policy_update_notification_title">Thông báo cập nhật sản phẩm</string>
   <string name="privacy_policy_update_notification_action">Để làm cho Firefox Lite tốt hơn cho bạn và mọi người, chúng tôi đã thực hiện một số thay đổi đối với chính sách quyền riêng tư của mình. Nhấn để tìm hiểu thêm.</string>
   <string name="rate_app_dialog_text_title">Thích ứng dụng %1$s?</string>
