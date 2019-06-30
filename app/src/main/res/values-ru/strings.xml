@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">Не удалось отобразить скриншот</string>
   <string name="remove">Удалить</string>
   <string name="pin_site">Закрепить сайт</string>
+  <string name="update_to_latest_app_toast">Загрузка последней сборки…</string>
+  <string name="update_to_latest_app_notification">Последняя сборка загружена. Нажмите, чтобы выполнить обновление.</string>
+  <string name="update_to_latest_app_snack_bar_message">Последняя сборка загружена</string>
+  <string name="update_to_latest_app_snack_bar_update">ОБНОВИТЬ</string>
   <string name="privacy_policy_update_notification_title">Уведомление об обновлении продукта</string>
   <string name="privacy_policy_update_notification_action">Чтобы сделать Firefox Lite лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
   <string name="rate_app_dialog_text_title">Нравится %1$s?</string>
