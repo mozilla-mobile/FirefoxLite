@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">ไม่สามารถแสดงผลภาพหน้าจอ</string>
   <string name="remove">เอาออก</string>
   <string name="pin_site">ปักหมุดไซต์</string>
+  <string name="update_to_latest_app_toast">กำลังดาวน์โหลดรุ่นล่าสุด…</string>
+  <string name="update_to_latest_app_notification">ดาวน์โหลดรุ่นล่าสุดแล้ว แตะเพื่ออัปเดต</string>
+  <string name="update_to_latest_app_snack_bar_message">ดาวน์โหลดรุ่นล่าสุดแล้ว</string>
+  <string name="update_to_latest_app_snack_bar_update">อัปเดต</string>
   <string name="privacy_policy_update_notification_title">ประกาศการอัปเดตผลิตภัณฑ์</string>
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Lite ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
