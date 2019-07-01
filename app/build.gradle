@@ -257,6 +257,7 @@ dependencies {
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
+    testImplementation "org.json:json:${Versions.json}"
     testImplementation "androidx.test:core:${Versions.androidx_test_core}"
     androidTestImplementation "org.mockito:mockito-android:${Versions.mockito}"
 
