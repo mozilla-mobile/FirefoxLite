@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">स्क्रीनशॉट प्रदर्शित नहीं किया जा सकता</string>
   <string name="remove">हटाएँ</string>
   <string name="pin_site">साइट को पिन करें</string>
+  <string name="update_to_latest_app_toast">नवीनतम बिल्ड डाउनलोड हो रहा है…</string>
+  <string name="update_to_latest_app_notification">नवीनतम बिल्ड डाउनलोड हो चूका है। अपडेट करने के लिए दबाएं।</string>
+  <string name="update_to_latest_app_snack_bar_message">नवीनतम बिल्ड डाउनलोड हो चूका है</string>
+  <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">प्रोडक्ट अद्यतन सूचना</string>
   <string name="privacy_policy_update_notification_action">Firefox Lite को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएँ।</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद आया?</string>
