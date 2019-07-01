@@ -690,6 +690,8 @@ class MainActivity : BaseActivity(),
     }
 
     override fun showInstallPrompt(actionCallback: () -> Unit) {
+        postInstallPromptNotification()
+
         Snackbar.make(
                 container,
                 getString(R.string.update_to_latest_app_snack_bar_message),
@@ -700,11 +702,44 @@ class MainActivity : BaseActivity(),
     }
 
     override fun showDownloadStartHint() {
+        postDownloadingNotification()
+
         Toast.makeText(
                 this@MainActivity,
                 getString(R.string.update_to_latest_app_toast),
                 Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun postInstallPromptNotification() {
+        val intent = Intent(ACTION_INSTALL_IN_APP_UPDATE).apply {
+            setClassName(this@MainActivity, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val builder = NotificationUtil.baseBuilder(this, NotificationUtil.Channel.LOW_PRIORITY)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentTitle(getString(R.string.update_to_latest_app_notification))
+                .setLargeIcon(null)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+
+        NotificationUtil.sendNotification(this, NotificationId.IN_APP_UPDATE, builder)
+    }
+
+    private fun postDownloadingNotification() {
+        val builder = NotificationUtil.baseBuilder(this, NotificationUtil.Channel.LOW_PRIORITY)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentTitle(getString(R.string.update_to_latest_app_toast))
+                .setAutoCancel(true)
+
+        NotificationUtil.sendNotification(this, NotificationId.IN_APP_UPDATE, builder)
     }
 
     // a TabViewProvider and it should only be used in this activity
