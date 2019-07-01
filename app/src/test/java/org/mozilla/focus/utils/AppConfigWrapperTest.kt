@@ -2,6 +2,7 @@ package org.mozilla.focus.utils
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mozilla.focus.utils.FirebaseHelper.LIFE_FEED_PROVIDERS
 import org.mozilla.focus.utils.FirebaseHelper.RATE_APP_DIALOG_THRESHOLD
 import org.mozilla.focus.utils.FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD
 import org.mozilla.focus.utils.FirebaseHelper.SHARE_APP_DIALOG_THRESHOLD
@@ -42,5 +43,21 @@ class AppConfigWrapperTest {
                 shareDialog + rateNotification - rateDialog,
                 AppConfigWrapper.getShareDialogLaunchTimeThreshold(true).toInt()
         )
+    }
+
+    @Test
+    fun `get migrated news categorize url`() {
+        val lifeFeedProviders = """
+            |[
+            | {"name":"Newspoint","type":"news","url":"LEGACY_URL"},
+            | {"name":"NewspointCategory","type":"news","url":"CATEGORY_URL"}
+            |]
+            """.trimMargin()
+        val map = HashMap<String, Any>().apply {
+            this[LIFE_FEED_PROVIDERS] = lifeFeedProviders
+        }
+        FirebaseHelper.replaceContract(FirebaseNoOpImp(map))
+
+        assertEquals("CATEGORY_URL", AppConfigWrapper.getNewsProviderUrl("Newspoint"))
     }
 }
