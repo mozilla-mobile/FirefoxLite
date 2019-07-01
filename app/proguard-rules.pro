@@ -120,3 +120,6 @@ public static java.lang.String TABLENAME;
 ## Integrate Glide source code
 -dontwarn android.graphics.Bitmap$Config
 -dontwarn android.app.FragmentManager
+
+# kotlinx.coroutines
+-dontwarn kotlinx.atomicfu.AtomicBoolean
