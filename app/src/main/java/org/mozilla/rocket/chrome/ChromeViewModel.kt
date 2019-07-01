@@ -94,6 +94,8 @@ class ChromeViewModel(
         isRefreshing.value = false
         canGoBack.value = false
         canGoForward.value = false
+        isHomePageUrlInputShowing.value = false
+        isMyShotOnBoardingPending.value = false
 
         isCurrentUrlBookmarked = Transformations.switchMap<String, List<BookmarkModel>>(currentUrl, bookmarkRepo::getBookmarksByUrl)
                 .let { urlBookmarksLiveData ->
