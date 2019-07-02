@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">Teu bisa midangkeun téwakan layar</string>
   <string name="remove">Piceun</string>
   <string name="pin_site">Pin loka</string>
+  <string name="update_to_latest_app_toast">Ngundeur wangun mutahir…</string>
+  <string name="update_to_latest_app_notification">Wangun mutahir geus diundeur. Toél pikeun ngamutahirkeun.</string>
+  <string name="update_to_latest_app_snack_bar_message">Wangun mutahir geus diundeur</string>
+  <string name="update_to_latest_app_snack_bar_update">MUTAHIRKEUN</string>
   <string name="privacy_policy_update_notification_title">Wawar Apdétan Prodak</string>
   <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
   <string name="rate_app_dialog_text_title">Bogoh %1$s?</string>
