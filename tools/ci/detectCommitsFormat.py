@@ -20,7 +20,7 @@ else:
     try:
         pattern = "\[.+\]"
         head = re.search(pattern, commits[0][1]).group(0)
-        print(head)
+        print("head: " + head)
         for c in commits:
             print(c)
             if not c[1].startswith(head):
