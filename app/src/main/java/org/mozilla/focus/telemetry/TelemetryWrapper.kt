@@ -2659,6 +2659,7 @@ object TelemetryWrapper {
             val context = configuration.context
             addCustomPing(configuration, ThemeToyMeasurement(context))
             addCustomPing(configuration, CaptureCountMeasurement(context))
+            addCustomPing(configuration, InstallReferrerMeasurement(context))
         }
 
         internal fun addCustomPing(
@@ -2717,6 +2718,22 @@ object TelemetryWrapper {
 
         companion object {
             private const val MEASUREMENT_CAPTURE_COUNT = "capture_count"
+        }
+    }
+
+    private class InstallReferrerMeasurement internal constructor(
+        private val context: Context
+    ) : TelemetryMeasurement(MEASUREMENT_INSTALL_REFERRER) {
+        override fun flush(): Any {
+            return try {
+                context.packageManager.getInstallerPackageName(context.packageName)
+            } catch (e: Exception) {
+                null
+            } ?: ""
+        }
+
+        companion object {
+            private const val MEASUREMENT_INSTALL_REFERRER = "install_referrer"
         }
     }
 }
