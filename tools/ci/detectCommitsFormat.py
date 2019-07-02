@@ -1,4 +1,5 @@
 import os, sys, re
+import traceback
 
 master_commit = os.popen("git ls-remote git@github.com:mozilla-tw/FirefoxLite.git | grep refs/heads/master").read()
 master_abbrev_commit = master_commit[0:7]
@@ -30,6 +31,7 @@ else:
                 sys.exit(0)
         print("Deteciton pass")
     except:
+        traceback.print_exc()
         print("Detection fail: unknown reason")
         sys.exit(0)
         # sys.exit(1)
