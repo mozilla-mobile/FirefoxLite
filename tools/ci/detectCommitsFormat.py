@@ -9,21 +9,26 @@ commits = []
 for commit in commits_list.split("\n"):
     if commit[0:8] != master_abbrev_commit:
         commits.append((commit[0:8], commit[9:]))
+        print(commit[0:8])
     else:
         break
 
 if len(commits) <= 1:
-    print("Detection pass")
+    print("Detection pass: one commit")
     sys.exit(0)
 else:
     try:
         pattern = "\[.+\]"
         head = re.search(pattern, commits[0][1]).group(0)
+        print(head)
         for c in commits:
+            print(c)
             if not c[1].startswith(head):
-                print("Detection fail")
-                sys.exit(1)
+                print("Detection fail: wrong header")
+                # sys.exit(1)
+                sys.exit(0)
         print("Deteciton pass")
     except:
-        print("Detection fail")
-        sys.exit(1)
+        print("Detection fail: unknown reason")
+        sys.exit(0)
+        # sys.exit(1)
