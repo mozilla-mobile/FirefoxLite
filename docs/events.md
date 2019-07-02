@@ -135,3 +135,7 @@
 |Click Quick Search|search|click|quicksearch|""|"engine=Facebook,Youtube,Instagram," 
 |Enter Landscape Mode|enter landscape mode|change|landscape_mode|"enter"|"" 
 |Exit Landscape Mode|enter landscape mode|change|landscape_mode|"exit"|"duration=duration in ms," 
+|Show in-app update dialog|action|show|update_msg,update|""|"from_build=old version,to_build=new version," 
+|Click in-app update dialog|action|click|update_msg,update|"positive,negative"|"from_build=old version,to_build=new version,action=dismiss,force_close," 
+|Show in-app update install prompt|action|show|update|"downloaded"|"from_build=old version,to_build=new version," 
+|Click in-app update install prompt|action|click|update|"apply"|"from_build=old version,to_build=new version,source=notification,snackbar," 

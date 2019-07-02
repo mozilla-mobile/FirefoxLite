@@ -143,12 +143,16 @@ object TelemetryWrapper {
         const val QUICK_SEARCH = "quicksearch"
 
         const val LANDSCAPE_MODE = "landscape_mode"
+
+        const val UPDATE_MESSAGE = "update_msg"
+        const val UPDATE = "update"
     }
 
     object Value {
         internal const val HOME = "home"
         internal const val TOPSITE = "top_site"
         internal const val DOWNLOAD = "download"
+        internal const val DOWNLOADED = "downloaded"
         internal const val HISTORY = "history"
         internal const val TURBO = "turbo"
         internal const val BLOCK_IMAGE = "block_image"
@@ -217,6 +221,8 @@ object TelemetryWrapper {
         internal const val SWIPE = "swipe"
 
         internal const val SETTINGS_PRIVATE_SHORTCUT = "pref_private_shortcut"
+
+        internal const val APPLY = "apply"
     }
 
     internal object Extra {
@@ -244,6 +250,9 @@ object TelemetryWrapper {
         const val ID = "id"
         const val DURATION = "duration"
         const val LANGUAGE = "language"
+        const val FROM_BUILD = "from_build"
+        const val TO_BUILD = "to_build"
+        const val ACTION = "action"
     }
 
     object Extra_Value {
@@ -261,6 +270,9 @@ object TelemetryWrapper {
         internal const val SYSTEM_BACK = "system_back"
         const val LAUNCHER = "launcher"
         const val EXTERNAL_APP = "external_app"
+        const val DISMISS = "dismiss"
+        const val FORCE_CLOSE = "force_close"
+        const val SNACKBAR = "snackbar"
     }
 
     enum class FIND_IN_PAGE {
@@ -2411,6 +2423,98 @@ object TelemetryWrapper {
     fun exitLandscapeMode(duration: Long) {
         EventBuilder(Category.ENTER_LANDSCAPE_MODE, Method.CHANGE, Object.LANDSCAPE_MODE, Value.EXIT)
                 .extra(Extra.DURATION, duration.toString()).queue()
+    }
+
+    /**
+     * @param obj [Object.UPDATE_MESSAGE] for intro dialog. [Object.UPDATE] for google play
+     * in-app update dialog
+     */
+    @TelemetryDoc(
+            name = "Show in-app update dialog",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = "${Object.UPDATE_MESSAGE},${Object.UPDATE}",
+            value = "",
+            extras = [
+                TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version")
+            ])
+    fun showInAppUpdateDialog(obj: String, toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.SHOW, obj)
+                .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
+                .extra(Extra.TO_BUILD, toVersion.toString())
+                .queue()
+    }
+
+    /**
+     * @param obj [Object.UPDATE_MESSAGE] for intro dialog. [Object.UPDATE] for google play
+     * in-app update dialog
+     */
+    @TelemetryDoc(
+            name = "Click in-app update dialog",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = "${Object.UPDATE_MESSAGE},${Object.UPDATE}",
+            value = "${Value.POSITIVE},${Value.NEGATIVE}",
+            extras = [
+                TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version"),
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS},${Extra_Value.FORCE_CLOSE}")
+            ])
+    fun clickInAppUpdateDialog(
+        obj: String,
+        value: String,
+        isForceClose: Boolean,
+        toVersion: Int
+    ) {
+        EventBuilder(Category.ACTION, Method.CLICK, obj, value)
+                .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
+                .extra(Extra.TO_BUILD, toVersion.toString())
+                .extra(Extra.ACTION, if (isForceClose) {
+                    Extra_Value.FORCE_CLOSE
+                } else {
+                    Extra_Value.DISMISS
+                })
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show in-app update install prompt",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.UPDATE,
+            value = Value.DOWNLOADED,
+            extras = [
+                TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version")
+            ])
+    fun showInAppUpdateInstallPrompt(toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.UPDATE, Value.DOWNLOADED)
+                .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
+                .extra(Extra.TO_BUILD, toVersion.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click in-app update install prompt",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.UPDATE,
+            value = Value.APPLY,
+            extras = [
+                TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version"),
+                TelemetryExtra(
+                        name = Extra.SOURCE,
+                        value = "${Extra_Value.NOTIFICATION},${Extra_Value.SNACKBAR}"
+                )
+            ])
+    fun clickInAppUpdateInstallPrompt(source: String, toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.UPDATE, Value.APPLY)
+                .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
+                .extra(Extra.TO_BUILD, toVersion.toString())
+                .extra(Extra.SOURCE, source)
+                .queue()
     }
 
     internal class EventBuilder @JvmOverloads constructor(
