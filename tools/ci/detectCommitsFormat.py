@@ -1,16 +1,16 @@
 import os, sys, re
 
 master_commit = os.popen("git ls-remote git@github.com:mozilla-tw/FirefoxLite.git | grep refs/heads/master").read()
-master_abbrev_commit = master_commit[0:8]
+master_abbrev_commit = master_commit[0:7]
 print("master: " + master_abbrev_commit)
 
 commits_list = os.popen("git log --pretty=oneline --abbrev-commit -n 50").read()
 commits = []
 
 for commit in commits_list.split("\n"):
-    if commit[0:8] != master_abbrev_commit:
-        commits.append((commit[0:8], commit[9:]))
-        print(commit[0:8])
+    if commit[0:7] != master_abbrev_commit:
+        commits.append((commit[0:7], commit[9:]))
+        print(commit[0:7])
     else:
         break
 
