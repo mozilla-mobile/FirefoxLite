@@ -90,7 +90,7 @@ public class NotificationUtil {
                 NotificationManager.IMPORTANCE_HIGH);
 
         createNotificationChannel(context, LOW_PRIORITY_CHANNEL_ID,
-                R.string.app_name,
+                R.string.low_priority_notification_channel,
                 NotificationManager.IMPORTANCE_LOW);
 
         createNotificationChannel(context, PRIVATE_MODE_CHANNEL_ID,
