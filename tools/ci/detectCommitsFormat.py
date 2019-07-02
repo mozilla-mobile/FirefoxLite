@@ -2,6 +2,7 @@ import os, sys, re
 
 master_commit = os.popen("git ls-remote git@github.com:mozilla-tw/FirefoxLite.git | grep refs/heads/master").read()
 master_abbrev_commit = master_commit[0:8]
+print("master: " + master_abbrev_commit)
 
 commits_list = os.popen("git log --pretty=oneline --abbrev-commit -n 50").read()
 commits = []
