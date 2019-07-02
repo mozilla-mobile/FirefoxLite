@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">無法顯示擷圖</string>
   <string name="remove">移除</string>
   <string name="pin_site">釘選網站</string>
+  <string name="update_to_latest_app_toast">正在下載最新版本…</string>
+  <string name="update_to_latest_app_notification">已下載最新版本。點擊此處即可更新。</string>
+  <string name="update_to_latest_app_snack_bar_message">已下載最新版本</string>
+  <string name="update_to_latest_app_snack_bar_update">更新</string>
   <string name="privacy_policy_update_notification_title">產品更新公告</string>
   <string name="privacy_policy_update_notification_action">為了讓 Firefox Lite 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
   <string name="rate_app_dialog_text_title">喜歡 %1$s 嗎？</string>
