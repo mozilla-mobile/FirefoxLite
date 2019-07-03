@@ -689,8 +689,10 @@ class MainActivity : BaseActivity(),
         return true
     }
 
-    override fun showInstallPrompt(actionCallback: () -> Unit) {
-        postInstallPromptNotification()
+    override fun showInstallPrompt(isExistingDownload: Boolean, actionCallback: () -> Unit) {
+        if (!isExistingDownload) {
+            postInstallPromptNotification()
+        }
 
         Snackbar.make(
                 container,

@@ -48,6 +48,7 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
 
     val showIntroDialog = SingleLiveEvent<InAppUpdateData>()
     val showInstallPrompt = SingleLiveEvent<Unit>()
+    val showInstallPromptForExistDownload = SingleLiveEvent<Unit>()
     val showDownloadStartHint = SingleLiveEvent<Unit>()
 
     fun checkUpdate(info: AppUpdateInfo) {
@@ -63,7 +64,7 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
 
         if (hasDownloadedUpdate(info)) {
             log("detect a downloaded update")
-            onUpdateDownloaded()
+            onExistingDownloadDetected()
             return
         }
 
@@ -139,6 +140,10 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
     fun onUpdateDownloadCancelled() { /* nothing to do for now */ }
     fun onUpdateDownloaded() {
         showInstallPrompt.call()
+    }
+
+    private fun onExistingDownloadDetected() {
+        showInstallPromptForExistDownload.call()
     }
 
     private fun startGooglePlayUpdate(data: InAppUpdateData) {

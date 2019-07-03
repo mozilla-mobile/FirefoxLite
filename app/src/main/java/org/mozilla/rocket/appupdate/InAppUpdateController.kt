@@ -65,7 +65,12 @@ class InAppUpdateController(
             closeApp.observe(activity, Observer { activity.finish() })
 
             showIntroDialog.nonNullObserve(activity) { showIntroDialog(it, viewDelegate) }
-            showInstallPrompt.observe(activity, Observer { showInstallPrompt(viewDelegate) })
+            showInstallPrompt.observe(activity, Observer {
+                showInstallPrompt(viewDelegate, false)
+            })
+            showInstallPromptForExistDownload.observe(activity, Observer {
+                showInstallPrompt(viewDelegate, true)
+            })
             showDownloadStartHint.observe(activity, Observer { showDownloadStartHint(viewDelegate) })
         }
     }
@@ -125,8 +130,8 @@ class InAppUpdateController(
         })
     }
 
-    private fun showInstallPrompt(delegate: ViewDelegate) {
-        delegate.showInstallPrompt {
+    private fun showInstallPrompt(delegate: ViewDelegate, isExistingDownload: Boolean) {
+        delegate.showInstallPrompt(isExistingDownload) {
             inAppUpdateManager.onInstallAgreed()
         }
     }
@@ -212,7 +217,7 @@ class InAppUpdateController(
             positiveCallback: () -> Unit,
             negativeCallback: () -> Unit
         ): Boolean
-        fun showInstallPrompt(actionCallback: () -> Unit)
+        fun showInstallPrompt(isExistingDownload: Boolean, actionCallback: () -> Unit)
         fun showDownloadStartHint()
     }
 
