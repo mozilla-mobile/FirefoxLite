@@ -50,7 +50,7 @@ class InAppUpdateController(
     private val appContext = activity.applicationContext
     private var inAppUpdateManager = InAppUpdateManager(inAppUpdateModel)
 
-    private var installDirectly = false
+    private var installFromIntent = false
     private var shouldShowFirstRun = Settings.getInstance(appContext).shouldShowFirstrun()
     private var isSideLoaded = try {
         appContext.packageManager.getInstallerPackageName(appContext.packageName)
@@ -81,9 +81,8 @@ class InAppUpdateController(
             return
         }
 
-        if (installDirectly) {
-            log("this is an install intent, install directly")
-            startInstall(appUpdateManager)
+        if (installFromIntent) {
+            log("install is triggered by intent, skip")
             return
         }
 
@@ -93,7 +92,10 @@ class InAppUpdateController(
     }
 
     fun onReceiveIntent(intent: Intent?) {
-        installDirectly = isInAppUpdateInstallIntent(intent)
+        installFromIntent = isInAppUpdateInstallIntent(intent)
+        if (installFromIntent) {
+            startInstall(appUpdateManager)
+        }
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int) {
