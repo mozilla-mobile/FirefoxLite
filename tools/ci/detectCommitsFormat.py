@@ -15,6 +15,9 @@ for commit in commits_list.split("\n"):
     else:
         break
 
+# Bitrise use "merge" command, therefore, pop the first one
+commits.pop(0)
+
 if len(commits) <= 1:
     print("Detection pass: one commit")
     sys.exit(0)
