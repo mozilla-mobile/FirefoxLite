@@ -13,6 +13,7 @@ for commit in commits_list.split("\n"):
         commits.append((commit[0:7], commit[9:]))
         print(commit)
     else:
+        print(commit)
         break
 
 # Bitrise use "merge" command, therefore, pop the first one
