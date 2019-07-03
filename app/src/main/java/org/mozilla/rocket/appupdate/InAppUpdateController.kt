@@ -18,6 +18,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.MainActivity.Companion.ACTION_INSTALL_IN_APP_UPDATE
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Settings
@@ -58,6 +59,8 @@ class InAppUpdateController(
         ""
     }.isNullOrEmpty()
 
+    private var pendingRequestData: InAppUpdateManager.InAppUpdateData? = null
+
     init {
         with(inAppUpdateManager) {
             startUpdate.nonNullObserve(activity) { startUpdate(activity, appUpdateManager, it) }
@@ -97,28 +100,35 @@ class InAppUpdateController(
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int) {
+        val requestData = pendingRequestData ?: return
         if (requestCode == MainActivity.REQUEST_CODE_IN_APP_UPDATE) {
             if (resultCode == Activity.RESULT_OK) {
-                onUpdateAgreed()
+                onUpdateAgreed(requestData)
             } else {
-                onUpdateDenied()
+                onUpdateDenied(requestData)
             }
         }
+        pendingRequestData = null
     }
 
-    private fun onUpdateAgreed() {
+    private fun onUpdateAgreed(data: InAppUpdateManager.InAppUpdateData) {
+        TelemetryWrapper.clickGooglePlayDialog(data, true)
         inAppUpdateManager.onUpdateAgreed()
     }
 
-    private fun onUpdateDenied() {
+    private fun onUpdateDenied(data: InAppUpdateManager.InAppUpdateData) {
+        TelemetryWrapper.clickGooglePlayDialog(data, false)
         inAppUpdateManager.onUpdateDenied()
     }
 
     private fun showIntroDialog(data: InAppUpdateManager.InAppUpdateData, delegate: ViewDelegate) {
+        TelemetryWrapper.showIntroDialog(data)
         val intro = data.config.introData ?: return
         delegate.showIntroDialog(intro, {
+            TelemetryWrapper.clickIntroDialog(data, true)
             inAppUpdateManager.onIntroAgreed(data)
         }, {
+            TelemetryWrapper.clickIntroDialog(data, false)
             inAppUpdateManager.onIntroDenied(data)
         })
     }
@@ -138,6 +148,7 @@ class InAppUpdateController(
         manager: AppUpdateManager,
         data: InAppUpdateManager.InAppUpdateData
     ) {
+        pendingRequestData = data
         manager.registerListener(createUpdateListener(manager))
         manager.startUpdateFlowForResult(
                 data.info,
@@ -145,6 +156,7 @@ class InAppUpdateController(
                 activity,
                 MainActivity.REQUEST_CODE_IN_APP_UPDATE
         )
+        TelemetryWrapper.showGooglePlayDialog(data)
     }
 
     private fun startInstall(manager: AppUpdateManager) {
@@ -217,4 +229,44 @@ class InAppUpdateController(
     companion object {
         private const val TAG = "InAppUpdateController"
     }
+}
+
+private fun TelemetryWrapper.showIntroDialog(data: InAppUpdateManager.InAppUpdateData) {
+    showInAppUpdateDialog(TelemetryWrapper.Object.UPDATE_MESSAGE, data.info.availableVersionCode())
+}
+
+private fun TelemetryWrapper.clickIntroDialog(
+    data: InAppUpdateManager.InAppUpdateData,
+    isAccepted: Boolean
+) {
+    clickInAppUpdateDialog(
+            TelemetryWrapper.Object.UPDATE_MESSAGE,
+            if (isAccepted) {
+                TelemetryWrapper.Value.POSITIVE
+            } else {
+                TelemetryWrapper.Value.NEGATIVE
+            },
+            data.config.forceCloseOnDenied,
+            data.info.availableVersionCode()
+    )
+}
+
+private fun TelemetryWrapper.showGooglePlayDialog(data: InAppUpdateManager.InAppUpdateData) {
+    showInAppUpdateDialog(TelemetryWrapper.Object.UPDATE, data.info.availableVersionCode())
+}
+
+private fun TelemetryWrapper.clickGooglePlayDialog(
+    data: InAppUpdateManager.InAppUpdateData,
+    isAccepted: Boolean
+) {
+    clickInAppUpdateDialog(
+            TelemetryWrapper.Object.UPDATE,
+            if (isAccepted) {
+                TelemetryWrapper.Value.POSITIVE
+            } else {
+                TelemetryWrapper.Value.NEGATIVE
+            },
+            data.config.forceCloseOnDenied,
+            data.info.availableVersionCode()
+    )
 }
