@@ -689,11 +689,7 @@ class MainActivity : BaseActivity(),
         return true
     }
 
-    override fun showInstallPrompt(isExistingDownload: Boolean, actionCallback: () -> Unit) {
-        if (!isExistingDownload) {
-            postInstallPromptNotification()
-        }
-
+    override fun showInstallPrompt(actionCallback: () -> Unit) {
         Snackbar.make(
                 container,
                 getString(R.string.update_to_latest_app_snack_bar_message),
@@ -701,6 +697,10 @@ class MainActivity : BaseActivity(),
         ).setAction(getString(R.string.update_to_latest_app_snack_bar_update)) {
             actionCallback.invoke()
         }.show()
+    }
+
+    override fun showInstallPromptNotification() {
+        postInstallPromptNotification()
     }
 
     override fun showDownloadStartHint() {
