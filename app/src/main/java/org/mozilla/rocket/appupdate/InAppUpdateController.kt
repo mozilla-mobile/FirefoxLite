@@ -131,8 +131,12 @@ class InAppUpdateController(
     }
 
     private fun showInstallPrompt(delegate: ViewDelegate, isExistingDownload: Boolean) {
-        delegate.showInstallPrompt(isExistingDownload) {
+        delegate.showInstallPrompt {
             inAppUpdateManager.onInstallAgreed()
+        }
+
+        if (!isExistingDownload) {
+            delegate.showInstallPromptNotification()
         }
     }
 
@@ -217,7 +221,8 @@ class InAppUpdateController(
             positiveCallback: () -> Unit,
             negativeCallback: () -> Unit
         ): Boolean
-        fun showInstallPrompt(isExistingDownload: Boolean, actionCallback: () -> Unit)
+        fun showInstallPrompt(actionCallback: () -> Unit)
+        fun showInstallPromptNotification()
         fun showDownloadStartHint()
     }
 
