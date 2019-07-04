@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">திரைப்பிடிப்பக் காண்பிக்க முடியவில்லை</string>
   <string name="remove">நீக்கு</string>
   <string name="pin_site">செருகு</string>
+  <string name="update_to_latest_app_toast">புதிய பதிப்பை தரவிறக்குகிறது…</string>
+  <string name="update_to_latest_app_notification">புதிய பதிப்பு தரவிறக்கப்பட்டது. புதுப்பிக்க தட்டவும்.</string>
+  <string name="update_to_latest_app_snack_bar_message">புதிய பதிப்பு தரவிறக்கப்பட்டது</string>
+  <string name="update_to_latest_app_snack_bar_update">புதுப்பி</string>
   <string name="privacy_policy_update_notification_title">தயாரிப்பு புதுப்பிப்பு அறிக்கை</string>
   <string name="privacy_policy_update_notification_action">உங்களுக்கும் எல்லோருக்கும் ஒரு சிறந்த பயர்பாக்சு இராக்கெட்டை வழங்கிட எங்களின் தனியுரிமை கொள்கையில் சில மாற்றங்களைச் செய்துள்ளோம். மேலும் அறிய தட்டுக.</string>
   <string name="rate_app_dialog_text_title">%1$s விரும்புகிறீரா?</string>
