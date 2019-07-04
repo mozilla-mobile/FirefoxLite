@@ -4,7 +4,7 @@ object Versions {
     const val compile_sdk = 28
     const val build_tools = "28.0.3"
     const val version_code = 1
-    const val version_name = "1.8.0"
+    const val version_name = "1.9.0"
     const val android_gradle_plugin = "3.2.1"
     const val gms_oss_licenses_plugin = "0.9.3"
     const val support = "28.0.0"
