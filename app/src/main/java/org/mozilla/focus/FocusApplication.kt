@@ -13,6 +13,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import mozilla.components.browser.engine.system.SystemEngine
+import mozilla.components.browser.session.SessionManager
+import mozilla.components.concept.engine.Engine
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -44,6 +47,12 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
     val settings by lazy {
         SettingsProvider(this)
+    }
+    val engine: Engine by lazy {
+        SystemEngine(this)
+    }
+    val sessionManager: SessionManager by lazy {
+        SessionManager(engine)
     }
 
     fun getAppComponent(): AppComponent {

@@ -28,6 +28,8 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
+import mozilla.components.concept.engine.EngineView
+import mozilla.components.concept.engine.LifecycleObserver
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
@@ -47,6 +49,7 @@ import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
+import org.mozilla.rocket.content.app
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
@@ -88,6 +91,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private lateinit var browserContainer: ViewGroup
     private lateinit var videoContainer: ViewGroup
     private lateinit var tabViewSlot: ViewGroup
+    private lateinit var engineView: EngineView
     private lateinit var displayUrlView: TextView
     private lateinit var progressView: AnimatedProgressBar
     private lateinit var siteIdentity: ImageView
@@ -140,6 +144,8 @@ class BrowserFragment : LocaleAwareFragment(),
         videoContainer = view.findViewById(R.id.video_container)
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
+
+        attachEngineView(tabViewSlot)
 
         initTrackerView(view)
 
@@ -313,6 +319,11 @@ class BrowserFragment : LocaleAwareFragment(),
             return true
         }
 
+        if (app().sessionManager.selectedSession?.canGoBack == true) {
+            goBack()
+            return true
+        }
+
         sessionManager.dropTab(focus.id)
         ScreenNavigator.get(activity).popToHomeScreen(true)
         chromeViewModel.dropCurrentPage.call()
@@ -357,6 +368,15 @@ class BrowserFragment : LocaleAwareFragment(),
                 sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
             }
 
+            val selectedSession = app().sessionManager.selectedSession
+            if (selectedSession == null) {
+                val newSession = mozilla.components.browser.session.Session(url)
+                app().sessionManager.add(newSession)
+                engineView.render(app().sessionManager.getOrCreateEngineSession(newSession))
+            } else {
+                app().sessionManager.getOrCreateEngineSession(selectedSession).loadUrl(url)
+            }
+
             ThreadUtils.postToMainThread(onViewReadyCallback)
         }
     }
@@ -369,10 +389,21 @@ class BrowserFragment : LocaleAwareFragment(),
         permissionHandler.onRequestPermissionsResult(context, requestCode, permissions, grantResults)
     }
 
-    private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
-    private fun goForward() = sessionManager.focusSession?.engineSession?.goForward()
-    private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
-    private fun reload() = sessionManager.focusSession?.engineSession?.reload()
+    private fun goBack() = app().sessionManager.selectedSession?.let {
+        app().sessionManager.getEngineSession()?.goBack()
+    }
+
+    private fun goForward() = app().sessionManager.selectedSession?.let {
+        app().sessionManager.getEngineSession()?.goForward()
+    }
+
+    private fun stop() = app().sessionManager.selectedSession?.let {
+        app().sessionManager.getEngineSession()?.stopLoading()
+    }
+
+    private fun reload() = app().sessionManager.selectedSession?.let {
+        app().sessionManager.getEngineSession()?.reload()
+    }
 
     private fun onTrackerButtonClicked() {
         view?.let { parentView -> trackerPopup.show(parentView) }
@@ -384,6 +415,12 @@ class BrowserFragment : LocaleAwareFragment(),
         }
         chromeViewModel.dropCurrentPage.call()
         ScreenNavigator.get(activity).popToHomeScreen(true)
+    }
+
+    private fun attachEngineView(parentView: ViewGroup) {
+        engineView = app().engine.createView(requireContext())
+        lifecycle.addObserver(LifecycleObserver(engineView))
+        parentView.addView(engineView.asView())
     }
 
     private fun setupBottomBar(rootView: View) {
