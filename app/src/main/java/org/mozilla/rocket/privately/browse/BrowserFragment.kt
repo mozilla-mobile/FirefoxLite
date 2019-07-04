@@ -100,6 +100,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private lateinit var trackerPopup: TrackerPopup
 
+    private var lastSession: mozilla.components.browser.session.Session? = null
+
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,6 +165,12 @@ class BrowserFragment : LocaleAwareFragment(),
         sessionManager.register(observer)
         sessionManager.focusSession?.register(observer)
 
+        app().sessionManager.register(sessionManagerObserver)
+        app().sessionManager.selectedSession?.let {
+            it.register(sessionObserver)
+            lastSession = it
+        }
+
         observeChromeAction()
     }
 
@@ -171,6 +179,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
         sessionManager.focusSession?.unregister(observer)
         sessionManager.unregister(observer)
+
+        app().sessionManager.unregister(sessionManagerObserver)
+        lastSession?.unregister(sessionObserver)
     }
 
     override fun onResume() {
@@ -323,6 +334,7 @@ class BrowserFragment : LocaleAwareFragment(),
             goBack()
             return true
         }
+        app().sessionManager.remove()
 
         sessionManager.dropTab(focus.id)
         ScreenNavigator.get(activity).popToHomeScreen(true)
@@ -410,6 +422,7 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun onDeleteClicked() {
+        app().sessionManager.removeSessions()
         for (tab in sessionManager.getTabs()) {
             sessionManager.dropTab(tab.id)
         }
@@ -501,6 +514,31 @@ class BrowserFragment : LocaleAwareFragment(),
                 goForward()
             }
         })
+    }
+
+    val sessionManagerObserver = object : mozilla.components.browser.session.SessionManager.Observer {
+        override fun onAllSessionsRemoved() {
+        }
+
+        override fun onSessionAdded(session: mozilla.components.browser.session.Session) {
+        }
+
+        override fun onSessionRemoved(session: mozilla.components.browser.session.Session) {
+            session.unregister(sessionObserver)
+        }
+
+        override fun onSessionSelected(session: mozilla.components.browser.session.Session) {
+            lastSession?.unregister(sessionObserver)
+            session.register(sessionObserver)
+            lastSession = session
+        }
+
+        override fun onSessionsRestored() {
+        }
+    }
+
+    val sessionObserver = object : mozilla.components.browser.session.Session.Observer {
+        // TODO: Evan
     }
 
     class Observer(val fragment: BrowserFragment) : SessionManager.Observer, Session.Observer {
