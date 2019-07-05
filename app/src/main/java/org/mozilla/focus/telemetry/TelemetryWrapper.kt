@@ -273,6 +273,8 @@ object TelemetryWrapper {
         const val DISMISS = "dismiss"
         const val FORCE_CLOSE = "force_close"
         const val SNACKBAR = "snackbar"
+        const val NEW = "new"
+        const val REMINDER = "reminder"
     }
 
     enum class FIND_IN_PAGE {
@@ -2513,12 +2515,14 @@ object TelemetryWrapper {
             value = Value.DOWNLOADED,
             extras = [
                 TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
-                TelemetryExtra(name = Extra.TO_BUILD, value = "new version")
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version"),
+                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.NEW},${Extra_Value.REMINDER}")
             ])
-    fun showInAppUpdateInstallPrompt(toVersion: Int) {
+    fun showInAppUpdateInstallPrompt(type: String, toVersion: Int) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.UPDATE, Value.DOWNLOADED)
                 .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
                 .extra(Extra.TO_BUILD, toVersion.toString())
+                .extra(Extra.TYPE, type)
                 .queue()
     }
 
@@ -2534,13 +2538,15 @@ object TelemetryWrapper {
                 TelemetryExtra(
                         name = Extra.SOURCE,
                         value = "${Extra_Value.NOTIFICATION},${Extra_Value.SNACKBAR}"
-                )
+                ),
+                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.NEW},${Extra_Value.REMINDER}")
             ])
-    fun clickInAppUpdateInstallPrompt(source: String, toVersion: Int) {
+    fun clickInAppUpdateInstallPrompt(source: String, type: String, toVersion: Int) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.UPDATE, Value.APPLY)
                 .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
                 .extra(Extra.TO_BUILD, toVersion.toString())
                 .extra(Extra.SOURCE, source)
+                .extra(Extra.TYPE, type)
                 .queue()
     }
 
