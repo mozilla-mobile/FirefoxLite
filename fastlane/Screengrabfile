@@ -1,5 +1,5 @@
 
-#locales ['en','hi','in','jv','su','th','tl','zh-TW','vi','ta','kn','ml']
+#locales ['en','hi-IN','in','jv','su','th','tl','zh-TW','vi','ta','kn','ml']
 locales ['vi','zh-TW']
 clear_previous_screenshots true
 exit_on_test_failure false

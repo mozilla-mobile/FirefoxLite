@@ -17,6 +17,7 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 
 public class BeforeTestTask {
+    private final boolean enableLifeFeedNews;
     private boolean enableRateAppPromotion;
     private boolean skipFirstRun;
     private boolean clearBrowsingHistory;
@@ -29,6 +30,7 @@ public class BeforeTestTask {
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
         this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
         this.enableDownloadIndicatorIntro = builder.enableDownloadIndicatorIntro;
+        this.enableLifeFeedNews = builder.enableLifeFeedNews;
     }
 
     public void execute() {
@@ -57,6 +59,11 @@ public class BeforeTestTask {
             if (!this.enableDownloadIndicatorIntro) {
                 settings.getEventHistory().add(Settings.Event.ShowDownloadIndicatorIntro);
             }
+
+            if (this.enableLifeFeedNews) {
+                settings.setLifeFeedSettings("1");
+            }
+
         }
         if (this.clearBrowsingHistory) {
             //TODO: should consider using IdlingResource for DB operation or in-memory DB
@@ -78,6 +85,7 @@ public class BeforeTestTask {
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
         private boolean clearBrowsingHistory;
+        private boolean enableLifeFeedNews;
 
         public Builder() {
             this.enableRateAppPromotion = false;
@@ -85,6 +93,8 @@ public class BeforeTestTask {
             this.clearBrowsingHistory = false;
             this.enableSreenshotOnBoarding = false;
             this.enableDownloadIndicatorIntro = false;
+            this.enableLifeFeedNews = false;
+
         }
 
         public Builder setRateAppPromotionEnabled(boolean enable) {
@@ -104,6 +114,11 @@ public class BeforeTestTask {
 
         public Builder enableSreenshotOnBoarding(boolean enableSreenshotOnBoarding) {
             this.enableSreenshotOnBoarding = enableSreenshotOnBoarding;
+            return this;
+        }
+
+        public Builder enableLifeFeedNews(boolean enableLifeFeedNews) {
+            this.enableLifeFeedNews = enableLifeFeedNews;
             return this;
         }
 

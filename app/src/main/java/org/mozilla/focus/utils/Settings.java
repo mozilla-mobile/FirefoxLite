@@ -163,6 +163,12 @@ public class Settings {
         return preferences.getString(getPreferenceKey(R.string.pref_key_developer_option_life_feed), "0");
     }
 
+    public void setLifeFeedSettings(String option) {
+        preferences.edit()
+                .putString(getPreferenceKey(R.string.pref_key_developer_option_life_feed), option)
+                .apply();
+    }
+
     @Nullable
     public String getDefaultSearchEngineName() {
         return preferences.getString(getPreferenceKey(R.string.pref_key_search_engine), null);
