@@ -44,11 +44,12 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
 
     val startUpdate = SingleLiveEvent<InAppUpdateData>()
     val startInstall = SingleLiveEvent<Unit>()
+    val startInstallExistingDownload = SingleLiveEvent<Unit>()
     val closeApp = SingleLiveEvent<Unit>()
 
     val showIntroDialog = SingleLiveEvent<InAppUpdateData>()
-    val showInstallPrompt = SingleLiveEvent<Unit>()
-    val showInstallPromptForExistDownload = SingleLiveEvent<Unit>()
+    val showInstallPrompt = SingleLiveEvent<InAppUpdateData>()
+    val showInstallPromptForExistDownload = SingleLiveEvent<InAppUpdateData>()
     val showDownloadStartHint = SingleLiveEvent<Unit>()
 
     fun checkUpdate(info: AppUpdateInfo) {
@@ -62,9 +63,10 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
 
         log("install status: ${info.installStatus()}, availability: ${info.updateAvailability()}")
 
+        val data = InAppUpdateData(info, config)
         if (hasDownloadedUpdate(info)) {
             log("detect a downloaded update")
-            onExistingDownloadDetected()
+            onExistingDownloadDetected(data)
             return
         }
 
@@ -94,7 +96,6 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
         log("Firebase target version: $configVersion")
         log("will update from $currentVersion to $availableVersion")
 
-        val data = InAppUpdateData(info, config)
         config.getIntroIfAvailable()?.let { _ ->
             showIntroDialog.value = data
         } ?: run {
@@ -132,18 +133,22 @@ class InAppUpdateManager(val model: InAppUpdateModel) {
         startInstall.call()
     }
 
+    fun onInstallExistingDownloadAgreed() {
+        startInstallExistingDownload.call()
+    }
+
     fun onInstallFailed() { /* nothing to do for now */ }
     fun onInstallSuccess() { /* nothing to do for now */ }
     fun onInstallComplete() { /* nothing to do for now */ }
 
     fun onUpdateDownloadFailed() { /* nothing to do for now */ }
     fun onUpdateDownloadCancelled() { /* nothing to do for now */ }
-    fun onUpdateDownloaded() {
-        showInstallPrompt.call()
+    fun onUpdateDownloaded(data: InAppUpdateData) {
+        showInstallPrompt.value = data
     }
 
-    private fun onExistingDownloadDetected() {
-        showInstallPromptForExistDownload.call()
+    private fun onExistingDownloadDetected(data: InAppUpdateData) {
+        showInstallPromptForExistDownload.value = data
     }
 
     private fun startGooglePlayUpdate(data: InAppUpdateData) {
