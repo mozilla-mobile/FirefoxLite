@@ -17,6 +17,8 @@ import android.view.WindowManager;
 import org.mozilla.focus.R;
 import org.mozilla.focus.provider.SettingPreferenceWrapper;
 import org.mozilla.focus.search.SearchEngine;
+import org.mozilla.rocket.preference.SharedPreferenceLiveData;
+import org.mozilla.rocket.preference.SharedPreferenceLiveDataKt;
 
 import java.util.Set;
 
@@ -290,6 +292,26 @@ public class Settings {
 
     public void setPriority(String prefKey, @Settings.SettingPriority int priority) {
         preferences.edit().putInt(prefKey, priority).apply();
+    }
+
+    public SharedPreferenceLiveData<Integer> intLiveData(int keyResId, Integer defValue) {
+        return SharedPreferenceLiveDataKt.intLiveData(preferences, resources.getString(keyResId), defValue);
+    }
+
+    public SharedPreferenceLiveData<String> stringLiveData(int keyResId, String defValue) {
+        return SharedPreferenceLiveDataKt.stringLiveData(preferences, resources.getString(keyResId), defValue);
+    }
+
+    public SharedPreferenceLiveData<Boolean> booleanLiveData(int keyResId, Boolean defValue) {
+        return SharedPreferenceLiveDataKt.booleanLiveData(preferences, resources.getString(keyResId), defValue);
+    }
+
+    public SharedPreferenceLiveData<Float> floatLiveData(int keyResId, Float defValue) {
+        return SharedPreferenceLiveDataKt.floatLiveData(preferences, resources.getString(keyResId), defValue);
+    }
+
+    public SharedPreferenceLiveData<Long> longLiveData(int keyResId, Long defValue) {
+        return SharedPreferenceLiveDataKt.longLiveData(preferences, resources.getString(keyResId), defValue);
     }
 
 
