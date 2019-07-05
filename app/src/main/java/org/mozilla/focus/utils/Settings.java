@@ -66,6 +66,10 @@ public class Settings {
         settingPreferenceWrapper = new SettingPreferenceWrapper(context.getContentResolver());
     }
 
+    public SharedPreferenceLiveData<Boolean> shouldBlockImagesLiveData() {
+        return booleanLiveData(R.string.pref_key_performance_block_images, BLOCK_IMAGE_DEFAULT);
+    }
+
     public boolean shouldBlockImages() {
         return preferences.getBoolean(
                 resources.getString(R.string.pref_key_performance_block_images),
@@ -109,6 +113,10 @@ public class Settings {
         final String value = preferences.getString(key, defined[0]);
 
         return defined[0].equals(value); // assume the first item is for removable storage
+    }
+
+    public SharedPreferenceLiveData<Boolean> shouldUseTurboModeLiveData() {
+        return booleanLiveData(R.string.pref_key_turbo_mode, TURBO_MODE_DEFAULT);
     }
 
     public boolean shouldUseTurboMode() {

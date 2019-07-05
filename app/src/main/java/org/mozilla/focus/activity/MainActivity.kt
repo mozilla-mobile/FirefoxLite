@@ -14,12 +14,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Resources
 import android.database.ContentObserver
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.annotation.UiThread
 import android.support.annotation.VisibleForTesting
 import android.support.design.widget.Snackbar
@@ -120,20 +118,6 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    private val onSharedPreferenceChangeListener = OnSharedPreferenceChangeListener { _, key ->
-        // Only refresh when disabling turbo mode
-        if (this.resources.getString(R.string.pref_key_turbo_mode) == key) {
-            val turboEnabled = chromeViewModel.isTurboModeEnabled.value == true
-            browserFragment?.setContentBlockingEnabled(turboEnabled)
-            chromeViewModel.isTurboModeEnabled.value = turboEnabled
-        } else if (this.resources.getString(R.string.pref_key_performance_block_images) == key) {
-            val blockingImages = chromeViewModel.isBlockImageEnabled.value == true
-            browserFragment?.setImageBlockingEnabled(blockingImages)
-            chromeViewModel.isBlockImageEnabled.value = blockingImages
-        }
-        // For turbo mode, a automatic refresh is done when we disable block image.
-    }
-
     private val asyncQueryListener = TabModelStore.AsyncQueryListener { states, currentTabId ->
         chromeViewModel.onRestoreTabCountCompleted()
         getSessionManager().restore(states, currentTabId)
@@ -196,8 +180,6 @@ class MainActivity : BaseActivity(),
         promotionModel = PromotionModel(this, intent).also {
             checkAndRunPromotion(it)
         }
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
         observeNavigation()
         monitorOrientationState()
         observeChromeAction()
@@ -346,8 +328,6 @@ class MainActivity : BaseActivity(),
     }
 
     public override fun onDestroy() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
         sessionManager?.destroy()
         super.onDestroy()
     }
