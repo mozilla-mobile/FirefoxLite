@@ -2425,49 +2425,76 @@ object TelemetryWrapper {
                 .extra(Extra.DURATION, duration.toString()).queue()
     }
 
-    /**
-     * @param obj [Object.UPDATE_MESSAGE] for intro dialog. [Object.UPDATE] for google play
-     * in-app update dialog
-     */
     @TelemetryDoc(
-            name = "Show in-app update dialog",
+            name = "Show in-app update intro dialog",
             category = Category.ACTION,
             method = Method.SHOW,
-            `object` = "${Object.UPDATE_MESSAGE},${Object.UPDATE}",
+            `object` = Object.UPDATE_MESSAGE,
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
                 TelemetryExtra(name = Extra.TO_BUILD, value = "new version")
             ])
-    fun showInAppUpdateDialog(obj: String, toVersion: Int) {
-        EventBuilder(Category.ACTION, Method.SHOW, obj)
+    fun showInAppUpdateIntroDialog(toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.UPDATE_MESSAGE)
                 .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
                 .extra(Extra.TO_BUILD, toVersion.toString())
                 .queue()
     }
 
-    /**
-     * @param obj [Object.UPDATE_MESSAGE] for intro dialog. [Object.UPDATE] for google play
-     * in-app update dialog
-     */
     @TelemetryDoc(
-            name = "Click in-app update dialog",
+            name = "Show google play's in-app update dialog",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.UPDATE,
+            value = "",
+            extras = [
+                TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version")
+            ])
+    fun showInAppUpdateGooglePlayDialog(toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.UPDATE)
+                .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
+                .extra(Extra.TO_BUILD, toVersion.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click in-app update intro dialog",
             category = Category.ACTION,
             method = Method.CLICK,
-            `object` = "${Object.UPDATE_MESSAGE},${Object.UPDATE}",
+            `object` = Object.UPDATE_MESSAGE,
             value = "${Value.POSITIVE},${Value.NEGATIVE}",
             extras = [
                 TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
                 TelemetryExtra(name = Extra.TO_BUILD, value = "new version"),
                 TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS},${Extra_Value.FORCE_CLOSE}")
             ])
-    fun clickInAppUpdateDialog(
-        obj: String,
-        value: String,
-        isForceClose: Boolean,
-        toVersion: Int
-    ) {
-        EventBuilder(Category.ACTION, Method.CLICK, obj, value)
+    fun clickInAppUpdateIntroDialog(value: String, isForceClose: Boolean, toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.UPDATE_MESSAGE, value)
+                .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
+                .extra(Extra.TO_BUILD, toVersion.toString())
+                .extra(Extra.ACTION, if (isForceClose) {
+                    Extra_Value.FORCE_CLOSE
+                } else {
+                    Extra_Value.DISMISS
+                })
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click google play's in-app update dialog",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.UPDATE,
+            value = "${Value.POSITIVE},${Value.NEGATIVE}",
+            extras = [
+                TelemetryExtra(name = Extra.FROM_BUILD, value = "old version"),
+                TelemetryExtra(name = Extra.TO_BUILD, value = "new version"),
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS},${Extra_Value.FORCE_CLOSE}")
+            ])
+    fun clickInAppUpdateGooglePlayDialog(value: String, isForceClose: Boolean, toVersion: Int) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.UPDATE, value)
                 .extra(Extra.FROM_BUILD, BuildConfig.VERSION_CODE.toString())
                 .extra(Extra.TO_BUILD, toVersion.toString())
                 .extra(Extra.ACTION, if (isForceClose) {

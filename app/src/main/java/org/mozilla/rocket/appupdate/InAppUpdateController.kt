@@ -244,15 +244,14 @@ class InAppUpdateController(
 }
 
 private fun TelemetryWrapper.showIntroDialog(data: InAppUpdateManager.InAppUpdateData) {
-    showInAppUpdateDialog(TelemetryWrapper.Object.UPDATE_MESSAGE, data.info.availableVersionCode())
+    showInAppUpdateIntroDialog(data.info.availableVersionCode())
 }
 
 private fun TelemetryWrapper.clickIntroDialog(
     data: InAppUpdateManager.InAppUpdateData,
     isAccepted: Boolean
 ) {
-    clickInAppUpdateDialog(
-            TelemetryWrapper.Object.UPDATE_MESSAGE,
+    clickInAppUpdateIntroDialog(
             if (isAccepted) {
                 TelemetryWrapper.Value.POSITIVE
             } else {
@@ -264,15 +263,14 @@ private fun TelemetryWrapper.clickIntroDialog(
 }
 
 private fun TelemetryWrapper.showGooglePlayDialog(data: InAppUpdateManager.InAppUpdateData) {
-    showInAppUpdateDialog(TelemetryWrapper.Object.UPDATE, data.info.availableVersionCode())
+    showInAppUpdateGooglePlayDialog(data.info.availableVersionCode())
 }
 
 private fun TelemetryWrapper.clickGooglePlayDialog(
     data: InAppUpdateManager.InAppUpdateData,
     isAccepted: Boolean
 ) {
-    clickInAppUpdateDialog(
-            TelemetryWrapper.Object.UPDATE,
+    clickInAppUpdateGooglePlayDialog(
             if (isAccepted) {
                 TelemetryWrapper.Value.POSITIVE
             } else {
