@@ -64,16 +64,19 @@ class InAppUpdateController(
     init {
         with(inAppUpdateManager) {
             startUpdate.nonNullObserve(activity) { startUpdate(activity, appUpdateManager, it) }
-            startInstall.observe(activity, Observer { startInstall(appUpdateManager) })
+            startInstall.observe(activity, Observer {
+                startInstall(appUpdateManager, isExistingDownload = false, isFromNotification = false)
+            })
+            startInstallExistingDownload.observe(activity, Observer {
+                startInstall(appUpdateManager, isExistingDownload = true, isFromNotification = false)
+            })
             closeApp.observe(activity, Observer { activity.finish() })
 
             showIntroDialog.nonNullObserve(activity) { showIntroDialog(it, viewDelegate) }
-            showInstallPrompt.observe(activity, Observer {
-                showInstallPrompt(viewDelegate, false)
-            })
-            showInstallPromptForExistDownload.observe(activity, Observer {
-                showInstallPrompt(viewDelegate, true)
-            })
+            showInstallPrompt.nonNullObserve(activity) { showInstallPrompt(it, viewDelegate) }
+            showInstallPromptForExistDownload.nonNullObserve(activity) {
+                showInstallPromptForExistDownload(it, viewDelegate)
+            }
             showDownloadStartHint.observe(activity, Observer { showDownloadStartHint(viewDelegate) })
         }
     }
@@ -102,7 +105,7 @@ class InAppUpdateController(
     fun onReceiveIntent(intent: Intent?) {
         installFromIntent = isInAppUpdateInstallIntent(intent)
         if (installFromIntent) {
-            startInstall(appUpdateManager)
+            startInstall(appUpdateManager, isExistingDownload = false, isFromNotification = true)
         }
     }
 
@@ -140,13 +143,26 @@ class InAppUpdateController(
         })
     }
 
-    private fun showInstallPrompt(delegate: ViewDelegate, isExistingDownload: Boolean) {
+    private fun showInstallPrompt(
+        data: InAppUpdateManager.InAppUpdateData,
+        delegate: ViewDelegate
+    ) {
+        TelemetryWrapper.showInstallPrompt(data.info.availableVersionCode(), isExistingDownload = true)
+
         delegate.showInstallPrompt {
             inAppUpdateManager.onInstallAgreed()
         }
+        delegate.showInstallPromptNotification()
+    }
 
-        if (!isExistingDownload) {
-            delegate.showInstallPromptNotification()
+    private fun showInstallPromptForExistDownload(
+        data: InAppUpdateManager.InAppUpdateData,
+        delegate: ViewDelegate
+    ) {
+        TelemetryWrapper.showInstallPrompt(data.info.availableVersionCode(), isExistingDownload = false)
+
+        delegate.showInstallPrompt {
+            inAppUpdateManager.onInstallExistingDownloadAgreed()
         }
     }
 
@@ -160,7 +176,7 @@ class InAppUpdateController(
         data: InAppUpdateManager.InAppUpdateData
     ) {
         pendingRequestData = data
-        manager.registerListener(createUpdateListener(manager))
+        manager.registerListener(createUpdateListener(manager, data))
         manager.startUpdateFlowForResult(
                 data.info,
                 AppUpdateType.FLEXIBLE,
@@ -170,12 +186,22 @@ class InAppUpdateController(
         TelemetryWrapper.showGooglePlayDialog(data)
     }
 
-    private fun startInstall(manager: AppUpdateManager) {
+    private fun startInstall(
+        manager: AppUpdateManager,
+        isExistingDownload: Boolean,
+        isFromNotification: Boolean
+    ) {
         manager.appUpdateInfo.addOnSuccessListener { info ->
             if (info.installStatus() != InstallStatus.DOWNLOADED) {
                 log("no downloaded update, skip install")
                 return@addOnSuccessListener
             }
+
+            TelemetryWrapper.clickInstallPrompt(
+                    info.availableVersionCode(),
+                    isExistingDownload,
+                    isFromNotification
+            )
 
             manager.completeUpdate().addOnSuccessListener {
                 inAppUpdateManager.onInstallSuccess()
@@ -187,14 +213,17 @@ class InAppUpdateController(
         }
     }
 
-    private fun createUpdateListener(manager: AppUpdateManager): InstallStateUpdatedListener {
+    private fun createUpdateListener(
+        manager: AppUpdateManager,
+        data: InAppUpdateManager.InAppUpdateData
+    ): InstallStateUpdatedListener {
         return object : InstallStateUpdatedListener {
             override fun onStateUpdate(state: InstallState) {
                 when (state.installStatus()) {
                     InstallStatus.DOWNLOADED -> {
                         log("download complete")
                         manager.unregisterListener(this)
-                        inAppUpdateManager.onUpdateDownloaded()
+                        inAppUpdateManager.onUpdateDownloaded(data)
                     }
                     InstallStatus.FAILED -> {
                         log("download failed")
@@ -278,5 +307,36 @@ private fun TelemetryWrapper.clickGooglePlayDialog(
             },
             data.config.forceCloseOnDenied,
             data.info.availableVersionCode()
+    )
+}
+
+private fun TelemetryWrapper.showInstallPrompt(toVersion: Int, isExistingDownload: Boolean) {
+    showInAppUpdateInstallPrompt(
+            if (isExistingDownload) {
+                TelemetryWrapper.Extra_Value.REMINDER
+            } else {
+                TelemetryWrapper.Extra_Value.NEW
+            },
+            toVersion
+    )
+}
+
+private fun TelemetryWrapper.clickInstallPrompt(
+    toVersion: Int,
+    isExistingDownload: Boolean,
+    isFromNotification: Boolean
+) {
+    clickInAppUpdateInstallPrompt(
+            if (isFromNotification) {
+                TelemetryWrapper.Extra_Value.NOTIFICATION
+            } else {
+                TelemetryWrapper.Extra_Value.SNACKBAR
+            },
+            if (isExistingDownload) {
+                TelemetryWrapper.Extra_Value.REMINDER
+            } else {
+                TelemetryWrapper.Extra_Value.NEW
+            },
+            toVersion
     )
 }
