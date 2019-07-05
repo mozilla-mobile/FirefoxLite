@@ -43,8 +43,8 @@ class ChromeViewModel(
     val canGoForward = MutableLiveData<Boolean>()
     val isHomePageUrlInputShowing = MutableLiveData<Boolean>()
     val isMyShotOnBoardingPending = MutableLiveData<Boolean>()
-    val isTurboModeEnabled = MutableLiveData<Boolean>()
-    val isBlockImageEnabled = MutableLiveData<Boolean>()
+    val isTurboModeEnabled = settings.shouldUseTurboModeLiveData()
+    val isBlockImageEnabled = settings.shouldBlockImagesLiveData()
     val hasUnreadScreenshot = MutableLiveData<Boolean>()
     val isPrivateBrowsingActive = MutableLiveData<Boolean>()
 
@@ -83,8 +83,6 @@ class ChromeViewModel(
     init {
         settings.run {
             isNightMode.value = NightModeSettings(isNightModeEnable, nightModeBrightnessValue)
-            isTurboModeEnabled.value = shouldUseTurboMode()
-            isBlockImageEnabled.value = shouldBlockImages()
             hasUnreadScreenshot.value = AppConfigWrapper.getMyshotUnreadEnabled() && hasUnreadMyShot()
             isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
         }
@@ -121,8 +119,8 @@ class ChromeViewModel(
         canGoForward.invalidate()
         isHomePageUrlInputShowing.invalidate()
         isMyShotOnBoardingPending.invalidate()
-        isTurboModeEnabled.invalidate()
-        isBlockImageEnabled.invalidate()
+        isTurboModeEnabled.forceNotify()
+        isBlockImageEnabled.forceNotify()
     }
 
     fun adjustNightMode() {
@@ -286,9 +284,6 @@ class ChromeViewModel(
     fun onTurboModeToggled() {
         val toEnable = !settings.shouldUseTurboMode()
         settings.setTurboMode(toEnable)
-        if (isTurboModeEnabled.value != toEnable) {
-            isTurboModeEnabled.value = toEnable
-        }
         showToast.value = ToastMessage(if (toEnable) R.string.message_enable_turbo_mode else R.string.message_disable_turbo_mode)
         TelemetryWrapper.menuTurboChangeTo(toEnable)
     }
@@ -296,9 +291,6 @@ class ChromeViewModel(
     fun onBlockImageToggled() {
         val toEnable = !settings.shouldBlockImages()
         settings.setBlockImages(toEnable)
-        if (isBlockImageEnabled.value != toEnable) {
-            isBlockImageEnabled.value = toEnable
-        }
         showToast.value = ToastMessage(if (toEnable) R.string.message_enable_block_image else R.string.message_disable_block_image)
         TelemetryWrapper.menuBlockImageChangeTo(toEnable)
     }

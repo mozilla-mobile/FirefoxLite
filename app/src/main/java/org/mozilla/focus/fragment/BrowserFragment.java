@@ -456,6 +456,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void observeChromeAction() {
+        chromeViewModel.isTurboModeEnabled().observe(this, this::setContentBlockingEnabled);
+        chromeViewModel.isBlockImageEnabled().observe(this, this::setImageBlockingEnabled);
         chromeViewModel.getDoScreenshot().observe(this, telemetryData -> {
             permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, telemetryData);
         });
