@@ -27,10 +27,6 @@ abstract class SharedPreferenceLiveData<T>(
         sharedPrefs.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener)
         super.onInactive()
     }
-
-    fun forceNotify() {
-        value = value
-    }
 }
 
 class SharedPreferenceIntLiveData(sharedPrefs: SharedPreferences, key: String, defValue: Int) :

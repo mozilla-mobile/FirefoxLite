@@ -23,6 +23,7 @@ import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.content.view.MenuLayout
 import org.mozilla.rocket.extension.nonNullObserve
+import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.extension.toActivity
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
@@ -120,13 +121,16 @@ class MenuDialog : BottomSheetDialog {
         val activity = context.toFragmentActivity()
         menuViewModel.menuItems.nonNullObserve(activity, menuItemAdapter::setItems)
 
-        chromeViewModel.isTurboModeEnabled.nonNullObserve(activity, menuItemAdapter::setTurboMode)
-        chromeViewModel.isNightMode.nonNullObserve(activity) {
-            menuItemAdapter.setNightMode(it.isEnabled)
-        }
-        chromeViewModel.isBlockImageEnabled.nonNullObserve(activity, menuItemAdapter::setBlockImageEnabled)
-        chromeViewModel.hasUnreadScreenshot.nonNullObserve(activity, menuItemAdapter::setUnreadScreenshot)
-        chromeViewModel.isPrivateBrowsingActive.nonNullObserve(activity, menuItemAdapter::setPrivateBrowsingActive)
+        chromeViewModel.isTurboModeEnabled.switchFrom(menuViewModel.menuItems)
+                .observe(activity, Observer { menuItemAdapter.setTurboMode(it == true) })
+        chromeViewModel.isNightMode.switchFrom(menuViewModel.menuItems)
+                .observe(activity, Observer { menuItemAdapter.setNightMode(it?.isEnabled == true) })
+        chromeViewModel.isBlockImageEnabled.switchFrom(menuViewModel.menuItems)
+                .observe(activity, Observer { menuItemAdapter.setBlockImageEnabled(it == true) })
+        chromeViewModel.hasUnreadScreenshot.switchFrom(menuViewModel.menuItems)
+                .observe(activity, Observer { menuItemAdapter.setUnreadScreenshot(it == true) })
+        chromeViewModel.isPrivateBrowsingActive.switchFrom(menuViewModel.menuItems)
+                .observe(activity, Observer { menuItemAdapter.setPrivateBrowsingActive(it == true) })
     }
 
     private fun overridePendingTransition(enterAnim: Int, exitAnim: Int) {
@@ -194,12 +198,17 @@ class MenuDialog : BottomSheetDialog {
             bottomBarItemAdapter.setItems(bottomItems)
             hidePinShortcutButtonIfNotSupported()
         }
-        menuViewModel.isBottomBarEnabled.observe(activity, Observer { bottomBarItemAdapter.setEnabled(it == true) })
 
-        chromeViewModel.tabCount.observe(activity, Observer { bottomBarItemAdapter.setTabCount(it ?: 0) })
-        chromeViewModel.isRefreshing.observe(activity, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
-        chromeViewModel.canGoForward.observe(activity, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
-        chromeViewModel.isCurrentUrlBookmarked.observe(activity, Observer { bottomBarItemAdapter.setBookmark(it == true) })
+        menuViewModel.isBottomBarEnabled.switchFrom(menuViewModel.bottomItems)
+                .observe(activity, Observer { bottomBarItemAdapter.setEnabled(it == true) })
+        chromeViewModel.tabCount.switchFrom(menuViewModel.bottomItems)
+                .observe(activity, Observer { bottomBarItemAdapter.setTabCount(it ?: 0) })
+        chromeViewModel.isRefreshing.switchFrom(menuViewModel.bottomItems)
+                .observe(activity, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
+        chromeViewModel.canGoForward.switchFrom(menuViewModel.bottomItems)
+                .observe(activity, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
+        chromeViewModel.isCurrentUrlBookmarked.switchFrom(menuViewModel.bottomItems)
+                .observe(activity, Observer { bottomBarItemAdapter.setBookmark(it == true) })
     }
 
     private fun hidePinShortcutButtonIfNotSupported() {
@@ -224,10 +233,7 @@ class MenuDialog : BottomSheetDialog {
         menuViewModel.onTabFocusChanged(hasFocus)
         bottomBarItemAdapter.setCanGoForward(hasFocus && chromeViewModel.canGoForward.value == true)
 
-        val hasNewConfig = menuViewModel.refresh()
-        if (hasNewConfig) {
-            chromeViewModel.invalidate()
-        }
+        menuViewModel.refresh()
     }
 
     private fun showAdjustBrightness() {

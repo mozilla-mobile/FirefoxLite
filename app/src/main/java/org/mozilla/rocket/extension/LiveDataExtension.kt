@@ -7,11 +7,8 @@ package org.mozilla.rocket.extension
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-
-fun <T> MutableLiveData<T>.invalidate() { value = value }
 
 fun <T> LiveData<T>.nonNullObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
     this.observe(owner, Observer {
@@ -28,3 +25,6 @@ fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
 fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
     return Transformations.switchMap(this, body)
 }
+
+fun <X, Y> LiveData<X>.switchFrom(source: LiveData<Y>): LiveData<X> =
+        source.switchMap { this.map { it } }

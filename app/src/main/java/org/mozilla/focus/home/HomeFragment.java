@@ -86,6 +86,7 @@ import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;
+import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
@@ -103,8 +104,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import kotlin.Unit;
 
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
@@ -534,11 +533,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
-        chromeViewModel.getTabCount().observe(this, bottomBarItemAdapter::setTabCount);
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.isNightMode(), this, nightModeSettings -> {
-            bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled());
-            return Unit.INSTANCE;
-        });
+        LiveDataExtensionKt.switchFrom(chromeViewModel.isNightMode(), bottomBarViewModel.getItems())
+                .observe(this, nightModeSettings -> bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled()));
+        LiveDataExtensionKt.switchFrom(chromeViewModel.getTabCount(), bottomBarViewModel.getItems())
+                .observe(this, bottomBarItemAdapter::setTabCount);
 
         setupDownloadIndicator();
     }
@@ -559,22 +557,25 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setupDownloadIndicator() {
-        Inject.obtainDownloadIndicatorViewModel(getActivity()).getDownloadIndicatorObservable().observe(getViewLifecycleOwner(), status -> {
-            switch (status) {
-                case DOWNLOADING:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
-                    break;
-                case UNREAD:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_UNREAD);
-                    break;
-                case WARNING:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_WARNING);
-                    break;
-                case DEFAULT:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DEFAULT);
-                    break;
-            }
-        });
+        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
+        DownloadIndicatorViewModel downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(getActivity());
+        LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
+                .observe(getViewLifecycleOwner(), status -> {
+                    switch (status) {
+                        case DOWNLOADING:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
+                            break;
+                        case UNREAD:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_UNREAD);
+                            break;
+                        case WARNING:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_WARNING);
+                            break;
+                        case DEFAULT:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DEFAULT);
+                            break;
+                    }
+                });
     }
 
     private class SiteItemClickListener implements View.OnClickListener, View.OnLongClickListener {
