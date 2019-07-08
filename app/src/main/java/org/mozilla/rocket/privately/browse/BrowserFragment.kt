@@ -24,7 +24,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.fragment_private_browser.*
+import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.Inject
@@ -45,6 +45,7 @@ import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
+import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView.FullscreenCallback
@@ -361,8 +362,10 @@ class BrowserFragment : LocaleAwareFragment(),
             bottomBarItemAdapter.setTrackerSwitch(isTurboModeEnabled(rootView.context))
         }
 
-        chromeViewModel.isRefreshing.nonNullObserve(this, bottomBarItemAdapter::setRefreshing)
-        chromeViewModel.canGoForward.nonNullObserve(this, bottomBarItemAdapter::setCanGoForward)
+        chromeViewModel.isRefreshing.switchFrom(bottomBarViewModel.items)
+                .observe(this, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
+        chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
+                .observe(this, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
     }
 
     private fun initTrackerView(parentView: View) {

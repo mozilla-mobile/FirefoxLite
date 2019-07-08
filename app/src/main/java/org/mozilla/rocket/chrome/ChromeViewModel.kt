@@ -1,15 +1,13 @@
 package org.mozilla.rocket.chrome
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.persistence.BookmarkModel
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
@@ -17,7 +15,8 @@ import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.ToastMessage.Companion.LENGTH_LONG
 import org.mozilla.rocket.download.SingleLiveEvent
-import org.mozilla.rocket.extension.invalidate
+import org.mozilla.rocket.extension.map
+import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.privately.PrivateMode
@@ -92,10 +91,8 @@ class ChromeViewModel(
         isHomePageUrlInputShowing.value = false
         isMyShotOnBoardingPending.value = false
 
-        isCurrentUrlBookmarked = Transformations.switchMap<String, List<BookmarkModel>>(currentUrl, bookmarkRepo::getBookmarksByUrl)
-                .let { urlBookmarksLiveData ->
-                    Transformations.map<List<BookmarkModel>, Boolean>(urlBookmarksLiveData) { it.isNotEmpty() }
-                }
+        isCurrentUrlBookmarked = currentUrl.switchMap(bookmarkRepo::getBookmarksByUrl)
+                .let { urlBookmarksLiveData -> urlBookmarksLiveData.map { it.isNotEmpty() } }
 
         thread { checkRemovableStorage() }
     }
@@ -105,22 +102,6 @@ class ChromeViewModel(
      */
     private fun checkRemovableStorage() {
         settings.removableStorageStateOnCreate = storageHelper.hasRemovableStorage()
-    }
-
-    fun invalidate() {
-        isNightMode.invalidate()
-        tabCount.invalidate()
-        isTabRestoredComplete.invalidate()
-        navigationState.invalidate()
-        currentUrl.invalidate()
-        currentTitle.invalidate()
-        isRefreshing.invalidate()
-        canGoBack.invalidate()
-        canGoForward.invalidate()
-        isHomePageUrlInputShowing.invalidate()
-        isMyShotOnBoardingPending.invalidate()
-        isTurboModeEnabled.forceNotify()
-        isBlockImageEnabled.forceNotify()
     }
 
     fun adjustNightMode() {

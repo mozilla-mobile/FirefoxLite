@@ -11,8 +11,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Dialog;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,14 +23,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,6 +39,18 @@ import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
@@ -104,8 +106,6 @@ import org.mozilla.urlutils.UrlUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
-
-import kotlin.Unit;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.WEBVIEW;
@@ -542,17 +542,16 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light.INSTANCE);
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.isNightMode(), this, nightModeSettings -> {
-            bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled());
-            return Unit.INSTANCE;
-        });
-        LiveDataExtensionKt.nonNullObserve(chromeViewModel.getTabCount(), this, count -> {
-            bottomBarItemAdapter.setTabCount(count, true);
-            return Unit.INSTANCE;
-        });
-        chromeViewModel.isRefreshing().observe(this, bottomBarItemAdapter::setRefreshing);
-        chromeViewModel.getCanGoForward().observe(this, bottomBarItemAdapter::setCanGoForward);
-        chromeViewModel.isCurrentUrlBookmarked().observe(this, bottomBarItemAdapter::setBookmark);
+        LiveDataExtensionKt.switchFrom(chromeViewModel.isNightMode(), bottomBarViewModel.getItems())
+                .observe(this, nightModeSettings -> bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled()));
+        LiveDataExtensionKt.switchFrom(chromeViewModel.getTabCount(), bottomBarViewModel.getItems())
+                .observe(this, count -> bottomBarItemAdapter.setTabCount(count, true));
+        LiveDataExtensionKt.switchFrom(chromeViewModel.isRefreshing(), bottomBarViewModel.getItems())
+                .observe(this, bottomBarItemAdapter::setRefreshing);
+        LiveDataExtensionKt.switchFrom(chromeViewModel.getCanGoForward(), bottomBarViewModel.getItems())
+                .observe(this, bottomBarItemAdapter::setCanGoForward);
+        LiveDataExtensionKt.switchFrom(chromeViewModel.isCurrentUrlBookmarked(), bottomBarViewModel.getItems())
+                .observe(this, bottomBarItemAdapter::setBookmark);
 
         setupDownloadIndicator(rootView);
     }
@@ -561,31 +560,31 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
         DownloadIndicatorViewModel downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(getActivity());
-        LiveDataExtensionKt.nonNullObserve(downloadIndicatorViewModel.getDownloadIndicatorObservable(), this, status -> {
-            switch (status) {
-                case DOWNLOADING:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
-                    break;
-                case UNREAD:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_UNREAD);
-                    break;
-                case WARNING:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_WARNING);
-                    break;
-                case DEFAULT:
-                    bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DEFAULT);
-                    break;
-            }
-            final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
-            if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorViewModel.Status.DEFAULT) {
-                eventHistory.add(Settings.Event.ShowDownloadIndicatorIntro);
-                BottomBar.BottomBarItem menuItem = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_MENU);
-                if (menuItem != null && menuItem.getView() != null) {
-                    DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuItem.getView(), browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
-                }
-            }
-            return Unit.INSTANCE;
-        });
+        LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
+                .observe(this, status -> {
+                    switch (status) {
+                        case DOWNLOADING:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);
+                            break;
+                        case UNREAD:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_UNREAD);
+                            break;
+                        case WARNING:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_WARNING);
+                            break;
+                        case DEFAULT:
+                            bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DEFAULT);
+                            break;
+                    }
+                    final Settings.EventHistory eventHistory = Settings.getInstance(getActivity()).getEventHistory();
+                    if (!eventHistory.contains(Settings.Event.ShowDownloadIndicatorIntro) && status != DownloadIndicatorViewModel.Status.DEFAULT) {
+                        eventHistory.add(Settings.Event.ShowDownloadIndicatorIntro);
+                        BottomBar.BottomBarItem menuItem = bottomBarItemAdapter.getItem(BottomBarItemAdapter.TYPE_MENU);
+                        if (menuItem != null && menuItem.getView() != null) {
+                            DownloadIndicatorIntroViewHelper.INSTANCE.initDownloadIndicatorIntroView(this, menuItem.getView(), browserRoot, viewRef -> downloadIndicatorIntro = viewRef);
+                        }
+                    }
+                });
     }
 
     @Override

@@ -16,24 +16,19 @@ class MenuViewModel : ViewModel() {
         refresh()
     }
 
-    fun refresh(): Boolean {
-        var hasNewConfig = false
+    fun refresh() {
         val configuredMenuItems = getConfiguredMenuItems() ?: DEFAULT_MENU_ITEMS
         val configuredBottomBarItems = getConfiguredBottomBarItems() ?: DEFAULT_MENU_BOTTOM_ITEMS
         menuItems.value.let { currentValue ->
             if (configuredMenuItems != currentValue) {
                 menuItems.value = configuredMenuItems
-                hasNewConfig = true
             }
         }
         bottomItems.value.let { currentValue ->
             if (configuredBottomBarItems != currentValue) {
                 bottomItems.value = configuredBottomBarItems
-                hasNewConfig = true
             }
         }
-
-        return hasNewConfig
     }
 
     private fun getConfiguredMenuItems(): List<MenuItemAdapter.ItemData>? = AppConfigWrapper.getMenuItems()
