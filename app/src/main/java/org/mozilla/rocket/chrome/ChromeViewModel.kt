@@ -30,7 +30,7 @@ class ChromeViewModel(
     private val browsers: Browsers,
     private val storageHelper: StorageHelper
 ) : ViewModel() {
-    val isNightMode = MutableLiveData<NightModeSettings>()
+    val isNightMode: LiveData<NightModeSettings> = settings.isNightModeEnablLiveData.map { NightModeSettings(it, settings.nightModeBrightnessValue) }
     val tabCount = MutableLiveData<Int>()
     val isTabRestoredComplete = MutableLiveData<Boolean>()
     val navigationState = MutableLiveData<ScreenNavigator.NavigationState>()
@@ -81,7 +81,6 @@ class ChromeViewModel(
 
     init {
         settings.run {
-            isNightMode.value = NightModeSettings(isNightModeEnable, nightModeBrightnessValue)
             hasUnreadScreenshot.value = AppConfigWrapper.getMyshotUnreadEnabled() && hasUnreadMyShot()
             isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
         }
@@ -116,9 +115,6 @@ class ChromeViewModel(
 
     private fun updateNightMode(isEnabled: Boolean) {
         settings.setNightMode(isEnabled)
-        if (isNightMode.value?.isEnabled != isEnabled) {
-            isNightMode.value = NightModeSettings(isEnabled, settings.nightModeBrightnessValue)
-        }
         TelemetryWrapper.menuNightModeChangeTo(isEnabled)
     }
 
