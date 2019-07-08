@@ -42,9 +42,9 @@ class ChromeViewModel(
     val canGoForward = MutableLiveData<Boolean>()
     val isHomePageUrlInputShowing = MutableLiveData<Boolean>()
     val isMyShotOnBoardingPending = MutableLiveData<Boolean>()
-    val isTurboModeEnabled = settings.shouldUseTurboModeLiveData()
-    val isBlockImageEnabled = settings.shouldBlockImagesLiveData()
-    val hasUnreadScreenshot = MutableLiveData<Boolean>()
+    val isTurboModeEnabled: LiveData<Boolean> = settings.shouldUseTurboModeLiveData()
+    val isBlockImageEnabled: LiveData<Boolean> = settings.shouldBlockImagesLiveData()
+    val hasUnreadScreenshot: LiveData<Boolean> = settings.hasUnreadMyShotLiveData().map { AppConfigWrapper.getMyshotUnreadEnabled() && it }
     val isPrivateBrowsingActive = MutableLiveData<Boolean>()
 
     val shouldShowFirstrun: Boolean
@@ -81,7 +81,6 @@ class ChromeViewModel(
 
     init {
         settings.run {
-            hasUnreadScreenshot.value = AppConfigWrapper.getMyshotUnreadEnabled() && hasUnreadMyShot()
             isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
         }
         isRefreshing.value = false
@@ -274,17 +273,10 @@ class ChromeViewModel(
 
     fun onDoScreenshot(telemetryData: ScreenCaptureTelemetryData) {
         doScreenshot.value = telemetryData
-        val shouldShowUnread = AppConfigWrapper.getMyshotUnreadEnabled()
-        if (hasUnreadScreenshot.value != shouldShowUnread) {
-            hasUnreadScreenshot.value = shouldShowUnread
-        }
     }
 
     fun showScreenshots() {
         settings.setHasUnreadMyShot(false)
-        if (hasUnreadScreenshot.value != false) {
-            hasUnreadScreenshot.value = false
-        }
         showScreenshots.call()
         TelemetryWrapper.clickMenuCapture()
     }
