@@ -80,9 +80,7 @@ class ChromeViewModel(
     val showNightModeOnBoarding = SingleLiveEvent<Unit>()
 
     init {
-        settings.run {
-            isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
-        }
+        isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
         isRefreshing.value = false
         canGoBack.value = false
         canGoForward.value = false
