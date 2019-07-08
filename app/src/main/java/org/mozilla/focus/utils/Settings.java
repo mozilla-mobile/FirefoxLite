@@ -222,6 +222,9 @@ public class Settings {
                 .apply();
     }
 
+    public SharedPreferenceLiveData<Boolean> hasUnreadMyShotLiveData() {
+        return booleanLiveData(R.string.pref_has_unread_my_shot, false);
+    }
 
     public boolean hasUnreadMyShot() {
         return preferences.getBoolean(getPreferenceKey(R.string.pref_has_unread_my_shot), false);
