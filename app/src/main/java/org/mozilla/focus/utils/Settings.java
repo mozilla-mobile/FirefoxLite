@@ -81,6 +81,10 @@ public class Settings {
         preferences.edit().putBoolean(key, blockImages).apply();
     }
 
+    public SharedPreferenceLiveData<Boolean> isNightModeEnablLiveData() {
+        return booleanLiveData(R.string.pref_key_night_mode_enable, NIGHT_MODE_DEFAULT);
+    }
+
     public boolean isNightModeEnable() {
         return settingPreferenceWrapper.getBoolean(resources.getString(R.string.pref_key_night_mode_enable),
                 NIGHT_MODE_DEFAULT);
