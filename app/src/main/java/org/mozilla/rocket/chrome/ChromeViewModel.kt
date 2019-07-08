@@ -36,7 +36,7 @@ class ChromeViewModel(
     val navigationState = MutableLiveData<ScreenNavigator.NavigationState>()
     val currentUrl = MutableLiveData<String>()
     val currentTitle = MutableLiveData<String>()
-    var isCurrentUrlBookmarked: LiveData<Boolean>
+    var isCurrentUrlBookmarked: LiveData<Boolean> = currentUrl.switchMap(bookmarkRepo::getBookmarksByUrl).map { it.isNotEmpty() }
     val isRefreshing = MutableLiveData<Boolean>()
     val canGoBack = MutableLiveData<Boolean>()
     val canGoForward = MutableLiveData<Boolean>()
@@ -88,9 +88,6 @@ class ChromeViewModel(
         canGoForward.value = false
         isHomePageUrlInputShowing.value = false
         isMyShotOnBoardingPending.value = false
-
-        isCurrentUrlBookmarked = currentUrl.switchMap(bookmarkRepo::getBookmarksByUrl)
-                .let { urlBookmarksLiveData -> urlBookmarksLiveData.map { it.isNotEmpty() } }
 
         thread { checkRemovableStorage() }
     }
