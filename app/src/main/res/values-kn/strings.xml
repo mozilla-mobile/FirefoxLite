@@ -30,11 +30,11 @@
   <string name="preference_dialog_title_search_engine">ಪೂರ್ವನಿಯೋಜಿತ ಹುಡುಕು ಎಂಜಿನ್</string>
   <string name="preference_dialog_title_news_source">ಸುದ್ದಿ ಮೂಲ</string>
   <string name="preference_data_saving_block_images">ಚಿತ್ರಗಳನ್ನು ತಡೆ</string>
-  <string name="preference_privacy_storage_clear_browsing_data">ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸವನ್ನು ಅಳಿಸಿ</string>
+  <string name="preference_privacy_storage_clear_browsing_data">ಜಾಲಾಟದ ಇತಿಹಾಸವನ್ನು ಅಳಿಸಿ</string>
   <string name="preference_privacy_storage_save_downloads_to">ಡೌನ್ಲೋಡುಗಳನ್ನು ಇಲ್ಲಿ ಉಳಿಸು</string>
   <string name="preference_default_browser">ಪೂರ್ವನಿಯೋಜಿತ ಬ್ರೌಸರ್ ಮಾಡಿ</string>
   <string name="preference_default_browser_is_setting">ಸಿದ್ಧತೆಗಳನ್ನು ಬದಲಿಸುವುದು…</string>
-  <string name="preference_turbo_mode">ಟರ್ಬೋ ಮೋಡ್</string>
+  <string name="preference_turbo_mode">ಟರ್ಬೋ ಸ್ಥಿತಿ</string>
   <string name="preference_mozilla_telemetry">ಬಳಕೆಯ ದತ್ತಾಂಶ ಕಳುಹಿಸಿ</string>
   <string name="preference_mozilla_telemetry_summary">%2$s ಎಲ್ಲರಿಗಾಗಿ %1$s ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಿ ಕೊಡುವುದಕ್ಕೆ ಬೇಕಾದ್ದನ್ನು ಮಾತ್ರ ಸಂಗ್ರಹಿಸುತ್ತದೆ.</string>
   <string name="preference_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
@@ -70,14 +70,14 @@
   <string name="contextmenu_open_image_in_new_tab">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಚಿತ್ರವನ್ನು ತೆರೆ</string>
   <string name="first_run_page1_title">%1$s ಆಯ್ಕೆಮಾಡಿದ್ದಕ್ಕೆ ವಂದನೆಗಳು</string>
   <string name="first_run_page1_text">ಸ್ವತಂತ್ರ ಮತ್ತು ಮುಕ್ತ ಜಾಲಕ್ಕಾಗಿ ಬದ್ಧವಾಗಿರುವ ಲಾಭರಹಿತ ಸಂಸ್ಥೆಯಾದ, %1$s ಅಭಿವೃದ್ಧಿಪಡಿಸಿದ ಒಂದು ಬ್ರೌಸರ್.</string>
-  <string name="first_run_page2_title">ಹಿಂದಿನಕ್ಕಿಂತೆ ವೇಗವಾಗಿ ಜಾಲಾಡಿ</string>
-  <string name="first_run_page2_text">ಟರ್ಬೋ ಸ್ಥಿತಿ ಬಳಸಿ ಜಾಲಾಟದ ಜಾಡುಹಿಡಿಯುವ ಜಾಹೀರಾತುಗಳನ್ನು ತಡೆಯುವುದರ ಮೂಲಕ ಮಿಂಚಿನವೇಗಗಳಲ್ಲಿ ಜಾಲಾಡಿ. ನಿಮ್ಮ ಜಾಲತಾಣಗಳು ಮುರಿದಂತೆ ಕಂಡುಬಂದಲ್ಲಿ, ಮೆನುವಿನಲ್ಲಿ ಟರ್ಬೋ ಸ್ಥಿತಿಯನ್ನು ತಟ್ಟಿ ಸ್ಥಗಿತಗೊಳಿಸಿ.</string>
-  <string name="first_run_page3_title">ಡೆಟಾ ಉಳಿತಾಯ = ದುಡ್ಡು ಉಳಿತಾಯ</string>
+  <string name="first_run_page2_title">ಎಂದಿಗಿಂತಲೂ ವೇಗವಾಗಿ ಜಾಲಾಡಿ</string>
+  <string name="first_run_page2_text">ಜಾಲಾಟದ ಜಾಡುಹಿಡಿಯುವ ಜಾಹೀರಾತುಗಳನ್ನು ಟರ್ಬೋ ಸ್ಥಿತಿ ಬಳಸಿ ತಡೆಯುವುದರ ಮೂಲಕ ಮಿಂಚಿನ ವೇಗದಲ್ಲಿ ಜಾಲಾಡಬಹುದು. ನಿಮ್ಮ ಜಾಲತಾಣಗಳು ಮುರಿದುಬಿದ್ದಂತೆ ಕಂಡುಬಂದಲ್ಲಿ, ಮೆನುವಿನಲ್ಲಿ ಟರ್ಬೋ ಸ್ಥಿತಿಯನ್ನು ತಟ್ಟಿ ಸ್ಥಗಿತಗೊಳಿಸಿ.</string>
+  <string name="first_run_page3_title">ಡೇಟಾವನ್ನು ಉಳಿಸಿ = ಹಣವನ್ನು ಉಳಿಸಿ</string>
   <string name="first_run_page3_text">ಜಾಡುಹಿಡಿಯುವ ಜಾಹೀರಾತುಗಳನ್ನು ತಡೆಯುವುದು ದತ್ತಾಂಶದ ಖರ್ಚು ಉಳಿಸುತ್ತದೆ. ಚಿತ್ರಗಳನ್ನೂ ತಡೆಹಿಡಿಯುವುದರಿಂದ ಇನ್ನೂ ಹೆಚ್ಚಿಗೆ ಉಳಿಸಬಹುದು.</string>
   <string name="first_run_page4_title">ಇಡೀ ಪುಟವನ್ನು ತೆರೆಚಿತ್ರವಾಗಿಸಿ</string>
   <string name="first_run_page4_text">ಇಡೀ ಜಾಲಪುಟದ ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ. ತೆರೆಚಿತ್ರವನ್ನು ಆಫ್‍ಲೈನ್ನಲ್ಲಿ ಡೇಟಾ ಬಳಸದೆ ನೋಡಿ ಅಥವಾ ಜಾಲಪುಟವನ್ನು ಪುನ: ವೀಕ್ಷಿಸಲು ಮೆಲ್ಲ ತಟ್ಟಿ.</string>
   <string name="first_run_page5_title">ಮುಂದಿನ ಹಂತದ ಗೌಪ್ಯತೆ</string>
-  <string name="first_run_page5_text">ಜಾಡು ಹಿಡಿಯಲಾಗದಂತೆ ಬ್ರೌಸ್ ಮಾಡಿ, ಮತ್ತು ವ್ಯಾಪಕವಾದ ಸಾಮಾನ್ಯ ವೆಬ್ ಟ್ರ್ಯಾಕರ್ಗಳನ್ನು ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ನಿರ್ಬಂಧಿಸಿ. ನಿಮ್ಮ ಗೌಪ್ಯ ದತ್ತಾಂಶದ ಭದ್ರತೆಯನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</string>
+  <string name="first_run_page5_text">ಜಾಡು ಹಿಡಿಯಲಾಗದಂತೆ ಜಾಲಾಡಿ, ಮತ್ತು ವ್ಯಾಪಕವಾದ ಸಾಮಾನ್ಯ ವೆಬ್ ಟ್ರ್ಯಾಕರ್ಗಳನ್ನು ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ನಿರ್ಬಂಧಿಸಿ. ನಿಮ್ಮ ಗೌಪ್ಯ ದತ್ತಾಂಶದ ಭದ್ರತೆಯನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</string>
   <string name="first_run_page6_title">ಹೊಸ ವಿಷಯಗಳನ್ನು ಅನ್ವೇಷಿಸಿ</string>
   <string name="first_run_page6_text">ಕೇವಲ ಒಂದು ಸಲಹೆ, ನಿಮ್ಮನ್ನು “%1$s” ನೊಂದಿಗೆ ನವೀಕರಿಸಿಕೊಳ್ಳಿ - ಅತ್ಯಂತ ಜನಪ್ರಿಯ ವಿಷಯಗಳಿಂದ ಅತ್ಯಂತ ಬಿಸಿಬಿಸಿ ವ್ಯವಹಾರಗಳ ವೈವಿಧ್ಯಮಯ ವಿಷಯಗಳು. %2$s</string>
   <string name="first_run_page7_title">ಟ್ರ್ಯಾಕ್ ಮಾಡ‌ಲಾಗದಂತೆ ತಡೆಯಿರಿ</string>
@@ -102,7 +102,7 @@
   <string name="label_menu_share">ಹಂಚು</string>
   <string name="label_menu_my_shots">ನನ್ನ ಫೋಟೋಗಳು‍</string>
   <string name="label_menu_capture_page">ಪುಟವನ್ನು ಸೆರೆಹಿಡಿ</string>
-  <string name="label_menu_turbo_mode">ಟರ್ಬೋ ಮೋಡ್</string>
+  <string name="label_menu_turbo_mode">ಟರ್ಬೋ ಸ್ಥಿತಿ</string>
   <string name="label_menu_night_mode">ರಾತ್ರಿ ಸ್ಥಿತಿ</string>
   <string name="label_menu_block_ads">ಜಾಹಿರಾತು ನಿರ್ಬಂಧಿಸು</string>
   <string name="label_menu_block_image">ಚಿತ್ರಗಳನ್ನು ತಡೆ</string>
@@ -144,8 +144,8 @@
   <string name="unknown">ಗೊತ್ತಿರದ</string>
   <string name="setting_dialog_sd_card">ಎಸ್‍ಡಿ ಕಾರ್ಡ್</string>
   <string name="setting_dialog_internal_storage">ಆಂತರಿಕ ಶೇಖರಣೆ</string>
-  <string name="browsing_history_clear_btn">ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸ ತೆರೆವುಗೊಳಿಸು</string>
-  <string name="browsing_history_empty_view_msg">ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸ ಇಲ್ಲ</string>
+  <string name="browsing_history_clear_btn">ಜಾಲಾಟದ ಇತಿಹಾಸ ತೆರೆವುಗೊಳಿಸಿ</string>
+  <string name="browsing_history_empty_view_msg">ವೀಕ್ಷಣೆಯ ಇತಿಹಾಸ ಲಭ್ಯವಿಲ್ಲ</string>
   <string name="browsing_history_date_today">ಇಂದು</string>
   <string name="browsing_history_date_yesterday">ನಿನ್ನೆ</string>
   <string name="browsing_history_menu_delete">ಅಳಿಸು</string>
@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">ತೆರೆಚಿತ್ರವನ್ನು ಪ್ರದರ್ಶಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ</string>
   <string name="remove">ತೆಗೆದು ಹಾಕು</string>
   <string name="pin_site">ಪಿನ್ ಸೈಟ್</string>
+  <string name="update_to_latest_app_toast">ಇತ್ತೀಚಿನ ನಿರ್ಮಾಣವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ…</string>
+  <string name="update_to_latest_app_notification">ಇತ್ತೀಚಿನ ನಿರ್ಮಾಣವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ. ನವೀಕರಿಸಲು ಮೆಲ್ಲ ತಟ್ಟಿ.</string>
+  <string name="update_to_latest_app_snack_bar_message">ಇತ್ತೀಚಿನ ನಿರ್ಮಾಣವನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</string>
+  <string name="update_to_latest_app_snack_bar_update">ನವೀಕರಿಸು</string>
   <string name="privacy_policy_update_notification_title">ಉತ್ಪನ್ನದ ಪರಿಷ್ಕರಣೆಯ ಸೂಚನೆ</string>
   <string name="privacy_policy_update_notification_action">ಫೈರ್‍ಫಾಕ್ಸ್ ಲೈಟ್ ಅನ್ನು ನಿಮಗೆ ಮತ್ತು ಎಲ್ಲರಿಗಾಗಿ ಉತ್ತಮಗೊಳಿಸಲು, ನಾವು ಖಾಸಗಿತನದ ನೀತಿಗಳಲ್ಲಿ ಕೆಲವೊಂದು ಬದಲಾವಣೆಗಳನ್ನು ತಂದಿದ್ದೇವೆ. ಹೆಚ್ಚಿಗೆ ತಿಳಿಯಲು ಮೆಲ್ಲ ತಟ್ಟಿ.</string>
   <string name="rate_app_dialog_text_title">%1$s ಇಷ್ಟವೇ?</string>
@@ -277,10 +281,14 @@
   <string name="private_browsing_open_action">ತೆರೆ</string>
   <string name="private_browsing_erase_done">ನಿಮ್ಮ ಖಾಸಗಿ ಜಾಲಾಟದ\nಇತಿಹಾಸವನ್ನು ಅಳಿಸಲಾಗಿದೆ.</string>
   <string name="private_browsing_tracker_blocked">ಜಾಡುಹಿಡಿಯುವವರನ್ನು ನಿರ್ಭಂದಿಸಲಾಗಿದೆ</string>
-  <string name="private_browsing_tracker_blocked_description">ಹೆಚ್ಚುವರಿ ರಕ್ಷಣೆಯೊಂದಿಗೆ ಬ್ರೌಸಿಂಗ್ ಆನಂದಿಸಿ.</string>
+  <string name="private_browsing_tracker_blocked_description">ಹೆಚ್ಚುವರಿ ರಕ್ಷಣೆಯೊಂದಿಗೆ ಜಾಲಾಟವನ್ನು ಆನಂದಿಸಿ.</string>
   <string name="private_browsing_dialog_add_shortcut_title">ಒಂದು ಕ್ಲಿಕ್ನಲ್ಲಿ ಖಾಸಗಿ ಸ್ಥಿತಿ ಅನ್ನು ಪ್ರವೇಶಿಸಿ! ಮುಖಪುಟಕ್ಕೆ ಖಾಸಗಿ ಸ್ಥಿತಿ ಶಾರ್ಟ್ಕಟ್ ಸೇರಿಸಲು ಬಯಸುವಿರಾ?</string>
   <string name="private_browsing_dialog_add_shortcut_no">ಬೇಡ, ಧನ್ಯವಾದಗಳು</string>
   <string name="private_browsing_dialog_add_shortcut_yes">ಹೌದು</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">ಖಾಸಗಿ ಸ್ಥಿತಿ ಶಾರ್ಟ್‌ಕಟ್ ಸೇರಿಸಿ</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">ನಿಮ್ಮ ಮುಖಪುಟದಿಂದ ಖಾಸಗಿ ಸ್ಥಿತಿಗೆ ತ್ವರಿತವಾಗಿ ಪ್ರವೇಶಿಸಿ.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">ಬೇಡ, ಧನ್ಯವಾದಗಳು</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">ಹೌದು, ಈಗಲೇ ಸೇರಿಸಿ!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">ನಂತರ ನೀವು ಸಿದ್ಧತೆಗಳಲ್ಲಿ ಖಾಸಗಿ ಸ್ಥಿತಿ ಶಾರ್ಟ್ಕಟ್ ಅನ್ನು ಸೇರಿಸಬಹುದು.</string>
   <string name="private_browsing_shortcut_name">%1$s - ಖಾಸಗಿ ವೀಕ್ಷಣೆ</string>
   <string name="preference_add_private_browsing_shortcut">ಮುಖಪುಟದ ಪರದೆಗೆ ಖಾಸಗಿ ಸ್ಥಿತಿ ಶಾರ್ಟ್ಕಟ್ ಸೇರಿಸಿ</string>
@@ -288,11 +296,12 @@
   <string name="my_shot_on_boarding_category_message">‍ನಿಮ್ಮ ಉತ್ಪಾದನೆಯ ಅನುಭವವನ್ನು ಉತ್ತಮಗೊಳಿಸಲು, ನಾವು ನಿಮ್ಮ ತೆರೆಚಿತ್ರಗಳ ವರ್ಗಗಳ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ.</string>
   <string name="btn_vpn">7 ದಿನಗಳ ಉಚಿತ VPN ಸೇವೆ ನಿಮಗಾಗಿ ಸಿದ್ಧವಾಗಿದೆ. ಹೆಚ್ಚು ಖಾಸಗಿಯಾಗಿ ಮತ್ತು ಸುರಕ್ಷಿತವಾಗಿ ಜಾಲಾಡಲು ಅನುಸ್ಥಾಪಿಸಿಕೊಳ್ಳಿ.</string>
   <string name="exp_survey_wifi">ನೀವು ಹತ್ತಿರದ ಉಚಿತ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಕಂಡುಹಿಡಿಯಲು ಸಹಾಯವಾಗುವಂತೆ “ಫ್ರೀ ವೈಫೈ-ಫೈಂಡರ್” ಅನ್ನು ಸಂಯೋಜಿಸಲು ನಾವು ಯೋಜಿಸುತ್ತಿದ್ದೇವೆ.\n \nಆಸಕ್ತಿ ಇದೆಯೇ?</string>
-  <string name="exp_survey_vpn">ಬ್ರೌಸಿಂಗ್ ಮಾಡುವಾಗ ನಿಮಗೆ ಹೆಚ್ಚಿನ ಸ್ವಾತಂತ್ರ್ಯ ಮತ್ತು ಹೆಚ್ಚಿನ ಗೌಪ್ಯತೆ ಪಡೆಯಲು \"VPN ಸೇವೆ\" ಅನ್ನು ಸಂಯೋಜಿಸಲು ನಾವು ಯೋಜಿಸಿದ್ದೇವೆ. \n \n ಆಸಕ್ತಿ ಇದೆಯೇ?</string>
+  <string name="exp_survey_vpn">ಜಾಲಾಡುವಾಗ ನಿಮಗೆ ಹೆಚ್ಚಿನ ಸ್ವಾತಂತ್ರ್ಯ ಮತ್ತು ಹೆಚ್ಚಿನ ಗೌಪ್ಯತೆ ಪಡೆಯಲು \"VPN ಸೇವೆ\" ಅನ್ನು ಸಂಯೋಜಿಸಲು ನಾವು ಯೋಜಿಸಿದ್ದೇವೆ. \n \n ಆಸಕ್ತಿ ಇದೆಯೇ?</string>
   <string name="exp_survey_thanks">ನಮಗೆ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ನೀಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು %1$s</string>
   <string name="exp_survey_yes">ಹೌದು, ದಯವಿಟ್ಟು</string>
   <string name="exp_survey_no">ಇಲ್ಲ</string>
   <string name="http_auth_dialog_title">ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ</string>
   <string name="http_auth_dialog_user_name">ಬಳಕೆದಾರನ ಹೆಸರು</string>
   <string name="http_auth_dialog_password">ಗುಪ್ತಪದ</string>
+  <string name="low_priority_notification_channel">ಮರೆಮಾಡಿದ ಸೂಚನೆಗಳು</string>
 </resources>
