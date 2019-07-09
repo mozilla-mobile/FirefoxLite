@@ -6,7 +6,6 @@
 package org.mozilla.focus.urlinput;
 
 import android.os.AsyncTask;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -45,7 +44,6 @@ public class UrlInputPresenter implements UrlInputContract.Presenter {
         }
     }
 
-    @MainThread
     @Override
     public void onInput(@NonNull CharSequence input, boolean isThrottled) {
         if (isThrottled && queryTask != null) {
