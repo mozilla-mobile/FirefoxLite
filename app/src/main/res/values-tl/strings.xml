@@ -184,6 +184,7 @@
   <string name="message_cannot_find_screenshot">Hindi maipakita ang screenshot</string>
   <string name="remove">Alisin</string>
   <string name="pin_site">I-pin ang site</string>
+  <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
   <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Firefox Lite para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
@@ -245,8 +246,11 @@
   <string name="news_category_option_politics">Pulitika</string>
   <string name="news_category_option_cricket">Cricket</string>
   <string name="news_category_option_sports">Sports</string>
+  <string name="news_category_option_entertainment">Aliwan</string>
   <string name="news_category_option_business">Negosyo</string>
   <string name="news_category_option_health">Kalusugan</string>
+  <string name="news_category_option_movie_reviews">Review ng mga Sine</string>
+  <string name="news_category_option_automobile">Kotse</string>
   <string name="news_category_option_regional">Pang-Rehiyon</string>
   <string name="news_category_option_travel">Paglalakbay</string>
   <string name="news_category_option_lifestyle">Lifestyle</string>
@@ -265,6 +269,10 @@
   <string name="private_browsing_erase_message">Burahin ang kasaysayan ng private browsing</string>
   <string name="private_browsing_open_action">BUKSAN</string>
   <string name="private_browsing_erase_done">Ang kasaysayan ng iyong private browsing\nay nabura na.</string>
+  <string name="private_browsing_tracker_blocked">Trackers blocked</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">Oo</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">HINDI, THANKS</string>
+  <string name="private_browsing_shortcut_name">%1$s - Private browsing</string>
   <string name="my_shot_on_boarding_message">Tingnan ang mga screenshot dito!</string>
   <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
   <string name="btn_vpn">Ang 7-araw na libreng serbisyo ng VPN ay handa na para sa iyo. I-install ngayon upang mag-browse nang mas pribado at ligtas.</string>
