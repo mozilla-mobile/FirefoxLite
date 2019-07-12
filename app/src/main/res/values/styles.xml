@@ -132,6 +132,7 @@
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:paddingTop">5dp</item>
+        <item name="android:textColor">@color/paletteLightBlack100</item>
     </style>
 
     <style name="ListPanelDrawable">
