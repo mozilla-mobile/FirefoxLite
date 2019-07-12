@@ -60,6 +60,7 @@ public class WebViewProvider {
         setupView(webkitView);
         configureDefaultSettings(context, settings, webkitView);
         applyMultiTabSettings(context, settings);
+        applyJavaScriptSettings(context, settings);
         applyAppSettings(context, settings);
 
         if (hook != null) {
@@ -129,6 +130,10 @@ public class WebViewProvider {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webkitView, true);
         }
+    }
+
+    public static void applyJavaScriptSettings(Context context, WebSettings settings) {
+        settings.setJavaScriptEnabled(!Settings.getInstance(context).shouldBlockJavaScript());
     }
 
     public static void applyAppSettings(Context context, WebSettings settings) {

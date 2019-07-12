@@ -458,6 +458,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private void observeChromeAction() {
         chromeViewModel.isTurboModeEnabled().observe(this, this::setContentBlockingEnabled);
         chromeViewModel.isBlockImageEnabled().observe(this, this::setImageBlockingEnabled);
+        chromeViewModel.isBlockJavaScriptEnabled().observe(this, this::setJavaScriptBlockingEnabled);
         chromeViewModel.getDoScreenshot().observe(this, telemetryData -> {
             permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, telemetryData);
         });
@@ -781,6 +782,17 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             final TabViewEngineSession es = session.getEngineSession();
             if (es != null && es.getTabView() != null) {
                 es.getTabView().setImageBlockingEnabled(enabled);
+            }
+        }
+    }
+
+    private void setJavaScriptBlockingEnabled(boolean enabled) {
+        // TODO: Better if we can move this logic to some setting-like classes, and provider interface
+        // for configuring JavaScript blocking function of each tab.
+        for (final Session session : sessionManager.getTabs()) {
+            final TabViewEngineSession es = session.getEngineSession();
+            if (es != null && es.getTabView() != null) {
+                es.getTabView().setJavaScriptBlockingEnabled(enabled);
             }
         }
     }

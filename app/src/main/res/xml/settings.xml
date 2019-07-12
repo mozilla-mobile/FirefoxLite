@@ -79,7 +79,7 @@
     <!-- Preferences for development purpose, only visible in dev-build -->
     <PreferenceCategory
         android:key="@string/pref_key_category_development"
-        android:title="For Development">
+        android:title="For development">
 
         <org.mozilla.focus.widget.LifeFeedPreference
             android:dialogTitle="Life feed settings"
@@ -87,6 +87,18 @@
             android:entryValues="@array/life_feed_settings_values"
             android:key="@string/pref_key_developer_option_life_feed"
             android:title="Life feed settings" />
+
+    </PreferenceCategory>
+
+    <!-- Preferences for experimental features, only visible in dev-build -->
+    <PreferenceCategory
+        android:key="@string/pref_key_category_experiment"
+        android:title="For experiment">
+
+        <SwitchPreference
+            android:key="@string/pref_key_performance_block_java_script"
+            android:layout="@layout/focus_preference"
+            android:title="Block JavaScript" />
 
     </PreferenceCategory>
 

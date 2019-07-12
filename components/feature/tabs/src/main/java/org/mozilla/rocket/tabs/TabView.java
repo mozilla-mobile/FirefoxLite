@@ -70,6 +70,8 @@ public interface TabView {
 
     boolean isBlockingEnabled();
 
+    void setJavaScriptBlockingEnabled(boolean enabled);
+
     void performExitFullScreen();
 
     void setViewClient(@Nullable TabViewClient viewClient);

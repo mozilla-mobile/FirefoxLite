@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.settings;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -14,8 +13,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
@@ -23,9 +23,13 @@ import org.mozilla.focus.activity.SettingsActivity;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.*;
-import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
+import org.mozilla.focus.utils.AppConstants;
+import org.mozilla.focus.utils.DialogUtils;
+import org.mozilla.focus.utils.FirebaseContract;
+import org.mozilla.focus.utils.FirebaseHelper;
+import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.ShortcutUtils;
 import org.mozilla.telemetry.TelemetryHolder;
 
@@ -44,8 +48,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         addPreferencesFromResource(R.xml.settings);
         final PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
         if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild() && !AppConstants.isNightlyBuild()) {
-            Preference category = findPreference(getString(R.string.pref_key_category_development));
-            rootPreferences.removePreference(category);
+            Preference developmentCategory = findPreference(getString(R.string.pref_key_category_development));
+            rootPreferences.removePreference(developmentCategory);
+
+            Preference experimentCategory = findPreference(getString(R.string.pref_key_category_experiment));
+            rootPreferences.removePreference(experimentCategory);
         }
 
         final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
