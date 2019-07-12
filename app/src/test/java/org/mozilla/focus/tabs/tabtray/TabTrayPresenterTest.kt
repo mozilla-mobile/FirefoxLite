@@ -112,6 +112,9 @@ class TabTrayPresenterTest {
             return false
         }
 
+        override fun setJavaScriptBlockingEnabled(enabled: Boolean) {
+        }
+
         override fun performExitFullScreen() {
         }
 

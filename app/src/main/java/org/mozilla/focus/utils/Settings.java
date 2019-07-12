@@ -9,10 +9,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
+import android.view.WindowManager;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import android.view.WindowManager;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.provider.SettingPreferenceWrapper;
@@ -32,6 +33,7 @@ public class Settings {
 
     private static Settings instance;
     private static final boolean BLOCK_IMAGE_DEFAULT = false;
+    private static final boolean BLOCK_JAVA_SCRIPT_DEFAULT = false;
     private static final boolean TURBO_MODE_DEFAULT = true;
     private static final boolean NIGHT_MODE_DEFAULT = false;
     private static final boolean DID_SHOW_RATE_APP_DEFAULT = false;
@@ -79,6 +81,16 @@ public class Settings {
     public void setBlockImages(boolean blockImages) {
         final String key = getPreferenceKey(R.string.pref_key_performance_block_images);
         preferences.edit().putBoolean(key, blockImages).apply();
+    }
+
+    public SharedPreferenceLiveData<Boolean> shouldBlockJavaScriptLiveData() {
+        return booleanLiveData(R.string.pref_key_performance_block_java_script, BLOCK_JAVA_SCRIPT_DEFAULT);
+    }
+
+    public boolean shouldBlockJavaScript() {
+        return preferences.getBoolean(
+                resources.getString(R.string.pref_key_performance_block_java_script),
+                BLOCK_JAVA_SCRIPT_DEFAULT);
     }
 
     public SharedPreferenceLiveData<Boolean> isNightModeEnablLiveData() {

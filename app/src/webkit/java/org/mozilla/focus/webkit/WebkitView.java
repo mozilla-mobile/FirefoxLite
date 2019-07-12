@@ -9,7 +9,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,6 +21,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
 import android.webkit.WebViewDatabase;
+
+import androidx.annotation.NonNull;
 
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.BuildConfig;
@@ -206,6 +207,7 @@ public class WebkitView extends NestedWebView implements TabView {
         msg.sendToTarget();
     }
 
+    @Override
     public boolean isBlockingEnabled() {
         return webViewClient.isBlockingEnabled();
     }
@@ -223,6 +225,18 @@ public class WebkitView extends NestedWebView implements TabView {
         if (enable) {
             reloadOnAttached();
         }
+    }
+
+    @Override
+    public void setJavaScriptBlockingEnabled(boolean blockingEnabled) {
+        WebSettings settings = getSettings();
+        if (blockingEnabled == !settings.getJavaScriptEnabled()) {
+            return;
+        }
+
+        WebViewProvider.applyJavaScriptSettings(getContext(), getSettings());
+
+        reloadOnAttached();
     }
 
     @Override
