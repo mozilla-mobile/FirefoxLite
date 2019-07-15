@@ -35,6 +35,11 @@ public class BrowsingSession {
         blockedCountData.postValue(blockedTrackers);
     }
 
+    public void setBlockedTrackerCount(int count) {
+        blockedTrackers = count;
+        blockedCountData.postValue(count);
+    }
+
     public void resetTrackerCount() {
         blockedTrackers = 0;
         blockedCountData.postValue(blockedTrackers);

@@ -86,6 +86,10 @@ class TrackerPopup(context: Context) : PopupWindow(
         }
     }
 
+    fun setSwitchToggled(enabled: Boolean) {
+        contentView.tracker_switch.isChecked = enabled
+    }
+
     fun show(parentView: View) {
         val res = parentView.resources
         val margin: Int = (res.getDimension(R.dimen.fixed_menu_height) +
