@@ -152,7 +152,7 @@
   <string name="browsing_history_dialog_confirm_clear_message">Xóa tất cả lịch sử duyệt web?</string>
   <string name="browsing_history_dialog_btn_clear">Xóa</string>
   <string name="remove_from_list">Xóa khỏi danh sách</string>
-  <string name="delete_file">Xóa tệp</string>
+  <string name="delete_file">Xóa tập tin</string>
   <string name="screenshot_saved">Ảnh chụp màn hình đã lưu</string>
   <string name="screenshot_failed">Không thể chụp ảnh màn hình</string>
   <string name="screenshot_illustration">Chụp ảnh màn hình toàn bộ trang…</string>
