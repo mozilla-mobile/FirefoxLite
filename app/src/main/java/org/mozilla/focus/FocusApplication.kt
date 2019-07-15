@@ -29,6 +29,7 @@ import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
@@ -55,9 +56,22 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
         SystemEngine(this, engineSettings)
     }
     val engineSettings: DefaultSettings by lazy {
-        DefaultSettings().apply {
-            trackingProtectionPolicy = createTrackingProtectionPolicy(isInPrivateProcess)
-        }
+        DefaultSettings(
+            trackingProtectionPolicy = createTrackingProtectionPolicy(isInPrivateProcess),
+            displayZoomControls = false,
+            // To respect the html viewport:
+            loadWithOverviewMode = true,
+            // Disable access to arbitrary local files by webpages - assets can still be loaded
+            // via file:///android_asset/res, so at least error page images won't be blocked.
+            allowFileAccess = false,
+            allowFileAccessFromFileURLs = false,
+            allowUniversalAccessFromFileURLs = false,
+            userAgentString = WebViewProvider.getUserAgentString(this),
+            // Right now I do not know why we should allow loading content from a content provider
+            allowContentAccess = false,
+            // The default for those settings should be "false" - But we want to be explicit.
+            domStorageEnabled = true
+        )
     }
     val sessionManager: SessionManager by lazy {
         SessionManager(engine)
