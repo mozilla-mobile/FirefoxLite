@@ -6,12 +6,13 @@
 package org.mozilla.focus.activity;
 
 import android.content.Intent;
+
 import androidx.annotation.Keep;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +30,7 @@ import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isSelected;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.core.AllOf.allOf;
 
@@ -58,7 +59,7 @@ public class OnBoardingTest {
      * 2. check turbo mode is selected on first onbording page
      * 3. move forward and backfard to check 4 pages of onboarding are displayed correctly
      * 4. open menu
-     * 5. check turbo mode is selected
+     * 5. check turbo mode is enabled
      */
     @FlakyTest
     @Test
@@ -97,7 +98,7 @@ public class OnBoardingTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Check if turbo mode is on
-        onView(withId(R.id.menu_turbomode)).check(matches(isDisplayed())).check(matches(isSelected()));
+        onView(withId(R.id.menu_turbomode)).check(matches(isDisplayed())).check(matches(isEnabled()));
 
         // Close menu
         Espresso.pressBack();
