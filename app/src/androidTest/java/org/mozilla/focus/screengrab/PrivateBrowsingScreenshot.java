@@ -8,10 +8,11 @@ package org.mozilla.focus.screengrab;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.IdlingRegistry;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObjectNotFoundException;
@@ -26,10 +27,12 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.annotation.ScreengrabOnly;
 import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.helper.BeforeTestTask;
-import org.mozilla.focus.helper.SessionLoadedIdlingResource;
+import org.mozilla.focus.helper.PrivateSessionLoadedIdlingResource;
 import org.mozilla.focus.utils.AndroidTestUtils;
+import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.privately.PrivateModeActivity;
 
+import mozilla.components.browser.session.SessionManager;
 import tools.fastlane.screengrab.Screengrab;
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy;
 
@@ -50,7 +53,7 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
     private static final int NOTIFICATION_DISPLAY_DELAY = 2000;
 
     private final UiDevice uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
-    private SessionLoadedIdlingResource loadingIdlingResource;
+    private PrivateSessionLoadedIdlingResource loadingIdlingResource;
 
     @Rule
     public ActivityTestRule<PrivateModeActivity> activityTestRule = new ActivityTestRule<>(PrivateModeActivity.class, true, false);
@@ -79,7 +82,8 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
         onView(withId(R.id.pm_home_fake_input)).perform(click());
 
         // create the idlingResource before the new session is created.
-        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
+        SessionManager sessionManager = ExtentionKt.app(activityTestRule.getActivity()).getSessionManager();
+        loadingIdlingResource = new PrivateSessionLoadedIdlingResource(sessionManager, "screenshotPrivateBrowsing");
 
         onView(withId(R.id.url_edit)).perform(replaceText(TARGET_URL_SITE), pressImeActionButton());
 
