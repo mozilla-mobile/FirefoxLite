@@ -92,6 +92,12 @@ class MenuItemAdapter(
         }
     }
 
+    fun setFindInPageEnabled(enabled: Boolean) {
+        getItem(TYPE_FIND_IN_PAGE)?.view?.let {
+            setEnabled(it, enabled)
+        }
+    }
+
     sealed class Theme(val tintResId: Int) {
         object Light : Theme(tintResId = R.color.sheet_menu_button)
     }

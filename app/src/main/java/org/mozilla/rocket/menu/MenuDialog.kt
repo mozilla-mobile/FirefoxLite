@@ -22,6 +22,7 @@ import org.mozilla.rocket.chrome.MenuItemAdapter
 import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.content.view.MenuLayout
+import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.extension.toActivity
@@ -129,6 +130,9 @@ class MenuDialog : BottomSheetDialog {
                 .observe(activity, Observer { menuItemAdapter.setBlockImageEnabled(it == true) })
         chromeViewModel.hasUnreadScreenshot.switchFrom(menuViewModel.menuItems)
                 .observe(activity, Observer { menuItemAdapter.setUnreadScreenshot(it == true) })
+        chromeViewModel.navigationState.switchFrom(menuViewModel.menuItems)
+                .map { navigationState -> navigationState.isBrowser }
+                .observe(activity, Observer { menuItemAdapter.setFindInPageEnabled(it) })
         chromeViewModel.isPrivateBrowsingActive.switchFrom(menuViewModel.menuItems)
                 .observe(activity, Observer { menuItemAdapter.setPrivateBrowsingActive(it == true) })
     }
