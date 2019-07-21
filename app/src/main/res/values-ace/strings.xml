@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">Han jeuët peuleumah drop layeuë</string>
   <string name="remove">Sampôh</string>
   <string name="pin_site">Peukab situs</string>
+  <string name="update_to_latest_app_toast">Cok-keubah nyang ban meuseubaro…</string>
+  <string name="update_to_latest_app_notification">Nyang ban meuseubaro ka lheuh meukeubah. Cukeh keu teuseubaro.</string>
+  <string name="update_to_latest_app_snack_bar_message">Nyan ban teuseubaro ka meucok-keubah</string>
+  <string name="update_to_latest_app_snack_bar_update">SEUBARO</string>
   <string name="privacy_policy_update_notification_title">Bri Thèe Pubarô Produk</string>
   <string name="privacy_policy_update_notification_action">Mangat jeuet Firefox Lite leubèh göt keu Droeneuh ngön ban mandum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut lom.</string>
   <string name="rate_app_dialog_text_title">Galak keu %1$s?</string>
@@ -281,6 +285,10 @@
   <string name="private_browsing_dialog_add_shortcut_title">Tamöng mode privat ngön sigo teugön! Keumeung tamah pintasan mode privat u seuramoe?</string>
   <string name="private_browsing_dialog_add_shortcut_no">H\'an, sabah</string>
   <string name="private_browsing_dialog_add_shortcut_yes">Nyo</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">Tamah shortcut mode privat</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">Akses mode privat beubagah nibak layeue seuramoe keu.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">HAN, TEURIMÖNG GASEH</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">GÖT, TAMAH JINOE!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">Droeneuh jeuet neutamah pintasan mode privat euntreuk lam teumpat atô.</string>
   <string name="private_browsing_shortcut_name">%1$s - Peuhah wèb privat</string>
   <string name="preference_add_private_browsing_shortcut">Tamah pintasan mode privat u seuramoe</string>
@@ -295,4 +303,5 @@
   <string name="http_auth_dialog_title">Peureulè otentikasi</string>
   <string name="http_auth_dialog_user_name">Nan ureung ngui</string>
   <string name="http_auth_dialog_password">Lageum tamöng</string>
+  <string name="low_priority_notification_channel">Notifikasi teupeusom</string>
 </resources>
