@@ -7,10 +7,12 @@ package org.mozilla.focus.screenshot;
 
 import android.content.Context;
 import android.net.Uri;
-import androidx.annotation.VisibleForTesting;
-import androidx.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
+import androidx.core.util.Pair;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,7 @@ import org.mozilla.focus.provider.ScreenshotContract.Screenshot;
 import org.mozilla.focus.utils.AppConfigWrapper;
 import org.mozilla.focus.utils.IOUtils;
 import org.mozilla.focus.web.WebViewProvider;
+import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
 import java.io.IOException;
@@ -128,7 +131,17 @@ public class ScreenshotManager {
         BackgroundCachedRequestLoader cachedRequestLoader = new BackgroundCachedRequestLoader(context, SCREENSHOT_CATEGORY_CACHE_KEY
                 , manifest, WebViewProvider.getUserAgentString(context), SocketTags.SCREENSHOT_CATEGORY);
         responseData = cachedRequestLoader.getStringLiveData();
-        responseData.observeForever(integerStringPair -> {
+        ThreadUtils.postToMainThread(() ->
+            responseData.observeForever(integerStringPair ->
+                handleRemoteDataAsync(integerStringPair, countDownLatch::countDown)
+            )
+        );
+        countDownLatch.await(5, TimeUnit.SECONDS);
+        return countDownLatch.getCount() == 0;
+    }
+
+    private void handleRemoteDataAsync(Pair<Integer, String> integerStringPair, Runnable callback) {
+        ThreadUtils.postToBackgroundThread(() -> {
             try {
                 if (integerStringPair == null) {
                     return;
@@ -138,13 +151,13 @@ public class ScreenshotManager {
                     return;
                 }
                 initWithJson(new JSONObject(response));
-                countDownLatch.countDown();
+                if (callback != null) {
+                    callback.run();
+                }
             } catch (JSONException e) {
                 Log.e(TAG, "ScreenshotManager init error with incorrect format: ", e);
             }
         });
-        countDownLatch.await(5, TimeUnit.SECONDS);
-        return countDownLatch.getCount() == 0;
     }
 
     private void initWithJson(JSONObject json) {
