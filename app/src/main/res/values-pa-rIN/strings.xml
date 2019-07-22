@@ -296,4 +296,5 @@
   <string name="http_auth_dialog_title">ਪਰਮਾਣਕਿਤਾ ਚਾਹੀਦੀ ਹੈ</string>
   <string name="http_auth_dialog_user_name">ਵਰਤੋਂਕਾਰ ਨਾਂ</string>
   <string name="http_auth_dialog_password">ਪਾਸਵਰਡ</string>
+  <string name="low_priority_notification_channel">ਸੂਚਨਾਵਾਂ ਲੁਕਾਓ</string>
 </resources>
