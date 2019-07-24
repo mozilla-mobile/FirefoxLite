@@ -49,7 +49,4 @@ data class NewsCategory(
             }
         }
     }
-
-    // TODO: workaround to fix the Kotlin and JVM 1.8 compatible issue: https://youtrack.jetbrains.com/issue/KT-31027
-    override fun hashCode(): Int = categoryId.hashCode()
 }
