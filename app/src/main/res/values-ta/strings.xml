@@ -303,4 +303,5 @@
   <string name="http_auth_dialog_title">அங்கீகாரம் தேவை</string>
   <string name="http_auth_dialog_user_name">பயனர்பெயர்</string>
   <string name="http_auth_dialog_password">கடவுச்சொல்</string>
+  <string name="low_priority_notification_channel">மறைக்கப்பட்ட அறிவிப்புகள்</string>
 </resources>
