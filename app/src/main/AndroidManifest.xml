@@ -292,6 +292,10 @@
             android:name="org.mozilla.rocket.content.games.GamesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="org.mozilla.rocket.content.news_v2.NewsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -6,12 +6,6 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.sqlite.db.SupportSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,15 +21,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,6 +33,24 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,6 +86,7 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
+import org.mozilla.rocket.content.news_v2.NewsActivity;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;
@@ -1005,15 +1009,22 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void showContentPortal() {
-        if (contentPanel != null) {
-            contentPanel.show(true);
+//        if (contentPanel != null) {
+//            contentPanel.show(true);
+//
+//            if (contentFeature.hasCoupon()) {
+//                // default tab for ec is coupon. so we send the telemetry as coupon
+//                TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.ARROW);
+//            } else if (contentFeature.hasNews()) {
+//                TelemetryWrapper.openLifeFeedNews(null);
+//                TelemetryWrapper.openLifeFeedNews(null);
+//            }
+//        }
 
-            if (contentFeature.hasCoupon()) {
-                // default tab for ec is coupon. so we send the telemetry as coupon
-                TelemetryWrapper.openLifeFeedPromo(TelemetryWrapper.Extra_Value.ARROW);
-            } else if (contentFeature.hasNews()) {
-                TelemetryWrapper.openLifeFeedNews(null);
-            }
+        FragmentActivity activity = getActivity();
+        if (activity != null) {
+            Intent intent = new Intent(activity, NewsActivity.class);
+            ContextCompat.startActivity(activity, intent, null);
         }
     }
 
