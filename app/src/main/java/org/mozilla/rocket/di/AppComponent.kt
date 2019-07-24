@@ -78,6 +78,8 @@ interface AppComponent {
     fun inject(newsSettingFragment: NewsSettingFragment)
     fun inject(newsTabFragment: NewsTabFragment)
     fun inject(newsFragment: NewsFragment)
+    fun inject(newsTabFragment: org.mozilla.rocket.content.news_v2.NewsTabFragment)
+    fun inject(newsFragment: org.mozilla.rocket.content.news_v2.NewsFragment)
     fun inject(mainActivity: MainActivity)
     fun inject(editBookmarkActivity: EditBookmarkActivity)
     fun inject(bookmarksFragment: BookmarksFragment)
