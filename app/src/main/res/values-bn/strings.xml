@@ -10,6 +10,11 @@
   <string name="menu_give_feedback">প্রতিক্রিয়া জানান</string>
   <string name="menu_share_with_friends">বন্ধুদের সাথে শেয়ার করুন</string>
   <string name="share_dialog_title">এর দ্বারা শেয়ার করুন</string>
+  <string name="find_in_page_input">পাতায় অনুসন্ধান</string>
+  <string name="find_in_page_result">%1$d/%2$d</string>
+  <string name="accessibility_find_in_page_result">%2$d এর মধ্যে %1$d</string>
+  <string name="accessibility_find_next_result">পরবর্তী ফলাফল খুঁজুন</string>
+  <string name="accessibility_find_previous_result">পূর্ববর্তী ফলাফল খুঁজুন</string>
   <string name="text_selection_search_action">Firefox Lite এ খুঁজুন</string>
   <string name="about_content_body">%1$s %2$s-র তৈরি একটি দ্রুত এবং হালকা ব্রাউজার। আমাদের লক্ষ্য হল একটি ভালো, মুক্ত ইন্টারনেটের উন্নতিবিধান করা।</string>
   <string name="about_link_learn_more">আরও জানুন</string>
@@ -30,6 +35,7 @@
   <string name="preference_mozilla_telemetry_summary">%2$s কেবলমাত্র সেটাই সংগ্রহ করার চেষ্টা করে যা প্রত্যেকের জন্য %1$sকে প্রদান এবং উন্নতি করতে লাগে।</string>
   <string name="preference_learn_more">আরও জানুন</string>
   <string name="preference_about">সম্বন্ধে</string>
+  <string name="preference_night_mode_brightness">নাইট মোড উজ্জ্বলতা</string>
   <string name="content_description_clear_input">ইনপুট মুছে ফেলুন</string>
   <string name="content_description_dismiss_input">খারিজ করুন</string>
   <string name="content_description_lock">সুরক্ষিত সংযোগ</string>
@@ -65,6 +71,7 @@
   <string name="first_run_page3_text">ব্লক করা ট্র্যাকিং বিজ্ঞাপনগুলি শুধুমাত্র ব্রাউজিং-র গতি বৃদ্ধি করে না সাথে, এটি ডেটা সংরক্ষণ করে। যদি আপনি ছবি ব্লক করেন তাহলে আরও সংরক্ষণ করতে পারেন।</string>
   <string name="first_run_page4_title">সবকিছুর স্ক্রিনশট নিন</string>
   <string name="first_run_page4_text">পুরো ওয়েব পেজগুলির স্ক্রিনশটগুলি নিন। একটি স্ক্রিনশটকে অফলাইনে দেখুন (ডেটা ব্যবহার না করে) অথবা ওয়েবপেজটির পুনরারম্ভ করতে ট্যাপ করুন।</string>
+  <string name="first_run_page5_title">পরবর্তী স্তরের গোপনীয়তা</string>
   <string name="first_run_upgrade_page_title">আমরা আপনার প্রতিক্রিয়া শুনেছি!</string>
   <string name="first_run_upgrade_page_text1">1. একই সময়ে %s খুলে রেখে অন্য কাজ করতে পারেন!</string>
   <string name="first_run_upgrade_page_text1_highlight">একাধিক ট্যাব</string>
@@ -75,12 +82,14 @@
   <string name="firstrun_next_button">পরবর্তী</string>
   <string name="label_menu_bookmark">বুকমার্ক</string>
   <string name="label_menu_download">ডাউনলোড</string>
+  <string name="label_menu_find_in_page">পাতায় অনুসন্ধান</string>
   <string name="label_menu_clear_cache">ক্যাশ মুছে ফেলুন</string>
   <string name="label_menu_history">পূর্ববর্তী তথ্য</string>
   <string name="label_menu_share">শেয়ার</string>
   <string name="label_menu_my_shots">আমার শটগুলি</string>
   <string name="label_menu_capture_page">পাতা ক্যাপচার করুন</string>
   <string name="label_menu_turbo_mode">টার্বো মোড</string>
+  <string name="label_menu_night_mode">নাইট মোড</string>
   <string name="label_menu_block_ads">অ্যাড ব্লক করুন</string>
   <string name="label_menu_block_image">ছবি অবরুদ্ধ করুন</string>
   <string name="label_menu_settings">সেটিংস</string>
@@ -140,6 +149,7 @@
   <string name="screenshot_grid_empty_text_msg_postfix"> করুন মেনুতে একটি সম্পূর্ণ\nওয়েব পেজ ক্যাপচার করতে।</string>
   <string name="screenshot_image_viewer_dialog_title">তথ্য</string>
   <string name="screenshot_image_viewer_dialog_info_time1">তারিখ: %1$s</string>
+  <string name="screenshot_image_viewer_dialog_info_category">বিষয়শ্রেণী: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_resolution1">রেজল্যুশন: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_size1">সাইজ: %1$s</string>
   <string name="screenshot_image_viewer_dialog_info_title1">শিরোনাম: %1$s</string>
@@ -195,8 +205,15 @@
   <string name="bookmark_edit_success">বুকমার্ক আপডেট করা আছে</string>
   <string name="bookmarks_empty_view_msg">বুকমার্ক নেই</string>
   <string name="edit_bookmark">সম্পাদনা</string>
+  <string name="label_menu_news">সংবাদ</string>
+  <string name="news_update_btn">নতুন হালনাগাদ</string>
+  <string name="private_tab">ব্যক্তিগত ট্যাব</string>
   <string name="private_browsing_title">ব্যক্তিগত ব্রাউজিং</string>
   <string name="private_browsing_erase_message">ব্রাউজিং-র পূর্ববর্তী তথ্য মুছে দিন</string>
   <string name="private_browsing_open_action">খুলুন</string>
   <string name="private_browsing_erase_done">আপনার ব্যক্তিগত ব্রাউজিংয়ের \nপূর্ববর্তী তথ্য মুছে ফেলা হয়েছে।</string>
+  <string name="my_shot_on_boarding_message">আপনার স্ক্রিনশটটি দেখুন!</string>
+  <string name="exp_survey_thanks">প্রতিক্রিয়া জানানোর জন্য আপনাকে ধন্যবাদ %1$s</string>
+  <string name="exp_survey_yes">হ্যাঁ</string>
+  <string name="exp_survey_no">না</string>
 </resources>

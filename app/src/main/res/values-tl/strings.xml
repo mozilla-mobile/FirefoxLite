@@ -239,6 +239,7 @@
   <string name="news_language_dialog_option_punjabi">Punjabi</string>
   <string name="news_language_dialog_option_bengali">Bengali</string>
   <string name="news_category_title">Mga Interes</string>
+  <string name="news_category_option_top_news">Pangunahing balita</string>
   <string name="news_category_option_india">India</string>
   <string name="news_category_option_world">Mundo</string>
   <string name="news_category_option_technology">Teknolohiya</string>
@@ -270,8 +271,10 @@
   <string name="private_browsing_open_action">BUKSAN</string>
   <string name="private_browsing_erase_done">Ang kasaysayan ng iyong private browsing\nay nabura na.</string>
   <string name="private_browsing_tracker_blocked">Trackers blocked</string>
+  <string name="private_browsing_dialog_add_shortcut_no">Salamat na lang</string>
   <string name="private_browsing_dialog_add_shortcut_yes">Oo</string>
   <string name="private_browsing_dialog_add_shortcut_no_v2">HINDI, THANKS</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">YES, ADD IT NOW!</string>
   <string name="private_browsing_shortcut_name">%1$s - Private browsing</string>
   <string name="my_shot_on_boarding_message">Tingnan ang mga screenshot dito!</string>
   <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
