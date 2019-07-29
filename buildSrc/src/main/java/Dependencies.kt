@@ -13,6 +13,7 @@ object Versions {
     const val cardview = "1.0.0"
     const val recyclerview = "1.0.0"
     const val constraint = "1.1.3"
+    const val viewpager2 = "1.0.0-beta02"
     const val preference = "1.0.0"
     const val arch_core = "2.0.1"
     const val arch_work = "2.0.1"
