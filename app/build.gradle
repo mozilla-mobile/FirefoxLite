@@ -268,8 +268,6 @@ dependencies {
 
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
-    coverageImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
 
     implementation project(':newspoint')
@@ -277,20 +275,6 @@ dependencies {
     implementation project(':banner')
 
     implementation "com.google.android.play:core:${Versions.play}"
-}
-
-// -------------------------------------------------------------------------------------------------
-// LeakCanary - Ensure the no-op dependency is always used in JVM tests.
-// -------------------------------------------------------------------------------------------------
-
-configurations.all { config ->
-    if (config.name.contains('UnitTest') || config.name.contains('AndroidTest')) {
-        config.resolutionStrategy.eachDependency { details ->
-            if (details.requested.group == 'com.squareup.leakcanary' && details.requested.name == 'leakcanary-android') {
-                details.useTarget(group: details.requested.group, name: 'leakcanary-android-no-op', version: details.requested.version)
-            }
-        }
-    }
 }
 
 // -------------------------------------------------------------------------------------------------
