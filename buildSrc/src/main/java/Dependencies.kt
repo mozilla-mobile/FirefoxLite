@@ -27,7 +27,7 @@ object Versions {
     const val navigation = "2.0.0"
     const val findbugs = "3.0.1"
     const val lottie = "2.8.0"
-    const val leakcanary = "1.6.2"
+    const val leakcanary = "2.0-beta-3"
     const val android_components = "0.52.0"
     const val adjust = "4.11.4"
     const val annotation = "1.1.0"
