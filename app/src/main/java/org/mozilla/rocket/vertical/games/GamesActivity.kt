@@ -39,8 +39,6 @@ class GamesActivity : FragmentActivity() {
         }
     }
 
-    class BrowserGamesFragment : Fragment()
-
     class PremiumGamesFragment : Fragment()
 
     companion object {
