@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
 
@@ -22,6 +24,7 @@ class GamesActivity : FragmentActivity() {
         gamesViewModel = ViewModelProviders.of(this, GamesViewModelFactory.INSTANCE).get(GamesViewModel::class.java)
         setContentView(R.layout.activity_games)
         initViewPager()
+        initTabLayout()
         observeGameAction()
     }
 
@@ -29,8 +32,15 @@ class GamesActivity : FragmentActivity() {
         adapter = GamesAdapter(this)
         view_pager.apply {
             adapter = this@GamesActivity.adapter
+            // Disable scrolling for ViewPager
             isUserInputEnabled = false
         }
+    }
+
+    private fun initTabLayout() {
+        TabLayoutMediator(games_tabs, view_pager, TabLayoutMediator.OnConfigureTabCallback { tab, position ->
+            tab.text = adapter.getItemTitle(position)
+        }).attach()
     }
 
     private fun observeGameAction() {
@@ -48,6 +58,8 @@ class GamesActivity : FragmentActivity() {
 
 private class GamesAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
+    private val resource = activity.resources
+
     override fun getItemCount(): Int = GAMES_TAB_COUNT
 
     override fun createFragment(position: Int): Fragment {
@@ -56,6 +68,16 @@ private class GamesAdapter(activity: FragmentActivity) : FragmentStateAdapter(ac
             1 -> GamesActivity.PremiumGamesFragment()
             else -> throw IndexOutOfBoundsException("position: $position")
         }
+    }
+
+    fun getItemTitle(position: Int): String {
+        val resId = when (position) {
+            0 -> R.string.games_tab_title_browser_games
+            1 -> R.string.games_tab_title_premium_games
+            else -> throw IndexOutOfBoundsException("position: $position")
+        }
+
+        return resource.getString(resId)
     }
 
     companion object {
