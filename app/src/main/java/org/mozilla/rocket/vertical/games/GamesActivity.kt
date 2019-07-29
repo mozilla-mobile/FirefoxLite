@@ -26,24 +26,26 @@ class GamesActivity : FragmentActivity() {
         }
     }
 
-    private class GamesAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
-
-        override fun getItemCount(): Int = GAMES_TAB_COUNT
-
-        override fun createFragment(position: Int): Fragment {
-            return when (position) {
-                0 -> BrowserGamesFragment()
-                1 -> PremiumGamesFragment()
-                else -> throw IndexOutOfBoundsException("position: $position")
-            }
-        }
-    }
-
     class PremiumGamesFragment : Fragment()
 
     companion object {
-        const val GAMES_TAB_COUNT = 2
-
         fun getStartIntent(context: Context) = Intent(context, GamesActivity::class.java)
+    }
+}
+
+private class GamesAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
+
+    override fun getItemCount(): Int = GAMES_TAB_COUNT
+
+    override fun createFragment(position: Int): Fragment {
+        return when (position) {
+            0 -> BrowserGamesFragment()
+            1 -> GamesActivity.PremiumGamesFragment()
+            else -> throw IndexOutOfBoundsException("position: $position")
+        }
+    }
+
+    companion object {
+        const val GAMES_TAB_COUNT = 2
     }
 }

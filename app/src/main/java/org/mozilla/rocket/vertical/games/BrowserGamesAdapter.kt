@@ -1,33 +1,72 @@
 package org.mozilla.rocket.vertical.games
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.mozilla.rocket.vertical.games.GamesViewModel.Item
+import org.mozilla.focus.R
+import org.mozilla.rocket.vertical.games.item.GameCategoryAdapter
 
-class BrowserGamesAdapter : RecyclerView.Adapter<BrowserGamesAdapter.BrowserGamesViewHolder>() {
+class BrowserGamesAdapter : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>() {
 
-    private var data = mutableListOf<Item>()
+    private var data = mutableListOf<GamesViewModel.Item>()
 
-    fun setData(data: List<Item>) {
+    fun setData(data: List<GamesViewModel.Item>) {
         this.data.clear()
         this.data.addAll(data)
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BrowserGamesViewHolder {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            ITEM_TYPE_GAME_CATEGORY -> {
+                val view = inflater.inflate(R.layout.item_game_category, parent, false)
+                ItemHolder.GameCategoryViewHolder(view)
+            }
+            else -> error("invalid viewType")
+        }
     }
 
     override fun getItemCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: BrowserGamesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ItemHolder, position: Int) {
         holder.bind(data[position])
     }
 
-    class BrowserGamesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(item: Item) {
-//            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getItemViewType(position: Int): Int = when (data[position]) {
+        is GamesViewModel.Item.GameCategory -> ITEM_TYPE_GAME_CATEGORY
+    }
+
+    sealed class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        abstract fun bind(item: GamesViewModel.Item)
+
+        class GameCategoryViewHolder(view: View) : ItemHolder(view) {
+            // TODO: use kotlinx
+            val name: TextView = itemView.findViewById(R.id.category_title)
+            val list: RecyclerView = itemView.findViewById(R.id.game_list)
+
+            private var adapter = GameCategoryAdapter()
+
+            init {
+                list.apply {
+                    adapter = this@GameCategoryViewHolder.adapter
+                    layoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
+                }
+            }
+
+            override fun bind(item: GamesViewModel.Item) {
+                item as GamesViewModel.Item.GameCategory
+                name.text = item.title
+                adapter.setData(item.gameList)
+            }
         }
+    }
+
+    companion object {
+        const val ITEM_TYPE_GAME_CATEGORY = 2
     }
 }
