@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import org.mozilla.focus.R
+import org.mozilla.rocket.vertical.games.item.CarouselBannerAdapter
 import org.mozilla.rocket.vertical.games.item.GameCategoryAdapter
 
 class BrowserGamesAdapter(
@@ -24,6 +26,10 @@ class BrowserGamesAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
+            ITEM_TYPE_CAROUSEL_BANNER -> {
+                val view = inflater.inflate(R.layout.item_carousel_banner, parent, false)
+                ItemHolder.CarouselBannerViewHolder(view, gamesViewModel)
+            }
             ITEM_TYPE_GAME_CATEGORY -> {
                 val view = inflater.inflate(R.layout.item_game_category, parent, false)
                 ItemHolder.GameCategoryViewHolder(view, gamesViewModel)
@@ -39,6 +45,7 @@ class BrowserGamesAdapter(
     }
 
     override fun getItemViewType(position: Int): Int = when (data[position]) {
+        is GamesViewModel.Item.CarouselBanner -> ITEM_TYPE_CAROUSEL_BANNER
         is GamesViewModel.Item.GameCategory -> ITEM_TYPE_GAME_CATEGORY
     }
 
@@ -66,9 +73,29 @@ class BrowserGamesAdapter(
                 adapter.setData(item.gameList)
             }
         }
+
+        class CarouselBannerViewHolder(view: View, viewModel: GamesViewModel) : ItemHolder(view) {
+            // TODO: use kotlinx
+            val list: ViewPager2 = itemView.findViewById(R.id.carousel_list)
+
+            private var adapter = CarouselBannerAdapter(viewModel)
+
+            init {
+                list.apply {
+                    adapter = this@CarouselBannerViewHolder.adapter
+                    orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                }
+            }
+
+            override fun bind(item: GamesViewModel.Item) {
+                item as GamesViewModel.Item.CarouselBanner
+                adapter.setData(item.banners)
+            }
+        }
     }
 
     companion object {
+        const val ITEM_TYPE_CAROUSEL_BANNER = 1
         const val ITEM_TYPE_GAME_CATEGORY = 2
     }
 }

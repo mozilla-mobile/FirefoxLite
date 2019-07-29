@@ -29,6 +29,7 @@ class GamesActivity : FragmentActivity() {
         adapter = GamesAdapter(this)
         view_pager.apply {
             adapter = this@GamesActivity.adapter
+            isUserInputEnabled = false
         }
     }
 
