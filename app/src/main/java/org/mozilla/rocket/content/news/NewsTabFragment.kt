@@ -109,6 +109,7 @@ class NewsTabFragment : DaggerFragment() {
     /**
      * Adapter that builds a page for each E-Commerce type .
      */
+    @Suppress("DEPRECATION")
     inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) :
         FragmentPagerAdapter(fm) {
 

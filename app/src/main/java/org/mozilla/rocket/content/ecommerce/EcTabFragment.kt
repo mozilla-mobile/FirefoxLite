@@ -75,6 +75,7 @@ class EcTabFragment : Fragment() {
     /**
      * Adapter that builds a page for each E-Commerce type .
      */
+    @Suppress("DEPRECATION")
     inner class EcFragmentAdapter(fm: FragmentManager, private val features: ArrayList<Int>) : FragmentPagerAdapter(fm) {
 
         override fun getCount() = features.size
