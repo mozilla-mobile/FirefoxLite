@@ -108,7 +108,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
         val newsRepo = NewsRepository.newInstance(
             context,
             hashMapOf(
-                NewsRepository.CONFIG_URL to NewsSourceManager.getInstance().newsSourceUrl,
+                NewsRepository.CONFIG_URL to NewsSourceManager.instance.newsSourceUrl,
                 NewsRepository.CONFIG_CATEGORY to getCategory(),
                 NewsRepository.CONFIG_LANGUAGE to getLanguage()
             )

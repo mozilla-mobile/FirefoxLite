@@ -72,7 +72,7 @@ open class FocusApplication : LocaleAwareApplication() {
         Inject.enableStrictMode()
 
         SearchEngineManager.getInstance().init(this)
-        NewsSourceManager.getInstance().init(this)
+        NewsSourceManager.instance.init(this)
 
         TelemetryWrapper.init(this)
         AdjustHelper.setupAdjustIfNeeded(this)
