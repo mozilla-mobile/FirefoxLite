@@ -1601,7 +1601,7 @@ object TelemetryWrapper {
             `object` = Object.PANEL,
             value = Value.LIFEFEED_NEWS,
             extras = [TelemetryExtra(name = Extra.POSITION, value = "1,2,3..."),
-                    TelemetryExtra(name = Extra.FEED, value = "Newspoint,DainikBhaskar.com"),
+                    TelemetryExtra(name = Extra.FEED, value = "Newspoint"),
                     TelemetryExtra(name = Extra.SOURCE, value = "India TV,Business World,HW News English...etc"),
                     TelemetryExtra(name = Extra.CATEGORY, value = "Uttar Pradesh,National,Tech Knowledge....etc"),
                     TelemetryExtra(name = Extra.SUB_CATEGORY, value = "top-news,entertainment,Lucknow...etc")])
