@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.focus.R
 import org.mozilla.rocket.vertical.games.item.GameCategoryAdapter
 
-class BrowserGamesAdapter : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>() {
+class BrowserGamesAdapter(
+    private val gamesViewModel: GamesViewModel
+) : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>() {
 
     private var data = mutableListOf<GamesViewModel.Item>()
 
@@ -24,7 +26,7 @@ class BrowserGamesAdapter : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>
         return when (viewType) {
             ITEM_TYPE_GAME_CATEGORY -> {
                 val view = inflater.inflate(R.layout.item_game_category, parent, false)
-                ItemHolder.GameCategoryViewHolder(view)
+                ItemHolder.GameCategoryViewHolder(view, gamesViewModel)
             }
             else -> error("invalid viewType")
         }
@@ -44,12 +46,12 @@ class BrowserGamesAdapter : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>
 
         abstract fun bind(item: GamesViewModel.Item)
 
-        class GameCategoryViewHolder(view: View) : ItemHolder(view) {
+        class GameCategoryViewHolder(view: View, viewModel: GamesViewModel) : ItemHolder(view) {
             // TODO: use kotlinx
             val name: TextView = itemView.findViewById(R.id.category_title)
             val list: RecyclerView = itemView.findViewById(R.id.game_list)
 
-            private var adapter = GameCategoryAdapter()
+            private var adapter = GameCategoryAdapter(viewModel)
 
             init {
                 list.apply {

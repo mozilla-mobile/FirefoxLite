@@ -32,7 +32,7 @@ class BrowserGamesFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = BrowserGamesAdapter()
+        adapter = BrowserGamesAdapter(gamesViewModel)
         list.apply {
             adapter = this@BrowserGamesFragment.adapter
             layoutManager = LinearLayoutManager(context)

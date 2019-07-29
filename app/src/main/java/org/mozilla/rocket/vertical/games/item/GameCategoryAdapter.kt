@@ -8,9 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
+import org.mozilla.rocket.vertical.games.GamesViewModel
 import org.mozilla.rocket.vertical.games.GamesViewModel.GameItem
 
-class GameCategoryAdapter : RecyclerView.Adapter<GameCategoryAdapter.GameViewHolder>() {
+class GameCategoryAdapter(
+    private val gamesViewModel: GamesViewModel
+) : RecyclerView.Adapter<GameCategoryAdapter.GameViewHolder>() {
 
     private var data = mutableListOf<GameItem>()
 
@@ -22,7 +25,9 @@ class GameCategoryAdapter : RecyclerView.Adapter<GameCategoryAdapter.GameViewHol
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_game, parent, false)
-        return GameViewHolder(view)
+        return GameViewHolder(view).apply {
+            setOnItemClickListener { gamesViewModel.onGameItemClicked(it) }
+        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -36,6 +41,8 @@ class GameCategoryAdapter : RecyclerView.Adapter<GameCategoryAdapter.GameViewHol
         val name: TextView = itemView.findViewById(R.id.name)
         val image: ImageView = itemView.findViewById(R.id.image)
 
+        private var onItemClickListener: ((GameItem) -> Unit)? = null
+
         fun bind(gameItem: GameItem) {
             this.name.text = gameItem.name
             GlideApp.with(itemView.context)
@@ -44,6 +51,12 @@ class GameCategoryAdapter : RecyclerView.Adapter<GameCategoryAdapter.GameViewHol
                     .fitCenter()
                     .load(gameItem.imageUrl)
                     .into(image)
+
+            itemView.setOnClickListener { onItemClickListener?.invoke(gameItem) }
+        }
+
+        fun setOnItemClickListener(listener: (GameItem) -> Unit) {
+            onItemClickListener = listener
         }
     }
 }
