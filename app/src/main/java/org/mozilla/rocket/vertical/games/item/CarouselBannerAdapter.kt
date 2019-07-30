@@ -3,8 +3,9 @@ package org.mozilla.rocket.vertical.games.item
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_banner.image
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.vertical.games.GamesViewModel
@@ -37,29 +38,26 @@ class CarouselBannerAdapter(
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         `object` as BannerViewHolder
-        return view === `object`.itemView
+        return view === `object`.containerView
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         `object` as BannerViewHolder
-        container.removeView(`object`.itemView)
+        container.removeView(`object`.containerView)
     }
 
-    class BannerViewHolder(val itemView: View) {
-        // TODO: use kotlinx
-        val image: ImageView = itemView.findViewById(R.id.image)
-
+    class BannerViewHolder(override val containerView: View) : LayoutContainer {
         private var onItemClickListener: ((BannerItem) -> Unit)? = null
 
         fun bind(bannerItem: BannerItem) {
-            GlideApp.with(itemView.context)
+            GlideApp.with(containerView.context)
                     .asBitmap()
                     .placeholder(R.drawable.placeholder)
                     .fitCenter()
                     .load(bannerItem.imageUrl)
                     .into(image)
 
-            itemView.setOnClickListener { onItemClickListener?.invoke(bannerItem) }
+            containerView.setOnClickListener { onItemClickListener?.invoke(bannerItem) }
         }
 
         fun setOnItemClickListener(listener: (BannerItem) -> Unit) {

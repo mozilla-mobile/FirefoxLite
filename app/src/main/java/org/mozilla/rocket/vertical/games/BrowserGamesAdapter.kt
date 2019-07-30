@@ -3,10 +3,12 @@ package org.mozilla.rocket.vertical.games
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_carousel_banner.carousel_list
+import kotlinx.android.synthetic.main.item_game_category.category_title
+import kotlinx.android.synthetic.main.item_game_category.game_list
 import org.mozilla.focus.R
 import org.mozilla.rocket.vertical.games.item.CarouselBannerAdapter
 import org.mozilla.rocket.vertical.games.item.GameCategoryAdapter
@@ -49,41 +51,32 @@ class BrowserGamesAdapter(
         is GamesViewModel.Item.GameCategory -> ITEM_TYPE_GAME_CATEGORY
     }
 
-    sealed class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
+    sealed class ItemHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
 
         abstract fun bind(item: GamesViewModel.Item)
 
-        class GameCategoryViewHolder(view: View, viewModel: GamesViewModel) : ItemHolder(view) {
-            // TODO: use kotlinx
-            val name: TextView = itemView.findViewById(R.id.category_title)
-            val list: RecyclerView = itemView.findViewById(R.id.game_list)
-
+        class GameCategoryViewHolder(override val containerView: View, viewModel: GamesViewModel) : ItemHolder(containerView) {
             private var adapter = GameCategoryAdapter(viewModel)
 
             init {
-                list.apply {
+                game_list.apply {
                     adapter = this@GameCategoryViewHolder.adapter
-                    layoutManager = LinearLayoutManager(view.context, RecyclerView.HORIZONTAL, false)
+                    layoutManager = LinearLayoutManager(containerView.context, RecyclerView.HORIZONTAL, false)
                 }
             }
 
             override fun bind(item: GamesViewModel.Item) {
                 item as GamesViewModel.Item.GameCategory
-                name.text = item.title
+                category_title.text = item.title
                 adapter.setData(item.gameList)
             }
         }
 
-        class CarouselBannerViewHolder(view: View, viewModel: GamesViewModel) : ItemHolder(view) {
-            // TODO: use kotlinx
-            val list: ViewPager = itemView.findViewById(R.id.carousel_list)
-
+        class CarouselBannerViewHolder(override val containerView: View, viewModel: GamesViewModel) : ItemHolder(containerView) {
             private var adapter = CarouselBannerAdapter(viewModel)
 
             init {
-                list.apply {
-                    adapter = this@CarouselBannerViewHolder.adapter
-                }
+                carousel_list.adapter = this@CarouselBannerViewHolder.adapter
             }
 
             override fun bind(item: GamesViewModel.Item) {
