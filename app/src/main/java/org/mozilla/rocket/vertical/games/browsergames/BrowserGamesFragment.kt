@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games
+package org.mozilla.rocket.vertical.games.browsergames
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_games.list
 import kotlinx.android.synthetic.main.fragment_games.spinner
 import org.mozilla.focus.R
+import org.mozilla.rocket.vertical.games.GamesViewModel
+import org.mozilla.rocket.vertical.games.GamesViewModelFactory
 
 class BrowserGamesFragment : Fragment() {
 

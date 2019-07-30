@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games.item
+package org.mozilla.rocket.vertical.games.browsergames
 
 import android.view.LayoutInflater
 import android.view.View

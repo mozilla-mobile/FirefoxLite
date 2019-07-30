@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games
+package org.mozilla.rocket.vertical.games.browsergames
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +10,7 @@ import kotlinx.android.synthetic.main.item_carousel_banner.carousel_list
 import kotlinx.android.synthetic.main.item_game_category.category_title
 import kotlinx.android.synthetic.main.item_game_category.game_list
 import org.mozilla.focus.R
-import org.mozilla.rocket.vertical.games.item.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.item.GameCategoryAdapter
+import org.mozilla.rocket.vertical.games.GamesViewModel
 
 class BrowserGamesAdapter(
     private val gamesViewModel: GamesViewModel

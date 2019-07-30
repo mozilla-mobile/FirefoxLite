@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
+import org.mozilla.rocket.vertical.games.browsergames.BrowserGamesFragment
 
 class GamesActivity : FragmentActivity() {
 
