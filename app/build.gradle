@@ -205,7 +205,6 @@ dependencies {
     implementation "androidx.cardview:cardview:${Versions.cardview}"
     implementation "androidx.recyclerview:recyclerview:${Versions.recyclerview}"
     implementation "androidx.constraintlayout:constraintlayout:${Versions.constraint}"
-    implementation "androidx.viewpager2:viewpager2:${Versions.viewpager2}"
     implementation "androidx.preference:preference:${Versions.preference}"
 
     // Architecture components

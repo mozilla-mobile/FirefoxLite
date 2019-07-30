@@ -1,15 +1,16 @@
 package org.mozilla.rocket.vertical.games
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
@@ -29,18 +30,14 @@ class GamesActivity : FragmentActivity() {
     }
 
     private fun initViewPager() {
-        adapter = GamesAdapter(this)
+        adapter = GamesAdapter(supportFragmentManager, this)
         view_pager.apply {
             adapter = this@GamesActivity.adapter
-            // Disable scrolling for ViewPager
-            isUserInputEnabled = false
         }
     }
 
     private fun initTabLayout() {
-        TabLayoutMediator(games_tabs, view_pager, TabLayoutMediator.OnConfigureTabCallback { tab, position ->
-            tab.text = adapter.getItemTitle(position)
-        }).attach()
+        games_tabs.setupWithViewPager(view_pager)
     }
 
     private fun observeGameAction() {
@@ -56,13 +53,12 @@ class GamesActivity : FragmentActivity() {
     }
 }
 
-private class GamesAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
+@SuppressLint("WrongConstant")
+private class GamesAdapter(fm: FragmentManager, activity: FragmentActivity) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val resource = activity.resources
 
-    override fun getItemCount(): Int = GAMES_TAB_COUNT
-
-    override fun createFragment(position: Int): Fragment {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> BrowserGamesFragment()
             1 -> GamesActivity.PremiumGamesFragment()
@@ -70,7 +66,9 @@ private class GamesAdapter(activity: FragmentActivity) : FragmentStateAdapter(ac
         }
     }
 
-    fun getItemTitle(position: Int): String {
+    override fun getCount(): Int = GAMES_TAB_COUNT
+
+    override fun getPageTitle(position: Int): CharSequence? {
         val resId = when (position) {
             0 -> R.string.games_tab_title_browser_games
             1 -> R.string.games_tab_title_premium_games

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.PagerAdapter
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.vertical.games.GamesViewModel
@@ -12,7 +12,7 @@ import org.mozilla.rocket.vertical.games.GamesViewModel.BannerItem
 
 class CarouselBannerAdapter(
     private val gamesViewModel: GamesViewModel
-) : RecyclerView.Adapter<CarouselBannerAdapter.BannerViewHolder>() {
+) : PagerAdapter() {
 
     private var data = mutableListOf<BannerItem>()
 
@@ -22,20 +22,30 @@ class CarouselBannerAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_banner, parent, false)
-        return BannerViewHolder(view).apply {
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val view = LayoutInflater.from(container.context).inflate(R.layout.item_banner, container, false)
+        val viewHolder = BannerViewHolder(view).apply {
             setOnItemClickListener { gamesViewModel.onBannerItemClicked(it) }
+            bind(data[position])
         }
+        container.addView(view)
+
+        return viewHolder
     }
 
-    override fun getItemCount(): Int = data.size
+    override fun getCount(): Int = data.size
 
-    override fun onBindViewHolder(holder: BannerViewHolder, position: Int) {
-        holder.bind(data[position])
+    override fun isViewFromObject(view: View, `object`: Any): Boolean {
+        `object` as BannerViewHolder
+        return view === `object`.itemView
     }
 
-    class BannerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        `object` as BannerViewHolder
+        container.removeView(`object`.itemView)
+    }
+
+    class BannerViewHolder(val itemView: View) {
         // TODO: use kotlinx
         val image: ImageView = itemView.findViewById(R.id.image)
 

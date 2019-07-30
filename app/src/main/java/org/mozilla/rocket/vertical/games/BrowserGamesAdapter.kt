@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager.widget.ViewPager
 import org.mozilla.focus.R
 import org.mozilla.rocket.vertical.games.item.CarouselBannerAdapter
 import org.mozilla.rocket.vertical.games.item.GameCategoryAdapter
@@ -76,14 +76,13 @@ class BrowserGamesAdapter(
 
         class CarouselBannerViewHolder(view: View, viewModel: GamesViewModel) : ItemHolder(view) {
             // TODO: use kotlinx
-            val list: ViewPager2 = itemView.findViewById(R.id.carousel_list)
+            val list: ViewPager = itemView.findViewById(R.id.carousel_list)
 
             private var adapter = CarouselBannerAdapter(viewModel)
 
             init {
                 list.apply {
                     adapter = this@CarouselBannerViewHolder.adapter
-                    orientation = ViewPager2.ORIENTATION_HORIZONTAL
                 }
             }
 
