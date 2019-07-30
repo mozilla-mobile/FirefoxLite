@@ -216,6 +216,7 @@ dependencies {
     implementation "androidx.work:work-runtime:${Versions.arch_work}"
     implementation "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewmodel_ktx}"
     implementation "androidx.navigation:navigation-fragment:${Versions.navigation}"
     implementation "androidx.room:room-runtime:${Versions.room}"
     kapt "androidx.room:room-compiler:${Versions.room}"

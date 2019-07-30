@@ -17,6 +17,7 @@ object Versions {
     const val arch_core = "2.0.1"
     const val arch_work = "2.0.1"
     const val lifecycle = "2.0.0"
+    const val viewmodel_ktx = "2.2.0-alpha02"
     const val room = "2.1.0"
     const val glide = "4.0.0"
     const val kotlin = "1.3.41"

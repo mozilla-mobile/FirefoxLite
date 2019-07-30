@@ -2,19 +2,22 @@ package org.mozilla.rocket.vertical.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import org.mozilla.rocket.vertical.games.repository.GamesRepo
 
-class GamesViewModelFactory private constructor() : ViewModelProvider.NewInstanceFactory() {
+class GamesViewModelFactory private constructor(
+    private val gamesRepo: GamesRepo
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(GamesViewModel::class.java)) {
-            return GamesViewModel() as T
+            return GamesViewModel(gamesRepo) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 
     companion object {
         @JvmStatic
-        val INSTANCE: GamesViewModelFactory by lazy { GamesViewModelFactory() }
+        val INSTANCE: GamesViewModelFactory by lazy { GamesViewModelFactory(GamesRepo()) }
     }
 }

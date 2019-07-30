@@ -2,108 +2,30 @@ package org.mozilla.rocket.vertical.games
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
-import kotlin.random.Random
+import org.mozilla.rocket.vertical.games.repository.GamesRepo
 
-class GamesViewModel : ViewModel() {
+class GamesViewModel(
+    private val gamesRepo: GamesRepo
+) : ViewModel() {
 
     val browserGamesItems = MutableLiveData<List<Item>>()
 
     val showToast = SingleLiveEvent<ToastMessage>()
 
     init {
-        // TODO: init data from repository
-        initFakeData()
+        loadData()
     }
 
-    // TODO: remove test function
-    private fun initFakeData() {
-        browserGamesItems.value = listOf(
-            Item.CarouselBanner(listOf(
-                generateFakeBanner(),
-                generateFakeBanner(),
-                generateFakeBanner(),
-                generateFakeBanner(),
-                generateFakeBanner()
-            )),
-            Item.GameCategory("title 1", listOf(
-                generateFakeGame(1),
-                generateFakeGame(2),
-                generateFakeGame(3),
-                generateFakeGame(4),
-                generateFakeGame(5),
-                generateFakeGame(6)
-            )),
-            Item.GameCategory("title 2", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            )),
-            Item.GameCategory("title 3", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            )),
-            Item.GameCategory("title 4", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            )),
-            Item.GameCategory("title 5", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            )),
-            Item.GameCategory("title 6", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            )),
-            Item.GameCategory("title 7", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            )),
-            Item.GameCategory("title 8", listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-            ))
-        )
+    private fun loadData() {
+        viewModelScope.launch {
+            browserGamesItems.value = gamesRepo.getFakeData()
+        }
     }
-
-    // TODO: remove test function
-    private fun getPlaceholderImageUrl(w: Int, h: Int): String =
-            "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
-
-    // TODO: remove test function
-    private fun generateFakeBanner(): BannerItem = getPlaceholderImageUrl(400, 200).run { BannerItem(this, this) }
-
-    // TODO: remove test function
-    private fun generateFakeGame(number: Int): GameItem = getPlaceholderImageUrl(100, 100).run { GameItem(number.toString(), this) }
 
     fun onGameItemClicked(gameItem: GameItem) {
         // TODO: testing code, needs to be removed
