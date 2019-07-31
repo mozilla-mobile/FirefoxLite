@@ -1,13 +1,13 @@
-package org.mozilla.rocket.vertical.games.repository
+package org.mozilla.rocket.content.games.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.vertical.common.adapter.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.adapter.CarouselBanner
-import org.mozilla.rocket.vertical.games.adapter.GameCategory
-import org.mozilla.rocket.vertical.games.adapter.GameItem
+import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
+import org.mozilla.rocket.content.games.adapter.CarouselBanner
+import org.mozilla.rocket.content.games.adapter.GameCategory
+import org.mozilla.rocket.content.games.adapter.GameItem
 import kotlin.random.Random
 
 class GamesRepo {

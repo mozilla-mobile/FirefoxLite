@@ -1,8 +1,8 @@
-package org.mozilla.rocket.vertical.games
+package org.mozilla.rocket.content.games
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.mozilla.rocket.vertical.games.repository.GamesRepo
+import org.mozilla.rocket.content.games.data.GamesRepo
 
 class GamesViewModelFactory private constructor(
     private val gamesRepo: GamesRepo

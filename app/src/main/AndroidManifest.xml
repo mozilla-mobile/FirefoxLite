@@ -289,7 +289,7 @@
             android:exported="false" />
 
         <activity
-            android:name="org.mozilla.rocket.vertical.games.GamesActivity"
+            android:name="org.mozilla.rocket.content.games.GamesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
     </application>

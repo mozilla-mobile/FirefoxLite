@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games.adapter
+package org.mozilla.rocket.content.games.adapter
 
 import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
-import org.mozilla.rocket.vertical.games.BrowserGamesFragment
-import org.mozilla.rocket.vertical.games.GamesActivity
+import org.mozilla.rocket.content.games.BrowserGamesFragment
+import org.mozilla.rocket.content.games.GamesActivity
 
 @SuppressLint("WrongConstant")
 class GameTabsAdapter(fm: FragmentManager, activity: FragmentActivity) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {

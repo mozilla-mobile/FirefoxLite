@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games
+package org.mozilla.rocket.content.games
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
-import org.mozilla.rocket.vertical.games.adapter.GameTabsAdapter
+import org.mozilla.rocket.content.games.adapter.GameTabsAdapter
 
 class GamesActivity : FragmentActivity() {
 

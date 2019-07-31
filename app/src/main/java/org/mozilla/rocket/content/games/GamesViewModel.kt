@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games
+package org.mozilla.rocket.content.games
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,9 +9,9 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
-import org.mozilla.rocket.vertical.common.adapter.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.adapter.GameItem
-import org.mozilla.rocket.vertical.games.repository.GamesRepo
+import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
+import org.mozilla.rocket.content.games.adapter.GameItem
+import org.mozilla.rocket.content.games.data.GamesRepo
 
 class GamesViewModel(
     private val gamesRepo: GamesRepo

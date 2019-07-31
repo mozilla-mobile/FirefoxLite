@@ -83,7 +83,7 @@ import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.theme.ThemeManager
-import org.mozilla.rocket.vertical.games.GamesActivity
+import org.mozilla.rocket.content.games.GamesActivity
 import org.mozilla.rocket.widget.enqueue
 import java.util.Locale
 

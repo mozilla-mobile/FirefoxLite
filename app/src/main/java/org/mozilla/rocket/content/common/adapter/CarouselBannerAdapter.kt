@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.common.adapter
+package org.mozilla.rocket.content.common.adapter
 
 import android.view.LayoutInflater
 import android.view.View

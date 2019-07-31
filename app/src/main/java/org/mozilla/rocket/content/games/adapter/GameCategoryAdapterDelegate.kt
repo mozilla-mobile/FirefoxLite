@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games.adapter
+package org.mozilla.rocket.content.games.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +9,7 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.vertical.games.GamesViewModel
+import org.mozilla.rocket.content.games.GamesViewModel
 
 class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =

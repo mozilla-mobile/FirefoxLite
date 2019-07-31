@@ -1,11 +1,11 @@
-package org.mozilla.rocket.vertical.games.adapter
+package org.mozilla.rocket.content.games.adapter
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_carousel_banner.carousel_list
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.vertical.games.GamesViewModel
-import org.mozilla.rocket.vertical.common.adapter.CarouselBannerAdapter
+import org.mozilla.rocket.content.games.GamesViewModel
+import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 
 class CarouselBannerAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
