@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news_v2
+package org.mozilla.rocket.content.news.ui.v2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

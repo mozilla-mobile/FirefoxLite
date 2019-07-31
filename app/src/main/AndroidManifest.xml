@@ -294,7 +294,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="org.mozilla.rocket.content.news_v2.NewsActivity"
+            android:name="org.mozilla.rocket.content.news.ui.v2.NewsActivity"
             android:exported="false" />
     </application>
 

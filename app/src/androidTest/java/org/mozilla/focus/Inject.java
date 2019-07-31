@@ -32,8 +32,6 @@ import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.chrome.MenuViewModelFactory;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
-import org.mozilla.rocket.content.news.NewsViewModel;
-import org.mozilla.rocket.content.news.NewsViewModelFactory;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;

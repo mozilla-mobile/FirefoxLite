@@ -1,11 +1,11 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
-import org.mozilla.rocket.content.news.NewsFragment.NewsListListener
+import org.mozilla.rocket.content.news.ui.NewsFragment.NewsListListener
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.threadutils.ThreadUtils
 

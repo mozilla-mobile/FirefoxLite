@@ -4,7 +4,6 @@
 
 package org.mozilla.focus.activity;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
@@ -15,7 +14,7 @@ import android.view.View;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.settings.SettingsFragment;
-import org.mozilla.rocket.content.news.NewsSettingFragment;
+import org.mozilla.rocket.content.news.ui.NewsSettingFragment;
 import org.mozilla.rocket.content.portal.ContentFeature;
 
 public class SettingsActivity extends BaseActivity {

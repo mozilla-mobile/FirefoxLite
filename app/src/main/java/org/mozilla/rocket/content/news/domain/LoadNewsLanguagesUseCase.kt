@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.domain
 
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.isNotEmpty

@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -12,9 +12,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.news.data.NewsCategory
-import org.mozilla.rocket.content.news.data.NewsCategoryPreference
 import org.mozilla.rocket.content.news.data.NewsLanguage
-import org.mozilla.rocket.content.news.data.NewsLanguagePreference
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import javax.inject.Inject
 

@@ -1,7 +1,8 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 
 class NewsViewModelFactory constructor(
     private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase

@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil

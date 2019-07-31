@@ -20,7 +20,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.ecommerce.EcTabFragment
-import org.mozilla.rocket.content.news.NewsTabFragment
+import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
 interface ContentPortalListener {

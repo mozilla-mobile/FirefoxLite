@@ -6,13 +6,13 @@ import dagger.Provides
 import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
-import org.mozilla.rocket.content.news.LoadNewsSettingsUseCase
-import org.mozilla.rocket.content.news.NewsSettingsViewModelFactory
-import org.mozilla.rocket.content.news.NewsViewModelFactory
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.ui.NewsSettingsViewModelFactory
+import org.mozilla.rocket.content.news.ui.NewsViewModelFactory
 import java.util.Locale
 import javax.inject.Singleton
 

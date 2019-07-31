@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.domain
 
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository

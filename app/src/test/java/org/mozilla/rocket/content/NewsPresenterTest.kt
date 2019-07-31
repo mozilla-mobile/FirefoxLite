@@ -8,9 +8,9 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
 import org.mozilla.lite.partner.Repository
-import org.mozilla.rocket.content.news.NewsPresenter
-import org.mozilla.rocket.content.news.NewsViewContract
-import org.mozilla.rocket.content.news.NewsViewModel
+import org.mozilla.rocket.content.news.ui.NewsPresenter
+import org.mozilla.rocket.content.news.ui.NewsViewContract
+import org.mozilla.rocket.content.news.ui.NewsViewModel
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.robolectric.RobolectricTestRunner
 

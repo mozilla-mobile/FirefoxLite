@@ -1,6 +1,5 @@
-package org.mozilla.rocket.content.news_v2
+package org.mozilla.rocket.content.news.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -24,9 +21,7 @@ import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.news.NewsAdapter
-import org.mozilla.rocket.content.news.NewsViewModel
-import org.mozilla.rocket.content.news.NewsViewModelFactory
+import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
@@ -34,32 +29,33 @@ import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalListener
-import org.mozilla.threadutils.ThreadUtils
+import org.mozilla.rocket.widget.BottomSheetBehavior
 import javax.inject.Inject
 
-class NewsFragment : Fragment(), ContentPortalListener {
+class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
-    @Inject
-    lateinit var applicationContext: Context
+    @Inject lateinit var viewModelFactory: NewsViewModelFactory
 
-    @Inject
-    lateinit var viewModelFactory: NewsViewModelFactory
+    override fun getCategory(): String {
+        return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
+    }
 
-    private lateinit var newsViewModel: NewsViewModel
-    private var recyclerView: RecyclerView? = null
-    private var newsEmptyView: View? = null
-    private var newsProgressCenter: ProgressBar? = null
-    private var newsAdapter: NewsAdapter<NewsItem>? = null
-    private var newsListLayoutManager: LinearLayoutManager? = null
+    override fun getLanguage(): String {
+        return arguments?.getString(ContentFeature.EXTRA_NEWS_LANGUAGE) ?: "english"
+    }
 
-    private var isLoading = false
-    private val uiScope = CoroutineScope(Dispatchers.Main)
-    private var stateLoadingJob: Job? = null
+    override fun updateSourcePriority() {
+        // the user had seen the news. Treat it as an user selection so no on can change it
+        Settings.getInstance(context).setPriority(NewsSourceManager.PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER)
+    }
 
     companion object {
         private const val NEWS_THRESHOLD = 10
         private const val TIME_MILLIS_STATE_LOADING_THRESHOLD = 5000L
-        private const val LOAD_MORE_THRESHOLD = 3000L
+
+        fun newInstance(bottomSheetBehavior: BottomSheetBehavior<View>): NewsFragment {
+            return NewsFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
+        }
 
         fun newInstance(category: String, language: String): NewsFragment {
             val args = Bundle().apply {
@@ -71,6 +67,19 @@ class NewsFragment : Fragment(), ContentPortalListener {
             }
         }
     }
+
+    interface NewsListListener {
+        fun loadMore()
+    }
+
+    private var newsPresenter: NewsPresenter? = null
+    private var recyclerView: RecyclerView? = null
+    private var newsListListener: NewsListListener? = null
+    private var newsEmptyView: View? = null
+    private var newsProgressCenter: ProgressBar? = null
+    private var newsAdapter: NewsAdapter<NewsItem>? = null
+    private var newsListLayoutManager: LinearLayoutManager? = null
+    private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -87,21 +96,15 @@ class NewsFragment : Fragment(), ContentPortalListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
+        newsPresenter = NewsPresenter(this, newsViewModel)
 
-        recyclerView = view.findViewById(R.id.news_list)
-        newsEmptyView = view.findViewById(R.id.empty_view_container)
-        newsProgressCenter = view.findViewById(R.id.news_progress_center)
-        view.findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
-            // call onStatus() again with null to display the loading indicator
-            onStatus(null)
-            loadMore()
-        }
-    }
+        // creating a repository will also create a new subscription.
+        // we deliberately create a new subscription again to load data aggressively.
+        val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
+        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(appContext())
+        val newsSettingRepo = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        newsViewModel = activityViewModelProvider(viewModelFactory)
         val newsRepo = NewsRepository.newInstance(
             context,
             hashMapOf(
@@ -110,23 +113,20 @@ class NewsFragment : Fragment(), ContentPortalListener {
                 NewsRepository.CONFIG_LANGUAGE to getLanguage()
             )
         )
-        val newsLiveData: MediatorLiveData<List<NewsItem>>? =
-            newsViewModel.getNews(getCategory(), getLanguage(), newsRepo)
-        newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
-            updateNews(items)
-            isLoading = false
-        })
-        updateSourcePriority()
-        loadMore()
 
-        // creating a repository will also create a new subscription.
-        // we deliberately create a new subscription again to load data aggressively.
-        val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
-        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(applicationContext)
-        val newsSettingRepo = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
-        newsViewModel.newsSettingsRepository = newsSettingRepo
+        newsPresenter?.setupNewsViewModel(newsRepo, newsSettingRepo)
+        newsListListener = newsPresenter
 
+        view.findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
+            // call onStatus() again with null to display the loading indicator
+            onStatus(null)
+            newsListListener?.loadMore()
+        }
+        recyclerView = view.findViewById(R.id.news_list)
+        newsEmptyView = view.findViewById(R.id.empty_view_container)
+        newsProgressCenter = view.findViewById(R.id.news_progress_center)
         newsAdapter = NewsAdapter(this)
+
         recyclerView?.adapter = newsAdapter
         newsListLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerView?.layoutManager = newsListLayoutManager
@@ -138,10 +138,24 @@ class NewsFragment : Fragment(), ContentPortalListener {
                     val visibleItemCount = it.childCount
                     val lastVisibleItem = it.findLastVisibleItemPosition()
                     if (visibleItemCount + lastVisibleItem + NEWS_THRESHOLD >= totalItemCount) {
-                        loadMore()
+                        newsListListener?.loadMore()
                     }
                 }
             })
+        }
+    }
+
+    override fun updateNews(items: List<NewsItem>?) {
+        onStatus(items)
+
+        newsAdapter?.submitList(items)
+        ContentPortalViewState.lastNewsPos?.let {
+            val size = items?.size
+            if (size != null && size > it) {
+                newsListLayoutManager?.scrollToPosition(it)
+                // forget about last scroll position
+                ContentPortalViewState.lastNewsPos = null
+            }
         }
     }
 
@@ -153,6 +167,9 @@ class NewsFragment : Fragment(), ContentPortalListener {
             ContentPortalViewState.lastNewsPos = it
         }
     }
+
+    private val uiScope = CoroutineScope(Dispatchers.Main)
+    private var stateLoadingJob: Job? = null
 
     override fun onStatus(items: List<NewsItem>?) {
         when {
@@ -186,49 +203,13 @@ class NewsFragment : Fragment(), ContentPortalListener {
         recyclerView?.visibility = View.GONE
         newsEmptyView?.visibility = View.VISIBLE
         newsProgressCenter?.visibility = View.GONE
+        bottomSheetBehavior?.skipCollapsed = true
     }
 
     private fun stateLoading() {
         recyclerView?.visibility = View.GONE
         newsEmptyView?.visibility = View.GONE
         newsProgressCenter?.visibility = View.VISIBLE
-    }
-
-    private fun loadMore() {
-        if (!isLoading) {
-            newsViewModel.loadMore(getCategory())
-            isLoading = true
-            ThreadUtils.postToMainThreadDelayed(
-                { isLoading = false },
-                LOAD_MORE_THRESHOLD
-            )
-        }
-    }
-
-    private fun getCategory(): String {
-        return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
-    }
-
-    private fun getLanguage(): String {
-        return arguments?.getString(ContentFeature.EXTRA_NEWS_LANGUAGE) ?: "english"
-    }
-
-    private fun updateNews(items: List<NewsItem>?) {
-        onStatus(items)
-
-        newsAdapter?.submitList(items)
-        ContentPortalViewState.lastNewsPos?.let {
-            val size = items?.size
-            if (size != null && size > it) {
-                newsListLayoutManager?.scrollToPosition(it)
-                // forget about last scroll position
-                ContentPortalViewState.lastNewsPos = null
-            }
-        }
-    }
-
-    private fun updateSourcePriority() {
-        // the user had seen the news. Treat it as an user selection so no on can change it
-        Settings.getInstance(context).setPriority(NewsSourceManager.PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER)
+        bottomSheetBehavior?.skipCollapsed = true
     }
 }

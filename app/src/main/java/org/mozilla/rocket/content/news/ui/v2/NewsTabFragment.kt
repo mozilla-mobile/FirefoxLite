@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news_v2
+package org.mozilla.rocket.content.news.ui.v2
 
 import android.content.Context
 import android.content.Intent
@@ -21,10 +21,10 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.news.NewsViewModel
-import org.mozilla.rocket.content.news.NewsViewModelFactory
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.ui.NewsViewModel
+import org.mozilla.rocket.content.news.ui.NewsViewModelFactory
 import org.mozilla.rocket.content.portal.ContentFeature
 import javax.inject.Inject
 

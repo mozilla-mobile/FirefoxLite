@@ -1,8 +1,9 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 
 class NewsSettingsViewModelFactory constructor(
     private val repository: NewsSettingsRepository

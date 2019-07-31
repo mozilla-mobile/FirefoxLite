@@ -86,7 +86,7 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
-import org.mozilla.rocket.content.news_v2.NewsActivity;
+import org.mozilla.rocket.content.news.ui.v2.NewsActivity;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;

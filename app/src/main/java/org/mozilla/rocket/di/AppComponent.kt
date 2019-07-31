@@ -19,9 +19,9 @@ package org.mozilla.rocket.di
 import android.content.Context
 import dagger.Component
 import org.mozilla.rocket.content.di.ContentModule
-import org.mozilla.rocket.content.news.NewsFragment
-import org.mozilla.rocket.content.news.NewsSettingFragment
-import org.mozilla.rocket.content.news.NewsTabFragment
+import org.mozilla.rocket.content.news.ui.NewsFragment
+import org.mozilla.rocket.content.news.ui.NewsSettingFragment
+import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import javax.inject.Singleton
 
 /**
@@ -47,7 +47,7 @@ interface AppComponent {
 
     fun inject(newsFragment: NewsFragment)
 
-    fun inject(newsTabFragment: org.mozilla.rocket.content.news_v2.NewsTabFragment)
+    fun inject(newsTabFragment: org.mozilla.rocket.content.news.ui.v2.NewsTabFragment)
 
-    fun inject(newsFragment: org.mozilla.rocket.content.news_v2.NewsFragment)
+    fun inject(newsFragment: org.mozilla.rocket.content.news.ui.v2.NewsFragment)
 }

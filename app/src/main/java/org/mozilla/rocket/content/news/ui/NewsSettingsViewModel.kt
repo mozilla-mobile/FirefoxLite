@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.mozilla.focus.utils.CharacterValidator
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import javax.inject.Inject
 
 class NewsSettingsViewModel @Inject constructor(

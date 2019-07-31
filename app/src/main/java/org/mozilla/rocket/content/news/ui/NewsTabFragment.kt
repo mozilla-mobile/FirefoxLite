@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import android.content.Context
 import android.content.Intent
@@ -159,7 +159,7 @@ class NewsTabFragment : Fragment() {
             // recreate self
             context?.inTransaction {
                 replace(
-                    R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior),
+                    R.id.bottom_sheet, newInstance(bottomSheetBehavior),
                     ContentPortalView.TAG_NEWS_FRAGMENT
                 )
             }
