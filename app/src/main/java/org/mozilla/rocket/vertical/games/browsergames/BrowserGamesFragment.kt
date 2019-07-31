@@ -11,13 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_games.list
 import kotlinx.android.synthetic.main.fragment_games.spinner
 import org.mozilla.focus.R
+import org.mozilla.rocket.adapter.AdapterDelegatesManager
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.vertical.games.GamesViewModel
 import org.mozilla.rocket.vertical.games.GamesViewModelFactory
 
 class BrowserGamesFragment : Fragment() {
 
     private lateinit var gamesViewModel: GamesViewModel
-    private lateinit var adapter: BrowserGamesAdapter
+    private lateinit var adapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +38,10 @@ class BrowserGamesFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = BrowserGamesAdapter(
+        adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(BrowserGamesAdapter.Item.CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate(gamesViewModel))
-                add(BrowserGamesAdapter.Item.GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
+                add(CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate(gamesViewModel))
+                add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
             }
         )
         list.apply {

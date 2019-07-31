@@ -3,30 +3,32 @@ package org.mozilla.rocket.vertical.games.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.mozilla.rocket.vertical.games.browsergames.BrowserGamesAdapter
+import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.vertical.games.browsergames.CarouselBanner
 import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
+import org.mozilla.rocket.vertical.games.browsergames.GameCategory
 import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
 import kotlin.random.Random
 
 class GamesRepo {
 
-    suspend fun getFakeData(): List<BrowserGamesAdapter.Item> {
+    suspend fun getFakeData(): List<DelegateAdapter.UIModel> {
         return withContext(Dispatchers.IO) {
             delay(2000)
             generateFakeData()
         }
     }
 
-    private fun generateFakeData(): List<BrowserGamesAdapter.Item> =
+    private fun generateFakeData(): List<DelegateAdapter.UIModel> =
             listOf(
-                BrowserGamesAdapter.Item.CarouselBanner(listOf(
+                CarouselBanner(listOf(
                         generateFakeBanner(),
                         generateFakeBanner(),
                         generateFakeBanner(),
                         generateFakeBanner(),
                         generateFakeBanner()
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 1", listOf(
+                GameCategory("title 1", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -34,7 +36,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 2", listOf(
+                GameCategory("title 2", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -42,7 +44,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 3", listOf(
+                GameCategory("title 3", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -50,7 +52,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 4", listOf(
+                GameCategory("title 4", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -58,7 +60,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 5", listOf(
+                GameCategory("title 5", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -66,7 +68,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 6", listOf(
+                GameCategory("title 6", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -74,7 +76,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 7", listOf(
+                GameCategory("title 7", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -82,7 +84,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                BrowserGamesAdapter.Item.GameCategory("title 8", listOf(
+                GameCategory("title 8", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),

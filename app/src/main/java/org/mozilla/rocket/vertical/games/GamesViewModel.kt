@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
-import org.mozilla.rocket.vertical.games.browsergames.BrowserGamesAdapter
 import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
 import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
 import org.mozilla.rocket.vertical.games.repository.GamesRepo
@@ -18,7 +18,7 @@ class GamesViewModel(
 ) : ViewModel() {
 
     val browserGamesState = MutableLiveData<State>().apply { value = State.Idle }
-    val browserGamesItems = MutableLiveData<List<BrowserGamesAdapter.Item>>()
+    val browserGamesItems = MutableLiveData<List<DelegateAdapter.UIModel>>()
 
     val showToast = SingleLiveEvent<ToastMessage>()
 
