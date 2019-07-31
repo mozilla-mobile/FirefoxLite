@@ -16,9 +16,9 @@ class BrowserGamesAdapter(
     private val gamesViewModel: GamesViewModel
 ) : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>() {
 
-    private var data = mutableListOf<GamesViewModel.Item>()
+    private var data = mutableListOf<Item>()
 
-    fun setData(data: List<GamesViewModel.Item>) {
+    fun setData(data: List<Item>) {
         this.data.clear()
         this.data.addAll(data)
         notifyDataSetChanged()
@@ -46,13 +46,13 @@ class BrowserGamesAdapter(
     }
 
     override fun getItemViewType(position: Int): Int = when (data[position]) {
-        is GamesViewModel.Item.CarouselBanner -> ITEM_TYPE_CAROUSEL_BANNER
-        is GamesViewModel.Item.GameCategory -> ITEM_TYPE_GAME_CATEGORY
+        is Item.CarouselBanner -> ITEM_TYPE_CAROUSEL_BANNER
+        is Item.GameCategory -> ITEM_TYPE_GAME_CATEGORY
     }
 
     sealed class ItemHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
 
-        abstract fun bind(item: GamesViewModel.Item)
+        abstract fun bind(item: Item)
 
         class GameCategoryViewHolder(override val containerView: View, viewModel: GamesViewModel) : ItemHolder(containerView) {
             private var adapter = GameCategoryAdapter(viewModel)
@@ -64,8 +64,8 @@ class BrowserGamesAdapter(
                 }
             }
 
-            override fun bind(item: GamesViewModel.Item) {
-                item as GamesViewModel.Item.GameCategory
+            override fun bind(item: Item) {
+                item as Item.GameCategory
                 category_title.text = item.title
                 adapter.setData(item.gameList)
             }
@@ -78,11 +78,16 @@ class BrowserGamesAdapter(
                 carousel_list.adapter = this@CarouselBannerViewHolder.adapter
             }
 
-            override fun bind(item: GamesViewModel.Item) {
-                item as GamesViewModel.Item.CarouselBanner
+            override fun bind(item: Item) {
+                item as Item.CarouselBanner
                 adapter.setData(item.banners)
             }
         }
+    }
+
+    sealed class Item {
+        data class CarouselBanner(val banners: List<CarouselBannerAdapter.BannerItem>) : Item()
+        data class GameCategory(val title: String, val gameList: List<GameCategoryAdapter.GameItem>) : Item()
     }
 
     companion object {

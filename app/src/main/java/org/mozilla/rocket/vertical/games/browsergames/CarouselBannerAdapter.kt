@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.item_banner.image
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.vertical.games.GamesViewModel
-import org.mozilla.rocket.vertical.games.GamesViewModel.BannerItem
 
 class CarouselBannerAdapter(
     private val gamesViewModel: GamesViewModel
@@ -64,4 +63,6 @@ class CarouselBannerAdapter(
             onItemClickListener = listener
         }
     }
+
+    data class BannerItem(val imageUrl: String, val link: String)
 }

@@ -8,6 +8,9 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
+import org.mozilla.rocket.vertical.games.browsergames.BrowserGamesAdapter
+import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
+import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
 import org.mozilla.rocket.vertical.games.repository.GamesRepo
 
 class GamesViewModel(
@@ -15,7 +18,7 @@ class GamesViewModel(
 ) : ViewModel() {
 
     val browserGamesState = MutableLiveData<State>().apply { value = State.Idle }
-    val browserGamesItems = MutableLiveData<List<Item>>()
+    val browserGamesItems = MutableLiveData<List<BrowserGamesAdapter.Item>>()
 
     val showToast = SingleLiveEvent<ToastMessage>()
 
@@ -29,12 +32,12 @@ class GamesViewModel(
         }
     }
 
-    fun onGameItemClicked(gameItem: GameItem) {
+    fun onGameItemClicked(gameItem: GameCategoryAdapter.GameItem) {
         // TODO: testing code, needs to be removed
         showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, "${gameItem.name}")
     }
 
-    fun onBannerItemClicked(bannerItem: BannerItem) {
+    fun onBannerItemClicked(bannerItem: CarouselBannerAdapter.BannerItem) {
         // TODO: testing code, needs to be removed
         showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, "${bannerItem.link}")
     }
@@ -51,15 +54,6 @@ class GamesViewModel(
             }
         }
     }
-
-    sealed class Item {
-        data class CarouselBanner(val banners: List<BannerItem>) : Item()
-        data class GameCategory(val title: String, val gameList: List<GameItem>) : Item()
-    }
-
-    data class BannerItem(val imageUrl: String, val link: String)
-
-    data class GameItem(val name: String, val imageUrl: String)
 
     sealed class State {
         object Idle : State()

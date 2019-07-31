@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.vertical.games.GamesViewModel
-import org.mozilla.rocket.vertical.games.GamesViewModel.GameItem
 
 class GameCategoryAdapter(
     private val gamesViewModel: GamesViewModel
@@ -59,4 +58,6 @@ class GameCategoryAdapter(
             onItemClickListener = listener
         }
     }
+
+    data class GameItem(val name: String, val imageUrl: String)
 }

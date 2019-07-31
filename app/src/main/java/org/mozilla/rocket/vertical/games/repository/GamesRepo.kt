@@ -3,28 +3,30 @@ package org.mozilla.rocket.vertical.games.repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.mozilla.rocket.vertical.games.GamesViewModel
+import org.mozilla.rocket.vertical.games.browsergames.BrowserGamesAdapter
+import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
+import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
 import kotlin.random.Random
 
 class GamesRepo {
 
-    suspend fun getFakeData(): List<GamesViewModel.Item> {
+    suspend fun getFakeData(): List<BrowserGamesAdapter.Item> {
         return withContext(Dispatchers.IO) {
             delay(2000)
             generateFakeData()
         }
     }
 
-    private fun generateFakeData(): List<GamesViewModel.Item> =
+    private fun generateFakeData(): List<BrowserGamesAdapter.Item> =
             listOf(
-                GamesViewModel.Item.CarouselBanner(listOf(
+                BrowserGamesAdapter.Item.CarouselBanner(listOf(
                         generateFakeBanner(),
                         generateFakeBanner(),
                         generateFakeBanner(),
                         generateFakeBanner(),
                         generateFakeBanner()
                 )),
-                GamesViewModel.Item.GameCategory("title 1", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 1", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -32,7 +34,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 2", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 2", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -40,7 +42,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 3", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 3", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -48,7 +50,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 4", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 4", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -56,7 +58,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 5", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 5", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -64,7 +66,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 6", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 6", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -72,7 +74,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 7", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 7", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -80,7 +82,7 @@ class GamesRepo {
                         generateFakeGame(5),
                         generateFakeGame(6)
                 )),
-                GamesViewModel.Item.GameCategory("title 8", listOf(
+                BrowserGamesAdapter.Item.GameCategory("title 8", listOf(
                         generateFakeGame(1),
                         generateFakeGame(2),
                         generateFakeGame(3),
@@ -95,10 +97,10 @@ class GamesRepo {
             "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
 
     // TODO: remove test function
-    private fun generateFakeBanner(): GamesViewModel.BannerItem =
-            getPlaceholderImageUrl(400, 200).run { GamesViewModel.BannerItem(this, this) }
+    private fun generateFakeBanner(): CarouselBannerAdapter.BannerItem =
+            getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(this, this) }
 
     // TODO: remove test function
-    private fun generateFakeGame(number: Int): GamesViewModel.GameItem =
-            getPlaceholderImageUrl(100, 100).run { GamesViewModel.GameItem(number.toString(), this) }
+    private fun generateFakeGame(number: Int): GameCategoryAdapter.GameItem =
+            getPlaceholderImageUrl(100, 100).run { GameCategoryAdapter.GameItem(number.toString(), this) }
 }
