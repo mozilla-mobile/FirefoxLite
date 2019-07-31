@@ -36,7 +36,12 @@ class BrowserGamesFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        adapter = BrowserGamesAdapter(gamesViewModel)
+        adapter = BrowserGamesAdapter(
+            AdapterDelegatesManager().apply {
+                add(BrowserGamesAdapter.Item.CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate(gamesViewModel))
+                add(BrowserGamesAdapter.Item.GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
+            }
+        )
         list.apply {
             adapter = this@BrowserGamesFragment.adapter
             layoutManager = LinearLayoutManager(context)
