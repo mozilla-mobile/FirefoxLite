@@ -13,13 +13,14 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.chrome.ToastMessage.Companion.LENGTH_LONG
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.privately.PrivateMode
+import org.mozilla.rocket.util.ToastMessage
+import org.mozilla.rocket.util.ToastMessage.Companion.LENGTH_LONG
 import org.mozilla.urlutils.UrlUtils
 import kotlin.concurrent.thread
 
@@ -327,16 +328,5 @@ class ChromeViewModel(
                 override fun newArray(size: Int): Array<ScreenCaptureTelemetryData?> = arrayOfNulls(size)
             }
         }
-    }
-}
-
-class ToastMessage(
-    val stringResId: Int,
-    val duration: Int = LENGTH_SHORT,
-    vararg val args: String
-) {
-    companion object {
-        const val LENGTH_SHORT = 0
-        const val LENGTH_LONG = 1
     }
 }
