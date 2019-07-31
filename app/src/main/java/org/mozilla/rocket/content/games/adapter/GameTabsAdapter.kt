@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
+import org.mozilla.rocket.content.games.BrowserGamesFragment
 import org.mozilla.rocket.content.games.GamesActivity
 
 class GameTabsAdapter(fm: FragmentManager, activity: FragmentActivity) : FragmentPagerAdapter(fm) {
@@ -13,7 +14,7 @@ class GameTabsAdapter(fm: FragmentManager, activity: FragmentActivity) : Fragmen
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> GamesActivity.BrowserGamesFragment()
+            0 -> BrowserGamesFragment()
             1 -> GamesActivity.PremiumGamesFragment()
             else -> throw IndexOutOfBoundsException("position: $position")
         }
