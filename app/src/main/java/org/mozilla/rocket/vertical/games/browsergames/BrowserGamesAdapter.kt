@@ -12,11 +12,13 @@ import kotlinx.android.synthetic.main.item_game_category.game_list
 import org.mozilla.focus.R
 import org.mozilla.rocket.vertical.games.GamesViewModel
 
-class BrowserGamesAdapter(
-    private val gamesViewModel: GamesViewModel
-) : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>() {
+
+class BrowserGamesAdapter(gamesViewModel: GamesViewModel) : RecyclerView.Adapter<BrowserGamesAdapter.ItemHolder>() {
 
     private var data = mutableListOf<Item>()
+
+    private val carouselBannerAdapterDelegate = CarouselBannerAdapterDelegate(gamesViewModel)
+    private val gameCategoryAdapterDelegate = GameCategoryAdapterDelegate(gamesViewModel)
 
     fun setData(data: List<Item>) {
         this.data.clear()
@@ -25,16 +27,9 @@ class BrowserGamesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            ITEM_TYPE_CAROUSEL_BANNER -> {
-                val view = inflater.inflate(R.layout.item_carousel_banner, parent, false)
-                ItemHolder.CarouselBannerViewHolder(view, gamesViewModel)
-            }
-            ITEM_TYPE_GAME_CATEGORY -> {
-                val view = inflater.inflate(R.layout.item_game_category, parent, false)
-                ItemHolder.GameCategoryViewHolder(view, gamesViewModel)
-            }
+            ITEM_TYPE_CAROUSEL_BANNER -> carouselBannerAdapterDelegate.onCreateViewHolder(parent)
+            ITEM_TYPE_GAME_CATEGORY -> gameCategoryAdapterDelegate.onCreateViewHolder(parent)
             else -> error("invalid viewType")
         }
     }
@@ -93,5 +88,35 @@ class BrowserGamesAdapter(
     companion object {
         const val ITEM_TYPE_CAROUSEL_BANNER = 1
         const val ITEM_TYPE_GAME_CATEGORY = 2
+    }
+}
+
+interface AdapterDelegate {
+    fun onCreateViewHolder(parent: ViewGroup): BrowserGamesAdapter.ItemHolder
+
+    fun onBindViewHolder(item: BrowserGamesAdapter.Item, position: Int, holder: BrowserGamesAdapter.ItemHolder) {
+        holder.bind(item)
+    }
+}
+
+class CarouselBannerAdapterDelegate(
+    private val gamesViewModel: GamesViewModel
+) : AdapterDelegate {
+    override fun onCreateViewHolder(parent: ViewGroup): BrowserGamesAdapter.ItemHolder {
+        val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_carousel_banner, parent, false)
+
+        return BrowserGamesAdapter.ItemHolder.CarouselBannerViewHolder(view, gamesViewModel)
+    }
+}
+
+class GameCategoryAdapterDelegate(
+    private val gamesViewModel: GamesViewModel
+) : AdapterDelegate {
+    override fun onCreateViewHolder(parent: ViewGroup): BrowserGamesAdapter.ItemHolder {
+        val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_game_category, parent, false)
+
+        return BrowserGamesAdapter.ItemHolder.GameCategoryViewHolder(view, gamesViewModel)
     }
 }

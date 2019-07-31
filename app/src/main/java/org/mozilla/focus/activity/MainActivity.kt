@@ -83,6 +83,7 @@ import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.theme.ThemeManager
+import org.mozilla.rocket.vertical.games.GamesActivity
 import org.mozilla.rocket.widget.enqueue
 import java.util.Locale
 
@@ -265,10 +266,8 @@ class MainActivity : BaseActivity(),
                 ContentPortalViewState.reset()
                 screenNavigator.addHomeScreen(true)
             })
-            showUrlInput.observe(this@MainActivity, Observer { url ->
-                if (!supportFragmentManager.isStateSaved) {
-                    screenNavigator.addUrlScreen(url)
-                }
+            showUrlInput.observe(this@MainActivity, Observer {
+                startActivity(GamesActivity.getStartIntent(this@MainActivity))
             })
             dismissUrlInput.observe(this@MainActivity, Observer { screenNavigator.popUrlScreen() })
             pinShortcut.observe(this@MainActivity, Observer { requestPinShortcut() })
