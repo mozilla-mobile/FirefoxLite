@@ -4,10 +4,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.vertical.games.browsergames.CarouselBanner
 import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.browsergames.GameCategory
 import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
+import org.mozilla.rocket.vertical.games.browsergames.adapter.CarouselBanner
+import org.mozilla.rocket.vertical.games.browsergames.adapter.GameCategory
 import kotlin.random.Random
 
 class GamesRepo {

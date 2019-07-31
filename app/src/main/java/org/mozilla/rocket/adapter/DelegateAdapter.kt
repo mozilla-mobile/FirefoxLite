@@ -31,7 +31,7 @@ class DelegateAdapter(
     }
 
     abstract class ViewHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
-        abstract fun bind(UIModel: UIModel)
+        abstract fun bind(uiModel: UIModel)
     }
 
     open class UIModel
@@ -43,7 +43,7 @@ interface AdapterDelegate {
 
     fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder
 
-    fun onBindViewHolder(UIModel: DelegateAdapter.UIModel, position: Int, holder: DelegateAdapter.ViewHolder) {
-        holder.bind(UIModel)
+    fun onBindViewHolder(uiModel: DelegateAdapter.UIModel, position: Int, holder: DelegateAdapter.ViewHolder) {
+        holder.bind(uiModel)
     }
 }

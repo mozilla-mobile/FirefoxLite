@@ -15,6 +15,10 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.vertical.games.GamesViewModel
 import org.mozilla.rocket.vertical.games.GamesViewModelFactory
+import org.mozilla.rocket.vertical.games.browsergames.adapter.CarouselBanner
+import org.mozilla.rocket.vertical.games.browsergames.adapter.CarouselBannerAdapterDelegate
+import org.mozilla.rocket.vertical.games.browsergames.adapter.GameCategory
+import org.mozilla.rocket.vertical.games.browsergames.adapter.GameCategoryAdapterDelegate
 
 class BrowserGamesFragment : Fragment() {
 
