@@ -9,16 +9,20 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.games.GamesViewModel
 
-class GameCategoryAdapterDelegate : AdapterDelegate {
+class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            GameCategoryViewHolder(view)
+            GameCategoryViewHolder(view, gamesViewModel)
 }
 
-class GameCategoryViewHolder(override val containerView: View) : DelegateAdapter.ViewHolder(containerView) {
+class GameCategoryViewHolder(
+    override val containerView: View,
+    viewModel: GamesViewModel
+) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(GameItem::class, R.layout.item_game, GameAdapterDelegate())
+            add(GameItem::class, R.layout.item_game, GameAdapterDelegate(viewModel))
         }
     )
 
