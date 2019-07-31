@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games.browsergames
+package org.mozilla.rocket.vertical.games
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,12 +13,10 @@ import kotlinx.android.synthetic.main.fragment_games.spinner
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.vertical.games.GamesViewModel
-import org.mozilla.rocket.vertical.games.GamesViewModelFactory
-import org.mozilla.rocket.vertical.games.browsergames.adapter.CarouselBanner
-import org.mozilla.rocket.vertical.games.browsergames.adapter.CarouselBannerAdapterDelegate
-import org.mozilla.rocket.vertical.games.browsergames.adapter.GameCategory
-import org.mozilla.rocket.vertical.games.browsergames.adapter.GameCategoryAdapterDelegate
+import org.mozilla.rocket.vertical.games.adapter.CarouselBanner
+import org.mozilla.rocket.vertical.games.adapter.CarouselBannerAdapterDelegate
+import org.mozilla.rocket.vertical.games.adapter.GameCategory
+import org.mozilla.rocket.vertical.games.adapter.GameCategoryAdapterDelegate
 
 class BrowserGamesFragment : Fragment() {
 

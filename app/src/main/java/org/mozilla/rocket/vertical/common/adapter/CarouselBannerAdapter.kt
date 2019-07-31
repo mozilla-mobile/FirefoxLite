@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games.browsergames
+package org.mozilla.rocket.vertical.common.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,9 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_banner.image
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
-import org.mozilla.rocket.vertical.games.GamesViewModel
 
 class CarouselBannerAdapter(
-    private val gamesViewModel: GamesViewModel
+    private val eventListener: EventListener
 ) : PagerAdapter() {
 
     private var data = mutableListOf<BannerItem>()
@@ -25,7 +24,7 @@ class CarouselBannerAdapter(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(container.context).inflate(R.layout.item_banner, container, false)
         val viewHolder = BannerViewHolder(view).apply {
-            setOnItemClickListener { gamesViewModel.onBannerItemClicked(it) }
+            setOnItemClickListener { eventListener.onBannerItemClicked(it) }
             bind(data[position])
         }
         container.addView(view)
@@ -65,4 +64,8 @@ class CarouselBannerAdapter(
     }
 
     data class BannerItem(val imageUrl: String, val link: String)
+
+    interface EventListener {
+        fun onBannerItemClicked(bannerItem: BannerItem)
+    }
 }

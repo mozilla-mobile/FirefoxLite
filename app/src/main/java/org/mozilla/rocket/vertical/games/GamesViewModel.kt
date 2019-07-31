@@ -9,8 +9,8 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
-import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.browsergames.adapter.GameItem
+import org.mozilla.rocket.vertical.common.adapter.CarouselBannerAdapter
+import org.mozilla.rocket.vertical.games.adapter.GameItem
 import org.mozilla.rocket.vertical.games.repository.GamesRepo
 
 class GamesViewModel(

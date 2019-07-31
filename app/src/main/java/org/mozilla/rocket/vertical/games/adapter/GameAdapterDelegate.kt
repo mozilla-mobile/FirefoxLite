@@ -1,4 +1,4 @@
-package org.mozilla.rocket.vertical.games.browsergames.adapter
+package org.mozilla.rocket.vertical.games.adapter
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_game.image
