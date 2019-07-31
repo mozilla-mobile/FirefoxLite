@@ -287,6 +287,11 @@
             android:name="org.mozilla.rocket.nightmode.AdjustBrightnessDialog"
             android:theme="@style/TransparentTheme"
             android:exported="false" />
+
+        <activity
+            android:name="org.mozilla.rocket.content.games.GamesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

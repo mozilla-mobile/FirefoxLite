@@ -648,4 +648,7 @@
 
     <!-- Name of low priority notification channel, this will be shown on the app info page in the system setting -->
     <string name="low_priority_notification_channel">Hidden notifications</string>
+
+    <string name="games_tab_title_browser_games">Browser games</string>
+    <string name="games_tab_title_premium_games">Premium games</string>
 </resources>
