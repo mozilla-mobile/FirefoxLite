@@ -4,17 +4,21 @@ import android.view.View
 import kotlinx.android.synthetic.main.item_carousel_banner.carousel_list
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.games.GamesViewModel
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 
-class CarouselBannerAdapterDelegate() : AdapterDelegate {
+class CarouselBannerAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            CarouselBannerViewHolder(view)
+            CarouselBannerViewHolder(view, gamesViewModel)
 }
 
-class CarouselBannerViewHolder(override val containerView: View) : DelegateAdapter.ViewHolder(containerView) {
+class CarouselBannerViewHolder(
+    override val containerView: View,
+    viewModel: GamesViewModel
+) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = CarouselBannerAdapter(object : CarouselBannerAdapter.EventListener {
         override fun onBannerItemClicked(bannerItem: CarouselBannerAdapter.BannerItem) {
-            // TODO
+            viewModel.onBannerItemClicked(bannerItem)
         }
     })
 

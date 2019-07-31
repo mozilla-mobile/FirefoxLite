@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_games.list
+import kotlinx.android.synthetic.main.fragment_games.spinner
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -35,13 +36,14 @@ class BrowserGamesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         bindListData()
+        bindPageState()
     }
 
     private fun initRecyclerView() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate())
-                add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate())
+                add(CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate(gamesViewModel))
+                add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
             }
         )
         list.apply {
@@ -54,5 +56,27 @@ class BrowserGamesFragment : Fragment() {
         gamesViewModel.browserGamesItems.observe(this@BrowserGamesFragment, Observer {
             adapter.setData(it)
         })
+    }
+
+    private fun bindPageState() {
+        gamesViewModel.browserGamesState.observe(this@BrowserGamesFragment, Observer { state ->
+            when (state) {
+                is GamesViewModel.State.Idle -> showContentView()
+                is GamesViewModel.State.Loading -> showLoadingView()
+                is GamesViewModel.State.Error -> showErrorView()
+            }
+        })
+    }
+
+    private fun showLoadingView() {
+        spinner.visibility = View.VISIBLE
+    }
+
+    private fun showContentView() {
+        spinner.visibility = View.GONE
+    }
+
+    private fun showErrorView() {
+        TODO("not implemented")
     }
 }

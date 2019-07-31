@@ -7,14 +7,16 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.games.GamesViewModel
 
-class GameAdapterDelegate : AdapterDelegate {
+class GameAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            GameViewHolder(view)
+            GameViewHolder(view, gamesViewModel)
 }
 
 class GameViewHolder(
-    override val containerView: View
+    override val containerView: View,
+    private val gamesViewModel: GamesViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     override fun bind(uiModel: DelegateAdapter.UIModel) {
         val gameItem = uiModel as GameItem
@@ -26,9 +28,7 @@ class GameViewHolder(
                 .load(gameItem.imageUrl)
                 .into(image)
 
-        itemView.setOnClickListener {
-            // TODO
-        }
+        itemView.setOnClickListener { gamesViewModel.onGameItemClicked(gameItem) }
     }
 }
 
