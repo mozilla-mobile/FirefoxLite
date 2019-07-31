@@ -32,7 +32,6 @@ class GamesActivity : FragmentActivity() {
         games_tabs.setupWithViewPager(view_pager)
     }
 
-    class BrowserGamesFragment : Fragment()
     class PremiumGamesFragment : Fragment()
 
     companion object {
