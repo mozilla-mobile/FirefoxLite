@@ -10,7 +10,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
 import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
+import org.mozilla.rocket.vertical.games.browsergames.adapter.GameItem
 import org.mozilla.rocket.vertical.games.repository.GamesRepo
 
 class GamesViewModel(
@@ -32,7 +32,7 @@ class GamesViewModel(
         }
     }
 
-    fun onGameItemClicked(gameItem: GameCategoryAdapter.GameItem) {
+    fun onGameItemClicked(gameItem: GameItem) {
         // TODO: testing code, needs to be removed
         showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, "${gameItem.name}")
     }

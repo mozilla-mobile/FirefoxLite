@@ -5,9 +5,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.vertical.games.browsergames.CarouselBannerAdapter
-import org.mozilla.rocket.vertical.games.browsergames.GameCategoryAdapter
 import org.mozilla.rocket.vertical.games.browsergames.adapter.CarouselBanner
 import org.mozilla.rocket.vertical.games.browsergames.adapter.GameCategory
+import org.mozilla.rocket.vertical.games.browsergames.adapter.GameItem
 import kotlin.random.Random
 
 class GamesRepo {
@@ -103,6 +103,6 @@ class GamesRepo {
             getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(this, this) }
 
     // TODO: remove test function
-    private fun generateFakeGame(number: Int): GameCategoryAdapter.GameItem =
-            getPlaceholderImageUrl(100, 100).run { GameCategoryAdapter.GameItem(number.toString(), this) }
+    private fun generateFakeGame(number: Int): GameItem =
+            getPlaceholderImageUrl(100, 100).run { GameItem(number.toString(), this) }
 }
