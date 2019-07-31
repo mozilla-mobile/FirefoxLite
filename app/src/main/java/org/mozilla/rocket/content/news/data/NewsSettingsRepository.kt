@@ -3,6 +3,8 @@ package org.mozilla.rocket.content.news.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import org.mozilla.focus.utils.CharacterValidator
+import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.isNotEmpty
 
 class NewsSettingsRepository(
     private val remoteDataSource: NewsSettingsDataSource,
@@ -38,6 +40,20 @@ class NewsSettingsRepository(
 
     fun getLanguages(): LiveData<List<NewsLanguage>> {
         return languagesLiveData
+    }
+
+    suspend fun getLanguagesV2(): Result<List<NewsLanguage>> {
+        val localResult = localDataSource.getSupportLanguagesV2()
+        if (localResult.isNotEmpty) {
+            return localResult
+        }
+
+        val remoteResult = remoteDataSource.getSupportLanguagesV2()
+        if (remoteResult is Result.Success && remoteResult.data.isNotEmpty()) {
+            localDataSource.setSupportLanguages(remoteResult.data)
+        }
+
+        return remoteResult
     }
 
     fun setUserPreferenceLanguage(language: NewsLanguage) {

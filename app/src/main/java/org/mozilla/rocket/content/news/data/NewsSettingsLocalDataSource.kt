@@ -1,12 +1,17 @@
 package org.mozilla.rocket.content.news.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
+import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.Result.Error
+import org.mozilla.rocket.content.Result.Success
 import org.mozilla.threadutils.ThreadUtils
 import java.util.Locale
 
@@ -52,6 +57,20 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
         }
 
         return languagesLiveData
+    }
+
+    override suspend fun getSupportLanguagesV2(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
+        return@withContext try {
+            var newsLanguageList = ArrayList<NewsLanguage>()
+            val jsonString = getPreferences()
+                .getString(KEY_JSON_STRING_SUPPORT_LANGUAGES, "") ?: ""
+            if (!TextUtils.isEmpty(jsonString)) {
+                newsLanguageList.addAll(NewsLanguage.fromJson(jsonString))
+            }
+            Success(newsLanguageList)
+        } catch (e: Exception) {
+            Error(e)
+        }
     }
 
     override fun setSupportLanguages(languages: List<NewsLanguage>) {

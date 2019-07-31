@@ -2,8 +2,13 @@ package org.mozilla.rocket.content.news.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.mozilla.httprequest.HttpRequest
+import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.threadutils.ThreadUtils
 import java.net.URL
 
@@ -19,6 +24,16 @@ class NewsSettingsRemoteDataSource : NewsSettingsDataSource {
         }
 
         return languagesLiveData
+    }
+
+    override suspend fun getSupportLanguagesV2(): Result<List<NewsLanguage>> = withContext(Dispatchers.Default) {
+        return@withContext safeApiCall(
+            call = {
+                val responseBody = getHttpResult(getLanguageApiEndpoint())
+                Success(NewsLanguage.fromJson(responseBody))
+            },
+            errorMessage = "Unable to get remote news languages"
+        )
     }
 
     override fun setSupportLanguages(languages: List<NewsLanguage>) {

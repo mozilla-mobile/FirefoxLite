@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.news
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsCategoryPreference
@@ -18,7 +20,14 @@ import javax.inject.Inject
 
 class NewsSettingFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var repository: NewsSettingsRepository
+    @Inject
+    lateinit var applicationContext: Context
+
+    @Inject
+    lateinit var viewModelFactory: NewsSettingsViewModelFactory
+
+    @Inject
+    lateinit var repository: NewsSettingsRepository
 
     private var languagePreference: NewsLanguagePreference? = null
     private var categoryPreference: NewsCategoryPreference? = null
@@ -52,11 +61,10 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val allLangsObserver = Observer<List<NewsLanguage>> {
-            Log.d(TAG, "language list has changed")
-            dialogHelper.updateLangList(it)
-        }
-        repository.getLanguages().observe(viewLifecycleOwner, allLangsObserver)
+        val viewModel: NewsSettingsViewModel = activityViewModelProvider(viewModelFactory)
+        viewModel.uiModel.observe(this, Observer { newsSettingsUiModel ->
+            dialogHelper.updateLangList(newsSettingsUiModel.newsLanguages)
+        })
 
         val settingObserver = Observer<Pair<NewsLanguage, List<NewsCategory>>> {
             Log.d(

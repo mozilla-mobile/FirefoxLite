@@ -7,6 +7,7 @@ import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.news.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.NewsSettingsViewModelFactory
 import org.mozilla.rocket.content.news.NewsViewModelFactory
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
@@ -46,13 +47,20 @@ object ContentModule {
     @Singleton
     @Provides
     fun provideLoadNewsSettingsUseCase(newsSettingsRepository: NewsSettingsRepository): LoadNewsSettingsUseCase =
-            LoadNewsSettingsUseCase(newsSettingsRepository)
+        LoadNewsSettingsUseCase(newsSettingsRepository)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideNewsViewModelFactory(loadNewsSettingsUseCase: LoadNewsSettingsUseCase): NewsViewModelFactory =
-            NewsViewModelFactory(loadNewsSettingsUseCase)
+        NewsViewModelFactory(loadNewsSettingsUseCase)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideNewsSettingsViewModelFactory(newsSettingsRepository: NewsSettingsRepository): NewsSettingsViewModelFactory {
+        return NewsSettingsViewModelFactory(newsSettingsRepository)
+    }
 
     @JvmStatic
     @Singleton

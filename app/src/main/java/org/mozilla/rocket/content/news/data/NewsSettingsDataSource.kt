@@ -1,9 +1,11 @@
 package org.mozilla.rocket.content.news.data
 
 import androidx.lifecycle.LiveData
+import org.mozilla.rocket.content.Result
 
 interface NewsSettingsDataSource {
     fun getSupportLanguages(): LiveData<List<NewsLanguage>>
+    suspend fun getSupportLanguagesV2(): Result<List<NewsLanguage>>
     fun setSupportLanguages(languages: List<NewsLanguage>)
     fun getUserPreferenceLanguage(): LiveData<NewsLanguage>
     fun setUserPreferenceLanguage(language: NewsLanguage)
