@@ -20,7 +20,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import dagger.Module
 import dagger.Provides
-import org.mozilla.focus.FocusApplication
+import javax.inject.Singleton
 
 /**
  * Defines all the classes that need to be provided in the scope of the app.
@@ -29,13 +29,13 @@ import org.mozilla.focus.FocusApplication
  * others. If some of those objects are singletons, they should be annotated with `@Singleton`.
  */
 @Module
-class AppModule {
+class AppModule(private val appContext: Context) {
 
+    @Singleton
     @Provides
-    fun provideContext(application: FocusApplication): Context {
-        return application.applicationContext
-    }
+    fun provideAppContext(): Context = appContext
 
+    @Singleton
     @Provides
     fun providesWifiManager(context: Context): WifiManager =
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager

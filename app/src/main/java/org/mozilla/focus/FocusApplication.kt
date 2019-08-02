@@ -8,12 +8,8 @@ package org.mozilla.focus
 import android.app.Activity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import androidx.fragment.app.Fragment
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -23,6 +19,8 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.rocket.content.news.data.NewsSourceManager
+import org.mozilla.rocket.di.AppComponent
+import org.mozilla.rocket.di.AppModule
 import org.mozilla.rocket.di.DaggerAppComponent
 import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
@@ -31,13 +29,12 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.settings.SettingsProvider
 import java.io.File
 
-open class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInjector {
+open class FocusApplication : LocaleAwareApplication() {
 
-    @javax.inject.Inject
-    lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
-
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> {
-        return fragmentInjector
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.builder()
+                .appModule(AppModule(this))
+                .build()
     }
 
     lateinit var partnerActivator: PartnerActivator
@@ -67,7 +64,6 @@ open class FocusApplication : LocaleAwareApplication(), HasSupportFragmentInject
 
     override fun onCreate() {
         super.onCreate()
-        DaggerAppComponent.builder().application(this).build().inject(this)
         setupLeakCanary()
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)

@@ -10,11 +10,8 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
-import javax.inject.Inject
 
-class NewsViewModel @Inject constructor(
-    private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase
-) : ViewModel() {
+class NewsViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase) : ViewModel() {
 
     private var newsSettingsResult: MediatorLiveData<Result<LoadNewsSettingsResult>> = loadNewsSettingsUseCase.observe()
 

@@ -6,6 +6,7 @@ import dagger.Provides
 import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
+import org.mozilla.rocket.content.news.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.NewsViewModelFactory
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
@@ -15,20 +16,23 @@ import java.util.Locale
 import javax.inject.Singleton
 
 @Module
-class ContentModule {
+object ContentModule {
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideNewsSettingsRemoteDataSource(): NewsSettingsRemoteDataSource {
         return NewsSettingsRemoteDataSource()
     }
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideNewsSettingsLocalDataSource(context: Context): NewsSettingsLocalDataSource {
         return NewsSettingsLocalDataSource(context)
     }
 
+    @JvmStatic
     @Singleton
     @Provides
     fun provideNewsSettingsRepository(
@@ -38,12 +42,19 @@ class ContentModule {
         return NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
     }
 
+    @JvmStatic
     @Singleton
     @Provides
-    fun provideNewsViewModelFactory(newsSettingsRepository: NewsSettingsRepository): NewsViewModelFactory {
-        return NewsViewModelFactory(newsSettingsRepository)
-    }
+    fun provideLoadNewsSettingsUseCase(newsSettingsRepository: NewsSettingsRepository): LoadNewsSettingsUseCase =
+            LoadNewsSettingsUseCase(newsSettingsRepository)
 
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideNewsViewModelFactory(loadNewsSettingsUseCase: LoadNewsSettingsUseCase): NewsViewModelFactory =
+            NewsViewModelFactory(loadNewsSettingsUseCase)
+
+    @JvmStatic
     @Singleton
     @Provides
     fun provideNewsRepository(

@@ -1,28 +1,24 @@
 package org.mozilla.rocket.content.news
 
-import androidx.lifecycle.Observer
-import android.content.Context
 import android.os.Bundle
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import android.util.Log
 import android.view.View
-import dagger.android.support.AndroidSupportInjection
+import androidx.lifecycle.Observer
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsCategoryPreference
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsLanguagePreference
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import javax.inject.Inject
 
 class NewsSettingFragment : PreferenceFragmentCompat() {
 
-    @javax.inject.Inject
-    lateinit var applicationContext: Context
-
-    @javax.inject.Inject
-    lateinit var repository: NewsSettingsRepository
+    @Inject lateinit var repository: NewsSettingsRepository
 
     private var languagePreference: NewsLanguagePreference? = null
     private var categoryPreference: NewsCategoryPreference? = null
@@ -48,9 +44,13 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         TelemetryWrapper.changeNewsSetting(categories = catList?.filter { item -> item.isSelected }?.map { lang -> lang.order.toString() })
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AndroidSupportInjection.inject(this)
 
         val allLangsObserver = Observer<List<NewsLanguage>> {
             Log.d(TAG, "language list has changed")

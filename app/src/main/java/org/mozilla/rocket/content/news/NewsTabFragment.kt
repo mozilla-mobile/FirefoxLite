@@ -1,41 +1,40 @@
 package org.mozilla.rocket.content.news
 
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.MODE_SCROLLABLE
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.DaggerFragment
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.MODE_SCROLLABLE
 import kotlinx.android.synthetic.main.content_tab_news.news_setting
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalView
+import javax.inject.Inject
 
 /**
  * Fragment that host the tabs for different types of content portal
  *
  */
-class NewsTabFragment : DaggerFragment() {
+class NewsTabFragment : Fragment() {
 
-    @javax.inject.Inject
-    lateinit var viewModelFactory: NewsViewModelFactory
+    @Inject lateinit var viewModelFactory: NewsViewModelFactory
 
     lateinit var newsViewModel: NewsViewModel
 
@@ -45,6 +44,11 @@ class NewsTabFragment : DaggerFragment() {
         fun newInstance(bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>?): NewsTabFragment {
             return NewsTabFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -57,7 +61,6 @@ class NewsTabFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AndroidSupportInjection.inject(this)
 
         if (savedInstanceState == null) {
             newsViewModel = activityViewModelProvider(viewModelFactory)

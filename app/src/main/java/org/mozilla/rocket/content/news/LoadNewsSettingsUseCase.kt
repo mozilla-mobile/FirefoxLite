@@ -21,10 +21,10 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
-import javax.inject.Inject
 
-open class LoadNewsSettingsUseCase @Inject constructor(private val repository: NewsSettingsRepository) :
-    MediatorUseCase<LoadNewsSettingsParameter, LoadNewsSettingsResult>() {
+open class LoadNewsSettingsUseCase(
+    private val repository: NewsSettingsRepository
+) : MediatorUseCase<LoadNewsSettingsParameter, LoadNewsSettingsResult>() {
     override fun execute(parameters: LoadNewsSettingsParameter) {
         val settingsLiveData = repository.getNewsSettings()
         result.removeSource(settingsLiveData)
