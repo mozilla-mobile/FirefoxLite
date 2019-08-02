@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_games.list
+import kotlinx.android.synthetic.main.fragment_games.recycler_view
 import kotlinx.android.synthetic.main.fragment_games.spinner
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
@@ -46,7 +46,7 @@ class BrowserGamesFragment : Fragment() {
                 add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
             }
         )
-        list.apply {
+        recycler_view.apply {
             adapter = this@BrowserGamesFragment.adapter
             layoutManager = LinearLayoutManager(context)
         }

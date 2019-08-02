@@ -18,7 +18,7 @@ class GameViewHolder(
     override val containerView: View,
     private val gamesViewModel: GamesViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
-    override fun bind(uiModel: DelegateAdapter.UIModel) {
+    override fun bind(uiModel: DelegateAdapter.UiModel) {
         val gameItem = uiModel as GameItem
         name.text = gameItem.name
         GlideApp.with(itemView.context)
@@ -32,4 +32,4 @@ class GameViewHolder(
     }
 }
 
-data class GameItem(val name: String, val imageUrl: String) : DelegateAdapter.UIModel()
+data class GameItem(val name: String, val imageUrl: String) : DelegateAdapter.UiModel()

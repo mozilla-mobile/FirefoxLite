@@ -10,9 +10,9 @@ class DelegateAdapter(
     private val delegatesManager: AdapterDelegatesManager
 ) : RecyclerView.Adapter<DelegateAdapter.ViewHolder>() {
 
-    private var data = mutableListOf<UIModel>()
+    private var data = mutableListOf<UiModel>()
 
-    fun setData(data: List<UIModel>) {
+    fun setData(data: List<UiModel>) {
         this.data.clear()
         this.data.addAll(data)
         notifyDataSetChanged()
@@ -31,10 +31,10 @@ class DelegateAdapter(
     }
 
     abstract class ViewHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
-        abstract fun bind(uiModel: UIModel)
+        abstract fun bind(uiModel: UiModel)
     }
 
-    abstract class UIModel
+    abstract class UiModel
 }
 
 interface AdapterDelegate {
@@ -43,7 +43,7 @@ interface AdapterDelegate {
 
     fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder
 
-    fun onBindViewHolder(uiModel: DelegateAdapter.UIModel, position: Int, holder: DelegateAdapter.ViewHolder) {
+    fun onBindViewHolder(uiModel: DelegateAdapter.UiModel, position: Int, holder: DelegateAdapter.ViewHolder) {
         holder.bind(uiModel)
     }
 }
