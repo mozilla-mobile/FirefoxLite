@@ -54,4 +54,4 @@ google-services.json
 
 # Fastlane for screenshot
 fastlane/*
-!fastlane/Screengrabfile
+fastlane/Screengrabfile
