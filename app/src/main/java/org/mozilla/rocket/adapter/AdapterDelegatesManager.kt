@@ -7,9 +7,9 @@ import kotlin.reflect.KClass
 
 class AdapterDelegatesManager {
     private val typeDelegateMap = SparseArrayCompat<AdapterDelegate>()
-    private val modelTypeMap = ArrayMap<KClass<out DelegateAdapter.UIModel>, Int>()
+    private val modelTypeMap = ArrayMap<KClass<out DelegateAdapter.UiModel>, Int>()
 
-    fun add(clazz: KClass<out DelegateAdapter.UIModel>, layoutId: Int, delegate: AdapterDelegate) {
+    fun add(clazz: KClass<out DelegateAdapter.UiModel>, layoutId: Int, delegate: AdapterDelegate) {
         typeDelegateMap.put(layoutId, delegate)
         modelTypeMap[clazz] = layoutId
     }
@@ -22,10 +22,10 @@ class AdapterDelegatesManager {
         return delegate.onCreateViewHolder(view)
     }
 
-    fun getItemViewType(UIModel: DelegateAdapter.UIModel): Int =
-            modelTypeMap[UIModel::class] ?: error("Cannot find viewType with class: ${UIModel.javaClass}")
+    fun getItemViewType(uiModel: DelegateAdapter.UiModel): Int =
+            modelTypeMap[uiModel::class] ?: error("Cannot find viewType with class: ${uiModel.javaClass}")
 
-    fun onBindViewHolder(holder: DelegateAdapter.ViewHolder, UIModel: DelegateAdapter.UIModel) {
-        holder.bind(UIModel)
+    fun onBindViewHolder(holder: DelegateAdapter.ViewHolder, uiModel: DelegateAdapter.UiModel) {
+        holder.bind(uiModel)
     }
 }

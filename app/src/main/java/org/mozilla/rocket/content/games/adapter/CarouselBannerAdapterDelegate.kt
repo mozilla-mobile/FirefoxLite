@@ -26,10 +26,10 @@ class CarouselBannerViewHolder(
         carousel_list.adapter = this@CarouselBannerViewHolder.adapter
     }
 
-    override fun bind(uiModel: DelegateAdapter.UIModel) {
+    override fun bind(uiModel: DelegateAdapter.UiModel) {
         uiModel as CarouselBanner
         adapter.setData(uiModel.banners)
     }
 }
 
-data class CarouselBanner(val banners: List<CarouselBannerAdapter.BannerItem>) : DelegateAdapter.UIModel()
+data class CarouselBanner(val banners: List<CarouselBannerAdapter.BannerItem>) : DelegateAdapter.UiModel()

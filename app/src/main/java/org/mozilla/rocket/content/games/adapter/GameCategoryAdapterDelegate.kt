@@ -33,11 +33,11 @@ class GameCategoryViewHolder(
         }
     }
 
-    override fun bind(uiModel: DelegateAdapter.UIModel) {
+    override fun bind(uiModel: DelegateAdapter.UiModel) {
         uiModel as GameCategory
         category_title.text = uiModel.title
         adapter.setData(uiModel.gameList)
     }
 }
 
-data class GameCategory(val title: String, val gameList: List<GameItem>) : DelegateAdapter.UIModel()
+data class GameCategory(val title: String, val gameList: List<GameItem>) : DelegateAdapter.UiModel()

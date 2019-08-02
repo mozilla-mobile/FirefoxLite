@@ -8,31 +8,31 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.games.BrowserGamesFragment
 import org.mozilla.rocket.content.games.GamesActivity
 
-class GameTabsAdapter(fm: FragmentManager, activity: FragmentActivity) : FragmentPagerAdapter(fm) {
+class GameTabsAdapter(
+    fm: FragmentManager,
+    activity: FragmentActivity,
+    private val items: List<TabItem> = DEFAULT_TABS
+) : FragmentPagerAdapter(fm) {
 
     private val resource = activity.resources
 
-    override fun getItem(position: Int): Fragment {
-        return when (position) {
-            0 -> BrowserGamesFragment()
-            1 -> GamesActivity.PremiumGamesFragment()
-            else -> throw IndexOutOfBoundsException("position: $position")
-        }
-    }
+    override fun getItem(position: Int): Fragment = items[position].fragment
 
-    override fun getCount(): Int = GAMES_TAB_COUNT
+    override fun getCount(): Int = items.size
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        val resId = when (position) {
-            0 -> R.string.games_tab_title_browser_games
-            1 -> R.string.games_tab_title_premium_games
-            else -> throw IndexOutOfBoundsException("position: $position")
-        }
+    override fun getPageTitle(position: Int): CharSequence? = resource.getString(items[position].titleResId)
 
-        return resource.getString(resId)
-    }
+    data class TabItem(
+        val fragment: Fragment,
+        val titleResId: Int
+    )
 
     companion object {
-        const val GAMES_TAB_COUNT = 2
+        private val DEFAULT_TABS: List<TabItem> by lazy {
+            listOf(
+                TabItem(BrowserGamesFragment(), R.string.mozilla),
+                TabItem(GamesActivity.PremiumGamesFragment(), R.string.firefox)
+            )
+        }
     }
 }

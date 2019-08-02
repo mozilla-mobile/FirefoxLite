@@ -12,14 +12,14 @@ import kotlin.random.Random
 
 class GamesRepo {
 
-    suspend fun getFakeData(): List<DelegateAdapter.UIModel> {
+    suspend fun getFakeData(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
             delay(2000)
             generateFakeData()
         }
     }
 
-    private fun generateFakeData(): List<DelegateAdapter.UIModel> =
+    private fun generateFakeData(): List<DelegateAdapter.UiModel> =
             listOf(
                 CarouselBanner(listOf(
                         generateFakeBanner(),
