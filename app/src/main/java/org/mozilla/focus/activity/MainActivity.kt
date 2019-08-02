@@ -28,6 +28,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -66,7 +67,9 @@ import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
+import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
@@ -93,6 +96,9 @@ class MainActivity : BaseActivity(),
         ScreenNavigator.HostActivity,
         PromotionViewContract,
         InAppUpdateController.ViewDelegate {
+
+    @javax.inject.Inject
+    lateinit var downloadViewModelFactory: DownloadViewModelFactory
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
@@ -145,9 +151,10 @@ class MainActivity : BaseActivity(),
         get() = supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment?
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
         chromeViewModel = Inject.obtainChromeViewModel(this)
-        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this)
+        downloadIndicatorViewModel = ViewModelProviders.of(this, downloadViewModelFactory).get(DownloadIndicatorViewModel::class.java)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
         appUpdateController = InAppUpdateController(

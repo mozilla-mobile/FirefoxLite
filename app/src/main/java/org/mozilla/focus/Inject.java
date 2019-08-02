@@ -33,10 +33,6 @@ import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.chrome.MenuViewModelFactory;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
-import org.mozilla.rocket.download.DownloadIndicatorViewModel;
-import org.mozilla.rocket.download.DownloadInfoRepository;
-import org.mozilla.rocket.download.DownloadInfoViewModel;
-import org.mozilla.rocket.download.DownloadViewModelFactory;
 import org.mozilla.rocket.helper.StorageHelper;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.urlinput.GlobalDataSource;
@@ -107,21 +103,6 @@ public class Inject {
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.NONE;
-    }
-
-    public static DownloadInfoRepository provideDownloadInfoRepository() {
-        //TODO inject data source, ex production DB or mock DB here
-        return DownloadInfoRepository.getInstance();
-    }
-
-    public static DownloadIndicatorViewModel obtainDownloadIndicatorViewModel(FragmentActivity activity) {
-        DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(DownloadIndicatorViewModel.class);
-    }
-
-    public static DownloadInfoViewModel obtainDownloadInfoViewModel(FragmentActivity activity) {
-        DownloadViewModelFactory factory = DownloadViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(DownloadInfoViewModel.class);
     }
 
     private static QuickSearchRepository provideQuickSearchRepository(Application application) {
