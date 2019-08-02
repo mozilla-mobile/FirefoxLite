@@ -235,9 +235,7 @@ dependencies {
 
     // Dagger 2
     implementation "com.google.dagger:dagger:${Versions.dagger}"
-    implementation "com.google.dagger:dagger-android-support:${Versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${Versions.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${Versions.dagger}"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutine}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutine}"

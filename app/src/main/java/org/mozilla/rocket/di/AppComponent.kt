@@ -16,18 +16,13 @@
 
 package org.mozilla.rocket.di
 
+import android.content.Context
 import dagger.Component
-import dagger.android.support.AndroidSupportInjectionModule
-import org.mozilla.focus.FocusApplication
 import org.mozilla.rocket.content.di.ContentModule
-import javax.inject.Singleton
-import dagger.BindsInstance
-import dagger.Module
-import dagger.android.AndroidInjector
-import dagger.android.ContributesAndroidInjector
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
+import javax.inject.Singleton
 
 /**
  * Main component of the app, created and persisted in the Application class.
@@ -38,35 +33,17 @@ import org.mozilla.rocket.content.news.NewsTabFragment
  */
 @Singleton
 @Component(
-    modules = [AndroidSupportInjectionModule::class,
-        ContentModule::class,
-        FragmentModule::class,
-        AppModule::class
+    modules = [
+        AppModule::class,
+        ContentModule::class
     ]
 )
+interface AppComponent {
+    fun appContext(): Context
 
-interface AppComponent : AndroidInjector<FocusApplication> {
+    fun inject(newsSettingFragment: NewsSettingFragment)
 
-    override fun inject(app: FocusApplication)
+    fun inject(newsTabFragment: NewsTabFragment)
 
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        fun application(application: FocusApplication): Builder
-
-        fun build(): AppComponent
-    }
-}
-
-// move this to another file / sub-component
-@Module
-abstract class FragmentModule {
-    @ContributesAndroidInjector
-    internal abstract fun bindNewsTabFragment(): NewsTabFragment
-
-    @ContributesAndroidInjector
-    internal abstract fun bindNewsFragment(): NewsFragment
-
-    @ContributesAndroidInjector
-    internal abstract fun bindNewsSettingFragment(): NewsSettingFragment
+    fun inject(newsFragment: NewsFragment)
 }

@@ -6,15 +6,16 @@
 package org.mozilla.focus;
 
 import android.app.Application;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 import android.view.animation.Animation;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.BookmarksDatabase;
@@ -32,8 +33,6 @@ import org.mozilla.rocket.chrome.MenuViewModel;
 import org.mozilla.rocket.chrome.MenuViewModelFactory;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
-import org.mozilla.rocket.content.news.NewsViewModel;
-import org.mozilla.rocket.content.news.NewsViewModelFactory;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoRepository;
 import org.mozilla.rocket.download.DownloadInfoViewModel;

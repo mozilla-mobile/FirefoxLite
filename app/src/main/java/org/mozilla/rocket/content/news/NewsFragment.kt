@@ -1,15 +1,14 @@
 package org.mozilla.rocket.content.news
 
-import android.content.Context
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
-import dagger.android.support.DaggerFragment
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +20,8 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
@@ -29,14 +30,11 @@ import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.rocket.content.portal.ContentPortalListener
 import org.mozilla.rocket.widget.BottomSheetBehavior
+import javax.inject.Inject
 
-class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
+class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
-    @javax.inject.Inject
-    lateinit var viewModelFactory: NewsViewModelFactory
-
-    @javax.inject.Inject
-    lateinit var applicationContext: Context
+    @Inject lateinit var viewModelFactory: NewsViewModelFactory
 
     override fun getCategory(): String {
         return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
@@ -83,6 +81,11 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
     private var newsListLayoutManager: LinearLayoutManager? = null
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -99,7 +102,7 @@ class NewsFragment : DaggerFragment(), ContentPortalListener, NewsViewContract {
         // creating a repository will also create a new subscription.
         // we deliberately create a new subscription again to load data aggressively.
         val newsSettingsRemoteDataSource = NewsSettingsRemoteDataSource()
-        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(applicationContext)
+        val newsSettingsLocalDataSource = NewsSettingsLocalDataSource(appContext())
         val newsSettingRepo = NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
 
         val newsRepo = NewsRepository.newInstance(
