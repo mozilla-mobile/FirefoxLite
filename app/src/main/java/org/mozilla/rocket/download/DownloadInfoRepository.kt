@@ -80,9 +80,4 @@ class DownloadInfoRepository {
     fun deleteFromDownloadManager(downloadId: Long) {
         DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
     }
-
-    companion object {
-        @JvmStatic
-        val instance: DownloadInfoRepository by lazy { DownloadInfoRepository() }
-    }
 }

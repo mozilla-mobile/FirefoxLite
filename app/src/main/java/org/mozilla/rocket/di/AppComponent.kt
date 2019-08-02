@@ -18,6 +18,11 @@ package org.mozilla.rocket.di
 
 import android.content.Context
 import dagger.Component
+import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.fragment.BrowserFragment
+import org.mozilla.focus.fragment.DownloadsFragment
+import org.mozilla.focus.home.HomeFragment
+import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
@@ -35,15 +40,18 @@ import javax.inject.Singleton
 @Component(
     modules = [
         AppModule::class,
-        ContentModule::class
+        ContentModule::class,
+        ChromeModule::class
     ]
 )
 interface AppComponent {
     fun appContext(): Context
 
     fun inject(newsSettingFragment: NewsSettingFragment)
-
     fun inject(newsTabFragment: NewsTabFragment)
-
     fun inject(newsFragment: NewsFragment)
+    fun inject(mainActivity: MainActivity)
+    fun inject(browserFragment: BrowserFragment)
+    fun inject(downloadsFragment: DownloadsFragment)
+    fun inject(homeFragment: HomeFragment)
 }

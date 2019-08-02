@@ -82,11 +82,13 @@ import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
+import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.download.DownloadViewModelFactory;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
@@ -121,6 +123,9 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final int MSG_ID_REFRESH = 8269;
 
     public static final String BANNER_MANIFEST_DEFAULT = "";
+
+    @javax.inject.Inject
+    DownloadViewModelFactory downloadViewModelFactory;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -163,6 +168,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void onCreate(Bundle bundle) {
+        ExtentionKt.appComponent(this).inject(this);
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
@@ -558,7 +564,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void setupDownloadIndicator() {
         BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
-        DownloadIndicatorViewModel downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(getActivity());
+        DownloadIndicatorViewModel downloadIndicatorViewModel =
+                ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
                 .observe(getViewLifecycleOwner(), status -> {
                     switch (status) {

@@ -49,6 +49,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -81,9 +82,11 @@ import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
+import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.download.DownloadViewModelFactory;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
@@ -133,6 +136,9 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
+
+    @javax.inject.Inject
+    DownloadViewModelFactory downloadViewModelFactory;
 
     private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
 
@@ -208,6 +214,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         chromeViewModel = Inject.obtainChromeViewModel(getActivity());
@@ -560,7 +567,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private void setupDownloadIndicator(View rootView) {
         final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
-        DownloadIndicatorViewModel downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(getActivity());
+        DownloadIndicatorViewModel downloadIndicatorViewModel =
+                ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
                 .observe(this, status -> {
                     switch (status) {
