@@ -23,8 +23,6 @@ import javax.annotation.Nullable;
 
 public class Inject {
 
-    private static boolean sIsNewCreated = true;
-
     public static String getDefaultTopSites(Context context) {
 
         return PreferenceManager.getDefaultSharedPreferences(context)
@@ -64,14 +62,6 @@ public class Inject {
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
-    }
-
-    public static final boolean getActivityNewlyCreatedFlag() {
-        return sIsNewCreated;
-    }
-
-    public static void setActivityNewlyCreatedFlag() {
-        sIsNewCreated = false;
     }
 
     public static boolean isUnderEspressoTest() {
