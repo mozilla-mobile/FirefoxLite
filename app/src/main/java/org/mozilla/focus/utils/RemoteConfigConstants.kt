@@ -1,9 +1,13 @@
 package org.mozilla.focus.utils
 
-import org.mozilla.focus.Inject
-
 object RemoteConfigConstants {
-    val FEATURE_SURVEY_DEFAULT = Inject.getDefaultFeatureSurvey().value
+
+    // Provide different default value for ui testing and production mode
+    val FEATURE_SURVEY_DEFAULT = if (!AppConstants.isUnderEspressoTest()) {
+        RemoteConfigConstants.SURVEY.NONE
+    } else {
+        RemoteConfigConstants.SURVEY.VPN_RECOMMENDER
+    }.value
 
     enum class SURVEY constructor(val value: Int) {
         NONE(0), WIFI_FINDING(1), VPN(2), VPN_RECOMMENDER(3);

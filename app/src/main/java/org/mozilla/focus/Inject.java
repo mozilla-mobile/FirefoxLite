@@ -9,7 +9,6 @@ import android.content.Context;
 import android.preference.PreferenceManager;
 
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.utils.RemoteConfigConstants;
 
 public class Inject {
 
@@ -17,9 +16,5 @@ public class Inject {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(HomeFragment.TOPSITES_PREF, null);
 
-    }
-
-    public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
-        return RemoteConfigConstants.SURVEY.NONE;
     }
 }
