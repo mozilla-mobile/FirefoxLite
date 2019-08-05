@@ -77,11 +77,6 @@ public class Inject {
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
 
-    public static boolean isUnderEspressoTest() {
-        return true;
-    }
-
-
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.VPN_RECOMMENDER;
     }

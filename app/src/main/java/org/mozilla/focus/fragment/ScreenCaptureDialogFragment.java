@@ -10,20 +10,21 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieComposition;
 import com.airbnb.lottie.OnCompositionLoadedListener;
 
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
+import org.mozilla.focus.utils.AppConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class ScreenCaptureDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_capture_screen, container, false);
         mLottieAnimationView = (LottieAnimationView) view.findViewById(R.id.animation_view);
-        if (!Inject.isUnderEspressoTest()) {
+        if (!AppConstants.isUnderEspressoTest()) {
             // Since Lottie 2.5.0, infinite animation may affect ScreenshotCaptureTask to be finished on bitrise.
             // We don't play animation during testing
             mLottieAnimationView.playAnimation();
