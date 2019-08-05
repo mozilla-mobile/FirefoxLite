@@ -6,9 +6,7 @@
 package org.mozilla.focus;
 
 import android.content.Context;
-import android.os.StrictMode;
 
-import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 
 public class Inject {
@@ -17,24 +15,6 @@ public class Inject {
 
     public static String getDefaultTopSites(Context context) {
         return TOP_SITES;
-    }
-
-    public static void enableStrictMode() {
-        if (AppConstants.isReleaseBuild()) {
-            return;
-        }
-
-        final StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll();
-        final StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
-
-        // In AndroidTest we are super kind :)
-        threadPolicyBuilder.penaltyLog();
-        // Previously we have penaltyDeath() for debug build, but in order to add crashlytics, we can't use it here.
-        // ( crashlytics has untagged Network violation so it always crashes
-        vmPolicyBuilder.penaltyLog();
-
-        StrictMode.setThreadPolicy(threadPolicyBuilder.build());
-        StrictMode.setVmPolicy(vmPolicyBuilder.build());
     }
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
