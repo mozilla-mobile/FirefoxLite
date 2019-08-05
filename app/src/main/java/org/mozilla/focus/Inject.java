@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 public class Inject {
 
     public static String getDefaultTopSites(Context context) {
-
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(HomeFragment.TOPSITES_PREF, null);
 
@@ -62,10 +61,6 @@ public class Inject {
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build());
         StrictMode.setVmPolicy(vmPolicyBuilder.build());
-    }
-
-    public static boolean isUnderEspressoTest() {
-        return false;
     }
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {

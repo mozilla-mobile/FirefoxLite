@@ -44,4 +44,13 @@ public final class AppConstants {
         return BuildConfig.FLAVOR_product == FLAVOR_product_NIGHTLY;
     }
 
+    public static boolean isUnderEspressoTest() {
+        try {
+            Class.forName("androidx.test.espresso.Espresso");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
 }
