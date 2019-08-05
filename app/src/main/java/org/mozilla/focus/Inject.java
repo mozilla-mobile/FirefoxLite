@@ -10,7 +10,6 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 
@@ -20,10 +19,6 @@ public class Inject {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(HomeFragment.TOPSITES_PREF, null);
 
-    }
-
-    public static TabsDatabase getTabsDatabase(Context context) {
-        return TabsDatabase.getInstance(context);
     }
 
     public static void enableStrictMode() {

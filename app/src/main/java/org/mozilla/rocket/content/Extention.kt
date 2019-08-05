@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -14,11 +15,14 @@ import org.mozilla.rocket.extension.toFragmentActivity
 fun Fragment.app(): FocusApplication = context?.applicationContext as FocusApplication
 fun FragmentActivity.app(): FocusApplication = applicationContext as FocusApplication
 fun AppCompatDialog.app(): FocusApplication = context.applicationContext as FocusApplication
-fun Fragment.appComponent(): AppComponent = app().appComponent
-fun FragmentActivity.appComponent(): AppComponent = app().appComponent
-fun AppCompatDialog.appComponent(): AppComponent = app().appComponent
+fun Fragment.appComponent(): AppComponent = app().getAppComponent()
+fun FragmentActivity.appComponent(): AppComponent = app().getAppComponent()
+fun AppCompatDialog.appComponent(): AppComponent = app().getAppComponent()
 fun Fragment.appContext(): Context = appComponent().appContext()
 fun FragmentActivity.appContext(): Context = appComponent().appContext()
+
+@VisibleForTesting
+fun Context.appComponent(): AppComponent = (applicationContext as FocusApplication).getAppComponent()
 
 /**
  * Like [FragmentActivity.viewModelProvider] for FragmentActivity that want a [ViewModel] scoped to the Activity.

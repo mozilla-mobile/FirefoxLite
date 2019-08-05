@@ -1,23 +1,27 @@
 package org.mozilla.focus.activity;
 
+import android.content.Context;
 import android.content.Intent;
+
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
+import org.mozilla.focus.persistence.di.TabsModule;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
+import org.mozilla.rocket.content.ExtentionKt;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.pressBack;
@@ -46,7 +50,7 @@ public class SaveRestoreTabsTest {
         // Set the share preferences and start the activity
         AndroidTestUtils.beforeTest();
 
-        tabsDatabase = Inject.getTabsDatabase(null);
+        tabsDatabase = ExtentionKt.appComponent((Context) getApplicationContext()).tabsDatabase();
     }
 
     /**

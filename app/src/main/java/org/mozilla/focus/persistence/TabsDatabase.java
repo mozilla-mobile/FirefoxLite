@@ -11,22 +11,13 @@ import androidx.annotation.NonNull;
 @Database(entities = {TabEntity.class}, version = 2)
 public abstract class TabsDatabase extends RoomDatabase {
 
-    private static volatile TabsDatabase instance;
-
     public abstract TabDao tabDao();
 
-    public static TabsDatabase getInstance(@NonNull Context context) {
-        if (instance == null) {
-            synchronized (TabsDatabase.class) {
-                if (instance == null) {
-                    instance = Room.databaseBuilder(context.getApplicationContext(),
-                            TabsDatabase.class, "tabs.db")
-                            .addMigrations(MIGRATION_1_2)
-                            .build();
-                }
-            }
-        }
-        return instance;
+    public static TabsDatabase create(@NonNull Context context) {
+        return Room.databaseBuilder(context.getApplicationContext(),
+                TabsDatabase.class, "tabs.db")
+                .addMigrations(MIGRATION_1_2)
+                .build();
     }
 
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
