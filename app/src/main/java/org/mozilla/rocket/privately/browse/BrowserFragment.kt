@@ -1,17 +1,12 @@
 package org.mozilla.rocket.privately.browse
 
 import android.Manifest
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +19,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
@@ -43,6 +43,10 @@ import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
@@ -67,6 +71,9 @@ class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
 
+    @javax.inject.Inject
+    lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
+
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
@@ -87,6 +94,7 @@ class BrowserFragment : LocaleAwareFragment(),
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
         chromeViewModel = Inject.obtainChromeViewModel(activity)
     }
@@ -355,7 +363,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
+        val bottomBarViewModel = activityViewModelProvider<PrivateBottomBarViewModel>(privateBottomBarViewModelFactory)
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
             bottomBarItemAdapter.endPrivateHomeAnimation()
