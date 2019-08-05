@@ -10,8 +10,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.view.animation.Animation;
 
 import androidx.room.Room;
 import androidx.test.InstrumentationRegistry;
@@ -79,8 +77,5 @@ public class Inject {
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.VPN_RECOMMENDER;
-    }
-
-    public static void startAnimation(View view, Animation animation) {
     }
 }
