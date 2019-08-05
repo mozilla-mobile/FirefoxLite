@@ -6,12 +6,6 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.sqlite.db.SupportSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,15 +21,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,6 +34,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,10 +58,10 @@ import org.mozilla.banner.BannerConfigViewModel;
 import org.mozilla.banner.BannerViewHolder;
 import org.mozilla.banner.OnClickListener;
 import org.mozilla.fileutils.FileUtils;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.home.repository.TopSitesRepo;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.HistoryContract;
@@ -132,6 +133,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     BottomBarViewModelFactory bottomBarViewModelFactory;
     @javax.inject.Inject
     ChromeViewModelFactory chromeViewModelFactory;
+    @javax.inject.Inject
+    TopSitesRepo topSitesRepo;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -718,7 +721,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void initDefaultSites() {
         // use different implementation to provide default top sites.
-        String obj_sites = Inject.getDefaultTopSites(getContext());
+        String obj_sites = topSitesRepo.getDefaultTopSitesJsonString();
 
         //if no default sites data in SharedPreferences, load data from assets.
         if (obj_sites == null) {
