@@ -31,17 +31,31 @@ import java.io.File
 
 open class FocusApplication : LocaleAwareApplication() {
 
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
-    }
+    private var appComponent: AppComponent? = null
 
     lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
 
     val settings by lazy {
         SettingsProvider(this)
+    }
+
+    fun getAppComponent(): AppComponent {
+        if (appComponent == null) {
+            synchronized(this@FocusApplication) {
+                if (appComponent == null) {
+                    appComponent = DaggerAppComponent.builder()
+                            .appModule(AppModule(this))
+                            .build()
+                }
+            }
+        }
+
+        return requireNotNull(appComponent)
+    }
+
+    fun resetAppComponent() {
+        appComponent = null
     }
 
     // Override getCacheDir cause when we create a WebView, it'll asked the application's

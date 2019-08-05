@@ -24,6 +24,8 @@ import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.DownloadsFragment
 import org.mozilla.focus.history.BrowsingHistoryFragment
 import org.mozilla.focus.home.HomeFragment
+import org.mozilla.focus.persistence.TabsDatabase
+import org.mozilla.focus.persistence.di.TabsModule
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.di.ChromeModule
@@ -49,14 +51,12 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         ContentModule::class,
-        ChromeModule::class
+        ChromeModule::class,
+        TabsModule::class
     ]
 )
 interface AppComponent {
     fun appContext(): Context
-
-    @VisibleForTesting
-    fun chromeViewModelFactory(): ChromeViewModelFactory
 
     fun inject(newsSettingFragment: NewsSettingFragment)
     fun inject(newsTabFragment: NewsTabFragment)
@@ -72,4 +72,9 @@ interface AppComponent {
     fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
     fun inject(ecFragment: EcFragment)
     fun inject(privateModeActivity: PrivateModeActivity)
+
+    @VisibleForTesting
+    fun chromeViewModelFactory(): ChromeViewModelFactory
+    @VisibleForTesting
+    fun tabsDatabase(): TabsDatabase
 }
