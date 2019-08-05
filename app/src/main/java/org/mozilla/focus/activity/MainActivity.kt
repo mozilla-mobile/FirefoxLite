@@ -101,6 +101,8 @@ class MainActivity : BaseActivity(),
     lateinit var downloadViewModelFactory: DownloadViewModelFactory
     @javax.inject.Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    @javax.inject.Inject
+    lateinit var tabModelStore: TabModelStore
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
@@ -430,12 +432,12 @@ class MainActivity : BaseActivity(),
         }
 
         val currentTabId = getSessionManager().focusSession?.id
-        TabModelStore.getInstance(this).saveTabs(this, sessions, currentTabId, null)
+        tabModelStore.saveTabs(this, sessions, currentTabId, null)
     }
 
     private fun restoreTabsFromPersistence() {
         chromeViewModel.onRestoreTabCountStarted()
-        TabModelStore.getInstance(this).getSavedTabs(this, asyncQueryListener)
+        tabModelStore.getSavedTabs(this, asyncQueryListener)
     }
 
     override fun getThemeManager(): ThemeManager? = themeManager
