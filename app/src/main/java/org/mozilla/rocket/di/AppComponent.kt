@@ -22,6 +22,7 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.DownloadsFragment
 import org.mozilla.focus.home.HomeFragment
+import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.news.NewsFragment
@@ -54,4 +55,5 @@ interface AppComponent {
     fun inject(browserFragment: BrowserFragment)
     fun inject(downloadsFragment: DownloadsFragment)
     fun inject(homeFragment: HomeFragment)
+    fun inject(urlInputFragment: UrlInputFragment)
 }
