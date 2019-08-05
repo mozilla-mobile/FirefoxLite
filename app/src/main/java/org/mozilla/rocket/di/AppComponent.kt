@@ -24,6 +24,8 @@ import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.DownloadsFragment
 import org.mozilla.focus.history.BrowsingHistoryFragment
 import org.mozilla.focus.home.HomeFragment
+import org.mozilla.focus.home.di.TopSitesModule
+import org.mozilla.focus.home.repository.TopSitesRepo
 import org.mozilla.focus.persistence.TabsDatabase
 import org.mozilla.focus.persistence.di.TabsModule
 import org.mozilla.focus.urlinput.UrlInputFragment
@@ -52,7 +54,8 @@ import javax.inject.Singleton
         AppModule::class,
         ContentModule::class,
         ChromeModule::class,
-        TabsModule::class
+        TabsModule::class,
+        TopSitesModule::class
     ]
 )
 interface AppComponent {
@@ -77,4 +80,6 @@ interface AppComponent {
     fun chromeViewModelFactory(): ChromeViewModelFactory
     @VisibleForTesting
     fun tabsDatabase(): TabsDatabase
+    @VisibleForTesting
+    fun topSitesRepo(): TopSitesRepo
 }
