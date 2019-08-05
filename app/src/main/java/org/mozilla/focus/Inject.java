@@ -5,7 +5,6 @@
 
 package org.mozilla.focus;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -29,17 +28,10 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModelFactory;
-import org.mozilla.rocket.chrome.MenuViewModel;
-import org.mozilla.rocket.chrome.MenuViewModelFactory;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
 import org.mozilla.rocket.helper.StorageHelper;
 import org.mozilla.rocket.privately.PrivateMode;
-import org.mozilla.rocket.urlinput.GlobalDataSource;
-import org.mozilla.rocket.urlinput.LocaleDataSource;
-import org.mozilla.rocket.urlinput.QuickSearchRepository;
-import org.mozilla.rocket.urlinput.QuickSearchViewModel;
-import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import javax.annotation.Nullable;
@@ -108,11 +100,6 @@ public class Inject {
     public static BottomBarViewModel obtainBottomBarViewModel(FragmentActivity activity) {
         BottomBarViewModelFactory factory = BottomBarViewModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(BottomBarViewModel.class);
-    }
-
-    public static MenuViewModel obtainMenuViewModel(FragmentActivity activity) {
-        MenuViewModelFactory factory = MenuViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(MenuViewModel.class);
     }
 
     public static PrivateBottomBarViewModel obtainPrivateBottomBarViewModel(FragmentActivity activity) {

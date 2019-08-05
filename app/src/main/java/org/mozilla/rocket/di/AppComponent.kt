@@ -28,6 +28,7 @@ import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
+import org.mozilla.rocket.menu.MenuDialog
 import javax.inject.Singleton
 
 /**
@@ -56,4 +57,5 @@ interface AppComponent {
     fun inject(downloadsFragment: DownloadsFragment)
     fun inject(homeFragment: HomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
+    fun inject(menuDialog: MenuDialog)
 }
