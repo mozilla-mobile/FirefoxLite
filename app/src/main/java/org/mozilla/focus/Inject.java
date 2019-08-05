@@ -10,16 +10,12 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.view.animation.Animation;
 
 import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
-
-import javax.annotation.Nullable;
 
 public class Inject {
 
@@ -65,12 +61,5 @@ public class Inject {
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.NONE;
-    }
-
-    public static void startAnimation(@Nullable View view, Animation animation) {
-        if (view == null) {
-            return;
-        }
-        view.startAnimation(animation);
     }
 }
