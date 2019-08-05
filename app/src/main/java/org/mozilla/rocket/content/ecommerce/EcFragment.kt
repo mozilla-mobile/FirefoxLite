@@ -1,27 +1,29 @@
 package org.mozilla.rocket.content.ecommerce
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.banner.BannerAdapter
 import org.mozilla.banner.BannerConfigViewModel
 import org.mozilla.banner.TelemetryListener
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.home.BannerHelper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_KEY
@@ -42,11 +44,15 @@ class EcFragment : Fragment() {
         }
     }
 
+    @javax.inject.Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+
     private lateinit var chromeViewModel: ChromeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
     }
 
     override fun onCreateView(

@@ -8,7 +8,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
 
-class ChromeViewModelFactory private constructor(
+class ChromeViewModelFactory(
     private val settings: Settings,
     private val bookmarkRepo: BookmarkRepository,
     private val privateMode: PrivateMode,
@@ -28,28 +28,5 @@ class ChromeViewModelFactory private constructor(
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-    }
-
-    companion object {
-
-        @Volatile private var INSTANCE: ChromeViewModelFactory? = null
-
-        @JvmStatic
-        fun getInstance(
-            settings: Settings,
-            bookmarkRepo: BookmarkRepository,
-            privateMode: PrivateMode,
-            browsers: Browsers,
-            storageHelper: StorageHelper
-        ): ChromeViewModelFactory? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: ChromeViewModelFactory(
-                            settings,
-                            bookmarkRepo,
-                            privateMode,
-                            browsers,
-                            storageHelper
-                    ).also { INSTANCE = it }
-                }
     }
 }

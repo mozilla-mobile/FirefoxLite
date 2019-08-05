@@ -64,10 +64,12 @@ import org.mozilla.rocket.appupdate.InAppUpdateController
 import org.mozilla.rocket.appupdate.InAppUpdateIntro
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.extension.nonNullObserve
@@ -99,6 +101,8 @@ class MainActivity : BaseActivity(),
 
     @javax.inject.Inject
     lateinit var downloadViewModelFactory: DownloadViewModelFactory
+    @javax.inject.Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
@@ -153,8 +157,8 @@ class MainActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = Inject.obtainChromeViewModel(this)
-        downloadIndicatorViewModel = ViewModelProviders.of(this, downloadViewModelFactory).get(DownloadIndicatorViewModel::class.java)
+        chromeViewModel = viewModelProvider(chromeViewModelFactory)
+        downloadIndicatorViewModel = viewModelProvider(downloadViewModelFactory)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
         appUpdateController = InAppUpdateController(
