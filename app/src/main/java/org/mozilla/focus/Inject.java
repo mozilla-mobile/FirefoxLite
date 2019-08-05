@@ -6,8 +6,6 @@
 package org.mozilla.focus;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
@@ -15,7 +13,6 @@ import org.mozilla.focus.home.HomeFragment;
 import org.mozilla.focus.persistence.TabsDatabase;
 import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 public class Inject {
 
@@ -27,19 +24,6 @@ public class Inject {
 
     public static TabsDatabase getTabsDatabase(Context context) {
         return TabsDatabase.getInstance(context);
-    }
-
-
-    public static boolean isTelemetryEnabled(Context context) {
-        // The first access to shared preferences will require a disk read.
-        return StrictModeViolation.tempGrant(StrictMode.ThreadPolicy.Builder::permitDiskReads, () -> {
-            final Resources resources = context.getResources();
-            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            final boolean isEnabledByDefault = AppConstants.isBuiltWithFirebase();
-            // Telemetry is not enable by default in debug build. But the user / developer can choose to turn it on
-            // in AndroidTest, this is enabled by default
-            return preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), isEnabledByDefault);
-        });
     }
 
     public static void enableStrictMode() {
