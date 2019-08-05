@@ -5,17 +5,19 @@
 
 package org.mozilla.focus.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.util.DisplayMetrics;
+
 import androidx.annotation.Keep;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.action.Tap;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import android.util.DisplayMetrics;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,18 +25,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
-import org.mozilla.focus.autobot.BottomBarRobotKt;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
+import org.mozilla.rocket.content.ExtentionKt;
 
 import java.util.List;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.pressBack;
@@ -46,8 +47,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition;
-import static org.mozilla.rocket.chrome.BottomBarItemAdapter.TYPE_MENU;
-import static org.mozilla.rocket.chrome.BottomBarItemAdapter.TYPE_TAB_COUNTER;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
@@ -75,7 +74,9 @@ public class HomeTest {
 
         try {
             // Get test top sites
-            final JSONArray jsonDefault = new JSONArray(Inject.getDefaultTopSites(context));
+            String topSitesJsonString = ExtentionKt.appComponent((Context) getApplicationContext())
+                    .topSitesRepo().getDefaultTopSitesJsonString();
+            final JSONArray jsonDefault = new JSONArray(topSitesJsonString);
             final List<Site> defaultSites = TopSitesUtils.paresJsonToList(context, jsonDefault);
 
             // Check the title of the sample top site is correct
