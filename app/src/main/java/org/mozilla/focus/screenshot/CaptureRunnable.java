@@ -6,10 +6,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.BrowserFragment;
 import org.mozilla.focus.fragment.ScreenCaptureDialogFragment;
+import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 
@@ -82,7 +82,7 @@ public class CaptureRunnable extends ScreenshotCaptureTask implements Runnable, 
         if (TextUtils.isEmpty(path)) {
             screenCaptureDialogFragment.dismiss();
         } else {
-            screenCaptureDialogFragment.dismiss(!Inject.isUnderEspressoTest());
+            screenCaptureDialogFragment.dismiss(!AppConstants.isUnderEspressoTest());
         }
     }
 
