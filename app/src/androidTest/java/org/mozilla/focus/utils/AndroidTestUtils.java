@@ -150,6 +150,7 @@ public final class AndroidTestUtils {
     }
 
     public static void setRateAppPromotionIsReadyToShow() {
+        MainActivity.shouldRunPromotion = true;
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         // Clear rate app did show flag
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
