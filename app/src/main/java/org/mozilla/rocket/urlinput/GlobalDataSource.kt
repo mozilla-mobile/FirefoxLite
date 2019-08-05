@@ -4,34 +4,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.urlinput
 
-import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import android.content.Context
 
-class GlobalDataSource : QuickSearchDataSource {
-
-    private lateinit var context: Context
+class GlobalDataSource(private val appContext: Context) : QuickSearchDataSource {
 
     override fun fetchEngines(): LiveData<List<QuickSearch>> {
         val liveData = MutableLiveData<List<QuickSearch>>()
-        QuickSearchUtils.loadDefaultEngines(context, liveData)
+        QuickSearchUtils.loadDefaultEngines(appContext, liveData)
         return liveData
-    }
-
-    companion object {
-
-        // It's an Application Context so it should be safe
-        @SuppressLint("StaticFieldLeak")
-        @Volatile private var INSTANCE: GlobalDataSource? = null
-
-        @JvmStatic
-        fun getInstance(context: Context): GlobalDataSource? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: GlobalDataSource().also {
-                        INSTANCE = it
-                        it.context = context.applicationContext
-                    }
-                }
     }
 }
