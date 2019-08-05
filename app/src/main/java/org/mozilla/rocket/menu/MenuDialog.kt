@@ -11,7 +11,6 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.mozilla.fileutils.FileUtils
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU
@@ -19,6 +18,7 @@ import org.mozilla.focus.utils.FormatUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.MenuItemAdapter
 import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.chrome.MenuViewModelFactory
@@ -37,6 +37,8 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 class MenuDialog : BottomSheetDialog {
 
     @javax.inject.Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    @javax.inject.Inject
     lateinit var menuViewModelFactory: MenuViewModelFactory
 
     private lateinit var menuViewModel: MenuViewModel
@@ -54,7 +56,7 @@ class MenuDialog : BottomSheetDialog {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         val activity = context.toFragmentActivity()
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
         menuViewModel = activityViewModelProvider(menuViewModelFactory)
         settings = Settings.getInstance(context)
 

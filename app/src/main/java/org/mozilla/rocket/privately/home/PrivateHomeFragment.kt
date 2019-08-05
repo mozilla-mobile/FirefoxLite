@@ -17,13 +17,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieAnimationView
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
@@ -40,6 +40,8 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     @javax.inject.Inject
     lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
+    @javax.inject.Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var logoMan: LottieAnimationView
@@ -50,7 +52,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     override fun onCreate(bundle: Bundle?) {
         appComponent().inject(this)
         super.onCreate(bundle)
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
     }
 
     @Override

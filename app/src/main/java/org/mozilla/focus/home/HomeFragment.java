@@ -83,6 +83,7 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
+import org.mozilla.rocket.chrome.ChromeViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
@@ -129,6 +130,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     DownloadViewModelFactory downloadViewModelFactory;
     @javax.inject.Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
+    @javax.inject.Inject
+    ChromeViewModelFactory chromeViewModelFactory;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -178,7 +181,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter.setView(this);
         this.presenter.setModel(this);
         bannerHelper.setListener(this);
-        chromeViewModel = Inject.obtainChromeViewModel(getActivity());
+        chromeViewModel = ViewModelProviders.of(requireActivity(), chromeViewModelFactory).get(ChromeViewModel.class);
         bottomBarViewModel = ViewModelProviders.of(requireActivity(), bottomBarViewModelFactory).get(BottomBarViewModel.class);
     }
 
