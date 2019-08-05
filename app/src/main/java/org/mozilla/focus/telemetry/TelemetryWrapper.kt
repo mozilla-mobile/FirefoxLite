@@ -17,7 +17,6 @@ import android.util.Log
 import android.webkit.PermissionRequest
 import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import org.mozilla.focus.BuildConfig
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.provider.ScreenshotContract
 import org.mozilla.focus.search.SearchEngineManager
@@ -26,6 +25,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.AdjustHelper
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
@@ -286,11 +286,16 @@ object TelemetryWrapper {
     // context passed here is nullable cause it may come from Java code
     @JvmStatic
     fun isTelemetryEnabled(context: Context?): Boolean {
-        return if (context == null) {
-            false
-        } else {
-            Inject.isTelemetryEnabled(context)
-        }
+        if (context == null) return false
+        // The first access to shared preferences will require a disk read.
+        return StrictModeViolation.tempGrant({ obj: Builder -> obj.permitDiskReads() }, {
+            val resources = context.resources
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val isEnabledByDefault = AppConstants.isBuiltWithFirebase()
+            // Telemetry is not enable by default in debug build. But the user / developer can choose to turn it on
+            // in AndroidTest, this is enabled by default
+            preferences.getBoolean(resources.getString(R.string.pref_key_telemetry), isEnabledByDefault)
+        })
     }
 
     @JvmStatic
