@@ -29,6 +29,7 @@ import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
 import org.mozilla.rocket.menu.MenuDialog
+import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import javax.inject.Singleton
 
 /**
@@ -54,8 +55,10 @@ interface AppComponent {
     fun inject(newsFragment: NewsFragment)
     fun inject(mainActivity: MainActivity)
     fun inject(browserFragment: BrowserFragment)
+    fun inject(browserFragment: org.mozilla.rocket.privately.browse.BrowserFragment)
     fun inject(downloadsFragment: DownloadsFragment)
     fun inject(homeFragment: HomeFragment)
+    fun inject(privateHomeFragment: PrivateHomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
     fun inject(menuDialog: MenuDialog)
 }

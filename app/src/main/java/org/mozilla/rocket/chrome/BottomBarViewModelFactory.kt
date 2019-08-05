@@ -3,7 +3,7 @@ package org.mozilla.rocket.chrome
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class BottomBarViewModelFactory private constructor() : ViewModelProvider.NewInstanceFactory() {
+class BottomBarViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -11,10 +11,5 @@ class BottomBarViewModelFactory private constructor() : ViewModelProvider.NewIns
             return BottomBarViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-    }
-
-    companion object {
-        @JvmStatic
-        val instance: BottomBarViewModelFactory by lazy { BottomBarViewModelFactory() }
     }
 }

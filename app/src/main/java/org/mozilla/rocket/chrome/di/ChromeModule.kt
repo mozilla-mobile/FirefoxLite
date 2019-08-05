@@ -3,7 +3,9 @@ package org.mozilla.rocket.chrome.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.mozilla.rocket.chrome.BottomBarViewModelFactory
 import org.mozilla.rocket.chrome.MenuViewModelFactory
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
 import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.urlinput.GlobalDataSource
@@ -56,4 +58,14 @@ object ChromeModule {
     @Singleton
     @Provides
     fun provideMenuViewModelFactory(): MenuViewModelFactory = MenuViewModelFactory()
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideBottomBarViewModelFactory(): BottomBarViewModelFactory = BottomBarViewModelFactory()
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun providePrivateBottomBarViewModelFactory(): PrivateBottomBarViewModelFactory = PrivateBottomBarViewModelFactory()
 }

@@ -24,12 +24,8 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.RemoteConfigConstants;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.chrome.BottomBarViewModel;
-import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModelFactory;
-import org.mozilla.rocket.chrome.PrivateBottomBarViewModel;
-import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory;
 import org.mozilla.rocket.helper.StorageHelper;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
@@ -95,16 +91,6 @@ public class Inject {
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.NONE;
-    }
-
-    public static BottomBarViewModel obtainBottomBarViewModel(FragmentActivity activity) {
-        BottomBarViewModelFactory factory = BottomBarViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(BottomBarViewModel.class);
-    }
-
-    public static PrivateBottomBarViewModel obtainPrivateBottomBarViewModel(FragmentActivity activity) {
-        PrivateBottomBarViewModelFactory factory = PrivateBottomBarViewModelFactory.getInstance();
-        return ViewModelProviders.of(activity, factory).get(PrivateBottomBarViewModel.class);
     }
 
     public static ChromeViewModel obtainChromeViewModel(FragmentActivity activity) {

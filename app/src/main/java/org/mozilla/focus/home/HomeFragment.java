@@ -80,6 +80,7 @@ import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
+import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.content.ExtentionKt;
@@ -126,6 +127,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @javax.inject.Inject
     DownloadViewModelFactory downloadViewModelFactory;
+    @javax.inject.Inject
+    BottomBarViewModelFactory bottomBarViewModelFactory;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -148,6 +151,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
     private ChromeViewModel chromeViewModel;
+    private BottomBarViewModel bottomBarViewModel;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = bannerHelper::setUpHomeBannerFromConfig;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -175,6 +179,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter.setModel(this);
         bannerHelper.setListener(this);
         chromeViewModel = Inject.obtainChromeViewModel(getActivity());
+        bottomBarViewModel = ViewModelProviders.of(requireActivity(), bottomBarViewModelFactory).get(BottomBarViewModel.class);
     }
 
     @Override
@@ -536,7 +541,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Dark.INSTANCE);
-        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
         LiveDataExtensionKt.switchFrom(chromeViewModel.isNightMode(), bottomBarViewModel.getItems())
@@ -563,7 +567,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setupDownloadIndicator() {
-        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         DownloadIndicatorViewModel downloadIndicatorViewModel =
                 ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
