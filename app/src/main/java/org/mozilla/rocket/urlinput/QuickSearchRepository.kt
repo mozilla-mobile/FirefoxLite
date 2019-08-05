@@ -18,20 +18,4 @@ class QuickSearchRepository(
     fun fetchLocale(): LiveData<List<QuickSearch>> {
         return localeDataSource.fetchEngines()
     }
-
-    companion object {
-
-        @Volatile private var INSTANCE: QuickSearchRepository? = null
-
-        @JvmStatic
-        fun getInstance(
-            globalDataSource: QuickSearchDataSource,
-            localeDataSource: QuickSearchDataSource
-        ): QuickSearchRepository? =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: QuickSearchRepository(globalDataSource, localeDataSource).also {
-                        INSTANCE = it
-                    }
-                }
-    }
 }

@@ -32,8 +32,12 @@ import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.urlinput.QuickSearch
 import org.mozilla.rocket.urlinput.QuickSearchAdapter
+import org.mozilla.rocket.urlinput.QuickSearchViewModel
+import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory
 import java.util.Locale
 
 /**
@@ -41,6 +45,9 @@ import java.util.Locale
  */
 class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener,
         View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
+
+    @javax.inject.Inject
+    lateinit var quickSearchViewModelFactory: QuickSearchViewModelFactory
 
     private val autoCompleteProvider: ShippedDomainsProvider = ShippedDomainsProvider()
     private lateinit var presenter: UrlInputContract.Presenter
@@ -57,6 +64,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private var allowSuggestion: Boolean = false
 
     override fun onCreate(bundle: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(bundle)
         val userAgent = WebViewProvider.getUserAgentString(activity)
         this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
@@ -118,11 +126,14 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
         quickSearchRecyclerView.adapter = quickSearchAdapter
-        Inject.obtainQuickSearchViewModel(activity).quickSearchObservable.observe(
-                viewLifecycleOwner,
-                Observer { quickSearchList ->
-                    quickSearchAdapter.submitList(quickSearchList)
-            })
+        activityViewModelProvider<QuickSearchViewModel>(quickSearchViewModelFactory).run {
+            quickSearchObservable.observe(
+                    viewLifecycleOwner,
+                    Observer { quickSearchList ->
+                        quickSearchAdapter.submitList(quickSearchList)
+                    }
+            )
+        }
     }
 
     override fun onStart() {

@@ -105,15 +105,6 @@ public class Inject {
         return RemoteConfigConstants.SURVEY.NONE;
     }
 
-    private static QuickSearchRepository provideQuickSearchRepository(Application application) {
-        return QuickSearchRepository.getInstance(GlobalDataSource.getInstance(application), LocaleDataSource.getInstance(application));
-    }
-
-    public static QuickSearchViewModel obtainQuickSearchViewModel(FragmentActivity activity) {
-        QuickSearchViewModelFactory factory = new QuickSearchViewModelFactory(provideQuickSearchRepository(activity.getApplication()));
-        return ViewModelProviders.of(activity, factory).get(QuickSearchViewModel.class);
-    }
-
     public static BottomBarViewModel obtainBottomBarViewModel(FragmentActivity activity) {
         BottomBarViewModelFactory factory = BottomBarViewModelFactory.getInstance();
         return ViewModelProviders.of(activity, factory).get(BottomBarViewModel.class);
