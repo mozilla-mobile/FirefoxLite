@@ -3,7 +3,7 @@ package org.mozilla.rocket.chrome
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class MenuViewModelFactory private constructor() : ViewModelProvider.NewInstanceFactory() {
+class MenuViewModelFactory : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -11,10 +11,5 @@ class MenuViewModelFactory private constructor() : ViewModelProvider.NewInstance
             return MenuViewModel() as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-    }
-
-    companion object {
-        @JvmStatic
-        val instance: MenuViewModelFactory by lazy { MenuViewModelFactory() }
     }
 }

@@ -3,6 +3,7 @@ package org.mozilla.rocket.chrome.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.mozilla.rocket.chrome.MenuViewModelFactory
 import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.urlinput.GlobalDataSource
@@ -50,4 +51,9 @@ object ChromeModule {
     @Provides
     fun provideDownloadViewModelFactory(downloadInfoRepository: DownloadInfoRepository): DownloadViewModelFactory =
             DownloadViewModelFactory(downloadInfoRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideMenuViewModelFactory(): MenuViewModelFactory = MenuViewModelFactory()
 }
