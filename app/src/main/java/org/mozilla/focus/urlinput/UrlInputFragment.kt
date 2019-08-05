@@ -32,6 +32,7 @@ import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.urlinput.QuickSearch
@@ -48,6 +49,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     @javax.inject.Inject
     lateinit var quickSearchViewModelFactory: QuickSearchViewModelFactory
+    @javax.inject.Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private val autoCompleteProvider: ShippedDomainsProvider = ShippedDomainsProvider()
     private lateinit var presenter: UrlInputContract.Presenter
@@ -69,7 +72,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         val userAgent = WebViewProvider.getUserAgentString(activity)
         this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
                 .getDefaultSearchEngine(activity), userAgent)
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
 
         context?.let {
             autoCompleteProvider.initialize(it.applicationContext)

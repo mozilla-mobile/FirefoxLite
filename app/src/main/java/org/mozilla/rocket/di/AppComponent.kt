@@ -17,18 +17,23 @@
 package org.mozilla.rocket.di
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import dagger.Component
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.DownloadsFragment
+import org.mozilla.focus.history.BrowsingHistoryFragment
 import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.di.ContentModule
+import org.mozilla.rocket.content.ecommerce.EcFragment
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
 import org.mozilla.rocket.menu.MenuDialog
+import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import javax.inject.Singleton
 
@@ -50,6 +55,9 @@ import javax.inject.Singleton
 interface AppComponent {
     fun appContext(): Context
 
+    @VisibleForTesting
+    fun chromeViewModelFactory(): ChromeViewModelFactory
+
     fun inject(newsSettingFragment: NewsSettingFragment)
     fun inject(newsTabFragment: NewsTabFragment)
     fun inject(newsFragment: NewsFragment)
@@ -61,4 +69,7 @@ interface AppComponent {
     fun inject(privateHomeFragment: PrivateHomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
     fun inject(menuDialog: MenuDialog)
+    fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
+    fun inject(ecFragment: EcFragment)
+    fun inject(privateModeActivity: PrivateModeActivity)
 }

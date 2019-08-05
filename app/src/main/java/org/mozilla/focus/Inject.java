@@ -13,21 +13,10 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.animation.Animation;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProviders;
-
 import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.focus.persistence.TabsDatabase;
-import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.utils.AppConstants;
-import org.mozilla.focus.utils.Browsers;
 import org.mozilla.focus.utils.RemoteConfigConstants;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.chrome.ChromeViewModel;
-import org.mozilla.rocket.chrome.ChromeViewModelFactory;
-import org.mozilla.rocket.helper.StorageHelper;
-import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import javax.annotation.Nullable;
@@ -91,16 +80,6 @@ public class Inject {
 
     public static RemoteConfigConstants.SURVEY getDefaultFeatureSurvey() {
         return RemoteConfigConstants.SURVEY.NONE;
-    }
-
-    public static ChromeViewModel obtainChromeViewModel(FragmentActivity activity) {
-        Settings settings = Settings.getInstance(activity);
-        BookmarkRepository bookmarkRepo = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(activity));
-        PrivateMode privateMode = PrivateMode.getInstance(activity);
-        Browsers Browsers = new Browsers(activity, "http://mozilla.org");
-        StorageHelper storageHelper = new StorageHelper(activity);
-        ChromeViewModelFactory factory = ChromeViewModelFactory.getInstance(settings, bookmarkRepo, privateMode, Browsers, storageHelper);
-        return ViewModelProviders.of(activity, factory).get(ChromeViewModel.class);
     }
 
     public static void startAnimation(@Nullable View view, Animation animation) {

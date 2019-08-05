@@ -37,8 +37,11 @@ import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitStateModel
@@ -52,6 +55,9 @@ class PrivateModeActivity : BaseActivity(),
         ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
 
+    @javax.inject.Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+
     private val LOG_TAG = "PrivateModeActivity"
     private var sessionManager: SessionManager? = null
     private lateinit var chromeViewModel: ChromeViewModel
@@ -64,9 +70,10 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // we don't keep any state if user leave Private-mode
+        appComponent().inject(this)
         super.onCreate(null)
 
-        chromeViewModel = Inject.obtainChromeViewModel(this)
+        chromeViewModel = viewModelProvider(chromeViewModelFactory)
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
