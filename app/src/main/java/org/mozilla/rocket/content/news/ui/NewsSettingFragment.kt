@@ -2,7 +2,6 @@ package org.mozilla.rocket.content.news.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.preference.Preference
@@ -11,7 +10,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import javax.inject.Inject
@@ -61,23 +59,16 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
         val viewModel: NewsSettingsViewModel = activityViewModelProvider(viewModelFactory)
         viewModel.uiModel.observe(this, Observer { newsSettingsUiModel ->
-            dialogHelper.updateLangList(newsSettingsUiModel.newsLanguages)
-        })
-
-        val settingObserver = Observer<Pair<NewsLanguage, List<NewsCategory>>> {
-            Log.d(
-                TAG,
-                "news locale/cats setting has changed, hence the changes to the cat list is overridden again and again "
-            )
-            it?.first?.let { langChanged ->
+            newsSettingsUiModel.newsSettings.first.let { langChanged ->
                 languagePreference?.summary = langChanged.name
                 langKey = langChanged.getApiId()
             }
-            it?.second?.let { categories ->
+            newsSettingsUiModel.newsSettings.second.let { categories ->
                 categoryPreference?.updateCatList(categories)
             }
-        }
-        repository.getNewsSettings().observe(viewLifecycleOwner, settingObserver)
+
+            dialogHelper.updateLangList(newsSettingsUiModel.newsLanguages)
+        })
     }
 
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {

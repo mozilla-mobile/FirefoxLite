@@ -64,10 +64,10 @@ class NewsTabFragment : Fragment() {
         if (savedInstanceState == null) {
             newsViewModel = activityViewModelProvider(viewModelFactory)
 
-            newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
+            newsViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
                     newsViewModel.clear()
-                    setupViewPager(view, it)
+                    setupViewPager(view, it.newsSettings)
                 }
             })
         }

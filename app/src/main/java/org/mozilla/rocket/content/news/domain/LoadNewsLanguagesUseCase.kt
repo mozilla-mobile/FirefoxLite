@@ -10,13 +10,13 @@ class LoadNewsLanguagesUseCase @Inject constructor(private val repository: NewsS
     companion object {
         private const val DEFAULT_LANGUAGE_KEY = "English"
         private const val DEFAULT_LANGUAGE_CODE = "1"
-        private val DEFAULT_LANGUAGE_LIST = listOf(
+        val DEFAULT_LANGUAGE_LIST = listOf(
             NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE_CODE, DEFAULT_LANGUAGE_KEY)
         )
     }
 
     suspend operator fun invoke(): Result<List<NewsLanguage>> {
-        val result = repository.getLanguagesV2()
+        val result = repository.getLanguages()
         return if (result.isNotEmpty) {
             result
         } else {

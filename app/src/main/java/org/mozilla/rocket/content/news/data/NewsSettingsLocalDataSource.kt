@@ -3,8 +3,6 @@ package org.mozilla.rocket.content.news.data
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -12,14 +10,9 @@ import org.json.JSONException
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Error
 import org.mozilla.rocket.content.Result.Success
-import org.mozilla.threadutils.ThreadUtils
 import java.util.Locale
 
 class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
-    private val languagesLiveData: MutableLiveData<List<NewsLanguage>> = MutableLiveData()
-    private val preferenceLanguagesLiveData: MutableLiveData<NewsLanguage> = MutableLiveData()
-    private val supportCategoriesLiveData: MutableLiveData<List<String>> = MutableLiveData()
-    private val preferenceCategoriesLiveData: MutableLiveData<List<String>> = MutableLiveData()
 
     companion object {
         private const val PREF_NAME = "news_settings"
@@ -30,38 +23,14 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
         private const val DEFAULT_LANGUAGE_KEY = "English"
         private const val DEFAULT_LANGUAGE_CODE = "1"
         private const val DEFAULT_CATEGORY_ID = "top-news"
-        private val DEFAULT_LANGUAGE_LIST = listOf(
-            NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE_CODE, DEFAULT_LANGUAGE_KEY)
-        )
         private val DEFAULT_CATEGORY_LIST = listOf(
             DEFAULT_CATEGORY_ID
         )
     }
 
-    override fun getSupportLanguages(): LiveData<List<NewsLanguage>> {
-        ThreadUtils.postToBackgroundThread {
-            var newsLanguageList = DEFAULT_LANGUAGE_LIST
-            val jsonString = getPreferences()
-                .getString(KEY_JSON_STRING_SUPPORT_LANGUAGES, "") ?: ""
-            if (!TextUtils.isEmpty(jsonString)) {
-                try {
-                    val newsLanguageResult = NewsLanguage.fromJson(jsonString)
-                    if (newsLanguageResult.isNotEmpty()) {
-                        newsLanguageList = newsLanguageResult
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }
-            languagesLiveData.postValue(newsLanguageList)
-        }
-
-        return languagesLiveData
-    }
-
-    override suspend fun getSupportLanguagesV2(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
+    override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext try {
-            var newsLanguageList = ArrayList<NewsLanguage>()
+            val newsLanguageList = ArrayList<NewsLanguage>()
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_SUPPORT_LANGUAGES, "") ?: ""
             if (!TextUtils.isEmpty(jsonString)) {
@@ -73,15 +42,12 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
         }
     }
 
-    override fun setSupportLanguages(languages: List<NewsLanguage>) {
-        ThreadUtils.postToBackgroundThread {
-            getPreferences().edit().putString(KEY_JSON_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
-            languagesLiveData.postValue(languages)
-        }
+    override suspend fun setSupportLanguages(languages: List<NewsLanguage>) = withContext(Dispatchers.IO) {
+        getPreferences().edit().putString(KEY_JSON_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
     }
 
-    override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
-        ThreadUtils.postToBackgroundThread {
+    override suspend fun getUserPreferenceLanguage(): Result<NewsLanguage?> = withContext(Dispatchers.IO) {
+        return@withContext try {
             var selectedLanguage = getDefaultPreferenceLanguage()
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
@@ -95,41 +61,35 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
                     e.printStackTrace()
                 }
             }
-            preferenceLanguagesLiveData.postValue(selectedLanguage)
-        }
-
-        return preferenceLanguagesLiveData
-    }
-
-    override fun setUserPreferenceLanguage(language: NewsLanguage) {
-        ThreadUtils.postToBackgroundThread {
-            getPreferences().edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
-            preferenceLanguagesLiveData.postValue(language)
+            Success(selectedLanguage)
+        } catch (e: Exception) {
+            Error(e)
         }
     }
 
-    override fun getSupportCategories(language: String): LiveData<List<String>> {
-        ThreadUtils.postToBackgroundThread {
+    override suspend fun setUserPreferenceLanguage(language: NewsLanguage) = withContext(Dispatchers.IO) {
+        getPreferences().edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
+    }
+
+    override suspend fun getSupportCategories(language: String): Result<List<String>> = withContext(Dispatchers.IO) {
+        return@withContext try {
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language, "") ?: ""
-            supportCategoriesLiveData.postValue(toCategoryList(jsonString))
-        }
-
-        return supportCategoriesLiveData
-    }
-
-    override fun setSupportCategories(language: String, supportCategories: List<String>) {
-        ThreadUtils.postToBackgroundThread {
-            getPreferences().edit().putString(
-                KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
-                categoryListToJsonArray(supportCategories).toString()
-            ).apply()
-            supportCategoriesLiveData.postValue(supportCategories)
+            Success(toCategoryList(jsonString))
+        } catch (e: Exception) {
+            Error(e)
         }
     }
 
-    override fun getUserPreferenceCategories(language: String): LiveData<List<String>> {
-        ThreadUtils.postToBackgroundThread {
+    override suspend fun setSupportCategories(language: String, supportCategories: List<String>) = withContext(Dispatchers.IO) {
+        getPreferences().edit().putString(
+            KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
+            categoryListToJsonArray(supportCategories).toString()
+        ).apply()
+    }
+
+    override suspend fun getUserPreferenceCategories(language: String): Result<List<String>> = withContext(Dispatchers.IO) {
+        return@withContext try {
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
             val preferenceCategories = if (jsonString.isEmpty()) {
@@ -137,20 +97,17 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
             } else {
                 toCategoryList(jsonString)
             }
-            preferenceCategoriesLiveData.postValue(preferenceCategories)
+            Success(preferenceCategories)
+        } catch (e: Exception) {
+            Error(e)
         }
-
-        return preferenceCategoriesLiveData
     }
 
-    override fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
-        ThreadUtils.postToBackgroundThread {
-            getPreferences().edit().putString(
-                KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
-                categoryListToJsonArray(userPreferenceCategories).toString()
-            ).apply()
-            preferenceCategoriesLiveData.postValue(userPreferenceCategories)
-        }
+    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) = withContext(Dispatchers.IO) {
+        getPreferences().edit().putString(
+            KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
+            categoryListToJsonArray(userPreferenceCategories).toString()
+        ).apply()
     }
 
     private fun getPreferences(): SharedPreferences {

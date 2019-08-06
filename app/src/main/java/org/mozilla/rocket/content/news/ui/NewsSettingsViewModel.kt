@@ -9,12 +9,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.utils.CharacterValidator
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import javax.inject.Inject
 
 class NewsSettingsViewModel @Inject constructor(
-    private val loadNewsLanguagesUseCase: LoadNewsLanguagesUseCase
+    private val loadNewsSettings: LoadNewsSettingsUseCase,
+    private val loadNewsLanguages: LoadNewsLanguagesUseCase
 ) : ViewModel() {
 
     private val _uiModel = MutableLiveData<NewsSettingsUiModel>()
@@ -22,14 +25,19 @@ class NewsSettingsViewModel @Inject constructor(
         get() = _uiModel
 
     init {
-        getLanguages()
+        getNewsSettings()
     }
 
-    private fun getLanguages() = viewModelScope.launch(Dispatchers.Default) {
-        val result = loadNewsLanguagesUseCase()
-        if (result is Result.Success) {
-            val supportLanguages = filterSupportedLanguages(result.data)
-            withContext(Dispatchers.Main) { emitUiModel(supportLanguages) }
+    private fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {
+        val newsSettingsResult = loadNewsSettings()
+        if (newsSettingsResult is Result.Success) {
+            val newsSettings = newsSettingsResult.data
+
+            val languagesResult = loadNewsLanguages()
+            if (languagesResult is Result.Success) {
+                val supportLanguages = filterSupportedLanguages(languagesResult.data)
+                withContext(Dispatchers.Main) { emitUiModel(newsSettings, supportLanguages) }
+            }
         }
     }
 
@@ -49,12 +57,12 @@ class NewsSettingsViewModel @Inject constructor(
         return supportLanguages
     }
 
-    private fun emitUiModel(comments: List<NewsLanguage>) {
-        _uiModel.value = NewsSettingsUiModel(comments)
+    private fun emitUiModel(newsSettings: Pair<NewsLanguage, List<NewsCategory>>, newsLanguages: List<NewsLanguage>) {
+        _uiModel.value = NewsSettingsUiModel(newsSettings, newsLanguages)
     }
 }
 
-// TODO update to hold the entire setting elements
 data class NewsSettingsUiModel(
+    val newsSettings: Pair<NewsLanguage, List<NewsCategory>>,
     val newsLanguages: List<NewsLanguage>
 )
