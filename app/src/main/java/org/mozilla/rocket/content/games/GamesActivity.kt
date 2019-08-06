@@ -7,20 +7,26 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.adapter.GameTabsAdapter
+import org.mozilla.rocket.content.viewModelProvider
+import javax.inject.Inject
 
 class GamesActivity : FragmentActivity() {
+
+    @Inject
+    lateinit var gamesViewModelFactory: GamesViewModelFactory
 
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: GameTabsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        gamesViewModel = ViewModelProviders.of(this, GamesViewModelFactory.INSTANCE).get(GamesViewModel::class.java)
+        gamesViewModel = viewModelProvider(gamesViewModelFactory)
         setContentView(R.layout.activity_games)
         initViewPager()
         initTabLayout()
