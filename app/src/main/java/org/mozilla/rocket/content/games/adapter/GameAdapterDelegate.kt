@@ -32,4 +32,4 @@ class GameViewHolder(
     }
 }
 
-data class GameItem(val name: String, val imageUrl: String) : DelegateAdapter.UiModel()
+data class GameItem(val name: String, val imageUrl: String, val linkUrl: String) : DelegateAdapter.UiModel()

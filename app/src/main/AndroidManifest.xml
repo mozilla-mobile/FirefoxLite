@@ -294,6 +294,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name="org.mozilla.rocket.content.games.GameModeActivity"
+            android:theme="@style/GameModeTheme"
+            android:exported="false" />
+
+        <activity
             android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity"
             android:exported="false"
             android:launchMode="singleTask"
