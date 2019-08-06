@@ -62,6 +62,7 @@ import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.mozilla.threadutils.ThreadUtils
 import org.mozilla.urlutils.UrlUtils
+import javax.inject.Inject
 
 private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
@@ -71,9 +72,9 @@ class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
 
-    @javax.inject.Inject
+    @Inject
     lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private lateinit var permissionHandler: PermissionHandler

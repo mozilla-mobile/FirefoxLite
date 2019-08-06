@@ -5,11 +5,7 @@
 
 package org.mozilla.focus.urlinput
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.TextUtils
@@ -18,6 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import mozilla.components.browser.domains.autocomplete.ShippedDomainsProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
@@ -39,6 +39,7 @@ import org.mozilla.rocket.urlinput.QuickSearchAdapter
 import org.mozilla.rocket.urlinput.QuickSearchViewModel
 import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory
 import java.util.Locale
+import javax.inject.Inject
 
 /**
  * Fragment for displaying he URL input controls.
@@ -46,9 +47,9 @@ import java.util.Locale
 class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener,
         View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
 
-    @javax.inject.Inject
+    @Inject
     lateinit var quickSearchViewModelFactory: QuickSearchViewModelFactory
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private val autoCompleteProvider: ShippedDomainsProvider = ShippedDomainsProvider()

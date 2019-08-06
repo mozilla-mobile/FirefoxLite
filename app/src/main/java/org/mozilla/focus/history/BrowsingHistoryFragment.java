@@ -8,15 +8,15 @@ package org.mozilla.focus.history;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
@@ -27,10 +27,12 @@ import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 
+import javax.inject.Inject;
+
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, ItemClosingPanelFragmentStatusListener {
 
-    @javax.inject.Inject
+    @Inject
     ChromeViewModelFactory chromeViewModelFactory;
 
     private RecyclerView mRecyclerView;

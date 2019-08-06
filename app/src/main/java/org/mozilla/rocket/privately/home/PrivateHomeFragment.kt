@@ -34,13 +34,14 @@ import org.mozilla.rocket.privately.ShortcutUtils
 import org.mozilla.rocket.privately.ShortcutViewModel
 import org.mozilla.rocket.widget.CustomViewDialogData
 import org.mozilla.rocket.widget.PromotionDialog
+import javax.inject.Inject
 
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
-    @javax.inject.Inject
+    @Inject
     lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private lateinit var chromeViewModel: ChromeViewModel
