@@ -292,6 +292,11 @@
             android:name="org.mozilla.rocket.content.games.GamesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="org.mozilla.rocket.content.games.GameModeActivity"
+            android:theme="@style/GameModeTheme"
+            android:exported="false" />
     </application>
 
 </manifest>

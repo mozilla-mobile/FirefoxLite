@@ -34,12 +34,12 @@ class GamesViewModel(
 
     fun onGameItemClicked(gameItem: GameItem) {
         // TODO: testing code, needs to be removed
-        showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, "${gameItem.name}")
+        showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, gameItem.name, gameItem.linkUrl)
     }
 
     fun onBannerItemClicked(bannerItem: CarouselBannerAdapter.BannerItem) {
         // TODO: testing code, needs to be removed
-        showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, "${bannerItem.link}")
+        showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, bannerItem.link)
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

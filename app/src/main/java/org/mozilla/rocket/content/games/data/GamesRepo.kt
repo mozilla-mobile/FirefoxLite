@@ -99,10 +99,14 @@ class GamesRepo {
             "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
 
     // TODO: remove test function
+    private fun getPlaceholderLinkUrl(): String =
+            "https://www.google.com.tw/"
+
+    // TODO: remove test function
     private fun generateFakeBanner(): CarouselBannerAdapter.BannerItem =
             getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(this, this) }
 
     // TODO: remove test function
     private fun generateFakeGame(number: Int): GameItem =
-            getPlaceholderImageUrl(100, 100).run { GameItem(number.toString(), this) }
+            getPlaceholderImageUrl(100, 100).run { GameItem(number.toString(), this, getPlaceholderLinkUrl()) }
 }
