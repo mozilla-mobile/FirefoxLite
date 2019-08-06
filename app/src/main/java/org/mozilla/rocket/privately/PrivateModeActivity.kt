@@ -5,18 +5,18 @@
 
 package org.mozilla.rocket.privately
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
@@ -48,13 +48,14 @@ import org.mozilla.rocket.privately.browse.BrowserFragment
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
+import javax.inject.Inject
 
 class PrivateModeActivity : BaseActivity(),
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
 
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private val LOG_TAG = "PrivateModeActivity"

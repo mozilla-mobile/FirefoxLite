@@ -28,6 +28,7 @@ import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_KEY
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_TICKET
+import javax.inject.Inject
 
 /**
  * Fragment that display the content for [ShoppingLink]s and [Coupon]s
@@ -44,7 +45,7 @@ class EcFragment : Fragment() {
         }
     }
 
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private lateinit var chromeViewModel: ChromeViewModel
