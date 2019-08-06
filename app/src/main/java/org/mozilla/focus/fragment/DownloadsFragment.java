@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -23,10 +25,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
@@ -37,12 +38,14 @@ import org.mozilla.rocket.download.DownloadInfoPack;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
 import org.mozilla.rocket.download.DownloadViewModelFactory;
 
+import javax.inject.Inject;
+
 public class DownloadsFragment extends PanelFragment implements DownloadInfoViewModel.OnProgressUpdateListener {
 
     private static final int MSG_UPDATE_PROGRESS = 1;
     private static final int QUERY_PROGRESS_DELAY = 500;
 
-    @javax.inject.Inject
+    @Inject
     DownloadViewModelFactory downloadViewModelFactory;
 
     private RecyclerView recyclerView;

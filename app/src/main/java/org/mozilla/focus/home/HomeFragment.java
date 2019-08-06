@@ -110,6 +110,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.inject.Inject;
+
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
@@ -127,13 +129,13 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     public static final String BANNER_MANIFEST_DEFAULT = "";
 
-    @javax.inject.Inject
+    @Inject
     DownloadViewModelFactory downloadViewModelFactory;
-    @javax.inject.Inject
+    @Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
-    @javax.inject.Inject
+    @Inject
     ChromeViewModelFactory chromeViewModelFactory;
-    @javax.inject.Inject
+    @Inject
     TopSitesRepo topSitesRepo;
 
     private TopSitesContract.Presenter presenter;

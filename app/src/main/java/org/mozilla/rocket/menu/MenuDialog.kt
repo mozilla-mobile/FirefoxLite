@@ -33,12 +33,13 @@ import org.mozilla.rocket.extension.toActivity
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.privately.PrivateModeActivity
+import javax.inject.Inject
 
 class MenuDialog : BottomSheetDialog {
 
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
-    @javax.inject.Inject
+    @Inject
     lateinit var menuViewModelFactory: MenuViewModelFactory
 
     private lateinit var menuViewModel: MenuViewModel

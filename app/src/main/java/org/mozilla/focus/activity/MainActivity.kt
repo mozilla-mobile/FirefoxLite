@@ -89,6 +89,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.widget.enqueue
 import java.util.Locale
+import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
         ThemeManager.ThemeHost,
@@ -98,11 +99,11 @@ class MainActivity : BaseActivity(),
         PromotionViewContract,
         InAppUpdateController.ViewDelegate {
 
-    @javax.inject.Inject
+    @Inject
     lateinit var downloadViewModelFactory: DownloadViewModelFactory
-    @javax.inject.Inject
+    @Inject
     lateinit var chromeViewModelFactory: ChromeViewModelFactory
-    @javax.inject.Inject
+    @Inject
     lateinit var tabModelStore: TabModelStore
 
     val portraitStateModel = PortraitStateModel()

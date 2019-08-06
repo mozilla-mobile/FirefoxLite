@@ -111,6 +111,8 @@ import org.mozilla.urlutils.UrlUtils;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
+import javax.inject.Inject;
+
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.WEBVIEW;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
@@ -138,11 +140,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private static final int SITE_GLOBE = 0;
     private static final int SITE_LOCK = 1;
 
-    @javax.inject.Inject
+    @Inject
     DownloadViewModelFactory downloadViewModelFactory;
-    @javax.inject.Inject
+    @Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
-    @javax.inject.Inject
+    @Inject
     ChromeViewModelFactory chromeViewModelFactory;
 
     private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
