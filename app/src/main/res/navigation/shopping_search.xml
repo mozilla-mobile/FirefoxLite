@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shopping_search"
+    app:startDestination="@id/shopping_search_keyword_input_dest">
+
+    <fragment
+        android:id="@+id/shopping_search_keyword_input_dest"
+        android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputFragment"
+        android:label="KeywordInput"
+        tools:layout="@layout/fragment_shopping_search_keyword_input">
+        <action
+            android:id="@+id/action_search_keyword_to_result"
+            app:destination="@id/shopping_search_result_tab_dest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/shopping_search_result_tab_dest"
+        android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment"
+        android:label="SearchResult"
+        tools:layout="@layout/fragment_shopping_search_result_tab">
+        <argument
+            android:name="searchKeyword"
+            app:argType="string" />
+    </fragment>
+</navigation>
