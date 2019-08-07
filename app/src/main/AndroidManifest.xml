@@ -292,6 +292,13 @@
             android:name="org.mozilla.rocket.content.games.GamesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=".shopping.search" />
     </application>
 
 </manifest>
