@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 
 class ShoppingSearchTabsAdapter(
     fm: FragmentManager,
-    private val items: List<TabItem> = DEFAULT_TABS
+    private val items: List<TabItem>
 ) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment = items[position].fragment
@@ -19,14 +19,4 @@ class ShoppingSearchTabsAdapter(
         val fragment: Fragment,
         val title: String
     )
-
-    companion object {
-        private val DEFAULT_TABS: List<TabItem> by lazy {
-            listOf(
-                TabItem(ShoppingSearchResultContentFragment.newInstance("https://www.bukalapak.com"), "Bukalapak"),
-                TabItem(ShoppingSearchResultContentFragment.newInstance("https://tokopedia.com"), "Tokopedia"),
-                TabItem(ShoppingSearchResultContentFragment.newInstance("https://www.jd.id"), "JD.ID")
-            )
-        }
-    }
 }
