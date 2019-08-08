@@ -23,9 +23,9 @@ class ShoppingSearchTabsAdapter(
     companion object {
         private val DEFAULT_TABS: List<TabItem> by lazy {
             listOf(
-                TabItem(ShoppingSearchResultContentFragment(), "Bukalapak"),
-                TabItem(ShoppingSearchResultContentFragment(), "Tokopedia"),
-                TabItem(ShoppingSearchResultContentFragment(), "JD.ID ")
+                TabItem(ShoppingSearchResultContentFragment.newInstance("https://www.bukalapak.com"), "Bukalapak"),
+                TabItem(ShoppingSearchResultContentFragment.newInstance("https://tokopedia.com"), "Tokopedia"),
+                TabItem(ShoppingSearchResultContentFragment.newInstance("https://www.jd.id"), "JD.ID")
             )
         }
     }

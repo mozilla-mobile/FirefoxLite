@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     tools:context="org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultContentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <WebView
+        android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Shopping search result" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
