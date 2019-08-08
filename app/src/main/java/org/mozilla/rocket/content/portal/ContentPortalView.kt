@@ -19,7 +19,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
-import org.mozilla.rocket.content.ecommerce.EcTabFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
 import org.mozilla.rocket.widget.BottomSheetBehavior
 
@@ -53,20 +52,12 @@ class ContentPortalView : CoordinatorLayout {
         // if there's only one feature or it's production build, we init the legacy content portal
         if (contentFeature.hasNews()) {
             initNewsFragment()
-        } else {
-            initEcTabFragment()
         }
     }
 
     private fun initNewsFragment() {
         context?.inTransaction {
             replace(R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior), TAG_NEWS_FRAGMENT)
-        }
-    }
-
-    private fun initEcTabFragment() {
-        context?.inTransaction {
-            replace(R.id.bottom_sheet, EcTabFragment.newInstance(), TAG_CONTENT_FRAGMENT)
         }
     }
 
