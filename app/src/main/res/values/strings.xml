@@ -581,8 +581,9 @@
     <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
     <string name="logo_text">Service provided by</string>
 
-    <string name="label_menu_e_commerce" translatable="false">E-Voucher &amp; Tiket</string>
-    <string name="label_menu_e_commerce_coupon" translatable="false">Kupon</string>
+    <string name="label_menu_e_commerce_deal" translatable="false">Deals</string>
+    <string name="label_menu_e_commerce_coupon" translatable="false">Coupons</string>
+    <string name="label_menu_e_commerce_voucher" translatable="false">E-vouchers</string>
     <string name="coupon_valid_description" translatable="false">Berlaku hingga %s</string>
 
     <!-- Private Browsing-->

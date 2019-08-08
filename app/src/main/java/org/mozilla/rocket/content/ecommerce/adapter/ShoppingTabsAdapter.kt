@@ -31,9 +31,9 @@ class ShoppingTabsAdapter(
     companion object {
         private val DEFAULT_TABS: List<TabItem> by lazy {
             listOf(
-                TabItem(BrowserGamesFragment(), R.string.firefox),
+                TabItem(BrowserGamesFragment(), R.string.label_menu_e_commerce_deal),
                 TabItem(EcFragment.newInstance(ContentFeature.TYPE_COUPON), R.string.label_menu_e_commerce_coupon),
-                TabItem(EcFragment.newInstance(ContentFeature.TYPE_TICKET), R.string.label_menu_e_commerce)
+                TabItem(EcFragment.newInstance(ContentFeature.TYPE_TICKET), R.string.label_menu_e_commerce_voucher)
             )
         }
     }
