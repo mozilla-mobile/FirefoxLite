@@ -187,6 +187,10 @@
   <string name="message_cannot_find_screenshot">स्क्रीनशॉट प्रदर्शित करू शकत नाही</string>
   <string name="remove">काढून टाका</string>
   <string name="pin_site">साइट पिन करा</string>
+  <string name="update_to_latest_app_toast">नवीनतम बिल्ड डाउनलोड करीत आहे…</string>
+  <string name="update_to_latest_app_notification">नवीनतम बिल्ड डाउनलोड केले गेले आहे. अद्यतनित करण्यासाठी टॅप करा.</string>
+  <string name="update_to_latest_app_snack_bar_message">नवीनतम बिल्ड डाउनलोड केले</string>
+  <string name="update_to_latest_app_snack_bar_update">अद्ययावत करा</string>
   <string name="privacy_policy_update_notification_title">उत्पादन अद्यतन सूचना</string>
   <string name="privacy_policy_update_notification_action">FIrefox Lite सर्वांसाठी सुधारण्यासाठी, आम्ही गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
   <string name="rate_app_dialog_text_title">%1$s आवडलं का?</string>
@@ -251,15 +255,18 @@
   <string name="news_category_option_education">शिक्षण</string>
   <string name="news_category_option_politics">राजकीय</string>
   <string name="news_category_option_career">करीयर</string>
+  <string name="news_category_option_cricket">क्रिकेट</string>
   <string name="news_category_option_sports">खेळ</string>
   <string name="news_category_option_entertainment">करमणूक</string>
   <string name="news_category_option_business">व्यवसाय</string>
   <string name="news_category_option_health">आरोग्य</string>
   <string name="news_category_option_movie_reviews">चित्रपट पुनरावलोकन</string>
+  <string name="news_category_option_automobile">वाहन</string>
   <string name="news_category_option_regional">प्रादेशिक</string>
   <string name="news_category_option_travel">यात्रा</string>
   <string name="news_category_option_lifestyle">जीवन श्रेणी</string>
   <string name="news_category_option_food">खानपान</string>
+  <string name="news_category_option_video">चित्रफित</string>
   <string name="news_category_option_city">शहर</string>
   <string name="news_category_option_events">कार्यक्रम</string>
   <string name="news_category_option_religion">धर्म</string>
@@ -275,6 +282,16 @@
   <string name="private_browsing_erase_done">आपला ब्राउझिंग इतिहास\nमिटवला गेला आहे.</string>
   <string name="private_browsing_tracker_blocked">ट्रॅकर अवरोधित</string>
   <string name="private_browsing_tracker_blocked_description">अतिरिक्त संरक्षणासह ब्राउझिंगचा आनंद घ्या.</string>
+  <string name="private_browsing_dialog_add_shortcut_title">एका क्लिकमध्ये खासगी मोडमध्ये प्रवेश करा! मुख्यपृष्ठावरून खाजगी मोड शॉर्टकट जोडायचा?</string>
+  <string name="private_browsing_dialog_add_shortcut_no">नाही, धन्यवाद</string>
+  <string name="private_browsing_dialog_add_shortcut_yes">होय</string>
+  <string name="private_browsing_dialog_add_shortcut_title_v2">खाजगी मोड शॉर्टकट जोडा</string>
+  <string name="private_browsing_dialog_add_shortcut_content_v2">आपल्या मुख्यपृष्ठावरून खासगी मोडमध्ये त्वरीत प्रवेश करा.</string>
+  <string name="private_browsing_dialog_add_shortcut_no_v2">नको, धन्यवाद</string>
+  <string name="private_browsing_dialog_add_shortcut_yes_v2">होय, आत्ताच जोडा!</string>
+  <string name="private_browsing_dialog_add_shortcut_no_toast">आपण नंतर सेटिंग्जमध्ये खाजगी मोड शॉर्टकट जोडू शकता.</string>
+  <string name="private_browsing_shortcut_name">%1$s - खाजगी ब्राउझिंग</string>
+  <string name="preference_add_private_browsing_shortcut">मुख्यपृष्ठ स्क्रीनवर खाजगी मोड शॉर्टकट जोडा</string>
   <string name="my_shot_on_boarding_message">येथे आपले स्क्रीनशॉट्स पहा!</string>
   <string name="my_shot_on_boarding_category_message">आपला अनुभव सुधारण्यासाठी, आम्ही आपल्या स्क्रीनशॉटच्या श्रेणीची माहिती गोळा करतो.</string>
   <string name="btn_vpn">7-दिवस विनामुल्य VPN सेवा आपल्यासाठी तयार आहे. अधिक खाजगीरीत्या आणि सुरक्षिततेने ब्राउझ करण्यासाठी आता स्थापित करा.</string>
@@ -286,4 +303,5 @@
   <string name="http_auth_dialog_title">अधिप्रमाणन गरजेचे आहे</string>
   <string name="http_auth_dialog_user_name">वापरकर्त्याचे नाव</string>
   <string name="http_auth_dialog_password">पासवर्ड</string>
+  <string name="low_priority_notification_channel">लपलेल्या सूचना</string>
 </resources>
