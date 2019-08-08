@@ -313,6 +313,11 @@
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/PrivateModeTheme" />
+
+        <activity
+            android:name="org.mozilla.rocket.content.ecommerce.ShoppingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
