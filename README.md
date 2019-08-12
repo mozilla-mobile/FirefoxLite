@@ -1,5 +1,5 @@
 # Firefox Lite - Mango
-[![Build Status](https://app.bitrise.io/app/8b236d90ab7273d4/status.svg?token=lvHSg6bLhlWD7KCXMIv09w&branch=master)](https://app.bitrise.io/app/8b236d90a
+[![Build Status](https://app.bitrise.io/app/8b236d90ab7273d4/status.svg?token=lvHSg6bLhlWD7KCXMIv09w)](https://app.bitrise.io/app/8b236d90ab7273d4)
 
 Getting Involved
 ----------------
