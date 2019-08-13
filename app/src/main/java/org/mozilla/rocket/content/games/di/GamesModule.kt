@@ -2,8 +2,8 @@ package org.mozilla.rocket.content.games.di
 
 import dagger.Module
 import dagger.Provides
-import org.mozilla.rocket.content.games.GamesViewModelFactory
 import org.mozilla.rocket.content.games.data.GamesRepo
+import org.mozilla.rocket.content.games.ui.GamesViewModelFactory
 import javax.inject.Singleton
 
 @Module
@@ -18,5 +18,5 @@ object GamesModule {
     @Singleton
     @Provides
     fun provideGamesViewModelFactory(gamesRepo: GamesRepo): GamesViewModelFactory =
-            GamesViewModelFactory(gamesRepo)
+        GamesViewModelFactory(gamesRepo)
 }

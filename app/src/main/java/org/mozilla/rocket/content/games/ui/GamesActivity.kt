@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games
+package org.mozilla.rocket.content.games.ui
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.games.adapter.GameTabsAdapter
+import org.mozilla.rocket.content.games.ui.adapter.GameTabsAdapter
 import org.mozilla.rocket.content.viewModelProvider
 import javax.inject.Inject
 

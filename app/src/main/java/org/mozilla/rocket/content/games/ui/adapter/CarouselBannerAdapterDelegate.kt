@@ -1,10 +1,10 @@
-package org.mozilla.rocket.content.games.adapter
+package org.mozilla.rocket.content.games.ui.adapter
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_carousel_banner.carousel_list
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.games.GamesViewModel
+import org.mozilla.rocket.content.games.ui.GamesViewModel
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 
 class CarouselBannerAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {

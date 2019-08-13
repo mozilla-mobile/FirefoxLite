@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games
+package org.mozilla.rocket.content.games.ui
 
 import android.annotation.SuppressLint
 import android.content.Context

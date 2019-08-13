@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games
+package org.mozilla.rocket.content.games.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
-import org.mozilla.rocket.content.games.adapter.GameItem
+import org.mozilla.rocket.content.games.ui.adapter.GameItem
 import org.mozilla.rocket.content.games.data.GamesRepo
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
