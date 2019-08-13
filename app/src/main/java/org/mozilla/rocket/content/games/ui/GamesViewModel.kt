@@ -8,8 +8,8 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
-import org.mozilla.rocket.content.games.ui.adapter.GameItem
 import org.mozilla.rocket.content.games.data.GamesRepo
+import org.mozilla.rocket.content.games.ui.adapter.GameItem
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.ToastMessage
 
@@ -39,7 +39,7 @@ class GamesViewModel(
 
     fun onBannerItemClicked(bannerItem: CarouselBannerAdapter.BannerItem) {
         // TODO: testing code, needs to be removed
-        showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, bannerItem.link)
+        showToast.value = ToastMessage(R.string.screenshot_image_viewer_dialog_info_title1, ToastMessage.LENGTH_SHORT, bannerItem.linkUrl)
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

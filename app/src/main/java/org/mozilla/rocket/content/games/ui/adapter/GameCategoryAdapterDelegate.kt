@@ -13,7 +13,7 @@ import org.mozilla.rocket.content.games.ui.GamesViewModel
 
 class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            GameCategoryViewHolder(view, gamesViewModel)
+        GameCategoryViewHolder(view, gamesViewModel)
 }
 
 class GameCategoryViewHolder(
@@ -40,4 +40,8 @@ class GameCategoryViewHolder(
     }
 }
 
-data class GameCategory(val title: String, val gameList: List<GameItem>) : DelegateAdapter.UiModel()
+data class GameCategory(
+    val id: String,
+    val title: String,
+    val gameList: List<GameItem>
+) : DelegateAdapter.UiModel()

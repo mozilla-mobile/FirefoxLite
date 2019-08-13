@@ -8,6 +8,7 @@ import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 import org.mozilla.rocket.content.games.ui.adapter.CarouselBanner
 import org.mozilla.rocket.content.games.ui.adapter.GameCategory
 import org.mozilla.rocket.content.games.ui.adapter.GameItem
+import java.util.UUID
 import kotlin.random.Random
 
 class GamesRepo {
@@ -20,93 +21,105 @@ class GamesRepo {
     }
 
     private fun generateFakeData(): List<DelegateAdapter.UiModel> =
-            listOf(
-                CarouselBanner(listOf(
-                        generateFakeBanner(),
-                        generateFakeBanner(),
-                        generateFakeBanner(),
-                        generateFakeBanner(),
-                        generateFakeBanner()
+        listOf(
+            CarouselBanner(listOf(
+                generateFakeBanner(),
+                generateFakeBanner(),
+                generateFakeBanner(),
+                generateFakeBanner(),
+                generateFakeBanner()
+            )),
+            GameCategory(UUID.randomUUID().toString(),
+                "title 1",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 1", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 2",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 2", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 3",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 3", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 4",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 4", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 5",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 5", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 6",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 6", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 7",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 )),
-                GameCategory("title 7", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
-                )),
-                GameCategory("title 8", listOf(
-                        generateFakeGame(1),
-                        generateFakeGame(2),
-                        generateFakeGame(3),
-                        generateFakeGame(4),
-                        generateFakeGame(5),
-                        generateFakeGame(6)
+            GameCategory(UUID.randomUUID().toString(),
+                "title 8",
+                listOf(
+                    generateFakeGame(1),
+                    generateFakeGame(2),
+                    generateFakeGame(3),
+                    generateFakeGame(4),
+                    generateFakeGame(5),
+                    generateFakeGame(6)
                 ))
-            )
+        )
 
     // TODO: remove test function
     private fun getPlaceholderImageUrl(w: Int, h: Int): String =
-            "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
-
-    // TODO: remove test function
-    private fun getPlaceholderLinkUrl(): String =
-            "https://www.google.com.tw/"
+        "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
 
     // TODO: remove test function
     private fun generateFakeBanner(): CarouselBannerAdapter.BannerItem =
-            getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(this, this) }
+        getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(UUID.randomUUID().toString(), this, this) }
 
     // TODO: remove test function
     private fun generateFakeGame(number: Int): GameItem =
-            getPlaceholderImageUrl(100, 100).run { GameItem(number.toString(), this, getPlaceholderLinkUrl()) }
+        getPlaceholderImageUrl(100, 100).run { GameItem(UUID.randomUUID().toString(), number.toString(), this, this) }
 }
