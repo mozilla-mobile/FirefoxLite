@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games
+package org.mozilla.rocket.content.games.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,10 +14,10 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.games.adapter.CarouselBanner
-import org.mozilla.rocket.content.games.adapter.CarouselBannerAdapterDelegate
-import org.mozilla.rocket.content.games.adapter.GameCategory
-import org.mozilla.rocket.content.games.adapter.GameCategoryAdapterDelegate
+import org.mozilla.rocket.content.games.ui.adapter.CarouselBanner
+import org.mozilla.rocket.content.games.ui.adapter.CarouselBannerAdapterDelegate
+import org.mozilla.rocket.content.games.ui.adapter.GameCategory
+import org.mozilla.rocket.content.games.ui.adapter.GameCategoryAdapterDelegate
 import javax.inject.Inject
 
 class BrowserGamesFragment : Fragment() {

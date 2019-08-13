@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games
+package org.mozilla.rocket.content.games.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

@@ -5,9 +5,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
-import org.mozilla.rocket.content.games.adapter.CarouselBanner
-import org.mozilla.rocket.content.games.adapter.GameCategory
-import org.mozilla.rocket.content.games.adapter.GameItem
+import org.mozilla.rocket.content.games.ui.adapter.CarouselBanner
+import org.mozilla.rocket.content.games.ui.adapter.GameCategory
+import org.mozilla.rocket.content.games.ui.adapter.GameItem
 import kotlin.random.Random
 
 class GamesRepo {

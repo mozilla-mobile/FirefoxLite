@@ -33,8 +33,8 @@ import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.ecommerce.EcFragment
-import org.mozilla.rocket.content.games.BrowserGamesFragment
-import org.mozilla.rocket.content.games.GamesActivity
+import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
+import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment

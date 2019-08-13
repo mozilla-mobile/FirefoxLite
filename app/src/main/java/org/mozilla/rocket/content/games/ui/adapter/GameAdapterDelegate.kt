@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.adapter
+package org.mozilla.rocket.content.games.ui.adapter
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_game.image
@@ -7,7 +7,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.games.GamesViewModel
+import org.mozilla.rocket.content.games.ui.GamesViewModel
 
 class GameAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
