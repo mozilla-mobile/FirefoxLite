@@ -9,7 +9,6 @@ import org.mozilla.rocket.content.games.ui.adapter.CarouselBanner
 import org.mozilla.rocket.content.games.ui.adapter.GameCategory
 import org.mozilla.rocket.content.games.ui.adapter.GameItem
 import java.util.UUID
-import kotlin.random.Random
 
 class GamesRepo {
 
@@ -23,103 +22,131 @@ class GamesRepo {
     private fun generateFakeData(): List<DelegateAdapter.UiModel> =
         listOf(
             CarouselBanner(listOf(
-                generateFakeBanner(),
-                generateFakeBanner(),
-                generateFakeBanner(),
-                generateFakeBanner(),
-                generateFakeBanner()
+                CarouselBannerAdapter.BannerItem(
+                    UUID.randomUUID().toString(),
+                    "http://www.gameloft.com/central/upload/Asphalt-9-Legends-Slider-logo-2.jpg",
+                    "http://www.gameloft.com/central/category/asphalt/asphalt-9-legends/"
+                ),
+                CarouselBannerAdapter.BannerItem(
+                    UUID.randomUUID().toString(),
+                    "http://www.gameloft.com/central/upload/MCB_Blog-FrontRodolex_2048x700.jpg",
+                    "http://www.gameloft.com/central/modern-combat-blackout/modern-combat-blackout-coming-nintendo-switch/"
+                ),
+                CarouselBannerAdapter.BannerItem(
+                    UUID.randomUUID().toString(),
+                    "http://www.gameloft.com/central/upload/Slider-1.jpg",
+                    "http://www.gameloft.com/central/dungeon-hunter/dungeon-hunter-champions-brings-you-epic-action/"
+                )
             )),
             GameCategory(UUID.randomUUID().toString(),
-                "title 1",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
+                "Game of the week",
+                generateTestingGameList1()
+            ),
             GameCategory(UUID.randomUUID().toString(),
-                "title 2",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
+                "Strategy",
+                generateTestingGameList2()
+            ),
             GameCategory(UUID.randomUUID().toString(),
-                "title 3",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
+                "Adventure",
+                generateTestingGameList1()
+            ),
             GameCategory(UUID.randomUUID().toString(),
-                "title 4",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
+                "Action",
+                generateTestingGameList2()
+            ),
             GameCategory(UUID.randomUUID().toString(),
-                "title 5",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
+                "Arcade",
+                generateTestingGameList1()
+            ),
             GameCategory(UUID.randomUUID().toString(),
-                "title 6",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
+                "Puzzle & Logic",
+                generateTestingGameList2()
+            ),
             GameCategory(UUID.randomUUID().toString(),
-                "title 7",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                )),
-            GameCategory(UUID.randomUUID().toString(),
-                "title 8",
-                listOf(
-                    generateFakeGame(1),
-                    generateFakeGame(2),
-                    generateFakeGame(3),
-                    generateFakeGame(4),
-                    generateFakeGame(5),
-                    generateFakeGame(6)
-                ))
+                "Sport & Racing",
+                generateTestingGameList1()
+            )
         )
 
-    // TODO: remove test function
-    private fun getPlaceholderImageUrl(w: Int, h: Int): String =
-        "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
+    private fun generateTestingGameList1(): List<GameItem> {
+        return listOf(
+            GameItem(
+                UUID.randomUUID().toString(),
+                "BoboiBoy Galaxy Run",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/3662/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/boBoiBoyRunFree/?ms_sid=4&phoneId=32225&game=16003785&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Kitchen Bazar",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/3796/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/kitchenBazarFree/?ms_sid=4&phoneId=32225&game=16086981&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Ludibubbles",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/2920/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/ludibubblesFree/?ms_sid=4&phoneId=32225&game=15153437&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Danger Dash",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/3232/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/dangerDashFree/?ms_sid=4&phoneId=32225&game=15487866&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Puzzle Pets: Pairs",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/puzzlePetsPairsFree/?ms_sid=4&phoneId=32225&game=15084939&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Meow Meow Life",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/3598/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/meowMeowLifeFree/?ms_sid=4&phoneId=32225&game=15928205&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            )
+        )
+    }
 
-    // TODO: remove test function
-    private fun generateFakeBanner(): CarouselBannerAdapter.BannerItem =
-        getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(UUID.randomUUID().toString(), this, this) }
-
-    // TODO: remove test function
-    private fun generateFakeGame(number: Int): GameItem =
-        getPlaceholderImageUrl(100, 100).run { GameItem(UUID.randomUUID().toString(), number.toString(), this, this) }
+    private fun generateTestingGameList2(): List<GameItem> {
+        return listOf(
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Castle of Magic",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/3624/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/castleOfMagicFree/?ms_sid=4&phoneId=32225&game=15966327&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Ninja UP!",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/2817/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/ninjaUpFree/?ms_sid=4&phoneId=32225&game=15118898&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Kite",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/2564/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/kiteFree/?ms_sid=4&phoneId=32225&game=14355923&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Pirates: Path of the Buccaneer",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/3297/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/piratesPathOfTheBuccaneerFree/?ms_sid=4&phoneId=32225&game=15574419&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "NitroStreet: DragMode",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/nitroStreetDragModeFree/?ms_sid=4&phoneId=32225&game=15104944&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            ),
+            GameItem(
+                UUID.randomUUID().toString(),
+                "Fantasy Sushi Diver",
+                "https://media07-gl-ssl-gzip.gameloft.com/products/2665/default/html5/icon/114/icon.png",
+                "https://cdn.ludigames.com/h5/fantasySushiDiverFree/?ms_sid=4&phoneId=32225&game=14583641&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+            )
+        )
+    }
 }
