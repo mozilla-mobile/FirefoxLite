@@ -23,7 +23,7 @@ import javax.inject.Inject
 class BrowserGamesFragment : Fragment() {
 
     @Inject
-    lateinit var gamesViewModelFactory: GamesViewModelFactory
+    lateinit var gamesViewModelFactory: GamesViewModel.Factory
 
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: DelegateAdapter
