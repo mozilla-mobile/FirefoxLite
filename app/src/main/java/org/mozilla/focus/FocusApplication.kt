@@ -7,6 +7,7 @@ package org.mozilla.focus
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.StrictMode
 import android.preference.PreferenceManager
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
@@ -18,6 +19,7 @@ import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
@@ -31,17 +33,31 @@ import java.io.File
 
 open class FocusApplication : LocaleAwareApplication() {
 
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
-    }
+    private var appComponent: AppComponent? = null
 
     lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
 
     val settings by lazy {
         SettingsProvider(this)
+    }
+
+    fun getAppComponent(): AppComponent {
+        if (appComponent == null) {
+            synchronized(this@FocusApplication) {
+                if (appComponent == null) {
+                    appComponent = DaggerAppComponent.builder()
+                            .appModule(AppModule(this))
+                            .build()
+                }
+            }
+        }
+
+        return requireNotNull(appComponent)
+    }
+
+    fun resetAppComponent() {
+        appComponent = null
     }
 
     // Override getCacheDir cause when we create a WebView, it'll asked the application's
@@ -68,8 +84,7 @@ open class FocusApplication : LocaleAwareApplication() {
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
-        // Provide different strict mode penalty for ui testing and production code
-        Inject.enableStrictMode()
+        enableStrictMode()
 
         SearchEngineManager.getInstance().init(this)
         NewsSourceManager.getInstance().init(this)
@@ -137,5 +152,26 @@ open class FocusApplication : LocaleAwareApplication() {
                 }
             }
         })
+    }
+
+    private fun enableStrictMode() {
+        if (AppConstants.isReleaseBuild()) {
+            return
+        }
+
+        val threadPolicyBuilder = StrictMode.ThreadPolicy.Builder().detectAll()
+        val vmPolicyBuilder = StrictMode.VmPolicy.Builder().detectAll()
+
+        // Provide different strict mode penalty for ui testing and production code
+        if (AppConstants.isUnderEspressoTest()) {
+            // In AndroidTest we are super kind :)
+            threadPolicyBuilder.penaltyLog()
+        } else {
+            threadPolicyBuilder.penaltyLog().penaltyDialog()
+        }
+        vmPolicyBuilder.penaltyLog()
+
+        StrictMode.setThreadPolicy(threadPolicyBuilder.build())
+        StrictMode.setVmPolicy(vmPolicyBuilder.build())
     }
 }

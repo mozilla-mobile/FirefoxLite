@@ -17,6 +17,8 @@ public final class AppConstants {
     private static final String BUILD_TYPE_RELEASE = "release";
     private static final String FLAVOR_product_NIGHTLY = "preview";
 
+    private static Boolean isUnderEspressoTest;
+
     private AppConstants() {
     }
 
@@ -42,6 +44,19 @@ public final class AppConstants {
 
     public static boolean isNightlyBuild() {
         return BuildConfig.FLAVOR_product == FLAVOR_product_NIGHTLY;
+    }
+
+    public static boolean isUnderEspressoTest() {
+        if (isUnderEspressoTest == null) {
+            try {
+                Class.forName("androidx.test.espresso.Espresso");
+                isUnderEspressoTest = true;
+            } catch (ClassNotFoundException e) {
+                isUnderEspressoTest = false;
+            }
+        }
+
+        return isUnderEspressoTest;
     }
 
 }

@@ -6,15 +6,19 @@
 package org.mozilla.focus.helper;
 
 import android.content.Context;
+
 import androidx.test.InstrumentationRegistry;
 
-import org.mozilla.focus.Inject;
+import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.persistence.BookmarksDatabase;
+import org.mozilla.focus.persistence.di.TabsModule;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.NewFeatureNotice;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
+
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
 public class BeforeTestTask {
     private boolean enableRateAppPromotion;
@@ -37,6 +41,7 @@ public class BeforeTestTask {
             return;
         }
 
+        ((FocusApplication) context.getApplicationContext()).resetAppComponent();
         if (this.skipFirstRun) {
             NewFeatureNotice.getInstance(context).setLiteUpdateDidShow();
             LifeFeedOnboarding.hasShown(context);
@@ -63,7 +68,6 @@ public class BeforeTestTask {
             BrowsingHistoryManager.getInstance().deleteAll(null);
         }
 
-        Inject.getTabsDatabase(null).tabDao().deleteAllTabs();
         BookmarksDatabase.getInstance(context).bookmarkDao().deleteAllBookmarks();
         AndroidTestUtils.setFocusTabId("");
         // Disable privacy update notice

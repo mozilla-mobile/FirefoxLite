@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
+import androidx.lifecycle.ViewModelProviders;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.action.CoordinatesProvider;
@@ -21,11 +23,13 @@ import android.view.View;
 
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.helper.BeforeTestTask;
+import org.mozilla.rocket.chrome.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.ExtentionKt;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -112,7 +116,11 @@ public final class AndroidTestUtils {
     public static void showMenu(ActivityTestRule<MainActivity> activityTestRule) {
         if (activityTestRule != null) {
             final MainActivity mainActivity = activityTestRule.getActivity();
-            mainActivity.runOnUiThread(() -> Inject.obtainChromeViewModel(mainActivity).getShowMenu().call());
+            mainActivity.runOnUiThread(() -> {
+                ChromeViewModelFactory chromeViewModelFactory = ExtentionKt.appComponent(mainActivity).chromeViewModelFactory();
+                ChromeViewModel chromeViewModel = ViewModelProviders.of(mainActivity, chromeViewModelFactory).get(ChromeViewModel.class);
+                chromeViewModel.getShowMenu().call();
+            });
         }
     }
 
@@ -141,6 +149,7 @@ public final class AndroidTestUtils {
     }
 
     public static void setRateAppPromotionIsReadyToShow() {
+        MainActivity.shouldRunPromotion = true;
         final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         // Clear rate app did show flag
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

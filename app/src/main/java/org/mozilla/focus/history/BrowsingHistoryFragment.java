@@ -8,23 +8,32 @@ package org.mozilla.focus.history;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.mozilla.focus.Inject;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.chrome.ChromeViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.ExtentionKt;
+
+import javax.inject.Inject;
 
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, ItemClosingPanelFragmentStatusListener {
+
+    @Inject
+    ChromeViewModelFactory chromeViewModelFactory;
 
     private RecyclerView mRecyclerView;
     private ViewGroup mContainerEmptyView, mContainerRecyclerView;
@@ -32,6 +41,12 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
 
     public static BrowsingHistoryFragment newInstance() {
         return new BrowsingHistoryFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ExtentionKt.appComponent(this).inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -71,7 +86,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                         }
                         mAdapter.clear();
                         TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
-                        ChromeViewModel chromeViewModel = Inject.obtainChromeViewModel(getActivity());
+                        ChromeViewModel chromeViewModel = ViewModelProviders.of(requireActivity(), chromeViewModelFactory).get(ChromeViewModel.class);
                         chromeViewModel.getClearBrowsingHistory().call();
                         TelemetryWrapper.clearHistory();
                     }

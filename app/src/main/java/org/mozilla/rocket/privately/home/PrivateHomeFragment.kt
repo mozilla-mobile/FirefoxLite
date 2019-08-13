@@ -4,35 +4,45 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.rocket.privately.home
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.airbnb.lottie.LottieAnimationView
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.ShortcutUtils
 import org.mozilla.rocket.privately.ShortcutViewModel
-import org.mozilla.rocket.widget.PromotionDialog
 import org.mozilla.rocket.widget.CustomViewDialogData
+import org.mozilla.rocket.widget.PromotionDialog
+import javax.inject.Inject
 
 class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
+
+    @Inject
+    lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
+    @Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var logoMan: LottieAnimationView
@@ -41,8 +51,9 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     @Override
     override fun onCreate(bundle: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(bundle)
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
     }
 
     @Override
@@ -84,7 +95,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
+        val bottomBarViewModel = activityViewModelProvider<PrivateBottomBarViewModel>(privateBottomBarViewModelFactory)
         bottomBarViewModel.items.nonNullObserve(this, bottomBarItemAdapter::setItems)
     }
 

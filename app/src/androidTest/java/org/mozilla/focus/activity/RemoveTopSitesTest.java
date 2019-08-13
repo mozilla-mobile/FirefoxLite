@@ -7,14 +7,15 @@ package org.mozilla.focus.activity;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.Keep;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.espresso.matcher.ViewMatchers;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,16 +24,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
 import org.mozilla.focus.utils.TopSitesUtils;
+import org.mozilla.rocket.content.ExtentionKt;
 
 import java.util.List;
 import java.util.Random;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
@@ -181,7 +183,9 @@ public class RemoveTopSitesTest {
     }
 
     private void prepareTopSiteList() throws JSONException {
-        final JSONArray jsonArray = new JSONArray(Inject.getDefaultTopSites(context));
+        String topSitesJsonString = ExtentionKt.appComponent((Context) getApplicationContext())
+                .topSitesRepo().getDefaultTopSitesJsonString();
+        final JSONArray jsonArray = new JSONArray(topSitesJsonString);
         siteList = TopSitesUtils.paresJsonToList(context, jsonArray);
 
         Assert.assertNotNull(siteList);

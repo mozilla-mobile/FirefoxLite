@@ -2,9 +2,10 @@ package org.mozilla.rocket.download
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.mozilla.focus.Inject
 
-class DownloadViewModelFactory private constructor(private val repository: DownloadInfoRepository) : ViewModelProvider.NewInstanceFactory() {
+class DownloadViewModelFactory(
+    private val repository: DownloadInfoRepository
+) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -14,10 +15,5 @@ class DownloadViewModelFactory private constructor(private val repository: Downl
             return DownloadInfoViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-    }
-
-    companion object {
-        @JvmStatic
-        val instance: DownloadViewModelFactory by lazy { DownloadViewModelFactory(Inject.provideDownloadInfoRepository()) }
     }
 }

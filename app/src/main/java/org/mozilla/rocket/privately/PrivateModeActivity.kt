@@ -5,20 +5,19 @@
 
 package org.mozilla.rocket.privately
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.mozilla.focus.BuildConfig
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.activity.MainActivity
@@ -37,8 +36,11 @@ import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitStateModel
@@ -46,11 +48,15 @@ import org.mozilla.rocket.privately.browse.BrowserFragment
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
+import javax.inject.Inject
 
 class PrivateModeActivity : BaseActivity(),
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         TabsSessionProvider.SessionHost {
+
+    @Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private val LOG_TAG = "PrivateModeActivity"
     private var sessionManager: SessionManager? = null
@@ -64,9 +70,10 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // we don't keep any state if user leave Private-mode
+        appComponent().inject(this)
         super.onCreate(null)
 
-        chromeViewModel = Inject.obtainChromeViewModel(this)
+        chromeViewModel = viewModelProvider(chromeViewModelFactory)
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 

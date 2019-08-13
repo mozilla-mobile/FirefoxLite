@@ -2,6 +2,7 @@ package org.mozilla.rocket.menu
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StyleRes
@@ -10,7 +11,6 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.mozilla.fileutils.FileUtils
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.MENU
@@ -18,8 +18,12 @@ import org.mozilla.focus.utils.FormatUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.MenuItemAdapter
 import org.mozilla.rocket.chrome.MenuViewModel
+import org.mozilla.rocket.chrome.MenuViewModelFactory
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.content.view.MenuLayout
 import org.mozilla.rocket.extension.map
@@ -29,12 +33,18 @@ import org.mozilla.rocket.extension.toActivity
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.privately.PrivateModeActivity
+import javax.inject.Inject
 
 class MenuDialog : BottomSheetDialog {
 
-    private val menuViewModel: MenuViewModel
-    private val chromeViewModel: ChromeViewModel
-    private var settings: Settings
+    @Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    @Inject
+    lateinit var menuViewModelFactory: MenuViewModelFactory
+
+    private lateinit var menuViewModel: MenuViewModel
+    private lateinit var chromeViewModel: ChromeViewModel
+    private lateinit var settings: Settings
     private lateinit var menuItemAdapter: MenuItemAdapter
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
 
@@ -43,10 +53,12 @@ class MenuDialog : BottomSheetDialog {
     constructor(context: Context) : super(context)
     constructor(context: Context, @StyleRes theme: Int) : super(context, theme)
 
-    init {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
         val activity = context.toFragmentActivity()
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
-        menuViewModel = Inject.obtainMenuViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
+        menuViewModel = activityViewModelProvider(menuViewModelFactory)
         settings = Settings.getInstance(context)
 
         initLayout()

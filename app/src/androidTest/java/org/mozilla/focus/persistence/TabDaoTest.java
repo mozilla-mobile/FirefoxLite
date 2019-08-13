@@ -1,22 +1,24 @@
 package org.mozilla.focus.persistence;
 
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
-import androidx.room.Room;
-import androidx.room.testing.MigrationTestHelper;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+
+import androidx.room.Room;
+import androidx.room.testing.MigrationTestHelper;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
 import androidx.test.InstrumentationRegistry;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mozilla.focus.Inject;
+import org.mozilla.focus.persistence.di.TabsModule;
 
 import java.io.IOException;
 import java.util.List;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static org.junit.Assert.assertEquals;
 
 public class TabDaoTest {
@@ -36,7 +38,7 @@ public class TabDaoTest {
 
     @Before
     public void initDb() throws Exception {
-        tabsDatabase = Inject.getTabsDatabase(null);
+        tabsDatabase = TabsModule.provideTabsDatabase(getApplicationContext());
         tabsDatabase.tabDao().deleteAllTabs();
     }
 

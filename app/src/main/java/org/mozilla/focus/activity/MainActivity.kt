@@ -32,7 +32,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import kotlinx.android.synthetic.main.activity_main.container
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.fragment.BrowserFragment
@@ -63,10 +62,14 @@ import org.mozilla.rocket.appupdate.InAppUpdateController
 import org.mozilla.rocket.appupdate.InAppUpdateIntro
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
+import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
@@ -85,6 +88,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.widget.enqueue
 import java.util.Locale
+import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
         ThemeManager.ThemeHost,
@@ -93,6 +97,13 @@ class MainActivity : BaseActivity(),
         ScreenNavigator.HostActivity,
         PromotionViewContract,
         InAppUpdateController.ViewDelegate {
+
+    @Inject
+    lateinit var downloadViewModelFactory: DownloadViewModelFactory
+    @Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    @Inject
+    lateinit var tabModelStore: TabModelStore
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
@@ -145,9 +156,10 @@ class MainActivity : BaseActivity(),
         get() = supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment?
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = Inject.obtainChromeViewModel(this)
-        downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(this)
+        chromeViewModel = viewModelProvider(chromeViewModelFactory)
+        downloadIndicatorViewModel = viewModelProvider(downloadViewModelFactory)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
         appUpdateController = InAppUpdateController(
@@ -220,8 +232,8 @@ class MainActivity : BaseActivity(),
     }
 
     private fun checkAndRunPromotion(promotionModel: PromotionModel) {
-        if (Inject.getActivityNewlyCreatedFlag()) {
-            Inject.setActivityNewlyCreatedFlag()
+        if (shouldRunPromotion) {
+            shouldRunPromotion = false
             PromotionPresenter.runPromotion(this, promotionModel)
         }
     }
@@ -421,12 +433,12 @@ class MainActivity : BaseActivity(),
         }
 
         val currentTabId = getSessionManager().focusSession?.id
-        TabModelStore.getInstance(this).saveTabs(this, sessions, currentTabId, null)
+        tabModelStore.saveTabs(this, sessions, currentTabId, null)
     }
 
     private fun restoreTabsFromPersistence() {
         chromeViewModel.onRestoreTabCountStarted()
-        TabModelStore.getInstance(this).getSavedTabs(this, asyncQueryListener)
+        tabModelStore.getSavedTabs(this, asyncQueryListener)
     }
 
     override fun getThemeManager(): ThemeManager? = themeManager
@@ -740,5 +752,8 @@ class MainActivity : BaseActivity(),
 
         const val REQUEST_CODE_IN_APP_UPDATE = 1024
         const val ACTION_INSTALL_IN_APP_UPDATE = "action_install_in_app_update"
+
+        @JvmField
+        var shouldRunPromotion = true
     }
 }

@@ -6,12 +6,6 @@
 package org.mozilla.focus.home;
 
 import android.app.Activity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-import androidx.sqlite.db.SupportSQLiteOpenHelper;
-import androidx.sqlite.db.SupportSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteQueryBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,15 +21,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,6 +34,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteQueryBuilder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,10 +58,10 @@ import org.mozilla.banner.BannerConfigViewModel;
 import org.mozilla.banner.BannerViewHolder;
 import org.mozilla.banner.OnClickListener;
 import org.mozilla.fileutils.FileUtils;
-import org.mozilla.focus.Inject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
+import org.mozilla.focus.home.repository.TopSitesRepo;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.HistoryContract;
@@ -80,13 +81,17 @@ import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
+import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
+import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
+import org.mozilla.rocket.download.DownloadViewModelFactory;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.home.pinsite.PinSiteManager;
 import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
@@ -105,6 +110,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.inject.Inject;
+
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
@@ -121,6 +128,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private static final int MSG_ID_REFRESH = 8269;
 
     public static final String BANNER_MANIFEST_DEFAULT = "";
+
+    @Inject
+    DownloadViewModelFactory downloadViewModelFactory;
+    @Inject
+    BottomBarViewModelFactory bottomBarViewModelFactory;
+    @Inject
+    ChromeViewModelFactory chromeViewModelFactory;
+    @Inject
+    TopSitesRepo topSitesRepo;
 
     private TopSitesContract.Presenter presenter;
     private RecyclerView recyclerView;
@@ -143,6 +159,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private Timer timer;
     private static final int SCROLL_PERIOD = 10000;
     private ChromeViewModel chromeViewModel;
+    private BottomBarViewModel bottomBarViewModel;
     private BannerConfigViewModel bannerConfigViewModel;
     final Observer<String[]> homeBannerObserver = bannerHelper::setUpHomeBannerFromConfig;
     private BottomBarItemAdapter bottomBarItemAdapter;
@@ -163,12 +180,14 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     @Override
     public void onCreate(Bundle bundle) {
+        ExtentionKt.appComponent(this).inject(this);
         super.onCreate(bundle);
         this.presenter = new TopSitesPresenter();
         this.presenter.setView(this);
         this.presenter.setModel(this);
         bannerHelper.setListener(this);
-        chromeViewModel = Inject.obtainChromeViewModel(getActivity());
+        chromeViewModel = ViewModelProviders.of(requireActivity(), chromeViewModelFactory).get(ChromeViewModel.class);
+        bottomBarViewModel = ViewModelProviders.of(requireActivity(), bottomBarViewModelFactory).get(BottomBarViewModel.class);
     }
 
     @Override
@@ -381,8 +400,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     private void playContentPortalAnimation() {
         final Animation fadeout = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_out);
         final Animation fadein = AnimationUtils.loadAnimation(getActivity(), R.anim.arrow_fade_in);
-        Inject.startAnimation(arrow1, fadeout);
-        Inject.startAnimation(arrow2, fadein);
+        startAnimation(arrow1, fadeout);
+        startAnimation(arrow2, fadein);
+    }
+
+    private static void startAnimation(View view, Animation animation) {
+        if (view == null) {
+            return;
+        }
+        view.startAnimation(animation);
     }
 
     private void setupBannerTimer() {
@@ -530,7 +556,6 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Dark.INSTANCE);
-        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
         bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
 
         LiveDataExtensionKt.switchFrom(chromeViewModel.isNightMode(), bottomBarViewModel.getItems())
@@ -557,8 +582,8 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void setupDownloadIndicator() {
-        BottomBarViewModel bottomBarViewModel = Inject.obtainBottomBarViewModel(getActivity());
-        DownloadIndicatorViewModel downloadIndicatorViewModel = Inject.obtainDownloadIndicatorViewModel(getActivity());
+        DownloadIndicatorViewModel downloadIndicatorViewModel =
+                ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
                 .observe(getViewLifecycleOwner(), status -> {
                     switch (status) {
@@ -698,7 +723,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void initDefaultSites() {
         // use different implementation to provide default top sites.
-        String obj_sites = Inject.getDefaultTopSites(getContext());
+        String obj_sites = topSitesRepo.getDefaultTopSitesJsonString();
 
         //if no default sites data in SharedPreferences, load data from assets.
         if (obj_sites == null) {

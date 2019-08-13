@@ -14,29 +14,39 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.mozilla.focus.Inject;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.widget.DownloadListAdapter;
+import org.mozilla.rocket.content.ExtentionKt;
+import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoPack;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
+import org.mozilla.rocket.download.DownloadViewModelFactory;
+
+import javax.inject.Inject;
 
 public class DownloadsFragment extends PanelFragment implements DownloadInfoViewModel.OnProgressUpdateListener {
 
     private static final int MSG_UPDATE_PROGRESS = 1;
     private static final int QUERY_PROGRESS_DELAY = 500;
 
+    @Inject
+    DownloadViewModelFactory downloadViewModelFactory;
 
     private RecyclerView recyclerView;
     private DownloadListAdapter downloadListAdapter;
@@ -66,11 +76,17 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
     };
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ExtentionKt.appComponent(this).inject(this);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_downloads, container, false);
 
-        viewModel = Inject.obtainDownloadInfoViewModel(getActivity());
+        viewModel = ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadInfoViewModel.class);
         downloadListAdapter = new DownloadListAdapter(getContext(), viewModel);
         viewModel.getDownloadInfoObservable().observe(getViewLifecycleOwner(), downloadInfoPack -> {
             if (downloadInfoPack != null) {
@@ -155,7 +171,8 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
         viewModel.markAllItemsAreRead();
         // When download indicator is showing and download is failed, we won't get notified by DownloadManager. Then back to BrowserFragment/HomeFragment will not
         // go through fragment's onResume i.e. LiveData's onActive. So force trigger download indicator update here.
-        Inject.obtainDownloadIndicatorViewModel(getActivity()).updateIndicator();
+        ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class)
+                .updateIndicator();
         cleanUp();
         super.onDestroy();
     }

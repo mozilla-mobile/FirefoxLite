@@ -1,17 +1,12 @@
 package org.mozilla.rocket.privately.browse
 
 import android.Manifest
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.Fragment
-import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,10 +19,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
-import org.mozilla.focus.Inject
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -43,6 +42,11 @@ import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.ChromeViewModelFactory
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
@@ -58,6 +62,7 @@ import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.mozilla.threadutils.ThreadUtils
 import org.mozilla.urlutils.UrlUtils
+import javax.inject.Inject
 
 private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
@@ -66,6 +71,11 @@ private const val ACTION_DOWNLOAD = 0
 class BrowserFragment : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
+
+    @Inject
+    lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
+    @Inject
+    lateinit var chromeViewModelFactory: ChromeViewModelFactory
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
@@ -87,8 +97,9 @@ class BrowserFragment : LocaleAwareFragment(),
     private var systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = Inject.obtainChromeViewModel(activity)
+        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
     }
 
     override fun onCreateView(
@@ -355,7 +366,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = Inject.obtainPrivateBottomBarViewModel(activity)
+        val bottomBarViewModel = activityViewModelProvider<PrivateBottomBarViewModel>(privateBottomBarViewModelFactory)
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
             bottomBarItemAdapter.endPrivateHomeAnimation()
