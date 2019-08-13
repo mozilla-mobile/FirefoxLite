@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.mozilla.rocket.content.games.data.GamesRepo
 
-class GamesViewModelFactory private constructor(
+class GamesViewModelFactory(
     private val gamesRepo: GamesRepo
 ) : ViewModelProvider.NewInstanceFactory() {
 
@@ -14,10 +14,5 @@ class GamesViewModelFactory private constructor(
             return GamesViewModel(gamesRepo) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-    }
-
-    companion object {
-        @JvmStatic
-        val INSTANCE: GamesViewModelFactory by lazy { GamesViewModelFactory(GamesRepo()) }
     }
 }

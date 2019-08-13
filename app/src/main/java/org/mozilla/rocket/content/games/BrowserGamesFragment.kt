@@ -6,26 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_games.recycler_view
 import kotlinx.android.synthetic.main.fragment_games.spinner
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.activityViewModelProvider
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.adapter.CarouselBanner
 import org.mozilla.rocket.content.games.adapter.CarouselBannerAdapterDelegate
 import org.mozilla.rocket.content.games.adapter.GameCategory
 import org.mozilla.rocket.content.games.adapter.GameCategoryAdapterDelegate
+import javax.inject.Inject
 
 class BrowserGamesFragment : Fragment() {
+
+    @Inject
+    lateinit var gamesViewModelFactory: GamesViewModelFactory
 
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        gamesViewModel = ViewModelProviders.of(requireActivity(), GamesViewModelFactory.INSTANCE).get(GamesViewModel::class.java)
+        gamesViewModel = activityViewModelProvider(gamesViewModelFactory)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
