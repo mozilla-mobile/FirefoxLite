@@ -17,8 +17,8 @@ import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon;
 import org.mozilla.rocket.content.ecommerce.adapter.CouponKey;
-import org.mozilla.rocket.content.ecommerce.data.ShoppingLink;
-import org.mozilla.rocket.content.ecommerce.data.ShoppingLinkKey;
+import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink;
+import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLinkKey;
 import org.mozilla.rocket.content.news.data.NewsProviderConfig;
 
 import java.util.ArrayList;

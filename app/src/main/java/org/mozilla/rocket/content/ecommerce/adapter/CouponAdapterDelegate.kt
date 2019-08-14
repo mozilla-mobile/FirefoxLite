@@ -7,7 +7,6 @@ import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ShoppingViewModel
-import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
 import java.text.SimpleDateFormat
 import java.util.*
 

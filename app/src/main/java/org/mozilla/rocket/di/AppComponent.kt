@@ -35,7 +35,6 @@ import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
-import org.mozilla.rocket.content.ecommerce.EcFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.NewsFragment
@@ -86,7 +85,6 @@ interface AppComponent {
     fun inject(urlInputFragment: UrlInputFragment)
     fun inject(menuDialog: MenuDialog)
     fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
-    fun inject(ecFragment: EcFragment)
     fun inject(privateModeActivity: PrivateModeActivity)
     fun inject(gamesActivity: GamesActivity)
     fun inject(browserGamesFragment: BrowserGamesFragment)

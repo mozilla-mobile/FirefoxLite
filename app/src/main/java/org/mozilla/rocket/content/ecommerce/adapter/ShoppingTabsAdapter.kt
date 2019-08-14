@@ -6,9 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.ecommerce.CouponFragment
-import org.mozilla.rocket.content.ecommerce.EcFragment
+import org.mozilla.rocket.content.ecommerce.ShoppingLinkFragment
 import org.mozilla.rocket.content.games.BrowserGamesFragment
-import org.mozilla.rocket.content.portal.ContentFeature
 
 class ShoppingTabsAdapter(
     fm: FragmentManager,
@@ -34,7 +33,7 @@ class ShoppingTabsAdapter(
             listOf(
                 TabItem(BrowserGamesFragment(), R.string.label_menu_e_commerce_deal),
                 TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
-                TabItem(EcFragment.newInstance(ContentFeature.TYPE_TICKET), R.string.label_menu_e_commerce_voucher)
+                TabItem(ShoppingLinkFragment(), R.string.label_menu_e_commerce_voucher)
             )
         }
     }

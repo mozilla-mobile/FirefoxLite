@@ -11,6 +11,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
+import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
 
 class ShoppingViewModel(
@@ -31,6 +32,17 @@ class ShoppingViewModel(
     }
     val couponItems: LiveData<List<DelegateAdapter.UiModel>> = _couponItems
 
+    private val _shoppingLinkItems by lazy {
+        val liveData = MutableLiveData<List<DelegateAdapter.UiModel>>()
+        _isDataLoading.value = true
+        viewModelScope.launch {
+            liveData.value = shoppingRepo.getShoppingLinks()
+            _isDataLoading.value = false
+        }
+        return@lazy liveData
+    }
+    val shoppingLinkItems: LiveData<List<DelegateAdapter.UiModel>> = _shoppingLinkItems
+
     fun onBannerItemClicked(context: Context, bannerItem: CarouselBannerAdapter.BannerItem) {
         ScreenNavigator.get(context).showBrowserScreen(bannerItem.link, true, false)
     }
@@ -44,6 +56,15 @@ class ShoppingViewModel(
 //                source = couponItem.link.source,
 //                category = couponItem.category,
 //                subcategory = couponItem.subcategory
+//        )
+    }
+
+    fun onShoppingLinkItemClicked(context: Context, shoppingLinkItem: ShoppingLink) {
+        ScreenNavigator.get(context).showBrowserScreen(shoppingLinkItem.url, true, false)
+//        TelemetryWrapper.clickOnEcItem(
+//                pos = position.toString(),
+//                source = shoppingLinkItem.source,
+//                category = shoppingLinkItem.name
 //        )
     }
 }
