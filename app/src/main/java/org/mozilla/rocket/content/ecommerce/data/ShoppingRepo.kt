@@ -25,6 +25,12 @@ class ShoppingRepo {
         }
     }
 
+    suspend fun getShoppingLinks(): List<DelegateAdapter.UiModel> {
+        return withContext(Dispatchers.IO) {
+            AppConfigWrapper.getEcommerceShoppingLinks()
+        }
+    }
+
     // TODO: remove test function
     private fun getPlaceholderImageUrl(w: Int, h: Int): String =
             "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
