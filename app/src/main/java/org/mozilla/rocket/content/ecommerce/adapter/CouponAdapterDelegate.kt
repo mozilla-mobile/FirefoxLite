@@ -8,7 +8,7 @@ import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ShoppingViewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class CouponAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
 
@@ -17,8 +17,8 @@ class CouponAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : 
 }
 
 class CouponViewHolder(
-        override val containerView: View,
-        private val shoppingViewModel: ShoppingViewModel
+    override val containerView: View,
+    private val shoppingViewModel: ShoppingViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     private val dateFormat = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
@@ -46,8 +46,8 @@ class CouponViewHolder(
         }
     }
 
-    private fun toValidPeriodFormat(end: Long): String
-            = if (end != 0L) containerView.context.getString(R.string.coupon_valid_description, dateFormat.format(end)) else ""
+    private fun toValidPeriodFormat(end: Long): String =
+            if (end != 0L) containerView.context.getString(R.string.coupon_valid_description, dateFormat.format(end)) else ""
 }
 
 object CouponKey {

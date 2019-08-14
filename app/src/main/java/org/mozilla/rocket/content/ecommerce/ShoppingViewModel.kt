@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
@@ -44,7 +43,7 @@ class ShoppingViewModel(
     val shoppingLinkItems: LiveData<List<DelegateAdapter.UiModel>> = _shoppingLinkItems
 
     fun onBannerItemClicked(context: Context, bannerItem: CarouselBannerAdapter.BannerItem) {
-        ScreenNavigator.get(context).showBrowserScreen(bannerItem.link, true, false)
+        ScreenNavigator.get(context).showBrowserScreen(bannerItem.linkUrl, true, false)
     }
 
     fun onCouponItemClicked(context: Context, couponItem: Coupon) {

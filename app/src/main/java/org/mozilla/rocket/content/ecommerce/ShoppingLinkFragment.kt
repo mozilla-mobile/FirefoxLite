@@ -12,7 +12,8 @@ import kotlinx.android.synthetic.main.content_tab_shoppinglink.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.adapter.*
+import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink
+import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLinkAdapterDelegate
 
 class ShoppingLinkFragment : Fragment() {
 

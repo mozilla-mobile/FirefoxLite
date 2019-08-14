@@ -14,8 +14,8 @@ class ShoppingLinkAdapterDelegate(private val shoppingViewModel: ShoppingViewMod
 }
 
 class ShoppingLinkViewHolder(
-        override val containerView: View,
-        private val shoppingViewModel: ShoppingViewModel
+    override val containerView: View,
+    private val shoppingViewModel: ShoppingViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
@@ -41,8 +41,8 @@ object ShoppingLinkKey {
 }
 
 data class ShoppingLink(
-        val url: String,
-        val name: String,
-        val image: String,
-        val source: String
+    val url: String,
+    val name: String,
+    val image: String,
+    val source: String
 ) : DelegateAdapter.UiModel()
