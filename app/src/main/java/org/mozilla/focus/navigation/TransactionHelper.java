@@ -254,6 +254,8 @@ class TransactionHelper implements DefaultLifecycleObserver {
 
         BackStackListener(TransactionHelper helper) {
             this.helper = helper;
+            // set up initial states
+            notifyTopFragment(helper.activity.getSupportFragmentManager());
         }
 
         @Override
