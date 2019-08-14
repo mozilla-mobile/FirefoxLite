@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.ecommerce.CouponFragment
 import org.mozilla.rocket.content.ecommerce.ShoppingLinkFragment
-import org.mozilla.rocket.content.games.BrowserGamesFragment
 
+@Suppress("DEPRECATION")
 class ShoppingTabsAdapter(
     fm: FragmentManager,
     activity: FragmentActivity,
@@ -31,7 +31,7 @@ class ShoppingTabsAdapter(
     companion object {
         private val DEFAULT_TABS: List<TabItem> by lazy {
             listOf(
-                TabItem(BrowserGamesFragment(), R.string.label_menu_e_commerce_deal),
+                TabItem(ShoppingLinkFragment(), R.string.label_menu_e_commerce_deal),
                 TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
                 TabItem(ShoppingLinkFragment(), R.string.label_menu_e_commerce_voucher)
             )

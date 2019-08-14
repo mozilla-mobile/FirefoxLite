@@ -37,5 +37,5 @@ class ShoppingRepo {
 
     // TODO: remove test function
     private fun generateFakeBanner(): CarouselBannerAdapter.BannerItem =
-            getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(this, this) }
+            getPlaceholderImageUrl(400, 200).run { CarouselBannerAdapter.BannerItem(this, this, this) }
 }
