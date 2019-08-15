@@ -56,12 +56,6 @@ class ContentPortalViewTest {
     }
 
     @Test
-    fun `when there's no News in RemoteConfig, we show EcTabFragment`() {
-        contentPortalView.onAttachedToWindow()
-        assert(activity.supportFragmentManager.findFragmentByTag(ContentPortalView.TAG_CONTENT_FRAGMENT) != null)
-    }
-
-    @Test
     fun `Remember to re-open Content Portal once opend`() {
         ContentPortalViewState.lastOpened()
         contentPortalView.onResume()
