@@ -38,6 +38,7 @@ import org.mozilla.rocket.content.games.GamesActivity
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
 import org.mozilla.rocket.content.news.NewsTabFragment
+import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
@@ -57,6 +58,7 @@ import javax.inject.Singleton
         ContentModule::class,
         ChromeModule::class,
         TabsModule::class,
+        HomeModule::class,
         TopSitesModule::class
     ]
 )
@@ -71,6 +73,7 @@ interface AppComponent {
     fun inject(browserFragment: org.mozilla.rocket.privately.browse.BrowserFragment)
     fun inject(downloadsFragment: DownloadsFragment)
     fun inject(homeFragment: HomeFragment)
+    fun inject(homeFragment: org.mozilla.rocket.home.HomeFragment)
     fun inject(privateHomeFragment: PrivateHomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
     fun inject(menuDialog: MenuDialog)

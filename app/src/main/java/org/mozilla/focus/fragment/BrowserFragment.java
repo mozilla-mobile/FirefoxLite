@@ -104,7 +104,6 @@ import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 import org.mozilla.rocket.tabs.utils.TabUtil;
 import org.mozilla.rocket.tabs.web.Download;
-import org.mozilla.rocket.theme.ThemeManager;
 import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
@@ -621,20 +620,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     sessionManager.switchToTab(focusTab.getId());
                 }
             }
-        }
-    }
-
-    private interface DoWithThemeManager {
-        void doIt(ThemeManager themeManager);
-    }
-
-    private static void doWithActivity(Activity activity, DoWithThemeManager doWithThemeManager) {
-        if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
-            return;
-        }
-        if (activity instanceof ThemeManager.ThemeHost) {
-            ThemeManager.ThemeHost themeHost = (ThemeManager.ThemeHost) activity;
-            doWithThemeManager.doIt(themeHost.getThemeManager());
         }
     }
 

@@ -37,7 +37,6 @@ import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.FirstrunFragment
 import org.mozilla.focus.fragment.ListPanelDialog
-import org.mozilla.focus.home.HomeFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.notification.NotificationId
 import org.mozilla.focus.notification.NotificationUtil
@@ -71,6 +70,7 @@ import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.extension.nonNullObserve
+import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -420,7 +420,9 @@ class MainActivity : BaseActivity(),
     }
 
     private fun dismissContentPortal(): Boolean =
-            (screenNavigator.topFragment as? HomeFragment)?.hideContentPortal() ?: false
+            // TODO: Evan
+            false
+//            (screenNavigator.topFragment as? HomeFragment)?.hideContentPortal() ?: false
 
     private fun saveTabsToPersistence() {
         if (chromeViewModel.isTabRestoredComplete.value != true) {
@@ -521,7 +523,8 @@ class MainActivity : BaseActivity(),
         applyNightModeBrightness(enabled, brightness, window)
         when (val fragment = screenNavigator.topFragment) {
             is BrowserFragment -> fragment.setNightModeEnabled(enabled)
-            is HomeFragment -> fragment.setNightModeEnabled(enabled)
+            // TODO: Evan
+//            is HomeFragment -> fragment.setNightModeEnabled(enabled)
         }
     }
 
@@ -574,7 +577,7 @@ class MainActivity : BaseActivity(),
     override fun createUrlInputScreen(url: String?, parentFragmentTag: String): UrlInputFragment =
             UrlInputFragment.create(url, parentFragmentTag, true)
 
-    override fun createHomeScreen(): HomeFragment = HomeFragment.create()
+    override fun createHomeScreen(): ScreenNavigator.HomeScreen = HomeFragment()
 
     override fun getSessionManager(): SessionManager =
             // TODO: Find a proper place to allocate and init SessionManager

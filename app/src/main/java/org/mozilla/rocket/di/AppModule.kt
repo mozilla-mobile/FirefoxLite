@@ -20,6 +20,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import dagger.Module
 import dagger.Provides
+import org.mozilla.focus.utils.Settings
 import javax.inject.Singleton
 
 /**
@@ -39,4 +40,8 @@ class AppModule(private val appContext: Context) {
     @Provides
     fun providesWifiManager(context: Context): WifiManager =
         context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+    @Singleton
+    @Provides
+    fun provideSettings(appContext: Context): Settings = Settings.getInstance(appContext)
 }

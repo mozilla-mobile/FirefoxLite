@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/home_container"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <org.mozilla.focus.home.HomeScreenBackground
+        android:id="@+id/home_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_homescreen_color"
+        android:scaleType="fitStart" />
+
+    <LinearLayout
+        android:id="@+id/profile_buttons_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#00FFFF"
+        android:padding="6dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#FFFF00"
+            android:layout_marginEnd="6dp"/>
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#FF00FF"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/home_fragment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_firefox_lite_logo"
+        android:tint="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/arc_panel"
+        app:layout_constraintVertical_bias="0.3"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="35dp"
+        app:layout_constraintTop_toBottomOf="@id/home_fragment_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Content &amp; Services"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <View
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="#FF00FF"
+                android:layout_margin="15dp"/>
+
+            <View
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="#00FFFF"
+                android:layout_margin="15dp"/>
+
+            <View
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:background="#FFFF00"
+                android:layout_margin="15dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="#FF0000"
+        android:translationY="30dp"
+        app:layout_constraintBottom_toTopOf="@id/arc_panel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/arc_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_arc_panel"
+        android:layout_gravity="bottom"
+        android:minHeight="160dp"
+        android:paddingTop="50dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:id="@+id/main_list"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="#FFFF00"
+            android:paddingBottom="20dp"
+            android:layout_marginBottom="12dp"/>
+
+        <View
+            android:id="@+id/page_indicator"
+            android:layout_width="30dp"
+            android:layout_height="10dp"
+            android:background="#00FFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/shopping_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="#FF0000"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <View
+                android:id="@+id/home_fragment_fake_input"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:background="#00FF00"
+                app:layout_constraintStart_toEndOf="@id/shopping_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <View
+                android:id="@+id/home_fragment_menu_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="#0000FF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <View
+                android:id="@+id/home_fragment_tab_counter"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="#FF00FF"
+                app:layout_constraintEnd_toStartOf="@id/home_fragment_menu_button"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

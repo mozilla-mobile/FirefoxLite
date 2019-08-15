@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +75,7 @@ public class RemoveTopSitesTest {
      * 2. long click to delete top site
      */
     @Test
+    @Ignore("fix this after top sites implemented")
     public void deleteTopSite_deleteSuccessfully() {
 
         // Pick a test site to delete
@@ -112,6 +114,7 @@ public class RemoveTopSitesTest {
      * 3. Press back key
      */
     @Test
+    @Ignore("fix this after top sites implemented")
     public void deleteTopSiteAndCancel_topSiteIsStillThere() {
 
         // Pick a test site to test
@@ -151,6 +154,7 @@ public class RemoveTopSitesTest {
      * 5. relaunch app
      */
     @Test
+    @Ignore("fix this after top sites implemented")
     public void deleteAllTopSitesAndRelaunchApp_defaultTopSitesAreLoaded() {
 
         // Get the count of top sites

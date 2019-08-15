@@ -25,6 +25,14 @@ fun FragmentActivity.appContext(): Context = appComponent().appContext()
 fun Context.appComponent(): AppComponent = (applicationContext as FocusApplication).getAppComponent()
 
 /**
+ * Like [Fragment.viewModelProvider] for Fragment that want a [ViewModel] scoped to the Fragment.
+ */
+inline fun <reified VM : ViewModel> Fragment.viewModelProvider(
+    provider: ViewModelProvider.Factory
+) =
+    ViewModelProviders.of(this, provider).get(VM::class.java)
+
+/**
  * Like [FragmentActivity.viewModelProvider] for FragmentActivity that want a [ViewModel] scoped to the Activity.
  */
 inline fun <reified VM : ViewModel> FragmentActivity.viewModelProvider(
