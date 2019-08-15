@@ -19,9 +19,7 @@ public class ThemeManager {
     }
 
     public interface ThemeHost {
-        Context getApplicationContext();
-
-        ThemeManager getThemeManager();
+       ThemeManager getThemeManager();
     }
 
     public enum ThemeSet {
@@ -45,8 +43,8 @@ public class ThemeManager {
     private HashSet<Themeable> subscribedThemeable = new HashSet<>(3);
     private boolean dirty = true;
 
-    public ThemeManager(ThemeHost themeHost) {
-        baseContext = themeHost.getApplicationContext();
+    public ThemeManager(Context appContext) {
+        baseContext = appContext;
         currentThemeSet = loadCurrentTheme(getSharedPreferences(baseContext));
     }
 

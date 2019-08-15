@@ -1,10 +1,10 @@
 package org.mozilla.focus.autobot
 
+import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import android.view.View
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 import org.mockito.Mockito.doReturn
@@ -33,13 +33,9 @@ interface BottomBarAutomation {
 
     fun mockMenuBottomBarItems(items: List<BottomBarItemAdapter.ItemData>)
 
-    fun clickHomeBottomBarItem(id: Int)
-
     fun clickBrowserBottomBarItem(id: Int)
 
     fun clickMenuBottomBarItem(id: Int)
-
-    fun homeBottomBarItemView(id: Int): Matcher<View>
 
     fun browserBottomBarItemView(id: Int): Matcher<View>
 
@@ -65,10 +61,6 @@ class BottomBarRobot : BottomBarAutomation {
     private fun List<BottomBarItemAdapter.ItemData>.toJsonString(): String =
             joinToString(separator = ",", prefix = "[", postfix = "]") { "{\"type\":\"${it.type}\"}" }
 
-    override fun clickHomeBottomBarItem(id: Int) {
-        onView(bottomBarItemView(R.id.bottom_bar, id)).perform(click())
-    }
-
     override fun clickBrowserBottomBarItem(id: Int) {
         onView(bottomBarItemView(R.id.browser_bottom_bar, id)).perform(click())
     }
@@ -76,9 +68,6 @@ class BottomBarRobot : BottomBarAutomation {
     override fun clickMenuBottomBarItem(id: Int) {
         onView(bottomBarItemView(R.id.menu_bottom_bar, id)).perform(click())
     }
-
-    override fun homeBottomBarItemView(id: Int): Matcher<View> =
-            bottomBarItemView(R.id.bottom_bar, id)
 
     override fun browserBottomBarItemView(id: Int): Matcher<View> =
             bottomBarItemView(R.id.browser_bottom_bar, id)

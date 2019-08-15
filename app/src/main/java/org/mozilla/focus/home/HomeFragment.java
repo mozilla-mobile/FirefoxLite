@@ -929,10 +929,10 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
             return;
         }
-        if (activity instanceof ThemeManager.ThemeHost) {
-            ThemeManager.ThemeHost themeHost = (ThemeManager.ThemeHost) activity;
-            doWithThemeManager.doIt(themeHost.getThemeManager());
-        }
+//        if (activity instanceof ThemeManager.ThemeHost) {
+//            ThemeManager.ThemeHost themeHost = (ThemeManager.ThemeHost) activity;
+//            doWithThemeManager.doIt(themeHost.getThemeManager());
+//        }
     }
 
 

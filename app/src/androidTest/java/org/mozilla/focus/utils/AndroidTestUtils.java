@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 import androidx.test.InstrumentationRegistry;
@@ -19,7 +20,6 @@ import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Tap;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.rule.ActivityTestRule;
-import android.view.View;
 
 import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.BuildConfig;
@@ -125,7 +125,7 @@ public final class AndroidTestUtils {
     }
 
     public static void tapHomeMenuButton() {
-        new BottomBarRobot().clickHomeBottomBarItem(R.id.bottom_bar_menu);
+        onView(withId(R.id.home_fragment_menu_button)).perform(click());
     }
 
     public static void tapBrowserMenuButton() {
