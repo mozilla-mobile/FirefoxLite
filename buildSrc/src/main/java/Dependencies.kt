@@ -41,6 +41,7 @@ object Versions {
     const val uiautomator = "2.2.0"
     const val mockwebserver = "3.7.0"
     const val firebase = "16.0.0"
+    const val firebase_auth = "18.1.0"
     const val fcm = "17.0.0"
     const val crashlytics = "2.9.3"
     const val google_services_plugin = "3.1.1"

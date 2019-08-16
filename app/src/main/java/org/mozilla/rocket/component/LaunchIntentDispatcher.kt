@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.CheckResult
+import org.mozilla.focus.BuildConfig.FXA_EMAIL_VERIFY_URL
+import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.notification.RocketMessagingService
@@ -30,13 +32,20 @@ class LaunchIntentDispatcher {
     }
 
     companion object {
+
         /**
          * Now [LaunchIntentDispatcher.dispatch] is the universal entry to our app. All starting method should be analyzed here.
          * */
         @JvmStatic
         @CheckResult
         fun dispatch(context: Context, intent: Intent): Action? {
-
+            // External URL from other apps (e.g. GMail) will go to InfoActivity
+            val inComingUrl = intent.data?.toString()
+            if (inComingUrl?.contains(FXA_EMAIL_VERIFY_URL) == true) {
+                val newIntent = InfoActivity.getIntentFor(context, inComingUrl, "Firefox Account verified")
+                context.startActivity(newIntent)
+                return Action.HANDLED
+            }
             /**
              * This extra is passed when we click our icon in mobile launcher
              * */
