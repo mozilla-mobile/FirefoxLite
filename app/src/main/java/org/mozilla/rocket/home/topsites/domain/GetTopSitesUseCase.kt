@@ -2,6 +2,7 @@ package org.mozilla.rocket.home.topsites.domain
 
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.ui.Site
+import org.mozilla.rocket.home.topsites.ui.toSiteModel
 import java.util.Locale
 
 class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
@@ -35,6 +36,7 @@ class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
                 mergeHistoryAndDefaultSites(defaultSites, historySites).toRemovableSite(topSitesRepo)
 
         return result.distinctBy { removeUrlPostSlash(it.url).toLowerCase(Locale.getDefault()) }
+                .also { removeOutboundDefaultSites(it) }
                 .take(TOP_SITES_SIZE)
     }
 
@@ -76,6 +78,17 @@ class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
             } else {
                 url
             }
+
+    private fun removeOutboundDefaultSites(sites: List<Site>) {
+        val sizeLimit = TOP_SITES_SIZE
+        if (sites.size > sizeLimit) {
+            val outboundSites = sites.takeLast(sites.size - sizeLimit)
+            outboundSites.filter { it.id < 0 }
+                    .forEach { defaultSite ->
+                        topSitesRepo.removeDefaultSite(defaultSite.toSiteModel())
+                    }
+        }
+    }
 
     companion object {
         private const val TOP_SITES_SIZE = 16

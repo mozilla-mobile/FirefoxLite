@@ -121,7 +121,7 @@ open class TopSitesRepo(
         }
     }
 
-    private fun removeDefaultSite(site: Site) {
+    fun removeDefaultSite(site: Site) {
         val defaultSitesJsonArray = getDefaultTopSitesJsonArrayFromSharedPref()
         if (defaultSitesJsonArray != null) {
             try {

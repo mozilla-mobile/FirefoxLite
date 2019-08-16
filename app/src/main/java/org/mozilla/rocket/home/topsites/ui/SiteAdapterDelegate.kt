@@ -138,3 +138,18 @@ sealed class Site(
         val isPinned: Boolean
     ) : Site(id, title, url, iconUri, viewCount, lastViewTimestamp)
 }
+
+fun Site.toSiteModel(): org.mozilla.focus.history.model.Site =
+        org.mozilla.focus.history.model.Site(
+                id,
+                title,
+                url,
+                viewCount,
+                lastViewTimestamp,
+                iconUri
+        ).apply {
+            isDefault = when (this@toSiteModel) {
+                is Site.FixedSite -> true
+                is Site.RemovableSite -> this@toSiteModel.isDefault
+            }
+        }
