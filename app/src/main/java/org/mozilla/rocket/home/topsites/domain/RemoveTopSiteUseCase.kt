@@ -6,7 +6,7 @@ import org.mozilla.rocket.home.topsites.ui.toSiteModel
 
 class RemoveTopSiteUseCase(private val topSitesRepo: TopSitesRepo) {
 
-    operator fun invoke(site: Site, callback: () -> Unit) {
-        topSitesRepo.remove(site.toSiteModel(), callback)
+    suspend operator fun invoke(site: Site) {
+        topSitesRepo.remove(site.toSiteModel())
     }
 }

@@ -8,6 +8,8 @@ import android.os.Looper
 import android.os.Message
 import android.preference.PreferenceManager
 import androidx.sqlite.db.SupportSQLiteQueryBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -25,6 +27,8 @@ import org.mozilla.rocket.home.pinsite.PinSiteManager
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import java.lang.ref.WeakReference
 import java.util.ArrayList
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 open class TopSitesRepo(
     private val appContext: Context,
@@ -106,18 +110,21 @@ open class TopSitesRepo(
         pinSiteManager.pin(site)
     }
 
-    fun remove(site: Site, callback: () -> Unit) {
+    suspend fun remove(site: Site) {
+        pinSiteManager.unpinned(site)
         val isDefaultSite = site.id < 0
+        TelemetryWrapper.removeTopSite(isDefaultSite)
         if (isDefaultSite) {
             removeDefaultSite(site)
-            pinSiteManager.unpinned(site)
-            callback.invoke()
-            TelemetryWrapper.removeTopSite(true)
-        } else {
-            site.viewCount = 1
-            BrowsingHistoryManager.getInstance().updateLastEntry(site) { callback.invoke() }
-            pinSiteManager.unpinned(site)
-            TelemetryWrapper.removeTopSite(false)
+        }
+        withContext(Dispatchers.IO) {
+            updateTopSiteToDb(site.apply { viewCount = 1 })
+        }
+    }
+
+    private suspend fun updateTopSiteToDb(site: Site) {
+        suspendCoroutine<Unit> { continuation ->
+            BrowsingHistoryManager.getInstance().updateLastEntry(site) { continuation.resume(Unit) }
         }
     }
 
