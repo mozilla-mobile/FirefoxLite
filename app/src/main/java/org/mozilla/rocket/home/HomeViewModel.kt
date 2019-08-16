@@ -2,6 +2,8 @@ package org.mozilla.rocket.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -83,10 +85,9 @@ class HomeViewModel(
         updateTopSitesData()
     }
 
-    fun onRemoveTopSiteClicked(site: Site) {
-        removeTopSiteUseCase(site) {
-            updateTopSitesData()
-        }
+    fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
+        removeTopSiteUseCase(site)
+        updateTopSitesData()
     }
 
     companion object {
