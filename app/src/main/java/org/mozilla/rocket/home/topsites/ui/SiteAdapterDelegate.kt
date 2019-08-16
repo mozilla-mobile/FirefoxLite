@@ -44,7 +44,10 @@ class SiteViewHolder(
         content_image.setImageBitmap(favicon)
 
         // Background color
-        val backgroundColor = calculateBackgroundColor(favicon)
+        val backgroundColor = when (site) {
+            is Site.FixedSite -> Color.WHITE
+            is Site.RemovableSite -> calculateBackgroundColor(favicon)
+        }
         ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(backgroundColor))
 
         // Pin
