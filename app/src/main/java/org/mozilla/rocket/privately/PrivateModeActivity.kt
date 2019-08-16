@@ -348,4 +348,16 @@ class PrivateModeActivity : BaseActivity(),
                     continuation()
                 })
     }
+
+    override fun createMissionDetailScreen(): ScreenNavigator.MissionDetailScreen {
+        TODO("not implemented")
+    }
+
+    override fun createFxLoginScreen(): ScreenNavigator.FxLoginScreen {
+        TODO("not implemented")
+    }
+
+    override fun createRedeemScreen(): ScreenNavigator.RedeemSceen {
+        TODO("not implemented")
+    }
 }

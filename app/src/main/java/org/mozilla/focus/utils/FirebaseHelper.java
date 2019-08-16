@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
@@ -14,6 +15,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.functions.Function2;
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.R;
 import org.mozilla.focus.home.FeatureSurveyViewHelper;
 import org.mozilla.focus.home.HomeFragment;
@@ -91,8 +96,9 @@ final public class FirebaseHelper {
     }
 
     /**
-    *  The entry point to inject FirebaseContract and start the library. This method can only
-    *  be called once or a IllegalStateException will be thrown.
+     * The entry point to inject FirebaseContract and start the library. This method can only
+     * be called once or a IllegalStateException will be thrown.
+     *
      * @param context The entry point to inject FirebaseContract and start the library.
      * @param enabled false if start Firebase without Analytics, true otherwise.
      */
@@ -153,6 +159,7 @@ final public class FirebaseHelper {
 
     /**
      * Provider actual Firebase implementation
+     *
      * @param context Context used to start Firebase
      * @return FirebaseContract that defines Firebase behavior
      */
@@ -176,6 +183,7 @@ final public class FirebaseHelper {
     /**
      * Get the implementation of FirebaseContract.
      * This will throw IllegalStateException if FirebaseHelper is not initiallzed.
+     *
      * @return Implementation of FirebaseContract
      */
     @NonNull
@@ -188,7 +196,7 @@ final public class FirebaseHelper {
 
     /**
      * @param applicationContext Used to disable Firebase Analytics. Allow null for Unit Tests.
-     * @param enable If true, enable Firebase Analytics.
+     * @param enable             If true, enable Firebase Analytics.
      */
     public static void enableAnalytics(@Nullable final Context applicationContext, final boolean enable) {
 
@@ -297,5 +305,21 @@ final public class FirebaseHelper {
         checkFirebaseInitState();
 
         getFirebase().setFirebaseUserProperty(context, tag, value);
+    }
+
+    public static void initUserState(@NotNull Activity activity) {
+        checkFirebaseInitState();
+        getFirebase().initUserState(activity);
+    }
+
+    @Nullable
+    public static String getUid() {
+        checkFirebaseInitState();
+        return getFirebase().getUid();
+    }
+
+
+    public static void signInWithCustomToken(@NotNull String jwt, @NotNull Activity activity, Function2<? super String, ? super String, Unit> onSuccess, Function1<? super String, Unit> onFail) {
+        getFirebase().signInWithCustomToken(jwt, activity, onSuccess, onFail);
     }
 }

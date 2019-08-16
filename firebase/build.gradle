@@ -57,6 +57,7 @@ dependencies {
     implementation "com.google.firebase:firebase-config:${Versions.firebase}"
     api "com.google.firebase:firebase-messaging:${Versions.fcm}"
     implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
+    implementation "com.google.firebase:firebase-auth:${Versions.firebase_auth}"
 
 }
 

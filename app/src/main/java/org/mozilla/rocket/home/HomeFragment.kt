@@ -52,6 +52,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         themeManager = (context as ThemeManager.ThemeHost).themeManager
         initSearchToolBar()
         initBackgroundView()
+        setupFxaView(view)
+    }
+
+    private fun setupFxaView(fragmentView: View?) {
+        val view = fragmentView?.findViewById<View>(R.id.profile_buttons_container)
+        view?.setOnClickListener { showMissionFragment() }
+    }
+
+    private fun showMissionFragment() {
+        ScreenNavigator.get(context).addMissionDetail()
     }
 
     private fun initSearchToolBar() {

@@ -291,7 +291,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         }
 
         this.recyclerView = view.findViewById(R.id.main_list);
-
+        setupFxaView(view);
         setupBottomBar(view);
         setupFakeInput(view);
 
@@ -395,6 +395,15 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         if (contentPanel != null) {
             contentPanel.onResume();
         }
+    }
+
+    private void setupFxaView(View fragmentView) {
+        final ImageView view = fragmentView.findViewById(R.id.profile_buttons_container);
+        view.setOnClickListener(v -> showMissionFragment());
+    }
+
+    private void showMissionFragment() {
+        ScreenNavigator.get(getContext()).addMissionDetail();
     }
 
     private void playContentPortalAnimation() {

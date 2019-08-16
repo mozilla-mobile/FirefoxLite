@@ -50,6 +50,7 @@ import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.DialogUtils
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.SafeIntent
@@ -71,6 +72,9 @@ import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.home.HomeFragment
+import org.mozilla.rocket.fxa.FxLoginFragment
+import org.mozilla.rocket.fxa.MissionDetailFragment
+import org.mozilla.rocket.fxa.RedeemFragment
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -96,7 +100,8 @@ class MainActivity : BaseActivity(),
         ScreenNavigator.Provider,
         ScreenNavigator.HostActivity,
         PromotionViewContract,
-        InAppUpdateController.ViewDelegate {
+        InAppUpdateController.ViewDelegate,
+        FxLoginFragment.OnLoginCompleteListener {
 
     @Inject
     lateinit var downloadViewModelFactory: DownloadViewModelFactory
@@ -158,6 +163,9 @@ class MainActivity : BaseActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+
+        FirebaseHelper.initUserState(this)
+
         chromeViewModel = viewModelProvider(chromeViewModelFactory)
         downloadIndicatorViewModel = viewModelProvider(downloadViewModelFactory)
         themeManager = ThemeManager(this)
@@ -579,6 +587,12 @@ class MainActivity : BaseActivity(),
 
     override fun createHomeScreen(): ScreenNavigator.HomeScreen = HomeFragment()
 
+    override fun createMissionDetailScreen(): ScreenNavigator.MissionDetailScreen = MissionDetailFragment()
+
+    override fun createFxLoginScreen(): ScreenNavigator.FxLoginScreen = FxLoginFragment.create(FirebaseHelper.getUid())
+
+    override fun createRedeemScreen(): ScreenNavigator.RedeemSceen = RedeemFragment()
+
     override fun getSessionManager(): SessionManager =
             // TODO: Find a proper place to allocate and init SessionManager
             sessionManager.takeIf { it != null } ?: SessionManager(MainTabViewProvider(this)).also {
@@ -748,6 +762,24 @@ class MainActivity : BaseActivity(),
             // but there is no promise about this.
             return WebViewProvider.create(this.activity, null) as TabView
         }
+    }
+
+    fun loginFxa() {
+        screenNavigator.addFxLogin()
+    }
+
+    override fun onLoginComplete(jwt: String, fragmentFx: FxLoginFragment) {
+
+        // TODO: Add the log to profile the slowness of the login
+        FirebaseHelper.signInWithCustomToken(jwt, this, { fxUid, oldFbUid ->
+            Toast.makeText(baseContext, "FB user [$oldFbUid] is now matches to Fx User [$fxUid]", Toast.LENGTH_SHORT).show()
+        }, {
+            Toast.makeText(baseContext, it, Toast.LENGTH_SHORT).show()
+        })
+
+        supportFragmentManager.popBackStack()
+
+        screenNavigator.addRedeem()
     }
 
     companion object {

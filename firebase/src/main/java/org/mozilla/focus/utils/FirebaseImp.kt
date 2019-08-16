@@ -5,13 +5,15 @@
 
 package org.mozilla.focus.utils
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.Size
 import androidx.annotation.WorkerThread
-import android.util.Log
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -24,9 +26,11 @@ import java.util.HashMap
 open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContract(fromResourceString) {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun init(context: Context) {
         FirebaseApp.initializeApp(context)
+        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     // get Remote Config string
@@ -112,5 +116,61 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
 
     override fun setFirebaseUserProperty(context: Context, tag: String, value: String) {
         FirebaseAnalytics.getInstance(context).setUserProperty(tag, value)
+    }
+
+    override val uid: String?
+        get() = firebaseAuth.uid
+
+    override fun signInWithCustomToken(
+        jwt: String,
+        activity: Activity,
+        onSuccess: (String?, String?) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        firebaseAuth.signInWithCustomToken(jwt).addOnCompleteListener(activity) { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "=====signInWithCustomToken success=====")
+                fetchClaim(onSuccess)
+            } else {
+                onFail("signInWithCustomToken failed.:${task.exception}")
+            }
+        }
+    }
+
+    override fun initUserState(activity: Activity) {
+        Log.d(TAG, "====initUserState====")
+
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser == null) {
+            firebaseAuth.signInAnonymously()
+                .addOnCompleteListener(activity) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "====signInAnonymously==== ${firebaseAuth.uid}")
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.e(TAG, "====signInAnonymously failure==== ${task.exception}")
+                    }
+                }
+        } else {
+            Log.d(TAG, "====already signed in==== ")
+        }
+    }
+
+    private fun fetchClaim(onClaimFetched: (String?, String?) -> Unit) {
+        Log.d(TAG, "current====${firebaseAuth.currentUser?.uid}")
+
+        firebaseAuth.currentUser?.getIdToken(true)?.addOnSuccessListener { result ->
+            val fxUid = result.claims["fxuid"]?.toString()
+            val oldFbUid = result.claims["oldFbUid"]?.toString()
+
+            onClaimFetched(fxUid, oldFbUid)
+            if (fxUid == null) {
+                Log.d(TAG, "===Not logged FxA===")
+            } else {
+                Log.d(TAG, "===fxuid====$fxUid====")
+                Log.d(TAG, "===oldFbUid====$oldFbUid====")
+            }
+        }
     }
 }
