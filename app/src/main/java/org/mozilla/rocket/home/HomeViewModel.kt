@@ -21,6 +21,7 @@ class HomeViewModel(
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
+    val topSitesPageIndex = MutableLiveData<Int>()
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
@@ -34,6 +35,10 @@ class HomeViewModel(
 
     fun updateTopSitesData() {
         getTopSitesUseCase { sitePages.value = it.toSitePages() }
+    }
+
+    fun onTopSitesPagePositionChanged(position: Int) {
+        topSitesPageIndex.value = position
     }
 
     fun onBackgroundViewDoubleTap(): Boolean {
