@@ -45,32 +45,33 @@ open class TopSitesRepo(
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
 
-    fun getHistorySitesAsync(callback: (List<Site>) -> Unit) {
-        if (needToCheckDbVersion) {
+    suspend fun getHistorySites(): List<Site> {
+        return if (needToCheckDbVersion) {
             needToCheckDbVersion = false
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(appContext)
             if (sharedPreferences.contains(TOP_SITES_V2_PREF)) {
-                queryHistorySitesAsync(callback)
+                queryHistorySites()
             } else {
-                startDbMigrationAndGetHistorySitesAsync(callback)
+                migrateHistoryDb()
+                queryHistorySites()
             }
         } else {
-            queryHistorySitesAsync(callback)
+            queryHistorySites()
         }
     }
 
-    private fun queryHistorySitesAsync(callback: (List<Site>) -> Unit) {
+    private suspend fun queryHistorySites(): List<Site> = suspendCoroutine { continuation ->
         BrowsingHistoryManager.getInstance()
                 .queryTopSites(TOP_SITES_QUERY_LIMIT, TOP_SITES_QUERY_MIN_VIEW_COUNT) {
-                    callback(it.filterIsInstance<Site>())
+                    continuation.resume(it.filterIsInstance<Site>())
                 }
     }
 
-    private fun startDbMigrationAndGetHistorySitesAsync(callback: (List<Site>) -> Unit) {
+    private suspend fun migrateHistoryDb() = suspendCoroutine<Unit> { continuation ->
         Thread(MigrateHistoryRunnable(object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
                 if (msg.what == MSG_ID_REFRESH) {
-                    queryHistorySitesAsync(callback)
+                    continuation.resume(Unit)
                 }
             }
         }, appContext)).start()

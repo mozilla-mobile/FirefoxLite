@@ -1,5 +1,7 @@
 package org.mozilla.rocket.home.topsites.domain
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.toSiteModel
@@ -9,20 +11,17 @@ class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
 
     private val fixedSites: List<org.mozilla.focus.history.model.Site> by lazy { topSitesRepo.getFixedSites() }
 
-    operator fun invoke(callback: (List<Site>) -> Unit) {
+    suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
         val pinnedSites = topSitesRepo.getPinnedSites()
+        val historySites = topSitesRepo.getHistorySites()
         val defaultSites = topSitesRepo.getDefaultSites()
 
-        topSitesRepo.getHistorySitesAsync { historySites ->
-            callback(
-                composeTopSites(
-                    fixedSites,
-                    pinnedSites,
-                    defaultSites,
-                    historySites
-                )
-            )
-        }
+        composeTopSites(
+            fixedSites,
+            pinnedSites,
+            defaultSites,
+            historySites
+        )
     }
 
     private fun composeTopSites(
