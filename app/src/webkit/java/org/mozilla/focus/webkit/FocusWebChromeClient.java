@@ -7,6 +7,8 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
 import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -148,6 +150,46 @@ class FocusWebChromeClient extends WebChromeClient {
         super.onReceivedTitle(view, title);
         if (tabChromeClient != null) {
             tabChromeClient.onReceivedTitle(this.host, title);
+        }
+    }
+
+    @Override
+    public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+        if (view.isAttachedToWindow()) {
+            return super.onJsConfirm(view, url, message, result);
+        } else {
+            result.cancel();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+        if (view.isAttachedToWindow()) {
+            return super.onJsPrompt(view, url, message, defaultValue, result);
+        } else {
+            result.cancel();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onJsBeforeUnload(WebView view, String url, String message, JsResult result) {
+        if (view.isAttachedToWindow()) {
+            return super.onJsBeforeUnload(view, url, message, result);
+        } else {
+            result.cancel();
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+        if (view.isAttachedToWindow()) {
+            return super.onJsAlert(view, url, message, result);
+        } else {
+            result.cancel();
+            return true;
         }
     }
 }
