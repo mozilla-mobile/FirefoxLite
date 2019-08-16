@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
@@ -26,7 +27,6 @@ import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
@@ -46,10 +46,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private lateinit var themeManager: ThemeManager
     private lateinit var topSitesAdapter: DelegateAdapter
 
+    private val topSitesPageChangeCallback = object : OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            homeViewModel.onTopSitesPagePositionChanged(position)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        homeViewModel = viewModelProvider(homeViewModelFactory)
+        homeViewModel = activityViewModelProvider(homeViewModelFactory)
         chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
     }
 
@@ -118,10 +124,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         )
         main_list.apply {
             adapter = this@HomeFragment.topSitesAdapter
+            registerOnPageChangeCallback(topSitesPageChangeCallback)
         }
+        var savedTopSitesPagePosition = homeViewModel.topSitesPageIndex.value
         homeViewModel.run {
             sitePages.observe(this@HomeFragment, Observer {
                 topSitesAdapter.setData(it)
+                savedTopSitesPagePosition?.let { savedPosition ->
+                    savedTopSitesPagePosition = null
+                    main_list.setCurrentItem(savedPosition, false)
+                }
             })
             topSiteClicked.observe(this@HomeFragment, Observer {
                 ScreenNavigator.get(context).showBrowserScreen(it.url, true, false)
@@ -152,6 +164,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     override fun onDestroyView() {
         super.onDestroyView()
         themeManager.unsubscribeThemeChange(home_background)
+        main_list.unregisterOnPageChangeCallback(topSitesPageChangeCallback)
     }
 
     override fun getFragment(): Fragment = this
