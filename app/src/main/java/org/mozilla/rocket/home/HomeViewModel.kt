@@ -31,13 +31,13 @@ class HomeViewModel(
     val topSiteClicked = SingleLiveEvent<Site>()
     val topSiteLongClicked = SingleLiveEvent<Site>()
 
+    fun updateTopSitesData() = viewModelScope.launch {
+        sitePages.value = getTopSitesUseCase().toSitePages()
+    }
+
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
             .filterIndexed { index, _ -> index < TOP_SITES_MAX_PAGE_SIZE }
             .map { SitePage(it) }
-
-    fun updateTopSitesData() {
-        getTopSitesUseCase { sitePages.value = it.toSitePages() }
-    }
 
     fun onTopSitesPagePositionChanged(position: Int) {
         topSitesPageIndex.value = position
