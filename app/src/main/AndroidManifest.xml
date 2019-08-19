@@ -304,6 +304,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=".shopping.search" />
+
+        <activity
+            android:name="org.mozilla.rocket.content.common.ui.ContentTabActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/PrivateModeTheme" />
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import dagger.Provides
 import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
+import org.mozilla.rocket.content.common.ui.ContentTabBottomBarViewModel
 import org.mozilla.rocket.content.games.di.GamesModule
 import org.mozilla.rocket.content.news.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.NewsViewModelFactory
@@ -47,13 +48,13 @@ object ContentModule {
     @Singleton
     @Provides
     fun provideLoadNewsSettingsUseCase(newsSettingsRepository: NewsSettingsRepository): LoadNewsSettingsUseCase =
-            LoadNewsSettingsUseCase(newsSettingsRepository)
+        LoadNewsSettingsUseCase(newsSettingsRepository)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideNewsViewModelFactory(loadNewsSettingsUseCase: LoadNewsSettingsUseCase): NewsViewModelFactory =
-            NewsViewModelFactory(loadNewsSettingsUseCase)
+        NewsViewModelFactory(loadNewsSettingsUseCase)
 
     @JvmStatic
     @Singleton
@@ -72,4 +73,10 @@ object ContentModule {
         )
         return RepositoryNewsPoint(context, url)
     }
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideContentTabBottomBarViewModelFactory(): ContentTabBottomBarViewModel.Factory =
+        ContentTabBottomBarViewModel.Factory()
 }
