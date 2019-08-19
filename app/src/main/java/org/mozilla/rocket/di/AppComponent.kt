@@ -31,6 +31,8 @@ import org.mozilla.focus.persistence.di.TabsModule
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.di.ChromeModule
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.ecommerce.EcFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
@@ -82,6 +84,8 @@ interface AppComponent {
     fun inject(privateModeActivity: PrivateModeActivity)
     fun inject(gamesActivity: GamesActivity)
     fun inject(browserGamesFragment: BrowserGamesFragment)
+    fun inject(contentTabActivity: ContentTabActivity)
+    fun inject(contentTabFragment: ContentTabFragment)
 
     @VisibleForTesting
     fun chromeViewModelFactory(): ChromeViewModelFactory
