@@ -19,7 +19,6 @@ fun Fragment.appComponent(): AppComponent = app().getAppComponent()
 fun FragmentActivity.appComponent(): AppComponent = app().getAppComponent()
 fun AppCompatDialog.appComponent(): AppComponent = app().getAppComponent()
 fun Fragment.appContext(): Context = appComponent().appContext()
-fun FragmentActivity.appContext(): Context = appComponent().appContext()
 
 @VisibleForTesting
 fun Context.appComponent(): AppComponent = (applicationContext as FocusApplication).getAppComponent()

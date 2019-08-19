@@ -1,6 +1,5 @@
 package org.mozilla.rocket.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.LayoutInflater
@@ -37,11 +36,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var themeManager: ThemeManager
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        themeManager = (context as ThemeManager.ThemeHost).themeManager
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
@@ -53,8 +47,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        themeManager = (context as ThemeManager.ThemeHost).themeManager
         initSearchToolBar()
         initBackgroundView()
     }
