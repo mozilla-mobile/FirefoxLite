@@ -1,13 +1,13 @@
 package org.mozilla.rocket.chrome
 
 import android.content.Context
-import androidx.core.content.ContextCompat
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
 import org.mozilla.focus.R
 import org.mozilla.focus.tabs.TabCounter
@@ -50,6 +50,8 @@ class BottomBarItemAdapter(
             TYPE_PRIVATE_HOME -> PrivateHomeItem(type, R.id.bottom_bar_private_home)
             TYPE_DELETE -> ImageItem(type, R.id.bottom_bar_delete, R.drawable.menu_delete, theme.buttonColorResId)
             TYPE_TRACKER -> TrackerItem(type, R.id.bottom_bar_tracker)
+            TYPE_BACK -> ImageItem(type, R.id.bottom_bar_back, R.drawable.action_back, theme.buttonColorResId)
+            TYPE_OPEN_IN_NEW_TAB -> ImageItem(type, R.id.bottom_bar_open_in_new_tab, R.drawable.action_open_in_new_tab, theme.buttonColorResId)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
@@ -287,6 +289,8 @@ class BottomBarItemAdapter(
         const val TYPE_PRIVATE_HOME = 10
         const val TYPE_DELETE = 11
         const val TYPE_TRACKER = 12
+        const val TYPE_BACK = 13
+        const val TYPE_OPEN_IN_NEW_TAB = 14
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1

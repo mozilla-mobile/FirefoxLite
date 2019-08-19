@@ -48,4 +48,6 @@
     <item name="bottom_bar_private_home" type="id"/>
     <item name="bottom_bar_delete" type="id"/>
     <item name="bottom_bar_tracker" type="id"/>
+    <item name="bottom_bar_back" type="id"/>
+    <item name="bottom_bar_open_in_new_tab" type="id"/>
 </resources>
