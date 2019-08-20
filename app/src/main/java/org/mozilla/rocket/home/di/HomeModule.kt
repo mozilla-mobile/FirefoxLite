@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.home.HomeViewModelFactory
+import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
+import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
@@ -25,13 +27,15 @@ object HomeModule {
         getTopSitesUseCase: GetTopSitesUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
-        removeTopSiteUseCase: RemoveTopSiteUseCase
+        removeTopSiteUseCase: RemoveTopSiteUseCase,
+        getContentHubItemsUseCase: GetContentHubItemsUseCase
     ): HomeViewModelFactory = HomeViewModelFactory(
         settings,
         getTopSitesUseCase,
         topSitesConfigsUseCase,
         pinTopSiteUseCase,
-        removeTopSiteUseCase
+        removeTopSiteUseCase,
+        getContentHubItemsUseCase
     )
 
     @JvmStatic
@@ -67,4 +71,14 @@ object HomeModule {
     @Provides
     fun providePinSiteManager(appContext: Context): PinSiteManager =
             PinSiteManager(SharedPreferencePinSiteDelegate(appContext))
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetContentHubItemsUseCase = GetContentHubItemsUseCase(contentHubRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideContentHubRepo(): ContentHubRepo = ContentHubRepo()
 }

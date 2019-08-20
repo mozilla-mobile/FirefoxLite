@@ -11,12 +11,14 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import kotlinx.android.synthetic.main.fragment_home.content_hub
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
+import kotlinx.android.synthetic.main.fragment_home.profile_buttons_container
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -70,7 +72,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initSearchToolBar()
         initBackgroundView()
         initTopSites()
-        setupFxaView(view)
+        initContentHub()
+        setupFxaView()
     }
 
     private fun initSearchToolBar() {
@@ -152,9 +155,14 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
     }
 
-    private fun setupFxaView(fragmentView: View?) {
-        val view = fragmentView?.findViewById<View>(R.id.profile_buttons_container)
-        view?.setOnClickListener { showMissionFragment() }
+    private fun initContentHub() {
+        homeViewModel.contentHubItems.observe(this, Observer {
+            content_hub.setItems(it)
+        })
+    }
+
+    private fun setupFxaView() {
+        profile_buttons_container.setOnClickListener { showMissionFragment() }
     }
 
     private fun showMissionFragment() {
