@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.Lazy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,10 +19,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.ContentPortalViewState
-import org.mozilla.rocket.content.activityViewModelProvider
-import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.content.*
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
@@ -34,7 +32,8 @@ import javax.inject.Inject
 
 class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
-    @Inject lateinit var viewModelFactory: NewsViewModelFactory
+    @Inject
+    lateinit var newsViewModelCreator: Lazy<NewsViewModel>
 
     override fun getCategory(): String {
         return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
@@ -96,7 +95,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val newsViewModel: NewsViewModel = activityViewModelProvider(viewModelFactory)
+        val newsViewModel: NewsViewModel = getActivityViewModel { newsViewModelCreator.get() }
         newsPresenter = NewsPresenter(this, newsViewModel)
 
         // creating a repository will also create a new subscription.
