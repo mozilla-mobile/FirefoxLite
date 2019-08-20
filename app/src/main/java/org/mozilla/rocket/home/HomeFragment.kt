@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.main_list
+import kotlinx.android.synthetic.main.fragment_home.page_indicator
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -129,11 +130,15 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         var savedTopSitesPagePosition = homeViewModel.topSitesPageIndex.value
         homeViewModel.run {
             sitePages.observe(this@HomeFragment, Observer {
+                page_indicator.setSize(it.size)
                 topSitesAdapter.setData(it)
                 savedTopSitesPagePosition?.let { savedPosition ->
                     savedTopSitesPagePosition = null
                     main_list.setCurrentItem(savedPosition, false)
                 }
+            })
+            topSitesPageIndex.observe(this@HomeFragment, Observer {
+                page_indicator.setSelection(it)
             })
             topSiteClicked.observe(this@HomeFragment, Observer {
                 ScreenNavigator.get(context).showBrowserScreen(it.url, true, false)
