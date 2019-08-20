@@ -58,7 +58,6 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/fixed_menu_height"
             android:clipChildren="false"
             android:orientation="vertical">
 
@@ -71,13 +70,6 @@
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
 
     </LinearLayout>
-
-    <org.mozilla.rocket.content.view.BottomBar
-        android:id="@+id/browser_bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/fixed_menu_height"
-        android:layout_alignParentBottom="true"
-        android:background="@color/privateBackground" />
 
     <FrameLayout
         android:id="@+id/video_container"
