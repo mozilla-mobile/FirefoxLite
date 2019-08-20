@@ -4,13 +4,18 @@ import org.mozilla.focus.R
 
 class ContentHubRepo {
 
-    fun getContentHubItems(): List<Item> =
+    fun getContentHubItems(): List<ContentHubItem> =
             listOf(
-                Item(R.drawable.ic_lock),
-                Item(R.drawable.ic_lock),
-                Item(R.drawable.ic_lock),
-                Item(R.drawable.ic_lock)
+                ContentHubItem.Travel(R.drawable.ic_lock),
+                ContentHubItem.Shopping(R.drawable.ic_lock),
+                ContentHubItem.News(R.drawable.ic_lock),
+                ContentHubItem.Games(R.drawable.ic_lock)
             )
+}
 
-    data class Item(val iconResId: Int)
+sealed class ContentHubItem(open val iconResId: Int) {
+    data class Travel(override val iconResId: Int) : ContentHubItem(iconResId)
+    data class Shopping(override val iconResId: Int) : ContentHubItem(iconResId)
+    data class News(override val iconResId: Int) : ContentHubItem(iconResId)
+    data class Games(override val iconResId: Int) : ContentHubItem(iconResId)
 }

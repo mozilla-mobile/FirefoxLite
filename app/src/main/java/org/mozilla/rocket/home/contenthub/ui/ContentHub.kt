@@ -10,7 +10,7 @@ import org.mozilla.rocket.extension.dpToPx
 
 class ContentHub : LinearLayout {
 
-    private var clickListener: (() -> Unit)? = null
+    private var clickListener: ((Item) -> Unit)? = null
 
     constructor(context: Context) : super(context)
 
@@ -34,6 +34,7 @@ class ContentHub : LinearLayout {
                     scaleType = ImageView.ScaleType.CENTER_INSIDE
                     setBackgroundResource(R.drawable.bg_content_hub_item)
                     elevation = dpToPx(ITEM_ELEVATION_IN_DP).toFloat()
+                    setOnClickListener { clickListener?.invoke(item) }
                 },
                 LayoutParams(dpToPx(ITEM_SIZE_IN_DP), dpToPx(ITEM_SIZE_IN_DP)).apply {
                     if (!isLast) {
@@ -44,11 +45,16 @@ class ContentHub : LinearLayout {
         }
     }
 
-    fun setOnItemClickListener(listener: () -> Unit) {
+    fun setOnItemClickListener(listener: (Item) -> Unit) {
         clickListener = listener
     }
 
-    data class Item(val iconResId: Int)
+    sealed class Item(open val iconResId: Int) {
+        data class Travel(override val iconResId: Int) : Item(iconResId)
+        data class Shopping(override val iconResId: Int) : Item(iconResId)
+        data class News(override val iconResId: Int) : Item(iconResId)
+        data class Games(override val iconResId: Int) : Item(iconResId)
+    }
 
     companion object {
         private const val PADDING_IN_DP = 12f

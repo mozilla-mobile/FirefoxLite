@@ -34,6 +34,7 @@ class HomeViewModel(
     val resetBackgroundColor = SingleLiveEvent<Unit>()
     val topSiteClicked = SingleLiveEvent<Site>()
     val topSiteLongClicked = SingleLiveEvent<Site>()
+    val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
 
     fun updateTopSitesData() = viewModelScope.launch {
         sitePages.value = getTopSitesUseCase().toSitePages()
@@ -92,6 +93,10 @@ class HomeViewModel(
     fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
         removeTopSiteUseCase(site)
         updateTopSitesData()
+    }
+
+    fun onContentHubItemClicked(item: ContentHub.Item) {
+        navigateToContentPage.value = item
     }
 
     companion object {

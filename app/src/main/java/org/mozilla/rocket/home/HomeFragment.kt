@@ -30,6 +30,8 @@ import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.games.ui.GamesActivity
+import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
@@ -156,9 +158,23 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initContentHub() {
-        homeViewModel.contentHubItems.observe(this, Observer {
-            content_hub.setItems(it)
-        })
+        content_hub.setOnItemClickListener {
+            homeViewModel.onContentHubItemClicked(it)
+        }
+        homeViewModel.run {
+            contentHubItems.observe(this@HomeFragment, Observer {
+                content_hub.setItems(it)
+            })
+            navigateToContentPage.observe(this@HomeFragment, Observer {
+                val context = requireContext()
+                when (it) {
+//                    is ContentHub.Item.Travel -> // TODO: navigation
+//                    is ContentHub.Item.Shopping -> // TODO: navigation
+//                    is ContentHub.Item.News -> // TODO: navigation
+                    is ContentHub.Item.Games -> startActivity(GamesActivity.getStartIntent(context))
+                }
+            })
+        }
     }
 
     private fun setupFxaView() {
