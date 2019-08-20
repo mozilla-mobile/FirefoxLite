@@ -6,7 +6,9 @@ import org.mozilla.rocket.home.contenthub.ui.ContentHub
 
 class GetContentHubItemsUseCase(private val contentHubRepo: ContentHubRepo) {
 
-    operator fun invoke(): List<ContentHub.Item> = contentHubRepo.getContentHubItems().toViewItem()
+    operator fun invoke(): List<ContentHub.Item> =
+            (contentHubRepo.getConfiguredContentHubItems() ?: contentHubRepo.getDefaultContentHubItems() ?: emptyList())
+                    .toViewItem()
 }
 
 private fun List<ContentHubItem>.toViewItem(): List<ContentHub.Item> = map { it.toViewItem() }

@@ -1,21 +1,52 @@
 package org.mozilla.rocket.home.contenthub.data
 
+import android.content.Context
+import org.json.JSONException
 import org.mozilla.focus.R
+import org.mozilla.rocket.util.AssetsUtils
+import org.mozilla.rocket.util.toJsonArray
 
-class ContentHubRepo {
+class ContentHubRepo(private val appContext: Context) {
 
-    fun getContentHubItems(): List<ContentHubItem> =
+    fun getConfiguredContentHubItems(): List<ContentHubItem>? =
+            // TODO:
             listOf(
-                ContentHubItem.Travel(R.drawable.ic_lock),
-                ContentHubItem.Shopping(R.drawable.ic_lock),
-                ContentHubItem.News(R.drawable.ic_lock),
-                ContentHubItem.Games(R.drawable.ic_lock)
+                ContentHubItem.Travel(),
+                ContentHubItem.Shopping(),
+                ContentHubItem.News(),
+                ContentHubItem.Games()
             )
+
+    fun getDefaultContentHubItems(): List<ContentHubItem>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.content_hub_default_items)
+                    ?.jsonStringToContentHubItems()
+
+    private fun String.jsonStringToContentHubItems(): List<ContentHubItem>? {
+        return try {
+            val jsonArray = this.toJsonArray()
+            (0 until jsonArray.length())
+                    .map { index -> jsonArray.getJSONObject(index) }
+                    .map { jsonObject -> jsonObject.getInt("type") }
+                    .map { type -> createContentHubItem(type) }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            null
+        }
+    }
 }
 
-sealed class ContentHubItem(open val iconResId: Int) {
-    data class Travel(override val iconResId: Int) : ContentHubItem(iconResId)
-    data class Shopping(override val iconResId: Int) : ContentHubItem(iconResId)
-    data class News(override val iconResId: Int) : ContentHubItem(iconResId)
-    data class Games(override val iconResId: Int) : ContentHubItem(iconResId)
+sealed class ContentHubItem(val iconResId: Int) {
+    class Travel : ContentHubItem(R.drawable.ic_travel)
+    class Shopping : ContentHubItem(R.drawable.ic_shopping)
+    class News : ContentHubItem(R.drawable.ic_news)
+    class Games : ContentHubItem(R.drawable.ic_games)
 }
+
+private fun createContentHubItem(type: Int): ContentHubItem =
+        when (type) {
+            1 -> ContentHubItem.Travel()
+            2 -> ContentHubItem.Shopping()
+            3 -> ContentHubItem.News()
+            4 -> ContentHubItem.Games()
+            else -> error("Unsupported content hub item type $type")
+        }

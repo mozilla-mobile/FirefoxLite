@@ -88,5 +88,5 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideContentHubRepo(): ContentHubRepo = ContentHubRepo()
+    fun provideContentHubRepo(appContext: Context): ContentHubRepo = ContentHubRepo(appContext)
 }
