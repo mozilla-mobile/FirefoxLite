@@ -5,8 +5,8 @@ import android.view.View;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.utils.NewFeatureNotice;
-import org.mozilla.rocket.home.pinsite.PinSiteManager;
-import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
+import org.mozilla.rocket.home.topsites.data.PinSiteManager;
+import org.mozilla.rocket.home.topsites.data.PinSiteManagerKt;
 
 public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
 

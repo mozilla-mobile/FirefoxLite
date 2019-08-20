@@ -24,7 +24,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.home.pinsite.PinSiteManager;
+import org.mozilla.rocket.home.topsites.data.PinSiteManager;
 import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import java.util.ArrayList;

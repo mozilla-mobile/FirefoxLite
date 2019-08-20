@@ -23,7 +23,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.focus.utils.TopSitesUtils
 import org.mozilla.icon.FavIconUtils
-import org.mozilla.rocket.home.pinsite.PinSiteManager
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import java.lang.ref.WeakReference
 import java.util.ArrayList
