@@ -25,27 +25,21 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_content_tab.browser_bottom_bar
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
-import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.content.view.BottomBar
-import org.mozilla.rocket.extension.nonNullObserve
-import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView
@@ -65,14 +59,11 @@ private const val ACTION_DOWNLOAD = 0
 class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen, BackKeyHandleable {
 
     @Inject
-    lateinit var bottomBarViewModelCreator: Lazy<ContentTabBottomBarViewModel>
-    @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
     private lateinit var observer: Observer
-    private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
     private lateinit var chromeViewModel: ChromeViewModel
 
     private lateinit var browserContainer: ViewGroup
@@ -166,8 +157,6 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
     override fun onViewCreated(view: View, savedState: Bundle?) {
         super.onViewCreated(view, savedState)
 
-        setupBottomBar(view)
-
         displayUrlView = view.findViewById(R.id.display_url)
         siteIdentity = view.findViewById(R.id.site_identity)
         browserContainer = view.findViewById(R.id.browser_container)
@@ -211,9 +200,7 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbarRoot.visibility = View.GONE
-            browser_bottom_bar.visibility = View.GONE
         } else {
-            browser_bottom_bar.visibility = View.VISIBLE
             toolbarRoot.visibility = View.VISIBLE
         }
     }
@@ -295,39 +282,6 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
     private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
 
     private fun reload() = sessionManager.focusSession?.engineSession?.reload()
-
-    private fun setupBottomBar(rootView: View) {
-        val bottomBar = rootView.findViewById<BottomBar>(R.id.browser_bottom_bar)
-        bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
-            override fun onItemClick(type: Int, position: Int) {
-                when (type) {
-                    BottomBarItemAdapter.TYPE_BACK -> activity?.onBackPressed()
-                    BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
-                    BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
-                    BottomBarItemAdapter.TYPE_OPEN_IN_NEW_TAB -> {
-                        startActivity(
-                            IntentUtils.createInternalOpenUrlIntent(
-                                context,
-                                sessionManager.focusSession!!.engineSession?.tabView?.url,
-                                true
-                            )
-                        )
-                    }
-                    else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
-                }
-            }
-        })
-        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = getActivityViewModel(bottomBarViewModelCreator)
-        bottomBarViewModel.items.nonNullObserve(this) {
-            bottomBarItemAdapter.setItems(it)
-        }
-
-        chromeViewModel.isRefreshing.switchFrom(bottomBarViewModel.items)
-            .observe(this, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
-        chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
-            .observe(this, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
-    }
 
     private fun isTurboModeEnabled(context: Context): Boolean {
         val appContext = (context.applicationContext as FocusApplication)
