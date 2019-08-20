@@ -7,18 +7,19 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_games.games_tabs
 import kotlinx.android.synthetic.main.activity_games.view_pager
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.ui.adapter.GameTabsAdapter
-import org.mozilla.rocket.content.viewModelProvider
+import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
 
 class GamesActivity : FragmentActivity() {
 
     @Inject
-    lateinit var gamesViewModelFactory: GamesViewModel.Factory
+    lateinit var gamesViewModelCreator: Lazy<GamesViewModel>
 
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: GameTabsAdapter
@@ -26,7 +27,7 @@ class GamesActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        gamesViewModel = viewModelProvider(gamesViewModelFactory)
+        gamesViewModel = getViewModel { gamesViewModelCreator.get() }
         setContentView(R.layout.activity_games)
         initViewPager()
         initTabLayout()

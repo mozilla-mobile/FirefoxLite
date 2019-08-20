@@ -17,6 +17,5 @@ object GamesModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGamesViewModelFactory(gamesRepo: GamesRepo): GamesViewModel.Factory =
-        GamesViewModel.Factory(gamesRepo)
+    fun provideGamesViewModel(gamesRepo: GamesRepo): GamesViewModel = GamesViewModel(gamesRepo)
 }
