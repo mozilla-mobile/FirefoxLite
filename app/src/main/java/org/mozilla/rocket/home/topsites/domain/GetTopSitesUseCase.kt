@@ -13,8 +13,8 @@ class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
 
     suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
         val pinnedSites = topSitesRepo.getPinnedSites()
-        val historySites = topSitesRepo.getHistorySites()
         val defaultSites = topSitesRepo.getDefaultSites()
+        val historySites = topSitesRepo.getHistorySites()
 
         composeTopSites(
             fixedSites,

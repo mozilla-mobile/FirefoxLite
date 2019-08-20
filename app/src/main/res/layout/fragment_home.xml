@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/home_fragment_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -67,31 +67,13 @@
             android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"/>
 
-        <LinearLayout
+        <org.mozilla.rocket.home.contenthub.ui.ContentHub
+            android:id="@+id/content_hub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
-
-            <View
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="#FF00FF"
-                android:layout_margin="15dp"/>
-
-            <View
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="#00FFFF"
-                android:layout_margin="15dp"/>
-
-            <View
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="#FFFF00"
-                android:layout_margin="15dp"/>
-
-        </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            tools:layout_width="200dp"
+            tools:layout_height="40dp"/>
 
     </LinearLayout>
 

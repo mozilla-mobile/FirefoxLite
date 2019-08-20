@@ -3,6 +3,7 @@ package org.mozilla.rocket.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -13,7 +14,8 @@ class HomeViewModelFactory(
     private val getTopSitesUseCase: GetTopSitesUseCase,
     private val topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
-    private val removeTopSiteUseCase: RemoveTopSiteUseCase
+    private val removeTopSiteUseCase: RemoveTopSiteUseCase,
+    private val getContentHubItemsUseCase: GetContentHubItemsUseCase
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -24,7 +26,8 @@ class HomeViewModelFactory(
                 getTopSitesUseCase,
                 topSitesConfigsUseCase,
                 pinTopSiteUseCase,
-                removeTopSiteUseCase
+                removeTopSiteUseCase,
+                getContentHubItemsUseCase
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

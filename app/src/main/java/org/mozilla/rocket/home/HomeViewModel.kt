@@ -7,6 +7,8 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
+import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -19,12 +21,14 @@ class HomeViewModel(
     private val getTopSitesUseCase: GetTopSitesUseCase,
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
-    private val removeTopSiteUseCase: RemoveTopSiteUseCase
+    private val removeTopSiteUseCase: RemoveTopSiteUseCase,
+    private val getContentHubItemsUseCase: GetContentHubItemsUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
     val topSitesPageIndex = MutableLiveData<Int>()
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
+    val contentHubItems = MutableLiveData<List<ContentHub.Item>>().apply { value = getContentHubItemsUseCase() }
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
