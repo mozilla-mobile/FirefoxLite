@@ -54,3 +54,31 @@ inline fun <reified VM : ViewModel> AppCompatDialog.activityViewModelProvider(
     provider: ViewModelProvider.Factory
 ) =
     ViewModelProviders.of(context.toFragmentActivity(), provider).get(VM::class.java)
+
+inline fun <reified T : ViewModel> Fragment.getViewModel(noinline creator: (() -> T)? = null): T {
+    return if (creator == null)
+        ViewModelProviders.of(this).get(T::class.java)
+    else
+        ViewModelProviders.of(this, BaseViewModelFactory(creator)).get(T::class.java)
+}
+
+inline fun <reified T : ViewModel> FragmentActivity.getViewModel(noinline creator: (() -> T)? = null): T {
+    return if (creator == null)
+        ViewModelProviders.of(this).get(T::class.java)
+    else
+        ViewModelProviders.of(this, BaseViewModelFactory(creator)).get(T::class.java)
+}
+
+inline fun <reified T : ViewModel> Fragment.getActivityViewModel(noinline creator: (() -> T)? = null): T {
+    return if (creator == null)
+        ViewModelProviders.of(requireActivity()).get(T::class.java)
+    else
+        ViewModelProviders.of(requireActivity(), BaseViewModelFactory(creator)).get(T::class.java)
+}
+
+inline fun <reified T : ViewModel> AppCompatDialog.getActivityViewModel(noinline creator: (() -> T)? = null): T {
+    return if (creator == null)
+        ViewModelProviders.of(context.toFragmentActivity()).get(T::class.java)
+    else
+        ViewModelProviders.of(context.toFragmentActivity(), BaseViewModelFactory(creator)).get(T::class.java)
+}
