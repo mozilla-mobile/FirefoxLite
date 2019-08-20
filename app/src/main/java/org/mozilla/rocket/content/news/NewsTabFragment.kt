@@ -15,13 +15,14 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.MODE_SCROLLABLE
+import dagger.Lazy
 import kotlinx.android.synthetic.main.content_tab_news.news_setting
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.ContentPortalViewState
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.portal.ContentFeature
@@ -34,9 +35,10 @@ import javax.inject.Inject
  */
 class NewsTabFragment : Fragment() {
 
-    @Inject lateinit var viewModelFactory: NewsViewModelFactory
+    @Inject
+    lateinit var newsViewModelCreator: Lazy<NewsViewModel>
 
-    lateinit var newsViewModel: NewsViewModel
+    private lateinit var newsViewModel: NewsViewModel
 
     private var bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>? = null
 
@@ -63,7 +65,7 @@ class NewsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            newsViewModel = activityViewModelProvider(viewModelFactory)
+            newsViewModel = getActivityViewModel { newsViewModelCreator.get() }
 
             newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
