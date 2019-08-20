@@ -16,7 +16,6 @@ import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.home.HomeViewModel
-import org.mozilla.rocket.home.pinsite.PinViewWrapper
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class SiteAdapterDelegate(private val homeViewModel: HomeViewModel) : AdapterDelegate {

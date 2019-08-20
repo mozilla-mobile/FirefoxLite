@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.annotation.VisibleForTesting;
 
-import org.mozilla.rocket.home.pinsite.PinSiteManager;
-import org.mozilla.rocket.home.pinsite.PinSiteManagerKt;
+import org.mozilla.rocket.home.topsites.data.PinSiteManager;
+import org.mozilla.rocket.home.topsites.data.PinSiteManagerKt;
 
 public class NewFeatureNotice {
 
