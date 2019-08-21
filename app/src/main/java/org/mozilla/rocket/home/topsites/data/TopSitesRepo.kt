@@ -80,7 +80,11 @@ open class TopSitesRepo(
         val jsonArray = getDefaultTopSitesJsonArrayFromSharedPref()
                 ?: TopSitesUtils.getDefaultSitesJsonArrayFromAssets(appContext)
 
-        return TopSitesUtils.paresJsonToList(appContext, jsonArray)
+        return TopSitesUtils.paresJsonToList(appContext, jsonArray).map {
+            it.apply {
+                isDefault = true
+            }
+        }
     }
 
     // open for mocking during testing
