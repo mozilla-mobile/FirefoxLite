@@ -21,15 +21,21 @@ import org.mozilla.focus.activity.EditBookmarkActivityKt;
 import org.mozilla.focus.bookmark.BookmarkAdapter;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.persistence.BookmarkModel;
-import org.mozilla.focus.persistence.BookmarksDatabase;
-import org.mozilla.focus.repository.BookmarkRepository;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
+import org.mozilla.rocket.content.BaseViewModelFactory;
+import org.mozilla.rocket.content.ExtentionKt;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
+import dagger.Lazy;
 
 public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.BookmarkPanelListener {
+
+    @Inject
+    Lazy<BookmarkViewModel> bookmarkViewModelCreator;
+
     private RecyclerView recyclerView;
     private View emptyView;
     private BookmarkAdapter adapter;
@@ -37,6 +43,13 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
 
     public static BookmarksFragment newInstance() {
         return new BookmarksFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        ExtentionKt.appComponent(this).inject(this);
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(bookmarkViewModelCreator::get)).get(BookmarkViewModel.class);
     }
 
     @Override
@@ -52,16 +65,11 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        BookmarkViewModel.Factory factory = new BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(getActivity())));
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         adapter = new BookmarkAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        viewModel = ViewModelProviders.of(getActivity(), factory)
-                .get(BookmarkViewModel.class);
         viewModel.getBookmarks().observe(this, bookmarks -> adapter.setData(bookmarks));
 
         onStatus(VIEW_TYPE_NON_EMPTY);

@@ -2,7 +2,6 @@ package org.mozilla.focus.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
 import org.mozilla.focus.persistence.BookmarkModel;
@@ -47,20 +46,5 @@ public class BookmarkViewModel extends ViewModel {
 
     public void deleteBookmarksByUrl(String url) {
         bookmarkRepository.deleteBookmarksByUrl(url);
-    }
-
-    public static class Factory extends ViewModelProvider.NewInstanceFactory {
-
-        private final BookmarkRepository repository;
-
-        public Factory(BookmarkRepository repository) {
-            this.repository = repository;
-        }
-
-        @Override
-        public <T extends ViewModel> T create(Class<T> modelClass) {
-            //noinspection unchecked
-            return (T) new BookmarkViewModel(repository);
-        }
     }
 }

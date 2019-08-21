@@ -19,7 +19,9 @@ package org.mozilla.rocket.di
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import dagger.Component
+import org.mozilla.focus.activity.EditBookmarkActivity
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.fragment.BookmarksFragment
 import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.DownloadsFragment
 import org.mozilla.focus.history.BrowsingHistoryFragment
@@ -73,6 +75,8 @@ interface AppComponent {
     fun inject(newsTabFragment: NewsTabFragment)
     fun inject(newsFragment: NewsFragment)
     fun inject(mainActivity: MainActivity)
+    fun inject(editBookmarkActivity: EditBookmarkActivity)
+    fun inject(bookmarksFragment: BookmarksFragment)
     fun inject(browserFragment: BrowserFragment)
     fun inject(browserFragment: org.mozilla.rocket.privately.browse.BrowserFragment)
     fun inject(downloadsFragment: DownloadsFragment)

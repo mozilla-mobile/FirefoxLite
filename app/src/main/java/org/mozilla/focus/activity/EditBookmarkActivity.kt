@@ -1,7 +1,6 @@
 package org.mozilla.focus.activity
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.core.content.ContextCompat
@@ -16,24 +15,26 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_edit_bookmark.*
 import org.mozilla.focus.R
 import org.mozilla.focus.persistence.BookmarkModel
-import org.mozilla.focus.persistence.BookmarksDatabase
-import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.viewmodel.BookmarkViewModel
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getViewModel
+import javax.inject.Inject
 
 private const val SAVE_ACTION_ID = 1
 const val ITEM_UUID_KEY = "ITEM_UUID_KEY"
 
 class EditBookmarkActivity : BaseActivity() {
 
+    @Inject
+    lateinit var viewModelCreator: Lazy<BookmarkViewModel>
+
+    private lateinit var viewModel: BookmarkViewModel
+
     private val itemId: String by lazy { intent.getStringExtra(ITEM_UUID_KEY) }
-    private val viewModelFactory: BookmarkViewModel.Factory by lazy {
-        BookmarkViewModel.Factory(
-                BookmarkRepository.getInstance(BookmarksDatabase.getInstance(this)))
-    }
-    private val viewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(BookmarkViewModel::class.java) }
     private lateinit var bookmark: BookmarkModel
     private val editTextName: EditText by lazy { findViewById<EditText>(R.id.bookmark_name) }
     private val editTextLocation: EditText by lazy { findViewById<EditText>(R.id.bookmark_location) }
@@ -89,7 +90,10 @@ class EditBookmarkActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        viewModel = getViewModel { viewModelCreator.get() }
+
         setContentView(R.layout.activity_edit_bookmark)
         setSupportActionBar(toolbar)
         val drawable: Drawable = DrawableCompat.wrap(resources.getDrawable(R.drawable.edit_close, theme))
