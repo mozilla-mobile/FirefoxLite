@@ -7,7 +7,6 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
-import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -30,7 +28,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
-import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.focus.widget.AnimatedProgressBar
@@ -48,7 +45,6 @@ import org.mozilla.rocket.tabs.TabViewEngineSession
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.Download
-import org.mozilla.threadutils.ThreadUtils
 import org.mozilla.urlutils.UrlUtils
 import javax.inject.Inject
 
@@ -56,7 +52,7 @@ private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
 private const val ACTION_DOWNLOAD = 0
 
-class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen, BackKeyHandleable {
+class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
@@ -177,6 +173,12 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
         sessionManager.focusSession?.register(observer)
 
         observeChromeAction()
+
+        loadUrl(arguments?.getString(EXTRA_URL) ?: "")
+        val tabView = sessionManager.focusSession?.engineSession?.tabView ?: return
+        if (tabViewSlot.childCount == 0) {
+            tabViewSlot.addView(tabView.view)
+        }
     }
 
     override fun onResume() {
@@ -210,48 +212,6 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
         // about the new language. See issue #666.
         val unneeded = WebView(context)
         unneeded.destroy()
-    }
-
-    override fun getFragment(): Fragment {
-        return this
-    }
-
-    override fun switchToTab(tabId: String?) {
-        if (!TextUtils.isEmpty(tabId)) {
-            sessionManager.switchToTab(tabId!!)
-        }
-    }
-
-    override fun goForeground() {
-        val tabView = sessionManager.focusSession?.engineSession?.tabView ?: return
-        if (tabViewSlot.childCount == 0) {
-            tabViewSlot.addView(tabView.view)
-        }
-    }
-
-    override fun goBackground() {
-        val focus = sessionManager.focusSession ?: return
-        val tabView = focus.engineSession?.tabView ?: return
-        focus.engineSession?.detach()
-        tabViewSlot.removeView(tabView.view)
-    }
-
-    override fun loadUrl(
-        url: String,
-        openNewTab: Boolean,
-        isFromExternal: Boolean,
-        onViewReadyCallback: Runnable?
-    ) {
-        if (url.isNotBlank()) {
-            displayUrlView.text = url
-            if (sessionManager.tabsCount == 0) {
-                sessionManager.addTab(url, TabUtil.argument(null, false, true))
-            } else {
-                sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
-            }
-
-            ThreadUtils.postToMainThread(onViewReadyCallback)
-        }
     }
 
     override fun onRequestPermissionsResult(
@@ -301,6 +261,30 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
                 goForward()
             }
         })
+    }
+
+    private fun loadUrl(url: String) {
+        if (url.isNotBlank()) {
+            displayUrlView.text = url
+            if (sessionManager.tabsCount == 0) {
+                sessionManager.addTab(url, TabUtil.argument(null, false, true))
+            } else {
+                sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+            }
+        }
+    }
+
+    companion object {
+        private const val EXTRA_URL = "url"
+
+        fun newInstance(url: String): ContentTabFragment {
+            val args = Bundle().apply {
+                putString(EXTRA_URL, url)
+            }
+            return ContentTabFragment().apply {
+                arguments = args
+            }
+        }
     }
 
     class Observer(val fragment: ContentTabFragment) : SessionManager.Observer, Session.Observer {

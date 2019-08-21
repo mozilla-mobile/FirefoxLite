@@ -7,18 +7,19 @@
     android:layout_height="match_parent"
     tools:context="org.mozilla.rocket.content.common.ui.ContentTabActivity">
 
-    <fragment
-        android:id="@+id/browser"
-        android:name="org.mozilla.rocket.content.common.ui.ContentTabFragment"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/snack_bar_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <org.mozilla.rocket.content.view.BottomBar
         android:id="@+id/bottom_bar"
