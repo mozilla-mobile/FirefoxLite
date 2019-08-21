@@ -76,7 +76,7 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun providePrivateBottomBarViewModelFactory(): PrivateBottomBarViewModelFactory = PrivateBottomBarViewModelFactory()
+    fun providePrivateBottomBarViewModel(): PrivateBottomBarViewModel = PrivateBottomBarViewModel()
 
     @JvmStatic
     @Singleton
