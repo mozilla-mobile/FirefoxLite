@@ -4,7 +4,6 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.home.HomeViewModelFactory
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
@@ -14,6 +13,7 @@ import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
+import org.mozilla.rocket.home.HomeViewModel
 import javax.inject.Singleton
 
 @Module
@@ -22,14 +22,14 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideHomeViewModelFactory(
+    fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase
-    ): HomeViewModelFactory = HomeViewModelFactory(
+    ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
         topSitesConfigsUseCase,

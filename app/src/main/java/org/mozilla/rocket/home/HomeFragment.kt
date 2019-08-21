@@ -32,7 +32,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
@@ -47,7 +46,7 @@ import javax.inject.Inject
 class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     @Inject
-    lateinit var homeViewModelFactory: HomeViewModelFactory
+    lateinit var homeViewModelCreator: Lazy<HomeViewModel>
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
@@ -65,7 +64,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        homeViewModel = activityViewModelProvider(homeViewModelFactory)
+        homeViewModel = getActivityViewModel { homeViewModelCreator.get() }
         chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
     }
 
