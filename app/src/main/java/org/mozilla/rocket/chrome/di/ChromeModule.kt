@@ -11,8 +11,9 @@ import org.mozilla.rocket.chrome.BottomBarViewModelFactory
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.MenuViewModelFactory
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
+import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadInfoRepository
-import org.mozilla.rocket.download.DownloadViewModelFactory
+import org.mozilla.rocket.download.DownloadInfoViewModel
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.urlinput.GlobalDataSource
@@ -58,8 +59,12 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideDownloadViewModelFactory(downloadInfoRepository: DownloadInfoRepository): DownloadViewModelFactory =
-            DownloadViewModelFactory(downloadInfoRepository)
+    fun provideDownloadIndicatorViewModel(downloadInfoRepository: DownloadInfoRepository): DownloadIndicatorViewModel = DownloadIndicatorViewModel(downloadInfoRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideDownloadInfoViewModel(downloadInfoRepository: DownloadInfoRepository): DownloadInfoViewModel = DownloadInfoViewModel(downloadInfoRepository)
 
     @JvmStatic
     @Singleton

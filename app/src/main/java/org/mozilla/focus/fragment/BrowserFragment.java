@@ -87,7 +87,6 @@ import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
-import org.mozilla.rocket.download.DownloadViewModelFactory;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
@@ -142,7 +141,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private static final int SITE_LOCK = 1;
 
     @Inject
-    DownloadViewModelFactory downloadViewModelFactory;
+    Lazy<DownloadIndicatorViewModel> downloadIndicatorViewModelCreator;
     @Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
     @Inject
@@ -576,7 +575,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
         DownloadIndicatorViewModel downloadIndicatorViewModel =
-                ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class);
+                ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
                 .observe(this, status -> {
                     switch (status) {

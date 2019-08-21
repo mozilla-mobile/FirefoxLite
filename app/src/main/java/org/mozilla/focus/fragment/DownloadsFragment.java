@@ -32,13 +32,15 @@ import com.google.android.material.snackbar.Snackbar;
 import org.mozilla.focus.R;
 import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.widget.DownloadListAdapter;
+import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoPack;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
-import org.mozilla.rocket.download.DownloadViewModelFactory;
 
 import javax.inject.Inject;
+
+import dagger.Lazy;
 
 public class DownloadsFragment extends PanelFragment implements DownloadInfoViewModel.OnProgressUpdateListener {
 
@@ -46,7 +48,10 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
     private static final int QUERY_PROGRESS_DELAY = 500;
 
     @Inject
-    DownloadViewModelFactory downloadViewModelFactory;
+    Lazy<DownloadInfoViewModel> downloadInfoViewModelCreator;
+
+    @Inject
+    Lazy<DownloadIndicatorViewModel> downloadIndicatorViewModelCreator;
 
     private RecyclerView recyclerView;
     private DownloadListAdapter downloadListAdapter;
@@ -61,12 +66,12 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
+            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
                 long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
                 if (id > 0) {
                     viewModel.notifyDownloadComplete(id);
                 }
-            } else if (intent.getAction() == DownloadInfoManager.ROW_UPDATED) {
+            } else if (DownloadInfoManager.ROW_UPDATED.equals(intent.getAction())) {
                 long id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L);
                 if (id > 0) {
                     viewModel.notifyRowUpdate(id);
@@ -86,7 +91,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
                              Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_downloads, container, false);
 
-        viewModel = ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadInfoViewModel.class);
+        viewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadInfoViewModelCreator::get)).get(DownloadInfoViewModel.class);
         downloadListAdapter = new DownloadListAdapter(getContext(), viewModel);
         viewModel.getDownloadInfoObservable().observe(getViewLifecycleOwner(), downloadInfoPack -> {
             if (downloadInfoPack != null) {
@@ -171,7 +176,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
         viewModel.markAllItemsAreRead();
         // When download indicator is showing and download is failed, we won't get notified by DownloadManager. Then back to BrowserFragment/HomeFragment will not
         // go through fragment's onResume i.e. LiveData's onActive. So force trigger download indicator update here.
-        ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class)
+        ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class)
                 .updateIndicator();
         cleanUp();
         super.onDestroy();

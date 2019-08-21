@@ -68,9 +68,7 @@ import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
-import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
-import org.mozilla.rocket.download.DownloadViewModelFactory
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.fxa.FxLoginFragment
@@ -105,7 +103,7 @@ class MainActivity : BaseActivity(),
         FxLoginFragment.OnLoginCompleteListener {
 
     @Inject
-    lateinit var downloadViewModelFactory: DownloadViewModelFactory
+    lateinit var downloadIndicatorViewModelCreator: Lazy<DownloadIndicatorViewModel>
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
@@ -168,7 +166,7 @@ class MainActivity : BaseActivity(),
         FirebaseHelper.initUserState(this)
 
         chromeViewModel = getViewModel { chromeViewModelCreator.get() }
-        downloadIndicatorViewModel = viewModelProvider(downloadViewModelFactory)
+        downloadIndicatorViewModel = getViewModel { downloadIndicatorViewModelCreator.get() }
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
         appUpdateController = InAppUpdateController(

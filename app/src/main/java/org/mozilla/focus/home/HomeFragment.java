@@ -92,7 +92,6 @@ import org.mozilla.rocket.content.portal.ContentFeature;
 import org.mozilla.rocket.content.portal.ContentPortalView;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
-import org.mozilla.rocket.download.DownloadViewModelFactory;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.home.topsites.data.PinSiteManager;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
@@ -132,7 +131,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     public static final String BANNER_MANIFEST_DEFAULT = "";
 
     @Inject
-    DownloadViewModelFactory downloadViewModelFactory;
+    Lazy<DownloadIndicatorViewModel> downloadIndicatorViewModelCreator;
     @Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
     @Inject
@@ -594,7 +593,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
 
     private void setupDownloadIndicator() {
         DownloadIndicatorViewModel downloadIndicatorViewModel =
-                ViewModelProviders.of(requireActivity(), downloadViewModelFactory).get(DownloadIndicatorViewModel.class);
+                ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
                 .observe(getViewLifecycleOwner(), status -> {
                     switch (status) {
