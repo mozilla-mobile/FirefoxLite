@@ -7,10 +7,7 @@ import org.mozilla.focus.persistence.BookmarksDatabase
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.chrome.BottomBarViewModelFactory
-import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.MenuViewModelFactory
-import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
+import org.mozilla.rocket.chrome.*
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
@@ -74,7 +71,7 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideBottomBarViewModelFactory(): BottomBarViewModelFactory = BottomBarViewModelFactory()
+    fun provideBottomBarViewModel(): BottomBarViewModel = BottomBarViewModel()
 
     @JvmStatic
     @Singleton
