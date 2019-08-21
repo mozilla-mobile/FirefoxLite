@@ -7,7 +7,11 @@ import org.mozilla.focus.persistence.BookmarksDatabase
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.chrome.*
+import org.mozilla.focus.viewmodel.BookmarkViewModel
+import org.mozilla.rocket.chrome.BottomBarViewModel
+import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.MenuViewModel
+import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
@@ -78,6 +82,11 @@ object ChromeModule {
     @Singleton
     @Provides
     fun provideBookmarkRepository(appContext: Context): BookmarkRepository = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(appContext))
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideBookmarkViewModel(bookmarkRepository: BookmarkRepository): BookmarkViewModel = BookmarkViewModel(bookmarkRepository)
 
     @JvmStatic
     @Singleton
