@@ -750,7 +750,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     }
 
     private void initDefaultSitesFromJSONArray(JSONArray jsonDefault) {
-        List<Site> defaultSites = TopSitesUtils.paresJsonToList(getContext(), jsonDefault);
+        List<Site> defaultSites = TopSitesUtils.paresJsonToList(jsonDefault);
         this.presenter.setSites(defaultSites);
     }
 

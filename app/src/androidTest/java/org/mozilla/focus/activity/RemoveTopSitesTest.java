@@ -190,7 +190,7 @@ public class RemoveTopSitesTest {
         String topSitesJsonString = ExtentionKt.appComponent((Context) getApplicationContext())
                 .topSitesRepo().getDefaultTopSitesJsonString();
         final JSONArray jsonArray = new JSONArray(topSitesJsonString);
-        siteList = TopSitesUtils.paresJsonToList(context, jsonArray);
+        siteList = TopSitesUtils.paresJsonToList(jsonArray);
 
         Assert.assertNotNull(siteList);
         Assert.assertTrue(siteList.size() > 0);
