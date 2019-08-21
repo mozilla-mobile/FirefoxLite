@@ -138,6 +138,27 @@ class ContentTabActivity : BaseActivity(),
         return UrlInputFragment.create(url, null, false)
     }
 
+    override fun createMissionDetailScreen(): ScreenNavigator.MissionDetailScreen {
+        if (BuildConfig.DEBUG) {
+            throw RuntimeException("ContentTabActivity should never show Mission Detail")
+        }
+        TODO("ContentTabActivity should never show Mission Detail")
+    }
+
+    override fun createFxLoginScreen(): ScreenNavigator.FxLoginScreen {
+        if (BuildConfig.DEBUG) {
+            throw RuntimeException("ContentTabActivity should never show FxLogin")
+        }
+        TODO("ContentTabActivity should never show FxLogin")
+    }
+
+    override fun createRedeemScreen(): ScreenNavigator.RedeemSceen {
+        if (BuildConfig.DEBUG) {
+            throw RuntimeException("ContentTabActivity should never show Redeem")
+        }
+        TODO("ContentTabActivity should never show Redeem")
+    }
+
     private fun handleIntent(intent: Intent?) {
         val safeIntent = intent?.let { SafeIntent(it) } ?: return
 
