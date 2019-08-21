@@ -3,35 +3,32 @@ package org.mozilla.rocket.home.contenthub.data
 import android.content.Context
 import org.json.JSONException
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
 
 class ContentHubRepo(private val appContext: Context) {
 
     fun getConfiguredContentHubItems(): List<ContentHubItem>? =
-            // TODO:
-            listOf(
-                ContentHubItem.Travel(),
-                ContentHubItem.Shopping(),
-                ContentHubItem.News(),
-                ContentHubItem.Games()
-            )
+            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_ITEMS)
+                    .takeIf { it.isNotEmpty() }
+                    ?.jsonStringToContentHubItems()
 
     fun getDefaultContentHubItems(): List<ContentHubItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.content_hub_default_items)
                     ?.jsonStringToContentHubItems()
+}
 
-    private fun String.jsonStringToContentHubItems(): List<ContentHubItem>? {
-        return try {
-            val jsonArray = this.toJsonArray()
-            (0 until jsonArray.length())
-                    .map { index -> jsonArray.getJSONObject(index) }
-                    .map { jsonObject -> jsonObject.getInt("type") }
-                    .map { type -> createContentHubItem(type) }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-            null
-        }
+private fun String.jsonStringToContentHubItems(): List<ContentHubItem>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> jsonObject.getInt("type") }
+                .map { type -> createContentHubItem(type) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
     }
 }
 
