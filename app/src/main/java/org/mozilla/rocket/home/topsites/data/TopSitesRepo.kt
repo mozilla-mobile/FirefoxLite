@@ -39,7 +39,7 @@ open class TopSitesRepo(
     fun getFixedSites(): List<Site> {
         val jsonArray = TopSitesUtils.getFixedSitesJsonArrayFromAssets(appContext)
 
-        return TopSitesUtils.paresJsonToList(appContext, jsonArray)
+        return TopSitesUtils.paresJsonToList(jsonArray)
     }
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
@@ -80,7 +80,7 @@ open class TopSitesRepo(
         val jsonArray = getDefaultTopSitesJsonArrayFromSharedPref()
                 ?: TopSitesUtils.getDefaultSitesJsonArrayFromAssets(appContext)
 
-        return TopSitesUtils.paresJsonToList(appContext, jsonArray).map {
+        return TopSitesUtils.paresJsonToList(jsonArray).map {
             it.apply {
                 isDefault = true
             }

@@ -102,7 +102,7 @@ public class TopSitesUtils {
                 .apply();
     }
 
-    public static List<Site> paresJsonToList(Context context, JSONArray jsonArray) {
+    public static List<Site> paresJsonToList(JSONArray jsonArray) {
         List<Site> defaultSites = new ArrayList<>();
         try {
             if (jsonArray != null) {
