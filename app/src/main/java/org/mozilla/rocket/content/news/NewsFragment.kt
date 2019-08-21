@@ -19,7 +19,10 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.*
+import org.mozilla.rocket.content.ContentPortalViewState
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource

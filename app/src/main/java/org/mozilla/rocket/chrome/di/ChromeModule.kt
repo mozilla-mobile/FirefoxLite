@@ -17,7 +17,10 @@ import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
-import org.mozilla.rocket.urlinput.*
+import org.mozilla.rocket.urlinput.GlobalDataSource
+import org.mozilla.rocket.urlinput.LocaleDataSource
+import org.mozilla.rocket.urlinput.QuickSearchRepository
+import org.mozilla.rocket.urlinput.QuickSearchViewModel
 import javax.inject.Singleton
 
 @Module
@@ -26,14 +29,12 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGlobalDataSource(appContext: Context): GlobalDataSource =
-            GlobalDataSource(appContext)
+    fun provideGlobalDataSource(appContext: Context): GlobalDataSource = GlobalDataSource(appContext)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideLocaleDataSource(appContext: Context): LocaleDataSource =
-            LocaleDataSource(appContext)
+    fun provideLocaleDataSource(appContext: Context): LocaleDataSource = LocaleDataSource(appContext)
 
     @JvmStatic
     @Singleton
@@ -106,10 +107,11 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideChromeViewModel(settings: Settings,
-                               bookmarkRepo: BookmarkRepository,
-                               privateMode: PrivateMode,
-                               browsers: Browsers,
-                               storageHelper: StorageHelper): ChromeViewModel =
-            ChromeViewModel(settings, bookmarkRepo, privateMode, browsers, storageHelper)
+    fun provideChromeViewModel(
+        settings: Settings,
+        bookmarkRepo: BookmarkRepository,
+        privateMode: PrivateMode,
+        browsers: Browsers,
+        storageHelper: StorageHelper
+    ): ChromeViewModel = ChromeViewModel(settings, bookmarkRepo, privateMode, browsers, storageHelper)
 }
