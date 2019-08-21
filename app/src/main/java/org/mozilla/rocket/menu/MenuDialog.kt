@@ -21,8 +21,6 @@ import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.MenuItemAdapter
 import org.mozilla.rocket.chrome.MenuViewModel
-import org.mozilla.rocket.chrome.MenuViewModelFactory
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
@@ -41,7 +39,7 @@ class MenuDialog : BottomSheetDialog {
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
-    lateinit var menuViewModelFactory: MenuViewModelFactory
+    lateinit var menuViewModelCreator: Lazy<MenuViewModel>
 
     private lateinit var menuViewModel: MenuViewModel
     private lateinit var chromeViewModel: ChromeViewModel
@@ -59,7 +57,7 @@ class MenuDialog : BottomSheetDialog {
         super.onCreate(savedInstanceState)
         val activity = context.toFragmentActivity()
         chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
-        menuViewModel = activityViewModelProvider(menuViewModelFactory)
+        menuViewModel = getActivityViewModel { menuViewModelCreator.get() }
         settings = Settings.getInstance(context)
 
         initLayout()

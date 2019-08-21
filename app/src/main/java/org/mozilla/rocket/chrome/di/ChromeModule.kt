@@ -66,7 +66,7 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideMenuViewModelFactory(): MenuViewModelFactory = MenuViewModelFactory()
+    fun provideMenuViewModel(): MenuViewModel = MenuViewModel()
 
     @JvmStatic
     @Singleton
