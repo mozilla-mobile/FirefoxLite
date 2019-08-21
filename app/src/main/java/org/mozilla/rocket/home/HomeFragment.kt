@@ -76,6 +76,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initTopSites()
         initContentHub()
         setupFxaView()
+        observeNightMode()
     }
 
     private fun initSearchToolBar() {
@@ -183,6 +184,13 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun showMissionFragment() {
         ScreenNavigator.get(context).addMissionDetail()
+    }
+
+    private fun observeNightMode() {
+        chromeViewModel.isNightMode.observe(this, Observer {
+            val isNightMode = it.isEnabled
+            home_background.setNightMode(isNightMode)
+        })
     }
 
     override fun onResume() {
