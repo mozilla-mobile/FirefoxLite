@@ -17,7 +17,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,7 +28,6 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
-import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.content.ExtentionKt;
 
 import java.util.List;
@@ -186,15 +184,12 @@ public class RemoveTopSitesTest {
 
     }
 
-    private void prepareTopSiteList() throws JSONException {
-        String topSitesJsonString = ExtentionKt.appComponent((Context) getApplicationContext())
-                .topSitesRepo().getDefaultTopSitesJsonString();
-        final JSONArray jsonArray = new JSONArray(topSitesJsonString);
-        siteList = TopSitesUtils.paresJsonToList(jsonArray);
+    private void prepareTopSiteList() {
+        siteList =  ExtentionKt.appComponent((Context) getApplicationContext())
+                .topSitesRepo().getDefaultSites();
 
         Assert.assertNotNull(siteList);
         Assert.assertTrue(siteList.size() > 0);
-
     }
 
 }

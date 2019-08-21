@@ -10,10 +10,10 @@ import android.preference.PreferenceManager
 import androidx.sqlite.db.SupportSQLiteQueryBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.fileutils.FileUtils
+import org.mozilla.focus.R
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.provider.HistoryContract
@@ -24,6 +24,8 @@ import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.focus.utils.TopSitesUtils
 import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.persistance.History.HistoryDatabase
+import org.mozilla.rocket.util.AssetsUtils
+import org.mozilla.rocket.util.toJsonArray
 import java.lang.ref.WeakReference
 import java.util.ArrayList
 import kotlin.coroutines.resume
@@ -36,11 +38,9 @@ open class TopSitesRepo(
 
     private var needToCheckDbVersion = true
 
-    fun getFixedSites(): List<Site> {
-        val jsonArray = TopSitesUtils.getFixedSitesJsonArrayFromAssets(appContext)
-
-        return TopSitesUtils.paresJsonToList(jsonArray)
-    }
+    fun getFixedSites(): List<Site>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.fixedsites)
+                    ?.jsonStringToSites()
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
 
@@ -76,36 +76,19 @@ open class TopSitesRepo(
         }, appContext)).start()
     }
 
-    fun getDefaultSites(): List<Site> {
-        val jsonArray = getDefaultTopSitesJsonArrayFromSharedPref()
-                ?: TopSitesUtils.getDefaultSitesJsonArrayFromAssets(appContext)
-
-        return TopSitesUtils.paresJsonToList(jsonArray).map {
-            it.apply {
-                isDefault = true
-            }
-        }
-    }
+    fun getDefaultSites(): List<Site>? =
+            (getDefaultTopSitesJsonString() ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites))
+                    ?.jsonStringToSites()
+                    ?.apply {
+                        forEach {
+                            it.isDefault = true
+                        }
+                    }
 
     // open for mocking during testing
     open fun getDefaultTopSitesJsonString(): String? {
         return PreferenceManager.getDefaultSharedPreferences(appContext)
                 .getString(TOP_SITES_PREF, null)
-    }
-
-    private fun getDefaultTopSitesJsonArrayFromSharedPref(): JSONArray? {
-        val jsonString = getDefaultTopSitesJsonString()
-
-        return if (jsonString != null) {
-            try {
-                JSONArray(jsonString)
-            } catch (e: JSONException) {
-                e.printStackTrace()
-                null
-            }
-        } else {
-            null
-        }
     }
 
     fun isPinEnabled(): Boolean = pinSiteManager.isEnabled()
@@ -133,7 +116,7 @@ open class TopSitesRepo(
     }
 
     fun removeDefaultSite(site: Site) {
-        val defaultSitesJsonArray = getDefaultTopSitesJsonArrayFromSharedPref()
+        val defaultSitesJsonArray = getDefaultTopSitesJsonString()?.toJsonArray()
         if (defaultSitesJsonArray != null) {
             try {
                 defaultSitesJsonArray.apply {
@@ -239,5 +222,17 @@ open class TopSitesRepo(
         private const val TOP_SITES_QUERY_LIMIT = 12
         private const val TOP_SITES_QUERY_MIN_VIEW_COUNT = 2
         private const val MSG_ID_REFRESH = 8269
+    }
+}
+
+private fun String.jsonStringToSites(): List<Site>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> TopSitesUtils.paresSite(jsonObject) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
     }
 }
