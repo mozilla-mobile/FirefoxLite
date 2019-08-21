@@ -9,7 +9,9 @@ import java.util.Locale
 
 class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
 
-    private val fixedSites: List<org.mozilla.focus.history.model.Site> by lazy { topSitesRepo.getFixedSites() ?: emptyList() }
+    private val fixedSites: List<org.mozilla.focus.history.model.Site> by lazy {
+        topSitesRepo.getConfiguredFixedSites() ?: topSitesRepo.getDefaultFixedSites() ?: emptyList()
+    }
 
     suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
         val pinnedSites = topSitesRepo.getPinnedSites()
