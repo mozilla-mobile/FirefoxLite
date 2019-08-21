@@ -82,7 +82,6 @@ import org.mozilla.focus.widget.SwipeMotionLayout;
 import org.mozilla.icon.FavIconUtils;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.BottomBarViewModel;
-import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
 import org.mozilla.rocket.content.BaseViewModelFactory;
@@ -133,7 +132,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Inject
     Lazy<DownloadIndicatorViewModel> downloadIndicatorViewModelCreator;
     @Inject
-    BottomBarViewModelFactory bottomBarViewModelFactory;
+    Lazy<BottomBarViewModel> bottomBarViewModelCreator;
     @Inject
     Lazy<ChromeViewModel> chromeViewModelCreator;
     @Inject
@@ -188,7 +187,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter.setModel(this);
         bannerHelper.setListener(this);
         chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
-        bottomBarViewModel = ViewModelProviders.of(requireActivity(), bottomBarViewModelFactory).get(BottomBarViewModel.class);
+        bottomBarViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(bottomBarViewModelCreator::get)).get(BottomBarViewModel.class);
     }
 
     @Override
