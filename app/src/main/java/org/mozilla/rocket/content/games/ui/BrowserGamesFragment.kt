@@ -32,7 +32,7 @@ class BrowserGamesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        gamesViewModel = getViewModel { gamesViewModelCreator.get() }
+        gamesViewModel = getViewModel(gamesViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

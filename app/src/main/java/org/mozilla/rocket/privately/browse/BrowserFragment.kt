@@ -98,7 +98,7 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = getActivityViewModel{ chromeViewModelCreator.get() }
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
     }
 
     override fun onCreateView(
@@ -365,7 +365,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = getActivityViewModel { privateBottomBarViewModelCreator.get() }
+        val bottomBarViewModel = getActivityViewModel(privateBottomBarViewModelCreator)
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
             bottomBarItemAdapter.endPrivateHomeAnimation()

@@ -65,7 +65,7 @@ class NewsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            newsViewModel = getActivityViewModel { newsViewModelCreator.get() }
+            newsViewModel = getActivityViewModel(newsViewModelCreator)
 
             newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {

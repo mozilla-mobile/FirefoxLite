@@ -73,7 +73,7 @@ class PrivateModeActivity : BaseActivity(),
         appComponent().inject(this)
         super.onCreate(null)
 
-        chromeViewModel = getViewModel { chromeViewModelCreator.get() }
+        chromeViewModel = getViewModel(chromeViewModelCreator)
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 

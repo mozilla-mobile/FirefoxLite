@@ -64,8 +64,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        homeViewModel = getActivityViewModel { homeViewModelCreator.get() }
-        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
+        homeViewModel = getActivityViewModel(homeViewModelCreator)
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

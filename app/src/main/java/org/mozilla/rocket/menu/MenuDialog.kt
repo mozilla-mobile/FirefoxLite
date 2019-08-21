@@ -56,8 +56,8 @@ class MenuDialog : BottomSheetDialog {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         val activity = context.toFragmentActivity()
-        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
-        menuViewModel = getActivityViewModel { menuViewModelCreator.get() }
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
+        menuViewModel = getActivityViewModel(menuViewModelCreator)
         settings = Settings.getInstance(context)
 
         initLayout()

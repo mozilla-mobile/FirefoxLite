@@ -50,7 +50,7 @@ class ContentTabActivity : BaseActivity(),
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
 
-        chromeViewModel = getViewModel { chromeViewModelCreator.get() }
+        chromeViewModel = getViewModel(chromeViewModelCreator)
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
