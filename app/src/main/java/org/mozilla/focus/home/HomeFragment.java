@@ -61,7 +61,7 @@ import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.home.repository.TopSitesRepo;
+import org.mozilla.rocket.home.topsites.data.TopSitesRepo;
 import org.mozilla.focus.locale.LocaleAwareFragment;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.HistoryContract;

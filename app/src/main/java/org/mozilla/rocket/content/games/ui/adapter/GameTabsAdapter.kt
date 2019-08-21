@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 import org.mozilla.rocket.content.games.ui.GamesActivity
 
+@Suppress("DEPRECATION")
 class GameTabsAdapter(
     fm: FragmentManager,
     activity: FragmentActivity,
