@@ -95,7 +95,7 @@ class NewsFragment : Fragment(), ContentPortalListener, NewsViewContract {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val newsViewModel: NewsViewModel = getActivityViewModel { newsViewModelCreator.get() }
+        val newsViewModel: NewsViewModel = getActivityViewModel(newsViewModelCreator)
         newsPresenter = NewsPresenter(this, newsViewModel)
 
         // creating a repository will also create a new subscription.

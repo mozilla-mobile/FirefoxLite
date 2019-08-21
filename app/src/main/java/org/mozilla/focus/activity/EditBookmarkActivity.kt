@@ -92,7 +92,7 @@ class EditBookmarkActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel { viewModelCreator.get() }
+        viewModel = getViewModel(viewModelCreator)
 
         setContentView(R.layout.activity_edit_bookmark)
         setSupportActionBar(toolbar)

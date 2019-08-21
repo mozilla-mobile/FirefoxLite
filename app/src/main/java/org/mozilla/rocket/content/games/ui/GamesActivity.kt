@@ -27,7 +27,7 @@ class GamesActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        gamesViewModel = getViewModel { gamesViewModelCreator.get() }
+        gamesViewModel = getViewModel(gamesViewModelCreator)
         setContentView(R.layout.activity_games)
         initViewPager()
         initTabLayout()

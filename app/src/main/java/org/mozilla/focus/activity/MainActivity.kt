@@ -165,8 +165,8 @@ class MainActivity : BaseActivity(),
 
         FirebaseHelper.initUserState(this)
 
-        chromeViewModel = getViewModel { chromeViewModelCreator.get() }
-        downloadIndicatorViewModel = getViewModel { downloadIndicatorViewModelCreator.get() }
+        chromeViewModel = getViewModel(chromeViewModelCreator)
+        downloadIndicatorViewModel = getViewModel(downloadIndicatorViewModelCreator)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
         appUpdateController = InAppUpdateController(

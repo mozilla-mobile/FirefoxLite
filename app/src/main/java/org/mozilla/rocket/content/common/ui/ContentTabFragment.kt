@@ -156,7 +156,7 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -318,7 +318,7 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = getActivityViewModel { bottomBarViewModelCreator.get() }
+        val bottomBarViewModel = getActivityViewModel(bottomBarViewModelCreator)
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
         }

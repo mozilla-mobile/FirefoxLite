@@ -53,7 +53,7 @@ class EcFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
     }
 
     override fun onCreateView(

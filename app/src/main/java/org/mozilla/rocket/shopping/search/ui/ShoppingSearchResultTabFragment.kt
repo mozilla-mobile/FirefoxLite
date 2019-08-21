@@ -29,7 +29,7 @@ class ShoppingSearchResultTabFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel { viewModelCreator.get() }
+        viewModel = getViewModel(viewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

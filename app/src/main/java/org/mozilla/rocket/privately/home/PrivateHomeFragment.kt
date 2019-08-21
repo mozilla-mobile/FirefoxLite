@@ -52,7 +52,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     override fun onCreate(bundle: Bundle?) {
         appComponent().inject(this)
         super.onCreate(bundle)
-        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
     }
 
     @Override
@@ -94,7 +94,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = getActivityViewModel { privateBottomBarViewModelCreator.get() }
+        val bottomBarViewModel = getActivityViewModel(privateBottomBarViewModelCreator)
         bottomBarViewModel.items.nonNullObserve(this, bottomBarItemAdapter::setItems)
     }
 

@@ -71,7 +71,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         val userAgent = WebViewProvider.getUserAgentString(activity)
         this.presenter = UrlInputPresenter(SearchEngineManager.getInstance()
                 .getDefaultSearchEngine(activity), userAgent)
-        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
+        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
 
         context?.let {
             autoCompleteProvider.initialize(it.applicationContext)
@@ -128,7 +128,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
         quickSearchRecyclerView.adapter = quickSearchAdapter
-        getActivityViewModel { quickSearchViewModelCreator.get() }.run {
+        getActivityViewModel(quickSearchViewModelCreator).run {
             quickSearchObservable.observe(
                     viewLifecycleOwner,
                     Observer { quickSearchList ->
