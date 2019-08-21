@@ -82,14 +82,20 @@ open class TopSitesRepo(
         }, appContext)).start()
     }
 
-    fun getDefaultSites(): List<Site>? =
-            (getDefaultTopSitesJsonString() ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites))
+    fun getChangedDefaultSites(): List<Site>? = getDefaultTopSitesJsonString()
                     ?.jsonStringToSites()
-                    ?.apply {
-                        forEach {
-                            it.isDefault = true
-                        }
-                    }
+                    ?.apply { forEach { it.isDefault = true } }
+
+    fun getConfiguredDefaultSites(): List<Site>? =
+            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS)
+                    .takeIf { it.isNotEmpty() }
+                    ?.jsonStringToSites()
+                    ?.apply { forEach { it.isDefault = true } }
+
+    fun getDefaultSites(): List<Site>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites)
+                    ?.jsonStringToSites()
+                    ?.apply { forEach { it.isDefault = true } }
 
     // open for mocking during testing
     open fun getDefaultTopSitesJsonString(): String? {
@@ -122,7 +128,10 @@ open class TopSitesRepo(
     }
 
     fun removeDefaultSite(site: Site) {
-        val defaultSitesJsonArray = getDefaultTopSitesJsonString()?.toJsonArray()
+        val defaultSitesString = getDefaultTopSitesJsonString()
+                ?: FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS).takeIf { it.isNotEmpty() }
+                ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites)
+        val defaultSitesJsonArray = defaultSitesString?.toJsonArray()
         if (defaultSitesJsonArray != null) {
             try {
                 defaultSitesJsonArray.apply {
