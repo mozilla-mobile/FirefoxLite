@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
 import kotlinx.android.synthetic.main.fragment_home.content_hub
+import kotlinx.android.synthetic.main.fragment_home.content_hub_title
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
@@ -167,6 +168,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
         homeViewModel.run {
             contentHubItems.observe(this@HomeFragment, Observer {
+                content_hub_title.visibility = if (it.isEmpty()) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
                 content_hub.setItems(it)
             })
             navigateToContentPage.observe(this@HomeFragment, Observer {
@@ -193,6 +199,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         chromeViewModel.isNightMode.observe(this, Observer {
             val isNightMode = it.isEnabled
             home_background.setNightMode(isNightMode)
+            content_hub_title.setNightMode(isNightMode)
             arc_view.setNightMode(isNightMode)
             arc_panel.setNightMode(isNightMode)
             search_panel.setNightMode(isNightMode)

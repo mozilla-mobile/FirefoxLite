@@ -60,12 +60,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
+        <org.mozilla.rocket.nightmode.themed.ThemedTextView
+            android:id="@+id/content_hub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Body4"
             android:text="Content &amp; Services"
-            android:textColor="@android:color/white"
+            android:textColor="@color/home_content_hub_title"
             android:layout_gravity="center_horizontal"/>
 
         <org.mozilla.rocket.home.contenthub.ui.ContentHub
