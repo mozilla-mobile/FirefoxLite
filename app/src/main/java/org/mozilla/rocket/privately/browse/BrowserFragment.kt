@@ -44,8 +44,6 @@ import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
-import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
@@ -74,7 +72,7 @@ class BrowserFragment : LocaleAwareFragment(),
         BackKeyHandleable {
 
     @Inject
-    lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
+    lateinit var privateBottomBarViewModelCreator: Lazy<PrivateBottomBarViewModel>
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
@@ -367,7 +365,7 @@ class BrowserFragment : LocaleAwareFragment(),
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = activityViewModelProvider<PrivateBottomBarViewModel>(privateBottomBarViewModelFactory)
+        val bottomBarViewModel = getActivityViewModel { privateBottomBarViewModelCreator.get() }
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
             bottomBarItemAdapter.endPrivateHomeAnimation()
