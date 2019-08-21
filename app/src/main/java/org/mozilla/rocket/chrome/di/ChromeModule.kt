@@ -13,10 +13,7 @@ import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
-import org.mozilla.rocket.urlinput.GlobalDataSource
-import org.mozilla.rocket.urlinput.LocaleDataSource
-import org.mozilla.rocket.urlinput.QuickSearchRepository
-import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory
+import org.mozilla.rocket.urlinput.*
 import javax.inject.Singleton
 
 @Module
@@ -45,8 +42,7 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideQuickSearchViewModelFactory(quickSearchRepository: QuickSearchRepository): QuickSearchViewModelFactory =
-            QuickSearchViewModelFactory(quickSearchRepository)
+    fun provideQuickSearchViewModel(quickSearchRepository: QuickSearchRepository): QuickSearchViewModel = QuickSearchViewModel(quickSearchRepository)
 
     @JvmStatic
     @Singleton

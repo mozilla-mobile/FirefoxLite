@@ -32,13 +32,11 @@ import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.urlinput.QuickSearch
 import org.mozilla.rocket.urlinput.QuickSearchAdapter
 import org.mozilla.rocket.urlinput.QuickSearchViewModel
-import org.mozilla.rocket.urlinput.QuickSearchViewModelFactory
 import java.util.Locale
 import javax.inject.Inject
 
@@ -49,7 +47,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         View.OnLongClickListener, ScreenNavigator.UrlInputScreen {
 
     @Inject
-    lateinit var quickSearchViewModelFactory: QuickSearchViewModelFactory
+    lateinit var quickSearchViewModelCreator: Lazy<QuickSearchViewModel>
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
@@ -130,7 +128,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             TelemetryWrapper.clickQuickSearchEngine(quickSearch.name)
         })
         quickSearchRecyclerView.adapter = quickSearchAdapter
-        activityViewModelProvider<QuickSearchViewModel>(quickSearchViewModelFactory).run {
+        getActivityViewModel { quickSearchViewModelCreator.get() }.run {
             quickSearchObservable.observe(
                     viewLifecycleOwner,
                     Observer { quickSearchList ->
