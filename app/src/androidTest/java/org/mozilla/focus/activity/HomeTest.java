@@ -19,19 +19,15 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
-import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.history.model.Site;
 import org.mozilla.focus.utils.AndroidTestUtils;
-import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.content.ExtentionKt;
 
 import java.util.List;
@@ -72,40 +68,29 @@ public class HomeTest {
         activityRule.launchActivity(new Intent());
         loadingIdlingResource = new SessionLoadedIdlingResource(activityRule.getActivity());
 
-        final MainActivity context = activityRule.getActivity();
+        // Get test top sites
+        final List<Site> defaultSites = ExtentionKt.appComponent((Context) getApplicationContext())
+                .topSitesRepo().getDefaultSites();
 
-        try {
-            // Get test top sites
-            String topSitesJsonString = ExtentionKt.appComponent((Context) getApplicationContext())
-                    .topSitesRepo().getDefaultTopSitesJsonString();
-            final JSONArray jsonDefault = new JSONArray(topSitesJsonString);
-            final List<Site> defaultSites = TopSitesUtils.paresJsonToList(jsonDefault);
+        // Check the title of the sample top site is correct
+        onView(withId(R.id.main_list))
+                .check(matches(atPosition(0, hasDescendant(withText(defaultSites.get(0).getTitle())))));
 
-            // Check the title of the sample top site is correct
-            onView(withId(R.id.main_list))
-                    .check(matches(atPosition(0, hasDescendant(withText(defaultSites.get(0).getTitle())))));
+        // Click and load the sample top site
+        // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
+        // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
+        onView(ViewMatchers.withId(R.id.main_list))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
 
-            // Click and load the sample top site
-            // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
-            // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
-            onView(ViewMatchers.withId(R.id.main_list))
-                    .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
+        // After page loading completes
+        IdlingRegistry.getInstance().register(loadingIdlingResource);
 
-            // After page loading completes
-            IdlingRegistry.getInstance().register(loadingIdlingResource);
+        // Check if the url is displayed correctly
+        onView(withId(R.id.display_url))
+                .check(matches(allOf(withText(defaultSites.get(0).getUrl()), isDisplayed())));
 
-            // Check if the url is displayed correctly
-            onView(withId(R.id.display_url))
-                    .check(matches(allOf(withText(defaultSites.get(0).getUrl()), isDisplayed())));
-
-            // Always remember to unregister idling resource
-            IdlingRegistry.getInstance().unregister(loadingIdlingResource);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new AssertionError("testTopSite failed:", e);
-
-        }
+        // Always remember to unregister idling resource
+        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
     }
 
     /**

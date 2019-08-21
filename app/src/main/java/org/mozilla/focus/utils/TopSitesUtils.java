@@ -58,20 +58,6 @@ public class TopSitesUtils {
         return obj;
     }
 
-    public static JSONArray getFixedSitesJsonArrayFromAssets(Context context) {
-        JSONArray obj = null;
-        try {
-            obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.fixedsites));
-            long lastViewTimestampSystem = System.currentTimeMillis();
-            for (int i = 0; i < obj.length(); i++) {
-                ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return obj;
-    }
-
     public static void clearTopSiteData(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
@@ -102,20 +88,26 @@ public class TopSitesUtils {
                 .apply();
     }
 
+    public static Site paresSite(JSONObject jsonObject) throws JSONException {
+        final long id = jsonObject.getLong(KEY_ID);
+        final String title = jsonObject.getString(KEY_TITLE);
+        final String url = jsonObject.getString(KEY_URL);
+        final long viewCount = jsonObject.getLong(KEY_VIEW_COUNT);
+        long lastViewed = 0;
+        if (jsonObject.has(KEY_LAST_VIEW_TIMESTAMP)) {
+            lastViewed = jsonObject.getLong(KEY_LAST_VIEW_TIMESTAMP);
+        }
+        final String faviconUri = TOP_SITE_ASSET_PREFIX + jsonObject.getString(KEY_FAVICON);
+        return new Site(id, title, url, viewCount, lastViewed, faviconUri);
+    }
+
     public static List<Site> paresJsonToList(JSONArray jsonArray) {
         List<Site> defaultSites = new ArrayList<>();
         try {
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json_site = (JSONObject) jsonArray.get(i);
-                    final long id = json_site.getLong(KEY_ID);
-                    final String title = json_site.getString(KEY_TITLE);
-                    final String url = json_site.getString(KEY_URL);
-                    final long viewCount = json_site.getLong(KEY_VIEW_COUNT);
-                    final long lastViewed = json_site.getLong(KEY_LAST_VIEW_TIMESTAMP);
-                    final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString(KEY_FAVICON);
-                    Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
-                    defaultSites.add(site);
+                    defaultSites.add(paresSite(json_site));
                 }
             }
         } catch (JSONException e) {
