@@ -34,7 +34,7 @@
 
     <org.mozilla.rocket.nightmode.themed.ThemedTextView
         android:id="@+id/text"
-        style="@style/Body4"
+        style="@style/Body5"
         android:layout_width="@dimen/top_site_textview_width"
         android:layout_height="40dp"
         android:gravity="center"
