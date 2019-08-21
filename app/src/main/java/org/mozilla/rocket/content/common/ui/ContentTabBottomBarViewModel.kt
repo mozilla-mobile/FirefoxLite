@@ -2,7 +2,6 @@ package org.mozilla.rocket.content.common.ui
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.BottomBarItemAdapter.ItemData
 
@@ -30,15 +29,5 @@ class ContentTabBottomBarViewModel : ViewModel() {
             ItemData(BottomBarItemAdapter.TYPE_SHARE),
             ItemData(BottomBarItemAdapter.TYPE_OPEN_IN_NEW_TAB)
         )
-    }
-
-    class Factory : ViewModelProvider.NewInstanceFactory() {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ContentTabBottomBarViewModel::class.java)) {
-                return ContentTabBottomBarViewModel() as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-        }
     }
 }
