@@ -88,6 +88,8 @@ final public class FirebaseHelper {
     public static final String BOOL_IN_APP_UPDATE_SHOW_INTRO = "bool_in_app_update_show_intro";
     public static final String STR_IN_APP_UPDATE_CONFIG = "str_in_app_update_config";
 
+    public static final String STR_CONTENT_HUB_ITEMS = "str_content_hub_items";
+
     private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
     private static FirebaseContract firebaseContract;
