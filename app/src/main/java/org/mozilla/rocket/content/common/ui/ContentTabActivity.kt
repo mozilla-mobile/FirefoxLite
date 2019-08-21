@@ -9,6 +9,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import dagger.Lazy
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
@@ -18,9 +19,8 @@ import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.viewModelProvider
+import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitStateModel
@@ -36,7 +36,7 @@ class ContentTabActivity : BaseActivity(),
     TabsSessionProvider.SessionHost {
 
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private var sessionManager: SessionManager? = null
     private val portraitStateModel = PortraitStateModel()
@@ -50,7 +50,7 @@ class ContentTabActivity : BaseActivity(),
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
 
-        chromeViewModel = viewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getViewModel { chromeViewModelCreator.get() }
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 

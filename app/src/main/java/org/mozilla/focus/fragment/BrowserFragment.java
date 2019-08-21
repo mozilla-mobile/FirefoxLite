@@ -82,7 +82,7 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData;
-import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.view.BottomBar;
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper;
@@ -111,6 +111,8 @@ import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
 
 import javax.inject.Inject;
+
+import dagger.Lazy;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BROWSER_FRAGMENT_TAG;
 import static org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.WEBVIEW;
@@ -144,7 +146,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     @Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
     @Inject
-    ChromeViewModelFactory chromeViewModelFactory;
+    Lazy<ChromeViewModel> chromeViewModelCreator;
 
     private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
 
@@ -223,7 +225,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         bottomBarViewModel = ViewModelProviders.of(requireActivity(), bottomBarViewModelFactory).get(BottomBarViewModel.class);
-        chromeViewModel = ViewModelProviders.of(requireActivity(), chromeViewModelFactory).get(ChromeViewModel.class);
+        chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
     }
 
     @Override

@@ -28,7 +28,7 @@ import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.focus.persistence.TabsDatabase
 import org.mozilla.focus.persistence.di.TabsModule
 import org.mozilla.focus.urlinput.UrlInputFragment
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
@@ -86,7 +86,7 @@ interface AppComponent {
     fun inject(contentTabFragment: ContentTabFragment)
 
     @VisibleForTesting
-    fun chromeViewModelFactory(): ChromeViewModelFactory
+    fun chromeViewModel(): ChromeViewModel
     @VisibleForTesting
     fun tabsDatabase(): TabsDatabase
     @VisibleForTesting

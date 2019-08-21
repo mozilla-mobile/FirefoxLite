@@ -28,7 +28,7 @@ import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.rocket.chrome.ChromeViewModel;
-import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 
 import java.io.IOException;
@@ -117,8 +117,8 @@ public final class AndroidTestUtils {
         if (activityTestRule != null) {
             final MainActivity mainActivity = activityTestRule.getActivity();
             mainActivity.runOnUiThread(() -> {
-                ChromeViewModelFactory chromeViewModelFactory = ExtentionKt.appComponent(mainActivity).chromeViewModelFactory();
-                ChromeViewModel chromeViewModel = ViewModelProviders.of(mainActivity, chromeViewModelFactory).get(ChromeViewModel.class);
+                ChromeViewModel chromeViewModelCreator = ExtentionKt.appComponent(mainActivity).chromeViewModel();
+                ChromeViewModel chromeViewModel = ViewModelProviders.of(mainActivity, new BaseViewModelFactory<>(() -> chromeViewModelCreator)).get(ChromeViewModel.class);
                 chromeViewModel.getShowMenu().call();
             });
         }
