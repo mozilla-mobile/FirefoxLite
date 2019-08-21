@@ -45,6 +45,7 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputFragment
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment
 import javax.inject.Singleton
 
 /**
@@ -88,6 +89,7 @@ interface AppComponent {
     fun inject(contentTabActivity: ContentTabActivity)
     fun inject(contentTabFragment: ContentTabFragment)
     fun inject(shoppingSearchKeywordInputFragment: ShoppingSearchKeywordInputFragment)
+    fun inject(shoppingSearchResultTabFragment: ShoppingSearchResultTabFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
