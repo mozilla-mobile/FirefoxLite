@@ -5,13 +5,11 @@ import android.text.SpannableStringBuilder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import java.util.Locale
 
@@ -51,19 +49,6 @@ class ShoppingSearchKeywordInputViewModel(
 
     private fun emitUiModel(keywordSuggestions: List<CharSequence>) {
         _uiModel.value = ShoppingSearchKeywordInputUiModel(keywordSuggestions)
-    }
-
-    class Factory(
-        val repository: KeywordSuggestionRepository
-    ) : ViewModelProvider.Factory {
-
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(ShoppingSearchKeywordInputViewModel::class.java)) {
-                return ShoppingSearchKeywordInputViewModel(FetchKeywordSuggestionUseCase(repository)) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
-        }
     }
 }
 

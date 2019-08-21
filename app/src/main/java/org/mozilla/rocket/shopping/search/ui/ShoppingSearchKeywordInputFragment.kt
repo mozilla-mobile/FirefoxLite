@@ -10,19 +10,25 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_keyword_input.*
 import org.mozilla.focus.R
-import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getViewModel
+import javax.inject.Inject
 
 class ShoppingSearchKeywordInputFragment : Fragment() {
 
-    private val viewModelFactory: ShoppingSearchKeywordInputViewModel.Factory by lazy {
-        ShoppingSearchKeywordInputViewModel.Factory(KeywordSuggestionRepository())
-    }
-    private val viewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(ShoppingSearchKeywordInputViewModel::class.java)
+    @Inject
+    lateinit var viewModelCreator: Lazy<ShoppingSearchKeywordInputViewModel>
+
+    private lateinit var viewModel: ShoppingSearchKeywordInputViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
+        viewModel = getViewModel { viewModelCreator.get() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
