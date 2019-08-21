@@ -88,15 +88,17 @@
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
+    <org.mozilla.rocket.nightmode.themed.ThemedImageView
+        android:id="@+id/arc_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:src="@drawable/bg_arch"
+        android:tint="@color/home_arc_panel"
         android:scaleType="fitXY"
         app:layout_constraintDimensionRatio="360:50"
         app:layout_constraintBottom_toTopOf="@id/arc_panel"/>
 
-    <LinearLayout
+    <org.mozilla.rocket.nightmode.themed.ThemedLinearLayout
         android:id="@+id/arc_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,7 +107,8 @@
         android:minHeight="160dp"
         android:clickable="true"
         android:focusable="true"
-        android:background="@color/paletteLightGreyB100"
+        android:background="@android:color/white"
+        android:backgroundTint="@color/home_arc_panel"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.viewpager2.widget.ViewPager2
@@ -122,14 +125,16 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <org.mozilla.rocket.nightmode.themed.ThemedConstraintLayout
+            android:id="@+id/search_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f4f4f4"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="12dp"
-            android:paddingBottom="12dp">
+            android:paddingBottom="12dp"
+            android:background="@android:color/white"
+            android:backgroundTint="@color/home_search_panel">
 
             <View
                 android:id="@+id/shopping_button"
@@ -165,8 +170,8 @@
                 app:layout_constraintEnd_toStartOf="@id/home_fragment_menu_button"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </org.mozilla.rocket.nightmode.themed.ThemedConstraintLayout>
 
-    </LinearLayout>
+    </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
