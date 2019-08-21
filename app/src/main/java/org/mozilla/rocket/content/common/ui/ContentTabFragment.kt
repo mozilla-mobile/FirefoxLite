@@ -23,7 +23,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
-import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -174,11 +173,9 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
 
         observeChromeAction()
 
-        loadUrl(arguments?.getString(EXTRA_URL) ?: "")
-        val tabView = sessionManager.focusSession?.engineSession?.tabView ?: return
-        if (tabViewSlot.childCount == 0) {
-            tabViewSlot.addView(tabView.view)
-        }
+        val url = arguments?.getString(EXTRA_URL) ?: ""
+        val enableTurboMode = arguments?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
+        loadUrl(url, enableTurboMode)
     }
 
     override fun onResume() {
@@ -243,11 +240,6 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
 
     private fun reload() = sessionManager.focusSession?.engineSession?.reload()
 
-    private fun isTurboModeEnabled(context: Context): Boolean {
-        val appContext = (context.applicationContext as FocusApplication)
-        return appContext.settings.privateBrowsingSettings.shouldUseTurboMode()
-    }
-
     private fun observeChromeAction() {
         chromeViewModel.refreshOrStop.observe(this, Observer {
             if (chromeViewModel.isRefreshing.value == true) {
@@ -263,23 +255,33 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         })
     }
 
-    private fun loadUrl(url: String) {
+    private fun loadUrl(url: String, enableTurboMode: Boolean = true) {
         if (url.isNotBlank()) {
             displayUrlView.text = url
+
             if (sessionManager.tabsCount == 0) {
-                sessionManager.addTab(url, TabUtil.argument(null, false, true))
-            } else {
-                sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
+                sessionManager.addTab("https://", TabUtil.argument(null, false, true))
+            }
+
+            sessionManager.focusSession?.engineSession?.tabView?.apply {
+                setContentBlockingEnabled(enableTurboMode)
+                loadUrl(url)
+
+                if (tabViewSlot.childCount == 0) {
+                    tabViewSlot.addView(view)
+                }
             }
         }
     }
 
     companion object {
         private const val EXTRA_URL = "url"
+        private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
 
-        fun newInstance(url: String): ContentTabFragment {
+        fun newInstance(url: String, enableTurboMode: Boolean = true): ContentTabFragment {
             val args = Bundle().apply {
                 putString(EXTRA_URL, url)
+                putBoolean(EXTRA_ENABLE_TURBO_MODE, enableTurboMode)
             }
             return ContentTabFragment().apply {
                 arguments = args
