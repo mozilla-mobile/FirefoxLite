@@ -2,26 +2,35 @@ package org.mozilla.rocket.home
 
 import android.os.Bundle
 import android.view.GestureDetector
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
+import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.adapter.AdapterDelegatesManager
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.viewModelProvider
+import org.mozilla.rocket.home.topsites.ui.Site
+import org.mozilla.rocket.home.topsites.ui.SitePage
+import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
+import org.mozilla.rocket.home.topsites.ui.SiteViewHolder.Companion.TOP_SITE_LONG_CLICK_TARGET
 import org.mozilla.rocket.theme.ThemeManager
 import javax.inject.Inject
 
@@ -35,6 +44,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var themeManager: ThemeManager
+    private lateinit var topSitesAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -52,16 +62,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         themeManager = (context as ThemeManager.ThemeHost).themeManager
         initSearchToolBar()
         initBackgroundView()
+        initTopSites()
         setupFxaView(view)
-    }
-
-    private fun setupFxaView(fragmentView: View?) {
-        val view = fragmentView?.findViewById<View>(R.id.profile_buttons_container)
-        view?.setOnClickListener { showMissionFragment() }
-    }
-
-    private fun showMissionFragment() {
-        ScreenNavigator.get(context).addMissionDetail()
     }
 
     private fun initSearchToolBar() {
@@ -108,6 +110,45 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
     }
 
+    private fun initTopSites() {
+        topSitesAdapter = DelegateAdapter(
+            AdapterDelegatesManager().apply {
+                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel))
+            }
+        )
+        main_list.apply {
+            adapter = this@HomeFragment.topSitesAdapter
+        }
+        homeViewModel.run {
+            sitePages.observe(this@HomeFragment, Observer {
+                topSitesAdapter.setData(it)
+            })
+            topSiteClicked.observe(this@HomeFragment, Observer {
+                ScreenNavigator.get(context).showBrowserScreen(it.url, true, false)
+            })
+            topSiteLongClicked.observe(this@HomeFragment, Observer { site ->
+                site as Site.RemovableSite
+                val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
+                val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
+                showTopSiteMenu(anchorView, allowToPin, site)
+            })
+        }
+    }
+
+    private fun setupFxaView(fragmentView: View?) {
+        val view = fragmentView?.findViewById<View>(R.id.profile_buttons_container)
+        view?.setOnClickListener { showMissionFragment() }
+    }
+
+    private fun showMissionFragment() {
+        ScreenNavigator.get(context).addMissionDetail()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.updateTopSitesData()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         themeManager.unsubscribeThemeChange(home_background)
@@ -121,5 +162,25 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     override fun applyLocale() {
         // TODO
+    }
+
+    private fun showTopSiteMenu(anchorView: View, pinEnabled: Boolean, site: Site) {
+        PopupMenu(anchorView.context, anchorView, Gravity.CLIP_HORIZONTAL)
+                .apply {
+                    menuInflater.inflate(R.menu.menu_top_site_item, menu)
+                    menu.findItem(R.id.pin)?.apply {
+                        isVisible = pinEnabled
+                    }
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.pin -> homeViewModel.onPinTopSiteClicked(site)
+                            R.id.remove -> homeViewModel.onRemoveTopSiteClicked(site)
+                            else -> throw IllegalStateException("Unhandled menu item")
+                        }
+
+                        true
+                    }
+                }
+                .show()
     }
 }

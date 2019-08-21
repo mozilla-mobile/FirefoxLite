@@ -7,6 +7,7 @@ package org.mozilla.focus.utils;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+
 import androidx.annotation.RawRes;
 
 import org.json.JSONArray;
@@ -51,6 +52,20 @@ public class TopSitesUtils {
                 ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
             }
             saveDefaultSites(context, obj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    public static JSONArray getFixedSitesJsonArrayFromAssets(Context context) {
+        JSONArray obj = null;
+        try {
+            obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.fixedsites));
+            long lastViewTimestampSystem = System.currentTimeMillis();
+            for (int i = 0; i < obj.length(); i++) {
+                ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -106,8 +121,8 @@ public class TopSitesUtils {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        } finally {
-            return defaultSites;
         }
+
+        return defaultSites;
     }
 }
