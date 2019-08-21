@@ -111,7 +111,7 @@ open class TopSitesRepo(
 
     suspend fun remove(site: Site) {
         pinSiteManager.unpinned(site)
-        val isDefaultSite = site.id < 0
+        val isDefaultSite = site.isDefault
         TelemetryWrapper.removeTopSite(isDefaultSite)
         if (isDefaultSite) {
             removeDefaultSite(site)
