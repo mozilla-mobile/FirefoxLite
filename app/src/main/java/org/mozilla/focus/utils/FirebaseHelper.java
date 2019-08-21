@@ -90,6 +90,8 @@ final public class FirebaseHelper {
 
     public static final String STR_CONTENT_HUB_ITEMS = "str_content_hub_items";
 
+    public static final String STR_TOP_SITES_FIXED_ITEMS = "str_top_sites_fixed_items";
+
     private static final String NEWLINE_PLACE_HOLDER = "<BR>";
 
     private static FirebaseContract firebaseContract;

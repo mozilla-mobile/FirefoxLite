@@ -21,6 +21,7 @@ import org.mozilla.focus.provider.HistoryDatabaseHelper
 import org.mozilla.focus.provider.QueryHandler
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DimenUtils
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.TopSitesUtils
 import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.persistance.History.HistoryDatabase
@@ -38,7 +39,12 @@ open class TopSitesRepo(
 
     private var needToCheckDbVersion = true
 
-    fun getFixedSites(): List<Site>? =
+    fun getConfiguredFixedSites(): List<Site>? =
+            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_FIXED_ITEMS)
+                    .takeIf { it.isNotEmpty() }
+                    ?.jsonStringToSites()
+
+    fun getDefaultFixedSites(): List<Site>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.fixedsites)
                     ?.jsonStringToSites()
 
