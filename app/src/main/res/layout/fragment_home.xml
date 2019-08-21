@@ -104,6 +104,7 @@
             android:id="@+id/main_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="186.67dp"
             tools:layout_height="150dp"/>
 
         <org.mozilla.rocket.home.topsites.ui.PagerIndicator
