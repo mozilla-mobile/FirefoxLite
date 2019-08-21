@@ -115,7 +115,6 @@ public class TopSitesUtils {
                     final long lastViewed = json_site.getLong(KEY_LAST_VIEW_TIMESTAMP);
                     final String faviconUri = TOP_SITE_ASSET_PREFIX + json_site.getString(KEY_FAVICON);
                     Site site = new Site(id, title, url, viewCount, lastViewed, faviconUri);
-                    site.setDefault(true);
                     defaultSites.add(site);
                 }
             }
