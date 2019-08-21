@@ -11,6 +11,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import kotlinx.android.synthetic.main.fragment_home.arc_panel
+import kotlinx.android.synthetic.main.fragment_home.arc_view
 import kotlinx.android.synthetic.main.fragment_home.content_hub
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
 import kotlinx.android.synthetic.main.fragment_home.profile_buttons_container
+import kotlinx.android.synthetic.main.fragment_home.search_panel
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
@@ -190,6 +193,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         chromeViewModel.isNightMode.observe(this, Observer {
             val isNightMode = it.isEnabled
             home_background.setNightMode(isNightMode)
+            arc_view.setNightMode(isNightMode)
+            arc_panel.setNightMode(isNightMode)
+            search_panel.setNightMode(isNightMode)
         })
     }
 

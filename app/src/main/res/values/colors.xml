@@ -136,4 +136,10 @@
     <color name="privateBackground">#38383D</color>
 
     <color name="myShotOnBoardingBackground">#B3111111</color>
+
+    <!--  Home Screen -->
+    <color name="homeArcPanelBackground">@color/paletteLightGreyB100</color>
+    <color name="homeArcPanelBackgroundNight">#414146</color>
+    <color name="homeSearchPanelBackground">#F4F4F4</color>
+    <color name="homeSearchPanelBackgroundNight">@color/paletteDarkGreyC100</color>
 </resources>
