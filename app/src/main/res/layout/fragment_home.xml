@@ -81,23 +81,30 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="#FF0000"
-        android:translationY="30dp"
+        android:translationY="-8dp"
         app:layout_constraintBottom_toTopOf="@id/arc_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.85"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/bg_arch"
+        android:scaleType="fitXY"
+        app:layout_constraintDimensionRatio="360:50"
+        app:layout_constraintBottom_toTopOf="@id/arc_panel"/>
 
     <LinearLayout
         android:id="@+id/arc_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bg_arc_panel"
         android:layout_gravity="bottom"
         android:minHeight="160dp"
-        android:paddingTop="50dp"
         android:clickable="true"
         android:focusable="true"
+        android:background="@color/paletteLightGreyB100"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.viewpager2.widget.ViewPager2
