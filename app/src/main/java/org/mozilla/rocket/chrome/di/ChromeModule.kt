@@ -8,7 +8,7 @@ import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.BottomBarViewModelFactory
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.MenuViewModelFactory
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
 import org.mozilla.rocket.download.DownloadInfoRepository
@@ -79,14 +79,30 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideChromeViewModelFactory(appContext: Context): ChromeViewModelFactory {
-        // TODO: use Dagger to provide these dependencies
-        val settings = Settings.getInstance(appContext)
-        val bookmarkRepo = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(appContext))
-        val privateMode = PrivateMode.getInstance(appContext)
-        val browsers = Browsers(appContext, "http://mozilla.org")
-        val storageHelper = StorageHelper(appContext)
+    fun provideBookmarkRepository(appContext: Context): BookmarkRepository = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(appContext))
 
-        return ChromeViewModelFactory(settings, bookmarkRepo, privateMode, browsers, storageHelper)
-    }
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun providePrivateMode(appContext: Context): PrivateMode = PrivateMode.getInstance(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideBrowsers(appContext: Context): Browsers = Browsers(appContext, "http://mozilla.org")
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideStorageHelper(appContext: Context): StorageHelper = StorageHelper(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideChromeViewModel(settings: Settings,
+                               bookmarkRepo: BookmarkRepository,
+                               privateMode: PrivateMode,
+                               browsers: Browsers,
+                               storageHelper: StorageHelper): ChromeViewModel =
+            ChromeViewModel(settings, bookmarkRepo, privateMode, browsers, storageHelper)
 }

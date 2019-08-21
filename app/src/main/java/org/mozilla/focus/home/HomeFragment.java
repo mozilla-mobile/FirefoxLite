@@ -85,7 +85,7 @@ import org.mozilla.rocket.chrome.BottomBarViewModel;
 import org.mozilla.rocket.chrome.BottomBarViewModelFactory;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction;
-import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.content.LifeFeedOnboarding;
 import org.mozilla.rocket.content.portal.ContentFeature;
@@ -112,6 +112,8 @@ import java.util.TimerTask;
 
 import javax.inject.Inject;
 
+import dagger.Lazy;
+
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DEFAULT;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_DOWNLOADING;
 import static org.mozilla.rocket.chrome.BottomBarItemAdapter.DOWNLOAD_STATE_UNREAD;
@@ -134,7 +136,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
     @Inject
     BottomBarViewModelFactory bottomBarViewModelFactory;
     @Inject
-    ChromeViewModelFactory chromeViewModelFactory;
+    Lazy<ChromeViewModel> chromeViewModelCreator;
     @Inject
     TopSitesRepo topSitesRepo;
 
@@ -186,7 +188,7 @@ public class HomeFragment extends LocaleAwareFragment implements TopSitesContrac
         this.presenter.setView(this);
         this.presenter.setModel(this);
         bannerHelper.setListener(this);
-        chromeViewModel = ViewModelProviders.of(requireActivity(), chromeViewModelFactory).get(ChromeViewModel.class);
+        chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
         bottomBarViewModel = ViewModelProviders.of(requireActivity(), bottomBarViewModelFactory).get(BottomBarViewModel.class);
     }
 

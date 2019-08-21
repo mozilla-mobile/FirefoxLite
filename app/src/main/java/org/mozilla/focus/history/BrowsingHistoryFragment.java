@@ -24,16 +24,18 @@ import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.chrome.ChromeViewModel;
-import org.mozilla.rocket.chrome.ChromeViewModelFactory;
+import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 
 import javax.inject.Inject;
+
+import dagger.Lazy;
 
 
 public class BrowsingHistoryFragment extends PanelFragment implements View.OnClickListener, ItemClosingPanelFragmentStatusListener {
 
     @Inject
-    ChromeViewModelFactory chromeViewModelFactory;
+    Lazy<ChromeViewModel> chromeViewModelCreator;
 
     private RecyclerView mRecyclerView;
     private ViewGroup mContainerEmptyView, mContainerRecyclerView;
@@ -86,7 +88,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                         }
                         mAdapter.clear();
                         TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
-                        ChromeViewModel chromeViewModel = ViewModelProviders.of(requireActivity(), chromeViewModelFactory).get(ChromeViewModel.class);
+                        ChromeViewModel chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
                         chromeViewModel.getClearBrowsingHistory().call();
                         TelemetryWrapper.clearHistory();
                     }

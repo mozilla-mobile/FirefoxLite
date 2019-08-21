@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
@@ -42,11 +43,11 @@ import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
@@ -75,7 +76,7 @@ class BrowserFragment : LocaleAwareFragment(),
     @Inject
     lateinit var privateBottomBarViewModelFactory: PrivateBottomBarViewModelFactory
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
@@ -99,7 +100,7 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getActivityViewModel{ chromeViewModelCreator.get() }
     }
 
     override fun onCreateView(

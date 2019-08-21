@@ -31,6 +31,7 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_main.container
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
@@ -62,11 +63,11 @@ import org.mozilla.rocket.appupdate.InAppUpdateController
 import org.mozilla.rocket.appupdate.InAppUpdateIntro
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.viewModelProvider
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadViewModelFactory
@@ -106,7 +107,7 @@ class MainActivity : BaseActivity(),
     @Inject
     lateinit var downloadViewModelFactory: DownloadViewModelFactory
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
     lateinit var tabModelStore: TabModelStore
 
@@ -166,7 +167,7 @@ class MainActivity : BaseActivity(),
 
         FirebaseHelper.initUserState(this)
 
-        chromeViewModel = viewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getViewModel { chromeViewModelCreator.get() }
         downloadIndicatorViewModel = viewModelProvider(downloadViewModelFactory)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)

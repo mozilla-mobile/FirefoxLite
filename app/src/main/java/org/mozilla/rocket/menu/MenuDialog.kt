@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import dagger.Lazy
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -18,12 +19,12 @@ import org.mozilla.focus.utils.FormatUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.chrome.MenuItemAdapter
 import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.chrome.MenuViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.content.view.MenuLayout
 import org.mozilla.rocket.extension.map
@@ -38,7 +39,7 @@ import javax.inject.Inject
 class MenuDialog : BottomSheetDialog {
 
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
     lateinit var menuViewModelFactory: MenuViewModelFactory
 
@@ -57,7 +58,7 @@ class MenuDialog : BottomSheetDialog {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         val activity = context.toFragmentActivity()
-        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
         menuViewModel = activityViewModelProvider(menuViewModelFactory)
         settings = Settings.getInstance(context)
 

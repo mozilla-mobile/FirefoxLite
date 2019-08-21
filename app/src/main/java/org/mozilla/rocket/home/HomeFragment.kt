@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
 import kotlinx.android.synthetic.main.fragment_home.content_hub
 import kotlinx.android.synthetic.main.fragment_home.content_hub_title
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
@@ -31,11 +32,11 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
@@ -48,7 +49,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     @Inject
     lateinit var homeViewModelFactory: HomeViewModelFactory
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var chromeViewModel: ChromeViewModel
@@ -65,7 +66,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         homeViewModel = activityViewModelProvider(homeViewModelFactory)
-        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

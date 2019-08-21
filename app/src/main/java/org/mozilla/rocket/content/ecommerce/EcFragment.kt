@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import dagger.Lazy
 import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.banner.BannerAdapter
@@ -21,10 +22,9 @@ import org.mozilla.focus.home.BannerHelper
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.data.ShoppingLink
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_COUPON
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_KEY
 import org.mozilla.rocket.content.portal.ContentFeature.Companion.TYPE_TICKET
@@ -46,14 +46,14 @@ class EcFragment : Fragment() {
     }
 
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private lateinit var chromeViewModel: ChromeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        chromeViewModel = activityViewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getActivityViewModel { chromeViewModelCreator.get() }
     }
 
     override fun onCreateView(

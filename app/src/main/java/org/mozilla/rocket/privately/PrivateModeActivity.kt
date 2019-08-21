@@ -17,6 +17,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import dagger.Lazy
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
@@ -36,11 +37,10 @@ import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
-import org.mozilla.rocket.chrome.ChromeViewModelFactory
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.viewModelProvider
+import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitStateModel
@@ -56,7 +56,7 @@ class PrivateModeActivity : BaseActivity(),
         TabsSessionProvider.SessionHost {
 
     @Inject
-    lateinit var chromeViewModelFactory: ChromeViewModelFactory
+    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private val LOG_TAG = "PrivateModeActivity"
     private var sessionManager: SessionManager? = null
@@ -73,7 +73,7 @@ class PrivateModeActivity : BaseActivity(),
         appComponent().inject(this)
         super.onCreate(null)
 
-        chromeViewModel = viewModelProvider(chromeViewModelFactory)
+        chromeViewModel = getViewModel { chromeViewModelCreator.get() }
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
