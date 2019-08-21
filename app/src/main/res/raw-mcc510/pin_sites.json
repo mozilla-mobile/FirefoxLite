@@ -3,16 +3,16 @@
   "partner": [
     {
       "id": -100,
-      "url": "https://tokopedia.link/YJ36X6FLVP?utm_source=mozilla&utm_medium=WddmUAVW&utm_campaign=mp_aon_gpaf_speeddial",
-      "title": "Tokopedia",
-      "favicon": "ic_tokopedia.png",
+      "url": "https://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&aff_sub=topsite",
+      "title": "Bukalapak",
+      "favicon": "ic_bukalapak.png",
       "viewCount": 0
     },
     {
       "id": -200,
-      "url": "https://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&aff_sub=topsite",
-      "title": "Bukalapak",
-      "favicon": "ic_bukalapak.png",
+      "url": "http://wapshop.gameloft.com/buyfull/tdc.php?mozilla=true&adid=434816",
+      "title": "Gameloft",
+      "favicon": "ic_gameloft.png",
       "viewCount": 0
     }
   ]
