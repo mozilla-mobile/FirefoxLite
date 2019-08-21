@@ -87,7 +87,7 @@ class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         val sizeLimit = TOP_SITES_SIZE
         if (sites.size > sizeLimit) {
             val outboundSites = sites.takeLast(sites.size - sizeLimit)
-            outboundSites.filter { it.id < 0 }
+            outboundSites.filter { it is Site.RemovableSite && it.isDefault }
                     .forEach { defaultSite ->
                         topSitesRepo.removeDefaultSite(defaultSite.toSiteModel())
                     }
