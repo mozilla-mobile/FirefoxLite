@@ -20,6 +20,7 @@ class PagerIndicator : LinearLayout {
 
     init {
         orientation = HORIZONTAL
+        minimumHeight = dpToPx(DOT_SIZE_IN_DP)
     }
 
     fun setSize(size: Int) {
