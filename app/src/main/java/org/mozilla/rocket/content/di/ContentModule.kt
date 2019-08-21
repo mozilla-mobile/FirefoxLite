@@ -76,6 +76,5 @@ object ContentModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideContentTabBottomBarViewModelFactory(): ContentTabBottomBarViewModel.Factory =
-        ContentTabBottomBarViewModel.Factory()
+    fun provideContentTabBottomBarViewModel(): ContentTabBottomBarViewModel = ContentTabBottomBarViewModel()
 }

@@ -41,7 +41,6 @@ import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.content.activityViewModelProvider
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
@@ -66,7 +65,7 @@ private const val ACTION_DOWNLOAD = 0
 class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen, BackKeyHandleable {
 
     @Inject
-    lateinit var bottomBarViewModelFactory: ContentTabBottomBarViewModel.Factory
+    lateinit var bottomBarViewModelCreator: Lazy<ContentTabBottomBarViewModel>
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
@@ -319,7 +318,7 @@ class ContentTabFragment : LocaleAwareFragment(), ScreenNavigator.BrowserScreen,
             }
         })
         bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = activityViewModelProvider<ContentTabBottomBarViewModel>(bottomBarViewModelFactory)
+        val bottomBarViewModel = getActivityViewModel { bottomBarViewModelCreator.get() }
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
         }
