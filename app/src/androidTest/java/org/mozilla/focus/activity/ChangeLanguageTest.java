@@ -83,7 +83,7 @@ public class ChangeLanguageTest {
         }
 
         // Tap menu -> settings
-        AndroidTestUtils.tapBrowserMenuButton();
+        AndroidTestUtils.tapHomeMenuButton();
         onView(withId(R.id.menu_preferences)).perform(click());
 
         // Tap language
