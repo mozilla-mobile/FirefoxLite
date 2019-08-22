@@ -58,6 +58,7 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
 
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var sessionManager: SessionManager
+    private lateinit var tabSession: Session
     private lateinit var observer: Observer
     private lateinit var chromeViewModel: ChromeViewModel
 
@@ -165,17 +166,30 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         }
 
         toolbarRoot = view.findViewById(R.id.toolbar_root)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         sessionManager = TabsSessionProvider.getOrThrow(activity)
+
+        val tabId = sessionManager.addTab("https://", TabUtil.argument(null, false, true))
+        tabSession = sessionManager.getTabs().find { it.id == tabId }!!
+        if (tabViewSlot.childCount == 0) {
+            tabSession.engineSession?.tabView?.apply {
+                val enableTurboMode = arguments?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
+                setContentBlockingEnabled(enableTurboMode)
+                tabViewSlot.addView(view)
+            }
+        }
+
         observer = Observer(this)
         sessionManager.register(observer)
-        sessionManager.focusSession?.register(observer)
+        tabSession.register(observer)
 
         observeChromeAction()
 
-        val url = arguments?.getString(EXTRA_URL) ?: ""
-        val enableTurboMode = arguments?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
-        loadUrl(url, enableTurboMode)
+        arguments?.getString(EXTRA_URL)?.apply { loadUrl(this) }
     }
 
     override fun onResume() {
@@ -190,7 +204,7 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        sessionManager.focusSession?.unregister(observer)
+        tabSession.unregister(observer)
         sessionManager.unregister(observer)
     }
 
@@ -220,15 +234,14 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
     }
 
     override fun onBackPressed(): Boolean {
-        val focus = sessionManager.focusSession ?: return false
-        val tabView = focus.engineSession?.tabView ?: return false
+        val tabView = tabSession.engineSession?.tabView ?: return false
 
         if (tabView.canGoBack()) {
             goBack()
             return true
         }
 
-        sessionManager.dropTab(focus.id)
+        sessionManager.dropTab(tabSession.id)
         return false
     }
 
@@ -255,21 +268,12 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         })
     }
 
-    private fun loadUrl(url: String, enableTurboMode: Boolean = true) {
+    private fun loadUrl(url: String) {
         if (url.isNotBlank()) {
             displayUrlView.text = url
 
-            if (sessionManager.tabsCount == 0) {
-                sessionManager.addTab("https://", TabUtil.argument(null, false, true))
-            }
-
-            sessionManager.focusSession?.engineSession?.tabView?.apply {
-                setContentBlockingEnabled(enableTurboMode)
+            tabSession.engineSession?.tabView?.apply {
                 loadUrl(url)
-
-                if (tabViewSlot.childCount == 0) {
-                    tabViewSlot.addView(view)
-                }
             }
         }
     }
