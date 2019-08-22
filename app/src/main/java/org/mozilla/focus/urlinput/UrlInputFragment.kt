@@ -106,7 +106,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
 
         urlView.setOnFilterListener(::onFilter)
-        urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
 
         initByArguments()
 
@@ -184,6 +183,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             clearView.visibility = if (TextUtils.isEmpty(url)) View.GONE else View.VISIBLE
         }
         allowSuggestion = args?.getBoolean(ARGUMENT_ALLOW_SUGGESTION, true) ?: false
+        if (args?.getBoolean(ARGUMENT_BOOLEAN_PRIVATE_MODE, false) == true) {
+            urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
+        }
     }
 
     private fun onSuggestionClicked(tag: CharSequence) {
@@ -333,6 +335,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         private const val ARGUMENT_URL = "url"
         private const val ARGUMENT_PARENT_FRAGMENT = "parent_frag_tag"
         private const val ARGUMENT_ALLOW_SUGGESTION = "allow_suggestion"
+        private const val ARGUMENT_BOOLEAN_PRIVATE_MODE = "boolean_private_mode"
         private const val REQUEST_THROTTLE_THRESHOLD = 300
 
         /**
@@ -340,11 +343,12 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
          * fake url bar view.
          */
         @JvmStatic
-        fun create(url: String?, parentFragmentTag: String?, allowSuggestion: Boolean): UrlInputFragment {
+        fun create(url: String?, parentFragmentTag: String?, allowSuggestion: Boolean, privateMode: Boolean = false): UrlInputFragment {
             val arguments = Bundle()
             arguments.putString(ARGUMENT_URL, url)
             arguments.putString(ARGUMENT_PARENT_FRAGMENT, parentFragmentTag)
             arguments.putBoolean(ARGUMENT_ALLOW_SUGGESTION, allowSuggestion)
+            arguments.putBoolean(ARGUMENT_BOOLEAN_PRIVATE_MODE, privateMode)
 
             val fragment = UrlInputFragment()
             fragment.arguments = arguments
