@@ -116,6 +116,7 @@ public class HomeTest {
      * 2. check visible - project name, search bar, top sites, tab tray
      */
     @Test
+    @Ignore("waiting for coroutine to finish in order to show main_list")
     public void checkBasicHomeComponents_allAreVisible() {
         activityRule.launchActivity(new Intent());
 
