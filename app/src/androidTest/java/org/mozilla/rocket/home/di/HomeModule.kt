@@ -6,11 +6,11 @@ import dagger.Provides
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.spy
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.home.HomeViewModelFactory
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
+import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
@@ -26,14 +26,14 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideHomeViewModelFactory(
+    fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase
-    ): HomeViewModelFactory = HomeViewModelFactory(
+    ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
         topSitesConfigsUseCase,
