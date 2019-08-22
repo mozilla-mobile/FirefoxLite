@@ -1,5 +1,6 @@
 package org.mozilla.rocket.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.Gravity
@@ -40,6 +41,7 @@ import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
 import org.mozilla.rocket.home.topsites.ui.SiteViewHolder.Companion.TOP_SITE_LONG_CLICK_TARGET
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
 import javax.inject.Inject
 
@@ -97,6 +99,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             TelemetryWrapper.showTabTrayHome()
         }
         shopping_button.setOnClickListener { homeViewModel.onShoppingButtonClicked() }
+        homeViewModel.launchShoppingSearch.observe(this, Observer {
+            showShoppingSearch()
+        })
     }
 
     private fun initBackgroundView() {
@@ -245,5 +250,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     }
                 }
                 .show()
+    }
+
+    private fun showShoppingSearch() {
+        val context: Context = this.context ?: return
+        startActivity(ShoppingSearchActivity.getStartIntent(context))
     }
 }

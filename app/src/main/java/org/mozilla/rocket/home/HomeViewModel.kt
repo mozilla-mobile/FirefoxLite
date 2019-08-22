@@ -32,6 +32,7 @@ class HomeViewModel(
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
+    val launchShoppingSearch = SingleLiveEvent<Unit>()
     val topSiteClicked = SingleLiveEvent<Site>()
     val topSiteLongClicked = SingleLiveEvent<Site>()
     val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
@@ -64,7 +65,7 @@ class HomeViewModel(
     }
 
     fun onShoppingButtonClicked() {
-        // TODO:
+        launchShoppingSearch.call()
     }
 
     fun onTopSiteClicked(site: Site, position: Int) {
