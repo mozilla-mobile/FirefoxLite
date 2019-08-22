@@ -353,6 +353,7 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onNewIntent(unsafeIntent: Intent) {
+        super.onNewIntent(unsafeIntent)
         val intent = SafeIntent(unsafeIntent)
         promotionModel?.let {
             it.parseIntent(intent)
