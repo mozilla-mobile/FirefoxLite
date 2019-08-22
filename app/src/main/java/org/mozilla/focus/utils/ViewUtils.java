@@ -7,22 +7,24 @@ package org.mozilla.focus.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.os.Build;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.inputmethod.EditorInfoCompat;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.mozilla.focus.R;
 
@@ -31,7 +33,7 @@ public class ViewUtils {
 
     public final static int SYSTEM_UI_VISIBILITY_NONE = -1;
 
-    public static final int IME_FLAG_NO_PERSONALIZED_LEARNING = 0x01000000;
+    public static final int IME_FLAG_NO_PERSONALIZED_LEARNING = EditorInfoCompat.IME_FLAG_NO_PERSONALIZED_LEARNING;
 
 
     public static void showKeyboard(View view) {

@@ -256,7 +256,7 @@ class PrivateModeActivity : BaseActivity(),
     }
 
     override fun createUrlInputScreen(url: String?, parentFragmentTag: String?): UrlInputScreen {
-        return UrlInputFragment.create(url, null, false)
+        return UrlInputFragment.create(url, null, allowSuggestion = false, privateMode = true)
     }
 
     private fun pushToBack() {
