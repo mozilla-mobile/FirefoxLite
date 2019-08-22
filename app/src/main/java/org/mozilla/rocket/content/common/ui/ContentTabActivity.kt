@@ -36,9 +36,9 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost {
     @Inject
     lateinit var bottomBarViewModelCreator: Lazy<ContentTabBottomBarViewModel>
 
-    private var sessionManager: SessionManager? = null
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewProvider: PrivateTabViewProvider
+    private lateinit var sessionManager: SessionManager
     private lateinit var uiMessageReceiver: BroadcastReceiver
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
     private lateinit var bottomBar: BottomBar
@@ -52,6 +52,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost {
 
         chromeViewModel = getViewModel(chromeViewModelCreator)
         tabViewProvider = PrivateTabViewProvider(this)
+        sessionManager = SessionManager(tabViewProvider)
 
         snackBarContainer = findViewById(R.id.snack_bar_container)
         makeStatusBarTransparent()
@@ -87,7 +88,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost {
 
     override fun onDestroy() {
         super.onDestroy()
-        sessionManager?.destroy()
+        sessionManager.destroy()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -119,12 +120,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost {
     }
 
     override fun getSessionManager(): SessionManager {
-        if (sessionManager == null) {
-            sessionManager = SessionManager(tabViewProvider)
-        }
-
-        // we just created it, it definitely not null
-        return sessionManager!!
+        return sessionManager
     }
 
     private fun setupBottomBar(bottomBar: BottomBar) {
