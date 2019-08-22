@@ -14,8 +14,8 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.adapter.CouponAdapterDelegate
-import org.mozilla.rocket.content.ecommerce.adapter.CouponBanner
-import org.mozilla.rocket.content.ecommerce.adapter.CouponBannerAdapterDelegate
+import org.mozilla.rocket.content.ecommerce.adapter.CouponRunway
+import org.mozilla.rocket.content.ecommerce.adapter.CouponRunwayAdapterDelegate
 
 class CouponFragment : Fragment() {
 
@@ -41,7 +41,7 @@ class CouponFragment : Fragment() {
     private fun initCoupons() {
         couponAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(CouponBanner::class, R.layout.item_carousel_banner, CouponBannerAdapterDelegate(shoppingViewModel))
+                add(CouponRunway::class, R.layout.item_runway_list, CouponRunwayAdapterDelegate(shoppingViewModel))
                 add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(shoppingViewModel))
             }
         )
