@@ -54,7 +54,7 @@ public class ClearBrowsingDataTest {
     public void clearBrowsingData() {
 
         //Tap menu -> settings
-        AndroidTestUtils.tapBrowserMenuButton();
+        AndroidTestUtils.tapHomeMenuButton();
         AndroidTestUtils.tapSettingButton();
 
         // Tap clear browsing data
