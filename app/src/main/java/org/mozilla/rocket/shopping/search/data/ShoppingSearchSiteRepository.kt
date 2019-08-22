@@ -6,9 +6,9 @@ class ShoppingSearchSiteRepository {
 
     suspend fun fetchSites(): Result<List<Site>> {
         return Result.Success(listOf(
-            // Site("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D=%s"),
-            Site("Tokopedia", "https://www.tokopedia.com/search?st=product&q=%s"),
-            Site("JD.ID", "https://www.jd.id/search?keywords=%s")
+            Site("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D="),
+            Site("Tokopedia", "https://www.tokopedia.com/search?st=product&q="),
+            Site("JD.ID", "https://www.jd.id/search?keywords=")
         ))
     }
 
