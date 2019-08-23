@@ -7,7 +7,7 @@
 <org.mozilla.rocket.content.ecommerce.SquaredLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/shoppinglink_item"
+    android:id="@+id/voucher_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="146dp"
@@ -24,19 +24,19 @@
         tools:ignore="contentDescription">
 
         <ImageView
-            android:id="@+id/shoppinglink_category_image"
+            android:id="@+id/voucher_category_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/common_margin_m4"
             android:layout_marginBottom="@dimen/common_margin_m2"
-            android:layout_above="@+id/shoppinglink_category_text"
+            android:layout_above="@+id/voucher_category_text"
             android:layout_centerHorizontal="true"
             android:src="@drawable/image_pulsa"
             android:elevation="4dp"/>
 
         <org.mozilla.rocket.nightmode.themed.ThemedTextView
             style="@style/Body1"
-            android:id="@+id/shoppinglink_category_text"
+            android:id="@+id/voucher_category_text"
             android:layout_width="match_parent"
             android:layout_height="30sp"
             android:layout_marginBottom="@dimen/common_margin_m3"

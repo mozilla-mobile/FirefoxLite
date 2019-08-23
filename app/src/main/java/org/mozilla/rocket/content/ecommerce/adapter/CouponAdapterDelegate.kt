@@ -68,5 +68,5 @@ data class Coupon(
     val start: Long,
     val end: Long,
     val active: Boolean,
-    val link: ShoppingLink
+    val link: Voucher
 ) : DelegateAdapter.UiModel()

@@ -25,9 +25,9 @@ class ShoppingRepo {
         }
     }
 
-    suspend fun getShoppingLinks(): List<DelegateAdapter.UiModel> {
+    suspend fun getVouchers(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
-            AppConfigWrapper.getEcommerceShoppingLinks()
+            AppConfigWrapper.getEcommerceVouchers()
         }
     }
 

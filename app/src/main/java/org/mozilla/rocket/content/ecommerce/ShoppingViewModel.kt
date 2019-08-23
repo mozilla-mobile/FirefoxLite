@@ -10,7 +10,7 @@ import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.adapter.RunwayItem
-import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink
+import org.mozilla.rocket.content.ecommerce.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
 
 class ShoppingViewModel(
@@ -31,16 +31,16 @@ class ShoppingViewModel(
     }
     val couponItems: LiveData<List<DelegateAdapter.UiModel>> = _couponItems
 
-    private val _shoppingLinkItems by lazy {
+    private val _voucherItems by lazy {
         val liveData = MutableLiveData<List<DelegateAdapter.UiModel>>()
         _isDataLoading.value = true
         viewModelScope.launch {
-            liveData.value = shoppingRepo.getShoppingLinks()
+            liveData.value = shoppingRepo.getVouchers()
             _isDataLoading.value = false
         }
         return@lazy liveData
     }
-    val shoppingLinkItems: LiveData<List<DelegateAdapter.UiModel>> = _shoppingLinkItems
+    val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
 
     fun onRunwayItemClicked(context: Context, runwayItem: RunwayItem) {
         ScreenNavigator.get(context).showBrowserScreen(runwayItem.linkUrl, true, false)
@@ -58,12 +58,12 @@ class ShoppingViewModel(
 //        )
     }
 
-    fun onShoppingLinkItemClicked(context: Context, shoppingLinkItem: ShoppingLink) {
-        ScreenNavigator.get(context).showBrowserScreen(shoppingLinkItem.url, true, false)
+    fun onVoucherItemClicked(context: Context, voucherItem: Voucher) {
+        ScreenNavigator.get(context).showBrowserScreen(voucherItem.url, true, false)
 //        TelemetryWrapper.clickOnEcItem(
 //                pos = position.toString(),
-//                source = shoppingLinkItem.source,
-//                category = shoppingLinkItem.name
+//                source = voucherItem.source,
+//                category = voucherItem.name
 //        )
     }
 }
