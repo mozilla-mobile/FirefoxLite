@@ -7,19 +7,70 @@
     android:layout_height="match_parent"
     tools:context="org.mozilla.rocket.content.common.ui.ContentTabActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:clipChildren="false"
+        app:elevation="0dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:id="@+id/urlbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            app:layout_scrollFlags="">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="bottom"
+                android:background="@color/privateBackground"
+                tools:background="#FF0000" />
+
+            <!-- divider between appbar and web-vew, will be covered by progress bar -->
+            <include layout="@layout/toolbar" />
+
+            <org.mozilla.focus.widget.AnimatedProgressBar
+                android:id="@+id/progress"
+                style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="-1dp"
+                android:importantForAccessibility="yes"
+                android:progressDrawable="@drawable/photon_progressbar"
+                app:shiftDuration="@integer/progress_shift_duration"
+                app:wrapShiftDrawable="true"
+                tools:progress="50" />
+        </FrameLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
     <FrameLayout
         android:id="@+id/snack_bar_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
+
+    <FrameLayout
+        android:id="@+id/video_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_bar"
+        app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
     <org.mozilla.rocket.content.view.BottomBar
         android:id="@+id/bottom_bar"

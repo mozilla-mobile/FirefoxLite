@@ -311,7 +311,6 @@
             android:name="org.mozilla.rocket.content.common.ui.ContentTabActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
-            android:screenOrientation="portrait"
             android:theme="@style/PrivateModeTheme" />
 
         <activity
