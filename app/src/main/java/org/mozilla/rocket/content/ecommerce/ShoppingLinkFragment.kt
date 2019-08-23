@@ -6,23 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.Lazy
 import kotlinx.android.synthetic.main.content_tab_shoppinglink.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink
 import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLinkAdapterDelegate
+import org.mozilla.rocket.content.getActivityViewModel
+import javax.inject.Inject
 
 class ShoppingLinkFragment : Fragment() {
+
+    @Inject
+    lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
 
     private lateinit var shoppingViewModel: ShoppingViewModel
     private lateinit var shoppingLinkAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        shoppingViewModel = ViewModelProviders.of(requireActivity(), ShoppingViewModelFactory.INSTANCE).get(ShoppingViewModel::class.java)
+        shoppingViewModel = getActivityViewModel(shoppingViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
