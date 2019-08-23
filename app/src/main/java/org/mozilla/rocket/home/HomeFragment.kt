@@ -34,6 +34,7 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.ecommerce.ShoppingActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.content.getActivityViewModel
@@ -184,7 +185,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 val context = requireContext()
                 when (it) {
 //                    is ContentHub.Item.Travel -> // TODO: navigation
-//                    is ContentHub.Item.Shopping -> // TODO: navigation
+                    is ContentHub.Item.Shopping -> startActivity(ShoppingActivity.getStartIntent(context))
 //                    is ContentHub.Item.News -> // TODO: navigation
                     is ContentHub.Item.Games -> startActivity(GamesActivity.getStartIntent(context))
                 }

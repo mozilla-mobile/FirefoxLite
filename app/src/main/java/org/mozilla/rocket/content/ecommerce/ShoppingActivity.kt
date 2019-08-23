@@ -3,12 +3,12 @@ package org.mozilla.rocket.content.ecommerce
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.activity_shopping.*
 import org.mozilla.focus.R
-import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.rocket.content.ecommerce.adapter.ShoppingTabsAdapter
 
-class ShoppingActivity : BaseActivity() {
+class ShoppingActivity : FragmentActivity() {
 
     private lateinit var adapter: ShoppingTabsAdapter
 
@@ -18,8 +18,6 @@ class ShoppingActivity : BaseActivity() {
         initViewPager()
         initTabLayout()
     }
-
-    override fun applyLocale() = Unit
 
     private fun initViewPager() {
         adapter = ShoppingTabsAdapter(supportFragmentManager, this)
@@ -33,6 +31,6 @@ class ShoppingActivity : BaseActivity() {
     }
 
     companion object {
-        fun create(context: Context) = Intent(context, ShoppingActivity::class.java)
+        fun getStartIntent(context: Context) = Intent(context, ShoppingActivity::class.java)
     }
 }
