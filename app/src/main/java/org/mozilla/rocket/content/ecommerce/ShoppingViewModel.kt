@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
-import org.mozilla.rocket.content.ecommerce.adapter.CouponRunwayItem
+import org.mozilla.rocket.content.ecommerce.adapter.RunwayItem
 import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
 
@@ -42,7 +42,7 @@ class ShoppingViewModel(
     }
     val shoppingLinkItems: LiveData<List<DelegateAdapter.UiModel>> = _shoppingLinkItems
 
-    fun onRunwayItemClicked(context: Context, runwayItem: CouponRunwayItem) {
+    fun onRunwayItemClicked(context: Context, runwayItem: RunwayItem) {
         ScreenNavigator.get(context).showBrowserScreen(runwayItem.linkUrl, true, false)
     }
 

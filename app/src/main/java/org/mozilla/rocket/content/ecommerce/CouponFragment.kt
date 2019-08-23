@@ -15,8 +15,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.adapter.CouponAdapterDelegate
-import org.mozilla.rocket.content.ecommerce.adapter.CouponRunway
-import org.mozilla.rocket.content.ecommerce.adapter.CouponRunwayAdapterDelegate
+import org.mozilla.rocket.content.ecommerce.adapter.Runway
+import org.mozilla.rocket.content.ecommerce.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class CouponFragment : Fragment() {
     private fun initCoupons() {
         couponAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(CouponRunway::class, R.layout.item_runway_list, CouponRunwayAdapterDelegate(shoppingViewModel))
+                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(shoppingViewModel))
                 add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(shoppingViewModel))
             }
         )

@@ -10,12 +10,12 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ShoppingViewModel
 import kotlin.math.min
 
-class CouponRunwayItemAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class RunwayItemAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            CouponRunwayItemViewHolder(view, shoppingViewModel)
+            RunwayItemViewHolder(view, shoppingViewModel)
 }
 
-class CouponRunwayItemViewHolder(
+class RunwayItemViewHolder(
     override val containerView: View,
     private val shoppingViewModel: ShoppingViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
@@ -32,7 +32,7 @@ class CouponRunwayItemViewHolder(
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        val runwayItem = uiModel as CouponRunwayItem
+        val runwayItem = uiModel as RunwayItem
 
         runway_card.setOnClickListener { shoppingViewModel.onRunwayItemClicked(it.context, runwayItem) }
 
@@ -45,7 +45,7 @@ class CouponRunwayItemViewHolder(
     }
 }
 
-data class CouponRunwayItem(
+data class RunwayItem(
     val id: String,
     val imageUrl: String,
     val linkUrl: String

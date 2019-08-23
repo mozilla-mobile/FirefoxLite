@@ -10,19 +10,19 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.HorizontalSpaceItemDecoration
 import org.mozilla.rocket.content.ecommerce.ShoppingViewModel
 
-class CouponRunwayAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class RunwayAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            CouponRunwayListViewHolder(view, shoppingViewModel)
+            RunwayViewHolder(view, shoppingViewModel)
 }
 
-class CouponRunwayListViewHolder(
+class RunwayViewHolder(
     override val containerView: View,
     private val shoppingViewModel: ShoppingViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(CouponRunwayItem::class, R.layout.item_runway, CouponRunwayItemAdapterDelegate(shoppingViewModel))
+            add(RunwayItem::class, R.layout.item_runway, RunwayItemAdapterDelegate(shoppingViewModel))
         }
     )
 
@@ -30,15 +30,15 @@ class CouponRunwayListViewHolder(
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
         val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
         runway_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth, padding))
-        runway_list.adapter = this@CouponRunwayListViewHolder.adapter
+        runway_list.adapter = this@RunwayViewHolder.adapter
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(runway_list)
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        val runway = uiModel as CouponRunway
+        val runway = uiModel as Runway
         adapter.setData(runway.runwayItems)
     }
 }
 
-data class CouponRunway(val runwayItems: List<CouponRunwayItem>) : DelegateAdapter.UiModel()
+data class Runway(val runwayItems: List<RunwayItem>) : DelegateAdapter.UiModel()
