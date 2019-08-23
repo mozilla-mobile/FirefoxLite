@@ -26,7 +26,7 @@ class CouponViewHolder(
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val couponItem = uiModel as Coupon
 
-        coupon_item.setOnClickListener { shoppingViewModel.onCouponItemClicked(it.context, couponItem) }
+        coupon_item.setOnClickListener { shoppingViewModel.onCouponItemClicked(couponItem) }
 
         GlideApp.with(itemView.context)
             .asBitmap()

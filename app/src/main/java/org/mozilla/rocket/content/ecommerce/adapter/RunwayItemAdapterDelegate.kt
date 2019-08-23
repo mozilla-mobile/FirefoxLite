@@ -34,7 +34,7 @@ class RunwayItemViewHolder(
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val runwayItem = uiModel as RunwayItem
 
-        runway_card.setOnClickListener { shoppingViewModel.onRunwayItemClicked(it.context, runwayItem) }
+        runway_card.setOnClickListener { shoppingViewModel.onRunwayItemClicked(runwayItem) }
 
         GlideApp.with(itemView.context)
             .asBitmap()
