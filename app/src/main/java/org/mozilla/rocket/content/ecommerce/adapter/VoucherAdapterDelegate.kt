@@ -22,7 +22,7 @@ class VoucherViewHolder(
         val voucherItem = uiModel as Voucher
 
         voucher_item.setOnClickListener {
-            shoppingViewModel.onVoucherItemClicked(it.context, voucherItem)
+            shoppingViewModel.onVoucherItemClicked(voucherItem)
         }
 
         voucher_category_text.text = voucherItem.name

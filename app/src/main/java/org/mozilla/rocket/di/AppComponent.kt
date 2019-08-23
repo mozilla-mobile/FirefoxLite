@@ -36,6 +36,7 @@ import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.ecommerce.CouponFragment
+import org.mozilla.rocket.content.ecommerce.ShoppingActivity
 import org.mozilla.rocket.content.ecommerce.VoucherFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 import org.mozilla.rocket.content.games.ui.GamesActivity
@@ -94,6 +95,7 @@ interface AppComponent {
     fun inject(contentTabFragment: ContentTabFragment)
     fun inject(shoppingSearchKeywordInputFragment: ShoppingSearchKeywordInputFragment)
     fun inject(shoppingSearchResultTabFragment: ShoppingSearchResultTabFragment)
+    fun inject(shoppingActivity: ShoppingActivity)
     fun inject(couponFragment: CouponFragment)
     fun inject(voucherFragment: VoucherFragment)
 
