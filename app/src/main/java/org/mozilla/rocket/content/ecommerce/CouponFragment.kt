@@ -6,25 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.Lazy
 import kotlinx.android.synthetic.main.content_tab_coupon.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.adapter.CouponAdapterDelegate
 import org.mozilla.rocket.content.ecommerce.adapter.CouponRunway
 import org.mozilla.rocket.content.ecommerce.adapter.CouponRunwayAdapterDelegate
+import org.mozilla.rocket.content.getActivityViewModel
+import javax.inject.Inject
 
 class CouponFragment : Fragment() {
+
+    @Inject
+    lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
 
     private lateinit var shoppingViewModel: ShoppingViewModel
     private lateinit var couponAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        shoppingViewModel = ViewModelProviders.of(requireActivity(), ShoppingViewModelFactory.INSTANCE).get(ShoppingViewModel::class.java)
+        shoppingViewModel = getActivityViewModel(shoppingViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

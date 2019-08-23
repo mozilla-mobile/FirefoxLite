@@ -7,6 +7,7 @@ import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.common.ui.ContentTabBottomBarViewModel
+import org.mozilla.rocket.content.ecommerce.di.ShoppingModule
 import org.mozilla.rocket.content.games.di.GamesModule
 import org.mozilla.rocket.content.news.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.NewsViewModel
@@ -17,7 +18,7 @@ import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import java.util.Locale
 import javax.inject.Singleton
 
-@Module(includes = [GamesModule::class])
+@Module(includes = [GamesModule::class, ShoppingModule::class])
 object ContentModule {
 
     @JvmStatic
