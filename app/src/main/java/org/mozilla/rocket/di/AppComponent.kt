@@ -36,7 +36,7 @@ import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
 import org.mozilla.rocket.content.ecommerce.CouponFragment
-import org.mozilla.rocket.content.ecommerce.ShoppingLinkFragment
+import org.mozilla.rocket.content.ecommerce.VoucherFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.NewsFragment
@@ -95,7 +95,7 @@ interface AppComponent {
     fun inject(shoppingSearchKeywordInputFragment: ShoppingSearchKeywordInputFragment)
     fun inject(shoppingSearchResultTabFragment: ShoppingSearchResultTabFragment)
     fun inject(couponFragment: CouponFragment)
-    fun inject(shoppingLinkFragment: ShoppingLinkFragment)
+    fun inject(voucherFragment: VoucherFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel

@@ -9,7 +9,7 @@
     tools:ignore="MissingPrefix">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/content_shoppinglink_list"
+        android:id="@+id/content_voucher_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -19,15 +19,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@drawable/image_pulsa"
         tools:itemCount="6"
-        tools:listitem="@layout/item_shoppinglink"
+        tools:listitem="@layout/item_voucher"
         tools:spanCount="2"
         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
 
-    <include layout="@layout/item_shoppinglink_footer"
+    <include layout="@layout/item_voucher_footer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/content_shoppinglink_list"
+        app:layout_constraintTop_toBottomOf="@id/content_voucher_list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

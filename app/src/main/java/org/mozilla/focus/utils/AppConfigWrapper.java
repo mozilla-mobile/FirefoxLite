@@ -17,8 +17,8 @@ import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
 import org.mozilla.rocket.content.ecommerce.adapter.Coupon;
 import org.mozilla.rocket.content.ecommerce.adapter.CouponKey;
-import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLink;
-import org.mozilla.rocket.content.ecommerce.adapter.ShoppingLinkKey;
+import org.mozilla.rocket.content.ecommerce.adapter.Voucher;
+import org.mozilla.rocket.content.ecommerce.adapter.VoucherKey;
 import org.mozilla.rocket.content.news.data.NewsProviderConfig;
 
 import java.util.ArrayList;
@@ -137,8 +137,8 @@ public class AppConfigWrapper {
         return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_LIFE_FEED);
     }
 
-    public static boolean hasEcommerceShoppingLink() {
-        return !getEcommerceShoppingLinks().isEmpty();
+    public static boolean hasEcommerceVoucher() {
+        return !getEcommerceVouchers().isEmpty();
     }
 
     /**
@@ -147,31 +147,31 @@ public class AppConfigWrapper {
      * In the future, the user may have both e-commerce and News. But now, let's make it simple.
      * @return ArrayList of shopping links or empty list if we encounter an error.
      */
-    public static ArrayList<ShoppingLink> getEcommerceShoppingLinks() {
-        ArrayList<ShoppingLink> shoppingLinks = new ArrayList<>();
+    public static ArrayList<Voucher> getEcommerceVouchers() {
+        ArrayList<Voucher> vouchers = new ArrayList<>();
 
         final String rcString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
         try {
             final JSONArray jsonArray = new JSONArray(rcString);
             for (int i = 0; i < jsonArray.length(); i++) {
                 final JSONObject object = (JSONObject) jsonArray.get(i);
-                shoppingLinks.add(toShoppingLink(object));
+                vouchers.add(toVoucher(object));
             }
 
         } catch (JSONException e) {
             // skip and do nothing
         }
 
-        return shoppingLinks;
+        return vouchers;
     }
 
     @NonNull
-    private static ShoppingLink toShoppingLink(JSONObject object) {
-        return new ShoppingLink(
-                object.optString(ShoppingLinkKey.KEY_URL),
-                object.optString(ShoppingLinkKey.KEY_NAME),
-                object.optString(ShoppingLinkKey.KEY_IMAGE),
-                object.optString(ShoppingLinkKey.KEY_SOURCE));
+    private static Voucher toVoucher(JSONObject object) {
+        return new Voucher(
+                object.optString(VoucherKey.KEY_URL),
+                object.optString(VoucherKey.KEY_NAME),
+                object.optString(VoucherKey.KEY_IMAGE),
+                object.optString(VoucherKey.KEY_SOURCE));
     }
 
     public static boolean hasEcommerceCoupons() {
@@ -186,7 +186,7 @@ public class AppConfigWrapper {
             final JSONArray jsonArray = new JSONArray(rcString);
             for (int i = 0; i < jsonArray.length(); i++) {
                 final JSONObject object = (JSONObject) jsonArray.get(i);
-                final ShoppingLink shoppingLink = toShoppingLink(object);
+                final Voucher voucher = toVoucher(object);
                 final Coupon coupon = new Coupon(
                         object.optString(CouponKey.KEY_ID),
                         object.optString(CouponKey.KEY_CATEGORY),
@@ -195,7 +195,7 @@ public class AppConfigWrapper {
                         object.optLong(CouponKey.KEY_START),
                         object.optLong(CouponKey.KEY_END),
                         object.optBoolean(CouponKey.KEY_ACTIVE),
-                        shoppingLink
+                        voucher
                 );
 
                 // Filter out the invalid coupons - NotStartYet, Expired and Inactive
