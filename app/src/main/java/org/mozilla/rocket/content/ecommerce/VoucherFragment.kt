@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.Lazy
-import kotlinx.android.synthetic.main.content_tab_voucher.*
+import kotlinx.android.synthetic.main.fragment_voucher.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -33,7 +33,7 @@ class VoucherFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.content_tab_voucher, container, false)
+        return inflater.inflate(R.layout.fragment_voucher, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
