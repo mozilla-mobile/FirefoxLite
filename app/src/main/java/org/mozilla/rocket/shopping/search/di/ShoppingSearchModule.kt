@@ -6,6 +6,7 @@ import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchSiteRepository
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import org.mozilla.rocket.shopping.search.domain.SearchShoppingSiteUseCase
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchBottomBarViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultViewModel
 import javax.inject.Singleton
@@ -22,13 +23,13 @@ object ShoppingSearchModule {
     @Singleton
     @Provides
     fun provideFetchKeywordSuggestionUseCase(repo: KeywordSuggestionRepository): FetchKeywordSuggestionUseCase =
-            FetchKeywordSuggestionUseCase(repo)
+        FetchKeywordSuggestionUseCase(repo)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideShoppingSearchKeywordInputViewModel(usecase: FetchKeywordSuggestionUseCase): ShoppingSearchKeywordInputViewModel =
-            ShoppingSearchKeywordInputViewModel(usecase)
+        ShoppingSearchKeywordInputViewModel(usecase)
 
     @JvmStatic
     @Singleton
@@ -44,5 +45,11 @@ object ShoppingSearchModule {
     @Singleton
     @Provides
     fun provideShoppingSearchResultViewModel(usecase: SearchShoppingSiteUseCase): ShoppingSearchResultViewModel =
-            ShoppingSearchResultViewModel(usecase)
+        ShoppingSearchResultViewModel(usecase)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShoppingSearchBottomBarViewModel(): ShoppingSearchBottomBarViewModel =
+        ShoppingSearchBottomBarViewModel()
 }
