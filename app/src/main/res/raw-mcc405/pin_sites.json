@@ -1,0 +1,26 @@
+{
+  "isEnabled": true,
+  "partner": [
+    {
+      "id": -100,
+      "url": "https://www.newspointapp.com/?utm_source=mozilla_browser&utm_medium=referral&utm_campaign=np",
+      "title": "NewsPoint",
+      "favicon": "ic_newspoint.png",
+      "viewCount": 0
+    },
+    {
+      "id": -200,
+      "url": "https://www.gamezop.com/?id=Pa6YWojZa",
+      "title": "Gamezop",
+      "favicon": "ic_gamezop.png",
+      "viewCount": 0
+    },
+    {
+      "id": -300,
+      "url": "https://www.flipkart.com/?fxlite",
+      "title": "Flipkart",
+      "favicon": "ic_flipkart.png",
+      "viewCount": 0
+    }
+  ]
+}
