@@ -59,8 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/fixed_menu_height">
+            android:orientation="vertical">
 
             <FrameLayout
                 android:id="@+id/tab_view_slot"
