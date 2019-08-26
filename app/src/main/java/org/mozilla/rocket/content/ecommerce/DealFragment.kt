@@ -66,8 +66,24 @@ class DealFragment : Fragment() {
     }
 
     private fun bindPageState() {
-        shoppingViewModel.isDataLoading.observe(this@DealFragment, Observer {
-            spinner.visibility = if (it) View.VISIBLE else View.GONE
+        shoppingViewModel.isDataLoading.observe(this@DealFragment, Observer { state ->
+            when (state) {
+                is ShoppingViewModel.State.Idle -> showContentView()
+                is ShoppingViewModel.State.Loading -> showLoadingView()
+                is ShoppingViewModel.State.Error -> showErrorView()
+            }
         })
+    }
+
+    private fun showLoadingView() {
+        spinner.visibility = View.VISIBLE
+    }
+
+    private fun showContentView() {
+        spinner.visibility = View.GONE
+    }
+
+    private fun showErrorView() {
+        TODO("not implemented")
     }
 }

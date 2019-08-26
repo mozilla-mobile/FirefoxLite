@@ -13,7 +13,7 @@ import org.mozilla.rocket.content.ecommerce.VoucherFragment
 class ShoppingTabsAdapter(
     fm: FragmentManager,
     activity: FragmentActivity,
-    private val items: List<TabItem> = DEFAULT_TABS
+    private val items: List<TabItem> = getDefaultTabs()
 ) : FragmentPagerAdapter(fm) {
 
     private val resource = activity.resources
@@ -30,12 +30,10 @@ class ShoppingTabsAdapter(
     )
 
     companion object {
-        private val DEFAULT_TABS: List<TabItem> by lazy {
-            listOf(
-                TabItem(DealFragment(), R.string.label_menu_e_commerce_deal),
-                TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
-                TabItem(VoucherFragment(), R.string.label_menu_e_commerce_voucher)
-            )
-        }
+        private fun getDefaultTabs(): List<TabItem> = listOf(
+            TabItem(DealFragment(), R.string.label_menu_e_commerce_deal),
+            TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
+            TabItem(VoucherFragment(), R.string.label_menu_e_commerce_voucher)
+        )
     }
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_voucher.*
 import org.mozilla.focus.R
@@ -50,7 +49,6 @@ class VoucherFragment : Fragment() {
         )
         content_voucher_list.apply {
             adapter = voucherAdapter
-            layoutManager = GridLayoutManager(context, 2)
         }
     }
 

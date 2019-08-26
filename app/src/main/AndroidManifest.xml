@@ -317,7 +317,9 @@
         <activity
             android:name="org.mozilla.rocket.content.ecommerce.ShoppingActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:taskAffinity=".content.ecommerce" />
     </application>
 
 </manifest>
