@@ -22,8 +22,14 @@ class CarouselBannerViewHolder(
         }
     })
 
+    private val paddingLeftRight = 16
+    private val pageMargin = 8
+
     init {
         carousel_list.adapter = this@CarouselBannerViewHolder.adapter
+        carousel_list.setPadding(paddingLeftRight, 0, paddingLeftRight, 0)
+        carousel_list.setClipToPadding(false)
+        carousel_list.setPageMargin(pageMargin)
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
