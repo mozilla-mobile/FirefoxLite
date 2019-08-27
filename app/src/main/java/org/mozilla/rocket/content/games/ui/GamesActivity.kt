@@ -37,6 +37,7 @@ class GamesActivity : FragmentActivity() {
         adapter = GameTabsAdapter(supportFragmentManager, this)
         view_pager.apply {
             adapter = this@GamesActivity.adapter
+            setSwipeable(false)
         }
     }
 
