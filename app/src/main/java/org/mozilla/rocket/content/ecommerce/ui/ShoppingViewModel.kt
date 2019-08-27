@@ -21,20 +21,20 @@ class ShoppingViewModel(
     val isDataLoading: LiveData<State> = _isDataLoading
 
     private val _couponItems by lazy {
-        val liveData = MutableLiveData<List<DelegateAdapter.UiModel>>()
-        launchDataLoad {
-            liveData.value = shoppingRepo.getCoupons()
+        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
+            launchDataLoad {
+                value = shoppingRepo.getCoupons()
+            }
         }
-        return@lazy liveData
     }
     val couponItems: LiveData<List<DelegateAdapter.UiModel>> = _couponItems
 
     private val _voucherItems by lazy {
-        val liveData = MutableLiveData<List<DelegateAdapter.UiModel>>()
-        launchDataLoad {
-            liveData.value = shoppingRepo.getVouchers()
+        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
+            launchDataLoad {
+                value = shoppingRepo.getVouchers()
+            }
         }
-        return@lazy liveData
     }
     val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
 
