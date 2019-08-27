@@ -52,6 +52,7 @@ object Versions {
     const val dagger = "2.16"
     const val coroutine = "1.2.0"
     const val play = "1.6.1"
+    const val coroutines_test = "1.3.0"
 }
 
 object SystemEnv {
