@@ -15,10 +15,10 @@ import org.mozilla.rocket.appupdate.InAppUpdateConfig;
 import org.mozilla.rocket.appupdate.InAppUpdateIntro;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
-import org.mozilla.rocket.content.ecommerce.adapter.Coupon;
-import org.mozilla.rocket.content.ecommerce.adapter.CouponKey;
-import org.mozilla.rocket.content.ecommerce.adapter.Voucher;
-import org.mozilla.rocket.content.ecommerce.adapter.VoucherKey;
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon;
+import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponKey;
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher;
+import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey;
 import org.mozilla.rocket.content.news.data.NewsProviderConfig;
 
 import java.util.ArrayList;

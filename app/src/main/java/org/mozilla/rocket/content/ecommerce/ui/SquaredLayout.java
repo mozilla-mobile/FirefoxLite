@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce;
+package org.mozilla.rocket.content.ecommerce.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;

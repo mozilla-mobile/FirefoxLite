@@ -4,8 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.adapter.Runway
-import org.mozilla.rocket.content.ecommerce.adapter.RunwayItem
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
+import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
 import kotlin.random.Random
 
 class ShoppingRepo {

@@ -1,13 +1,13 @@
-package org.mozilla.rocket.content.ecommerce.adapter
+package org.mozilla.rocket.content.ecommerce.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
-import org.mozilla.rocket.content.ecommerce.CouponFragment
-import org.mozilla.rocket.content.ecommerce.DealFragment
-import org.mozilla.rocket.content.ecommerce.VoucherFragment
+import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
+import org.mozilla.rocket.content.ecommerce.ui.DealFragment
+import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
 
 @Suppress("DEPRECATION")
 class ShoppingTabsAdapter(
@@ -31,9 +31,9 @@ class ShoppingTabsAdapter(
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(
-            TabItem(DealFragment(), R.string.label_menu_e_commerce_deal),
-            TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
-            TabItem(VoucherFragment(), R.string.label_menu_e_commerce_voucher)
+                TabItem(DealFragment(), R.string.label_menu_e_commerce_deal),
+                TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
+                TabItem(VoucherFragment(), R.string.label_menu_e_commerce_voucher)
         )
     }
 }
