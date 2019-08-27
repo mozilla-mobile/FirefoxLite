@@ -9,6 +9,7 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.games.ui.GameItemDecoration
 import org.mozilla.rocket.content.games.ui.GamesViewModel
 
 class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
@@ -25,12 +26,17 @@ class GameCategoryViewHolder(
             add(GameItem::class, R.layout.item_game, GameAdapterDelegate(viewModel))
         }
     )
+    /* paddingLeftRight is padding for boundary and the first/last item
+       paddingInBetween is padding for each item */
+    private val paddingLeftRight = 16
+    private val paddingInBetween = 4
 
     init {
         game_list.apply {
             adapter = this@GameCategoryViewHolder.adapter
             layoutManager = LinearLayoutManager(containerView.context, RecyclerView.HORIZONTAL, false)
         }
+        game_list.addItemDecoration(GameItemDecoration(paddingLeftRight, paddingInBetween))
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
