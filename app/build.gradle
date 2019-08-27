@@ -252,8 +252,12 @@ dependencies {
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation "org.robolectric:robolectric:${Versions.robolectric}"
     testImplementation "org.mockito:mockito-core:${Versions.mockito}"
+
     testImplementation "org.json:json:${Versions.json}"
     testImplementation "androidx.test:core:${Versions.test_core}"
+    testImplementation "androidx.arch.core:core-testing:${Versions.arch_core}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines_test}"
+
     androidTestImplementation "org.mockito:mockito-android:${Versions.mockito}"
 
     androidTestImplementation "androidx.annotation:annotation:${Versions.annotation}"
