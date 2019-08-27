@@ -646,9 +646,4 @@
 
     <!-- Name of low priority notification channel, this will be shown on the app info page in the system setting -->
     <string name="low_priority_notification_channel">Hidden notifications</string>
-
-    <!-- TODO: Waiting for for translation -->
-    <string name="label_menu_e_commerce_deal" translatable="false">Deals</string>
-    <string name="label_menu_e_commerce_coupon" translatable="false">Coupons</string>
-    <string name="label_menu_e_commerce_voucher" translatable="false">E-vouchers</string>
 </resources>
