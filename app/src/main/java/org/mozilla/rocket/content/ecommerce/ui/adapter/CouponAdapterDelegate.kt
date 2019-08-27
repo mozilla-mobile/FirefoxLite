@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce.adapter
+package org.mozilla.rocket.content.ecommerce.ui.adapter
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_coupon.*
@@ -6,7 +6,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ShoppingViewModel
+import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

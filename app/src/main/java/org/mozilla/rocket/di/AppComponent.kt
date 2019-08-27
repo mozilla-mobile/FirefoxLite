@@ -35,10 +35,10 @@ import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
-import org.mozilla.rocket.content.ecommerce.CouponFragment
-import org.mozilla.rocket.content.ecommerce.DealFragment
-import org.mozilla.rocket.content.ecommerce.ShoppingActivity
-import org.mozilla.rocket.content.ecommerce.VoucherFragment
+import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
+import org.mozilla.rocket.content.ecommerce.ui.DealFragment
+import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
+import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.NewsFragment

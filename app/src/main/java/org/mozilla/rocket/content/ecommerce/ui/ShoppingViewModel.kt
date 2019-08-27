@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce
+package org.mozilla.rocket.content.ecommerce.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.adapter.Coupon
-import org.mozilla.rocket.content.ecommerce.adapter.RunwayItem
-import org.mozilla.rocket.content.ecommerce.adapter.Voucher
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
+import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
 import org.mozilla.rocket.download.SingleLiveEvent
 

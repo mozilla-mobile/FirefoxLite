@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce
+package org.mozilla.rocket.content.ecommerce.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +12,8 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.ecommerce.adapter.Voucher
-import org.mozilla.rocket.content.ecommerce.adapter.VoucherAdapterDelegate
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
+import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 

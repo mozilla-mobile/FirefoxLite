@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce.adapter
+package org.mozilla.rocket.content.ecommerce.ui.adapter
 
 import android.view.View
 import android.widget.FrameLayout
@@ -7,7 +7,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ShoppingViewModel
+import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 import kotlin.math.min
 
 class RunwayItemAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {

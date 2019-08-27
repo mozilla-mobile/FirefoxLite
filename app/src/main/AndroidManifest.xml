@@ -315,7 +315,7 @@
             android:theme="@style/PrivateModeTheme" />
 
         <activity
-            android:name="org.mozilla.rocket.content.ecommerce.ShoppingActivity"
+            android:name="org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

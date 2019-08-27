@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce
+package org.mozilla.rocket.content.ecommerce.ui
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_shopping.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
-import org.mozilla.rocket.content.ecommerce.adapter.ShoppingTabsAdapter
+import org.mozilla.rocket.content.ecommerce.ui.adapter.ShoppingTabsAdapter
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
 
