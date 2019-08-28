@@ -31,7 +31,7 @@ import java.util.ArrayList
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-open class TopSitesRepo(
+class TopSitesRepo(
     private val appContext: Context,
     private val pinSiteManager: PinSiteManager
 ) {
@@ -96,8 +96,7 @@ open class TopSitesRepo(
                     ?.jsonStringToSites()
                     ?.apply { forEach { it.isDefault = true } }
 
-    // open for mocking during testing
-    open fun getDefaultTopSitesJsonString(): String? {
+    private fun getDefaultTopSitesJsonString(): String? {
         return PreferenceManager.getDefaultSharedPreferences(appContext)
                 .getString(TOP_SITES_PREF, null)
     }

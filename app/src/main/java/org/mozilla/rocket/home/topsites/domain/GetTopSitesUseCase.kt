@@ -7,13 +7,13 @@ import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.toSiteModel
 import java.util.Locale
 
-class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
+open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
 
     private val fixedSites: List<org.mozilla.focus.history.model.Site> by lazy {
         topSitesRepo.getConfiguredFixedSites() ?: topSitesRepo.getDefaultFixedSites() ?: emptyList()
     }
 
-    suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
+    open suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
         val pinnedSites = topSitesRepo.getPinnedSites()
         val defaultSites = topSitesRepo.getChangedDefaultSites()
                 ?: topSitesRepo.getConfiguredDefaultSites()
