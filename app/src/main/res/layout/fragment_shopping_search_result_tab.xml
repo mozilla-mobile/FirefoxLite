@@ -59,7 +59,7 @@
             android:layout_weight="1" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/shopping_search_tabs"
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/common_margin_m7"
             android:layout_marginStart="20dp"

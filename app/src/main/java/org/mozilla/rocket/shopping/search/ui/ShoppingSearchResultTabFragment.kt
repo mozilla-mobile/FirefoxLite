@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
-import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
@@ -50,15 +50,6 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
     private lateinit var contentTabObserver: ContentTabHelper.Observer
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
 
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager
-    private lateinit var bottomBar: BottomBar
-    private lateinit var videoContainer: ViewGroup
-    private lateinit var displayUrlView: TextView
-    private lateinit var progressView: AnimatedProgressBar
-    private lateinit var siteIdentity: ImageView
-    private lateinit var toolbarRoot: ViewGroup
-
     private val safeArgs: ShoppingSearchResultTabFragmentArgs by navArgs()
     private val searchKeyword by lazy { safeArgs.searchKeyword }
 
@@ -77,16 +68,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         super.onViewCreated(view, savedInstanceState)
         setupBottomBar(view)
 
-        tabLayout = view.findViewById(R.id.shopping_search_tabs)
-        viewPager = view.findViewById(R.id.view_pager)
-        bottomBar = view.findViewById(R.id.bottom_bar)
-        videoContainer = view.findViewById(R.id.video_container)
-        displayUrlView = view.findViewById(R.id.display_url)
-        siteIdentity = view.findViewById(R.id.site_identity)
-        progressView = view.findViewById(R.id.progress)
-        toolbarRoot = view.findViewById(R.id.toolbar_root)
-
-        view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
+        appbar.setOnApplyWindowInsetsListener { v, insets ->
             (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
@@ -122,17 +104,17 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     override fun getChromeViewModel() = chromeViewModel
 
-    override fun getSiteIdentity() = siteIdentity
+    override fun getSiteIdentity(): ImageView? = site_identity
 
-    override fun getDisplayUrlView() = displayUrlView
+    override fun getDisplayUrlView(): TextView? = display_url
 
-    override fun getProgressBar() = progressView
+    override fun getProgressBar(): ProgressBar? = progress
 
-    override fun getFullScreenGoneViews() = listOf(toolbarRoot, bottomBar, tabLayout)
+    override fun getFullScreenGoneViews() = listOf(toolbar_root, bottom_bar, tab_layout)
 
-    override fun getFullScreenInvisibleViews() = listOf(viewPager)
+    override fun getFullScreenInvisibleViews() = listOf(view_pager)
 
-    override fun getFullScreenContainerView() = videoContainer
+    override fun getFullScreenContainerView(): ViewGroup = video_container
 
     private fun setupBottomBar(rootView: View) {
         val bottomBar = rootView.findViewById<BottomBar>(R.id.bottom_bar)
@@ -168,12 +150,12 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
                     site.title
                 )
             }
-            viewPager.adapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
+            view_pager.adapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
         })
     }
 
     private fun initTabLayout() {
-        tabLayout.setupWithViewPager(viewPager)
+        tab_layout.setupWithViewPager(view_pager)
     }
 
     private fun observeChromeAction() {
