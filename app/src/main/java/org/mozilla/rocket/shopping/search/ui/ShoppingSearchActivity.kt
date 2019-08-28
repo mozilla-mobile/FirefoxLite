@@ -7,12 +7,13 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.rocket.privately.PrivateTabViewProvider
 import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 
 class ShoppingSearchActivity : BaseActivity(), TabsSessionProvider.SessionHost {
 
     private var sessionManager: SessionManager? = null
-    private lateinit var tabViewProvider: PrivateTabViewProvider
+    private lateinit var tabViewProvider: TabViewProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,12 @@ class ShoppingSearchActivity : BaseActivity(), TabsSessionProvider.SessionHost {
         tabViewProvider = PrivateTabViewProvider(this)
     }
 
-    override fun applyLocale() {}
+    override fun onDestroy() {
+        super.onDestroy()
+        sessionManager?.destroy()
+    }
+
+    override fun applyLocale() = Unit
 
     override fun getSessionManager(): SessionManager {
         if (sessionManager == null) {
