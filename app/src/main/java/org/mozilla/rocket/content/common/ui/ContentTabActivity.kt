@@ -9,17 +9,19 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.Lazy
+import kotlinx.android.synthetic.main.activity_content_tab.*
+import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.IntentUtils
-import org.mozilla.focus.widget.AnimatedProgressBar
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -51,14 +53,6 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
     private lateinit var contentTabObserver: ContentTabHelper.Observer
     private lateinit var uiMessageReceiver: BroadcastReceiver
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
-    private lateinit var displayUrlView: TextView
-    private lateinit var progressView: AnimatedProgressBar
-    private lateinit var siteIdentity: ImageView
-    private lateinit var browserContainer: ViewGroup
-    private lateinit var videoContainer: ViewGroup
-    private lateinit var toolbarRoot: ViewGroup
-    private lateinit var bottomBar: BottomBar
-    private lateinit var snackBarContainer: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -70,20 +64,14 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         tabViewProvider = PrivateTabViewProvider(this)
         sessionManager = SessionManager(tabViewProvider)
 
-        displayUrlView = findViewById(R.id.display_url)
-        siteIdentity = findViewById(R.id.site_identity)
-        browserContainer = findViewById(R.id.fragment_container)
-        videoContainer = findViewById(R.id.video_container)
-        progressView = findViewById(R.id.progress)
-        findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
+        appbar.setOnApplyWindowInsetsListener { v, insets ->
             (v.layoutParams as ConstraintLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
-        toolbarRoot = findViewById(R.id.toolbar_root)
-        snackBarContainer = findViewById(R.id.snack_bar_container)
+
         makeStatusBarTransparent()
-        bottomBar = findViewById(R.id.bottom_bar)
-        setupBottomBar(bottomBar)
+
+        setupBottomBar(bottom_bar)
 
         initBroadcastReceivers()
 
@@ -100,7 +88,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
             val url = intent?.extras?.getString(EXTRA_URL) ?: ""
             val enableTurboMode = intent?.extras?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ContentTabFragment.newInstance(url, enableTurboMode))
+                .replace(R.id.browser_container, ContentTabFragment.newInstance(url, enableTurboMode))
                 .commit()
         }
     }
@@ -128,11 +116,11 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         super.onConfigurationChanged(newConfig)
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            toolbarRoot.visibility = View.GONE
-            bottomBar.visibility = View.GONE
+            toolbar_root.visibility = View.GONE
+            bottom_bar.visibility = View.GONE
         } else {
-            toolbarRoot.visibility = View.VISIBLE
-            bottomBar.visibility = View.VISIBLE
+            toolbar_root.visibility = View.VISIBLE
+            bottom_bar.visibility = View.VISIBLE
         }
     }
 
@@ -149,7 +137,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
             return
         }
 
-        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        val fragment = supportFragmentManager.findFragmentById(R.id.browser_container)
         if (fragment != null && fragment is BackKeyHandleable) {
             val handled = fragment.onBackPressed()
             if (handled) {
@@ -170,17 +158,17 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
 
     override fun getChromeViewModel() = chromeViewModel
 
-    override fun getSiteIdentity() = siteIdentity
+    override fun getSiteIdentity(): ImageView? = site_identity
 
-    override fun getDisplayUrlView() = displayUrlView
+    override fun getDisplayUrlView(): TextView? = display_url
 
-    override fun getProgressBar() = progressView
+    override fun getProgressBar(): ProgressBar? = progress
 
-    override fun getFullScreenGoneViews() = listOf(toolbarRoot, bottomBar)
+    override fun getFullScreenGoneViews() = listOf(toolbar_root, bottom_bar)
 
-    override fun getFullScreenInvisibleViews() = listOf(browserContainer)
+    override fun getFullScreenInvisibleViews() = listOf(browser_container)
 
-    override fun getFullScreenContainerView() = videoContainer
+    override fun getFullScreenContainerView(): ViewGroup = video_container
 
     private fun setupBottomBar(bottomBar: BottomBar) {
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
@@ -225,7 +213,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         uiMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
-                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG)
+                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snack_bar_container, LOG_TAG)
                 }
             }
         }
