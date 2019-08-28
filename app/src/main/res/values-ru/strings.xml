@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">Сделайте скриншот всей страницы. Читайте её оффлайн без использования Интернета или нажмите на него, чтобы вернуться на веб-страницу.</string>
   <string name="first_run_page5_title">Следующий уровень приватности</string>
   <string name="first_run_page5_text">Просмотр страниц без слежки и блокировка распространенных веб-трекеров по умолчанию. Обеспечьте безопасность ваших конфиденциальных данных.</string>
-  <string name="first_run_page6_title">Откройте для себя новые вещи</string>
   <string name="first_run_page6_text">Всего лишь одно нажатие, и вы сможете быть в курсе последних событий с помощью «%1$s» — с самым разнообразным содержимым от наиболее популярных тем до самых горячих предложений. %2$s</string>
   <string name="first_run_page7_title">Защищает вас от отслеживания</string>
   <string name="first_run_page7_text">Теперь вы можете посмотреть, сколько трекеров было заблокировано в приватном режиме.</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">Добавить ярлык приватного просмотра на домашний экран</string>
   <string name="my_shot_on_boarding_message">Ваши скриншоты здесь!</string>
   <string name="my_shot_on_boarding_category_message">Чтобы улучшить качество работы, мы собираем информацию о категориях ваших скриншотов.</string>
-  <string name="btn_vpn">7-дневный бесплатный VPN готов для Вас. Установите сейчас, чтобы сёрфить более конфиденциально и надежно.</string>
-  <string name="exp_survey_wifi">Мы планируем добавить “Бесплатный поиск WiFi”, чтобы помочь вам найти поблизости качественное бесплатное подключение к Интернету.\n\n Заинтересовались?</string>
-  <string name="exp_survey_vpn">Мы планируем добавить “VPN сервис”, чтобы дать вам больше свободы и конфиденциальности при сёрфинге.\n\n Заинтересовались?</string>
-  <string name="exp_survey_thanks">Благодарим Вас за предоставленный отзыв %1$s</string>
-  <string name="exp_survey_yes">ДА, ПОЖАЛУЙСТА</string>
-  <string name="exp_survey_no">НЕТ</string>
   <string name="http_auth_dialog_title">Требуется аутентификация</string>
   <string name="http_auth_dialog_user_name">Имя пользователя</string>
   <string name="http_auth_dialog_password">Пароль</string>

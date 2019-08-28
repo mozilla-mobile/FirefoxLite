@@ -1,23 +1,18 @@
 package org.mozilla.rocket.persistance.History;
 
-import androidx.sqlite.db.SupportSQLiteDatabase;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
-import androidx.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.home.HomeFragment;
-import org.mozilla.focus.persistence.BookmarkDao;
 import org.mozilla.focus.provider.HistoryContract;
 import org.mozilla.focus.provider.HistoryDatabaseHelper;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.mozilla.rocket.home.topsites.data.TopSitesRepo;
 
 // TODO: 8/23/18
 // We're only utilizing Room to migrate, but we have not yet remove the classic / old school
@@ -81,10 +76,10 @@ public abstract class HistoryDatabase extends RoomDatabase {
                                 ") SELECT " + HistoryContract.BrowsingHistory._ID +
                                 ", " + HistoryContract.BrowsingHistory.FAV_ICON + ", " + HistoryContract.BrowsingHistory.URL +
                                 " FROM " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY +
-                                " WHERE " + HistoryContract.BrowsingHistory.VIEW_COUNT + " > " + HomeFragment.TOP_SITES_QUERY_MIN_VIEW_COUNT +
+                                " WHERE " + HistoryContract.BrowsingHistory.VIEW_COUNT + " > " + TopSitesRepo.TOP_SITES_QUERY_MIN_VIEW_COUNT +
                                 " ORDER BY " + HistoryContract.BrowsingHistory.VIEW_COUNT +
                                 // We migrate twice the amount in case user removes top site.
-                                " LIMIT " + HomeFragment.TOP_SITES_QUERY_LIMIT * 2);
+                                " LIMIT " + TopSitesRepo.TOP_SITES_QUERY_LIMIT * 2);
                 database.execSQL(CREATE_TABLE_IF_NOT_EXISTS + BROWSING_HISTORY_NEW + " (" +
                         HistoryContract.BrowsingHistory._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                         HistoryContract.BrowsingHistory.TITLE + " TEXT," +

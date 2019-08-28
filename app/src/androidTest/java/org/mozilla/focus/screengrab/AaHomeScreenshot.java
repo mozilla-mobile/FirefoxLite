@@ -130,12 +130,6 @@ public class AaHomeScreenshot extends BaseScreenshot {
         Screengrab.screenshot(ScreenshotNamingUtils.HOME_MENU_CLEAR_CACHE);
         SystemClock.sleep(MockUIUtils.SHORT_DELAY);
 
-        // VPN Recommender
-        onView(withId(R.id.home_wifi_vpn_survey)).check(matches(isDisplayed()));
-        onView(withId(R.id.home_wifi_vpn_survey)).perform(click());
-        Screengrab.screenshot(ScreenshotNamingUtils.HOME_VPN_RECOMMENDER);
-        onView(withId(R.id.home_wifi_vpn_survey)).perform(click());
-
 
         Resources resources = activityTestRule.getActivity().getResources();
 

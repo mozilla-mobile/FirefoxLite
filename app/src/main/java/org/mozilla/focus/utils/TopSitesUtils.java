@@ -15,7 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.home.HomeFragment;
+import org.mozilla.rocket.home.topsites.data.TopSitesRepo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,7 +61,7 @@ public class TopSitesUtils {
     public static void clearTopSiteData(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .remove(HomeFragment.TOPSITES_PREF)
+                .remove(TopSitesRepo.TOP_SITES_PREF)
                 .apply();
     }
 
@@ -84,7 +84,7 @@ public class TopSitesUtils {
         }
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString(HomeFragment.TOPSITES_PREF, obj.toString())
+                .putString(TopSitesRepo.TOP_SITES_PREF, obj.toString())
                 .apply();
     }
 
@@ -99,21 +99,5 @@ public class TopSitesUtils {
         }
         final String faviconUri = TOP_SITE_ASSET_PREFIX + jsonObject.getString(KEY_FAVICON);
         return new Site(id, title, url, viewCount, lastViewed, faviconUri);
-    }
-
-    public static List<Site> paresJsonToList(JSONArray jsonArray) {
-        List<Site> defaultSites = new ArrayList<>();
-        try {
-            if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject json_site = (JSONObject) jsonArray.get(i);
-                    defaultSites.add(paresSite(json_site));
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return defaultSites;
     }
 }

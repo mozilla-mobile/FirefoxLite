@@ -212,7 +212,6 @@
     <string name="first_run_page4_text">Take screenshot of an entire page scroll. Read it offline without using data or tap it to revisit the web page.</string>
     <string name="first_run_page5_title">Next-level privacy</string>
     <string name="first_run_page5_text">Browse without a trace, and block a wide range of common web trackers by default. Ensure the security of your confidential data.</string>
-    <string name="first_run_page6_title">Discover new things</string>
     <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in preference_learn_more. Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
     <string name="first_run_page6_text">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
     <!-- Title message shown in a privacy on-boarding page. It means to prevent websites from tracking you. -->
@@ -620,22 +619,6 @@
     <string name="my_shot_on_boarding_message">View your screenshots here!</string>
     <!-- The notice shown along with the message when the user captures screenshot for the first time -->
     <string name="my_shot_on_boarding_category_message">To improve your product experience, we collect information about your screenshots’ categories.</string>
-
-    <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. Press "Yes, please" then direct users to download vpn app; Press "Nope" then hide the icon in home screen. -->
-    <string name="btn_vpn">The 7-day free VPN service is ready for you. Install now to browse more privately and securely.</string>
-   
-    <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback.-->
-    <string name="exp_survey_wifi">We plan to integrate “Free Wifi-Finder” to help you find quality free internet connection nearby.\n\n Interested?</string>
-    <!-- Message shown in Home Screen with an icon. Users can choose either they want this feature or not. We'll evaluate if we want to implement this feature base on the users' feedback. -->
-    <string name="exp_survey_vpn">We plan to integrate “VPN service” to get you more freedom and more privacy when browsing.\n\n Interested?</string>
-    <!-- Message shown after the user chooses "YES, PLEASE" or "NOPE" on the survey.
-    %1$s will be replaced with a smiling face with smiling eyes Emoji (U+1F60A)
-    -->
-    <string name="exp_survey_thanks">Thank you for giving us feedback %1$s</string>
-    <!-- Text on survey feedback button. This means the user want to have this feature. -->
-    <string name="exp_survey_yes">YES, PLEASE</string>
-    <!-- Text on survey feedback button. This means the user don't want this feature. "Nope" is an informal way to express "No". -->
-    <string name="exp_survey_no">NOPE</string>
 
     <!-- Title on web auth dialog. This dialog hint user authentication is required to proceed to the website. -->
     <string name="http_auth_dialog_title">Authentication required</string>

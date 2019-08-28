@@ -356,12 +356,6 @@ public class Settings {
 
         public static final String PostSurveyNotification = "post_survey_notification";
         public static final String ShowMyShotOnBoardingDialog = "show_my_shot_on_boarding_dialog";
-        public static final String FeatureSurveyWifiFinding = "feature_survey_wifi_finding";
-        public static final String FeatureSurveyVpn = "feature_survey_vpn";
-
-        // Indicate the express vpn app was downloaded before, it may or may not in the device right now
-        public static final String VpnAppWasDownloaded = "vpn_app_was_downloaded";
-        public static final String VpnRecommenderIgnore = "vpn_recommender_ignore";
 
         public static final String ShowDownloadIndicatorIntro = "dl_indicator_intro";
     }

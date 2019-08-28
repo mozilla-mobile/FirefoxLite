@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">ಇಡೀ ಜಾಲಪುಟದ ತೆರೆಚಿತ್ರವನ್ನು ತೆಗೆದುಕೊಳ್ಳಿ. ತೆರೆಚಿತ್ರವನ್ನು ಆಫ್‍ಲೈನ್ನಲ್ಲಿ ಡೇಟಾ ಬಳಸದೆ ನೋಡಿ ಅಥವಾ ಜಾಲಪುಟವನ್ನು ಪುನ: ವೀಕ್ಷಿಸಲು ಮೆಲ್ಲ ತಟ್ಟಿ.</string>
   <string name="first_run_page5_title">ಮುಂದಿನ ಹಂತದ ಗೌಪ್ಯತೆ</string>
   <string name="first_run_page5_text">ಜಾಡು ಹಿಡಿಯಲಾಗದಂತೆ ಜಾಲಾಡಿ, ಮತ್ತು ವ್ಯಾಪಕವಾದ ಸಾಮಾನ್ಯ ವೆಬ್ ಟ್ರ್ಯಾಕರ್ಗಳನ್ನು ಪೂರ್ವನಿಯೋಜಿತವಾಗಿ ನಿರ್ಬಂಧಿಸಿ. ನಿಮ್ಮ ಗೌಪ್ಯ ದತ್ತಾಂಶದ ಭದ್ರತೆಯನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</string>
-  <string name="first_run_page6_title">ಹೊಸ ವಿಷಯಗಳನ್ನು ಅನ್ವೇಷಿಸಿ</string>
   <string name="first_run_page6_text">ಕೇವಲ ಒಂದು ಸಲಹೆ, ನಿಮ್ಮನ್ನು “%1$s” ನೊಂದಿಗೆ ನವೀಕರಿಸಿಕೊಳ್ಳಿ - ಅತ್ಯಂತ ಜನಪ್ರಿಯ ವಿಷಯಗಳಿಂದ ಅತ್ಯಂತ ಬಿಸಿಬಿಸಿ ವ್ಯವಹಾರಗಳ ವೈವಿಧ್ಯಮಯ ವಿಷಯಗಳು. %2$s</string>
   <string name="first_run_page7_title">ಟ್ರ್ಯಾಕ್ ಮಾಡ‌ಲಾಗದಂತೆ ತಡೆಯಿರಿ</string>
   <string name="first_run_page7_text">ನೀವು‍ ಈಗ ಖಾಸಗಿ ಸ್ಠಿತಿಯಲ್ಲಿ ಎಷ್ಟು ಜಾಡುಹಿಡಿಯುವವರನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಬಹುದು.</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">ಮುಖಪುಟದ ಪರದೆಗೆ ಖಾಸಗಿ ಸ್ಥಿತಿ ಶಾರ್ಟ್ಕಟ್ ಸೇರಿಸಿ</string>
   <string name="my_shot_on_boarding_message">‍ನಿಮ್ಮ ತೆರೆಚಿತ್ರಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಿ!</string>
   <string name="my_shot_on_boarding_category_message">‍ನಿಮ್ಮ ಉತ್ಪಾದನೆಯ ಅನುಭವವನ್ನು ಉತ್ತಮಗೊಳಿಸಲು, ನಾವು ನಿಮ್ಮ ತೆರೆಚಿತ್ರಗಳ ವರ್ಗಗಳ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸುತ್ತೇವೆ.</string>
-  <string name="btn_vpn">7 ದಿನಗಳ ಉಚಿತ VPN ಸೇವೆ ನಿಮಗಾಗಿ ಸಿದ್ಧವಾಗಿದೆ. ಹೆಚ್ಚು ಖಾಸಗಿಯಾಗಿ ಮತ್ತು ಸುರಕ್ಷಿತವಾಗಿ ಜಾಲಾಡಲು ಅನುಸ್ಥಾಪಿಸಿಕೊಳ್ಳಿ.</string>
-  <string name="exp_survey_wifi">ನೀವು ಹತ್ತಿರದ ಉಚಿತ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಕಂಡುಹಿಡಿಯಲು ಸಹಾಯವಾಗುವಂತೆ “ಫ್ರೀ ವೈಫೈ-ಫೈಂಡರ್” ಅನ್ನು ಸಂಯೋಜಿಸಲು ನಾವು ಯೋಜಿಸುತ್ತಿದ್ದೇವೆ.\n \nಆಸಕ್ತಿ ಇದೆಯೇ?</string>
-  <string name="exp_survey_vpn">ಜಾಲಾಡುವಾಗ ನಿಮಗೆ ಹೆಚ್ಚಿನ ಸ್ವಾತಂತ್ರ್ಯ ಮತ್ತು ಹೆಚ್ಚಿನ ಗೌಪ್ಯತೆ ಪಡೆಯಲು \"VPN ಸೇವೆ\" ಅನ್ನು ಸಂಯೋಜಿಸಲು ನಾವು ಯೋಜಿಸಿದ್ದೇವೆ. \n \n ಆಸಕ್ತಿ ಇದೆಯೇ?</string>
-  <string name="exp_survey_thanks">ನಮಗೆ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ನೀಡಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು %1$s</string>
-  <string name="exp_survey_yes">ಹೌದು, ದಯವಿಟ್ಟು</string>
-  <string name="exp_survey_no">ಇಲ್ಲ</string>
   <string name="http_auth_dialog_title">ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ</string>
   <string name="http_auth_dialog_user_name">ಬಳಕೆದಾರನ ಹೆಸರು</string>
   <string name="http_auth_dialog_password">ಗುಪ್ತಪದ</string>

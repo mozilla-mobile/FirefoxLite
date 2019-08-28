@@ -463,7 +463,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         sessionManager.register(this.managerObserver, this, false);
 
-        setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
+
+        observeNightMode();
 
         return view;
     }
@@ -493,6 +494,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 showFindInPage();
             }
         });
+    }
+
+    private void observeNightMode() {
+        chromeViewModel.isNightMode().observe(this,
+                nightModeSettings -> setNightModeEnabled(nightModeSettings.isEnabled()));
     }
 
     private void setupBottomBar(View rootView) {
@@ -708,7 +714,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 }
             }
         }
-        setNightModeEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
     }
 
     private void initialiseNormalBrowserUi() {
@@ -1760,7 +1765,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         return this;
     }
 
-    public void setNightModeEnabled(boolean enable) {
+    private void setNightModeEnabled(boolean enable) {
         browserContainer.setNightMode(enable);
 
         toolbarRoot.setNightMode(enable);

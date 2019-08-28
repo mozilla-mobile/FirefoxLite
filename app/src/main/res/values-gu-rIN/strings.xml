@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">સમગ્ર પૃષ્ઠ સ્ક્રોલનું સ્ક્રીનશોટ લો. ડેટાનો ઉપયોગ કર્યા વિના તેને ઑફલાઇન વાંચો અથવા વેબ પૃષ્ઠ પર ફરીથી મુલાકાત લેવા તે દબાવો.</string>
   <string name="first_run_page5_title">આગળની કક્ષાની ગોપનીયતા</string>
   <string name="first_run_page5_text">ટ્રેસ વિના બ્રાઉઝ કરો અને ડિફૉલ્ટ રૂપે સામાન્ય વેબ ટ્રેકર્સની વિશાળ શ્રેણીને અવરોધિત કરો. તમારા ગોપનીય ડેટાની સુરક્ષાની ખાતરી કરો.</string>
-  <string name="first_run_page6_title">નવી વસ્તુઓ શોધો</string>
   <string name="first_run_page6_text">ફક્ત એક ફ્લિપ કરો, પોતાને “%1$s” સાથે અપડેટ કરો - સૌથી વધુ લોકપ્રિય વિષયોથી વિવિધ હૉટેસ્ટ સોદા સુધી. %2$s</string>
   <string name="first_run_upgrade_page_title">અમે તમારી પ્રતિક્રિયા સાંભળી!</string>
   <string name="new_name_upgrade_page_title">અમારી પાસે એક નવો દેખાવ છે!</string>
@@ -234,12 +233,6 @@
   <string name="private_browsing_erase_done">તમારા ખાનગી બ્રાઉઝિંગ ઈતિહાસને ભૂંસી નાંખવામાં આવ્યું છે.</string>
   <string name="my_shot_on_boarding_message">તમારા સ્ક્રીનશોટ અહીં જુઓ!</string>
   <string name="my_shot_on_boarding_category_message">તમારાં ઉત્પાદનનો અનુભવ સુધારવાં માટે, અમે તમારાં સ્ક્રીનશોટનાં વર્ગો વિશે માહિતી ભેગી કરીએ છીએ.</string>
-  <string name="btn_vpn">7-દિવસની મફત VPN સેવા તમારા માટે તૈયાર છે. વધુ ખાનગી અને સુરક્ષિત રીતે બ્રાઉઝ કરવા માટે હમણાં ઇન્સ્ટોલ કરો.</string>
-  <string name="exp_survey_wifi">અમે નજીકમાં ગુણવત્તાયુક્ત મફત ઇન્ટરનેટ કનેક્શન શોધવામાં તમારી સહાય માટે “મફત Wifi-Finder” ની સંકલન કરવાની યોજના બનાવી છે.\n\n શું તમે રસ ધરાવો છો?</string>
-  <string name="exp_survey_vpn">બ્રાઉઝ કરતી વખતે તમને વધુ સ્વતંત્રતા અને વધુ ગોપનીયતા મેળવવા માટે અમે “VPN સેવા” ને એકીકૃત કરવા માંગીએ છીએ.\n\nશું તમે રસ ધરાવો છો?</string>
-  <string name="exp_survey_thanks">અમને પ્રતિસાદ આપવા બદલ આપનો આભાર %1$s</string>
-  <string name="exp_survey_yes">હા, કૃપા કરીને</string>
-  <string name="exp_survey_no">ના</string>
   <string name="http_auth_dialog_title">પ્રમાણીકરણ આવશ્યક છે</string>
   <string name="http_auth_dialog_user_name">વપરાશકર્તા નામ</string>
   <string name="http_auth_dialog_password">પાસવર્ડ</string>

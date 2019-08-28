@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">จับภาพหน้าจอส่วนที่เลื่อนทั้งหน้า อ่านภาพหน้าจอออฟไลน์โดยไม่ต้องใช้ข้อมูลหรือแตะภาพหน้าจอเพื่อเยี่ยมชมหน้าเว็บใหม่</string>
   <string name="first_run_page5_title">ความเป็นส่วนตัวระดับถัดไป</string>
   <string name="first_run_page5_text">เรียกดูโดยไม่มีร่องรอย และปิดกั้นตัวติดตามเว็บทั่วไปจำนวนมากโดยค่าเริ่มต้น ทำให้มั่นใจในความปลอดภัยของข้อมูลที่เป็นความลับของคุณ</string>
-  <string name="first_run_page6_title">ค้นพบสิ่งใหม่ ๆ</string>
   <string name="first_run_page6_text">ไม่พลาดทุกข่าวสารด้วย “%1$s” เพียงพลิกครั้งเดียว คุณก็จะพบเนื้อหาตั้งแต่หัวข้อที่ยอดนิยมที่สุดจนถึงดีลสุดฮอต %2$s</string>
   <string name="first_run_page7_title">ป้องกันไม่ให้ถูกติดตาม</string>
   <string name="first_run_page7_text">ตอนนี้คุณสามารถตรวจสอบจำนวนตัวติดตามที่ถูกปิดกั้นในโหมดส่วนตัว</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">เพิ่มทางลัดโหมดส่วนตัวไปยังหน้าจอหลัก</string>
   <string name="my_shot_on_boarding_message">ดูภาพหน้าจอของคุณที่นี่!</string>
   <string name="my_shot_on_boarding_category_message">เพื่อปรับปรุงประสบการณ์ผลิตภัณฑ์ของคุณ เราเก็บรวบรวมข้อมูลเกี่ยวกับหมวดหมู่ของภาพหน้าจอของคุณ</string>
-  <string name="btn_vpn">บริการ VPN ฟรี 7 วันพร้อมแล้วสำหรับคุณ ติดตั้งตอนนี้เพื่อเรียกดูอย่างเป็นส่วนตัวและปลอดภัยมากขึ้น</string>
-  <string name="exp_survey_wifi">เราวางแผนที่จะผนวกรวม “ตัวค้นหา Wifi ฟรี” เพื่อช่วยคุณค้นหาการเชื่อมต่ออินเทอร์เน็ตฟรีที่มีคุณภาพที่อยู่ใกล้เคียง\n\n สนใจไหม?</string>
-  <string name="exp_survey_vpn">เราวางแผนที่จะผนวกรวม “บริการ VPN” เพื่อให้คุณมีอิสรภาพมากขึ้นและความเป็นส่วนตัวเพิ่มขึ้นเมื่อเรียกดู\n\n สนใจไหม?</string>
-  <string name="exp_survey_thanks">ขอบคุณที่ให้ข้อคิดเห็นกับเรา %1$s</string>
-  <string name="exp_survey_yes">ใช่ ได้โปรด</string>
-  <string name="exp_survey_no">ไม่</string>
   <string name="http_auth_dialog_title">ต้องมีการรับรองความถูกต้อง</string>
   <string name="http_auth_dialog_user_name">ชื่อผู้ใช้</string>
   <string name="http_auth_dialog_password">รหัสผ่าน</string>

@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">Téwak layar saeusi kaca. Baca eusina sacara oflén tanpa maké data atawa toél pikeun nyorang deui kaca raramatna.</string>
   <string name="first_run_page5_title">Privasi tingkat lanjut</string>
   <string name="first_run_page5_text">Nyungsi tanpa tapak, sarta meungpeuk sarupaning palacak raramat sacara baku. Ngajamin amanna data penting anjeun.</string>
-  <string name="first_run_page6_title">Panggihan hal aranyar</string>
   <string name="first_run_page6_text">Ku sakali flip, ulah nepi ka tinggaleun di “%1$s” - rupa-rupa kontén ti jejer anu keur sabiwir hiji. %2$s</string>
   <string name="first_run_page7_title">Cegah tina dilacak</string>
   <string name="first_run_page7_text">Ayeuna anjeun bisa mariksa sabaraha palacak anu dipeungpeuk dina mode nyamuni.</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">Tambahkeun takulan modeu pribadi kana layar Tepas</string>
   <string name="my_shot_on_boarding_message">Ilikan téwakan layar anjeun di dieu!</string>
   <string name="my_shot_on_boarding_category_message">Pikeun ngaronjatkeun pangalaman produk anjeun, kami kukumpul émbaran ngeunaan kategori téwakan layar anjeun.</string>
-  <string name="btn_vpn">Ladénan VPN bébas 7 poé geus sayaga. Instal ayeuna pikeun ngalanglang leuwih nyamuni tur aman.</string>
-  <string name="exp_survey_wifi">Aya rencana ngahijikeun “Free Wifi-Finder” pikeun mantuan manggihan sambungan internét gratis anu deukeut.\n\n Kabita?</string>
-  <string name="exp_survey_vpn">Aya rencana ngahijikeun “layanan VPN” ngarah kabébasan jeung privasi anjeun nalika nyungsi internét leuwih kajaga.\n\nKabita?</string>
-  <string name="exp_survey_thanks">Nuhun kamandangna %1$s</string>
-  <string name="exp_survey_yes">MANGGA</string>
-  <string name="exp_survey_no">MOAL</string>
   <string name="http_auth_dialog_title">Kudu dioténtikasi</string>
   <string name="http_auth_dialog_user_name">Sandiasma</string>
   <string name="http_auth_dialog_password">Kecap sandi</string>

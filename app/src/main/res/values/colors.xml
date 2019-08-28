@@ -5,6 +5,7 @@
 <resources>
     <color name="paletteBlack100">#FF000000</color>
     <color name="paletteLightBlack100">#FF272727</color>
+    <color name="paletteLightBlack30">#4D272727</color>
     <color name="paletteLightBlack20">#33272727</color>
     <color name="paletteDarkGreyA100">#FF323232</color>
     <color name="paletteDarkGreyB100">#FF2A2A2E</color>
@@ -22,6 +23,7 @@
     <color name="paletteWhite70">#B3FFFFFF</color>
     <color name="paletteWhite60">#99FFFFFF</color>
     <color name="paletteWhite50">#7FFFFFFF</color>
+    <color name="paletteWhite30">#4DFFFFFF</color>
     <color name="paletteWhite20">#33FFFFFF</color>
     <color name="paletteWhite5">#0DFFFFFF</color>
     <color name="paletteDarkBlueA100">#FF253058</color>
