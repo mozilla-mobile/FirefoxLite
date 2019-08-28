@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import dagger.Lazy
+import kotlinx.android.synthetic.main.fragment_home.account_layout
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
 import kotlinx.android.synthetic.main.fragment_home.content_hub
@@ -24,8 +25,8 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_tex
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.main_list
+import kotlinx.android.synthetic.main.fragment_home.mission_button
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
-import kotlinx.android.synthetic.main.fragment_home.profile_buttons_container
 import kotlinx.android.synthetic.main.fragment_home.search_panel
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
@@ -85,7 +86,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initBackgroundView()
         initTopSites()
         initContentHub()
-        setupFxaView()
+        initFxaView()
         observeNightMode()
     }
 
@@ -196,8 +197,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
     }
 
-    private fun setupFxaView() {
-        profile_buttons_container.setOnClickListener { showMissionFragment() }
+    private fun initFxaView() {
+        homeViewModel.hasPendingMissions.observe(this, Observer {
+            mission_button.isActivated = it
+        })
+        mission_button.setOnClickListener { showMissionFragment() }
     }
 
     private fun showMissionFragment() {
@@ -215,6 +219,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             arc_panel.setNightMode(isNightMode)
             search_panel.setNightMode(isNightMode)
             home_fragment_fake_input_text.setNightMode(isNightMode)
+            account_layout.setNightMode(isNightMode)
         })
     }
 
