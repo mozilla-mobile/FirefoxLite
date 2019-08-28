@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">Kunin ang screenshot ng buong pahina. Tingnan ang screenshot offline ng hindi gagamit ng data o kaya ay i-tap ito para puntahan ang web page.</string>
   <string name="first_run_page5_title">Susunod na antas ng privacy</string>
   <string name="first_run_page5_text">Mag-browse nang walang bakas, at i-block ang isang malawak na hanay ng mga karaniwang trackers sa web bilang default. Tiyakin ang seguridad ng iyong kumpidensyal na data.</string>
-  <string name="first_run_page6_title">Discover new things</string>
   <string name="first_run_page6_text">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
   <string name="first_run_upgrade_page_title">Narinig namin ang inyong feedback!</string>
   <string name="new_name_upgrade_page_title">Mayroon kaming bagong hitsura!</string>
@@ -278,12 +277,6 @@
   <string name="private_browsing_shortcut_name">%1$s - Private browsing</string>
   <string name="my_shot_on_boarding_message">Tingnan ang mga screenshot dito!</string>
   <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
-  <string name="btn_vpn">Ang 7-araw na libreng serbisyo ng VPN ay handa na para sa iyo. I-install ngayon upang mag-browse nang mas pribado at ligtas.</string>
-  <string name="exp_survey_wifi">Balak naming magsama ng “Free Wifi-Finder” para makatulong sa paghahanap ng libreng internet connection na malapit sa iyo.\n\n Interessado?</string>
-  <string name="exp_survey_vpn">Balak naming magsama ng “VPN service” para sa mas mainam ng pribasiya habang ikaw ay nagba-browse.\n\n Interesado?</string>
-  <string name="exp_survey_thanks">Maraming salamat sa pagbibigay ng feedback %1$s</string>
-  <string name="exp_survey_yes">OO</string>
-  <string name="exp_survey_no">HINDI</string>
   <string name="http_auth_dialog_user_name">Username</string>
   <string name="http_auth_dialog_password">Password</string>
 </resources>

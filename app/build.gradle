@@ -281,7 +281,6 @@ dependencies {
 
     implementation project(':newspoint')
     implementation project(':partnerrepository')
-    implementation project(':banner')
 
     implementation "com.google.android.play:core:${Versions.play}"
 }

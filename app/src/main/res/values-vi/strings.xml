@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">Chụp ảnh màn hình của toàn bộ trang. Đọc ngoại tuyến mà không sử dụng dữ liệu hoặc chạm vào nó để xem lại trang web.</string>
   <string name="first_run_page5_title">Quyền riêng tư cấp độ tiếp theo</string>
   <string name="first_run_page5_text">Duyệt mà không để lại dấu vết và chặn một loạt các trình theo dõi web phổ biến theo mặc định. Đảm bảo an toàn cho dữ liệu bí mật của bạn.</string>
-  <string name="first_run_page6_title">Khám phá những điều mới</string>
   <string name="first_run_page6_text">Chỉ cần một lần lật, hãy cập nhật cho bạn với “%1$s” - một loạt nội dung từ các chủ đề phổ biến nhất đến các giao dịch hấp dẫn nhất. %2$s</string>
   <string name="first_run_page7_title">Ngăn chặn theo dõi</string>
   <string name="first_run_page7_text">Bây giờ bạn có thể kiểm tra có bao nhiêu trình theo dõi bị chặn trong chế độ riêng tư.</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">Thêm phím tắt chế độ riêng tư vào màn hình chính</string>
   <string name="my_shot_on_boarding_message">Xem ảnh chụp màn hình của bạn ở đây!</string>
   <string name="my_shot_on_boarding_category_message">Để cải thiện trải nghiệm sản phẩm của bạn, chúng tôi thu thập thông tin về các loại ảnh chụp màn hình của bạn.</string>
-  <string name="btn_vpn">Dịch vụ VPN miễn phí 7 ngày đã sẵn sàng cho bạn. Cài đặt ngay để duyệt riêng tư và an toàn hơn.</string>
-  <string name="exp_survey_wifi">Chúng tôi dự định tích hợp miễn phí Wifi-Finder để giúp bạn tìm kết nối internet miễn phí chất lượng cao ở xung quanh.\n\nQuan tâm?</string>
-  <string name="exp_survey_vpn">Chúng tôi dự định tích hợp dịch vụ VPN để giúp bạn tự do hơn và riêng tư hơn khi duyệt web.\n \nQuan tâm?</string>
-  <string name="exp_survey_thanks">Cảm ơn bạn đã cho chúng tôi thông tin phản hồi %1$s</string>
-  <string name="exp_survey_yes">VÂNG, LÀM ƠN</string>
-  <string name="exp_survey_no">KHÔNG</string>
   <string name="http_auth_dialog_title">Yêu cầu xác thực</string>
   <string name="http_auth_dialog_user_name">Tên đăng nhập</string>
   <string name="http_auth_dialog_password">Mật khẩu</string>

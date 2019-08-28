@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">Jepret layar sakabèhé situs wèb. Waca sawijining jepretan layar tanpa nganggo dhata utawa tunyuk manéh kanggo mbalik menyang situs wèb mau.</string>
   <string name="first_run_page5_title">Wadi sabanjure</string>
   <string name="first_run_page5_text">Delajah tanpa tilak, lan blokir sawetara pelacak web. Jamin keamanan data pribadimu.</string>
-  <string name="first_run_page6_title">Temokaké apa-apa sing anyar</string>
   <string name="first_run_page6_text">Mung sakbalikan, tansah anyaraké karo “%1$s” - anéka kontèn saka topik paling populèr nganti dodolan paling oké. %2$s</string>
   <string name="first_run_upgrade_page_title">Kita ngrungokaké tanggepan sampéyan!</string>
   <string name="new_name_upgrade_page_title">Kita duwe tampilan anyar!</string>
@@ -245,12 +244,6 @@
   <string name="private_browsing_erase_done">Riwayat dejalahan pribadhi \nsampéyan wis dibusak.</string>
   <string name="my_shot_on_boarding_message">Deleng pikutan layar sampeyan ing kéné!</string>
   <string name="my_shot_on_boarding_category_message">Kanggo ningkataké pengalaman produk sampéyan, kita ngumpulaké pratéla ngenani kategori jepretan layar sampéyan.</string>
-  <string name="btn_vpn">Layanan VPN gratis 7 dina wis siap kanggo sampeyan. Instal saiki kanggo browsing luwih pribadi lan aman.</string>
-  <string name="exp_survey_wifi">Kita rencana kanggo nggabungake “Free Wifi-Finder” kanggo mbantu sampeyan nemokake koneksi internet sing gratis.\n \n Sampeyan kasengsem?</string>
-  <string name="exp_survey_vpn">Kita rencana kanggo nggabungake “VPN service” kanggo nggawe sampeyan kebebasan lan privasi liyane nalika nelusur.\n \n Sampeyan kasengsem?</string>
-  <string name="exp_survey_thanks">Matur suwun kanggo menehi saran %1$s</string>
-  <string name="exp_survey_yes">IYO, MONGGO</string>
-  <string name="exp_survey_no">ORA</string>
   <string name="http_auth_dialog_title">Prelu otèntikasi</string>
   <string name="http_auth_dialog_user_name">Jeneng panganggo</string>
   <string name="http_auth_dialog_password">Sandi</string>

@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">पूर्ण पृष्ठ का स्क्रीनशॉट लें। डेटा इस्तेमाल किये बिना इसे ऑफलाइन पढ़ें या वेब पृष्ठ पर दुबारा जाने के लिए इसे टैप करें।</string>
   <string name="first_run_page5_title">अगले-दर्जे की गोपनीयता</string>
   <string name="first_run_page5_text">बिना ट्रेस हुए ब्राउज़ करें, और डिफ़ॉल्ट रूप से आम वेब ट्रैकर्स की एक विस्तृत श्रृंखला को ब्लॉक करें। अपने गोपनीय डेटा की सुरक्षा सुनिश्चित करें।</string>
-  <string name="first_run_page6_title">नई चीजों की खोज करें</string>
   <string name="first_run_page6_text">बस एक बटन दबाना, अपने आप को \"%1$s\" के साथ अपडेट रखें - सबसे लोकप्रिय विषयों से लेकर सबसे ताज़ा सौदों तक विभिन्न प्रकार की सामग्री। %2$s</string>
   <string name="first_run_page7_title">ट्रैक होने से रोकें</string>
   <string name="first_run_page7_text">अब आप निजी मोड में कितने ट्रैकर अवरुद्ध हैं उन्हें देख सकते हैं।</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">निजी मोड शॉर्टकट को होम स्क्रीन पर जोड़ें</string>
   <string name="my_shot_on_boarding_message">अपने स्क्रीनशॉटों को यहाँ देखें!</string>
   <string name="my_shot_on_boarding_category_message">आपके प्रोडक्ट अनुभव को सुधारने के लिए, हम आपके स्क्रीनशॉट श्रेणियों के बारे में जानकारियाँ जमा करते हैं।</string>
-  <string name="btn_vpn">7-दिनों की निःशुल्क VPN सेवा आपके लिए तैयार है। और भी अधिक निजी एवं सुरक्षित रूप से ब्राउज करने हेतु अभी इनस्टॉल करें।</string>
-  <string name="exp_survey_wifi">हम “मुफ्त वाईफाई-खोजक” जोड़ने पर विचार कर रहे हैं ताकि आपको आसपास अच्छी मुफ्त इंटरनेट कनेक्शन खोजने में मदद कर सकें।\n \n इच्छुक हैं?</string>
-  <string name="exp_survey_vpn">हम “VPN सेवा” जोड़ने पर विचार कर रहे हैं ताकि आपको ब्राउज़िंग करते समय अधिक आजादी एवं अधिक गोपनीयता मिल सके।\n \n इच्छुक हैं?</string>
-  <string name="exp_survey_thanks">हमें प्रतिक्रिया भेजने के लिए धन्यवाद %1$s</string>
-  <string name="exp_survey_yes">YES, PLEASE</string>
-  <string name="exp_survey_no">NOPE</string>
   <string name="http_auth_dialog_title">सत्यापन आवश्यक</string>
   <string name="http_auth_dialog_user_name">उपयोगकर्ता नाम</string>
   <string name="http_auth_dialog_password">पासवर्ड</string>

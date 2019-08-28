@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">पूर्ण पृष्ठाचा स्क्रीनशॉट घ्या. डेटा न वापरता ऑफलाईन पहा किंवा पुन्हा भेट देण्यासाठी टॅप करा.</string>
   <string name="first_run_page5_title">पुढील स्तरीय गोपनीयता</string>
   <string name="first_run_page5_text">मागमूसावीन ब्राउझ करा, आणि असंख्य साधारण वेब ट्रॅकर पूर्वनिर्धारीतरित्या आडवा. आपल्या गुप्त माहितीची सुरक्षा निश्चित करा.</string>
-  <string name="first_run_page6_title">नवीन गोष्टी शोधा</string>
   <string name="first_run_page6_text">फक्त एक फ्लिप करा, आपल्यास “%1$s” सह अद्ययावत ठेवा - सर्वात लोकप्रिय विषयांवरील विविध सामग्री सर्वाधिक हॉट डीलमध्ये. %2$s</string>
   <string name="first_run_page7_title">ट्रॅक करण्यापासून प्रतिबंधित करा</string>
   <string name="first_run_page7_text">आता आपण खाजगी मोडमध्ये किती ट्रॅकर अवरोधित केले आहेत ते तपासू शकता.</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">मुख्यपृष्ठ स्क्रीनवर खाजगी मोड शॉर्टकट जोडा</string>
   <string name="my_shot_on_boarding_message">येथे आपले स्क्रीनशॉट्स पहा!</string>
   <string name="my_shot_on_boarding_category_message">आपला अनुभव सुधारण्यासाठी, आम्ही आपल्या स्क्रीनशॉटच्या श्रेणीची माहिती गोळा करतो.</string>
-  <string name="btn_vpn">7-दिवस विनामुल्य VPN सेवा आपल्यासाठी तयार आहे. अधिक खाजगीरीत्या आणि सुरक्षिततेने ब्राउझ करण्यासाठी आता स्थापित करा.</string>
-  <string name="exp_survey_wifi">आपल्याला जवळचे मोफत इंटरनेट शोधून देण्यासाठी आम्ही “मोफत वायफाय-शोधक” सामावण्याच्या विचारात आहे.\nइच्छुक आहात?</string>
-  <string name="exp_survey_vpn">आपल्याला ब्राऊझिंग करताना अधिक स्वातंत्र्य व गोपनीयता देण्यासाठी “VPN सेवा” समाविष्ट करण्याच्या विचारात आहे.\n\nइच्छुक आहात?</string>
-  <string name="exp_survey_thanks">अभिप्राय दिल्याबद्दल धन्यवाद %1$s</string>
-  <string name="exp_survey_yes">YES, PLEASE</string>
-  <string name="exp_survey_no">NOPE</string>
   <string name="http_auth_dialog_title">अधिप्रमाणन गरजेचे आहे</string>
   <string name="http_auth_dialog_user_name">वापरकर्त्याचे नाव</string>
   <string name="http_auth_dialog_password">पासवर्ड</string>

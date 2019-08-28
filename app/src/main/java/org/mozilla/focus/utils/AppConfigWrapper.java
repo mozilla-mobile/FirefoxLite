@@ -102,24 +102,8 @@ public class AppConfigWrapper {
         return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.RATE_APP_DIALOG_TEXT_NEGATIVE);
     }
 
-    public static String getBannerRootConfig() {
-        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.BANNER_MANIFEST);
-    }
-
-    public static long getFeatureSurvey() {
-        return FirebaseHelper.getFirebase().getRcLong(FirebaseHelper.FEATURE_SURVEY);
-    }
-
     public static String getScreenshotCategoryUrl() {
         return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.SCREENSHOT_CATEGORY_MANIFEST);
-    }
-
-    public static String getVpnRecommenderUrl() {
-        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.VPN_RECOMMENDER_URL);
-    }
-
-    public static String getVpnRecommenderPackage() {
-        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.VPN_RECOMMENDER_PACKAGE);
     }
 
     public static long getFirstLaunchWorkerTimer() {

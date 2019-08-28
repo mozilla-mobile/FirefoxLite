@@ -77,7 +77,6 @@
   <string name="first_run_page4_title">మెత్తం పేజీనంతా తెరపట్టు తీయి</string>
   <string name="first_run_page4_text">వెబ్ పేజీల పూర్తి పొడవు తెరపట్లు తీసుకోండి. డేటా వాడుకోకుండానే ఆఫ్‌లైనులో దాన్ని చదువుకోవచ్చు లేదా ఆ వెబ్‌పేజీను మళ్ళీ చూడడానికి దానిపై తాకవచ్చు.</string>
   <string name="first_run_page5_title">తరువాత స్థాయి అంతరంగికత</string>
-  <string name="first_run_page6_title">కొత్త విషయాలు కనుగొనండి</string>
   <string name="first_run_page7_title">జాడ తెలుసుకోనీకుండా నియంత్రించండి</string>
   <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందన విన్నాము!</string>
   <string name="new_name_upgrade_page_title">మాకు కొత్త రూపం వచ్చింది!</string>
@@ -275,9 +274,6 @@
   <string name="private_browsing_tracker_blocked_description">అధిక సంరక్షణతో విహరణను ఆనందించండి.</string>
   <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
   <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
-  <string name="exp_survey_thanks">మీ అభిప్రాయాన్ని మాకు తెలియజేసినందుకు కృతజ్ఞతలు %1$s</string>
-  <string name="exp_survey_yes">సరే, కానివ్వు</string>
-  <string name="exp_survey_no">వద్దు</string>
   <string name="http_auth_dialog_title">అథీకరణ అవసరం</string>
   <string name="http_auth_dialog_user_name">వాడుకరి పేరు</string>
   <string name="http_auth_dialog_password">సంకేతపదం</string>

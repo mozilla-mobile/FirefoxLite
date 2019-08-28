@@ -11,7 +11,7 @@ import org.mozilla.rocket.content.games.ui.GamesActivity
 class GameTabsAdapter(
     fm: FragmentManager,
     activity: FragmentActivity,
-    private val items: List<TabItem> = DEFAULT_TABS
+    private val items: List<TabItem> = getDefaultTabs()
 ) : FragmentPagerAdapter(fm) {
 
     private val resource = activity.resources
@@ -24,15 +24,13 @@ class GameTabsAdapter(
 
     data class TabItem(
         val fragment: Fragment,
-        val title: String
+        val title: String // TODO: change to 'titleResId'
     )
 
     companion object {
-        private val DEFAULT_TABS: List<TabItem> by lazy {
-            listOf(
-                TabItem(BrowserGamesFragment(), "Browser Games"),
-                TabItem(GamesActivity.PremiumGamesFragment(), "Premium Games")
-            )
-        }
+        private fun getDefaultTabs(): List<TabItem> = listOf(
+            TabItem(BrowserGamesFragment(), "Browser Games"),
+            TabItem(GamesActivity.PremiumGamesFragment(), "Premium Games")
+        )
     }
 }

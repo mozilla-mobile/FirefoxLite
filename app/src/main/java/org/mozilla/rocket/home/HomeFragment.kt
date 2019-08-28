@@ -12,13 +12,14 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
 import kotlinx.android.synthetic.main.fragment_home.content_hub
 import kotlinx.android.synthetic.main.fragment_home.content_hub_title
-import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
+import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_text
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.main_list
@@ -30,14 +31,15 @@ import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
-import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.content.getActivityViewModel
+import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
@@ -136,7 +138,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun initTopSites() {
         topSitesAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel))
+                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel))
             }
         )
         main_list.apply {
@@ -156,10 +158,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             topSitesPageIndex.observe(this@HomeFragment, Observer {
                 page_indicator.setSelection(it)
             })
-            topSiteClicked.observe(this@HomeFragment, Observer {
+            openBrowser.observe(this@HomeFragment, Observer {
                 ScreenNavigator.get(context).showBrowserScreen(it.url, true, false)
             })
-            topSiteLongClicked.observe(this@HomeFragment, Observer { site ->
+            showTopSiteMenu.observe(this@HomeFragment, Observer { site ->
                 site as Site.RemovableSite
                 val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
                 val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
@@ -204,12 +206,20 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun observeNightMode() {
         chromeViewModel.isNightMode.observe(this, Observer {
             val isNightMode = it.isEnabled
+            ViewUtils.updateStatusBarStyle(!isNightMode, requireActivity().window)
+            topSitesAdapter.notifyDataSetChanged()
             home_background.setNightMode(isNightMode)
             content_hub_title.setNightMode(isNightMode)
             arc_view.setNightMode(isNightMode)
             arc_panel.setNightMode(isNightMode)
             search_panel.setNightMode(isNightMode)
+            home_fragment_fake_input_text.setNightMode(isNightMode)
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        TelemetryWrapper.showHome()
     }
 
     override fun onResume() {
@@ -226,11 +236,15 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     override fun getFragment(): Fragment = this
 
     override fun onUrlInputScreenVisible(visible: Boolean) {
-        // TODO
+        if (visible) {
+            chromeViewModel.onShowHomePageUrlInput()
+        } else {
+            chromeViewModel.onDismissHomePageUrlInput()
+        }
     }
 
     override fun applyLocale() {
-        // TODO
+        home_fragment_fake_input_text.text = "" // TODO: use resource id after defined
     }
 
     private fun showTopSiteMenu(anchorView: View, pinEnabled: Boolean, site: Site) {

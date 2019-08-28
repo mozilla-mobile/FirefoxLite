@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">不但能滚动截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
   <string name="first_run_page5_title">新一代隐私权保护</string>
   <string name="first_run_page5_text">无痕浏览。默认阻止各种常见的网络跟踪器。确保私密数据的安全性。</string>
-  <string name="first_run_page6_title">探索新知</string>
   <string name="first_run_page6_text">您只需轻轻翻转，即可在“%1$s”处获取新资讯 - 涵盖最流行的话题到最热门的促销等各种内容。%2$s</string>
   <string name="first_run_page7_title">杜绝跟踪</string>
   <string name="first_run_page7_text">现在，您可以检查在隐私模式下拦截了多少跟踪器。</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">将隐私模式快捷方式添加到主屏幕</string>
   <string name="my_shot_on_boarding_message">在这里查看您的截图！</string>
   <string name="my_shot_on_boarding_category_message">为了改善您的产品体验，我们会收集有关您的屏幕截图类别的信息。</string>
-  <string name="btn_vpn">VPN 服务 7 天免费使用。立即安装，上网可以更私密、更安全。</string>
-  <string name="exp_survey_wifi">我们计划整合“Free Wifi-Finder”来帮助您找到附近的高质量免费互联网接入节点。\n\n您感兴趣吗？</string>
-  <string name="exp_survey_vpn">我们计划整合“VPN 服务”来为您提供更多的隐私和自由。\n\n您感兴趣吗？</string>
-  <string name="exp_survey_thanks">感谢您提供反馈 %1$s</string>
-  <string name="exp_survey_yes">是的，我想要</string>
-  <string name="exp_survey_no">不需要</string>
   <string name="http_auth_dialog_title">需要验证身份</string>
   <string name="http_auth_dialog_user_name">用户名</string>
   <string name="http_auth_dialog_password">密码</string>

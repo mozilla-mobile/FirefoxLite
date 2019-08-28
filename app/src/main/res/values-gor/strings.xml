@@ -222,10 +222,4 @@
   <string name="private_browsing_erase_done">Riwayat menguli\'ato pribadi Olemu\nma yiluluto.</string>
   <string name="my_shot_on_boarding_message">Bilohi cuplikan layar Ulemu teye!</string>
   <string name="my_shot_on_boarding_category_message">U mopolayi\'o pengalaman produk, ami mohimo\'o informasi tomimbihu kategori cuplikan layar Anda.</string>
-  <string name="btn_vpn">Layanan VPN pereyi 7 hari ma sadi-sadiya ode Olanto. Lato tahu\'a pasiya alihu monguli\'ato lebe pribadi wawu amani.</string>
-  <string name="exp_survey_wifi">Rencana lami yito mopotuwawu “Pololohu Wifi Pereyi” alihu mo\'owubodu oli mongoli mo\'otapu wumbuta internet pereyi membidu.\n\n Mohuto?</string>
-  <string name="exp_survey_vpn">Rencana lami yito mopotuwawu \"Layanan VPN\" alihu Yi\'o mo\'otapu pereyi wawu privasi lebe ngohuntuwa to sa\'ati monguli\'ato.\n\n Mohuto?</string>
-  <string name="exp_survey_thanks">Odu\'olo Yi\'o ma longohi mayi potunu ode olami %1$s</string>
-  <string name="exp_survey_yes">JOO, TODUWOLO</string>
-  <string name="exp_survey_no">DE\'E</string>
 </resources>

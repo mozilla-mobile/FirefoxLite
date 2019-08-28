@@ -70,10 +70,10 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.nonNullObserve
-import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.fxa.FxLoginFragment
 import org.mozilla.rocket.fxa.MissionDetailFragment
 import org.mozilla.rocket.fxa.RedeemFragment
+import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -421,16 +421,10 @@ class MainActivity : BaseActivity(),
         when {
             supportFragmentManager.isStateSaved -> return
             screenNavigator.visibleBrowserScreen?.onBackPressed() == true -> return
-            dismissContentPortal() -> return
             !screenNavigator.canGoBack() -> finish()
             else -> super.onBackPressed()
         }
     }
-
-    private fun dismissContentPortal(): Boolean =
-            // TODO: Evan
-            false
-//            (screenNavigator.topFragment as? HomeFragment)?.hideContentPortal() ?: false
 
     private fun saveTabsToPersistence() {
         if (chromeViewModel.isTabRestoredComplete.value != true) {
@@ -529,11 +523,6 @@ class MainActivity : BaseActivity(),
 
     private fun onNightModeEnabled(brightness: Float, enabled: Boolean) {
         applyNightModeBrightness(enabled, brightness, window)
-        when (val fragment = screenNavigator.topFragment) {
-            is BrowserFragment -> fragment.setNightModeEnabled(enabled)
-            // TODO: Evan
-//            is HomeFragment -> fragment.setNightModeEnabled(enabled)
-        }
     }
 
     private fun showBookmarkAddedSnackbar(bookmarkItemId: String) {

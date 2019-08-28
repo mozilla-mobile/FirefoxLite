@@ -44,9 +44,6 @@ project(':partnerrepository').projectDir = new File(rootDir, 'components/partner
 include ':strictmodeviolator'
 project(':strictmodeviolator').projectDir = new File(rootDir, 'components/utils/strictmodeviolator')
 
-include ':banner'
-project(':banner').projectDir = new File(rootDir, 'components/ui/banner')
-
 include ':app'
 include ':firebase'
 include ':third_party:subsampling-scale-image-view'

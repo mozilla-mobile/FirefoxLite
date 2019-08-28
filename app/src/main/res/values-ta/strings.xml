@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">முழு வலைப்பக்கத்தையும் திரைப்பிடியுங்கள். தரவுப் பயன்பாடின்றி படியுங்கள் அல்லது வலைப்பக்கத்தை மீண்டும் பார்க்க அதனைத் தட்டுங்கள்.</string>
   <string name="first_run_page5_title">அடுத்த நிலை தனியுரிமை</string>
   <string name="first_run_page5_text">தடமின்றி உலாவுங்கள், மற்றும் பொதுவான வலை பின்தொடரிகள் பலவற்றை முன்னிருப்பாக முடக்குங்கள். உங்கள் தனிப்பட்ட தரவின் பாதுகாப்பை உறுதிசெய்யுங்கள்.</string>
-  <string name="first_run_page6_title">புதியவற்றைக் கண்டறி</string>
   <string name="first_run_page6_text">ஒற்றை நகர்வில், “%1$s” உடன் உங்களைப் புதுப்பித்துக்கொள்ளுங்கள் - பரபரப்பான செய்திகளிலிருந்து சிறந்த சலுகைகள் வரை பல்வகை உள்ளடக்கங்கள். %2$s</string>
   <string name="first_run_page7_title">கண்காணிக்கப்படுவதைத் தடு</string>
   <string name="first_run_page7_text">இப்போது தனிமை முறையில் எத்தனை பின்தொடரிகள் தடுக்கப்பட்டன எனப் பார்க்கலாம்.</string>
@@ -294,12 +293,6 @@
   <string name="preference_add_private_browsing_shortcut">அந்தரங்க முறைமையின் குறுக்குவழியை முகத்திரையில் சேர்</string>
   <string name="my_shot_on_boarding_message">உங்கள் திரைக்காட்சிகளை இங்கே காண்க!</string>
   <string name="my_shot_on_boarding_category_message">உங்கள் தயாரிப்பு அனுபவத்தை மேம்படுத்த, உங்கள் திரைப்பிடிப்பு பற்றிய தகவல்களை நாங்கள் சேகரிக்கிறோம்.</string>
-  <string name="btn_vpn">7-நாள் இலவச VPN சேவை உங்களுக்குத் தயாராக உள்ளது. மேலும் தனியாகவும் பாதுகாப்பாகவும் உலாவுவதற்கு இப்போதே நிறுவுங்கள்.</string>
-  <string name="exp_survey_wifi">அருகிலுள்ள தரமான இலவச இணைய இணைப்பு கண்டுபிடிக்க உங்களுக்கு உதவ, “இலவச வைஃபை-கண்டுபிடிப்பான்” ஒருங்கிணைக்க நாங்கள் திட்டமிடுகிறோம்.\n\n ஆர்வமா?</string>
-  <string name="exp_survey_vpn">நீங்கள் கட்டற்றும் தனியாகவும் உலாவும் வகையில் “VPN சேவையை” ஒருங்கிணைக்க திட்டமிட்டுள்ளோம்.\n\n ஆர்வமா?</string>
-  <string name="exp_survey_thanks">எங்களுக்கு %1$s கருத்து வழங்கியதற்கு நன்றி</string>
-  <string name="exp_survey_yes">ஆமாம், தயவு செய்து</string>
-  <string name="exp_survey_no">இல்லை</string>
   <string name="http_auth_dialog_title">அங்கீகாரம் தேவை</string>
   <string name="http_auth_dialog_user_name">பயனர்பெயர்</string>
   <string name="http_auth_dialog_password">கடவுச்சொல்</string>

@@ -78,7 +78,6 @@
   <string name="first_run_page4_text">മുഴുവൻ വെബ് പേജിന്റെയും സ്ക്രീൻഷോട്ടെടുക്കൂ. ഡാറ്റ ഉപയോഗിക്കാതെ ഓഫ്‌ലൈനായി വായിക്കൂ അല്ലെങ്കിൽ അമർത്തി ആ വെബ് പേജ് വീണ്ടും സന്ദർശിക്കൂ.</string>
   <string name="first_run_page5_title">അടുത്ത തലത്തിലുള്ള സ്വകാര്യത</string>
   <string name="first_run_page5_text">ഒരു അടയാളവുമില്ലാതെ ബ്രൗസുചെയ്യുക, ഒപ്പം സ്ഥിരമായി പൊതുവായ വെബ് ട്രാക്കറുകളുടെ വിപുലമായ ശ്രേണിയെ തടഞ്ഞുവയ്ക്കുക. നിങ്ങളുടെ രഹസ്യ ഡാറ്റയുടെ സുരക്ഷ ഉറപ്പാക്കുക.</string>
-  <string name="first_run_page6_title">പുതിയ കാര്യങ്ങള്‍ കണ്ടെത്തൂ</string>
   <string name="first_run_page6_text">ഒരു ഫ്ലിപ്പില്‍, “%1$s” നെ പറ്റി സ്വയം അപ്ഡേറ്റായി നിലനിർത്തുക - വ്യത്യസ്ഥതയുള്ള ഉള്ളടക്കങ്ങള്‍, ഏറ്റവുമധികം ചർച്ചചെയ്യപ്പെടുന്ന വിഷയങ്ങൾ മുതൽ ഏറ്റവും കൂടുതൽ പ്രചാരമുള്ള ഡീലുകള്‍ വരെ. %2$s</string>
   <string name="first_run_page7_title">ട്രാക്കിങ്ങ് തടയുക</string>
   <string name="first_run_page7_text">സ്വകാര്യത മോഡില്‍ എത്ര ട്രാക്കറുകള്‍ തടഞ്ഞു എന്ന് ഇപ്പോള്‍ കാണാം.</string>
@@ -286,12 +285,6 @@
   <string name="preference_add_private_browsing_shortcut">ഹോം സ്ക്രീനിലേക്ക് സ്വകാര്യ മോഡിന്റെ കുറുക്കുവഴി ചേർക്കുക</string>
   <string name="my_shot_on_boarding_message">നിങ്ങളുടെ സ്ക്രീൻഷോട്ട് ഇവിടെ കാണുക!</string>
   <string name="my_shot_on_boarding_category_message">നിങ്ങളുടെ ഉൽപ്പന്ന അനുഭവം മെച്ചപ്പെടുത്തുന്നതിന്, നിങ്ങളുടെ സ്ക്രീന്ഷോട്ട് വിഭാഗങ്ങള്‍ ഞങ്ങൾ ശേഖരിക്കും.</string>
-  <string name="btn_vpn">7-ദിന സൗജന്യ VPN സേവനം നിങ്ങൾക്കായി തയ്യാറാണ്. കൂടുതൽ സ്വകാര്യമായും സുരക്ഷിതമായും ബ്രൗസുചെയ്യുന്നതിന് ഇപ്പോൾ ഇൻസ്റ്റാൾ ചെയ്യുക.</string>
-  <string name="exp_survey_wifi">സമീപത്തുള്ള നിലവാരമുള്ള സൗജന്യ ഇന്റർനെറ്റ് കണക്ഷൻ കണ്ടെത്താൻ നിങ്ങളെ സഹായിക്കുന്നതിന് \"സൗജന്യ വൈഫൈ-ഫൈൻഡർ\" സംയോജിപ്പിക്കാൻ ഞങ്ങൾ പദ്ധതിയിടുന്നു. താൽപ്പര്യമുണ്ടോ?\n</string>
-  <string name="exp_survey_vpn">ബ്രൌസുചെയ്യുമ്പോൾ നിങ്ങൾക്ക് കൂടുതൽ സ്വാതന്ത്ര്യവും സ്വകാര്യതയും നേടാൻ \" VPN സേവനം \" സമന്വയിപ്പിക്കാൻ ഞങ്ങൾ പദ്ധതിയിടുന്നു. താൽപ്പര്യമുണ്ടോ?</string>
-  <string name="exp_survey_thanks">ഞങ്ങൾക്ക് ഫീഡ്ബാക്ക് നൽകിയതിന് നന്ദി %1$s</string>
-  <string name="exp_survey_yes">വേണം</string>
-  <string name="exp_survey_no">വേണ്ട</string>
   <string name="http_auth_dialog_title">ആധികാരികത ഉറപ്പാക്കേണ്ടതുണ്ട്</string>
   <string name="http_auth_dialog_user_name">ഉപയോക്തൃനാമം</string>
   <string name="http_auth_dialog_password">രഹസ്യവാക്ക്</string>

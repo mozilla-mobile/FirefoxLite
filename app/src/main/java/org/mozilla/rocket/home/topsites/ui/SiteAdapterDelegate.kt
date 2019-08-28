@@ -15,22 +15,28 @@ import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
-class SiteAdapterDelegate(private val homeViewModel: HomeViewModel) : AdapterDelegate {
+class SiteAdapterDelegate(
+    private val homeViewModel: HomeViewModel,
+    private val chromeViewModel: ChromeViewModel
+) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            SiteViewHolder(view, homeViewModel)
+            SiteViewHolder(view, homeViewModel, chromeViewModel)
 }
 
 class SiteViewHolder(
     override val containerView: View,
-    private val homeViewModel: HomeViewModel
+    private val homeViewModel: HomeViewModel,
+    private val chromeViewModel: ChromeViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val site = uiModel as Site
         text.text = site.title
+        text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
 
         // Tried AsyncTask and other simple offloading, the performance drops significantly.
         // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
