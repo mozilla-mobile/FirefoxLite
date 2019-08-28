@@ -7,42 +7,37 @@ package org.mozilla.focus.activity
 
 import android.content.Context
 import android.content.Intent
-
 import androidx.annotation.Keep
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.InstrumentationRegistry
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.RootMatchers
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
-
-import org.json.JSONException
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Ignore
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import org.mozilla.focus.R
-import org.mozilla.focus.history.model.Site
-import org.mozilla.focus.utils.AndroidTestUtils
-import org.mozilla.focus.utils.RecyclerViewTestUtils
-import org.mozilla.rocket.content.*
-import java.util.Random
-
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
+import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.not
+import org.json.JSONException
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mozilla.focus.R
+import org.mozilla.focus.utils.AndroidTestUtils
 import org.mozilla.focus.utils.RecyclerViewTestUtils.atPosition
+import org.mozilla.focus.utils.visibleWithId
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.home.topsites.ui.Site
 
 @Keep
 @RunWith(AndroidJUnit4::class)
@@ -73,21 +68,20 @@ class RemoveTopSitesTest {
      * 2. long click to delete top site
      */
     @Test
-    @Ignore("fix this after top sites implemented")
     fun deleteTopSite_deleteSuccessfully() {
 
         // Pick a test site to delete
-        val siteIndex = Random().nextInt(siteList.size)
+        val siteIndex = 4
         val testSite = siteList[siteIndex]
 
         onView(withId(R.id.main_list)).check(matches(isDisplayed()))
 
         // Check the title of test site is matched
-        onView(withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .check(matches(atPosition(siteIndex, hasDescendant(withText(testSite.title)))))
 
         // Long click the test site
-        onView(ViewMatchers.withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(siteIndex, longClick()))
 
         // Check the remove button is displayed
@@ -99,7 +93,7 @@ class RemoveTopSitesTest {
                 .perform(click())
 
         // Check the test site is removed
-        onView(withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .check(matches(not(atPosition(siteIndex, hasDescendant(withText(testSite.title))))))
     }
 
@@ -112,21 +106,20 @@ class RemoveTopSitesTest {
      * 3. Press back key
      */
     @Test
-    @Ignore("fix this after top sites implemented")
     fun deleteTopSiteAndCancel_topSiteIsStillThere() {
 
         // Pick a test site to test
-        val siteIndex = Random().nextInt(siteList.size)
+        val siteIndex = 4
         val testSite = siteList[siteIndex]
 
         onView(withId(R.id.main_list)).check(matches(isDisplayed()))
 
         // Check the title of test site is matched
-        onView(withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .check(matches(atPosition(siteIndex, hasDescendant(withText(testSite.title)))))
 
         // Long click the test site
-        onView(ViewMatchers.withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(siteIndex, longClick()))
 
         // Check the remove button is displayed
@@ -137,59 +130,17 @@ class RemoveTopSitesTest {
         Espresso.pressBack()
 
         // Check the title of test site is matched
-        onView(withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .check(matches(atPosition(siteIndex, hasDescendant(withText(testSite.title)))))
     }
 
-    /**
-     * Test case no: TC0007
-     * Test case name: All top sites are deleted sequentially
-     * Steps:
-     * 1. Launch app
-     * 2. remove top site
-     * 3. repeat step 2 until all topsites removed
-     * 4. exit app
-     * 5. relaunch app
-     */
-    @Test
-    @Ignore("fix this after top sites implemented")
-    fun deleteAllTopSitesAndRelaunchApp_defaultTopSitesAreLoaded() {
-
-        // Get the count of top sites
-        val countTopSite = RecyclerViewTestUtils.getCountFromRecyclerView(R.id.main_list)
-
-        // Iterate each top site and delete it
-        for (i in 0 until countTopSite) {
-            // Long click the first top site
-            onView(withId(R.id.main_list))
-                    .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, longClick()))
-
-            // Check the remove button is displayed
-            onView(withText(removeLabel)).check(matches(isDisplayed()))
-
-            // Click the remove button
-            onView(withText(removeLabel))
-                    .inRoot(RootMatchers.isPlatformPopup())
-                    .perform(click())
+    private fun prepareTopSiteList() {
+        siteList = runBlocking {
+            (getApplicationContext() as Context).appComponent()
+                .getTopSitesUseCase().invoke()
         }
 
-        // Exit app
-        Espresso.pressBackUnconditionally()
-
-        // Relaunch app
-        activityTestRule.launchActivity(Intent())
-
-        // Check if default top sites are loaded again
-        Assert.assertTrue(countTopSite == RecyclerViewTestUtils.getCountFromRecyclerView(R.id.main_list))
-
-    }
-
-    private fun prepareTopSiteList() {
-        siteList = (getApplicationContext() as Context).appComponent()
-                .topSitesRepo().getDefaultSites()
-
         Assert.assertNotNull(siteList)
-        Assert.assertTrue(siteList.size > 0)
+        Assert.assertTrue(siteList.isNotEmpty())
     }
-
 }
