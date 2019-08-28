@@ -55,6 +55,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             rootPreferences.removePreference(experimentCategory);
         }
 
+        boolean isFirefoxAccountEnabled = true; // TODO: read from remote config
+        if (!isFirefoxAccountEnabled) {
+            final Preference preferenceFirefoxAccount = findPreference(getString(R.string.pref_key_firefox_account));
+            rootPreferences.removePreference(preferenceFirefoxAccount);
+        }
+
         final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
         preferenceNightMode.setEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
 
@@ -67,7 +73,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         TelemetryWrapper.settingsClickEvent(keyClicked);
 
-        if (keyClicked.equals(resources.getString(R.string.pref_key_give_feedback))) {
+        if (keyClicked.equals(resources.getString(R.string.pref_key_firefox_account))) {
+            // TODO: do navigation
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_give_feedback))) {
             DialogUtils.createRateAppDialog(preference.getContext()).show();
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_share_with_friends))) {
             if (!debugingFirebase()) {

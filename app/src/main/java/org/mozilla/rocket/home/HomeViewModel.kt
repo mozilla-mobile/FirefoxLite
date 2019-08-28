@@ -29,6 +29,7 @@ class HomeViewModel(
     val topSitesPageIndex = MutableLiveData<Int>()
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
     val contentHubItems = MutableLiveData<List<ContentHub.Item>>().apply { value = getContentHubItemsUseCase() }
+    val hasPendingMissions = MutableLiveData<Boolean>()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
