@@ -157,6 +157,16 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     private fun initTabLayout() {
         tab_layout.setupWithViewPager(view_pager)
+
+        preferenceButton.setOnClickListener {
+            shoppingSearchResultViewModel.goPreferences.call()
+        }
+
+        shoppingSearchResultViewModel.goPreferences.observe(this, Observer {
+            activity?.baseContext?.let {
+                startActivity(ShoppingSearchPreferencesActivity.getStartIntent(it))
+            }
+        })
     }
 
     private fun observeChromeAction() {

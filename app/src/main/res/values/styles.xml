@@ -350,4 +350,9 @@
         <item name="trackTint">@color/preferences_switch_track_selector</item>
     </style>
 
+    <style name="ShoppingSearchTabText" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

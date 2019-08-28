@@ -6,7 +6,9 @@ import java.net.URLEncoder
 class GetShoppingSearchSitesUseCase(val repository: ShoppingSearchSiteRepository) {
 
     operator fun invoke(searchKeyword: String): List<ShoppingSearchSite> =
-            repository.getShoppingSites().map {
+            repository.getShoppingSites()
+                .filter { site -> site.isEnabled }
+                .map {
                 ShoppingSearchSite(
                     title = it.title,
                     searchUrl = it.searchUrl + URLEncoder.encode(searchKeyword, "UTF-8")
