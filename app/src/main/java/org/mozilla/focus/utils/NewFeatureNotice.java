@@ -37,7 +37,9 @@ public class NewFeatureNotice {
     }
 
     public boolean shouldShowLiteUpdate() {
-        boolean showPinSite = pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable();
+        // TODO: To be removed, force to disable pin site tutorial
+//        boolean showPinSite = pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable();
+        boolean showPinSite = false;
         return from21to40() || showPinSite;
     }
 
