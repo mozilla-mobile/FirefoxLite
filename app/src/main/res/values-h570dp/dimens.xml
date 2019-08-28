@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--  HomeFragment  -->
+    <item name="home_firefox_logo_visibility" type="integer">@integer/visibility_visible</item>
+    <item name="content_hub_title_visibility" type="integer">@integer/visibility_visible</item>
+    <item name="top_sites_pager_indicator_visibility" type="integer">@integer/visibility_visible</item>
+    <item name="content_hub_title_top_margin" type="dimen">16dp</item>
+</resources>

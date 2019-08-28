@@ -49,25 +49,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/arc_panel"
-        app:layout_constraintVertical_bias="0.3"/>
+        app:layout_constraintVertical_bias="0.26"
+        android:visibility="@integer/home_firefox_logo_visibility"
+        tools:visibility="visible"/>
 
     <LinearLayout
+        android:id="@+id/content_hub_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/home_fragment_title"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/content_hub_title_top_margin"
+        tools:layout_marginTop="16dp">
 
         <org.mozilla.rocket.nightmode.themed.ThemedTextView
             android:id="@+id/content_hub_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Body4"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="12dp"
             android:text="Content &amp; Services"
             android:textColor="@color/home_content_hub_title"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:visibility="@integer/content_hub_title_visibility"
+            tools:ignore="SpUsage"/>
 
         <org.mozilla.rocket.home.contenthub.ui.ContentHub
             android:id="@+id/content_hub"
@@ -75,18 +82,27 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             tools:layout_width="200dp"
-            tools:layout_height="40dp"/>
+            tools:layout_height="40dp"
+            tools:background="#00FF00"/>
 
     </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#0000FF"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:translationY="-56dp"
+        app:layout_constraintBottom_toTopOf="@id/arc_panel"/>
 
     <View
-        android:layout_width="136dp"
-        android:layout_height="102dp"
+        android:layout_width="122dp"
+        android:layout_height="103dp"
         android:background="#FF0000"
-        android:translationY="-8dp"
         app:layout_constraintBottom_toTopOf="@id/arc_panel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintHorizontal_bias="0.985"
         app:layout_constraintStart_toStartOf="parent" />
 
     <org.mozilla.rocket.nightmode.themed.ThemedImageView
@@ -124,7 +140,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:visibility="@integer/top_sites_pager_indicator_visibility"/>
 
         <org.mozilla.rocket.nightmode.themed.ThemedConstraintLayout
             android:id="@+id/search_panel"
