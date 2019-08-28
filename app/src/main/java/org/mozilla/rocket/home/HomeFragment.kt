@@ -16,6 +16,7 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
 import kotlinx.android.synthetic.main.fragment_home.content_hub
+import kotlinx.android.synthetic.main.fragment_home.content_hub_layout
 import kotlinx.android.synthetic.main.fragment_home.content_hub_title
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
@@ -176,7 +177,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
         homeViewModel.run {
             contentHubItems.observe(this@HomeFragment, Observer {
-                content_hub_title.visibility = if (it.isEmpty()) {
+                content_hub_layout.visibility = if (it.isEmpty()) {
                     View.INVISIBLE
                 } else {
                     View.VISIBLE

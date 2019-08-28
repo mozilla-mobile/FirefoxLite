@@ -3,6 +3,9 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <item name="visibility_visible" type="integer">0</item>
+    <item name="visibility_gone" type="integer">2</item>
+
     <!-- Common margin -->
     <dimen name="common_margin_m1">4dp</dimen>
     <dimen name="common_margin_m2">8dp</dimen>
@@ -93,4 +96,11 @@
 
     <dimen name="card_padding">16dp</dimen>
     <dimen name="card_space_width">4dp</dimen>
+
+    <!--  HomeFragment  -->
+    <item name="home_firefox_logo_visibility" type="integer">@integer/visibility_gone</item>
+    <item name="content_hub_title_visibility" type="integer">@integer/visibility_gone</item>
+    <item name="top_sites_pager_indicator_visibility" type="integer">@integer/visibility_gone</item>
+    <item name="content_hub_title_top_margin" type="dimen">0dp</item>
+
 </resources>
