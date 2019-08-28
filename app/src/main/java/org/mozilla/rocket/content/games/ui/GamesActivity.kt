@@ -8,8 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import dagger.Lazy
-import kotlinx.android.synthetic.main.activity_games.games_tabs
-import kotlinx.android.synthetic.main.activity_games.view_pager
+import kotlinx.android.synthetic.main.activity_games.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.ui.adapter.GameTabsAdapter
@@ -47,7 +46,8 @@ class GamesActivity : FragmentActivity() {
 
     private fun observeGameAction() {
         gamesViewModel.showToast.observe(this, Observer { message ->
-            Toast.makeText(applicationContext, getString(message.stringResId, *message.args), message.duration).show()
+            Toast.makeText(applicationContext, getString(message.stringResId, message.args[0]), message.duration).show()
+            startActivity(GameModeActivity.getStartIntent(this, message.args[1]))
         })
     }
 

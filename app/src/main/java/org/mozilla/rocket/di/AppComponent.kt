@@ -38,6 +38,7 @@ import org.mozilla.rocket.content.ecommerce.ui.DealFragment
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
+import org.mozilla.rocket.content.games.ui.GameModeActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.NewsFragment
 import org.mozilla.rocket.content.news.NewsSettingFragment
@@ -90,6 +91,7 @@ interface AppComponent {
     fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
     fun inject(privateModeActivity: PrivateModeActivity)
     fun inject(gamesActivity: GamesActivity)
+    fun inject(gameModeActivity: GameModeActivity)
     fun inject(browserGamesFragment: BrowserGamesFragment)
     fun inject(contentTabActivity: ContentTabActivity)
     fun inject(contentTabFragment: ContentTabFragment)
@@ -102,8 +104,10 @@ interface AppComponent {
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
+
     @VisibleForTesting
     fun tabsDatabase(): TabsDatabase
+
     @VisibleForTesting
     fun topSitesRepo(): TopSitesRepo
 }
