@@ -2,6 +2,7 @@ package org.mozilla.rocket.shopping.search.ui
 
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import java.util.Locale
 
@@ -21,13 +23,28 @@ class ShoppingSearchKeywordInputViewModel(
     val uiModel: LiveData<ShoppingSearchKeywordInputUiModel>
         get() = _uiModel
 
+    val navigateToResultTab = SingleLiveEvent<String>()
+
     fun fetchSuggestions(keyword: String) = viewModelScope.launch(Dispatchers.Default) {
-        val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
-        if (fetchKeywordSuggestionResult is Result.Success) {
-            val styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
-            withContext(Dispatchers.Main) {
-                emitUiModel(styledSuggestions)
+        val newUiModel: ShoppingSearchKeywordInputUiModel
+        if (TextUtils.isEmpty(keyword)) {
+            newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true)
+        } else {
+            var styledSuggestions: List<CharSequence>? = null
+            val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
+            if (fetchKeywordSuggestionResult is Result.Success) {
+                styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
             }
+            newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, true, true, true)
+        }
+        withContext(Dispatchers.Main) {
+            emitUiModel(newUiModel)
+        }
+    }
+
+    fun onKeywordSent(keyword: String) {
+        if (!TextUtils.isEmpty(keyword)) {
+            navigateToResultTab.value = keyword
         }
     }
 
@@ -47,11 +64,15 @@ class ShoppingSearchKeywordInputViewModel(
         }
     }
 
-    private fun emitUiModel(keywordSuggestions: List<CharSequence>) {
-        _uiModel.value = ShoppingSearchKeywordInputUiModel(keywordSuggestions)
+    private fun emitUiModel(newUiModel: ShoppingSearchKeywordInputUiModel) {
+        _uiModel.value = newUiModel
     }
 }
 
 data class ShoppingSearchKeywordInputUiModel(
-    val keywordSuggestions: List<CharSequence>
+    val keywordSuggestions: List<CharSequence>? = null,
+    val hideHintContainer: Boolean = false,
+    val hideLogoMan: Boolean = false,
+    val hideIndication: Boolean = false,
+    val hideClear: Boolean = false
 )

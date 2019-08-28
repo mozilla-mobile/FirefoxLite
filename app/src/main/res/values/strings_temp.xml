@@ -3,4 +3,6 @@
     <string name="label_menu_e_commerce_deal" translatable="false">Deals</string>
     <string name="label_menu_e_commerce_coupon" translatable="false">Coupons</string>
     <string name="label_menu_e_commerce_voucher" translatable="false">E-vouchers</string>
+    <string name="hint_title_shopping_search_keyword_input" translatable="false">New way of search!</string>
+    <string name="hint_desc_shopping_search_keyword_input" translatable="false">Use shopping to find products across different shopping sites.</string>
 </resources>
