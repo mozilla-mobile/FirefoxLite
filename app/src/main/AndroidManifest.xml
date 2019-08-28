@@ -305,6 +305,7 @@
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:taskAffinity=".shopping.search" />
 
         <activity

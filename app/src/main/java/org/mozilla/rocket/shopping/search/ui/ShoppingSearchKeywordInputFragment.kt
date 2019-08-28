@@ -18,7 +18,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
 
-class ShoppingSearchKeywordInputFragment : Fragment() {
+class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
 
     @Inject
     lateinit var viewModelCreator: Lazy<ShoppingSearchKeywordInputViewModel>
@@ -39,8 +39,10 @@ class ShoppingSearchKeywordInputFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.uiModel.observe(this, Observer { uiModel ->
-            setSuggestions(uiModel.keywordSuggestions)
+            setupView(uiModel)
         })
+
+        viewModel.navigateToResultTab.observe(this, Observer { showResultTab(it) })
 
         search_keyword_edit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -57,16 +59,30 @@ class ShoppingSearchKeywordInputFragment : Fragment() {
         search_keyword_edit.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
                 if (event.action == KeyEvent.ACTION_DOWN) {
-                    findNavController().navigate(
-                        ShoppingSearchKeywordInputFragmentDirections.actionSearchKeywordToResult(
-                            search_keyword_edit.text.toString()
-                        )
-                    )
+                    viewModel.onKeywordSent(search_keyword_edit.text.toString())
                     return@setOnKeyListener true
                 }
             }
             return@setOnKeyListener false
         }
+
+        clear.setOnClickListener(this)
+    }
+
+    override fun onClick(view: View) {
+        when (view.id) {
+            R.id.clear -> search_keyword_edit.text.clear()
+            R.id.suggestion_item -> viewModel.onKeywordSent((view as TextView).text.toString())
+            else -> throw IllegalStateException("Unhandled view in onClick()")
+        }
+    }
+
+    private fun setupView(uiModel: ShoppingSearchKeywordInputUiModel) {
+        hint_container.visibility = if (uiModel.hideHintContainer) View.GONE else View.VISIBLE
+        logo_man.visibility = if (uiModel.hideLogoMan) View.GONE else View.VISIBLE
+        indication.visibility = if (uiModel.hideIndication) View.GONE else View.VISIBLE
+        clear.visibility = if (uiModel.hideClear) View.GONE else View.VISIBLE
+        setSuggestions(uiModel.keywordSuggestions)
     }
 
     private fun setSuggestions(suggestions: List<CharSequence>?) {
@@ -78,7 +94,14 @@ class ShoppingSearchKeywordInputFragment : Fragment() {
         for (suggestion in suggestions) {
             val item = View.inflate(context, R.layout.tag_text, null) as TextView
             item.text = suggestion
+            item.setOnClickListener(this)
             this.search_suggestion_view.addView(item)
         }
+    }
+
+    private fun showResultTab(keyword: String) {
+        findNavController().navigate(
+                ShoppingSearchKeywordInputFragmentDirections.actionSearchKeywordToResult(keyword)
+        )
     }
 }

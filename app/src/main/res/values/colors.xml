@@ -146,4 +146,8 @@
     <color name="homeArcPanelBackgroundNight">#414146</color>
     <color name="homeSearchPanelBackground">#F4F4F4</color>
     <color name="homeSearchPanelBackgroundNight">@color/paletteDarkGreyC100</color>
+
+    <!-- Shopping Search -->
+    <color name="shoppingSearchInputBackgroundGradientStart">#ff3c61</color>
+    <color name="shoppingSearchInputBackgroundGradientEnd">#ff803e</color>
 </resources>
