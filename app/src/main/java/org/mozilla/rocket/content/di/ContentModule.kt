@@ -9,8 +9,8 @@ import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.common.ui.ContentTabBottomBarViewModel
 import org.mozilla.rocket.content.ecommerce.di.ShoppingModule
 import org.mozilla.rocket.content.games.di.GamesModule
-import org.mozilla.rocket.content.news.LoadNewsSettingsUseCase
-import org.mozilla.rocket.content.news.NewsViewModel
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.ui.NewsViewModel
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource

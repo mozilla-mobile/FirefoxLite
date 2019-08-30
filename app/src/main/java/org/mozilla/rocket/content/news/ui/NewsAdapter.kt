@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.news.NewsTabFragment.NewsListingEventListener
+import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 
 class NewsAdapter<T : NewsItem>(private val listener: NewsListingEventListener) :
     ListAdapter<NewsItem, NewsViewHolder<T>>(

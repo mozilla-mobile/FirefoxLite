@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -7,6 +7,11 @@ import androidx.lifecycle.ViewModel
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.news.domain.LoadNewsParameter
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsParameter
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsResult
+import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
