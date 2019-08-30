@@ -48,6 +48,10 @@ class ShoppingActivity : FragmentActivity() {
             startActivity(ContentTabActivity.getStartIntent(this, linkUrl))
         })
 
+        shoppingViewModel.openProduct.observe(this, Observer { linkUrl ->
+            startActivity(ContentTabActivity.getStartIntent(this, linkUrl))
+        })
+
         shoppingViewModel.openCoupon.observe(this, Observer { linkUrl ->
             startActivity(ContentTabActivity.getStartIntent(this, linkUrl))
         })

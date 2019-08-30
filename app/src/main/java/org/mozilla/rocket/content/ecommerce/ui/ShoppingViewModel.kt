@@ -11,6 +11,7 @@ import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
+import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class ShoppingViewModel(
@@ -19,6 +20,15 @@ class ShoppingViewModel(
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
+
+    private val _dealItems by lazy {
+        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
+            launchDataLoad {
+                value = shoppingRepo.getDeals()
+            }
+        }
+    }
+    val dealItems: LiveData<List<DelegateAdapter.UiModel>> = _dealItems
 
     private val _couponItems by lazy {
         MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
@@ -39,11 +49,16 @@ class ShoppingViewModel(
     val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
 
     val openRunway = SingleLiveEvent<String>()
+    val openProduct = SingleLiveEvent<String>()
     val openCoupon = SingleLiveEvent<String>()
     val openVoucher = SingleLiveEvent<String>()
 
     fun onRunwayItemClicked(runwayItem: RunwayItem) {
         openRunway.value = runwayItem.linkUrl
+    }
+
+    fun onProductItemClicked(productItem: ProductItem) {
+        openProduct.value = productItem.linkUrl
     }
 
     fun onCouponItemClicked(couponItem: Coupon) {

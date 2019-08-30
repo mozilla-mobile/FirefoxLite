@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.ecommerce.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
@@ -12,7 +13,7 @@ object ShoppingModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideShoppingRepo(): ShoppingRepo = ShoppingRepo()
+    fun provideShoppingRepo(appContext: Context): ShoppingRepo = ShoppingRepo(appContext)
 
     @JvmStatic
     @Singleton
