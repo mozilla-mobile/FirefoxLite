@@ -52,6 +52,7 @@ class BottomBarItemAdapter(
             TYPE_TRACKER -> TrackerItem(type, R.id.bottom_bar_tracker)
             TYPE_BACK -> ImageItem(type, R.id.bottom_bar_back, R.drawable.action_back, theme.buttonColorResId)
             TYPE_OPEN_IN_NEW_TAB -> ImageItem(type, R.id.bottom_bar_open_in_new_tab, R.drawable.action_open_in_new_tab, theme.buttonColorResId)
+            TYPE_SHOPPING_SEARCH -> ShoppingSearchItem(type, R.id.bottom_bar_shopping_search, theme)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
     }
@@ -267,10 +268,21 @@ class BottomBarItemAdapter(
         }
     }
 
+    private class ShoppingSearchItem(type: Int, id: Int, private val theme: Theme) : BottomBarItem(type, id) {
+        override fun onCreateView(context: Context, parent: ViewGroup): View {
+            return LayoutInflater.from(context)
+                .inflate(R.layout.button_shopping_search, parent, false).apply {
+                    val shoppingSearchColorResId = if (theme == Theme.ShoppingSearch) R.color.shoppingSearchIcon else theme.buttonColorResId
+                    findViewById<ThemedImageButton>(R.id.action_shopping_search).setTint(context, shoppingSearchColorResId)
+                }
+        }
+    }
+
     sealed class Theme(val buttonColorResId: Int) {
         object Light : Theme(buttonColorResId = R.color.browser_menu_button)
         object Dark : Theme(buttonColorResId = R.color.home_bottom_button)
         object PrivateMode : Theme(buttonColorResId = R.color.private_menu_button)
+        object ShoppingSearch : Theme(buttonColorResId = R.color.browser_menu_button)
     }
 
     data class ItemData(val type: Int)
@@ -291,6 +303,7 @@ class BottomBarItemAdapter(
         const val TYPE_TRACKER = 12
         const val TYPE_BACK = 13
         const val TYPE_OPEN_IN_NEW_TAB = 14
+        const val TYPE_SHOPPING_SEARCH = 15
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1

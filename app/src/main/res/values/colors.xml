@@ -150,4 +150,5 @@
     <!-- Shopping Search -->
     <color name="shoppingSearchInputBackgroundGradientStart">#ff3c61</color>
     <color name="shoppingSearchInputBackgroundGradientEnd">#ff803e</color>
+    <color name="shoppingSearchIcon">#FF5654</color>
 </resources>

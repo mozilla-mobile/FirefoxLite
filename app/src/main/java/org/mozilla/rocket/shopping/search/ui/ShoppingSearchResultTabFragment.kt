@@ -31,6 +31,7 @@ import org.mozilla.rocket.shopping.search.ui.ShoppingSearchTabsAdapter.TabItem
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import javax.inject.Inject
+import android.content.Intent
 
 class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
@@ -121,7 +122,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
                 when (type) {
-                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> activity?.onBackPressed()
+                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> activity?.onBackPressed()
                     BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
                     BottomBarItemAdapter.TYPE_DELETE -> activity?.finishAndRemoveTask()
                     BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
@@ -130,7 +131,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
                 }
             }
         })
-        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light)
+        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.ShoppingSearch)
         val bottomBarViewModel = getActivityViewModel(bottomBarViewModelCreator)
         bottomBarViewModel.items.nonNullObserve(this) {
             bottomBarItemAdapter.setItems(it)
@@ -171,6 +172,26 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
                 goForward()
             }
         })
+        chromeViewModel.share.observe(this, Observer {
+            sendShareIntent()
+        })
+    }
+
+    private fun sendShareIntent() {
+        val list = shoppingSearchResultViewModel.uiModel.value
+        list?.apply {
+            val index = view_pager.currentItem
+            val item = list.sites[index]
+            val subject = item.title
+            val text = item.title
+            val share = Intent(Intent.ACTION_SEND)
+
+            share.type = "text/plain"
+            share.putExtra(Intent.EXTRA_SUBJECT, subject)
+            share.putExtra(Intent.EXTRA_TEXT, text)
+
+            startActivity(share)
+        }
     }
 
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
