@@ -629,4 +629,196 @@
 
     <!-- Name of low priority notification channel, this will be shown on the app info page in the system setting -->
     <string name="low_priority_notification_channel">Hidden notifications</string>
+    <!--Shopping Vertical-->
+    <!--Artboard Name: 1.1 Shopping Search Overview-->
+    <!--Shopping Search Onboarding-->
+    <string name="shopping_search_onboarding_title">The best price. Always.</string>
+    <string name="shopping_search_onboarding_body">Compare prices across many online stores with Smart Shopping Search.</string>
+    <!--Shopping Search Input Placeholder-->
+    <string name="shopping_search_placeholder">Type the product you want to search</string>
+    <!--Shopping Search Prompt Message-->
+    <string name="shopping_search_prompt_message_body">Compare prices across many online stores with Smart Shopping Search.</string>
+    <string name="shopping_search_prompt_message_button">Search</string>
+    <!--Switch UI Onboarding-->
+    <string name="shopping_switch_ui_onboarding_body">Swipe left to load other shopping sites, or tap this button to edit.</string>
+    <string name="shopping_switch_ui_onboarding_button">OK</string>
+
+    <!--Artboard Name: 2.2 Switch UI Preference Behaviors-->
+    <!--Switch UI Preferences-->
+    <string name="shopping_switch_ui_preferences_title">Shopping Search Settings </string>
+    <string name="shopping_switch_ui_preferences_subtitle">Sites to compare</string>
+
+    <!--Artboard Name: 3.1 Switch UI Navigation Overview-->
+    <!--Switch UI Tab Tray-->
+    <string name="shopping_switch_ui_tabtray_title">Shopping Search: “Keywords”</string>
+
+    <!--Artboard Name: 3.2 Switch UI Remove Tab-->
+    <!--Closing dialog content.-->
+    <string name="shopping_closing_dialog_close">Close All</string>
+    <string name="shopping_closing_dialog_cancel">Cancel</string>
+    <string name="shopping_closing_dialog_body">Close all shopping search results?</string>
+
+    <!--Artboard Name: 4.1 Shopping Deals Overview-->
+    <!--Shopping Home-->
+    <string name="shopping_vertical_title">Shopping</string>
+    <string name="shopping_vertical_category_1">Deals</string>
+    <string name="shopping_vertical_category_2">Coupons</string>
+    <string name="shopping_vertical_category_3">Vouchers</string>
+    <!--Shopping Deals-->
+    <string name="shopping_deal_subcategory_1">Editor's Choice</string>
+    <string name="shopping_deal_subcategory_2">Top Sell</string>
+
+    <!--Artboard Name: 5.1 Shopping Coupons Overview-->
+    <!--Shopping Coupons-->
+    <string name="shopping_coupon_subcategory">Hot Coupons</string>
+
+    <!--Gaming Vertical-->
+    <!--Gaming Home-->
+    <string name="gaming_vertical_title">Game</string>
+    <string name="gaming_vertical_category_1">Instant Games</string>
+    <string name="gaming_vertical_category_2">Premium Games</string>
+    <string name="gaming_vertical_new">New</string>
+
+    <!--Gaming Contextual Hint-->
+    <string name="gaming_vertical_hint_title">Create shortcut for your favorite games </string>
+    <string name="gaming_vertical_hint_body">Long press to create a shortcut to your phone home screen. </string>
+    <string name="gaming_vertical_hint_button">OK</string>
+
+    <!--Gaming Longpress Menu-->
+    <string name="gaming_vertical_menu_option_1">Share this game</string>
+    <string name="gaming_vertical_menu_option_2">Create shortcut on home screen</string>
+    <string name="gaming_vertical_menu_option_3">Remove from the list</string>
+
+    <!--Gaming Share Message-->
+    <string name="gaming_vertical_share_message">I’m playing a really cool game.  Check it out!</string>
+
+
+    <!--Gaming Genres-->
+    <string name="gaming_vertical_genre_1">Recently played</string>
+    <string name="gaming_vertical_genre_2">Game of the week</string>
+    <string name="gaming_vertical_genre_3">My game</string>
+    <string name="gaming_vertical_genre_4">Most played</string>
+    <string name="gaming_vertical_genre_5">Offline games</string>
+    <string name="gaming_vertical_genre_6">Strategy</string>
+    <string name="gaming_vertical_genre_7">Adventure</string>
+    <string name="gaming_vertical_genre_8">Action</string>
+    <string name="gaming_vertical_genre_9">Arcade</string>
+    <string name="gaming_vertical_genre_10">Puzzle & Logic</string>
+    <string name="gaming_vertical_genre_11">Sports & Racing</string>
+
+    <!--News Vertical-->
+    <!-- Title of news preferences -->
+    <string name="title_news_preferences">News Settings</string>
+    <!-- This is the dialog for choosing news language -->
+    <string name="news_language_dialog_title">Language</string>
+
+    <!-- Home 2.0 -->
+    <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0 -->
+    <string name="onboarding_2.0_introduction_description">Remain Fast and Lightweight. We added smart shopping search and content to make internet browsing more fun and enjoyable!</string>
+    <!-- Onboarding for new users to introduce Firefox Lite 2.0 -->
+    <!-- Introduce Content & Services -->
+    <string name="onboarding_2.0_content_services_news_shopping_games">Tap to read the trendy news, find good deals or play the hottest free games to have fun!</string>
+    <string name="onboarding_2.0_content_services_news_games">Tap to read the trendy news or play the hottest free games to have fun!</string>
+    <string name="onboarding_2.0_content_services_games">Tap to play the hottest free games to have fun!</string>
+    <!-- Introduce Smart Shopping Search -->
+    <string name="onboarding_2.0_smart_shopping_search_title">Smart Shopping Search</string>
+    <string name="onboarding_2.0_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
+
+    <!-- Content & Services -->
+    <!-- Title of Content & Services -->
+    <string name="home_Content_Services">Content &amp; Services</string>
+    <!-- Actions in context menu. Users can long press an item then show the context menu to select an action -->
+    <string name="content_home_context_menu_add_to_home_screen">Add to Home screen</string>
+    <string name="content_home_context_menu_share_link">Share link</string>
+    <!-- Error message. E.g. when open a service and server is not working then show error message to users -->
+    <string name="content_home_error_message">Oops!\nSomething went wrong</string>
+
+    <!-- Private mode home 2.0 -->
+    <!-- Title of Private mode -->
+    <string name="private_home_title">Advanced Private Browsing</string>
+    <!-- Description of Private mode -->
+    <string name="private_home_description">Now you can browse privately, no history, no passwords recorded and other people who use this device won’t see your activity.\n\nOur Advanced Private Browsing can even prevent you from being tracked by advertisers and websites, which most private modes cannot.</string>
+
+    <!--MSRP Vertical-->
+
+    <!--Logoman-->
+    <string name="msrp_logoman_message">Win your free coupon</string>
+
+    <!--Contextual hint-->
+    <string name="msrp_home_hint">Try new features</string>
+
+    <!--Reward-->
+    <string name="msrp_reward_title">Reward</string>
+    <string name="msrp_reward_category_1">Challenge</string>
+    <string name="msrp_reward_category_2">Redeem</string>
+    <string name="msrp_reward_challenge_title">7-Day challenge for Rs 15,000 shopping coupon</string>
+    <string name="msrp_reward_challenge_expire">Expires 03/09/2020</string>
+
+    <!--Challenge-->
+    <string name="msrp_challenge_title">7-day challenge for Rs 15,000 shopping coupon</string>
+    <string name="msrp_challenge_details_title_1">1. Join the 7-Day challenge</string>
+    <string name="msrp_challenge_details_body_1">View the top sites on Firefox Lite home by simply clicking the buttons for seven days in a row.</string>
+    <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward </string>
+    <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
+    <string name="msrp_challenge_button_1">I’m In!</string>
+    <string name="msrp_challenge_tou">By clicking “I’m in” you are agreeing to our Terms of Use</string>
+    <string name="msrp_challenge_button_2">I quit for now</string>
+    <string name="msrp_challenge_separator">How to redeem</string>
+    <string name="msrp_challenge_button_4">Use Firefox account to redeem</string>
+
+    <!--Challenge  completed (popup)-->
+    <string name="msrp_completed_popup_title">Congtratulations!</string>
+    <string name="msrp_completed_popup_body">You have been with us 7 days. Thank you for your fidelity. We have been enjoying this journey with you.</string>
+    <string name="msrp_completed_popup_button1">Use Firefox account to redeem</string>
+    <string name="msrp_completed_popup_button2">Later</string>
+
+    <!--Challenge completed (full screen)-->
+    <string name="msrp_challenge_completed_title">Congtratulations!</string>
+    <string name="msrp_challenge_completed_body">You have been with us 7 days. Thank you for your fidelity. We have been enjoying this journey with you.</string>
+    <string name="msrp_challenge_button_5">Redeem later</string>
+
+    <!--Coupon-->
+    <string name="msrp_coupon_title">Your coupon is ready!</string>
+    <string name="msrp_coupon_body_1">Coupons are valid for a limited time only.  We reserve the right to modify or cancel coupons at any time.</string>
+    <string name="msrp_coupon_body_2">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
+    <string name="msrp_coupon_expire">Expires 03/09/2021</string>
+    <string name="msrp_coupon_button_2">Go Shopping</string>
+    <string name="msrp_coupon_button_1">Copy</string>
+
+    <!--Redeem-->
+    <string name="msrp_reward_redeem_redeem">Redeem</string>
+    <string name="msrp_reward_redeem_coupon">Coupon</string>
+
+    <!--Suspicious account activity-->
+    <string name="msrp_disqualification_button">GOT IT</string>
+    <string name="msrp_disqualification_body">You will be disqualified for the 7-Day challenge if you keep switching between different accounts.</string>
+    <string name="msrp_disqualification_title_1">Multiple accounts (1/3)</string>
+    <string name="msrp_disqualification_title_2">Multiple accounts (2/3)</string>
+    <string name="msrp_disqualification_body_2">You are disqualified for the 7-Day challenge due to multiple accounts login.</string>
+    <string name="msrp_disqualification_title_3">Multiple accounts (3/3)</string>
+
+    <!--Check-in toasts for each day-->
+    <string name="msrp_completed_toast_day1">Great! You have successfully completed your first daily task!</string>
+    <string name="msrp_completed_toast_day2">Cool! You have completed the second daily task!</string>
+    <string name="msrp_completed_toast_day3">Awesome! You have completed the third daily task, keep it up!</string>
+    <string name="msrp_completed_toast_day4">Congrats! You have completed the fourth daily task!</string>
+    <string name="msrp_completed_toast_day5">Terrific! You have completed the fifth daily task!</string>
+    <string name="msrp_completed_toast_day6">Wow! You are just one day away from getting the prize!</string>
+    <string name="msrp_completed_toast_day7">You made it! Please go to Reward page to redeem your prize!</string>
+
+    <!--Notifications for last 3 days-->
+    <string name="msrp_notification_reminder">Just a reminder, don’t forget to try our new Content & Services to get shopping coupon!</string>
+
+    <!--No data-->
+    <string name="msrp_reward_challenge_nodata">All challenges completed</string>
+    <string name="msrp_reward_redeem_nodata">All rewards collected</string>
+
+    <!--Error messages-->
+    <string name="msrp_reward_challenge_nointernet">Make sure you are connected to the internet</string>
+    <string name="msrp_reward_challenge_error_button">TRY AGAIN</string>
+    <string name="msrp_reward_challenge_error">Oops! Something went wrong</string>
+
+    <!--Activity killed-->
+    <string name="msrp_activitykilled_snackbar_button">REDEEM</string>
+    <string name="msrp_activitykilled_snackbar_body">Continue to redeem your coupon</string>
 </resources>
