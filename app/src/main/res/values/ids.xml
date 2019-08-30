@@ -50,4 +50,5 @@
     <item name="bottom_bar_tracker" type="id"/>
     <item name="bottom_bar_back" type="id"/>
     <item name="bottom_bar_open_in_new_tab" type="id"/>
+    <item name="bottom_bar_shopping_search" type="id"/>
 </resources>
