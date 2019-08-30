@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news_v2
+package org.mozilla.rocket.content.news
 
 import android.content.Context
 import android.content.Intent
