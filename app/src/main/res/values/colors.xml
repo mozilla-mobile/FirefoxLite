@@ -164,4 +164,8 @@
     <color name="shoppingSearchInputBackgroundGradientEnd">#ff803e</color>
     <color name="shoppingSearchIcon">#FF5654</color>
     <color name="shoppingSearchPreferencesToolbarBackground">#212121</color>
+
+    <!--  Shopping -->
+    <color name="colorProductPrice">#EC6255</color>
+    <color name="colorProductDiscount">#EC1C52</color>
 </resources>

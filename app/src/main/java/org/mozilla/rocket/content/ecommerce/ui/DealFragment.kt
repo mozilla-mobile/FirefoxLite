@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_coupon.spinner
 import kotlinx.android.synthetic.main.fragment_deal.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
-import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponAdapterDelegate
+import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
+import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategoryAdapterDelegate
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
 import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -50,17 +48,16 @@ class DealFragment : Fragment() {
         dealAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(shoppingViewModel))
-                add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(shoppingViewModel))
+                add(ProductCategory::class, R.layout.item_product_category, ProductCategoryAdapterDelegate(shoppingViewModel))
             }
         )
         content_deals.apply {
             adapter = dealAdapter
-            layoutManager = LinearLayoutManager(context)
         }
     }
 
     private fun bindListData() {
-        shoppingViewModel.couponItems.observe(this@DealFragment, Observer {
+        shoppingViewModel.dealItems.observe(this@DealFragment, Observer {
             dealAdapter.setData(it)
         })
     }
