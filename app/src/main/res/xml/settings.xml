@@ -4,11 +4,6 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="root_preferences">
-    <org.mozilla.focus.widget.FirefoxAccountPreference
-        android:layout="@layout/focus_preference"
-        android:key="@string/pref_key_firefox_account"
-        android:title="Firefox account" />
-
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
     <org.mozilla.focus.widget.LocaleListPreference
