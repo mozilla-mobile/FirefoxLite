@@ -40,9 +40,9 @@ import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 import org.mozilla.rocket.content.games.ui.GameModeActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
-import org.mozilla.rocket.content.news.NewsFragment
-import org.mozilla.rocket.content.news.NewsSettingFragment
-import org.mozilla.rocket.content.news.NewsTabFragment
+import org.mozilla.rocket.content.news.ui.NewsFragment
+import org.mozilla.rocket.content.news.ui.NewsSettingFragment
+import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase

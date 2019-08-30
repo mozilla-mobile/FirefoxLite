@@ -9,13 +9,13 @@
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
 
-    <org.mozilla.rocket.content.news.data.NewsLanguagePreference
+    <org.mozilla.rocket.content.news.ui.NewsLanguagePreference
             android:key="pref_dummy_s_news_lang"
             android:title="@string/news_language_dialog_title"
             app:iconSpaceReserved="false"
     />
 
-    <org.mozilla.rocket.content.news.data.NewsCategoryPreference
+    <org.mozilla.rocket.content.news.ui.NewsCategoryPreference
             android:key="pref_dummy_s_news_Cat"
             android:title="@string/news_category_title"/>
 

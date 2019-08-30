@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news
+package org.mozilla.rocket.content.news.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -25,7 +25,7 @@ import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.content.news.NewsTabFragment.NewsListingEventListener
+import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
