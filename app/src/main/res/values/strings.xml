@@ -498,7 +498,7 @@
 
     <!-- Confirm message shown on the dialog popped after user clicks close-all-tabs button -->
     <string name="tab_tray_close_tabs_dialog_msg">Close all tabs?</string>
-
+       
     <!-- This is the title of Themeing on-boarding dialog -->
     <string name="themetoy_onboarding_title">Color your life!</string>
 
@@ -533,9 +533,9 @@
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
     <!-- Title of news preferences -->
-    <string name="title_news_preferences">News preferences</string>
+    <string name="title_news_preferences">News Settings</string>
     <!-- This is the dialog for choosing news language -->
-    <string name="news_language_dialog_title">News language</string>
+    <string name="news_language_dialog_title">Language</string>
     <string name="news_language_dialog_option_english">English</string>
     <string name="news_language_dialog_option_hindi">Hindi</string>
     <string name="news_language_dialog_option_marathi">Marathi</string>
@@ -578,6 +578,28 @@
     <string name="news_category_option_science">Science</string>
     <string name="news_category_option_jokes">Jokes</string>
     
+    <!-- Home 2.0 -->
+    <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0--> 
+    <string name="onboarding_2.0_introduction_title">Brand-new Firefox Lite</string>
+    <string name="onboarding_2.0_introduction_description">Remain Fast and Lightweight. We added smart shopping search and content to make internet browsing more fun and enjoyable!</string>
+    <!-- Onboarding for new users to introduce Firefox Lite 2.0--> 
+    <!-- Introduce Content & Services -->
+    <string name="onboarding_2.0_content_services_news_shopping_games">Tap to read the trendy news, find good deals or play the hottest free games to have fun!</string>
+    <string name="onboarding_2.0_content_services_news_games">Tap to read the trendy news or play the hottest free games to have fun!</string>
+    <string name="onboarding_2.0_content_services_games">Tap to play the hottest free games to have fun!</string>
+    <!-- Introduce Smart Shopping Search -->
+    <string name="onboarding_2.0_smart_shopping_search_title">Smart Shopping Search</string>
+    <string name="onboarding_2.0_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
+   
+    <!-- Content & Services -->
+    <!-- Title of Content & Services -->
+    <string name="home_Content_Services">Content &amp; Services</string>
+    <!-- Actions in context menu. Users can long press an item then show the context menu to select an action -->
+    <string name="content_home_context_menu_add_to_home_screen">Add to Home screen</string>
+    <string name="content_home_context_menu_share_link">Share link</string>
+    <!-- Error message. E.g. when open a service and server is not working then show error message to users -->
+    <string name="content_home_error_message">Oops!\nSomething went wrong</string>     
+   
     <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
     <string name="logo_text">Service provided by</string>
 
@@ -586,7 +608,13 @@
     <string name="coupon_valid_description" translatable="false">Berlaku hingga %s</string>
 
     <!-- Private Browsing-->
-
+    
+    <!-- Private mode home 2.0 -->
+    <!-- Title of Private mode -->
+    <string name="private_home_title">Advanced Private Browsing</string>
+    <!-- Description of Private mode -->
+    <string name="private_home_description">Now you can browse privately, no history, no passwords recorded and other people who use this device won’t see your activity.\n\nOur Advanced Private Browsing can even prevent you from being tracked by advertisers and websites, which most private modes cannot.</string>
+    
     <!-- This is used in the menu. User can click the menu item and open a private tab. -->
     <string name="private_tab">Private tab</string>
 
