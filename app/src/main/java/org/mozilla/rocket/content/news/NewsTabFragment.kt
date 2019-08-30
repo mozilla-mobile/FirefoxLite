@@ -14,19 +14,18 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.MODE_SCROLLABLE
 import dagger.Lazy
-import kotlinx.android.synthetic.main.content_tab_news.news_setting
+import kotlinx.android.synthetic.main.content_tab_news.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.portal.ContentFeature
-import org.mozilla.rocket.content.portal.ContentPortalView
 import javax.inject.Inject
 
 /**
@@ -39,14 +38,6 @@ class NewsTabFragment : Fragment() {
     lateinit var newsViewModelCreator: Lazy<NewsViewModel>
 
     private lateinit var newsViewModel: NewsViewModel
-
-    private var bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>? = null
-
-    companion object {
-        fun newInstance(bottomSheetBehavior: org.mozilla.rocket.widget.BottomSheetBehavior<View>?): NewsTabFragment {
-            return NewsTabFragment().also { it.bottomSheetBehavior = bottomSheetBehavior }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -85,7 +76,7 @@ class NewsTabFragment : Fragment() {
             val pager = view.findViewById<ViewPager>(R.id.news_viewpager)
             view.findViewById<TabLayout>(R.id.news_tab).run {
                 setupWithViewPager(pager)
-                tabMode = MODE_SCROLLABLE
+                tabMode = TabLayout.MODE_SCROLLABLE
             }
             pager.adapter = EcFragmentAdapter(childFragmentManager, this)
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -154,21 +145,6 @@ class NewsTabFragment : Fragment() {
         startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ContentFeature.SETTING_REQUEST_CODE) {
-            // TODO: check if the setting has changed before recreate self
-            // TODO: repeated code for initNewsTabFragment
-            // recreate self
-            context?.inTransaction {
-                replace(
-                    R.id.bottom_sheet, NewsTabFragment.newInstance(bottomSheetBehavior),
-                    ContentPortalView.TAG_NEWS_FRAGMENT
-                )
-            }
-        }
-    }
-
     // TODO: make this a util
     // helper method to work with FragmentManager
     private inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
@@ -177,5 +153,16 @@ class NewsTabFragment : Fragment() {
             return
         }
         fragmentManager?.beginTransaction()?.func()?.commit()
+    }
+
+    companion object {
+        fun newInstance(): NewsTabFragment {
+            return NewsTabFragment()
+        }
+    }
+
+    interface NewsListingEventListener {
+        fun onItemClicked(url: String)
+        fun onStatus(items: List<NewsItem>?)
     }
 }

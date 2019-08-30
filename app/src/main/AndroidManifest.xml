@@ -321,7 +321,7 @@
             android:taskAffinity=".content.ecommerce" />
 
         <activity
-            android:name="org.mozilla.rocket.content.news_v2.NewsActivity"
+            android:name="org.mozilla.rocket.content.news.NewsActivity"
             android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"

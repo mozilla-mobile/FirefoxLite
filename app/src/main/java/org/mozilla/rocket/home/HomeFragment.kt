@@ -41,7 +41,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.content.news_v2.NewsActivity
+import org.mozilla.rocket.content.news.NewsActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage

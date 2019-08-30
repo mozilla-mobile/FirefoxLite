@@ -1,14 +1,14 @@
 package org.mozilla.rocket.content.news
 
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -16,12 +16,12 @@ import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.portal.ContentPortalListener
+import org.mozilla.rocket.content.news.NewsTabFragment.NewsListingEventListener
 
-class NewsAdapter<T : NewsItem>(private val listener: ContentPortalListener) :
-        ListAdapter<NewsItem, NewsViewHolder<T>>(
-            COMPARATOR
-        ) {
+class NewsAdapter<T : NewsItem>(private val listener: NewsListingEventListener) :
+    ListAdapter<NewsItem, NewsViewHolder<T>>(
+        COMPARATOR
+    ) {
 
     object COMPARATOR : DiffUtil.ItemCallback<NewsItem>() {
 
@@ -42,13 +42,13 @@ class NewsAdapter<T : NewsItem>(private val listener: ContentPortalListener) :
     override fun onBindViewHolder(holder: NewsViewHolder<T>, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
-                TelemetryWrapper.clickOnNewsItem(
-                        pos = position.toString(),
-                        feed = item.source,
-                        source = item.partner,
-                        category = item.category,
-                        subCategory = item.subcategory)
-                listener.onItemClicked(item.newsUrl)
+            TelemetryWrapper.clickOnNewsItem(
+                pos = position.toString(),
+                feed = item.source,
+                source = item.partner,
+                category = item.category,
+                subCategory = item.subcategory)
+            listener.onItemClicked(item.newsUrl)
         })
     }
 }
@@ -57,7 +57,7 @@ class NewsViewHolder<T : NewsItem>(itemView: View) : RecyclerView.ViewHolder(ite
 
     companion object {
         var requestOptions =
-                RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(16)) }
+            RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(16)) }
     }
 
     var view: View? = null
@@ -84,12 +84,12 @@ class NewsViewHolder<T : NewsItem>(itemView: View) : RecyclerView.ViewHolder(ite
         }
 
         time?.text = DateUtils.getRelativeTimeSpanString(
-                item.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
+            item.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
         )
 
         item.imageUrl?.let {
             if (image != null) {
-                    Glide.with(itemView.context).load(it).apply(requestOptions)
+                Glide.with(itemView.context).load(it).apply(requestOptions)
                     .into(image)
             }
         }

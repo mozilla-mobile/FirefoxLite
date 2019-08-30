@@ -89,9 +89,6 @@ public static java.lang.String TABLENAME;
 }
 -keep class **$Properties
 
-# Customized BottomSheetBehavior for ViewPager
--keep class org.mozilla.rocket.widget.ViewPagerBottomSheetBehavior
-
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.AppGlideModule
