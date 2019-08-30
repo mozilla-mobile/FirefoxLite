@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="10dp">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fx_toast"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:minHeight="50dp"
+        android:textColor="@color/paletteLightGreyA100"
+        style="@style/Body2"
+        android:gravity="center_vertical"
+        tools:text="Long message Long message Long message Long message Long message Long message Long message Long message Long message Long message Long message Long message Long message Long message " />
+
+</FrameLayout>
