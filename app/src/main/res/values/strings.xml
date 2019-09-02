@@ -119,7 +119,7 @@
    
     <!-- After users have tried night mode once, the next time the user opens menu we would like to show them how they can long press the Night Mode icon to show a widget for brightness adjustments. -->
     <string name="night_mode_on_boarding_message">Long press to adjust brightness</string>
-   
+  
     <!-- Content description (not visible, for screen readers etc.): Clear text in URL bar -->
     <string name="content_description_clear_input">Clear input</string>
 
@@ -703,8 +703,8 @@
     <string name="gaming_vertical_genre_7">Adventure</string>
     <string name="gaming_vertical_genre_8">Action</string>
     <string name="gaming_vertical_genre_9">Arcade</string>
-    <string name="gaming_vertical_genre_10">Puzzle & Logic</string>
-    <string name="gaming_vertical_genre_11">Sports & Racing</string>
+    <string name="gaming_vertical_genre_10">Puzzle &amp; Logic</string>
+    <string name="gaming_vertical_genre_11">Sports &amp; Racing</string>
 
     <!--News Vertical-->
     <!-- Title of news preferences -->
@@ -807,7 +807,7 @@
     <string name="msrp_completed_toast_day7">You made it! Please go to Reward page to redeem your prize!</string>
 
     <!--Notifications for last 3 days-->
-    <string name="msrp_notification_reminder">Just a reminder, don’t forget to try our new Content & Services to get shopping coupon!</string>
+    <string name="msrp_notification_reminder">Just a reminder, don’t forget to try our new Content &amp; Services to get shopping coupon!</string>
 
     <!--No data-->
     <string name="msrp_reward_challenge_nodata">All challenges completed</string>
