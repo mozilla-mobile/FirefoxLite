@@ -25,28 +25,4 @@ class ContentFeature(val settings: Settings) {
 
     fun hasNews() = (AppConfigWrapper.hasNewsPortal() && settings.lifeFeedSettings == DEFAULT) ||
         (settings.lifeFeedSettings == FORCE_ENABLE_NEWS)
-
-    fun hasCoupon() = (AppConfigWrapper.hasEcommerceCoupons() && settings.lifeFeedSettings == DEFAULT) ||
-        (settings.lifeFeedSettings == FORCE_ENABLE_E_COMMERCE)
-
-    fun hasVoucher() = (AppConfigWrapper.hasEcommerceVoucher() && settings.lifeFeedSettings == DEFAULT) ||
-        (settings.lifeFeedSettings == FORCE_ENABLE_E_COMMERCE)
-
-    fun hasContentPortal() = hasNews() || (hasCoupon() && hasVoucher())
-
-    // get the eCommerceFeatures from remote config
-    // if we want to change the order of tabs we should do it here.
-    fun eCommerceFeatures(): ArrayList<Int> {
-
-        val features = ArrayList<Int>()
-        if (hasVoucher()) {
-            features.add(TYPE_TICKET)
-        }
-
-        if (hasCoupon()) {
-            features.add(TYPE_COUPON)
-        }
-
-        return features
-    }
 }
