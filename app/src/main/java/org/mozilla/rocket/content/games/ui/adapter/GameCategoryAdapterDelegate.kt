@@ -28,15 +28,15 @@ class GameCategoryViewHolder(
     )
     /* paddingLeftRight is padding for boundary and the first/last item
        paddingInBetween is padding for each item */
-    private val paddingLeftRight = 16
-    private val paddingInBetween = 4
+    private val paddingWidth = 16
+    private val spaceWidth = 4
 
     init {
         game_list.apply {
             adapter = this@GameCategoryViewHolder.adapter
             layoutManager = LinearLayoutManager(containerView.context, RecyclerView.HORIZONTAL, false)
         }
-        game_list.addItemDecoration(GameItemDecoration(paddingLeftRight, paddingInBetween))
+        game_list.addItemDecoration(GameItemDecoration(paddingWidth, spaceWidth))
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
