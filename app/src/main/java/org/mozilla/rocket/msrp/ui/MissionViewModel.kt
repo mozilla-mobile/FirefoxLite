@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.msrp.data.Mission
@@ -21,6 +22,10 @@ class MissionViewModel(private val loadMissionsUseCase: LoadMissionsUseCase) : V
         get() = _missionViewState
     private val _missionViewState = MediatorLiveData<State>()
 
+    init {
+        loadMissions(FAKE_URL)
+    }
+
     fun loadMissions(missionGroupURI: String) {
         launchDataLoad {
             loadMissionsUseCase.execute(LoadMissionsUseCaseParameter(missionGroupURI)).items.let {
@@ -35,11 +40,11 @@ class MissionViewModel(private val loadMissionsUseCase: LoadMissionsUseCase) : V
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
-        return viewModelScope.launch {
+        return viewModelScope.launch(Dispatchers.IO) {
             try {
-                _missionViewState.value = State.Loading
+                _missionViewState.postValue(State.Loading)
                 block()
-                _missionViewState.value = State.Idle
+                _missionViewState.postValue(State.Idle)
             } catch (t: RewardServiceException) {
                 val errorState = when (t) {
                     is RewardServiceException.ServerErrorException -> State.AuthError
@@ -56,5 +61,9 @@ class MissionViewModel(private val loadMissionsUseCase: LoadMissionsUseCase) : V
         object Loading : State()
         object AuthError : State()
         object ServerError : State()
+    }
+
+    companion object {
+        const val FAKE_URL = "http://fake_url"
     }
 }
