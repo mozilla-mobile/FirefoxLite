@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.focus.R
-import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
@@ -14,6 +14,8 @@ import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
 import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
+import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
 import java.util.UUID
@@ -67,7 +69,7 @@ class ShoppingRepo(private val appContext: Context) {
 
     suspend fun getVouchers(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
-            AppConfigWrapper.getEcommerceVouchers()
+            getVoucherItems() ?: emptyList()
         }
     }
 
@@ -79,13 +81,18 @@ class ShoppingRepo(private val appContext: Context) {
     private fun generateFakeRunwayItem(): RunwayItem =
             getPlaceholderImageUrl(400, 200).run { RunwayItem(this, this, this) }
 
+    // TODO: remove mock data
     private fun getMockProductItems(): List<ProductItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.product_mock_items)
                 ?.jsonStringToProductItems()
 
+    // TODO: remove mock data
     private fun getMockCouponItems(): List<Coupon>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.coupon_mock_items)
                 ?.jsonStringToCouponItems()
+
+    private fun getVoucherItems(): List<Voucher>? =
+            FirebaseHelper.getFirebase().getRcString("str_e_commerce_shoppinglinks").jsonStringToVoucherItems()
 }
 
 private fun String.jsonStringToProductItems(): List<ProductItem>? {
@@ -138,4 +145,25 @@ private fun createCouponItem(jsonObject: JSONObject): Coupon =
             jsonObject.getInt("remain"),
             jsonObject.getString("link_url"),
             jsonObject.getString("brand")
+        )
+
+private fun String.jsonStringToVoucherItems(): List<Voucher>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> createVoucherItem(jsonObject) }
+                .shuffled()
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun createVoucherItem(jsonObject: JSONObject): Voucher =
+        Voucher(
+            jsonObject.getString(VoucherKey.KEY_URL),
+            jsonObject.getString(VoucherKey.KEY_NAME),
+            jsonObject.getString(VoucherKey.KEY_IMAGE),
+            jsonObject.getString(VoucherKey.KEY_SOURCE)
         )

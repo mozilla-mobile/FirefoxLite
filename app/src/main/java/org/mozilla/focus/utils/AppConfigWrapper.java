@@ -5,7 +5,6 @@
 
 package org.mozilla.focus.utils;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.json.JSONArray;
@@ -15,8 +14,6 @@ import org.mozilla.rocket.appupdate.InAppUpdateConfig;
 import org.mozilla.rocket.appupdate.InAppUpdateIntro;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher;
-import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey;
 import org.mozilla.rocket.content.news.data.NewsProviderConfig;
 
 import java.util.ArrayList;
@@ -117,43 +114,6 @@ public class AppConfigWrapper {
      */
     public static boolean hasNewsPortal() {
         return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_LIFE_FEED);
-    }
-
-    public static boolean hasEcommerceVoucher() {
-        return !getEcommerceVouchers().isEmpty();
-    }
-
-    /**
-     * Return a list of vouchers and shopping links for e-commerce content portal.
-     * This is also used to determine if the user should see e-commerce or News in content portal.
-     * In the future, the user may have both e-commerce and News. But now, let's make it simple.
-     * @return ArrayList of shopping links or empty list if we encounter an error.
-     */
-    public static ArrayList<Voucher> getEcommerceVouchers() {
-        ArrayList<Voucher> vouchers = new ArrayList<>();
-
-        final String rcString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_E_COMMERCE_SHOPPINGLINKS);
-        try {
-            final JSONArray jsonArray = new JSONArray(rcString);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                final JSONObject object = (JSONObject) jsonArray.get(i);
-                vouchers.add(toVoucher(object));
-            }
-
-        } catch (JSONException e) {
-            // skip and do nothing
-        }
-
-        return vouchers;
-    }
-
-    @NonNull
-    private static Voucher toVoucher(JSONObject object) {
-        return new Voucher(
-                object.optString(VoucherKey.KEY_URL),
-                object.optString(VoucherKey.KEY_NAME),
-                object.optString(VoucherKey.KEY_IMAGE),
-                object.optString(VoucherKey.KEY_SOURCE));
     }
 
     public static String getNewsProviderUrl(String provider) {
