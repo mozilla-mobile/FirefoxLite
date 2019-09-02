@@ -4,7 +4,7 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class GameItemDecoration(val paddingLR: Int, val padding: Int) : RecyclerView.ItemDecoration() {
+class GameItemDecoration(val paddingWidth: Int, val spaceWidth: Int) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
@@ -18,13 +18,13 @@ class GameItemDecoration(val paddingLR: Int, val padding: Int) : RecyclerView.It
 
         /* first position  */
         if (itemPosition == 0) {
-            outRect.set(paddingLR, padding, padding, padding)
+            outRect.set(paddingWidth, spaceWidth, spaceWidth, spaceWidth)
         /* last position  */
         } else if (itemCount > 0 && itemPosition == itemCount - 1) {
-            outRect.set(padding, padding, paddingLR, padding)
+            outRect.set(spaceWidth, spaceWidth, paddingWidth, spaceWidth)
         /* positions between first and last  */
         } else {
-            outRect.set(padding, padding, padding, padding)
+            outRect.set(spaceWidth, spaceWidth, spaceWidth, spaceWidth)
         }
     }
 }
