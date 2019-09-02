@@ -55,7 +55,7 @@ class MissionViewModelTest {
 
         missionRepository = mock(MissionRepository::class.java)
 
-        Mockito.`when`(missionRepository.fetchMission(MISSION_GROUP_URI)).thenReturn(testMissions)
+        Mockito.`when`(missionRepository.fetchMission(Mockito.anyString())).thenReturn(testMissions)
 
         missionViewModel = MissionViewModel(createLoadMissionsUseCase())
 
@@ -72,7 +72,7 @@ class MissionViewModelTest {
 
         val emptyList = listOf<Mission>()
 
-        Mockito.`when`(missionRepository.fetchMission(MISSION_GROUP_URI)).thenReturn(emptyList)
+        Mockito.`when`(missionRepository.fetchMission(Mockito.anyString())).thenReturn(emptyList)
 
         missionViewModel = MissionViewModel(createLoadMissionsUseCase())
 

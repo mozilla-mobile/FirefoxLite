@@ -43,10 +43,12 @@ import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
+import org.mozilla.rocket.fxa.MissionDetailFragment
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.menu.MenuDialog
+import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
@@ -69,7 +71,8 @@ import javax.inject.Singleton
         ChromeModule::class,
         TabsModule::class,
         HomeModule::class,
-        ShoppingSearchModule::class
+        ShoppingSearchModule::class,
+        MissionModule::class
     ]
 )
 interface AppComponent {
@@ -101,6 +104,7 @@ interface AppComponent {
     fun inject(dealFragment: DealFragment)
     fun inject(couponFragment: CouponFragment)
     fun inject(voucherFragment: VoucherFragment)
+    fun inject(missionDetailFragment: MissionDetailFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel

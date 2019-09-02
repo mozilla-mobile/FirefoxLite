@@ -23,8 +23,8 @@ open class MissionRepository {
             url = fakeUrl,
             headers = MutableHeaders(
                 "Accept" to "application/json; q=0.5",
-                "Accept" to "application/vnd.github.v3+json",
-                "Authorization" to "Bearer SOME-JWT"
+                "Accept" to "application/vnd.github.v3+json"
+//                , "Authorization" to "Bearer SOME-JWT" // add this when we do the real integration
             )
         )
         // pretending we are doing some network request here...
