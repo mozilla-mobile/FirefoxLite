@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.view_rating.view.*
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.DrawableUtils
 
 class RatingView : LinearLayout {
 
@@ -23,11 +24,8 @@ class RatingView : LinearLayout {
     init {
         LayoutInflater.from(context).inflate(R.layout.view_rating, this, true)
 
-        ratingStar = ContextCompat.getDrawable(context, R.drawable.ic_rating)
-        ratingStar?.setTint(ContextCompat.getColor(context, R.color.paletteDarkBlueC100))
-
-        ratingBlankStar = ContextCompat.getDrawable(context, R.drawable.ic_rating_blank)
-        ratingBlankStar?.setTint(ContextCompat.getColor(context, R.color.paletteDarkBlueC100))
+        ratingStar = DrawableUtils.loadAndTintDrawable(context, R.drawable.ic_rating, ContextCompat.getColor(context, R.color.paletteDarkBlueC100))
+        ratingBlankStar = DrawableUtils.loadAndTintDrawable(context, R.drawable.ic_rating_blank, ContextCompat.getColor(context, R.color.paletteDarkBlueC100))
     }
 
     fun updateRatingInfo(rating: Int, reviews: Int) {

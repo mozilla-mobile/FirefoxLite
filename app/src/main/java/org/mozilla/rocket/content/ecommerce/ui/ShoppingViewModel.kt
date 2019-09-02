@@ -62,7 +62,7 @@ class ShoppingViewModel(
     }
 
     fun onCouponItemClicked(couponItem: Coupon) {
-        openCoupon.value = couponItem.link.url
+        openCoupon.value = couponItem.linkUrl
     }
 
     fun onVoucherItemClicked(voucherItem: Voucher) {

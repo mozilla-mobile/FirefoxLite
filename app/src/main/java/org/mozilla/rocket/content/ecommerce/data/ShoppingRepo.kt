@@ -8,13 +8,15 @@ import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponCategory
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
 import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
-import java.util.*
+import java.util.UUID
 import kotlin.random.Random
 
 class ShoppingRepo(private val appContext: Context) {
@@ -47,16 +49,19 @@ class ShoppingRepo(private val appContext: Context) {
 
     suspend fun getCoupons(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
-            val list = mutableListOf<DelegateAdapter.UiModel>()
-            list.add(Runway(listOf(
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem()
-            )))
-            list.addAll(AppConfigWrapper.getEcommerceCoupons())
-            return@withContext list
+            listOf(
+                Runway(listOf(
+                        generateFakeRunwayItem(),
+                        generateFakeRunwayItem(),
+                        generateFakeRunwayItem(),
+                        generateFakeRunwayItem(),
+                        generateFakeRunwayItem()
+                )),
+                CouponCategory(UUID.randomUUID().toString(),
+                    "Hot Coupons",
+                    getMockCouponItems() ?: emptyList()
+                )
+            )
         }
     }
 
@@ -77,6 +82,10 @@ class ShoppingRepo(private val appContext: Context) {
     private fun getMockProductItems(): List<ProductItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.product_mock_items)
                 ?.jsonStringToProductItems()
+
+    private fun getMockCouponItems(): List<Coupon>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.coupon_mock_items)
+                ?.jsonStringToCouponItems()
 }
 
 private fun String.jsonStringToProductItems(): List<ProductItem>? {
@@ -104,4 +113,29 @@ private fun createProductItem(jsonObject: JSONObject): ProductItem =
             jsonObject.getString("image_url"),
             jsonObject.getDouble("rating").toFloat(),
             jsonObject.getInt("reviews")
+        )
+
+private fun String.jsonStringToCouponItems(): List<Coupon>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> createCouponItem(jsonObject) }
+                .shuffled()
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun createCouponItem(jsonObject: JSONObject): Coupon =
+        Coupon(
+            jsonObject.getInt("id"),
+            jsonObject.getString("description"),
+            jsonObject.getString("title"),
+            jsonObject.getString("start_date"),
+            jsonObject.getString("end_date"),
+            jsonObject.getInt("remain"),
+            jsonObject.getString("link_url"),
+            jsonObject.getString("brand")
         )

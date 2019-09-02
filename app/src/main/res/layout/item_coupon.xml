@@ -1,64 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coupon_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="-7dp"
-    android:minHeight="76dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true">
+    android:clipToPadding="false"
+    app:strokeColor="@color/paletteLightGreyA100"
+    app:strokeWidth="1dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp">
 
-    <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
-        android:id="@+id/coupon_item"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:layout_gravity="center_horizontal">
 
         <ImageView
-            android:id="@+id/coupon_item_image"
-            android:layout_width="64dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/common_margin_m4" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/coupon_shape"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="@dimen/common_margin_m3"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="@dimen/common_margin_m3"
-            android:layout_toEndOf="@id/coupon_item_image"
-            android:orientation="vertical">
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_coupon_shape"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-            <org.mozilla.rocket.nightmode.themed.ThemedTextView
-                android:id="@+id/coupon_item_headline"
-                style="@style/Body1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/common_margin_m1"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="@color/paletteDarkGreyC100"
-                tools:text="Coupon title" />
+        <TextView
+            android:id="@+id/coupon_brand"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="12sp"
+            android:textColor="@color/paletteDarkGreyD100"
+            app:layout_constraintTop_toBottomOf="@id/coupon_shape"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Bukalapak" />
 
-            <TextView
-                android:id="@+id/coupon_item_time"
-                style="@style/Body5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:textColor="@color/paletteDarkGreyD100"
-                tools:text="Valid until 30 January 2020" />
-        </LinearLayout>
-    </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
-</androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/coupon_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="14sp"
+            android:textColor="@color/paletteBlack100"
+            android:lines="3"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/coupon_brand"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="LEGO Brickheadz Marty McFly Doc Brown 41611" />
+
+        <TextView
+            android:id="@+id/coupon_remain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="12dp"
+            android:textSize="12sp"
+            android:textColor="@color/paletteDarkGreyD100"
+            app:layout_constraintTop_toBottomOf="@id/coupon_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="9 days left" />
+
+        <TextView
+            android:id="@+id/coupon_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/paletteWhite100"
+            app:layout_constraintTop_toTopOf="@id/coupon_shape"
+            app:layout_constraintBottom_toBottomOf="@id/coupon_shape"
+            app:layout_constraintStart_toStartOf="@id/coupon_shape"
+            app:layout_constraintEnd_toEndOf="@id/coupon_shape"
+            tools:text="Super Gratis Ongkir + Cashback Day" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

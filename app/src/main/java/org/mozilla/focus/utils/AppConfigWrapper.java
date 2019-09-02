@@ -15,8 +15,6 @@ import org.mozilla.rocket.appupdate.InAppUpdateConfig;
 import org.mozilla.rocket.appupdate.InAppUpdateIntro;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon;
-import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponKey;
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher;
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey;
 import org.mozilla.rocket.content.news.data.NewsProviderConfig;
@@ -156,50 +154,6 @@ public class AppConfigWrapper {
                 object.optString(VoucherKey.KEY_NAME),
                 object.optString(VoucherKey.KEY_IMAGE),
                 object.optString(VoucherKey.KEY_SOURCE));
-    }
-
-    public static boolean hasEcommerceCoupons() {
-        return !getEcommerceCoupons().isEmpty();
-    }
-
-    public static ArrayList<Coupon> getEcommerceCoupons() {
-        ArrayList<Coupon> coupons = new ArrayList<>();
-
-        final String rcString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_E_COMMERCE_COUPONS);
-        try {
-            final JSONArray jsonArray = new JSONArray(rcString);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                final JSONObject object = (JSONObject) jsonArray.get(i);
-                final Voucher voucher = toVoucher(object);
-                final Coupon coupon = new Coupon(
-                        object.optString(CouponKey.KEY_ID),
-                        object.optString(CouponKey.KEY_CATEGORY),
-                        object.optString(CouponKey.KEY_SUBCATEGORY),
-                        object.optString(CouponKey.KEY_FEED),
-                        object.optLong(CouponKey.KEY_START),
-                        object.optLong(CouponKey.KEY_END),
-                        object.optBoolean(CouponKey.KEY_ACTIVE),
-                        voucher
-                );
-
-                // Filter out the invalid coupons - NotStartYet, Expired and Inactive
-                if (coupon.getStart() > System.currentTimeMillis()
-                        || coupon.getEnd() < System.currentTimeMillis()
-                        || !coupon.getActive()) {
-                    continue;
-                }
-
-                coupons.add(coupon);
-            }
-        } catch (JSONException e) {
-            // skip and do nothing
-        }
-
-        return coupons;
-    }
-
-    public static String getCouponBannerRootConfig() {
-        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_COUPON_BANNER_MANIFEST);
     }
 
     public static String getNewsProviderUrl(String provider) {
