@@ -5,6 +5,7 @@
 <resources>
     <color name="paletteBlack100">#FF000000</color>
     <color name="paletteBlack87">#DE000000</color>
+    <color name="paletteBlack64">#A3000000</color>
     <color name="paletteBlack54">#8B000000</color>
     <color name="paletteBlack50">#80000000</color>
     <color name="paletteLightBlack100">#FF272727</color>
@@ -160,8 +161,8 @@
     <color name="contentHeaderTextColor">#0C0C0D</color>
 
     <!-- Shopping Search -->
-    <color name="shoppingSearchInputBackgroundGradientStart">#ff3c61</color>
-    <color name="shoppingSearchInputBackgroundGradientEnd">#ff803e</color>
+    <color name="shoppingSearchInputBackgroundGradientStart">#FF3C61</color>
+    <color name="shoppingSearchInputBackgroundGradientEnd">#FF803E</color>
     <color name="shoppingSearchIcon">#FF5654</color>
     <color name="shoppingSearchPreferencesToolbarBackground">#212121</color>
 
