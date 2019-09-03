@@ -532,9 +532,9 @@
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
     <!-- Title of news preferences -->
-    <string name="title_news_preferences">News preferences</string>
+    <string name="title_news_preferences">News Settings</string>
     <!-- This is the dialog for choosing news language -->
-    <string name="news_language_dialog_title">News language</string>
+    <string name="news_language_dialog_title">Language</string>
     <string name="news_language_dialog_option_english">English</string>
     <string name="news_language_dialog_option_hindi">Hindi</string>
     <string name="news_language_dialog_option_marathi">Marathi</string>
@@ -705,12 +705,6 @@
     <string name="gaming_vertical_genre_9">Arcade</string>
     <string name="gaming_vertical_genre_10">Puzzle &amp; Logic</string>
     <string name="gaming_vertical_genre_11">Sports &amp; Racing</string>
-
-    <!--News Vertical-->
-    <!-- Title of news preferences -->
-    <string name="title_news_preferences">News Settings</string>
-    <!-- This is the dialog for choosing news language -->
-    <string name="news_language_dialog_title">Language</string>
 
     <!-- Home 2.0 -->
     <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0 -->
