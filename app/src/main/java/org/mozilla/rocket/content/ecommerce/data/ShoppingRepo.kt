@@ -19,20 +19,15 @@ import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
 import java.util.UUID
-import kotlin.random.Random
 
 class ShoppingRepo(private val appContext: Context) {
 
     suspend fun getDeals(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
             listOf(
-                Runway(listOf(
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem(),
-                    generateFakeRunwayItem()
-                )),
+                Runway(
+                    getMockRunwayItems() ?: emptyList()
+                ),
                 ProductCategory(UUID.randomUUID().toString(),
                     "Flash Deals",
                     getMockProductItems()?.subList(0, 10) ?: emptyList()
@@ -52,13 +47,9 @@ class ShoppingRepo(private val appContext: Context) {
     suspend fun getCoupons(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
             listOf(
-                Runway(listOf(
-                        generateFakeRunwayItem(),
-                        generateFakeRunwayItem(),
-                        generateFakeRunwayItem(),
-                        generateFakeRunwayItem(),
-                        generateFakeRunwayItem()
-                )),
+                Runway(
+                    getMockRunwayItems() ?: emptyList()
+                ),
                 CouponCategory(UUID.randomUUID().toString(),
                     "Hot Coupons",
                     getMockCouponItems() ?: emptyList()
@@ -73,13 +64,10 @@ class ShoppingRepo(private val appContext: Context) {
         }
     }
 
-    // TODO: remove test function
-    private fun getPlaceholderImageUrl(w: Int, h: Int): String =
-            "https://placeimg.com/$w/$h/animals?whatever=${Random.nextInt(0, 10)}"
-
-    // TODO: remove test function
-    private fun generateFakeRunwayItem(): RunwayItem =
-            getPlaceholderImageUrl(400, 200).run { RunwayItem(this, this, this) }
+    // TODO: remove mock data
+    private fun getMockRunwayItems(): List<RunwayItem>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.runway_mock_items)
+                ?.jsonStringToRunwayItems()
 
     // TODO: remove mock data
     private fun getMockProductItems(): List<ProductItem>? =
@@ -94,6 +82,27 @@ class ShoppingRepo(private val appContext: Context) {
     private fun getVoucherItems(): List<Voucher>? =
             FirebaseHelper.getFirebase().getRcString("str_e_commerce_shoppinglinks").jsonStringToVoucherItems()
 }
+
+private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> createRunwayItem(jsonObject) }
+                .shuffled()
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
+        RunwayItem(
+            jsonObject.getInt("id"),
+            jsonObject.getString("image_url"),
+            jsonObject.getString("link_url"),
+            jsonObject.getString("source")
+        )
 
 private fun String.jsonStringToProductItems(): List<ProductItem>? {
     return try {

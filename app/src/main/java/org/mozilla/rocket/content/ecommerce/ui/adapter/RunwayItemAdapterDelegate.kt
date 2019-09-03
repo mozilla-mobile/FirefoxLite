@@ -36,6 +36,8 @@ class RunwayItemViewHolder(
 
         runway_card.setOnClickListener { shoppingViewModel.onRunwayItemClicked(runwayItem) }
 
+        runway_source.text = runwayItem.source
+
         GlideApp.with(itemView.context)
             .asBitmap()
             .placeholder(R.drawable.placeholder)
@@ -46,7 +48,8 @@ class RunwayItemViewHolder(
 }
 
 data class RunwayItem(
-    val id: String,
+    val id: Int,
     val imageUrl: String,
-    val linkUrl: String
+    val linkUrl: String,
+    val source: String
 ) : DelegateAdapter.UiModel()
