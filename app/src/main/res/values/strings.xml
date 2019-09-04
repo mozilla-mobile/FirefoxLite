@@ -645,7 +645,7 @@
 
     <!--Artboard Name: 2.2 Switch UI Preference Behaviors-->
     <!--Switch UI Preferences-->
-    <string name="shopping_switch_ui_preferences_title">Shopping Search Settings </string>
+    <string name="shopping_switch_ui_preferences_title">Shopping Search Settings</string>
     <string name="shopping_switch_ui_preferences_subtitle">Sites to compare</string>
 
     <!--Artboard Name: 3.1 Switch UI Navigation Overview-->
@@ -680,8 +680,8 @@
     <string name="gaming_vertical_new">New</string>
 
     <!--Gaming Contextual Hint-->
-    <string name="gaming_vertical_hint_title">Create shortcut for your favorite games </string>
-    <string name="gaming_vertical_hint_body">Long press to create a shortcut to your phone home screen. </string>
+    <string name="gaming_vertical_hint_title">Create shortcut for your favorite games</string>
+    <string name="gaming_vertical_hint_body">Long press to create a shortcut to your phone home screen.</string>
     <string name="gaming_vertical_hint_button">OK</string>
 
     <!--Gaming Longpress Menu-->
@@ -690,7 +690,7 @@
     <string name="gaming_vertical_menu_option_3">Remove from the list</string>
 
     <!--Gaming Share Message-->
-    <string name="gaming_vertical_share_message">I’m playing a really cool game.  Check it out!</string>
+    <string name="gaming_vertical_share_message">I’m playing a really cool game. Check it out!</string>
 
 
     <!--Gaming Genres-->
@@ -752,7 +752,7 @@
     <string name="msrp_challenge_title">7-day challenge for Rs 15,000 shopping coupon</string>
     <string name="msrp_challenge_details_title_1">1. Join the 7-Day challenge</string>
     <string name="msrp_challenge_details_body_1">View the top sites on Firefox Lite home by simply clicking the buttons for seven days in a row.</string>
-    <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward </string>
+    <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
     <string name="msrp_challenge_button_1">I’m In!</string>
     <string name="msrp_challenge_tou">By clicking “I’m in” you are agreeing to our Terms of Use</string>
@@ -773,7 +773,7 @@
 
     <!--Coupon-->
     <string name="msrp_coupon_title">Your coupon is ready!</string>
-    <string name="msrp_coupon_body_1">Coupons are valid for a limited time only.  We reserve the right to modify or cancel coupons at any time.</string>
+    <string name="msrp_coupon_body_1">Coupons are valid for a limited time only. We reserve the right to modify or cancel coupons at any time.</string>
     <string name="msrp_coupon_body_2">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
     <string name="msrp_coupon_expire">Expires 03/09/2021</string>
     <string name="msrp_coupon_button_2">Go Shopping</string>
