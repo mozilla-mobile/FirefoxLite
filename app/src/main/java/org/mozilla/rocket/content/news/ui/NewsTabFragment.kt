@@ -1,16 +1,13 @@
 package org.mozilla.rocket.content.news.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -39,6 +36,8 @@ class NewsTabFragment : Fragment() {
 
     private lateinit var newsViewModel: NewsViewModel
 
+    private var newsSettings: Pair<NewsLanguage, List<NewsCategory>>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
@@ -60,14 +59,20 @@ class NewsTabFragment : Fragment() {
 
             newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
-                    newsViewModel.clear()
-                    setupViewPager(view, it)
+                    newsSettings = it
+                    refresh(view, it)
                 }
             })
         }
 
         news_setting.setOnClickListener {
             setting()
+        }
+
+        news_refresh_button.setOnClickListener {
+            newsSettings?.let {
+                refresh(view, it)
+            }
         }
     }
 
@@ -136,6 +141,11 @@ class NewsTabFragment : Fragment() {
         }
     }
 
+    fun refresh(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
+        newsViewModel.clear()
+        setupViewPager(view, newsSettings)
+    }
+
     fun setting() {
         val intent = Intent().run {
             putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
@@ -143,16 +153,6 @@ class NewsTabFragment : Fragment() {
         }
         TelemetryWrapper.clickOnNewsSetting()
         startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
-    }
-
-    // TODO: make this a util
-    // helper method to work with FragmentManager
-    private inline fun Context.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        val fragmentManager = (this as? FragmentActivity)?.supportFragmentManager
-        if (fragmentManager?.isStateSaved == true) {
-            return
-        }
-        fragmentManager?.beginTransaction()?.func()?.commit()
     }
 
     companion object {

@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/new_tab_root"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_menu"
-        android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/new_tab_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_menu"
+    android:orientation="vertical">
 
     <RelativeLayout
-            android:id="@+id/news_tab_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+        android:id="@+id/news_tab_title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <TextView
-                android:id="@+id/news_text"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_menu_news"
-                style="@style/Headline4"
-                android:textColor="@color/paletteLightBlack100" />
+            android:id="@+id/news_text"
+            style="@style/Headline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/label_menu_news"
+            android:textColor="@color/contentHeaderTextColor" />
 
         <ImageButton
-                android:id="@+id/news_setting"
-                android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/news_setting" />
+            android:id="@+id/news_refresh_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@id/news_setting"
+            android:background="@null"
+            android:padding="4dp"
+            android:src="@drawable/action_refresh" />
+
+        <ImageButton
+            android:id="@+id/news_setting"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:padding="4dp"
+            android:src="@drawable/news_setting" />
     </RelativeLayout>
 
     <com.google.android.material.tabs.TabLayout
-            android:id="@+id/news_tab"
-            android:layout_below="@+id/news_tab_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/common_margin_m7"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            app:tabPaddingStart="0dp"
-            app:tabSelectedTextColor="@color/paletteDarkGreyC100"
-            app:tabTextColor="@color/paletteDarkGreyC30"
-            app:tabIndicatorColor="@android:color/transparent"
-            app:tabUnboundedRipple="true"
-            />
+        android:id="@+id/news_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_margin_m7"
+        android:layout_below="@+id/news_tab_title"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:tabIndicatorColor="@android:color/transparent"
+        app:tabPaddingStart="0dp"
+        app:tabSelectedTextColor="@color/paletteDarkGreyC100"
+        app:tabTextColor="@color/paletteDarkGreyC30"
+        app:tabUnboundedRipple="true" />
 
     <androidx.viewpager.widget.ViewPager
-            android:id="@+id/news_viewpager"
-            android:layout_below="@+id/news_tab"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+        android:id="@+id/news_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/news_tab" />
 
 </RelativeLayout>
