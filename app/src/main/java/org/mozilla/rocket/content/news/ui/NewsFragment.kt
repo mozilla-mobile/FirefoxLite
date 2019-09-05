@@ -25,12 +25,12 @@ import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.news.data.NewsSourceManager
+import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 import org.mozilla.rocket.content.portal.ContentFeature
 import org.mozilla.threadutils.ThreadUtils
 import javax.inject.Inject
@@ -134,7 +134,7 @@ class NewsFragment : Fragment(), NewsListingEventListener {
         }
 
         context?.let {
-            startActivity(ContentTabActivity.getStartIntent(it, url))
+            startActivity(ContentTabActivity.getStartIntent(it, url, enableTurboMode = false))
         }
     }
 
