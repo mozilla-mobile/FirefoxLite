@@ -8,6 +8,7 @@ import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.viewmodel.BookmarkViewModel
+import org.mozilla.focus.viewmodel.ShoppingSearchPromptViewModel
 import org.mozilla.rocket.chrome.BottomBarViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.MenuViewModel
@@ -17,6 +18,7 @@ import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
+import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
 import org.mozilla.rocket.urlinput.GlobalDataSource
 import org.mozilla.rocket.urlinput.LocaleDataSource
 import org.mozilla.rocket.urlinput.QuickSearchRepository
@@ -106,4 +108,8 @@ object ChromeModule {
         browsers: Browsers,
         storageHelper: StorageHelper
     ): ChromeViewModel = ChromeViewModel(settings, bookmarkRepo, privateMode, browsers, storageHelper)
+
+    @JvmStatic
+    @Provides
+    fun provideShoppingSearchPromptViewModel(useCase: GetShoppingSitesUseCase): ShoppingSearchPromptViewModel = ShoppingSearchPromptViewModel(useCase)
 }
