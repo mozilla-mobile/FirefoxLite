@@ -144,8 +144,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
     }
 
     private fun initViewPager() {
-        shoppingSearchResultViewModel.uiModel.observe(this, Observer { uiModel ->
-            val tabItems = uiModel.sites.map { site ->
+        shoppingSearchResultViewModel.shoppingSearchSites.observe(this, Observer { shoppingSearchSites ->
+            val tabItems = shoppingSearchSites.map { site ->
                 TabItem(
                     ContentTabFragment.newInstance(site.searchUrl),
                     site.title
@@ -178,10 +178,10 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
     }
 
     private fun sendShareIntent() {
-        val list = shoppingSearchResultViewModel.uiModel.value
+        val list = shoppingSearchResultViewModel.shoppingSearchSites.value
         list?.apply {
             val index = view_pager.currentItem
-            val item = list.sites[index]
+            val item = list[index]
             val subject = item.title
             val text = item.title
             val share = Intent(Intent.ACTION_SEND)

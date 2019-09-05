@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 
-class DelegateAdapter(
+open class DelegateAdapter(
     private val delegatesManager: AdapterDelegatesManager
 ) : RecyclerView.Adapter<DelegateAdapter.ViewHolder>() {
 
-    private var data = mutableListOf<UiModel>()
+    internal var data = mutableListOf<UiModel>()
 
     fun setData(data: List<UiModel>) {
         this.data.clear()

@@ -4,6 +4,8 @@
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
     <color name="paletteBlack100">#FF000000</color>
+    <color name="paletteBlack87">#DE000000</color>
+    <color name="paletteBlack54">#8B000000</color>
     <color name="paletteLightBlack100">#FF272727</color>
     <color name="paletteLightBlack30">#4D272727</color>
     <color name="paletteLightBlack20">#33272727</color>
@@ -15,8 +17,10 @@
     <color name="paletteDarkGreyD100">#FF737373</color>
     <color name="paletteDarkGreyD50">#7F737373</color>
     <color name="paletteDarkGreyE100">#B1B1B3</color>
+    <color name="paletteDarkGreyE54">#8AB1B1B3</color>
     <color name="paletteDarkGreyE50">#80B1B1B3</color>
     <color name="paletteDarkGreyE30">#4DB1B1B3</color>
+    <color name="paletteDarkGreyE16">#29B1B1B3</color>
     <color name="paletteLightGreyA100">#FFE4E4E4</color>
     <color name="paletteLightGreyB100">#FFF9F9FA</color>
     <color name="paletteWhite100">#FFFFFFFF</color>
@@ -31,7 +35,10 @@
     <color name="paletteDarkBlueA100">#FF253058</color>
     <color name="paletteDarkBlueB100">#FF1E2950</color>
     <color name="paletteDarkBlueC100">#FF0A84FF</color>
+    <color name="paletteDarkBlueC54">#8A0A84FF</color>
+    <color name="paletteDarkBlueC30">#4D0A84FF</color>
     <color name="paletteDarkBlueC20">#330A84FF</color>
+    <color name="paletteDarkBlueC16">#290A84FF</color>
     <color name="paletteLightBlue100">#FF41B7E6</color>
     <color name="palettePurple100">#FFC85DEF</color>
     <color name="palettePurple50">#80C85DEF</color>
@@ -151,4 +158,5 @@
     <color name="shoppingSearchInputBackgroundGradientStart">#ff3c61</color>
     <color name="shoppingSearchInputBackgroundGradientEnd">#ff803e</color>
     <color name="shoppingSearchIcon">#FF5654</color>
+    <color name="shoppingSearchPreferencesToolbarBackground">#212121</color>
 </resources>
