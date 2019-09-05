@@ -327,6 +327,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=".content.news" />
+
+        <activity
+            android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchPreferencesActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShoppingSearchPreferencesTheme"/>
+
     </application>
 
 </manifest>
