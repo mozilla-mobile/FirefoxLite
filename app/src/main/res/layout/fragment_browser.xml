@@ -95,6 +95,14 @@
         </org.mozilla.focus.widget.ResizableKeyboardLayout>
     </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
 
+    <ViewStub
+        android:id="@+id/shopping_search_stub"
+        android:inflatedId="@+id/subTree"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_above="@+id/browser_bottom_bar"
+        android:layout="@layout/shopping_search_prompt_message"/>
+
     <org.mozilla.rocket.content.view.BottomBar
         android:id="@+id/browser_bottom_bar"
         android:layout_width="match_parent"

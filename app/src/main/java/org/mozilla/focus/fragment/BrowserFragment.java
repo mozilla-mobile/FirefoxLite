@@ -29,12 +29,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebHistoryItem;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -51,6 +53,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,6 +73,7 @@ import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.focus.viewmodel.ShoppingSearchPromptViewModel;
 import org.mozilla.focus.web.GeoPermissionCache;
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder;
 import org.mozilla.focus.widget.AnimatedProgressBar;
@@ -94,6 +98,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedLinearLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabView;
@@ -145,6 +150,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     Lazy<BottomBarViewModel> bottomBarViewModelCreator;
     @Inject
     Lazy<ChromeViewModel> chromeViewModelCreator;
+    @Inject
+    Lazy<ShoppingSearchPromptViewModel> promptMessageViewModelCreator;
 
     private int systemVisibility = ViewUtils.SYSTEM_UI_VISIBILITY_NONE;
 
@@ -215,6 +222,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private ChromeViewModel chromeViewModel;
     private BottomBarViewModel bottomBarViewModel;
     private BottomBarItemAdapter bottomBarItemAdapter;
+    private ShoppingSearchPromptViewModel shoppingSearchPromptMessageViewModel;
+    private Button shoppingSearchBottomSheetSearchBtn;
+    private BottomSheetBehavior shoppingSearchPromptMessageBehavior;
+    private ViewStub shoppingSearchViewStub;
 
     private long landscapeStartTime = 0L;
 
@@ -224,6 +235,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         super.onCreate(savedInstanceState);
         bottomBarViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(bottomBarViewModelCreator::get)).get(BottomBarViewModel.class);
         chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
+        shoppingSearchPromptMessageViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(promptMessageViewModelCreator::get)).get(ShoppingSearchPromptViewModel.class);
     }
 
     @Override
@@ -420,6 +432,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         }
 
         urlView.setText(UrlUtils.stripUserInfo(url));
+        shoppingSearchPromptMessageViewModel.checkIsShoppingSite(url);
     }
 
     @Override
@@ -463,10 +476,42 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
         sessionManager.register(this.managerObserver, this, false);
 
+        shoppingSearchViewStub = view.findViewById(R.id.shopping_search_stub);
+        observeShoppingSearchPromptMessageViewModel();
 
         observeNightMode();
 
         return view;
+    }
+
+    private void observeShoppingSearchPromptMessageViewModel() {
+        shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().observe(this,
+                unit -> startActivity(new Intent(getActivity(), ShoppingSearchActivity.class)));
+
+        shoppingSearchPromptMessageViewModel.isUrlShoppingSite().observe(this, isShoppingSite -> {
+            int sheetState = BottomSheetBehavior.STATE_COLLAPSED;
+
+            if (isShoppingSite != null && isShoppingSite) {
+                if (shoppingSearchViewStub.getParent() != null) {
+                    setupShoppingSearchPrompt(shoppingSearchViewStub.inflate());
+                }
+                sheetState = BottomSheetBehavior.STATE_EXPANDED;
+            }
+
+            changeShoppingSearchPromptMessageState(sheetState);
+        });
+    }
+    private void setupShoppingSearchPrompt(View view) {
+        shoppingSearchPromptMessageBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet));
+
+        shoppingSearchBottomSheetSearchBtn = view.findViewById(R.id.bottom_sheet_search);
+        shoppingSearchBottomSheetSearchBtn.setOnClickListener(v -> shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().call());
+    }
+
+    private void changeShoppingSearchPromptMessageState(int state) {
+        if (shoppingSearchPromptMessageBehavior != null) {
+            shoppingSearchPromptMessageBehavior.setState(state);
+        }
     }
 
     private void observeChromeAction() {
@@ -492,6 +537,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             ScreenNavigator.NavigationState state = chromeViewModel.getNavigationState().getValue();
             if (state != null & state.isBrowser()) {
                 showFindInPage();
+            }
+        });
+        chromeViewModel.getCanGoBack().observe(this, unit -> {
+            if (canGoBack()) {
+                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }
