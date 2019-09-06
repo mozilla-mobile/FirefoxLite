@@ -14,8 +14,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/coupon_image"
+            android:layout_width="0dp"
+            android:layout_height="170dp"
+            android:scaleType="fitCenter"
+            android:background="@color/paletteWhite100"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/coupon_shape"
@@ -23,7 +32,7 @@
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/bg_coupon_shape"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/coupon_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -36,7 +45,7 @@
             android:layout_marginEnd="12dp"
             android:textSize="12sp"
             android:textColor="@color/paletteDarkGreyD100"
-            app:layout_constraintTop_toBottomOf="@id/coupon_shape"
+            app:layout_constraintTop_toBottomOf="@id/coupon_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Bukalapak" />
@@ -55,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@id/coupon_brand"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="LEGO Brickheadz Marty McFly Doc Brown 41611" />
+            tools:text="Beli Gadget Favorit, Dapatkan Cashbacknya Hingga Rp70 Ribu" />
 
         <TextView
             android:id="@+id/coupon_remain"
@@ -70,22 +79,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="9 days left" />
-
-        <TextView
-            android:id="@+id/coupon_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:textSize="14sp"
-            android:textColor="@color/paletteWhite100"
-            app:layout_constraintTop_toTopOf="@id/coupon_shape"
-            app:layout_constraintBottom_toBottomOf="@id/coupon_shape"
-            app:layout_constraintStart_toStartOf="@id/coupon_shape"
-            app:layout_constraintEnd_toEndOf="@id/coupon_shape"
-            tools:text="Super Gratis Ongkir + Cashback Day" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
