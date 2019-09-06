@@ -8,7 +8,6 @@ import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
@@ -46,15 +45,7 @@ class ShoppingRepo(private val appContext: Context) {
 
     suspend fun getCoupons(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
-            listOf(
-                Runway(
-                    getMockRunwayItems() ?: emptyList()
-                ),
-                CouponCategory(UUID.randomUUID().toString(),
-                    "Hot Coupons",
-                    getMockCouponItems() ?: emptyList()
-                )
-            )
+            getMockCouponItems() ?: emptyList()
         }
     }
 
@@ -98,10 +89,10 @@ private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
 
 private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
         RunwayItem(
-            jsonObject.getInt("id"),
-            jsonObject.getString("image_url"),
-            jsonObject.getString("link_url"),
-            jsonObject.getString("source")
+            jsonObject.optInt("id"),
+            jsonObject.optString("image_url"),
+            jsonObject.optString("link_url"),
+            jsonObject.optString("source")
         )
 
 private fun String.jsonStringToProductItems(): List<ProductItem>? {
@@ -119,16 +110,16 @@ private fun String.jsonStringToProductItems(): List<ProductItem>? {
 
 private fun createProductItem(jsonObject: JSONObject): ProductItem =
         ProductItem(
-            jsonObject.getInt("id"),
-            jsonObject.getString("name"),
+            jsonObject.optInt("id"),
+            jsonObject.optString("name"),
             "Rp",
-            jsonObject.getInt("price"),
-            jsonObject.getString("discount"),
-            jsonObject.getString("brand"),
-            jsonObject.getString("link_url"),
-            jsonObject.getString("image_url"),
-            jsonObject.getDouble("rating").toFloat(),
-            jsonObject.getInt("reviews")
+            jsonObject.optInt("price"),
+            jsonObject.optString("discount"),
+            jsonObject.optString("brand"),
+            jsonObject.optString("link_url"),
+            jsonObject.optString("image_url"),
+            jsonObject.optDouble("rating").toFloat(),
+            jsonObject.optInt("reviews")
         )
 
 private fun String.jsonStringToCouponItems(): List<Coupon>? {
@@ -146,14 +137,14 @@ private fun String.jsonStringToCouponItems(): List<Coupon>? {
 
 private fun createCouponItem(jsonObject: JSONObject): Coupon =
         Coupon(
-            jsonObject.getInt("id"),
-            jsonObject.getString("description"),
-            jsonObject.getString("title"),
-            jsonObject.getString("start_date"),
-            jsonObject.getString("end_date"),
-            jsonObject.getInt("remain"),
-            jsonObject.getString("link_url"),
-            jsonObject.getString("brand")
+            jsonObject.optInt("id"),
+            jsonObject.optString("title"),
+            jsonObject.optString("brand"),
+            jsonObject.optString("start_date"),
+            jsonObject.optString("end_date"),
+            jsonObject.optInt("remain"),
+            jsonObject.optString("link_url"),
+            jsonObject.optString("image_url")
         )
 
 private fun String.jsonStringToVoucherItems(): List<Voucher>? {
@@ -171,8 +162,8 @@ private fun String.jsonStringToVoucherItems(): List<Voucher>? {
 
 private fun createVoucherItem(jsonObject: JSONObject): Voucher =
         Voucher(
-            jsonObject.getString(VoucherKey.KEY_URL),
-            jsonObject.getString(VoucherKey.KEY_NAME),
-            jsonObject.getString(VoucherKey.KEY_IMAGE),
-            jsonObject.getString(VoucherKey.KEY_SOURCE)
+            jsonObject.optString(VoucherKey.KEY_URL),
+            jsonObject.optString(VoucherKey.KEY_NAME),
+            jsonObject.optString(VoucherKey.KEY_IMAGE),
+            jsonObject.optString(VoucherKey.KEY_SOURCE)
         )

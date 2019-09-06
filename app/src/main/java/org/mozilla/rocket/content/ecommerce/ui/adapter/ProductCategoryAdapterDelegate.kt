@@ -1,13 +1,14 @@
 package org.mozilla.rocket.content.ecommerce.ui.adapter
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_product_category.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.StartSnapHelper
-import org.mozilla.rocket.content.ecommerce.ui.ItemOffsetDecoration
+import org.mozilla.rocket.content.ecommerce.ui.SpaceItemDecoration
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 
 class ProductCategoryAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
@@ -28,7 +29,7 @@ class ProductCategoryViewHolder(
     init {
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
         val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
-        product_list.addItemDecoration(ItemOffsetDecoration(spaceWidth, padding))
+        product_list.addItemDecoration(SpaceItemDecoration(spaceWidth, padding, RecyclerView.HORIZONTAL))
         product_list.adapter = this@ProductCategoryViewHolder.adapter
         val snapHelper = StartSnapHelper()
         snapHelper.attachToRecyclerView(product_list)

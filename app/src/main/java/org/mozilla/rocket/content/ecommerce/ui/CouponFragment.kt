@@ -12,10 +12,8 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponCategory
-import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponCategoryAdapterDelegate
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
-import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
+import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 
@@ -47,13 +45,13 @@ class CouponFragment : Fragment() {
     private fun initCoupons() {
         couponAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(shoppingViewModel))
-                add(CouponCategory::class, R.layout.item_coupon_category, CouponCategoryAdapterDelegate(shoppingViewModel))
+                add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(shoppingViewModel))
             }
         )
-        content_coupons.apply {
-            adapter = couponAdapter
-        }
+        val spaceWidth = resources.getDimensionPixelSize(R.dimen.card_space_width)
+        val padding = resources.getDimensionPixelSize(R.dimen.card_padding)
+        coupon_list.addItemDecoration(SpaceItemDecoration(spaceWidth, padding))
+        coupon_list.adapter = couponAdapter
     }
 
     private fun bindListData() {

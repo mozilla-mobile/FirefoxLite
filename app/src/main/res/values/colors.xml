@@ -169,15 +169,4 @@
     <!--  Shopping -->
     <color name="colorProductPrice">#EC6255</color>
     <color name="colorProductDiscount">#EC1C52</color>
-    <color name="colorCouponDefault">#FF5654</color>
-    <color name="colorCouponTokopedia">#74CF79</color>
-    <color name="colorCouponJDID">#DC6E7B</color>
-    <color name="colorCouponShopee">#FA927D</color>
-    <color name="colorCouponLazada">#8A8CBA</color>
-    <color name="colorCouponBukalapak">#E66E90</color>
-    <color name="colorCouponFlipkart">#7FAAF0</color>
-    <color name="colorCouponAmazon">#EBBC75</color>
-    <color name="colorCouponSnapdeal">#E67E9E</color>
-    <color name="colorCouponPaytm">#7ECEE6</color>
-    <color name="colorCouponShopclues">#8FC4CC</color>
 </resources>

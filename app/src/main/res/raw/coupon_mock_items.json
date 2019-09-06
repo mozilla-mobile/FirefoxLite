@@ -1,302 +1,302 @@
 [
     {
         "id": 1,
-        "description": "50% off",
         "title": "Raih Promo Gratis Ongkir untuk Penuhi Kebutuhan Makanan & Kesehatan + Diskon Hingga 50%!",
+        "brand": "Tokopedia",
         "start_date": "8/26",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.tokopedia.com/promo/gratis-ongkir/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/Feature-Image-1200x6758.jpg"
     },
     {
         "id": 2,
-        "description": "70% off",
         "title": "Kecil-kecil Cabe Rawit, Beli Powerbank ACMIC Lebih Hemat",
+        "brand": "Tokopedia",
         "start_date": "8/27",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.tokopedia.com/promo/acmic/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/03/Feature3.jpg"
     },
     {
         "id": 3,
-        "description": "50% off",
         "title": "Promo Nature Republic - Berhadiah Merchandise EXO, Cashback 50%!",
+        "brand": "Tokopedia",
         "start_date": "8/27",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.tokopedia.com/promo/nature-republic/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/NatureRepublic-feature.jpg"
     },
     {
         "id": 4,
-        "description": "Free Ongkir 100% hingga Rp 20.000",
         "title": "Promo Fashion Wanita - Dapatkan Ongkir Hingga 20 ribu | Tokopedia",
+        "brand": "Tokopedia",
         "start_date": "8/26",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.tokopedia.com/promo/fashion-wanita/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/1200X675-FEATURE-Tanpa-10th.jpg"
     },
     {
         "id": 5,
-        "description": "50% off",
         "title": "Kembangkan Keceriaan Si Kecil dengan Mainan Favoritnya! Diskon s.d 50%",
+        "brand": "Tokopedia",
         "start_date": "8/19",
         "end_date": "9/1",
-        "remain": -1,
+        "remain": -5,
         "link_url": "https://www.tokopedia.com/promo/payday/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/07/image-feature.png"
     },
     {
         "id": 6,
-        "description": "Rp15.000 dari Grab Express",
         "title": "Tokopedia Food Market, Gratis Ongkir Hingga Rp15.000 dari Grab Express",
+        "brand": "Tokopedia",
         "start_date": "8/19",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://www.tokopedia.com/promo/grab/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/Feature-Image-940x339.png"
     },
     {
         "id": 7,
-        "description": "Rp50.000",
         "title": "Lengkapi Koleksimu Main Makin Seru, Cashback hingga Rp50 Ribu",
+        "brand": "Tokopedia",
         "start_date": "8/25",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://www.tokopedia.com/promo/j-shop/?cta_src=363",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/07/JShop-FEATURE.png"
     },
     {
         "id": 8,
-        "description": "Cash back Rp15.000",
         "title": "Pria Gaya Suka-Suka, Cashback hingga Rp15.000",
+        "brand": "Tokopedia",
         "start_date": "8/26",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.tokopedia.com/promo/manzone/?cta_src=0",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/03/Feature-Image-21.png"
     },
     {
         "id": 9,
-        "description": "30% off",
         "title": "Gajian Tiba, Hobi Baca Jadi Lebih Lega! Buku Favorit Diskon s.d 30%",
+        "brand": "Tokopedia",
         "start_date": "8/26",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.tokopedia.com/promo/kompas/?cta_src=0",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/kompas-payday-microsite-feature.png"
     },
     {
         "id": 10,
-        "description": "Diskon Rp200 Ribu",
         "title": "Diskon Rp200 Ribu",
+        "brand": "Tokopedia",
         "start_date": "8/26",
         "end_date": "9/1",
-        "remain": -1,
+        "remain": -5,
         "link_url": "https://www.tokopedia.com/promo/samsung/?cta_src=0",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/Tokopedia-Banner-Samsung-Galaxy-A70-1200x675px-23-Agustus-2019.jpg"
     },
     {
         "id": 11,
-        "description": "20% off",
         "title": "Paket Eksklusif Fitmee x Bits & Bobs ada di Official Store, Lho",
+        "brand": "Tokopedia",
         "start_date": "8/25",
         "end_date": "9/15",
-        "remain": 13,
+        "remain": 9,
         "link_url": "https://www.tokopedia.com/promo/fitmee/?cta_src=0",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2018/12/Feature-Image1.png"
     },
     {
         "id": 12,
-        "description": "Cashback 130rb",
         "title": "Cashback 130rb Untuk Kamu yang di Bali dan Palembang",
+        "brand": "Tokopedia",
         "start_date": "8/24",
         "end_date": "9/8",
-        "remain": 6,
+        "remain": 2,
         "link_url": "https://www.tokopedia.com/promo/finansial-home-credit-2/?cta_src=0",
-        "brand": "Tokopedia"
+        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/07/Feature-940x339-6.jpg"
     },
     {
         "id": 13,
-        "description": "Super Gratis Ongkir + Cashback Day",
         "title": "9.9 Super Shopping Day | Super Gratis Ongkir + Cashback Day | 16 Aug - 12 Sep",
+        "brand": "Shopee",
         "start_date": "8/16",
         "end_date": "9/12",
-        "remain": 10,
+        "remain": 6,
         "link_url": "https://shopee.co.id/m/9-9-super-gratis-ongkir-day-118",
-        "brand": "Shopee"
+        "image_url": "https://cf.shopee.co.id/file/d8e4021920ce70f9aa8912e0df1ce7d9"
     },
     {
         "id": 14,
-        "description": "70% off",
         "title": "Produk Terlaris Masa Kini Disc. up to 70% | 29 Ags - 1 Sep ",
+        "brand": "Shopee",
         "start_date": "8/29",
         "end_date": "9/1",
-        "remain": -1,
+        "remain": -5,
         "link_url": "https://shopee.co.id/collections/237662/",
-        "brand": "Shopee"
+        "image_url": "https://cf.shopee.co.id/file/34a347d5ea1a01832170d4d13b8dbcc1"
     },
     {
         "id": 15,
-        "description": "Rp 20.000",
         "title": "Nikmati promo Cegah Sakit di Pergantian Musim Mulai Dari 20RB hanya di Shopee!",
+        "brand": "Shopee",
         "start_date": "",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://shopee.co.id/m/cegah-sakit-di-pergantian-musim",
-        "brand": "Shopee"
+        "image_url": "https://cf.shopee.co.id/file/321e873bc0d95c666f464f29bc005e5b"
     },
     {
         "id": 16,
-        "description": "70% off",
         "title": "Nikmati promo Tas & Sepatu Favorit Wanita Disc. Up to 70% hanya di Shopee!",
+        "brand": "Shopee",
         "start_date": "",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://shopee.co.id/m/tas-sepatu-favorit-wanita",
-        "brand": "Shopee"
+        "image_url": "https://cf.shopee.co.id/file/54db961684f9d1bbae31ae81e591372a"
     },
     {
         "id": 17,
-        "description": "70% off",
         "title": "Nikmati Promo Bayar Di Tempat Disc. Up To 70% Hanya Di Shopee!",
+        "brand": "Shopee",
         "start_date": "",
         "end_date": "9/2",
-        "remain": 0,
+        "remain": -4,
         "link_url": "https://shopee.co.id/m/bayar-di-tempat-101",
-        "brand": "Shopee"
+        "image_url": "https://cf.shopee.co.id/file/a42289baf58e9d5afd1b84a556d369d6"
     },
     {
         "id": 18,
-        "description": "90% off",
         "title": "Produk Terbaik Komunitas",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://www.bukalapak.com/promo/produk-terbaik-komunitas?from=promo-page",
-        "brand": "bukalapak"
+        "image_url": "https://www.bukalapak.com/promo/produk-terbaik-komunitas"
     },
     {
         "id": 19,
-        "description": " 80% off",
         "title": "Nikmati Promo Aktivitas Outdoor Seru diskon hingga 80% Hanya di Shopee!",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "9/2",
-        "remain": 0,
+        "remain": -4,
         "link_url": "https://shopee.co.id/collections/242876/?source=allpromo",
-        "brand": "bukalapak"
+        "image_url": "https://cf.shopee.co.id/file/0feb2cc7b977a515163db80a8844020d"
     },
     {
         "id": 20,
-        "description": "90% off",
         "title": "Nikmati Promo Seru Kebutuhan Pria di 9.9 Serbu Promo Seru Hanya di Shopee!",
+        "brand": "bukalapak",
         "start_date": "8/29",
         "end_date": "9/2",
-        "remain": 0,
+        "remain": -4,
         "link_url": "https://shopee.co.id/m/promo-seru-kebutuhan-pria%20",
-        "brand": "bukalapak"
+        "image_url": "https://cf.shopee.co.id/file/6322d537275a9c50b0420b4ba42c018e"
     },
     {
         "id": 21,
-        "description": "Cashback 70RB",
         "title": "Beli Gadget Dapat Cashback",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "9/2",
-        "remain": 0,
+        "remain": -4,
         "link_url": "https://www.bukalapak.com/promo/beli-gadget-dapat-cashback?from=promo-page",
-        "brand": "bukalapak"
+        "image_url": "https://s1.bukalapak.com/uploads/campaign/86283/960x150_Voucher.jpg"
     },
     {
         "id": 22,
-        "description": "80% off   + Cashback 70RB",
         "title": "Electronic Fair",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "8/30",
-        "remain": -3,
+        "remain": -7,
         "link_url": "https://m.bukalapak.com/exclusive/electronic-mega-deals?utm_source=homepage&utm_medium=flash_banner&utm_promo=flash_banner_9&g=2?g=2&from=current-day-promo-old-2",
-        "brand": "bukalapak"
+        "image_url": "https://s3.bukalapak.com/uploads/dynamic_page_content/83793/original/1.jpg"
     },
     {
         "id": 23,
-        "description": "90% off ",
         "title": "Inspriasi Korean Style",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "",
         "remain": 0,
         "link_url": "https://www.bukalapak.com/promo/inspirasi-korean-style?g=2&from=current-day-promo-old-3",
-        "brand": "bukalapak"
+        "image_url": "https://s4.bukalapak.com/uploads/campaign/32973/KOREAN_STYLE_B_960x150.jpg"
     },
     {
         "id": 24,
-        "description": "Ciclan 0%",
         "title": "aptop dan Aksesoris Lengkap",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "",
         "remain": 0,
         "link_url": "https://www.bukalapak.com/promo/laptop-dan-aksesoris-lengkap?g=1&from=current-day-promo-old-4",
-        "brand": "bukalapak"
+        "image_url": "https://s3.bukalapak.com/uploads/campaign/84973/laptop_a_960x150.jpg"
     },
     {
         "id": 25,
-        "description": "80% off",
         "title": "Produk Terbaik Komunitas",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "",
         "remain": 0,
         "link_url": "https://m.bukalapak.com/exclusive/produk-terbaik-komunitas?g=1&from=current-day-promo-old-5",
-        "brand": "bukalapak"
+        "image_url": "https://s3.bukalapak.com/uploads/dynamic_page_content/38204/original/01_REV.jpg"
     },
     {
         "id": 26,
-        "description": "10% off",
         "title": "Koleksi Kamera Andalan",
+        "brand": "bukalapak",
         "start_date": "",
         "end_date": "",
         "remain": 0,
         "link_url": "https://www.bukalapak.com/promo/koleksi-kamera-andalan?g=2&from=current-day-promo-old-6",
-        "brand": "bukalapak"
+        "image_url": "https://s4.bukalapak.com/uploads/campaign/85973/kamera_a_Product_List_960x150.jpg"
     },
     {
         "id": 27,
-        "description": "Rp120.000",
         "title": "Bayar tagihan Kartu Kredit dan dapatkan Cashback Hingga Rp120.000",
+        "brand": "bukalapak",
         "start_date": "8/1",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://www.bukalapak.com/promo-detail/bayar-kartu-kredit-dijamin-irit?from=promo-page",
-        "brand": "bukalapak"
+        "image_url": "https://s4.bukalapak.com/uploads/promo_partnerinfo_bloggy/1038/Bloggy_1.jpg"
     },
     {
         "id": 28,
-        "description": "Rp 90.000",
         "title": "Bayar tagihan Listrik Pascabayar dan dapatkan Cashback hingga Rp90.000",
+        "brand": "bukalapak",
         "start_date": "8/1",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://www.bukalapak.com/promo-detail/bayar-tagihan-listrik-jadi-makin-asik?from=promo-page",
-        "brand": "bukalapak"
+        "image_url": "https://s0.bukalapak.com/uploads/promo_partnerinfo_bloggy/1138/Bloggy_1_Copy_2.jpg"
     },
     {
         "id": 29,
-        "description": "Cashbacknya 90%",
         "title": "Beli Produk Virtual Pakai DANA, Cashbacknya Sampai 90%",
+        "brand": "bukalapak",
         "start_date": "8/26",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://www.bukalapak.com/promo-detail/promo-vp-dana?from=promo-page",
-        "brand": "bukalapak"
+        "image_url": "https://s1.bukalapak.com/uploads/promo_partnerinfo_bloggy/3909/Bloggy_1_danahemat.jpg"
     },
     {
         "id": 30,
-        "description": "Cashback RP 50.000",
         "title": "Bisa Top Up Bigo, Jadi Lebih Asik",
+        "brand": "bukalapak",
         "start_date": "8/1",
         "end_date": "8/31",
-        "remain": -2,
+        "remain": -6,
         "link_url": "https://www.bukalapak.com/promo-detail/bisa-top-up-bigo-jadi-lebih-asik?from=promo-page",
-        "brand": "bukalapak"
+        "image_url": "https://s3.bukalapak.com/uploads/promo_partnerinfo_bloggy/8558/Bloggy_1_AGUSTUS.jpg"
     }
 ]

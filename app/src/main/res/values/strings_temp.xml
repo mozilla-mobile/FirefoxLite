@@ -13,5 +13,6 @@
     <string name="content_description_shopping_search" translatable="false">Shopping Search</string>
     <string name="shopping_search_preferences_title" translatable="false">Top online shopping websites</string>
     <string name="shopping_search_preferences_name" translatable="false">Preferences</string>
-    <string name="shopping_search_cs_onboarding_message">Swipe left load other popular shopping sites, and tap to edit.</string>
+    <string name="shopping_search_cs_onboarding_message" translatable="false">Swipe left load other popular shopping sites, and tap to edit.</string>
+    <string name="coupon_remain" translatable="false">%1$d days left</string>
 </resources>

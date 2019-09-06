@@ -7,7 +7,7 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.ItemOffsetDecoration
+import org.mozilla.rocket.content.ecommerce.ui.SpaceItemDecoration
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 
 class RunwayAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
@@ -29,7 +29,7 @@ class RunwayViewHolder(
     init {
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
         val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
-        runway_list.addItemDecoration(ItemOffsetDecoration(spaceWidth, padding))
+        runway_list.addItemDecoration(SpaceItemDecoration(spaceWidth, padding))
         runway_list.adapter = this@RunwayViewHolder.adapter
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(runway_list)
