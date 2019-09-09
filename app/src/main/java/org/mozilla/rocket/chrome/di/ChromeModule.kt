@@ -45,7 +45,6 @@ object ChromeModule {
     ): QuickSearchRepository = QuickSearchRepository(globalDataSource, localeDataSource)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideQuickSearchViewModel(quickSearchRepository: QuickSearchRepository): QuickSearchViewModel = QuickSearchViewModel(quickSearchRepository)
 
@@ -55,27 +54,22 @@ object ChromeModule {
     fun provideDownloadInfoRepository(): DownloadInfoRepository = DownloadInfoRepository()
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideDownloadIndicatorViewModel(downloadInfoRepository: DownloadInfoRepository): DownloadIndicatorViewModel = DownloadIndicatorViewModel(downloadInfoRepository)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideDownloadInfoViewModel(downloadInfoRepository: DownloadInfoRepository): DownloadInfoViewModel = DownloadInfoViewModel(downloadInfoRepository)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideMenuViewModel(): MenuViewModel = MenuViewModel()
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideBottomBarViewModel(): BottomBarViewModel = BottomBarViewModel()
 
     @JvmStatic
-    @Singleton
     @Provides
     fun providePrivateBottomBarViewModel(): PrivateBottomBarViewModel = PrivateBottomBarViewModel()
 
@@ -85,7 +79,6 @@ object ChromeModule {
     fun provideBookmarkRepository(appContext: Context): BookmarkRepository = BookmarkRepository.getInstance(BookmarksDatabase.getInstance(appContext))
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideBookmarkViewModel(bookmarkRepository: BookmarkRepository): BookmarkViewModel = BookmarkViewModel(bookmarkRepository)
 
@@ -105,7 +98,6 @@ object ChromeModule {
     fun provideStorageHelper(appContext: Context): StorageHelper = StorageHelper(appContext)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideChromeViewModel(
         settings: Settings,

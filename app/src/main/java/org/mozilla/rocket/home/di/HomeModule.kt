@@ -20,7 +20,6 @@ import javax.inject.Singleton
 object HomeModule {
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideHomeViewModel(
         settings: Settings,

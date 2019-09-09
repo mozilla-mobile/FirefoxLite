@@ -22,7 +22,6 @@ object MissionModule {
         LoadMissionsUseCase(missionRepository)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideMissionViewModel(loadMissionsUseCase: LoadMissionsUseCase): MissionViewModel =
         MissionViewModel(loadMissionsUseCase)
