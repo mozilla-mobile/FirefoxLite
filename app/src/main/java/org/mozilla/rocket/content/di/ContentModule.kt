@@ -52,7 +52,6 @@ object ContentModule {
         LoadNewsSettingsUseCase(newsSettingsRepository)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideNewsViewModel(loadNewsSettingsUseCase: LoadNewsSettingsUseCase): NewsViewModel = NewsViewModel(loadNewsSettingsUseCase)
 
@@ -75,7 +74,6 @@ object ContentModule {
     }
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideContentTabBottomBarViewModel(): ContentTabBottomBarViewModel = ContentTabBottomBarViewModel()
 }
