@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.chrome.BottomBarItemAdapter.ItemData
-import java.util.Arrays
 
 class BottomBarViewModel : ViewModel() {
     val items = MutableLiveData<List<ItemData>>()
@@ -26,12 +25,12 @@ class BottomBarViewModel : ViewModel() {
 
     companion object {
         @JvmStatic
-        val DEFAULT_BOTTOM_BAR_ITEMS: List<ItemData> = Arrays.asList(
-                ItemData(BottomBarItemAdapter.TYPE_TAB_COUNTER),
-                ItemData(BottomBarItemAdapter.TYPE_NEW_TAB),
-                ItemData(BottomBarItemAdapter.TYPE_SEARCH),
-                ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
-                ItemData(BottomBarItemAdapter.TYPE_MENU)
+        val DEFAULT_BOTTOM_BAR_ITEMS: List<ItemData> = listOf(
+            ItemData(BottomBarItemAdapter.TYPE_HOME),
+            ItemData(BottomBarItemAdapter.TYPE_REFRESH),
+            ItemData(BottomBarItemAdapter.TYPE_SEARCH),
+            ItemData(BottomBarItemAdapter.TYPE_TAB_COUNTER),
+            ItemData(BottomBarItemAdapter.TYPE_MENU)
         )
     }
 }

@@ -248,7 +248,7 @@ public class AppConfigWrapper {
 
     public static List<BottomBarItemAdapter.ItemData> getBottomBarItems() {
         List<BottomBarItemAdapter.ItemData> itemDataList = new ArrayList<>();
-        String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_BOTTOM_BAR_ITEMS);
+        String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_BOTTOM_BAR_ITEMS_V2);
         try {
             JSONArray jsonArray = new JSONArray(jsonString);
             for (int i = 0; i < jsonArray.length(); i++) {
