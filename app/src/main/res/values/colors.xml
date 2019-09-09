@@ -6,6 +6,7 @@
     <color name="paletteBlack100">#FF000000</color>
     <color name="paletteBlack87">#DE000000</color>
     <color name="paletteBlack54">#8B000000</color>
+    <color name="paletteBlack50">#80000000</color>
     <color name="paletteLightBlack100">#FF272727</color>
     <color name="paletteLightBlack30">#4D272727</color>
     <color name="paletteLightBlack20">#33272727</color>
