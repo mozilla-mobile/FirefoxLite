@@ -37,7 +37,7 @@
     <!-- Bottom Bar Items -->
     <item name="bottom_bar_tab_counter" type="id"/>
     <item name="bottom_bar_menu" type="id"/>
-    <item name="bottom_bar_new_tab" type="id"/>
+    <item name="bottom_bar_home" type="id"/>
     <item name="bottom_bar_search" type="id"/>
     <item name="bottom_bar_capture" type="id"/>
     <item name="bottom_bar_pin_shortcut" type="id"/>

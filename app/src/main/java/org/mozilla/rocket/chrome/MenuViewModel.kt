@@ -3,7 +3,6 @@ package org.mozilla.rocket.chrome
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
-import java.util.Arrays
 
 class MenuViewModel : ViewModel() {
     val menuItems = MutableLiveData<List<MenuItemAdapter.ItemData>>()
@@ -61,27 +60,27 @@ class MenuViewModel : ViewModel() {
 
     companion object {
         @JvmStatic
-        val DEFAULT_MENU_ITEMS: List<MenuItemAdapter.ItemData> = Arrays.asList(
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_BOOKMARKS),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_DOWNLOADS),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_HISTORY),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_SCREENSHOTS),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_TURBO_MODE),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_PRIVATE_BROWSING),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_NIGHT_MODE),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_BLOCK_IMAGE),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_FIND_IN_PAGE),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_CLEAR_CACHE),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_PREFERENCES),
-                MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_EXIT_APP)
+        val DEFAULT_MENU_ITEMS: List<MenuItemAdapter.ItemData> = listOf(
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_BOOKMARKS),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_DOWNLOADS),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_HISTORY),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_SCREENSHOTS),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_TURBO_MODE),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_PRIVATE_BROWSING),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_NIGHT_MODE),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_BLOCK_IMAGE),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_FIND_IN_PAGE),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_CLEAR_CACHE),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_PREFERENCES),
+            MenuItemAdapter.ItemData(MenuItemAdapter.TYPE_EXIT_APP)
         )
         @JvmStatic
-        val DEFAULT_MENU_BOTTOM_ITEMS: List<BottomBarItemAdapter.ItemData> = Arrays.asList(
-                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_NEXT),
-                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_REFRESH),
-                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
-                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_PIN_SHORTCUT),
-                BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_SHARE)
+        val DEFAULT_MENU_BOTTOM_ITEMS: List<BottomBarItemAdapter.ItemData> = listOf(
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_NEXT),
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_PIN_SHORTCUT),
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_SHARE)
         )
     }
 }

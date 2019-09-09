@@ -513,7 +513,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     chromeViewModel.getShowMenu().call();
                     TelemetryWrapper.showMenuToolbar(WEBVIEW, position);
                     break;
-                case BottomBarItemAdapter.TYPE_NEW_TAB:
+                case BottomBarItemAdapter.TYPE_HOME:
                     chromeViewModel.getShowNewTab().call();
                     TelemetryWrapper.clickAddTabToolbar(WEBVIEW, position);
                     break;

@@ -173,7 +173,7 @@ class MenuDialog : BottomSheetDialog {
                         chromeViewModel.showMenu.call()
                         TelemetryWrapper.showMenuToolbar(MENU, position)
                     }
-                    BottomBarItemAdapter.TYPE_NEW_TAB -> {
+                    BottomBarItemAdapter.TYPE_HOME -> {
                         chromeViewModel.showNewTab.call()
                         TelemetryWrapper.clickAddTabToolbar(MENU, position)
                     }

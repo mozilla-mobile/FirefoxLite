@@ -39,7 +39,7 @@ class BottomBarItemAdapter(
         return when (val type = itemData.type) {
             TYPE_TAB_COUNTER -> TabCounterItem(type, R.id.bottom_bar_tab_counter, theme)
             TYPE_MENU -> MenuItem(type, R.id.bottom_bar_menu, theme)
-            TYPE_NEW_TAB -> ImageItem(type, R.id.bottom_bar_new_tab, R.drawable.action_add, theme.buttonColorResId)
+            TYPE_HOME -> ImageItem(type, R.id.bottom_bar_home, R.drawable.action_home, theme.buttonColorResId)
             TYPE_SEARCH -> ImageItem(type, R.id.bottom_bar_search, R.drawable.action_search, theme.buttonColorResId)
             TYPE_CAPTURE -> ImageItem(type, R.id.bottom_bar_capture, R.drawable.action_capture, theme.buttonColorResId)
             TYPE_PIN_SHORTCUT -> ImageItem(type, R.id.bottom_bar_pin_shortcut, R.drawable.action_add_to_home, theme.buttonColorResId)
@@ -290,7 +290,7 @@ class BottomBarItemAdapter(
     companion object {
         const val TYPE_TAB_COUNTER = 0
         const val TYPE_MENU = 1
-        const val TYPE_NEW_TAB = 2
+        const val TYPE_HOME = 2
         const val TYPE_SEARCH = 3
         const val TYPE_CAPTURE = 4
         const val TYPE_PIN_SHORTCUT = 5

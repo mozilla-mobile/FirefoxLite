@@ -89,9 +89,8 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
         screenshotIdlingResource = ScreenshotIdlingResource(activity)
 
         // Click screen capture button
-        bottomBar {
-            clickBrowserBottomBarItem(R.id.bottom_bar_capture)
-        }
+        AndroidTestUtils.tapBrowserMenuButton()
+        BottomBarRobot().clickMenuBottomBarItem(R.id.bottom_bar_capture)
 
         AndroidTestUtils.toastContainsText(activity, R.string.screenshot_saved)
         checkNoScreenshotOnBoarding()
@@ -107,9 +106,8 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
     fun firstTimeClickCaptureScreen() {
         // TODO find a way to remove the activity reference
         // Click screen capture button
-        bottomBar {
-            clickBrowserBottomBarItem(R.id.bottom_bar_capture)
-        }
+        AndroidTestUtils.tapBrowserMenuButton()
+        BottomBarRobot().clickMenuBottomBarItem(R.id.bottom_bar_capture)
         checkScreenshotOnBoarding()
     }
 
