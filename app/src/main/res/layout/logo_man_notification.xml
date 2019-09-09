@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <org.mozilla.rocket.nightmode.themed.ThemedRecyclerView
+        android:id="@+id/notification_board"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:background="@android:color/transparent"
+        android:translationY="80dp"
+        tools:listitem="@layout/home_notification_board" />
+
+    <ImageView
+        android:id="@+id/logo_man"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/logo_man_notification"
+        android:translationY="144dp" />
+
+</merge>

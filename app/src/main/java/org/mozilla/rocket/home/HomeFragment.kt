@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_text
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
+import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.mission_button
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
@@ -47,6 +48,7 @@ import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
 import org.mozilla.rocket.home.topsites.ui.SiteViewHolder.Companion.TOP_SITE_LONG_CLICK_TARGET
+import org.mozilla.rocket.home.ui.LogoManNotification
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
 import javax.inject.Inject
@@ -88,7 +90,17 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initTopSites()
         initContentHub()
         initFxaView()
+        initLogoManNotification()
         observeNightMode()
+
+        // test
+        showLogoManNotification(
+            LogoManNotification.Notification(
+                icon = "",
+                title = "Win your free coupon",
+                subtitle = "7-day challenge for Rs 15,000 shopping coupon7-day challenge for Rs 15,000 "
+            )
+        )
     }
 
     private fun initSearchToolBar() {
@@ -277,5 +289,21 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun showShoppingSearch() {
         val context: Context = this.context ?: return
         startActivity(ShoppingSearchActivity.getStartIntent(context))
+    }
+
+    private fun showLogoManNotification(notification: LogoManNotification.Notification) {
+        logo_man_notification.showNotification(notification)
+    }
+
+    private fun initLogoManNotification() {
+        logo_man_notification.setNotificationActionListener(object : LogoManNotification.NotificationActionListener {
+            override fun onNotificationClick() {
+                // TODO:
+            }
+
+            override fun onNotificationDismiss() {
+                // TODO:
+            }
+        })
     }
 }
