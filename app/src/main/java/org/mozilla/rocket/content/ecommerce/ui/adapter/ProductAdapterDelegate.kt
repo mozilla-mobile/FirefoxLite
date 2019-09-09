@@ -24,8 +24,8 @@ class ProductViewHolder(
         product_name.text = productItem.name
         product_brand.text = productItem.brand
         product_currency.text = productItem.currency
-        product_price.text = DecimalFormat("#,###").format(productItem.price)
-        product_rating.updateRatingInfo(productItem.rating.roundToInt(), productItem.reviews)
+        product_price.text = productItem.priceWithFormat
+        product_rating.updateRatingInfo(productItem.ratingCount, productItem.reviews)
         product_discount.apply {
             if (productItem.discount.isNotEmpty()) {
                 product_discount.text = productItem.discount
@@ -57,4 +57,11 @@ data class ProductItem(
     val imageUrl: String,
     val rating: Float,
     val reviews: Int
-) : DelegateAdapter.UiModel()
+) : DelegateAdapter.UiModel() {
+
+    val priceWithFormat: String
+        get() = DecimalFormat("#,###").format(price)
+
+    val ratingCount: Int
+        get() = rating.roundToInt()
+}

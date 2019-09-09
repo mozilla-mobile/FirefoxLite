@@ -16,7 +16,6 @@ object ShoppingModule {
     fun provideShoppingRepo(appContext: Context): ShoppingRepo = ShoppingRepo(appContext)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideShoppingViewModel(repo: ShoppingRepo): ShoppingViewModel = ShoppingViewModel(repo)
 }
