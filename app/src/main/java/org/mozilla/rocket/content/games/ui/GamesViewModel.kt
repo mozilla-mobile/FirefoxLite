@@ -61,6 +61,12 @@ class GamesViewModel(
         _event.value = GameAction.Play(bannerItem.linkUrl)
     }
 
+    fun onRefreshGameListButtonClicked() {
+        // TODO: testing code, needs to be removed
+        browserGamesItems.value = emptyList()
+        loadData()
+    }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
