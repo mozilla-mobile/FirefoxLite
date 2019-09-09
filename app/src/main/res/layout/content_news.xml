@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_portal_container"
-    android:layout_gravity="bottom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="bottom"
     android:background="@drawable/background_menu"
     tools:ignore="MissingPrefix">
 
     <ProgressBar
         android:id="@+id/news_progress_center"
-        android:layout_centerInParent="true"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:padding="12dp"
-        android:indeterminate="true"/>
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:padding="12dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/news_list"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:paddingBottom="60dp"
-        android:clipToPadding="false"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/empty_view_container"
@@ -38,29 +37,28 @@
             android:layout_centerInParent="true">
 
             <ImageView
-                style="@style/PanelEmptyHolderImage"
                 android:id="@+id/empty_view_image"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:src="@drawable/ic_internet_error"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/no_internet"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="ContentDescription"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 style="@style/Body3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/paletteDarkGreyD100"
+                android:layout_marginTop="@dimen/common_margin_m2"
+                android:layout_marginBottom="40dp"
                 android:gravity="center"
                 android:text="@string/error_page_recover_a"
-                android:layout_marginBottom="40dp"
-                android:layout_marginTop="@dimen/common_margin_m2"
-                app:layout_constraintTop_toBottomOf="@+id/empty_view_image"
+                android:textColor="@color/paletteDarkGreyD100"
                 app:layout_constraintBottom_toTopOf="@+id/news_try_again"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/empty_view_image" />
 
             <Button
                 android:id="@+id/news_try_again"
@@ -70,13 +68,11 @@
                 android:text="@string/error_page_button"
                 android:textColor="@color/paletteDarkBlueC100"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-            />
+                app:layout_constraintStart_toStartOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     </RelativeLayout>
-
 
 </RelativeLayout>
