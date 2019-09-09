@@ -90,6 +90,15 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         observeChromeAction()
 
         shoppingSearchResultViewModel.search(searchKeyword)
+
+        observeAction()
+    }
+
+    private fun observeAction() {
+        shoppingSearchResultViewModel.showOnboardingDialog.observe(this, Observer {
+            val dialogFragment = ShoppingSearchOnboardingDialogFragment()
+            dialogFragment.show(childFragmentManager, "onboardingDialogFragment")
+        })
     }
 
     override fun onDestroyView() {

@@ -54,6 +54,7 @@ import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchPreferencesActivity
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchOnboardingDialogFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment
 import javax.inject.Singleton
 
@@ -107,6 +108,7 @@ interface AppComponent {
     fun inject(voucherFragment: VoucherFragment)
     fun inject(missionDetailFragment: MissionDetailFragment)
     fun inject(shoppingSearchPreferencesActivity: ShoppingSearchPreferencesActivity)
+    fun inject(shoppingSearchOnboardingDialogFragment: ShoppingSearchOnboardingDialogFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
