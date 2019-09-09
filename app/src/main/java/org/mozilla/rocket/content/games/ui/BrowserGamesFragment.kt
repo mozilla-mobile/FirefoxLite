@@ -1,7 +1,9 @@
 package org.mozilla.rocket.content.games.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ import org.mozilla.rocket.content.games.ui.adapter.GameCategory
 import org.mozilla.rocket.content.games.ui.adapter.GameCategoryAdapterDelegate
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
+import android.widget.Toast
 
 class BrowserGamesFragment : Fragment() {
 
@@ -28,6 +31,7 @@ class BrowserGamesFragment : Fragment() {
 
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: DelegateAdapter
+    private lateinit var gameType: GameType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -44,6 +48,26 @@ class BrowserGamesFragment : Fragment() {
         initRecyclerView()
         bindListData()
         bindPageState()
+        registerForContextMenu(recycler_view)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            R.id.share -> {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_SUBJECT, gamesViewModel.selectedGame.name)
+                    putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_game_dialog_text, gamesViewModel.selectedGame.linkUrl))
+                    type = "text/plain"
+                }
+                startActivity(Intent.createChooser(sendIntent, null))
+                Toast.makeText(activity, "Share", Toast.LENGTH_LONG).show()
+            }
+            R.id.remove -> Toast.makeText(activity, "Remove", Toast.LENGTH_LONG).show()
+            R.id.shortcut -> Toast.makeText(activity, "Shortcut", Toast.LENGTH_LONG).show()
+            R.id.delete -> Toast.makeText(activity, "Uninstall", Toast.LENGTH_LONG).show()
+        }
+        return super.onContextItemSelected(item)
     }
 
     private fun initRecyclerView() {
@@ -60,9 +84,18 @@ class BrowserGamesFragment : Fragment() {
     }
 
     private fun bindListData() {
-        gamesViewModel.browserGamesItems.observe(this@BrowserGamesFragment, Observer {
-            adapter.setData(it)
-        })
+        arguments?.getString(GAME_TYPE)?.let {
+            gameType = GameType.valueOf(it)
+        }
+
+        when (gameType) {
+            GameType.TYPE_BROWSER -> gamesViewModel.browserGamesItems.observe(this@BrowserGamesFragment, Observer {
+                adapter.setData(it)
+            })
+            GameType.TYPE_PREMIUM -> gamesViewModel.browserGamesItems.observe(this@BrowserGamesFragment, Observer {
+                adapter.setData(it)
+            })
+        }
     }
 
     private fun bindPageState() {
@@ -85,5 +118,21 @@ class BrowserGamesFragment : Fragment() {
 
     private fun showErrorView() {
         TODO("not implemented")
+    }
+
+    companion object {
+
+        private val GAME_TYPE = "game_type"
+
+        enum class GameType {
+            TYPE_BROWSER,
+            TYPE_PREMIUM
+        }
+        @JvmStatic
+        fun newInstance(gameType: GameType) = BrowserGamesFragment().apply {
+            arguments = Bundle().apply {
+                this.putString(GAME_TYPE, gameType.name)
+            }
+        }
     }
 }
