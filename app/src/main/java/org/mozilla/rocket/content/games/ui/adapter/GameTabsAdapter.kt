@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
-import org.mozilla.rocket.content.games.ui.GamesActivity
 
 @Suppress("DEPRECATION")
 class GameTabsAdapter(
@@ -29,8 +28,8 @@ class GameTabsAdapter(
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(
-            TabItem(BrowserGamesFragment(), "Browser Games"),
-            TabItem(GamesActivity.PremiumGamesFragment(), "Premium Games")
+            TabItem(BrowserGamesFragment.newInstance(BrowserGamesFragment.Companion.GameType.TYPE_BROWSER), "Browser Games"),
+            TabItem(BrowserGamesFragment.newInstance(BrowserGamesFragment.Companion.GameType.TYPE_PREMIUM), "Premium Games")
         )
     }
 }
