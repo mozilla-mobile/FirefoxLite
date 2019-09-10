@@ -256,10 +256,11 @@ class BrowserGamesFragment : Fragment() {
                 var redirectUrl = con.getHeaderField("Location")
                 return getFinalURL(redirectUrl)
             }
-        } finally {
+        } catch (e: Exception) {
+            TODO("not implemented")
+        }
             return url
         }
-    }
 
     companion object {
 
