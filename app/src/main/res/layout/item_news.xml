@@ -4,64 +4,63 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
-    android:background="@drawable/tab_tray_item_bkg"
-    android:outlineProvider="background"
-    android:elevation="1dp"
     android:layout_marginBottom="@dimen/tab_tray_item_space"
+    android:background="@drawable/tab_tray_item_bkg"
+    android:elevation="1dp"
+    android:outlineProvider="background"
     tools:ignore="contentDescription">
+
     <ImageView
-        android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:scaleType="centerCrop"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerVertical="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:padding="18dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/news_item_img_bg"
-        android:src="@drawable/file_image"
-        android:tint="@color/paletteLightGreyA100"
-        android:elevation="4dp"/>
+        android:elevation="4dp"
+        android:padding="18dp" />
+
     <ImageView
         android:id="@+id/news_item_image"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:scaleType="centerCrop"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerVertical="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:elevation="4dp"/>
+        android:layout_marginBottom="8dp"
+        android:elevation="4dp"
+        android:scaleType="centerCrop" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/news_item_image"
-        android:layout_marginTop="12sp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12sp"
-        android:orientation="vertical"
-        android:layout_centerVertical="true">
+        android:layout_marginBottom="12dp"
+        android:layout_toEndOf="@id/news_item_image"
+        android:orientation="vertical">
 
         <org.mozilla.rocket.nightmode.themed.ThemedTextView
-            style="@style/Body2"
             android:id="@+id/news_item_headline"
+            style="@style/Body2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:textColor="@color/paletteDarkGreyB100"
             android:ellipsize="end"
             android:maxLines="2"
-            tools:text="website_title"/>
+            android:textColor="@color/paletteDarkGreyB100"
+            tools:text="website_title" />
 
         <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
             android:layout_width="match_parent"
@@ -70,26 +69,28 @@
             <TextView
                 android:id="@+id/news_item_source"
                 style="@style/Body5"
-                android:textColor="@color/paletteDarkGreyD100"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
                 android:layout_toStartOf="@id/news_item_time"
                 android:gravity="start"
                 android:maxLines="1"
-                android:layout_marginEnd="24dp"
-                tools:text="234567345632456345634563456345345"/>
+                android:textColor="@color/paletteDarkGreyD100"
+                tools:text="234567345632456345634563456345345" />
 
             <TextView
                 android:id="@+id/news_item_time"
                 style="@style/Body5"
-                android:textColor="@color/paletteDarkGreyD100"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
                 android:layout_alignParentEnd="true"
+                android:maxLines="1"
                 android:textAlignment="viewEnd"
-                tools:text="5 month ago....."/>
+                android:textColor="@color/paletteDarkGreyD100"
+                tools:text="5 month ago....." />
+
         </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
 
     </LinearLayout>
+    
 </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
