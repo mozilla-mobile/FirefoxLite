@@ -9,6 +9,7 @@ import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.games.ui.GamesViewModel
 import android.view.ContextMenu
+import org.mozilla.rocket.content.games.vo.Game
 
 class GameAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
@@ -20,7 +21,7 @@ class GameViewHolder(
     private val gamesViewModel: GamesViewModel
 ) : DelegateAdapter.ViewHolder(containerView), View.OnCreateContextMenuListener {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        var gameItem = uiModel as GameItem
+        var gameItem = uiModel as Game
         name.text = gameItem.name
         GlideApp.with(itemView.context)
             .asBitmap()
@@ -44,12 +45,3 @@ class GameViewHolder(
             menu?.add(0, R.id.remove, 0, R.string.game_contextmenu_remove_from_gamelist)
     }
 }
-
-data class GameItem(
-    val id: String,
-    val name: String,
-    val imageUrl: String,
-    val linkUrl: String,
-    val type: String,
-    val recentplay: Boolean
-) : DelegateAdapter.UiModel()

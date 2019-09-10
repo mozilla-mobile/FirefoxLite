@@ -1,15 +1,19 @@
 package org.mozilla.rocket.content.games.ui
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.View
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.toolbar_game.refresh_button
 import kotlinx.android.synthetic.main.activity_games.*
 import org.mozilla.focus.R
+import org.mozilla.focus.download.DownloadInfoManager
+import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.ui.adapter.GameTabsAdapter
 import org.mozilla.rocket.content.getViewModel
@@ -22,6 +26,9 @@ class GamesActivity : FragmentActivity() {
 
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: GameTabsAdapter
+    private lateinit var uiMessageReceiver: BroadcastReceiver
+    private lateinit var snackBarContainer: View
+    private val LOG_TAG = "GameActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -31,7 +38,9 @@ class GamesActivity : FragmentActivity() {
         initViewPager()
         initTabLayout()
         initToolBar()
-        observeGameAction()
+
+        snackBarContainer = findViewById(R.id.container)
+        initBroadcastReceivers()
     }
 
     private fun initToolBar() {
@@ -51,18 +60,28 @@ class GamesActivity : FragmentActivity() {
         games_tabs.setupWithViewPager(view_pager)
     }
 
-    private fun observeGameAction() {
-        gamesViewModel.event.observe(this, Observer { event ->
-            when (event) {
-                is GamesViewModel.GameAction.Play -> {
-                    val playAction: GamesViewModel.GameAction.Play = event
-                    startActivity(GameModeActivity.getStartIntent(this, playAction.url))
-                }
-            }
-        })
+    override fun onResume() {
+        super.onResume()
+        val uiActionFilter = IntentFilter()
+        uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
+        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
+        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
     }
 
-    class PremiumGamesFragment : Fragment()
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
+    }
+
+    private fun initBroadcastReceivers() {
+        uiMessageReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
+                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG)
+                }
+            }
+        }
+    }
 
     companion object {
         fun getStartIntent(context: Context) = Intent(context, GamesActivity::class.java)
