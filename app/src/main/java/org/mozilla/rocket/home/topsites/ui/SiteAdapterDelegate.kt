@@ -67,7 +67,7 @@ class SiteViewHolder(
         itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
         itemView.setOnLongClickListener {
             it.tag = TOP_SITE_LONG_CLICK_TARGET
-            homeViewModel.onTopSiteLongClicked(site)
+            homeViewModel.onTopSiteLongClicked(site, adapterPosition)
         }
     }
 

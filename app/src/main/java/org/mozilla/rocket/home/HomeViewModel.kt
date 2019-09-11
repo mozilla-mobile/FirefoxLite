@@ -35,7 +35,7 @@ class HomeViewModel(
     val resetBackgroundColor = SingleLiveEvent<Unit>()
     val launchShoppingSearch = SingleLiveEvent<Unit>()
     val openBrowser = SingleLiveEvent<Site>()
-    val showTopSiteMenu = SingleLiveEvent<Site>()
+    val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
 
     fun updateTopSitesData() = viewModelScope.launch {
@@ -79,17 +79,20 @@ class HomeViewModel(
         TelemetryWrapper.clickTopSiteOn(position, title)
     }
 
-    fun onTopSiteLongClicked(site: Site): Boolean =
+    fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
             if (site is Site.RemovableSite) {
-                showTopSiteMenu.value = site
+                val pageIndex = requireNotNull(topSitesPageIndex.value)
+                val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+                showTopSiteMenu.value = ShowTopSiteMenuData(site, topSitePosition)
                 true
             } else {
                 false
             }
 
-    fun onPinTopSiteClicked(site: Site) {
+    fun onPinTopSiteClicked(site: Site, position: Int) {
         pinTopSiteUseCase(site)
         updateTopSitesData()
+        TelemetryWrapper.pinTopsite(site.url, position)
     }
 
     fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
@@ -101,7 +104,13 @@ class HomeViewModel(
 
     fun onContentHubItemClicked(item: ContentHub.Item) {
         navigateToContentPage.value = item
+        TelemetryWrapper.clickContentHub(item)
     }
+
+    data class ShowTopSiteMenuData(
+        val site: Site,
+        val position: Int
+    )
 
     companion object {
         private const val TOP_SITES_MAX_PAGE_SIZE = 2
