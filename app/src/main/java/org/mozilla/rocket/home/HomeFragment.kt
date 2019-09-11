@@ -233,6 +233,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             search_panel.setNightMode(isNightMode)
             home_fragment_fake_input_text.setNightMode(isNightMode)
             account_layout.setNightMode(isNightMode)
+            shopping_button.setNightMode(isNightMode)
         })
     }
 
