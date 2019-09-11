@@ -176,11 +176,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             openBrowser.observe(this@HomeFragment, Observer {
                 ScreenNavigator.get(context).showBrowserScreen(it.url, true, false)
             })
-            showTopSiteMenu.observe(this@HomeFragment, Observer { site ->
+            showTopSiteMenu.observe(this@HomeFragment, Observer { (site, position) ->
                 site as Site.RemovableSite
                 val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
                 val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
-                showTopSiteMenu(anchorView, allowToPin, site)
+                showTopSiteMenu(anchorView, allowToPin, site, position)
             })
         }
     }
@@ -266,7 +266,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         home_fragment_fake_input_text.text = "" // TODO: use resource id after defined
     }
 
-    private fun showTopSiteMenu(anchorView: View, pinEnabled: Boolean, site: Site) {
+    private fun showTopSiteMenu(anchorView: View, pinEnabled: Boolean, site: Site, position: Int) {
         PopupMenu(anchorView.context, anchorView, Gravity.CLIP_HORIZONTAL)
                 .apply {
                     menuInflater.inflate(R.menu.menu_top_site_item, menu)
@@ -275,7 +275,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     }
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.pin -> homeViewModel.onPinTopSiteClicked(site)
+                            R.id.pin -> homeViewModel.onPinTopSiteClicked(site, position)
                             R.id.remove -> homeViewModel.onRemoveTopSiteClicked(site)
                             else -> throw IllegalStateException("Unhandled menu item")
                         }
