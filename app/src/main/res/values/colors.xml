@@ -156,6 +156,10 @@
     <color name="homeArcPanelBackgroundNight">#414146</color>
     <color name="homeSearchPanelBackground">#F4F4F4</color>
     <color name="homeSearchPanelBackgroundNight">@color/paletteDarkGreyC100</color>
+    <color name="homeShoppingSearchButtonTint">@color/paletteLightBlack100</color>
+    <color name="homeShoppingSearchButtonTintNight">@color/paletteWhite100</color>
+    <color name="homeShoppingSearchButtonBackground">@color/paletteWhite100</color>
+    <color name="homeShoppingSearchButtonBackgroundNight">#414146</color>
 
     <!-- Content common -->
     <color name="contentHeaderTextColor">#0C0C0D</color>
