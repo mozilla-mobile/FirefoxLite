@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
@@ -42,7 +43,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHolder> {
+public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_TYPE_SHOPPING_SEARCH = 1;
+    private static final int VIEW_TYPE_TAB = 2;
+
+    private boolean showShoppingSearch;
+    private String keyword;
 
     private List<Session> tabs = new ArrayList<>();
     private Session focusedTab;
@@ -60,50 +67,86 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final ViewHolder holder = new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.item_tab_tray, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case VIEW_TYPE_SHOPPING_SEARCH: {
+                ShoppingSearchViewHolder holder = new ShoppingSearchViewHolder(LayoutInflater.from(parent.getContext()).inflate(
+                        R.layout.item_shopping_search, parent, false));
 
-        InternalTabClickListener listener = new InternalTabClickListener(holder, tabClickListener);
+                InternalTabClickListener listener = new InternalTabClickListener(holder, tabClickListener);
 
-        holder.itemView.setOnClickListener(listener);
-        holder.closeButton.setOnClickListener(listener);
-        return holder;
-    }
+                holder.itemView.setOnClickListener(listener);
+                holder.closeButton.setOnClickListener(listener);
+                return holder;
+            }
+            case VIEW_TYPE_TAB: {
+                TabViewHolder holder = new TabViewHolder(LayoutInflater.from(parent.getContext()).inflate(
+                        R.layout.item_tab_tray, parent, false));
 
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.itemView.setSelected(tabs.get(position) == focusedTab);
+                InternalTabClickListener listener = new InternalTabClickListener(holder, tabClickListener);
 
-        Resources resources = holder.itemView.getResources();
-
-        Session tab = tabs.get(position);
-
-        String title = getTitle(tab, holder);
-        holder.websiteTitle.setText(TextUtils.isEmpty(title) ?
-                resources.getString(R.string.app_name) : title);
-
-        String url = tab.getUrl();
-        if (!TextUtils.isEmpty(url)) {
-            holder.websiteSubtitle.setText(tab.getUrl());
+                holder.itemView.setOnClickListener(listener);
+                holder.closeButton.setOnClickListener(listener);
+                return holder;
+            }
+            default:
+                // unknown view type
+                return null;
         }
-
-        setFavicon(tab, holder);
-        holder.rootView.setNightMode(isNight);
-        holder.websiteTitle.setNightMode(isNight);
-        holder.websiteSubtitle.setNightMode(isNight);
     }
 
     @Override
-    public void onViewRecycled(ViewHolder holder) {
-        holder.websiteTitle.setText("");
-        holder.websiteSubtitle.setText("");
-        updateFavicon(holder, null);
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        Resources resources = holder.itemView.getResources();
+        switch (getItemViewType(position)) {
+            case VIEW_TYPE_SHOPPING_SEARCH: {
+                ShoppingSearchViewHolder ssHolder = (ShoppingSearchViewHolder) holder;
+                String title = TextUtils.isEmpty(keyword) ? resources.getString(R.string.tab_tray_shopping_search) :
+                        String.format("%s: \"%s\"", resources.getString(R.string.tab_tray_shopping_search), keyword);
+                ssHolder.title.setText(title);
+                break;
+            }
+            case VIEW_TYPE_TAB: {
+                Session tab = tabs.get(showShoppingSearch ? position - 1 : position);
+                TabViewHolder tabHolder = (TabViewHolder) holder;
+                tabHolder.itemView.setSelected(tab == focusedTab);
+
+                String title = getTitle(tab, tabHolder);
+                tabHolder.websiteTitle.setText(TextUtils.isEmpty(title) ?
+                        resources.getString(R.string.app_name) : title);
+
+                String url = tab.getUrl();
+                if (!TextUtils.isEmpty(url)) {
+                    tabHolder.websiteSubtitle.setText(tab.getUrl());
+                }
+
+                setFavicon(tab, tabHolder);
+                tabHolder.rootView.setNightMode(isNight);
+                tabHolder.websiteTitle.setNightMode(isNight);
+                tabHolder.websiteSubtitle.setNightMode(isNight);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        if (holder instanceof TabViewHolder) {
+            TabViewHolder tabHolder = (TabViewHolder) holder;
+            tabHolder.websiteTitle.setText("");
+            tabHolder.websiteSubtitle.setText("");
+            updateFavicon(tabHolder, null);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return tabs.size();
+        return showShoppingSearch ? tabs.size() + 1 : tabs.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (showShoppingSearch && position == 0) ? VIEW_TYPE_SHOPPING_SEARCH : VIEW_TYPE_TAB;
     }
 
     @Override
@@ -117,6 +160,11 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
 
     void setTabClickListener(TabClickListener tabClickListener) {
         this.tabClickListener = tabClickListener;
+    }
+
+    void setShoppingSearch(boolean showShoppingSearch, String keyword) {
+        this.showShoppingSearch = showShoppingSearch;
+        this.keyword = keyword;
     }
 
     void setData(List<Session> tabs) {
@@ -136,7 +184,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return focusedTab;
     }
 
-    private String getTitle(Session tab, ViewHolder holder) {
+    private String getTitle(Session tab, TabViewHolder holder) {
         String newTitle = tab.getTitle();
         String currentTitle = String.valueOf(holder.websiteTitle.getText());
 
@@ -147,7 +195,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         return newTitle;
     }
 
-    private void setFavicon(Session tab, final ViewHolder holder) {
+    private void setFavicon(Session tab, final TabViewHolder holder) {
         String uri = tab.getUrl();
         if (TextUtils.isEmpty(uri)) {
             return;
@@ -156,7 +204,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         loadCachedFavicon(tab, holder);
     }
 
-    private void loadCachedFavicon(final Session tab, final ViewHolder holder) {
+    private void loadCachedFavicon(final Session tab, final TabViewHolder holder) {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .dontAnimate();
@@ -195,7 +243,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 });
     }
 
-    private void loadGeneratedFavicon(Session tab, final ViewHolder holder) {
+    private void loadGeneratedFavicon(Session tab, final TabViewHolder holder) {
         Character symbol = FavIconUtils.getRepresentativeCharacter(tab.getUrl());
         Bitmap favicon = tab.getFavicon();
         int backgroundColor = (favicon == null) ? Color.WHITE : FavIconUtils.getDominantColor(favicon);
@@ -211,7 +259,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         }
     }
 
-    private void updateFavicon(ViewHolder holder, @Nullable Drawable drawable) {
+    private void updateFavicon(TabViewHolder holder, @Nullable Drawable drawable) {
         if (drawable != null) {
             holder.websiteIcon.setImageDrawable(drawable);
             holder.websiteIcon.setBackgroundColor(Color.TRANSPARENT);
@@ -223,14 +271,25 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ShoppingSearchViewHolder extends RecyclerView.ViewHolder {
+        TextView title;
+        View closeButton;
+
+        ShoppingSearchViewHolder(View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.title);
+            closeButton = itemView.findViewById(R.id.close_button);
+        }
+    }
+
+    class TabViewHolder extends RecyclerView.ViewHolder {
         ThemedRelativeLayout rootView;
         ThemedTextView websiteTitle;
         ThemedTextView websiteSubtitle;
         View closeButton;
         ImageView websiteIcon;
 
-        ViewHolder(View itemView) {
+        TabViewHolder(View itemView) {
             super(itemView);
             rootView = itemView.findViewById(R.id.root_view);
             websiteTitle = itemView.findViewById(R.id.website_title);
@@ -238,13 +297,24 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
             closeButton = itemView.findViewById(R.id.close_button);
             websiteIcon = itemView.findViewById(R.id.website_icon);
         }
+
+        public int getOriginPosition() {
+            final int position = getAdapterPosition();
+            if (position == RecyclerView.NO_POSITION) {
+                return position;
+            } else {
+                return showShoppingSearch ? position - 1 : position;
+            }
+        }
     }
 
     static class InternalTabClickListener implements View.OnClickListener {
-        private ViewHolder holder;
+        private static final int POSITION_OF_SHOPPING_SEARCH = -99;
+
+        private RecyclerView.ViewHolder holder;
         private TabClickListener tabClickListener;
 
-        InternalTabClickListener(ViewHolder holder, TabClickListener tabClickListener) {
+        InternalTabClickListener(RecyclerView.ViewHolder holder, TabClickListener tabClickListener) {
             this.holder = holder;
             this.tabClickListener = tabClickListener;
         }
@@ -255,20 +325,32 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
                 return;
             }
 
-            int pos = holder.getAdapterPosition();
-            if (pos != RecyclerView.NO_POSITION) {
-                dispatchOnClick(v, pos);
+            if (holder instanceof ShoppingSearchViewHolder) {
+                dispatchOnClick(v, POSITION_OF_SHOPPING_SEARCH);
+            } else if (holder instanceof  TabViewHolder) {
+                int pos = ((TabViewHolder) holder).getOriginPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    dispatchOnClick(v, pos);
+                }
             }
         }
 
         private void dispatchOnClick(View v, int position) {
             switch (v.getId()) {
                 case R.id.root_view:
-                    tabClickListener.onTabClick(position);
+                    if (position == POSITION_OF_SHOPPING_SEARCH) {
+                        tabClickListener.onShoppingSearchClick();
+                    } else {
+                        tabClickListener.onTabClick(position);
+                    }
                     break;
 
                 case R.id.close_button:
-                    tabClickListener.onTabCloseClick(position);
+                    if (position == POSITION_OF_SHOPPING_SEARCH) {
+                        tabClickListener.onShoppingSearchCloseClick();
+                    } else {
+                        tabClickListener.onTabCloseClick(position);
+                    }
                     break;
 
                 default:
@@ -278,6 +360,10 @@ public class TabTrayAdapter extends RecyclerView.Adapter<TabTrayAdapter.ViewHold
     }
 
     public interface TabClickListener {
+        void onShoppingSearchClick();
+
+        void onShoppingSearchCloseClick();
+
         void onTabClick(int tabPosition);
 
         void onTabCloseClick(int tabPosition);

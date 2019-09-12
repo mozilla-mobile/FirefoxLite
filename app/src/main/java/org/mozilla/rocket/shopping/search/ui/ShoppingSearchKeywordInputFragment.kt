@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_shopping_search_keyword_input.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.shopping.search.ShoppingSearchMode
 import javax.inject.Inject
 
 class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
@@ -37,6 +38,8 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ShoppingSearchMode.getInstance(view.context).deleteKeyword()
 
         viewModel.uiModel.observe(this, Observer { uiModel ->
             setupView(uiModel)
