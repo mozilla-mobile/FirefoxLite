@@ -11,12 +11,12 @@ class ShoppingSearchSiteRepository(appContext: Context) {
 
     private val preference = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val mockPreferenceSiteList = listOf(
-        ShoppingSite("Lazada", "https://www.lazada.co.id", "https://www.lazada.co.id", isEnabled = true),
-        ShoppingSite("Bukalapak", "https://www.bukalapak.com", "https://www.bukalapak.com", isEnabled = true),
-        ShoppingSite("Tokopedia", "https://www.tokopedia.com/search?st=product&q=%s", "https://www.tokopedia.com", isEnabled = true),
-        ShoppingSite("JD.ID", "https://www.jd.id/search?keywords=%s", "https://www.jd.id", isEnabled = true),
-        ShoppingSite("Shopee", "https://shopee.co.id", "https://shopee.co.id", isEnabled = true),
-        ShoppingSite("BliBli", "https://www.blibli.com", "https://www.blibli.com", isEnabled = true)
+        ShoppingSite("Lazada", "https://www.lazada.co.id/catalog/?q=", "https://www.lazada.co.id", isEnabled = true),
+        ShoppingSite("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D=", "https://www.bukalapak.com", isEnabled = true),
+        ShoppingSite("Tokopedia", "https://www.tokopedia.com/search?st=product&q=", "https://www.tokopedia.com", isEnabled = true),
+        ShoppingSite("JD.ID", "https://m.jd.id/search?keywords=", "https://www.jd.id", isEnabled = true),
+        ShoppingSite("Shopee", "https://shopee.co.id/search?keyword=", "https://shopee.co.id", isEnabled = true),
+        ShoppingSite("BliBli", "https://www.blibli.com/jual/backpack?searchTerm=backpack", "https://www.blibli.com", isEnabled = true)
     )
 
     fun getShoppingSites(): List<ShoppingSite> {
@@ -29,14 +29,14 @@ class ShoppingSearchSiteRepository(appContext: Context) {
     }
 
     fun getShoppingSitesLiveData(): LiveData<List<ShoppingSite>> =
-            preference.stringLiveData(KEY_SHOPPING_SEARCH_SITE, "")
-                    .map {
-                        if (it.isNotEmpty()) {
-                            it.toPreferenceSiteList()
-                        } else {
-                            getDefaultShoppingSites()
-                        }
-                    }
+        preference.stringLiveData(KEY_SHOPPING_SEARCH_SITE, "")
+            .map {
+                if (it.isNotEmpty()) {
+                    it.toPreferenceSiteList()
+                } else {
+                    getDefaultShoppingSites()
+                }
+            }
 
     private fun getDefaultShoppingSites(): List<ShoppingSite> {
         // TODO:
@@ -46,7 +46,7 @@ class ShoppingSearchSiteRepository(appContext: Context) {
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
         val siteJsonArray = JSONArray()
         shoppingSites.map { it.toJson() }
-                .forEach { siteJsonArray.put(it) }
+            .forEach { siteJsonArray.put(it) }
         preference.edit().putString(KEY_SHOPPING_SEARCH_SITE, siteJsonArray.toString()).apply()
     }
 
@@ -78,8 +78,8 @@ data class ShoppingSite(
 }
 
 private fun String.toPreferenceSiteList(): List<ShoppingSite> =
-        JSONArray(this).run {
-            (0 until length())
-                    .map { index -> optJSONObject(index) }
-                    .map { jsonObject -> ShoppingSite(jsonObject) }
-        }
+    JSONArray(this).run {
+        (0 until length())
+            .map { index -> optJSONObject(index) }
+            .map { jsonObject -> ShoppingSite(jsonObject) }
+    }
