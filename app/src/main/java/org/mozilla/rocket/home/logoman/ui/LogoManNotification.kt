@@ -65,6 +65,7 @@ class LogoManNotification : FrameLayout {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                notification_board.visibility = View.GONE
                 startSwipeOut()
                 actionListener?.onNotificationDismiss()
             }
