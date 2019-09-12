@@ -11,6 +11,7 @@
         android:layout_gravity="end|bottom"
         android:background="@android:color/transparent"
         android:translationY="80dp"
+        android:overScrollMode="never"
         tools:listitem="@layout/home_notification_board" />
 
     <ImageView
