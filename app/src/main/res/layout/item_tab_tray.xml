@@ -9,6 +9,8 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="@dimen/tab_tray_item_height"
+    android:layout_marginStart="@dimen/tab_tray_padding"
+    android:layout_marginEnd="@dimen/tab_tray_padding"
     android:background="@drawable/tab_tray_item_bkg"
     android:outlineProvider="background"
     android:elevation="1dp"

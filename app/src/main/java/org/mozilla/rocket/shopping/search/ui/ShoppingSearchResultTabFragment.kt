@@ -1,5 +1,6 @@
 package org.mozilla.rocket.shopping.search.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,6 +33,8 @@ import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import javax.inject.Inject
 import android.content.Intent
+import org.mozilla.focus.utils.AppConstants
+import org.mozilla.rocket.shopping.search.ShoppingSearchMode
 
 class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
@@ -91,6 +94,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
         shoppingSearchResultViewModel.search(searchKeyword)
 
+        ShoppingSearchMode.getInstance(requireContext()).saveKeyword(searchKeyword)
+
         observeAction()
     }
 
@@ -131,9 +136,9 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
                 when (type) {
-                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> activity?.onBackPressed()
+                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> sendHomeIntent(requireContext())
                     BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
-                    BottomBarItemAdapter.TYPE_DELETE -> activity?.finishAndRemoveTask()
+                    BottomBarItemAdapter.TYPE_DELETE -> ShoppingSearchMode.getInstance(requireContext()).finish()
                     BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
@@ -194,6 +199,13 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         chromeViewModel.share.observe(this, Observer {
             sendShareIntent()
         })
+    }
+
+    private fun sendHomeIntent(context: Context) {
+        val intent = Intent().apply {
+            setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
+        }
+        startActivity(intent)
     }
 
     private fun sendShareIntent() {

@@ -7,12 +7,15 @@ package org.mozilla.focus.tabs.tabtray;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -58,6 +61,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.rocket.privately.PrivateMode;
 import org.mozilla.rocket.privately.PrivateModeActivity;
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity;
 import org.mozilla.rocket.tabs.Session;
 import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
@@ -82,6 +86,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private View privateModeBtn;
     private View privateModeBadge;
 
+    private AlertDialog closeShoppingSearchDialog;
     private AlertDialog closeTabsDialog;
 
     private View backgroundView;
@@ -106,6 +111,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private ThemedImageView imgPrivateBrowsing, imgNewTab;
     private ThemedView bottomDivider;
 
+    private ShoppingSearchItemDecoration itemDecoration;
+    private boolean showShoppingSearch;
+
     @Nullable
     private DialogInterface.OnDismissListener onDismissListener;
 
@@ -122,6 +130,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
         SessionManager sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         presenter = new TabTrayPresenter(this, new TabsSessionModel(sessionManager));
+
+        itemDecoration = new ShoppingSearchItemDecoration(ContextCompat.getDrawable(getContext(), R.drawable.tab_tray_item_divider));
     }
 
     @Override
@@ -139,6 +149,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onStop() {
         super.onStop();
+        if (closeShoppingSearchDialog != null && closeShoppingSearchDialog.isShowing()) {
+            closeShoppingSearchDialog.dismiss();
+        }
         if (closeTabsDialog != null && closeTabsDialog.isShowing()) {
             closeTabsDialog.dismiss();
         }
@@ -159,6 +172,21 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             // Update the UI, in this case, a TextView.
             if (privateModeBadge != null) {
                 privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
+            }
+        });
+        tabTrayViewModel.getUiModel().observe(this, uiModel -> {
+            boolean isDiff = showShoppingSearch ^ uiModel.getShowShoppingSearch();
+            if (isDiff) {
+                showShoppingSearch = uiModel.getShowShoppingSearch();
+                presenter.setShoppingSearch(showShoppingSearch);
+                if (showShoppingSearch) {
+                    recyclerView.addItemDecoration(itemDecoration);
+                    adapter.notifyItemInserted(0);
+                } else {
+                    recyclerView.removeItemDecoration(itemDecoration);
+                    adapter.notifyItemRemoved(0);
+                }
+                adapter.setShoppingSearch(showShoppingSearch, uiModel.getKeyword());
             }
         });
         backgroundView = view.findViewById(R.id.root_layout);
@@ -204,6 +232,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onResume() {
         super.onResume();
         tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.getInstance(getContext()).hasPrivateSession());
+        tabTrayViewModel.checkShoppingSearchMode(getContext());
     }
 
     @Override
@@ -225,6 +254,29 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onShoppingSearchClick() {
+        presenter.shoppingSearchClicked();
+    }
+
+    @Override
+    public void onShoppingSearchCloseClick() {
+        if (closeShoppingSearchDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            closeShoppingSearchDialog = builder.setMessage(R.string.tab_tray_close_shopping_search_dialog_msg)
+                    .setPositiveButton(R.string.action_ok, (dialog, which) -> {
+                        tabTrayViewModel.finishShoppingSearchMode(getContext());
+                        presenter.shoppingSearchCloseClicked();
+                    })
+                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
+        } else {
+            closeShoppingSearchDialog.show();
         }
     }
 
@@ -254,17 +306,28 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
-                return oldTabs.size();
+                return showShoppingSearch ? oldTabs.size() + 1 : oldTabs.size();
             }
 
             @Override
             public int getNewListSize() {
-                return newTabs.size();
+                return showShoppingSearch ? newTabs.size() + 1 : newTabs.size();
             }
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return newTabs.get(newItemPosition).getId().equals(oldTabs.get(oldItemPosition).getId());
+                if (showShoppingSearch) {
+                    if (oldItemPosition == 0 && newItemPosition == 0) {
+                        return true;
+                    } else if (oldItemPosition == 0 && newItemPosition != 0 ||
+                            oldItemPosition != 0 && newItemPosition == 0) {
+                        return false;
+                    } else {
+                        return newTabs.get(newItemPosition - 1).getId().equals(oldTabs.get(oldItemPosition - 1).getId());
+                    }
+                } else {
+                    return newTabs.get(newItemPosition).getId().equals(oldTabs.get(oldItemPosition).getId());
+                }
             }
 
             @Override
@@ -278,11 +341,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             Session oldFocused = adapter.getFocusedTab();
             List<Session> oldTabs1 = adapter.getData();
             int oldFocusedPosition = oldTabs1.indexOf(oldFocused);
-            adapter.notifyItemChanged(oldFocusedPosition);
+            adapter.notifyItemChanged(showShoppingSearch ? oldFocusedPosition + 1 : oldFocusedPosition);
 
             adapter.setFocusedTab(newFocusedTab);
             int newFocusedPosition = oldTabs1.indexOf(newFocusedTab);
-            adapter.notifyItemChanged(newFocusedPosition);
+            adapter.notifyItemChanged(showShoppingSearch ? newFocusedPosition + 1 : newFocusedPosition);
         });
     }
 
@@ -291,7 +354,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         List<Session> tabs = adapter.getData();
         int position = tabs.indexOf(tab);
         if (position >= 0 && position < tabs.size()) {
-            adapter.notifyItemChanged(position);
+            adapter.notifyItemChanged(showShoppingSearch ? position + 1 : position);
         }
     }
 
@@ -315,6 +378,11 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void navigateToHome() {
         ScreenNavigator.get(getContext()).popToHomeScreen(false);
+    }
+
+    @Override
+    public void navigateToShoppingSearch() {
+        startActivity(ShoppingSearchActivity.Companion.getStartIntent(getContext()));
     }
 
     @Override
@@ -372,9 +440,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                ContentPortalViewState.reset();
-                presenter.tabCloseClicked(viewHolder.getAdapterPosition());
-                TelemetryWrapper.swipeTabFromTabTray();
+                if (viewHolder instanceof TabTrayAdapter.ShoppingSearchViewHolder) {
+                    tabTrayViewModel.finishShoppingSearchMode(getContext());
+                    presenter.shoppingSearchCloseClicked();
+                } else if (viewHolder instanceof TabTrayAdapter.TabViewHolder) {
+                    ContentPortalViewState.reset();
+                    presenter.tabCloseClicked(((TabTrayAdapter.TabViewHolder) viewHolder).getOriginPosition());
+                    TelemetryWrapper.swipeTabFromTabTray();
+                }
             }
 
             @Override
@@ -403,7 +476,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private void startExpandAnimation() {
         List<Session> tabs = adapter.getData();
         int focusedPosition = tabs.indexOf(adapter.getFocusedTab());
-        final boolean shouldExpand = isPositionVisibleWhenCollapse(focusedPosition);
+        final boolean shouldExpand = isPositionVisibleWhenCollapse(showShoppingSearch ? focusedPosition + 1 : focusedPosition);
         uiHandler.postDelayed(() -> {
             if (shouldExpand) {
                 setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -699,6 +772,56 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             if (Float.compare(this.overlayAlpha, overlayAlpha) != 0) {
                 this.overlayAlpha = overlayAlpha;
                 fragment.updateWindowOverlay(overlayAlpha);
+            }
+        }
+    }
+
+    private static class ShoppingSearchItemDecoration extends RecyclerView.ItemDecoration {
+        private Drawable divider;
+        private final Rect bounds = new Rect();
+
+        ShoppingSearchItemDecoration(Drawable divider) {
+            this.divider = divider;
+        }
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            if (parent.getLayoutManager() == null || divider == null) {
+                return;
+            }
+
+            c.save();
+            final int left;
+            final int right;
+            //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
+            if (parent.getClipToPadding()) {
+                left = parent.getPaddingLeft();
+                right = parent.getWidth() - parent.getPaddingRight();
+                c.clipRect(left, parent.getPaddingTop(), right,
+                        parent.getHeight() - parent.getPaddingBottom());
+            } else {
+                left = 0;
+                right = parent.getWidth();
+            }
+
+            final int childCount = parent.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                final View child = parent.getChildAt(0);
+                if (parent.getChildAdapterPosition(child) == 0) {
+                    parent.getDecoratedBoundsWithMargins(child, bounds);
+                    final int bottom = bounds.bottom + Math.round(child.getTranslationY());
+                    final int top = bottom - divider.getIntrinsicHeight();
+                    divider.setBounds(left, top, right, bottom);
+                    divider.draw(c);
+                }
+            }
+            c.restore();
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            if (parent.getChildAdapterPosition(view) == 1) {
+                outRect.top = view.getResources().getDimensionPixelOffset(R.dimen.tab_tray_padding);
             }
         }
     }

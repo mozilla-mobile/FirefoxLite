@@ -20,6 +20,12 @@ class TabTrayContract {
         void tabTrayClosed();
 
         void closeAllTabs();
+
+        void setShoppingSearch(boolean show);
+
+        void shoppingSearchClicked();
+
+        void shoppingSearchCloseClicked();
     }
 
     interface View {
@@ -36,6 +42,8 @@ class TabTrayContract {
         void closeTabTray();
 
         void navigateToHome();
+
+        void navigateToShoppingSearch();
     }
 
     interface Model {
