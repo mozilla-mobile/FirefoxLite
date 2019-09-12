@@ -89,7 +89,7 @@
             tools:layout_width="200dp" />
     </LinearLayout>
 
-    <org.mozilla.rocket.home.ui.LogoManNotification
+    <org.mozilla.rocket.home.logoman.ui.LogoManNotification
         android:id="@+id/logo_man_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

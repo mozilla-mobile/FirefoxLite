@@ -44,11 +44,11 @@ import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.home.logoman.ui.LogoManNotification
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
 import org.mozilla.rocket.home.topsites.ui.SiteViewHolder.Companion.TOP_SITE_LONG_CLICK_TARGET
-import org.mozilla.rocket.home.ui.LogoManNotification
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
 import javax.inject.Inject
@@ -92,15 +92,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initFxaView()
         initLogoManNotification()
         observeNightMode()
-
-        // test
-        showLogoManNotification(
-            LogoManNotification.Notification(
-                icon = "",
-                title = "Win your free coupon",
-                subtitle = "7-day challenge for Rs 15,000 shopping coupon7-day challenge for Rs 15,000 "
-            )
-        )
     }
 
     private fun initSearchToolBar() {
@@ -292,19 +283,25 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         startActivity(ShoppingSearchActivity.getStartIntent(context))
     }
 
-    private fun showLogoManNotification(notification: LogoManNotification.Notification) {
-        logo_man_notification.showNotification(notification)
-    }
-
     private fun initLogoManNotification() {
+        homeViewModel.logoManNotification.observe(this, Observer {
+            it?.let { (notification, animate) ->
+                showLogoManNotification(notification, animate)
+            }
+        })
         logo_man_notification.setNotificationActionListener(object : LogoManNotification.NotificationActionListener {
             override fun onNotificationClick() {
                 // TODO:
             }
 
             override fun onNotificationDismiss() {
-                // TODO:
+                homeViewModel.onLogoManDismissed()
             }
         })
+    }
+
+    private fun showLogoManNotification(notification: LogoManNotification.Notification, animate: Boolean) {
+        logo_man_notification.showNotification(notification, animate)
+        homeViewModel.onLogoManShown()
     }
 }
