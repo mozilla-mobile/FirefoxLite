@@ -16,33 +16,39 @@
 
 package org.mozilla.rocket.content.news.domain
 
-import org.mozilla.rocket.content.MediatorUseCase
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import org.mozilla.rocket.content.succeeded
+import java.util.Locale
 
-open class LoadNewsSettingsUseCase(
-    private val repository: NewsSettingsRepository
-) : MediatorUseCase<LoadNewsSettingsParameter, LoadNewsSettingsResult>() {
-    override fun execute(parameters: LoadNewsSettingsParameter) {
-        val settingsLiveData = repository.getNewsSettings()
-        result.removeSource(settingsLiveData)
-        result.addSource(settingsLiveData) { settingsPair ->
-            if (settingsPair == null) {
-                result.postValue(Result.Error(NewsSettingsNotFoundException()))
-            } else {
-                val settingsResult = LoadNewsSettingsResult(settingsPair)
-                result.postValue(Result.Success(settingsResult))
-            }
+open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepository) {
+
+    suspend operator fun invoke(): Result<Pair<NewsLanguage, List<NewsCategory>>> {
+        var defaultLanguage = LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE_LIST[0]
+        val supportLanguagesResult = repository.getLanguages()
+        if (supportLanguagesResult is Result.Success &&
+            supportLanguagesResult.isNotEmpty &&
+            supportLanguagesResult.data.find { newsLanguage -> newsLanguage.isSelected } == null) {
+            supportLanguagesResult.data
+                .find { language -> Locale.getDefault().displayName.contains(language.name) }
+                ?.let { defaultLanguage = it }
+        }
+
+        val result = repository.getNewsSettings(defaultLanguage)
+        return if (result.succeeded) {
+            result
+        } else {
+            Result.Success(Pair(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE_LIST[0], DEFAULT_CATEGORY_LIST))
         }
     }
+
+    companion object {
+        private const val DEFAULT_CATEGORY_ID = "top-news"
+        private val DEFAULT_CATEGORY_LIST = listOf(
+            NewsCategory.getCategoryById(DEFAULT_CATEGORY_ID)!!
+        )
+    }
 }
-
-class NewsSettingsNotFoundException : Exception()
-
-data class LoadNewsSettingsResult(
-    val settings: Pair<NewsLanguage, List<NewsCategory>>
-)
-
-class LoadNewsSettingsParameter

@@ -3,6 +3,7 @@ package org.mozilla.rocket.content.news.data
 import org.json.JSONObject
 import org.mozilla.rocket.content.news.data.NewsLanguage.Companion.KEY_LANGUAGE_CODE
 import org.mozilla.rocket.content.news.data.NewsLanguage.Companion.KEY_LANGUAGE_NAME
+import java.util.Locale
 
 data class NewsLanguage(
     val key: String,
@@ -10,6 +11,9 @@ data class NewsLanguage(
     val name: String,
     var isSelected: Boolean = false
 ) {
+    val apiId: String
+        get() = key.toLowerCase(Locale.getDefault())
+
     companion object {
         internal const val KEY_LANGUAGE_CODE = "languageCode"
         internal const val KEY_LANGUAGE_NAME = "languageName"
@@ -27,10 +31,6 @@ data class NewsLanguage(
 
             return result
         }
-    }
-
-    fun getApiId(): String {
-        return key.toLowerCase()
     }
 }
 

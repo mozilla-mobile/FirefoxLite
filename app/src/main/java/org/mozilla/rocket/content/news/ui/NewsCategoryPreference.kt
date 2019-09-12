@@ -5,16 +5,16 @@
 package org.mozilla.rocket.content.news.ui
 
 import android.content.Context
-import androidx.preference.Preference
-import androidx.preference.PreferenceViewHolder
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.ToggleButton
+import androidx.preference.Preference
+import androidx.preference.PreferenceViewHolder
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.news.data.NewsCategory
 

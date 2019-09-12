@@ -1,22 +1,27 @@
 package org.mozilla.rocket.content.news.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.lifecycle.Observer
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsLanguage
-import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import javax.inject.Inject
 
 class NewsSettingFragment : PreferenceFragmentCompat() {
 
-    @Inject lateinit var repository: NewsSettingsRepository
+    @Inject
+    lateinit var applicationContext: Context
+
+    @Inject
+    lateinit var newsSettingsViewModelCreator: Lazy<NewsSettingsViewModel>
+
+    private lateinit var newsSettingsViewModel: NewsSettingsViewModel
 
     private var languagePreference: NewsLanguagePreference? = null
     private var categoryPreference: NewsCategoryPreference? = null
@@ -25,14 +30,26 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
     private var langKey: String? = null
 
-    companion object {
-        private const val TAG = "NewsSettingFragment"
-        private const val PREF_NEWS_LANG = "pref_dummy_s_news_lang"
-        private const val PREF_NEWS_CAT = "pref_dummy_s_news_Cat"
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
-        fun newInstance(): NewsSettingFragment {
-            return NewsSettingFragment()
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        newsSettingsViewModel = getActivityViewModel(newsSettingsViewModelCreator)
+        newsSettingsViewModel.uiModel.observe(this, Observer { newsSettingsUiModel ->
+            newsSettingsUiModel.preferenceLanguage.let { langChanged ->
+                languagePreference?.summary = langChanged.name
+                langKey = langChanged.apiId
+            }
+            newsSettingsUiModel.categories.let { categories ->
+                categoryPreference?.updateCatList(categories)
+            }
+
+            dialogHelper.updateLangList(newsSettingsUiModel.allLanguages)
+        })
     }
 
     override fun onPause() {
@@ -42,36 +59,6 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         TelemetryWrapper.changeNewsSetting(categories = catList?.filter { item -> item.isSelected }?.map { lang -> lang.order.toString() })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent().inject(this)
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val allLangsObserver = Observer<List<NewsLanguage>> {
-            Log.d(TAG, "language list has changed")
-            dialogHelper.updateLangList(it)
-        }
-        repository.getLanguages().observe(viewLifecycleOwner, allLangsObserver)
-
-        val settingObserver = Observer<Pair<NewsLanguage, List<NewsCategory>>> {
-            Log.d(
-                TAG,
-                "news locale/cats setting has changed, hence the changes to the cat list is overridden again and again "
-            )
-            it?.first?.let { langChanged ->
-                languagePreference?.summary = langChanged.name
-                langKey = langChanged.getApiId()
-            }
-            it?.second?.let { categories ->
-                categoryPreference?.updateCatList(categories)
-            }
-        }
-        repository.getNewsSettings().observe(viewLifecycleOwner, settingObserver)
-    }
-
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {
         addPreferencesFromResource(R.xml.settings_news)
 
@@ -79,7 +66,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         categoryPreference = findPreference(PREF_NEWS_CAT) as? NewsCategoryPreference
         categoryPreference?.onCategoryClick = {
             langKey?.let { key ->
-                repository.setUserPreferenceCategories(key, it)
+                newsSettingsViewModel.updateUserPreferenceCategories(key, it)
             }
         }
     }
@@ -97,6 +84,15 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
     private fun setUserPreferLanguage(language: NewsLanguage) {
         TelemetryWrapper.changeNewsSetting(language = language.key)
-        repository.setUserPreferenceLanguage(language)
+        newsSettingsViewModel.updateUserPreferenceLanguage(language)
+    }
+
+    companion object {
+        private const val PREF_NEWS_LANG = "pref_dummy_s_news_lang"
+        private const val PREF_NEWS_CAT = "pref_dummy_s_news_Cat"
+
+        fun newInstance(): NewsSettingFragment {
+            return NewsSettingFragment()
+        }
     }
 }
