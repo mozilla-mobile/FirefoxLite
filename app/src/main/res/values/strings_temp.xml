@@ -21,4 +21,15 @@
     <string name="shopping_search_prompt_search" translatable="false">Search</string>
     <string name="shopping_search_feature_onboarding_title" translatable="false">New way of search!</string>
     <string name="shopping_search_feature_onboarding_message" translatable="false">Use shopping to find products across different shopping sites.</string>
+
+    <!-- MSRP challenge detail -->
+    <string name="msrp_challenge_detail_btn_redeem" translatable="false">Use Firefox account to redeem</string>
+    <string name="msrp_challenge_detail_desc_point_1_title" translatable="false">1. Join the 7-Day challenge</string>
+    <string name="msrp_challenge_detail_desc_point_1_message" translatable="false">View the top sites on Firefox Lite home by simply clicking the buttons for seven days in a row.</string>
+    <string name="msrp_challenge_detail_desc_point_2_title" translatable="false">2. Use your Firefox account to redeem your reward</string>
+    <string name="msrp_challenge_detail_desc_point_2_message" translatable="false"><a href="#">Enter your email address to get started.</a> Make sure you sign in to the account you want to use before you complete your redemption.</string>
+    <string name="msrp_challenge_detail_btn_im_in" translatable="false">I’m In!</string>
+    <string name="msrp_challenge_detail_btn_terms_of_use" translatable="false">By clicking “I’m in” you are agreeing to our <a href="#">Terms of Use</a>.</string>
+    <string name="msrp_challenge_detail_btn_quit" translatable="false">I quit for now</string>
+
 </resources>

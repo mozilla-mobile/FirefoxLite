@@ -71,7 +71,6 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.fxa.FxLoginFragment
-import org.mozilla.rocket.fxa.MissionDetailFragment
 import org.mozilla.rocket.fxa.RedeemFragment
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.landing.DialogQueue
@@ -80,6 +79,7 @@ import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitComponent
 import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.menu.MenuDialog
+import org.mozilla.rocket.msrp.ui.MissionDetailFragment
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.promotion.PromotionModel
 import org.mozilla.rocket.promotion.PromotionPresenter
