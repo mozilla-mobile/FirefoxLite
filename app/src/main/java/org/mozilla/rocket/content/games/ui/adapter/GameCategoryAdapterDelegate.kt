@@ -12,7 +12,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.games.ui.GameItemDecoration
 import org.mozilla.rocket.content.games.ui.GamesViewModel
 import org.mozilla.rocket.content.games.vo.Game
-import org.mozilla.rocket.content.games.vo.GameList
+import org.mozilla.rocket.content.games.vo.GameCategory
 
 class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
@@ -42,8 +42,8 @@ class GameCategoryViewHolder(
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        uiModel as GameList
+        uiModel as GameCategory
         category_title.text = uiModel.type
-        adapter.setData(uiModel.data)
+        adapter.setData(uiModel.games)
     }
 }

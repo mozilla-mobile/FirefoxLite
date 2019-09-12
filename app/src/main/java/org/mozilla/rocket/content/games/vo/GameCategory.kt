@@ -2,7 +2,7 @@ package org.mozilla.rocket.content.games.vo
 
 import org.mozilla.rocket.adapter.DelegateAdapter
 
-data class GameList(
+data class GameCategory(
     val type: String,
-    val data: List<Game>
+    val games: List<Game>
 ) : DelegateAdapter.UiModel()

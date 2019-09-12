@@ -1,0 +1,270 @@
+
+  [{
+    "type": "Browser",
+    "banner": [
+      {
+        "id": "1",
+        "imageUrl": "http://www.gameloft.com/central/upload/Asphalt-9-Legends-Slider-logo-2.jpg",
+        "linkUrl": "http://www.gameloft.com/central/category/asphalt/asphalt-9-legends/"
+      },
+      {
+        "id": "2",
+        "imageUrl": "http://www.gameloft.com/central/upload/MCB_Blog-FrontRodolex_2048x700.jpg",
+        "linkUrl": "http://www.gameloft.com/central/modern-combat-blackout/modern-combat-blackout-coming-nintendo-switch/"
+      },
+      {
+        "id": "3",
+        "imageUrl":"http://www.gameloft.com/central/upload/Slider-1.jpg",
+        "linkUrl": "http://www.gameloft.com/central/dungeon-hunter/dungeon-hunter-champions-brings-you-epic-action/"
+      }
+
+    ],
+    "gamelist": [
+      {
+        "type" : "Game of the week",
+        "games" : [
+          {
+            "id": 4,
+            "name": "BoboiBoy Galaxy Run",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3662/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/boBoiBoyRunFree/?ms_sid=4&phoneId=32225&game=16003785&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 5,
+            "name": "Kitchen Bazar",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3796/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/kitchenBazarFree/?ms_sid=4&phoneId=32225&game=16086981&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 6,
+            "name": "Danger Dash",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3232/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/dangerDashFree/?ms_sid=4&phoneId=32225&game=15487866&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 7,
+            "name": "Puzzle Pets: Pairs",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/puzzlePetsPairsFree/?ms_sid=4&phoneId=32225&game=15084939&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 8,
+            "name": "Ludibubbles",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2920/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/ludibubblesFree/?ms_sid=4&phoneId=32225&game=15153437&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          }
+        ]
+      },
+      {
+        "type" : "rpg",
+        "games" : [
+          {
+            "id": 9,
+            "name": "Meow Meow Life",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3598/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/meowMeowLifeFree/?ms_sid=4&phoneId=32225&game=15928205&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 10,
+            "name": "Castle of Magic",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3624/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/castleOfMagicFree/?ms_sid=4&phoneId=32225&game=15966327&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 11,
+            "name": "Ninja UP!",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2817/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/ninjaUpFree/?ms_sid=4&phoneId=32225&game=15118898&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 12,
+            "name": "Kite",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2564/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/kiteFree/?ms_sid=4&phoneId=32225&game=14355923&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 13,
+            "name": "Pirates: Path of the Buccaneer",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3297/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/piratesPathOfTheBuccaneerFree/?ms_sid=4&phoneId=32225&game=15574419&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 14,
+            "name": "NitroStreet: DragMode",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/nitroStreetDragModeFree/?ms_sid=4&phoneId=32225&game=15104944&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          }
+        ]
+      },
+      {
+        "type" : "Sports",
+        "games" : [
+          {
+            "id": 15,
+            "name": "BoboiBoy Galaxy Run",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3662/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/boBoiBoyRunFree/?ms_sid=4&phoneId=32225&game=16003785&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 16,
+            "name": "Kitchen Bazar",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3796/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/kitchenBazarFree/?ms_sid=4&phoneId=32225&game=16086981&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 17,
+            "name": "Danger Dash",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3232/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/dangerDashFree/?ms_sid=4&phoneId=32225&game=15487866&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 18,
+            "name": "Puzzle Pets: Pairs",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/puzzlePetsPairsFree/?ms_sid=4&phoneId=32225&game=15084939&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          },
+          {
+            "id": 19,
+            "name": "Ludibubbles",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2920/default/html5/icon/114/icon.png",
+            "linkUrl": "https://cdn.ludigames.com/h5/ludibubblesFree/?ms_sid=4&phoneId=32225&game=15153437&fromPartner=gameloft&sv=126ehy3kvewfvbn64lr4zs3rw&c=206&utm_source=gameloft&utm_medium=bookmark&utm_campaign=PI39"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Premium",
+    "banner": [
+      {
+        "id": "21",
+        "imageUrl": "http://www.gameloft.com/central/upload/Asphalt-9-Legends-Slider-logo-2.jpg",
+        "linkUrl": "http://www.gameloft.com/central/category/asphalt/asphalt-9-legends/"
+      },
+      {
+        "id": "22",
+        "imageUrl": "http://www.gameloft.com/central/upload/MCB_Blog-FrontRodolex_2048x700.jpg",
+        "linkUrl": "http://www.gameloft.com/central/modern-combat-blackout/modern-combat-blackout-coming-nintendo-switch/"
+      },
+      {
+        "id": "23",
+        "imageUrl":"http://www.gameloft.com/central/upload/Slider-1.jpg",
+        "linkUrl": "http://www.gameloft.com/central/dungeon-hunter/dungeon-hunter-champions-brings-you-epic-action/"
+      }
+
+    ],
+    "gamelist": [
+      {
+        "type" : "Game of the week",
+        "games" : [
+          {
+            "id": 24,
+            "name": "BoboiBoy Galaxy Run",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3662/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 25,
+            "name": "Kitchen Bazar",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3796/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 26,
+            "name": "Danger Dash",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3232/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 27,
+            "name": "Puzzle Pets: Pairs",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 28,
+            "name": "Ludibubbles",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2920/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          }
+        ]
+      },
+      {
+        "type" : "rpg",
+        "games" : [
+          {
+            "id": 29,
+            "name": "Meow Meow Life",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3598/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 30,
+            "name": "Castle of Magic",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3624/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 31,
+            "name": "Ninja UP!",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2817/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 32,
+            "name": "Kite",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2564/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 33,
+            "name": "Pirates: Path of the Buccaneer",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3297/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 34,
+            "name": "NitroStreet: DragMode",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          }
+        ]
+      },
+      {
+        "type" : "Sports",
+        "games" : [
+          {
+            "id": 35,
+            "name": "BoboiBoy Galaxy Run",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3662/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 36,
+            "name": "Kitchen Bazar",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3796/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 37,
+            "name": "Danger Dash",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/3232/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 38,
+            "name": "Puzzle Pets: Pairs",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2794/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          },
+          {
+            "id": 39,
+            "name": "Ludibubbles",
+            "imageUrl": "https://media07-gl-ssl-gzip.gameloft.com/products/2920/default/html5/icon/114/icon.png",
+            "linkUrl": "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+          }
+        ]
+      }
+    ]
+  }
+  ]
