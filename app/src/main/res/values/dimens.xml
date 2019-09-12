@@ -103,4 +103,13 @@
     <item name="top_sites_pager_indicator_visibility" type="integer">@integer/visibility_gone</item>
     <item name="content_hub_title_top_margin" type="dimen">0dp</item>
 
+    <!--  MissionDetailFragment  -->
+    <item name="msrp_mission_detail_horizontal_width" type="dimen">296dp</item>
+    <item name="msrp_mission_detail_button_height" type="dimen">40dp</item>
+    <item name="msrp_mission_detail_button_text_size" type="dimen">14sp</item>
+    <item name="msrp_mission_detail_day_width" type="dimen">50dp</item>
+    <item name="msrp_mission_detail_day_radius" type="dimen">25dp</item>
+    <item name="msrp_mission_detail_day_text_size" type="dimen">12sp</item>
+    <item name="msrp_mission_detail_day_text_margin_top" type="dimen">4dp</item>
+
 </resources>
