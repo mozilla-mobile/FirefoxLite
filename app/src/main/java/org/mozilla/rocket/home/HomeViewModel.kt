@@ -9,6 +9,9 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
+import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
+import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -22,7 +25,9 @@ class HomeViewModel(
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
-    private val getContentHubItemsUseCase: GetContentHubItemsUseCase
+    private val getContentHubItemsUseCase: GetContentHubItemsUseCase,
+    getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
+    private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -30,6 +35,7 @@ class HomeViewModel(
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
     val contentHubItems = MutableLiveData<List<ContentHub.Item>>().apply { value = getContentHubItemsUseCase() }
     val hasPendingMissions = MutableLiveData<Boolean>()
+    val logoManNotification = MutableLiveData<StateNotification?>()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -37,6 +43,12 @@ class HomeViewModel(
     val openBrowser = SingleLiveEvent<Site>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
+
+    init {
+        getLogoManNotificationUseCase()?.let { notification ->
+            logoManNotification.value = StateNotification(notification, true)
+        }
+    }
 
     fun updateTopSitesData() = viewModelScope.launch {
         sitePages.value = getTopSitesUseCase().toSitePages()
@@ -107,9 +119,27 @@ class HomeViewModel(
         TelemetryWrapper.clickContentHub(item)
     }
 
+    fun onLogoManShown() {
+        // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
+        logoManNotification.value?.animate = false
+    }
+
+    fun onLogoManDismissed() {
+        logoManNotification.value?.let {
+            dismissLogoManNotificationUseCase(it.notification)
+        }
+        logoManNotification.value = null
+    }
+
     data class ShowTopSiteMenuData(
         val site: Site,
         val position: Int
+    )
+
+    // Remove this when Home Screen doesn't recreate whenever goes back from browser
+    data class StateNotification(
+        val notification: Notification,
+        var animate: Boolean
     )
 
     companion object {

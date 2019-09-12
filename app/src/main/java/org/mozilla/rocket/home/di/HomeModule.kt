@@ -14,6 +14,9 @@ import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.home.HomeViewModel
+import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
+import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
+import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import javax.inject.Singleton
 
 @Module
@@ -27,14 +30,18 @@ object HomeModule {
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
-        getContentHubItemsUseCase: GetContentHubItemsUseCase
+        getContentHubItemsUseCase: GetContentHubItemsUseCase,
+        getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
+        dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
         topSitesConfigsUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
-        getContentHubItemsUseCase
+        getContentHubItemsUseCase,
+        getLogoManNotificationUseCase,
+        dismissLogoManNotificationUseCase
     )
 
     @JvmStatic
@@ -80,4 +87,21 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideContentHubRepo(appContext: Context): ContentHubRepo = ContentHubRepo(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideLogoManNotificationRepo(appContext: Context): LogoManNotificationRepo = LogoManNotificationRepo(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): GetLogoManNotificationUseCase =
+            GetLogoManNotificationUseCase(logoManNotificationRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideDismissLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): DismissLogoManNotificationUseCase =
+            DismissLogoManNotificationUseCase(logoManNotificationRepo)
 }
