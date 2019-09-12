@@ -50,20 +50,9 @@ class ShoppingSearchSiteRepository(appContext: Context) {
         preference.edit().putString(KEY_SHOPPING_SEARCH_SITE, siteJsonArray.toString()).apply()
     }
 
-    fun getOnboardingPref(): Boolean {
-        return preference.getBoolean(KEY_ONBOARDING, true)
-    }
-
-    fun setOnboardingPref(showed: Boolean) {
-        preference.run {
-            edit().putBoolean(KEY_ONBOARDING, showed).apply()
-        }
-    }
-
     companion object {
         const val PREF_NAME = "shopping_search"
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"
-        const val KEY_ONBOARDING = "shopping_search_result_onboarding"
     }
 }
 

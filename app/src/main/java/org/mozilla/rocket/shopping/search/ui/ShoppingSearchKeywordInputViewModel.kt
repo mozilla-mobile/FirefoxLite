@@ -12,11 +12,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.shopping.search.domain.CheckOnboardingFirstRunUseCase
+import org.mozilla.rocket.shopping.search.domain.CompleteOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import java.util.Locale
 
 class ShoppingSearchKeywordInputViewModel(
-    private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase
+    private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase,
+    checkOnboardingFirstRunUseCase: CheckOnboardingFirstRunUseCase,
+    private val completeOnboardingFirstRunUseCase: CompleteOnboardingFirstRunUseCase
 ) : ViewModel() {
 
     private val _uiModel = MutableLiveData<ShoppingSearchKeywordInputUiModel>()
@@ -24,11 +28,17 @@ class ShoppingSearchKeywordInputViewModel(
         get() = _uiModel
 
     val navigateToResultTab = SingleLiveEvent<String>()
+    private var isFirstRun = false
+
+    init {
+        isFirstRun = checkOnboardingFirstRunUseCase()
+        emitUiModel(ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun))
+    }
 
     fun fetchSuggestions(keyword: String) = viewModelScope.launch(Dispatchers.Default) {
         val newUiModel: ShoppingSearchKeywordInputUiModel
         if (TextUtils.isEmpty(keyword)) {
-            newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true)
+            newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun)
         } else {
             var styledSuggestions: List<CharSequence>? = null
             val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
@@ -37,6 +47,7 @@ class ShoppingSearchKeywordInputViewModel(
             }
             newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, true, true, true)
         }
+
         withContext(Dispatchers.Main) {
             emitUiModel(newUiModel)
         }
@@ -45,6 +56,10 @@ class ShoppingSearchKeywordInputViewModel(
     fun onKeywordSent(keyword: String) {
         if (!TextUtils.isEmpty(keyword)) {
             navigateToResultTab.value = keyword
+            if (isFirstRun) {
+                completeOnboardingFirstRunUseCase()
+                isFirstRun = false
+            }
         }
     }
 
@@ -71,7 +86,7 @@ class ShoppingSearchKeywordInputViewModel(
 
 data class ShoppingSearchKeywordInputUiModel(
     val keywordSuggestions: List<CharSequence>? = null,
-    val hideHintContainer: Boolean = false,
+    var hideHintContainer: Boolean = false,
     val hideLogoMan: Boolean = false,
     val hideIndication: Boolean = false,
     val hideClear: Boolean = false
