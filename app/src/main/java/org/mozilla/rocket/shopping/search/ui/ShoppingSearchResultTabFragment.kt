@@ -101,7 +101,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     private fun observeAction() {
         shoppingSearchResultViewModel.showOnboardingDialog.observe(this, Observer {
-            val dialogFragment = ShoppingSearchOnboardingDialogFragment()
+            val dialogFragment = ShoppingSearchContentSwitchOnboardingDialogFragment()
             dialogFragment.show(childFragmentManager, "onboardingDialogFragment")
         })
     }

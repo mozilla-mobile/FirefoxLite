@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/paletteBlack50"
-    tools:context="org.mozilla.rocket.shopping.search.ui.ShoppingSearchOnboardingDialogFragment">
+    tools:context="org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingDialogFragment">
 
     <View
         android:layout_width="12dp"

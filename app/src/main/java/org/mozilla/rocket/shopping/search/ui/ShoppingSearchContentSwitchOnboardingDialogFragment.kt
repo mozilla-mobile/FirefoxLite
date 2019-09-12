@@ -12,12 +12,12 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
 
-class ShoppingSearchOnboardingDialogFragment : DialogFragment() {
+class ShoppingSearchContentSwitchOnboardingDialogFragment : DialogFragment() {
 
     @Inject
-    lateinit var viewModelCreator: Lazy<ShoppingSearchOnboardingViewModel>
+    lateinit var viewModelCreator: Lazy<ShoppingSearchContentSwitchOnboardingViewModel>
 
-    private lateinit var viewModel: ShoppingSearchOnboardingViewModel
+    private lateinit var viewModel: ShoppingSearchContentSwitchOnboardingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)

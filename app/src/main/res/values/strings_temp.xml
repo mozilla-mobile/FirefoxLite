@@ -19,4 +19,6 @@
     <string name="tab_tray_close_shopping_search_dialog_msg" translatable="false">Close all shopping search results?</string>
     <string name="shopping_search_prompt_message" translatable="false">Use Shopping Search to find products on different shopping sites at once.</string>
     <string name="shopping_search_prompt_search" translatable="false">Search</string>
+    <string name="shopping_search_feature_onboarding_title" translatable="false">New way of search!</string>
+    <string name="shopping_search_feature_onboarding_message" translatable="false">Use shopping to find products across different shopping sites.</string>
 </resources>

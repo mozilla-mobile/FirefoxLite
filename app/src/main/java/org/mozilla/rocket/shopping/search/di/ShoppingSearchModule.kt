@@ -4,8 +4,11 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
+import org.mozilla.rocket.shopping.search.data.OnboardingSharedPreferenceRepository
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchSiteRepository
+import org.mozilla.rocket.shopping.search.domain.CheckContentSwitchOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.CheckOnboardingFirstRunUseCase
+import org.mozilla.rocket.shopping.search.domain.CompleteContentSwitchOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.CompleteOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
@@ -14,7 +17,7 @@ import org.mozilla.rocket.shopping.search.domain.UpdateShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchBottomBarViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchPreferencesViewModel
-import org.mozilla.rocket.shopping.search.ui.ShoppingSearchOnboardingViewModel
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultViewModel
 import javax.inject.Singleton
 
@@ -33,10 +36,13 @@ object ShoppingSearchModule {
         FetchKeywordSuggestionUseCase(repo)
 
     @JvmStatic
-    @Singleton
     @Provides
-    fun provideShoppingSearchKeywordInputViewModel(usecase: FetchKeywordSuggestionUseCase): ShoppingSearchKeywordInputViewModel =
-        ShoppingSearchKeywordInputViewModel(usecase)
+    fun provideShoppingSearchKeywordInputViewModel(
+        fetchKeywordUseCase: FetchKeywordSuggestionUseCase,
+        checkUseCase: CheckOnboardingFirstRunUseCase,
+        completeUseCase: CompleteOnboardingFirstRunUseCase
+    ): ShoppingSearchKeywordInputViewModel =
+        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase, checkUseCase, completeUseCase)
 
     @JvmStatic
     @Singleton
@@ -49,17 +55,15 @@ object ShoppingSearchModule {
     fun provideSearchShoppingSiteUseCase(repo: ShoppingSearchSiteRepository) = GetShoppingSearchSitesUseCase(repo)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideShoppingSearchResultViewModel(
         usecase: GetShoppingSearchSitesUseCase,
-        checkUseCase: CheckOnboardingFirstRunUseCase,
-        completeUseCase: CompleteOnboardingFirstRunUseCase
+        checkUseCase: CheckContentSwitchOnboardingFirstRunUseCase,
+        completeUseCase: CompleteContentSwitchOnboardingFirstRunUseCase
     ): ShoppingSearchResultViewModel =
         ShoppingSearchResultViewModel(usecase, checkUseCase, completeUseCase)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideShoppingSearchBottomBarViewModel(): ShoppingSearchBottomBarViewModel =
         ShoppingSearchBottomBarViewModel()
@@ -75,7 +79,6 @@ object ShoppingSearchModule {
     fun provideSaveListToPreferenceUseCase(repo: ShoppingSearchSiteRepository) = UpdateShoppingSitesUseCase(repo)
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideShoppingSearchPreferencesViewModel(usecase: GetShoppingSitesUseCase, saveUseCase: UpdateShoppingSitesUseCase): ShoppingSearchPreferencesViewModel =
             ShoppingSearchPreferencesViewModel(usecase, saveUseCase)
@@ -83,18 +86,34 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideCheckOnboardingFirstRunUseCase(repo: ShoppingSearchSiteRepository): CheckOnboardingFirstRunUseCase =
+    fun provideOnboardingSharedPreferenceRepository(appContext: Context): OnboardingSharedPreferenceRepository = OnboardingSharedPreferenceRepository(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideContentSwitchCheckOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CheckContentSwitchOnboardingFirstRunUseCase =
+        CheckContentSwitchOnboardingFirstRunUseCase(repo)
+
+    @JvmStatic
+    @Provides
+    fun provideShoppingSearchOnboardingViewModel(): ShoppingSearchContentSwitchOnboardingViewModel =
+        ShoppingSearchContentSwitchOnboardingViewModel()
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideContentSwitchCompleteOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CompleteContentSwitchOnboardingFirstRunUseCase =
+        CompleteContentSwitchOnboardingFirstRunUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCheckOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CheckOnboardingFirstRunUseCase =
         CheckOnboardingFirstRunUseCase(repo)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideShoppingSearchOnboardingViewModel(): ShoppingSearchOnboardingViewModel =
-        ShoppingSearchOnboardingViewModel()
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideCompleteOnboardingFirstRunUseCase(repo: ShoppingSearchSiteRepository): CompleteOnboardingFirstRunUseCase =
+    fun provideCompleteOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CompleteOnboardingFirstRunUseCase =
         CompleteOnboardingFirstRunUseCase(repo)
 }
