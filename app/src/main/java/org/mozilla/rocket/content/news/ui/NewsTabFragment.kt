@@ -57,10 +57,12 @@ class NewsTabFragment : Fragment() {
         if (savedInstanceState == null) {
             newsViewModel = getActivityViewModel(newsViewModelCreator)
 
-            newsViewModel.newsSettings.observe(viewLifecycleOwner, Observer { settings ->
+            newsViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
-                    newsSettings = it
-                    refresh(view, it)
+                    if (newsSettings != it.newsSettings) {
+                        newsSettings = it.newsSettings
+                        refresh(view, it.newsSettings)
+                    }
                 }
             })
         }
@@ -73,6 +75,14 @@ class NewsTabFragment : Fragment() {
             newsSettings?.let {
                 refresh(view, it)
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == ContentFeature.SETTING_REQUEST_CODE) {
+            newsViewModel.getNewsSettings()
         }
     }
 
@@ -114,7 +124,7 @@ class NewsTabFragment : Fragment() {
     inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) :
         FragmentPagerAdapter(fm) {
 
-        private val language = newsSettings.first.getApiId()
+        private val language = newsSettings.first.apiId
         private val displayCategories = newsSettings.second.filter { it.isSelected }
 
         override fun getCount() = displayCategories.size

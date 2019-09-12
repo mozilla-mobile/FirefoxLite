@@ -1,78 +1,58 @@
 package org.mozilla.rocket.content.news.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import org.mozilla.focus.utils.CharacterValidator
+import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.isNotEmpty
+import org.mozilla.rocket.content.succeeded
 
 class NewsSettingsRepository(
     private val remoteDataSource: NewsSettingsDataSource,
     private val localDataSource: NewsSettingsDataSource
 ) {
 
-    private val languagesLiveData = MediatorLiveData<List<NewsLanguage>>()
-    private var remoteLanguages: List<NewsLanguage>? = null
-    private var localLanguages: List<NewsLanguage>? = null
-    private var preferenceLanguage: NewsLanguage? = null
+    suspend fun getLanguages(): Result<List<NewsLanguage>> {
+        val remoteResult = remoteDataSource.getSupportLanguages()
+        if (remoteResult is Result.Success && remoteResult.data.isNotEmpty()) {
+            localDataSource.setSupportLanguages(remoteResult.data)
+        }
 
-    private val categoriesLiveData = MediatorLiveData<List<NewsCategory>>()
-    private val settingsLiveData = MediatorLiveData<Pair<NewsLanguage, List<NewsCategory>>>()
-    private var remoteCategories: List<String>? = null
-    private var localCategories: List<String>? = null
-    private var preferenceCategories: List<String>? = null
-    private var cacheNewsSettings: Pair<NewsLanguage, List<NewsCategory>>? = null
+        val supportLanguagesResult = localDataSource.getSupportLanguages()
+        if (supportLanguagesResult is Result.Success && supportLanguagesResult.data.isNotEmpty()) {
+            val supportLanguages = supportLanguagesResult.data
+            val defaultLanguageResult = localDataSource.getUserPreferenceLanguage()
+            if (defaultLanguageResult is Result.Success && defaultLanguageResult.succeeded) {
+                supportLanguages.forEach {
+                    it.isSelected = (it.key == defaultLanguageResult.data!!.key) // succeeded implies data is not null
+                }
+            }
+            return Result.Success(supportLanguages)
+        }
 
-    init {
-        languagesLiveData.addSource(remoteDataSource.getSupportLanguages()) {
-            remoteLanguages = it
-            updateLanguageResult()
-        }
-        languagesLiveData.addSource(localDataSource.getSupportLanguages()) {
-            localLanguages = it
-            updateLanguageResult()
-        }
-        languagesLiveData.addSource(localDataSource.getUserPreferenceLanguage()) {
-            preferenceLanguage = it
-            updateLanguageResult()
-        }
+        return Result.Error(Exception("Fail to get news languages result"))
     }
 
-    fun getLanguages(): LiveData<List<NewsLanguage>> {
-        return languagesLiveData
-    }
-
-    fun setUserPreferenceLanguage(language: NewsLanguage) {
+    suspend fun setUserPreferenceLanguage(language: NewsLanguage) {
         localDataSource.setUserPreferenceLanguage(language)
     }
 
-    fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
-        return localDataSource.getUserPreferenceLanguage()
-    }
-
-    fun getNewsSettings(): LiveData<Pair<NewsLanguage, List<NewsCategory>>> {
-        val userPreferenceLanguageData = localDataSource.getUserPreferenceLanguage()
-        settingsLiveData.removeSource(userPreferenceLanguageData)
-        settingsLiveData.addSource(userPreferenceLanguageData) { newsLanguage ->
-            newsLanguage?.let { language ->
-                preferenceLanguage = language
-
-                val categoriesByLanguage = getCategoriesByLanguage(language.getApiId())
-                settingsLiveData.removeSource(categoriesByLanguage)
-                settingsLiveData.addSource(categoriesByLanguage) { categories ->
-                    categories?.let { list ->
-                        val newsSettings = Pair(language, list)
-                        if (newsSettings != cacheNewsSettings) {
-                            cacheNewsSettings = newsSettings
-                            settingsLiveData.postValue(newsSettings)
-                        }
-                    }
-                }
+    suspend fun getNewsSettings(defaultLanguage: NewsLanguage): Result<Pair<NewsLanguage, List<NewsCategory>>> {
+        val userPreferenceLanguageResult = localDataSource.getUserPreferenceLanguage()
+        val userPreferenceLanguage =
+            if (userPreferenceLanguageResult is Result.Success && userPreferenceLanguageResult.data != null) {
+                userPreferenceLanguageResult.data
+            } else {
+                defaultLanguage
             }
+
+        val categoriesByLanguageResult = getCategoriesByLanguage(userPreferenceLanguage.apiId)
+        if (categoriesByLanguageResult is Result.Success && categoriesByLanguageResult.data.isNotEmpty()) {
+            val supportCategories = categoriesByLanguageResult.data
+            return Result.Success(Pair(userPreferenceLanguage, supportCategories))
         }
 
-        return settingsLiveData
+        return Result.Error(Exception("Fail to get news settings result"))
     }
 
-    fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) {
+    suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) {
         localDataSource.setUserPreferenceCategories(
             language,
             userPreferenceCategories.asSequence()
@@ -82,62 +62,16 @@ class NewsSettingsRepository(
         )
     }
 
-    private fun updateLanguageResult() {
-        val supportLanguages = ArrayList<NewsLanguage>()
-        if (localLanguages?.isNotEmpty() == true) {
-            localLanguages?.let {
-                val displayCharacterForNotSupportedCharacter = "\u2612"
-                val characterValidator = CharacterValidator(displayCharacterForNotSupportedCharacter)
-                supportLanguages.addAll(it.filterNot { item -> characterValidator.characterIsMissingInFont(item.name.substring(0, 1)) })
-                try {
-                    supportLanguages.sortBy { item -> item.code.toInt() }
-                } catch (e: NumberFormatException) {
-                    e.printStackTrace()
-                }
-            }
+    private suspend fun getCategoriesByLanguage(language: String): Result<List<NewsCategory>> {
+        val remoteCategoriesResult = remoteDataSource.getSupportCategories(language)
+        if (remoteCategoriesResult is Result.Success && remoteCategoriesResult.isNotEmpty) {
+            localDataSource.setSupportCategories(language, remoteCategoriesResult.data)
         }
 
-        if (remoteLanguages?.isNotEmpty() == true) {
-            remoteLanguages?.let {
-                localDataSource.setSupportLanguages(it)
-            }
-            remoteLanguages = null
-        }
-
-        val defaultLanguage = preferenceLanguage?.key ?: ""
-        supportLanguages.forEach {
-            it.isSelected = (it.key == defaultLanguage)
-        }
-
-        languagesLiveData.postValue(supportLanguages)
-    }
-
-    private fun getCategoriesByLanguage(language: String): LiveData<List<NewsCategory>> {
-        val remoteCategoriesData = remoteDataSource.getSupportCategories(language)
-        categoriesLiveData.removeSource(remoteCategoriesData)
-        categoriesLiveData.addSource(remoteCategoriesData) {
-            remoteCategories = it
-            updateCategoryResult(language)
-        }
-        val localCategoriesData = localDataSource.getSupportCategories(language)
-        categoriesLiveData.removeSource(localCategoriesData)
-        categoriesLiveData.addSource(localCategoriesData) {
-            localCategories = it
-            updateCategoryResult(language)
-        }
-        val localPreferenceCategoriesData = localDataSource.getUserPreferenceCategories(language)
-        categoriesLiveData.removeSource(localPreferenceCategoriesData)
-        categoriesLiveData.addSource(localPreferenceCategoriesData) {
-            preferenceCategories = it
-            updateCategoryResult(language)
-        }
-        return categoriesLiveData
-    }
-
-    private fun updateCategoryResult(language: String) {
         val supportCategories = ArrayList<NewsCategory>()
-        if (localCategories?.isNotEmpty() == true) {
-            localCategories?.let { it ->
+        val localCategoriesResult = localDataSource.getSupportCategories(language)
+        if (localCategoriesResult is Result.Success && localCategoriesResult.isNotEmpty) {
+            localCategoriesResult.data.let {
                 supportCategories.addAll(
                     it.asSequence()
                         .mapNotNull { categoryId -> NewsCategory.getCategoryById(categoryId) }
@@ -146,22 +80,17 @@ class NewsSettingsRepository(
                 )
             }
         }
-        // save all possible categories from remote to local
-        if (remoteCategories?.isNotEmpty() == true) {
-            remoteCategories?.let {
-                // here's a infinite loop here, cause localDataSource will make it's obeserver call updateCategoryResult
-                localDataSource.setSupportCategories(language, it)
-            }
-            remoteCategories = null
-        }
 
-        val selectedCategories = preferenceCategories?.joinToString(",") ?: ""
-        if (selectedCategories.isNotEmpty()) {
-            supportCategories.forEach {
-                it.isSelected = selectedCategories.contains(it.categoryId)
+        val preferenceCategoriesResult = localDataSource.getUserPreferenceCategories(language)
+        if (preferenceCategoriesResult is Result.Success && preferenceCategoriesResult.isNotEmpty) {
+            val selectedCategories = preferenceCategoriesResult.data.joinToString(",")
+            if (selectedCategories.isNotEmpty()) {
+                supportCategories.forEach {
+                    it.isSelected = selectedCategories.contains(it.categoryId)
+                }
             }
         }
 
-        categoriesLiveData.postValue(supportCategories)
+        return Result.Success(supportCategories)
     }
 }

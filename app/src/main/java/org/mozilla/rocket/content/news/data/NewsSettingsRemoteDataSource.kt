@@ -1,62 +1,63 @@
 package org.mozilla.rocket.content.news.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.mozilla.httprequest.HttpRequest
-import org.mozilla.threadutils.ThreadUtils
+import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 
 class NewsSettingsRemoteDataSource : NewsSettingsDataSource {
-    private val languagesLiveData: MutableLiveData<List<NewsLanguage>> = MutableLiveData()
-    private val categoriesLiveData: MutableLiveData<List<String>> = MutableLiveData()
 
-    override fun getSupportLanguages(): LiveData<List<NewsLanguage>> {
-        ThreadUtils.postToBackgroundThread {
-            var responseBody = getHttpResult(getLanguageApiEndpoint())
-            val newsLanguageList = NewsLanguage.fromJson(responseBody)
-            languagesLiveData.postValue(newsLanguageList)
-        }
-
-        return languagesLiveData
+    override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+            call = {
+                val responseBody = getHttpResult(getLanguageApiEndpoint())
+                Success(NewsLanguage.fromJson(responseBody))
+            },
+            errorMessage = "Unable to get remote news languages"
+        )
     }
 
-    override fun setSupportLanguages(languages: List<NewsLanguage>) {
+    override suspend fun setSupportLanguages(languages: List<NewsLanguage>) {
         throw UnsupportedOperationException("Can't set news languages setting to server")
     }
 
-    override fun getUserPreferenceLanguage(): LiveData<NewsLanguage> {
+    override suspend fun getUserPreferenceLanguage(): Result<NewsLanguage?> {
         throw UnsupportedOperationException("Can't get user preference news languages setting from server")
     }
 
-    override fun setUserPreferenceLanguage(language: NewsLanguage) {
+    override suspend fun setUserPreferenceLanguage(language: NewsLanguage) {
         throw UnsupportedOperationException("Can't set user preference news languages setting to server")
     }
 
-    override fun getSupportCategories(language: String): LiveData<List<String>> {
-        ThreadUtils.postToBackgroundThread {
-            var responseBody = getHttpResult(getCategoryApiEndpoint(language))
-            val result = ArrayList<String>()
-            val items = JSONArray(responseBody)
-            for (i in 0 until items.length()) {
-                val categoryId = items.optString(i)
-                result.add(categoryId)
-            }
-            categoriesLiveData.postValue(result)
-        }
-
-        return categoriesLiveData
+    override suspend fun getSupportCategories(language: String): Result<List<String>> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+            call = {
+                val responseBody = getHttpResult(getCategoryApiEndpoint(language))
+                val result = ArrayList<String>()
+                val items = JSONArray(responseBody)
+                for (i in 0 until items.length()) {
+                    val categoryId = items.optString(i)
+                    result.add(categoryId)
+                }
+                Success(result)
+            },
+            errorMessage = "Unable to get remote news categories"
+        )
     }
 
-    override fun setSupportCategories(language: String, supportCategories: List<String>) {
+    override suspend fun setSupportCategories(language: String, supportCategories: List<String>) {
         throw UnsupportedOperationException("Can't set news categories to server")
     }
 
-    override fun getUserPreferenceCategories(language: String): LiveData<List<String>> {
+    override suspend fun getUserPreferenceCategories(language: String): Result<List<String>> {
         throw UnsupportedOperationException("Can't get user preference news category setting from server")
     }
 
-    override fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
+    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
         throw UnsupportedOperationException("Can't set user preference news category setting to server")
     }
 

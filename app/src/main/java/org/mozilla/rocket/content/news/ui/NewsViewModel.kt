@@ -2,14 +2,16 @@ package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.domain.LoadNewsParameter
-import org.mozilla.rocket.content.news.domain.LoadNewsSettingsParameter
-import org.mozilla.rocket.content.news.domain.LoadNewsSettingsResult
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -18,10 +20,9 @@ import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 
 class NewsViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase) : ViewModel() {
 
-    private var newsSettingsResult: MediatorLiveData<Result<LoadNewsSettingsResult>> = loadNewsSettingsUseCase.observe()
-
-    val newsSettings: LiveData<Pair<NewsLanguage, List<NewsCategory>>> =
-        Transformations.map(this.newsSettingsResult) { (it as? Result.Success)?.data?.settings }
+    private val _uiModel = MutableLiveData<NewsUiModel>()
+    val uiModel: LiveData<NewsUiModel>
+        get() = _uiModel
 
     private val newsMap = HashMap<String, MediatorLiveData<List<NewsItem>>>()
 
@@ -30,11 +31,18 @@ class NewsViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase
     lateinit var newsSettingsRepository: NewsSettingsRepository
 
     init {
-        updateCategory()
+        getNewsSettings()
     }
 
-    private fun updateCategory() {
-        loadNewsSettingsUseCase.execute(LoadNewsSettingsParameter())
+    fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {
+        val result = loadNewsSettingsUseCase()
+        if (result is Result.Success) {
+            withContext(Dispatchers.Main) { emitUiModel(result.data) }
+        }
+    }
+
+    private fun emitUiModel(newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
+        _uiModel.value = NewsUiModel(newsSettings)
     }
 
     fun clear() {
@@ -65,3 +73,8 @@ class NewsViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase
         useCaseMap[category]?.execute(LoadNewsParameter(category))
     }
 }
+
+// TODO update to hold the entire news elements
+data class NewsUiModel(
+    val newsSettings: Pair<NewsLanguage, List<NewsCategory>>
+)
