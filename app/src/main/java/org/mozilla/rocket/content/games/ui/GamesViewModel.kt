@@ -1,26 +1,37 @@
 package org.mozilla.rocket.content.games.ui
 
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Handler
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
 import org.mozilla.rocket.content.games.data.GamesRepo
 import org.mozilla.rocket.content.games.ui.adapter.CarouselBanner
 import org.mozilla.rocket.content.games.vo.Game
 import org.mozilla.rocket.download.SingleLiveEvent
+import java.io.InputStream
+import java.net.URL
 
 class GamesViewModel(
     private val gamesRepo: GamesRepo
 ) : ViewModel() {
 
+    private val uiScope = CoroutineScope(Dispatchers.Main)
     val browserGamesState = MutableLiveData<State>()
     val browserGamesItems = MediatorLiveData<List<DelegateAdapter.UiModel>>()
     val premiumGamesItems = MediatorLiveData<List<DelegateAdapter.UiModel>>()
+    var isInit = false
+    var packageManager: PackageManager? = null
 
     private val _premiumBanner = gamesRepo.loadPremiumBanner()
     private val _premiumGames = gamesRepo.loadPremiumGames()
@@ -28,6 +39,7 @@ class GamesViewModel(
     private val _browserGames = gamesRepo.loadBrowserGames()
 
     var event = SingleLiveEvent<GameAction>()
+    var createShortcutEvent = SingleLiveEvent<GameShortcut>()
 
     lateinit var selectedGame: Game
 
@@ -121,6 +133,17 @@ class GamesViewModel(
         loadData()
     }
 
+    fun createShortCut() {
+        uiScope.launch {
+            val iconBitmap = withContext(Dispatchers.Default) {
+                var inputStream = URL(selectedGame.imageUrl).getContent() as InputStream
+                BitmapFactory.decodeStream(inputStream)
+            }
+
+            createShortcutEvent.value = GameShortcut(selectedGame.name, selectedGame.linkUrl, iconBitmap)
+        }
+    }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
@@ -144,4 +167,6 @@ class GamesViewModel(
         data class Install(val url: String) : GameAction()
         data class OpenLink(val url: String) : GameAction()
     }
+
+    data class GameShortcut(val gameName: String, val gameUrl: String, val gameBitmap: Bitmap)
 }

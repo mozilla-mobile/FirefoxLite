@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_games.recycler_view
 import kotlinx.android.synthetic.main.fragment_games.spinner
-import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -31,19 +31,14 @@ import org.mozilla.rocket.content.games.ui.adapter.GameCategoryAdapterDelegate
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
 import org.mozilla.rocket.content.appContext
-import org.mozilla.rocket.content.games.vo.GameList
+import org.mozilla.rocket.content.games.vo.GameCategory
 import java.util.Arrays
-import android.graphics.BitmapFactory
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.tabs.web.Download
-import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -55,7 +50,6 @@ class BrowserGamesFragment : Fragment() {
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: DelegateAdapter
     private lateinit var gameType: GameType
-    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -76,35 +70,30 @@ class BrowserGamesFragment : Fragment() {
         observeGameAction()
     }
 
-    suspend fun createShortcut() {
+    fun createShortcut(gameName: String, gameURL: String, gameIcon: Bitmap) {
         val i = Intent(appContext(),
                 GameModeActivity::class.java)
         i.action = Intent.ACTION_MAIN
-        i.data = Uri.parse(gamesViewModel.selectedGame.linkUrl)
-        i.putExtra(GAME_URL, gamesViewModel.selectedGame.linkUrl)
-
-        val iconBitmap = withContext(Dispatchers.Default) {
-            var inputStream = URL(gamesViewModel.selectedGame.imageUrl).getContent() as InputStream
-            BitmapFactory.decodeStream(inputStream)
-        }
+        i.data = Uri.parse(gameURL)
+        i.putExtra(GAME_URL, gameURL)
 
         if (Build.VERSION.SDK_INT < 26) {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             val installer = Intent()
             installer.putExtra("android.intent.extra.shortcut.INTENT", i)
-            installer.putExtra("android.intent.extra.shortcut.NAME", gamesViewModel.selectedGame.name)
+            installer.putExtra("android.intent.extra.shortcut.NAME", gameName)
             installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT")
             installer.putExtra("duplicate", false)
-            installer.putExtra("android.intent.extra.shortcut.ICON", iconBitmap)
+            installer.putExtra("android.intent.extra.shortcut.ICON", gameIcon)
             appContext().sendBroadcast(installer)
         } else {
             val shortcutManager = activity?.getSystemService(ShortcutManager::class.java)
 
             if (shortcutManager!!.isRequestPinShortcutSupported) {
-                val shortcut = ShortcutInfo.Builder(context, gamesViewModel.selectedGame.name)
-                        .setShortLabel(gamesViewModel.selectedGame.name)
-                        .setIcon(Icon.createWithAdaptiveBitmap(iconBitmap))
+                val shortcut = ShortcutInfo.Builder(context, gameName)
+                        .setShortLabel(gameName)
+                        .setIcon(Icon.createWithAdaptiveBitmap(gameIcon))
                         .setIntent(i).build()
 
                 shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut))
@@ -134,7 +123,7 @@ class BrowserGamesFragment : Fragment() {
                 gamesViewModel.removeGameFromRecentPlayList(gamesViewModel.selectedGame)
             }
             R.id.shortcut -> {
-                uiScope.launch { createShortcut() }
+                gamesViewModel.createShortCut()
             }
             R.id.delete -> TODO("not implemented")
         }
@@ -145,7 +134,7 @@ class BrowserGamesFragment : Fragment() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate(gamesViewModel))
-                add(GameList::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
+                add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
             }
         )
         recycler_view.apply {
@@ -188,13 +177,10 @@ class BrowserGamesFragment : Fragment() {
         EnqueueDownloadTask(getActivity()!!, download, url).execute()
     }
 
-    suspend fun downloadPremiumGame(downloadURL: String) {
+    fun downloadPremiumGame(downloadURL: String) {
         if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // We do have the permission to write to the external storage. Proceed with the download.
-            var url = withContext(Dispatchers.Default) {
-                getFinalURL(downloadURL)
-            }
-
+            var url = downloadURL
             var contentDisposition = ""
             var mimetype = "application/vnd.android.package-archive"
             var name = URLUtil.guessFileName(url, contentDisposition, mimetype)
@@ -209,6 +195,11 @@ class BrowserGamesFragment : Fragment() {
     }
 
     private fun observeGameAction() {
+        gamesViewModel.createShortcutEvent.observe(this, Observer { event ->
+            val gameShortcut = event
+            createShortcut(gameShortcut.gameName, gameShortcut.gameUrl, gameShortcut.gameBitmap)
+        })
+
         gamesViewModel.event.observe(this, Observer { event ->
             when (event) {
                 is GamesViewModel.GameAction.Play -> {
@@ -226,7 +217,7 @@ class BrowserGamesFragment : Fragment() {
                     // val install: GamesViewModel.GameAction.Install = event
                     // installa a APK
                     val install: GamesViewModel.GameAction.Install = event
-                    uiScope.launch { downloadPremiumGame(install.url) }
+                    downloadPremiumGame(install.url)
                 }
             }
         })

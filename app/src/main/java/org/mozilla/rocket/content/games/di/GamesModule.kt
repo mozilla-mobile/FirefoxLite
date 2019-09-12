@@ -15,6 +15,7 @@ object GamesModule {
     fun provideGamesRepo(): GamesRepo = GamesRepo()
 
     @JvmStatic
+    @Singleton
     @Provides
     fun provideGamesViewModel(gamesRepo: GamesRepo): GamesViewModel = GamesViewModel(gamesRepo)
 }
