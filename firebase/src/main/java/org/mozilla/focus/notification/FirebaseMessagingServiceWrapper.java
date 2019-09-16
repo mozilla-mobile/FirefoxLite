@@ -21,6 +21,7 @@ abstract public class FirebaseMessagingServiceWrapper extends FirebaseMessagingS
 
     public static final String PUSH_OPEN_URL = "push_open_url";
     public static final String PUSH_COMMAND = "push_command";
+    public static final String PUSH_DEEP_LINK = "push_deep_link";
 
     abstract public void onRemoteMessage(Intent intent, String title, String body);
 
@@ -35,6 +36,7 @@ abstract public class FirebaseMessagingServiceWrapper extends FirebaseMessagingS
             if (remoteMessage.getData() != null) {
                 intent.putExtra(PUSH_OPEN_URL, remoteMessage.getData().get(PUSH_OPEN_URL));
                 intent.putExtra(PUSH_COMMAND, remoteMessage.getData().get(PUSH_COMMAND));
+                intent.putExtra(PUSH_DEEP_LINK, remoteMessage.getData().get(PUSH_DEEP_LINK));
             }
             final String title = remoteMessage.getNotification().getTitle();
             final String body = remoteMessage.getNotification().getBody();
