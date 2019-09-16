@@ -65,7 +65,6 @@ import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.component.PrivateSessionNotificationService
-import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
@@ -278,7 +277,6 @@ class MainActivity : BaseActivity(),
             })
             showMenu.observe(this@MainActivity, Observer { menu.show() })
             showNewTab.observe(this@MainActivity, Observer {
-                ContentPortalViewState.reset()
                 screenNavigator.addHomeScreen(true)
             })
             showUrlInput.observe(this@MainActivity, Observer { url ->
