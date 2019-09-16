@@ -24,6 +24,7 @@ object Versions {
     const val glide = "4.0.0"
     const val kotlin = "1.3.41"
     const val ktlint = "0.32.0"
+    const val ktx = "1.0.1"
     const val gms = "11.8.0"
     const val navigation = "2.0.0"
     const val findbugs = "3.0.1"

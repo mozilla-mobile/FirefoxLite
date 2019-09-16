@@ -10,8 +10,7 @@
         android:id="@+id/home_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_homescreen_color"
-        android:scaleType="fitStart" />
+        tools:background="@drawable/bg_homescreen_pattern"/>
 
     <org.mozilla.rocket.nightmode.themed.ThemedLinearLayout
         android:id="@+id/account_layout"
@@ -47,7 +46,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_firefox_lite_logo"
-        android:tint="@android:color/white"
         android:visibility="@integer/home_firefox_logo_visibility"
         app:layout_constraintBottom_toTopOf="@id/arc_panel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,10 +71,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-medium"
-            android:text="Content &amp; Services"
+            android:text="@string/home_content_and_services"
             android:textColor="@color/home_content_hub_title"
             android:textSize="12dp"
             android:visibility="@integer/content_hub_title_visibility"
+            android:shadowColor="#4C000000"
+            android:shadowRadius="8"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             tools:ignore="SpUsage" />
 
         <org.mozilla.rocket.home.contenthub.ui.ContentHub
@@ -186,7 +188,7 @@
                 android:layout_marginStart="8dp"
                 android:elevation="1dp"
                 android:gravity="center_vertical"
-                android:text="Search..."
+                android:text="@string/home_search_hint"
                 android:textColor="@color/fake_input_text"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/home_fragment_fake_input"
