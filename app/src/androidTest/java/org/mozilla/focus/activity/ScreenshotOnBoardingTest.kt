@@ -16,6 +16,7 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -140,6 +141,7 @@ class ScreenshotOnBoardingTest {
      * 8. Check no screenshot on-boarding
      * */
     @Test
+    @Ignore
     fun closeScreenshotOnboarding_WhenOpenMyShotsFromMenu() {
 
         session {
@@ -167,6 +169,7 @@ class ScreenshotOnBoardingTest {
      * 4. Check no screenshot on-boarding
      * */
     @Test
+    @Ignore
     fun closeScreenshotOnboarding_WhenOpenMyshotsFromHistory() {
 
         session {

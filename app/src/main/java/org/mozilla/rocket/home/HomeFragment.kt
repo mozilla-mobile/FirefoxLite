@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_home.content_hub_layout
 import kotlinx.android.synthetic.main.fragment_home.content_hub_title
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
+import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_icon
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_text
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
@@ -107,6 +108,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             chromeViewModel.showTabTray.call()
             TelemetryWrapper.showTabTrayHome()
         }
+        chromeViewModel.tabCount.observe(this, Observer {
+            setTabCount(it ?: 0)
+        })
         shopping_button.setOnClickListener { homeViewModel.onShoppingButtonClicked() }
         homeViewModel.launchShoppingSearch.observe(this, Observer {
             showShoppingSearch()
@@ -222,7 +226,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             arc_view.setNightMode(isNightMode)
             arc_panel.setNightMode(isNightMode)
             search_panel.setNightMode(isNightMode)
+            home_fragment_fake_input.setNightMode(isNightMode)
+            home_fragment_fake_input_icon.setNightMode(isNightMode)
             home_fragment_fake_input_text.setNightMode(isNightMode)
+            home_fragment_tab_counter.setNightMode(isNightMode)
+            home_fragment_menu_button.setNightMode(isNightMode)
             account_layout.setNightMode(isNightMode)
             shopping_button.setNightMode(isNightMode)
         })
@@ -276,6 +284,23 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     }
                 }
                 .show()
+    }
+
+    private fun setTabCount(count: Int, animationEnabled: Boolean = false) {
+        home_fragment_tab_counter.apply {
+            if (animationEnabled) {
+                setCountWithAnimation(count)
+            } else {
+                setCount(count)
+            }
+            if (count > 0) {
+                isEnabled = true
+                alpha = 1f
+            } else {
+                isEnabled = false
+                alpha = 0.3f
+            }
+        }
     }
 
     private fun showShoppingSearch() {
