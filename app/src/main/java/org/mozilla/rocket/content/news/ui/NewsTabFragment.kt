@@ -17,7 +17,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -105,15 +104,11 @@ class NewsTabFragment : Fragment() {
                     if (newsSettings.second.size > p0) {
                         TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
                     }
-                    ContentPortalViewState.lastNewsTab = p0
                     // need to call request Layout to force BottomsheetBehaviour to call our
                     // findScrollingChild() implementation to find the corresponding scrolling child
                     view.requestLayout()
                 }
             })
-            ContentPortalViewState.lastNewsTab?.let {
-                pager.currentItem = it
-            }
         }
     }
 

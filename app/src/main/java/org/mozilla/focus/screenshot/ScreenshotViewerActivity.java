@@ -22,10 +22,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +31,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.ImageViewState;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.BaseActivity;
@@ -47,7 +48,6 @@ import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
-import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -230,7 +230,6 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.screenshot_viewer_btn_open_url:
                 TelemetryWrapper.openCaptureLink(mScreenshot.getCategory(), mScreenshot.getCategoryVersion());
-                ContentPortalViewState.reset();
                 Intent urlIntent = new Intent();
                 urlIntent.putExtra(EXTRA_URL, mScreenshot.getUrl());
                 setResult(RESULT_OPEN_URL, urlIntent);

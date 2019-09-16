@@ -21,7 +21,6 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.Settings
 import org.mozilla.lite.partner.NewsItem
-import org.mozilla.rocket.content.ContentPortalViewState
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
@@ -126,11 +125,6 @@ class NewsFragment : Fragment(), NewsListingEventListener {
     }
 
     override fun onItemClicked(url: String) {
-        // use findFirstVisibleItemPosition so we don't need to remember offset
-        newsListLayoutManager?.findFirstVisibleItemPosition()?.let {
-            ContentPortalViewState.lastNewsPos = it
-        }
-
         context?.let {
             startActivity(ContentTabActivity.getStartIntent(it, url, enableTurboMode = false))
         }
@@ -199,14 +193,6 @@ class NewsFragment : Fragment(), NewsListingEventListener {
         onStatus(items)
 
         newsAdapter?.submitList(items)
-        ContentPortalViewState.lastNewsPos?.let {
-            val size = items?.size
-            if (size != null && size > it) {
-                newsListLayoutManager?.scrollToPosition(it)
-                // forget about last scroll position
-                ContentPortalViewState.lastNewsPos = null
-            }
-        }
     }
 
     private fun updateSourcePriority() {

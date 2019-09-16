@@ -8,14 +8,15 @@ package org.mozilla.focus.history;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -33,7 +34,6 @@ import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
-import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -187,7 +187,6 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
             if (item instanceof Site) {
-                ContentPortalViewState.reset();
                 ScreenNavigator.get(mContext).showBrowserScreen(((Site) item).getUrl(), true, false);
                 mHistoryListener.onItemClicked();
                 TelemetryWrapper.historyOpenLink();

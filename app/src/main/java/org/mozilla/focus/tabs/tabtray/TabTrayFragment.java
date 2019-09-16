@@ -7,9 +7,6 @@ package org.mozilla.focus.tabs.tabtray;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,19 +18,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.DialogFragment;
-import androidx.core.view.GestureDetectorCompat;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -46,7 +30,23 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
@@ -54,7 +54,6 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.rocket.content.ContentPortalViewState;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
@@ -282,14 +281,12 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void onTabClick(int tabPosition) {
-        ContentPortalViewState.reset();
         presenter.tabClicked(tabPosition);
         TelemetryWrapper.clickTabFromTabTray();
     }
 
     @Override
     public void onTabCloseClick(int tabPosition) {
-        ContentPortalViewState.reset();
         presenter.tabCloseClicked(tabPosition);
         TelemetryWrapper.closeTabFromTabTray();
     }
@@ -444,7 +441,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     tabTrayViewModel.finishShoppingSearchMode(getContext());
                     presenter.shoppingSearchCloseClicked();
                 } else if (viewHolder instanceof TabTrayAdapter.TabViewHolder) {
-                    ContentPortalViewState.reset();
                     presenter.tabCloseClicked(((TabTrayAdapter.TabViewHolder) viewHolder).getOriginPosition());
                     TelemetryWrapper.swipeTabFromTabTray();
                 }
@@ -595,7 +591,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private void onNewTabClicked() {
-        ContentPortalViewState.reset();
         ScreenNavigator.get(getContext()).addHomeScreen(false);
         TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
@@ -606,7 +601,6 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
                     .setPositiveButton(R.string.action_ok, (dialog, which) -> {
-                        ContentPortalViewState.reset();
                         presenter.closeAllTabs();
                         TelemetryWrapper.closeAllTabFromTabTray();
                     })
