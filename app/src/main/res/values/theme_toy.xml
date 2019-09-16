@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="themetoy_onboarding_weight_denominator">6</integer>
-    <integer name="themetoy_onboarding_weight_numerators">5</integer>
-
 
     <declare-styleable name="ThemeToy">
         <attr name="themeGradientStart" format="color"/>
+        <attr name="themeGradientCenter" format="color"/>
         <attr name="themeGradientEnd" format="color"/>
     </declare-styleable>
 
@@ -15,53 +13,56 @@
 
     <style name="ThemeToyDefault" parent="ThemeToy.Light">
         <item name="themeGradientStart">@color/themeGradientStart</item>
+        <item name="themeGradientCenter">@color/themeGradientCenter</item>
         <item name="themeGradientEnd">@color/themeGradientEnd</item>
     </style>
 
-    <style name="ThemeToy01" parent="ThemeToy.Dark">
+    <style name="ThemeToy01" parent="ThemeToy.Light">
         <item name="themeGradientStart">@color/themeGradientStart01</item>
+        <item name="themeGradientCenter">@color/themeGradientCenter01</item>
         <item name="themeGradientEnd">@color/themeGradientEnd01</item>
     </style>
 
     <style name="ThemeToy02" parent="ThemeToy.Light">
         <item name="themeGradientStart">@color/themeGradientStart02</item>
+        <item name="themeGradientCenter">@color/themeGradientCenter02</item>
         <item name="themeGradientEnd">@color/themeGradientEnd02</item>
     </style>
 
     <style name="ThemeToy03" parent="ThemeToy.Light">
         <item name="themeGradientStart">@color/themeGradientStart03</item>
+        <item name="themeGradientCenter">@color/themeGradientCenter03</item>
         <item name="themeGradientEnd">@color/themeGradientEnd03</item>
     </style>
 
     <style name="ThemeToy04" parent="ThemeToy.Light">
         <item name="themeGradientStart">@color/themeGradientStart04</item>
+        <item name="themeGradientCenter">@color/themeGradientCenter04</item>
         <item name="themeGradientEnd">@color/themeGradientEnd04</item>
     </style>
 
-    <style name="ThemeToy05" parent="ThemeToy.Light">
-        <item name="themeGradientStart">@color/themeGradientStart05</item>
-        <item name="themeGradientEnd">@color/themeGradientEnd05</item>
-    </style>
-
     <!-- Default theme color -->
-    <color name="themeGradientStart">#4847F7</color>
-    <color name="themeGradientEnd">#A6FFCB</color>
+    <color name="themeGradientStart">#65FF9F</color>
+    <color name="themeGradientCenter">#41C3CF</color>
+    <color name="themeGradientEnd">#15A4F7</color>
 
-    <color name="themeGradientStart01">#2C3A5F</color>
-    <color name="themeGradientEnd01">#536D86</color>
+    <color name="themeGradientStart01">#1B3F7A</color>
+    <color name="themeGradientCenter01">#2C3F64</color>
+    <color name="themeGradientEnd01">#13265A</color>
 
-    <color name="themeGradientStart02">#3BA589</color>
-    <color name="themeGradientEnd02">#43BB77</color>
+    <color name="themeGradientStart02">#FC65C6</color>
+    <color name="themeGradientCenter02">#BA33C7</color>
+    <color name="themeGradientEnd02">#8400DA</color>
 
-    <color name="themeGradientStart03">#B741E6</color>
-    <color name="themeGradientEnd03">#E295BD</color>
+    <color name="themeGradientStart03">#AC68FF</color>
+    <color name="themeGradientCenter03">#736DEA</color>
+    <color name="themeGradientEnd03">#6292F4</color>
 
-    <color name="themeGradientStart04">#6893E3</color>
-    <color name="themeGradientEnd04">#BD95E2</color>
-
-    <color name="themeGradientStart05">#41B7E6</color>
-    <color name="themeGradientEnd05">#95E2BD</color>
+    <color name="themeGradientStart04">#1CEA8E</color>
+    <color name="themeGradientCenter04">#019E5A</color>
+    <color name="themeGradientEnd04">#008D68</color>
 
     <color name="themeGradientStartNight">#103266</color>
+    <color name="themeGradientCenterNight">#140B45</color>
     <color name="themeGradientEndNight">#140623</color>
 </resources>

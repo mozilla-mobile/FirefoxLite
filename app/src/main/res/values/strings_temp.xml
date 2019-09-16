@@ -21,6 +21,8 @@
     <string name="shopping_search_prompt_search" translatable="false">Search</string>
     <string name="shopping_search_feature_onboarding_title" translatable="false">New way of search!</string>
     <string name="shopping_search_feature_onboarding_message" translatable="false">Use shopping to find products across different shopping sites.</string>
+    <string name="home_content_and_services" translatable="false">Content &amp; Services</string>
+    <string name="home_search_hint" translatable="false">Search...</string>
 
     <!-- MSRP challenge detail -->
     <string name="msrp_challenge_detail_btn_redeem" translatable="false">Use Firefox account to redeem</string>
@@ -31,5 +33,4 @@
     <string name="msrp_challenge_detail_btn_im_in" translatable="false">I’m In!</string>
     <string name="msrp_challenge_detail_btn_terms_of_use" translatable="false">By clicking “I’m in” you are agreeing to our <a href="#">Terms of Use</a>.</string>
     <string name="msrp_challenge_detail_btn_quit" translatable="false">I quit for now</string>
-
 </resources>

@@ -25,11 +25,10 @@ public class ThemeManager {
     public enum ThemeSet {
         Default(R.style.ThemeToyDefault),
 
-        CatalinaBlue(R.style.ThemeToy01),
-        Gossamer(R.style.ThemeToy02),
-        BlueViolet(R.style.ThemeToy03),
-        CornflowerBlue(R.style.ThemeToy04),
-        Rocket(R.style.ThemeToy05);
+        Theme1(R.style.ThemeToy01),
+        Theme2(R.style.ThemeToy02),
+        Theme3(R.style.ThemeToy03),
+        Theme4(R.style.ThemeToy04);
 
         final int style;
 
