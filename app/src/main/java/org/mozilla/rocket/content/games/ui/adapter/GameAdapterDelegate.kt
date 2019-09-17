@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.games.ui.adapter
 
+import android.content.Intent
 import android.view.View
 import kotlinx.android.synthetic.main.item_game.image
 import kotlinx.android.synthetic.main.item_game.name
@@ -37,6 +38,8 @@ class GameViewHolder(
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         menu?.setHeaderTitle(name.text)
+        val intent = Intent()
+        intent.putExtra("gameType", gamesViewModel.selectedGame.type)
         if (gamesViewModel.canShare())
             menu?.add(0, R.id.share, 0, R.string.game_contextmenu_share)
         if (gamesViewModel.canCreateShortCut())
