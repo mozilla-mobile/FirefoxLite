@@ -12,6 +12,7 @@ import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
+import org.mozilla.rocket.home.msrp.domain.IsMsrpAvailableUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -27,7 +28,8 @@ class HomeViewModel(
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
     private val getContentHubItemsUseCase: GetContentHubItemsUseCase,
     getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
-    private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase
+    private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
+    private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -36,6 +38,7 @@ class HomeViewModel(
     val contentHubItems = MutableLiveData<List<ContentHub.Item>>().apply { value = getContentHubItemsUseCase() }
     val hasPendingMissions = MutableLiveData<Boolean>()
     val logoManNotification = MutableLiveData<StateNotification?>()
+    val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()

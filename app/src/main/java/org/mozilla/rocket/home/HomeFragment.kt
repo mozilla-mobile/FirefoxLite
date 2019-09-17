@@ -214,6 +214,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         profile_button.setOnClickListener {
             ScreenNavigator.get(context).addFxLogin()
         }
+
+        homeViewModel.isAccountLayerVisible.observe(this, Observer {
+            account_layout.visibility = if (it) { View.VISIBLE } else { View.INVISIBLE }
+        })
     }
 
     private fun showMissionFragment() {
