@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:background="@drawable/background_menu"
-    tools:ignore="MissingPrefix">
+    tools:context="org.mozilla.rocket.content.news.ui.NewsFragment">
 
     <ProgressBar
         android:id="@+id/news_progress_center"
