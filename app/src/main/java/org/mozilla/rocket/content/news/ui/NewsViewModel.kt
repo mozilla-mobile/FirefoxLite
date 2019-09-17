@@ -1,49 +1,18 @@
 package org.mozilla.rocket.content.news.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.domain.LoadNewsParameter
-import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
-import org.mozilla.rocket.content.news.data.NewsCategory
-import org.mozilla.rocket.content.news.data.NewsLanguage
-import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 
-class NewsViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase) : ViewModel() {
-
-    private val _uiModel = MutableLiveData<NewsUiModel>()
-    val uiModel: LiveData<NewsUiModel>
-        get() = _uiModel
+class NewsViewModel : ViewModel() {
 
     private val newsMap = HashMap<String, MediatorLiveData<List<NewsItem>>>()
 
     private val useCaseMap = HashMap<String, LoadNewsUseCase>()
-
-    lateinit var newsSettingsRepository: NewsSettingsRepository
-
-    init {
-        getNewsSettings()
-    }
-
-    fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {
-        val result = loadNewsSettingsUseCase()
-        if (result is Result.Success) {
-            withContext(Dispatchers.Main) { emitUiModel(result.data) }
-        }
-    }
-
-    private fun emitUiModel(newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
-        _uiModel.value = NewsUiModel(newsSettings)
-    }
 
     fun clear() {
         newsMap.clear()
@@ -73,8 +42,3 @@ class NewsViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase
         useCaseMap[category]?.execute(LoadNewsParameter(category))
     }
 }
-
-// TODO update to hold the entire news elements
-data class NewsUiModel(
-    val newsSettings: Pair<NewsLanguage, List<NewsCategory>>
-)

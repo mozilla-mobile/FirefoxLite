@@ -45,7 +45,6 @@ class LoadNewsUseCase(private val repository: Repository<out NewsItem>) :
 class NewsNotFoundException : Exception()
 
 data class LoadNewsResult(
-
     val items: MutableList<NewsItem>
 )
 

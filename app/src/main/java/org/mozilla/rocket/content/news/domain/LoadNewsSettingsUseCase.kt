@@ -27,7 +27,7 @@ import java.util.Locale
 open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepository) {
 
     suspend operator fun invoke(): Result<Pair<NewsLanguage, List<NewsCategory>>> {
-        var defaultLanguage = LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE_LIST[0]
+        var defaultLanguage = LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE
         val supportLanguagesResult = repository.getLanguages()
         if (supportLanguagesResult is Result.Success &&
             supportLanguagesResult.isNotEmpty &&
@@ -41,7 +41,7 @@ open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepositor
         return if (result.succeeded) {
             result
         } else {
-            Result.Success(Pair(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE_LIST[0], DEFAULT_CATEGORY_LIST))
+            Result.Success(Pair(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE, DEFAULT_CATEGORY_LIST))
         }
     }
 

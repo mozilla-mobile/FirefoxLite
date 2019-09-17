@@ -24,16 +24,12 @@ import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.portal.ContentFeature
 import javax.inject.Inject
 
-/**
- * Fragment that host the tabs for different types of content portal
- *
- */
 class NewsTabFragment : Fragment() {
 
     @Inject
-    lateinit var newsViewModelCreator: Lazy<NewsViewModel>
+    lateinit var newsTabViewModelCreator: Lazy<NewsTabViewModel>
 
-    private lateinit var newsViewModel: NewsViewModel
+    private lateinit var newsTabViewModel: NewsTabViewModel
 
     private var newsSettings: Pair<NewsLanguage, List<NewsCategory>>? = null
 
@@ -54,13 +50,13 @@ class NewsTabFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            newsViewModel = getActivityViewModel(newsViewModelCreator)
+            newsTabViewModel = getActivityViewModel(newsTabViewModelCreator)
 
-            newsViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
+            newsTabViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
                     if (newsSettings != it.newsSettings) {
                         newsSettings = it.newsSettings
-                        refresh(view, it.newsSettings)
+                        setupViewPager(view, it.newsSettings)
                     }
                 }
             })
@@ -72,7 +68,7 @@ class NewsTabFragment : Fragment() {
 
         news_refresh_button.setOnClickListener {
             newsSettings?.let {
-                refresh(view, it)
+                newsTabViewModel.refresh()
             }
         }
     }
@@ -81,8 +77,17 @@ class NewsTabFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ContentFeature.SETTING_REQUEST_CODE) {
-            newsViewModel.getNewsSettings()
+            newsTabViewModel.getNewsSettings()
         }
+    }
+
+    fun setting() {
+        val intent = Intent().run {
+            putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
+            setClass(context!!, SettingsActivity::class.java)
+        }
+        TelemetryWrapper.clickOnNewsSetting()
+        startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
     }
 
     private fun setupViewPager(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
@@ -104,16 +109,24 @@ class NewsTabFragment : Fragment() {
                     if (newsSettings.second.size > p0) {
                         TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
                     }
-                    // need to call request Layout to force BottomsheetBehaviour to call our
-                    // findScrollingChild() implementation to find the corresponding scrolling child
-                    view.requestLayout()
                 }
             })
         }
     }
 
+    companion object {
+        fun newInstance(): NewsTabFragment {
+            return NewsTabFragment()
+        }
+    }
+
+    interface NewsListingEventListener {
+        fun onItemClicked(url: String)
+        fun onStatus(items: List<NewsItem>?)
+    }
+
     /**
-     * Adapter that builds a page for each E-Commerce type .
+     * Adapter that builds a page for each news category.
      */
     @Suppress("DEPRECATION")
     inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) :
@@ -144,30 +157,5 @@ class NewsTabFragment : Fragment() {
             }
             return fragment
         }
-    }
-
-    fun refresh(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
-        newsViewModel.clear()
-        setupViewPager(view, newsSettings)
-    }
-
-    fun setting() {
-        val intent = Intent().run {
-            putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
-            setClass(context!!, SettingsActivity::class.java)
-        }
-        TelemetryWrapper.clickOnNewsSetting()
-        startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
-    }
-
-    companion object {
-        fun newInstance(): NewsTabFragment {
-            return NewsTabFragment()
-        }
-    }
-
-    interface NewsListingEventListener {
-        fun onItemClicked(url: String)
-        fun onStatus(items: List<NewsItem>?)
     }
 }
