@@ -1,6 +1,7 @@
 package org.mozilla.rocket.shopping.search.ui
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,10 +18,10 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.common.ui.ContentTabHelper
 import org.mozilla.rocket.content.common.ui.ContentTabViewContract
 import org.mozilla.rocket.content.getActivityViewModel
@@ -28,13 +29,11 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchTabsAdapter.TabItem
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import javax.inject.Inject
-import android.content.Intent
-import org.mozilla.focus.utils.AppConstants
-import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 
 class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
@@ -160,10 +159,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
     private fun initViewPager() {
         shoppingSearchResultViewModel.shoppingSearchSites.observe(this, Observer { shoppingSearchSites ->
             val tabItems = shoppingSearchSites.map { site ->
-                TabItem(
-                    ContentTabFragment.newInstance(site.searchUrl),
-                    site.title
-                )
+                TabItem(site.title, site.searchUrl)
             }
             view_pager.adapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
         })

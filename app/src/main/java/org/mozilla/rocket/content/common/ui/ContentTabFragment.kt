@@ -126,7 +126,7 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
     }
 
     companion object {
-        private const val EXTRA_URL = "url"
+        const val EXTRA_URL = "url"
         private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
 
         fun newInstance(url: String, enableTurboMode: Boolean = true): ContentTabFragment {
