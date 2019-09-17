@@ -109,25 +109,33 @@ class BrowserGamesFragment : Fragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        when (item.getItemId()) {
-            R.id.share -> {
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_SUBJECT, gamesViewModel.selectedGame.name)
-                    putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_game_dialog_text, gamesViewModel.selectedGame.linkUrl))
-                    type = "text/plain"
-                }
-                startActivity(Intent.createChooser(sendIntent, null))
-            }
-            R.id.remove -> {
-                gamesViewModel.removeGameFromRecentPlayList(gamesViewModel.selectedGame)
-            }
-            R.id.shortcut -> {
-                gamesViewModel.createShortCut()
-            }
-            R.id.delete -> TODO("not implemented")
+        val intent = item.getIntent()
+        var gameType = ""
+        if (intent != null) {
+            gameType = intent.getStringExtra("gameType")
         }
-        return super.onContextItemSelected(item)
+        if ((gameType == "Browser" && this.gameType == GameType.TYPE_BROWSER) ||
+                (gameType == "Premium" && this.gameType == GameType.TYPE_PREMIUM)) {
+            when (item.getItemId()) {
+                R.id.share -> {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_SUBJECT, gamesViewModel.selectedGame.name)
+                        putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_game_dialog_text, gamesViewModel.selectedGame.linkUrl))
+                        type = "text/plain"
+                    }
+                    startActivity(Intent.createChooser(sendIntent, null))
+                }
+                R.id.remove -> {
+                    gamesViewModel.removeGameFromRecentPlayList(gamesViewModel.selectedGame)
+                }
+                R.id.shortcut -> {
+                    gamesViewModel.createShortCut()
+                }
+            }
+            return true
+        }
+        return false
     }
 
     private fun initRecyclerView() {
