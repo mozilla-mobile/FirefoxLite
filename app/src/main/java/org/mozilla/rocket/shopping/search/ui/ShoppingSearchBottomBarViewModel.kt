@@ -24,9 +24,9 @@ class ShoppingSearchBottomBarViewModel : ViewModel() {
     companion object {
         @JvmStatic
         val DEFAULT_CONTENT_TAB_BOTTOM_BAR_ITEMS = listOf(
-            ItemData(BottomBarItemAdapter.TYPE_SHOPPING_SEARCH),
+            ItemData(BottomBarItemAdapter.TYPE_HOME),
             ItemData(BottomBarItemAdapter.TYPE_REFRESH),
-            ItemData(BottomBarItemAdapter.TYPE_DELETE),
+            ItemData(BottomBarItemAdapter.TYPE_SHOPPING_SEARCH),
             ItemData(BottomBarItemAdapter.TYPE_NEXT),
             ItemData(BottomBarItemAdapter.TYPE_SHARE)
         )

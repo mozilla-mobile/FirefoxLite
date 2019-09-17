@@ -135,9 +135,9 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
                 when (type) {
-                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> sendHomeIntent(requireContext())
+                    BottomBarItemAdapter.TYPE_HOME -> sendHomeIntent(requireContext())
                     BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
-                    BottomBarItemAdapter.TYPE_DELETE -> ShoppingSearchMode.getInstance(requireContext()).finish()
+                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> sendNewSearchIntent(requireContext())
                     BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
@@ -202,6 +202,14 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
             setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
         }
         startActivity(intent)
+    }
+
+    private fun sendNewSearchIntent(context: Context) {
+        startActivity(
+            ShoppingSearchActivity.getStartIntent(context).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+        )
     }
 
     private fun sendShareIntent() {

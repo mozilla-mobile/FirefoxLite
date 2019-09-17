@@ -486,7 +486,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
     private void observeShoppingSearchPromptMessageViewModel() {
         shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().observe(this,
-                unit -> startActivity(new Intent(getActivity(), ShoppingSearchActivity.class)));
+                unit -> {
+                    startActivity(ShoppingSearchActivity.Companion.getStartIntent(getContext()));
+                    ScreenNavigator.get(getContext()).popToHomeScreen(false);
+                });
 
         shoppingSearchPromptMessageViewModel.isUrlShoppingSite().observe(this, isShoppingSite -> {
             int sheetState = BottomSheetBehavior.STATE_COLLAPSED;
