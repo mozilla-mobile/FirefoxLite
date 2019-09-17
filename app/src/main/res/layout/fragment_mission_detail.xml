@@ -459,19 +459,19 @@
                 android:textSize="@dimen/msrp_mission_detail_button_text_size" />
 
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="148dp"
+                android:layout_width="184dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
-                android:src="@drawable/challenge_details" />
+                android:src="@drawable/ic_challenge_details" />
 
             <TextView
                 android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/msrp_challenge_detail_desc_point_1_message"
                 android:textColor="@color/paletteDarkGreyD100"
                 android:textSize="12sp" />
@@ -538,12 +538,12 @@
 
         <ImageView
             android:id="@+id/dmd_reward_landing"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="0dp"
+            android:layout_width="151dp"
+            android:layout_height="124dp"
+            android:layout_marginTop="13dp"
             android:background="@null"
             android:scaleType="fitCenter"
-            android:src="@drawable/reward_landing"
+            android:src="@drawable/ic_reward_ribbon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
