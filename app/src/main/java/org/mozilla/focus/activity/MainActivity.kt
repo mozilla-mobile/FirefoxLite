@@ -16,6 +16,7 @@ import android.content.res.Resources
 import android.database.ContentObserver
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
@@ -71,7 +72,6 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.fxa.FxLoginFragment
-import org.mozilla.rocket.fxa.RedeemFragment
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
@@ -80,6 +80,7 @@ import org.mozilla.rocket.landing.PortraitComponent
 import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.msrp.ui.MissionDetailFragment
+import org.mozilla.rocket.msrp.ui.RedeemFragment
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.promotion.PromotionModel
 import org.mozilla.rocket.promotion.PromotionPresenter
@@ -753,17 +754,13 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    fun loginFxa() {
-        screenNavigator.addFxLogin()
-    }
-
     override fun onLoginComplete(jwt: String, fragmentFx: FxLoginFragment) {
 
         // TODO: Add the log to profile the slowness of the login
         FirebaseHelper.signInWithCustomToken(jwt, this, { fxUid, oldFbUid ->
-            Toast.makeText(baseContext, "FB user [$oldFbUid] is now matches to Fx User [$fxUid]", Toast.LENGTH_SHORT).show()
+            Log.d(LOG_TAG, "onLoginComplete success oldFbUid [$oldFbUid] is now matches to Fx User [$fxUid]")
         }, {
-            Toast.makeText(baseContext, it, Toast.LENGTH_SHORT).show()
+            Log.d(LOG_TAG, "onLoginComplete fail ===$it")
         })
 
         supportFragmentManager.popBackStack()

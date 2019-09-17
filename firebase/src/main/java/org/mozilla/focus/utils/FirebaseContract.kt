@@ -59,4 +59,6 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
         var developerMode: Boolean = false
     }
+
+    abstract fun getUserToken(func: (String?) -> Unit)
 }

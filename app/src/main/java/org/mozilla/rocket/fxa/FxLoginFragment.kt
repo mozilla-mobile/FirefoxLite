@@ -149,13 +149,3 @@ class FxLoginFragment : Fragment(), ScreenNavigator.FxLoginScreen {
         }
     }
 }
-
-class RedeemFragment : Fragment(), ScreenNavigator.RedeemSceen {
-
-    override fun getFragment() = this
-
-    @SuppressLint("SetJavaScriptEnabled")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_redeem, container, false)
-    }
-}

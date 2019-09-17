@@ -49,6 +49,7 @@ import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.msrp.ui.MissionDetailFragment
+import org.mozilla.rocket.msrp.ui.RedeemFragment
 import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
@@ -107,6 +108,7 @@ interface AppComponent {
     fun inject(couponFragment: CouponFragment)
     fun inject(voucherFragment: VoucherFragment)
     fun inject(missionDetailFragment: MissionDetailFragment)
+    fun inject(redeemFragment: RedeemFragment)
     fun inject(shoppingSearchPreferencesActivity: ShoppingSearchPreferencesActivity)
     fun inject(shoppingSearchContentSwitchOnboardingDialogFragment: ShoppingSearchContentSwitchOnboardingDialogFragment)
 
