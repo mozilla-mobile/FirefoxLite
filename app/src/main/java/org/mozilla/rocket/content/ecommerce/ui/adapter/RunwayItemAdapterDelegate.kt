@@ -40,7 +40,7 @@ class RunwayItemViewHolder(
 
         GlideApp.with(itemView.context)
             .asBitmap()
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.news_item_img_bg)
             .fitCenter()
             .load(runwayItem.imageUrl)
             .into(runway_image)

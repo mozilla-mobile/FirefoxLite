@@ -48,9 +48,6 @@ class CouponFragment : Fragment() {
                 add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(shoppingViewModel))
             }
         )
-        val spaceWidth = resources.getDimensionPixelSize(R.dimen.card_space_width)
-        val padding = resources.getDimensionPixelSize(R.dimen.card_padding)
-        coupon_list.addItemDecoration(SpaceItemDecoration(spaceWidth, padding))
         coupon_list.adapter = couponAdapter
     }
 

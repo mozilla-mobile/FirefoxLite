@@ -37,7 +37,7 @@ class ProductViewHolder(
 
         GlideApp.with(itemView.context)
             .asBitmap()
-            .placeholder(R.drawable.placeholder)
+            .placeholder(R.drawable.news_item_img_bg)
             .fitCenter()
             .load(productItem.imageUrl)
             .into(product_image)

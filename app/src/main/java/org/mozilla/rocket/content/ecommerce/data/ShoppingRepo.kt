@@ -28,16 +28,12 @@ class ShoppingRepo(private val appContext: Context) {
                     getMockRunwayItems() ?: emptyList()
                 ),
                 ProductCategory(UUID.randomUUID().toString(),
-                    "Flash Deals",
-                    getMockProductItems()?.subList(0, 10) ?: emptyList()
+                    "Top Rated",
+                    getMockProductItems()?.subList(0, 15) ?: emptyList()
                 ),
                 ProductCategory(UUID.randomUUID().toString(),
-                    "Editors' Choice",
-                    getMockProductItems()?.subList(11, 20) ?: emptyList()
-                ),
-                ProductCategory(UUID.randomUUID().toString(),
-                    "New Products Arrived",
-                    getMockProductItems()?.subList(21, 30) ?: emptyList()
+                    "Best Sellers",
+                    getMockProductItems()?.subList(16, 30) ?: emptyList()
                 )
             )
         }
