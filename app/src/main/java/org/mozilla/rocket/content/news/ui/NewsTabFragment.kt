@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
-import kotlinx.android.synthetic.main.content_tab_news.*
+import kotlinx.android.synthetic.main.fragment_news_tab.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -43,7 +43,7 @@ class NewsTabFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.content_tab_news, container, false)
+        return inflater.inflate(R.layout.fragment_news_tab, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

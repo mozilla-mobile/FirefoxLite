@@ -22,7 +22,7 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
     Preference(context, attributes) {
 
     init {
-        layoutResource = R.layout.content_tab_new_setting
+        layoutResource = R.layout.preference_news_category
     }
 
     private var recyclerView: RecyclerView? = null
@@ -64,7 +64,7 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
     inner class NewsCatSettingCatAdapter : RecyclerView.Adapter<CategorySettingItemViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CategorySettingItemViewHolder {
-            val v = LayoutInflater.from(parent.context).inflate(R.layout.content_tab_new_setting_item, parent, false)
+            val v = LayoutInflater.from(parent.context).inflate(R.layout.item_news_category_preference, parent, false)
             return CategorySettingItemViewHolder(v)
         }
 
