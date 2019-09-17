@@ -8,11 +8,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.msrp.data.Mission
+import org.mozilla.rocket.msrp.data.RedeemResult
 import org.mozilla.rocket.msrp.data.RewardServiceException
 import org.mozilla.rocket.msrp.domain.LoadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.LoadMissionsUseCaseParameter
+import org.mozilla.rocket.msrp.domain.RedeemRequest
+import org.mozilla.rocket.msrp.domain.RedeemUseCase
 
-class MissionViewModel(private val loadMissionsUseCase: LoadMissionsUseCase) : ViewModel() {
+class MissionViewModel(
+    private val loadMissionsUseCase: LoadMissionsUseCase,
+    private val redeemUseCase: RedeemUseCase
+) : ViewModel() {
+
+    val redeemResult: LiveData<RedeemResult>
+        get() = _redeemResult
+    private val _redeemResult = MediatorLiveData<RedeemResult>()
 
     val missions: LiveData<List<Mission>>
         get() = _missions
@@ -36,6 +46,12 @@ class MissionViewModel(private val loadMissionsUseCase: LoadMissionsUseCase) : V
                 }
                 _missions.postValue(it)
             }
+        }
+    }
+
+    fun redeem(redeemUrl: String) {
+        launchDataLoad {
+            _redeemResult.postValue(redeemUseCase.execute(RedeemRequest(redeemUrl)))
         }
     }
 

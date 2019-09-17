@@ -157,10 +157,23 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         }
     }
 
+    override fun getUserToken(func: (String?) -> Unit) {
+        // some http request(mission/redeem) needs user token to access the backend.
+        // we need Firebase SDK to get the user token
+        // TODO: maybe wrap this logic in a MSRP client SDK
+        firebaseAuth.currentUser?.getIdToken(true)?.addOnSuccessListener { result ->
+            Log.d(TAG, "jwt====${result.token}")
+
+            func(result.token)
+        }
+    }
+
     private fun fetchClaim(onClaimFetched: (String?, String?) -> Unit) {
         Log.d(TAG, "current====${firebaseAuth.currentUser?.uid}")
 
         firebaseAuth.currentUser?.getIdToken(true)?.addOnSuccessListener { result ->
+            Log.d(TAG, "jwt2====${result.token}")
+
             val fxUid = result.claims["fxuid"]?.toString()
             val oldFbUid = result.claims["oldFbUid"]?.toString()
 
