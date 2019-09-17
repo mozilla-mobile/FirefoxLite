@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_shopping_search_keyword_input.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
-import org.mozilla.rocket.shopping.search.ShoppingSearchMode
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 import javax.inject.Inject
 
 class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {

@@ -1,4 +1,4 @@
-package org.mozilla.rocket.shopping.search
+package org.mozilla.rocket.shopping.search.data
 
 import android.app.ActivityManager
 import android.content.Context
@@ -48,8 +48,8 @@ class ShoppingSearchMode private constructor(context: Context) {
 
         @JvmStatic
         fun getInstance(context: Context): ShoppingSearchMode =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE ?: ShoppingSearchMode(context).also { INSTANCE = it }
-                }
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ShoppingSearchMode(context).also { INSTANCE = it }
+            }
     }
 }

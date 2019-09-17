@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.mozilla.rocket.shopping.search.ShoppingSearchMode
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 
 class TabTrayViewModel : ViewModel() {
     private var hasPrivateTab = MutableLiveData<Boolean>()

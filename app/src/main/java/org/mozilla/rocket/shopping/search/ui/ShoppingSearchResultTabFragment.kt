@@ -34,7 +34,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import javax.inject.Inject
 import android.content.Intent
 import org.mozilla.focus.utils.AppConstants
-import org.mozilla.rocket.shopping.search.ShoppingSearchMode
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 
 class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
