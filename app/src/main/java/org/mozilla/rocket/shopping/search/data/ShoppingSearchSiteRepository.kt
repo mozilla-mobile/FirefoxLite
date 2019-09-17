@@ -11,12 +11,12 @@ class ShoppingSearchSiteRepository(appContext: Context) {
 
     private val preference = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     private val mockPreferenceSiteList = listOf(
-        ShoppingSite("Lazada", "https://www.lazada.co.id/catalog/?q=", "https://www.lazada.co.id", isEnabled = true),
-        ShoppingSite("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D=", "https://www.bukalapak.com", isEnabled = true),
-        ShoppingSite("Tokopedia", "https://www.tokopedia.com/search?st=product&q=", "https://www.tokopedia.com", isEnabled = true),
-        ShoppingSite("JD.ID", "https://m.jd.id/search?keywords=", "https://www.jd.id", isEnabled = true),
-        ShoppingSite("Shopee", "https://shopee.co.id/search?keyword=", "https://shopee.co.id", isEnabled = true),
-        ShoppingSite("BliBli", "https://www.blibli.com/jual/backpack?searchTerm=backpack", "https://www.blibli.com", isEnabled = true)
+        ShoppingSite("Lazada", "https://www.lazada.co.id/catalog/?q=", "lazada.co.id", isEnabled = true),
+        ShoppingSite("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D=", "bukalapak.com", isEnabled = true),
+        ShoppingSite("Tokopedia", "https://www.tokopedia.com/search?st=product&q=", "tokopedia.com", isEnabled = true),
+        ShoppingSite("JD.ID", "https://m.jd.id/search?keywords=", "jd.id", isEnabled = true),
+        ShoppingSite("Shopee", "https://shopee.co.id/search?keyword=", "shopee.co.id", isEnabled = true),
+        ShoppingSite("BliBli", "https://www.blibli.com/jual/backpack?searchTerm=", "blibli.com", isEnabled = true)
     )
 
     fun getShoppingSites(): List<ShoppingSite> {
