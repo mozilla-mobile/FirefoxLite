@@ -1,9 +1,7 @@
 package org.mozilla.rocket.content.ecommerce.ui.adapter
 
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -59,7 +57,7 @@ class CouponViewHolder(
                     bodyColor = swatch.rgb
                 }
             }
-            ViewCompat.setBackgroundTintList(coupon_image, ColorStateList.valueOf(bodyColor))
+            coupon_image.setBackgroundColor(bodyColor)
         }
     }
 }

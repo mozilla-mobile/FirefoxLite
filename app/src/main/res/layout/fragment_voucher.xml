@@ -6,7 +6,7 @@
     android:id="@+id/content_portal_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix">
+    android:background="@color/paletteLightGreyD100">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/content_voucher_list"

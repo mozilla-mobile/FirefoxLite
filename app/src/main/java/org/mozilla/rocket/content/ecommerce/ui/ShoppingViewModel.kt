@@ -69,6 +69,24 @@ class ShoppingViewModel(
         openVoucher.value = voucherItem.url
     }
 
+    fun getLatestDeals() {
+        launchDataLoad {
+            _dealItems.postValue(shoppingRepo.getDeals())
+        }
+    }
+
+    fun getLatestCoupons() {
+        launchDataLoad {
+            _couponItems.postValue(shoppingRepo.getCoupons())
+        }
+    }
+
+    fun getLatestVouchers() {
+        launchDataLoad {
+            _voucherItems.postValue(shoppingRepo.getVouchers())
+        }
+    }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {

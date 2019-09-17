@@ -29,6 +29,7 @@ class ShoppingActivity : FragmentActivity() {
         setContentView(R.layout.activity_shopping)
         initViewPager()
         initTabLayout()
+        observeRefreshAction()
         observeShoppingAction()
     }
 
@@ -41,6 +42,16 @@ class ShoppingActivity : FragmentActivity() {
 
     private fun initTabLayout() {
         shopping_tabs.setupWithViewPager(view_pager)
+    }
+
+    private fun observeRefreshAction() {
+        refresh_button.setOnClickListener {
+            when (shopping_tabs.selectedTabPosition) {
+                TAB_DEAL -> shoppingViewModel.getLatestDeals()
+                TAB_COUPON -> shoppingViewModel.getLatestCoupons()
+                TAB_VOUCHER -> shoppingViewModel.getLatestVouchers()
+            }
+        }
     }
 
     private fun observeShoppingAction() {
@@ -62,6 +73,9 @@ class ShoppingActivity : FragmentActivity() {
     }
 
     companion object {
+        const val TAB_DEAL = 0
+        const val TAB_COUPON = 1
+        const val TAB_VOUCHER = 2
         fun getStartIntent(context: Context) = Intent(context, ShoppingActivity::class.java)
     }
 }

@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/paletteWhite100"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        app:title="Shopping" />
+        app:title="@string/shopping_vertical_title">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/refresh_button"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_gravity="end"
+            android:src="@drawable/action_refresh"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/shopping_tabs"
@@ -22,12 +34,16 @@
         app:tabTextColor="@color/paletteDarkGreyC30"
         app:tabIndicatorColor="@color/paletteDarkGreyC100"
         app:tabUnboundedRipple="true"
-        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
+        app:tabTextAppearance="@style/EcTabText" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/paletteLightGreyA100" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

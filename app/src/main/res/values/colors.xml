@@ -26,6 +26,7 @@
     <color name="paletteLightGreyA100">#FFE4E4E4</color>
     <color name="paletteLightGreyB100">#FFF9F9FA</color>
     <color name="paletteLightGreyC100">#FFEFF0F3</color>
+    <color name="paletteLightGreyD100">#FFFAFAFA</color>
     <color name="paletteWhite100">#FFFFFFFF</color>
     <color name="paletteWhite80">#CCFFFFFF</color>
     <color name="paletteWhite70">#B3FFFFFF</color>
