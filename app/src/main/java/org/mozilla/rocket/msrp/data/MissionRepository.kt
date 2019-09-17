@@ -8,10 +8,21 @@ import mozilla.components.concept.fetch.interceptor.withInterceptors
 import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import org.json.JSONObject
 import java.lang.Exception
+import org.mozilla.focus.utils.FirebaseHelper
 import java.util.Random
 import java.util.TimeZone
 
 open class MissionRepository {
+
+    private val missionListEndpoint: String
+        get() = FirebaseHelper.getFirebase().getRcString(STR_RC_MISSION_LIST_ENDPOINT)
+
+    private val isMsrpEnabled: Boolean
+        get() = FirebaseHelper.getFirebase().getRcBoolean(BOOL_RC_MSRP_ENABLED)
+
+    fun isMsrpAvailable(): Boolean {
+        return isMsrpEnabled && missionListEndpoint.isNotBlank()
+    }
 
     /**
      * Fetch a list of [Mission]s from the server
@@ -143,6 +154,8 @@ open class MissionRepository {
 
     companion object {
         private const val TAG = "MissionRepository"
+        private const val BOOL_RC_MSRP_ENABLED = "bool_msrp_enabled"
+        private const val STR_RC_MISSION_LIST_ENDPOINT = "str_mission_list_endpoint"
     }
 }
 

@@ -17,6 +17,8 @@ import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
+import org.mozilla.rocket.home.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.msrp.data.MissionRepository
 import javax.inject.Singleton
 
 @Module
@@ -32,7 +34,8 @@ object HomeModule {
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
-        dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase
+        dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
+        isMsrpAvailableUseCase: IsMsrpAvailableUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -41,7 +44,8 @@ object HomeModule {
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
         getLogoManNotificationUseCase,
-        dismissLogoManNotificationUseCase
+        dismissLogoManNotificationUseCase,
+        isMsrpAvailableUseCase
     )
 
     @JvmStatic
@@ -104,4 +108,9 @@ object HomeModule {
     @Provides
     fun provideDismissLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): DismissLogoManNotificationUseCase =
             DismissLogoManNotificationUseCase(logoManNotificationRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideIsMsrpAvailableUseCase(missionRepo: MissionRepository) = IsMsrpAvailableUseCase(missionRepo)
 }
