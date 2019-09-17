@@ -15,6 +15,7 @@ import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
+import org.mozilla.rocket.content.news.ui.NewsTabViewModel
 import org.mozilla.rocket.content.news.ui.NewsViewModel
 import java.util.HashMap
 import java.util.Locale
@@ -70,8 +71,13 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideNewsViewModel(loadNewsSettingsUseCase: LoadNewsSettingsUseCase): NewsViewModel =
-        NewsViewModel(loadNewsSettingsUseCase)
+    fun provideNewsViewModel(): NewsViewModel =
+        NewsViewModel()
+
+    @JvmStatic
+    @Provides
+    fun provideNewsTabViewModel(loadNewsSettingsUseCase: LoadNewsSettingsUseCase): NewsTabViewModel =
+        NewsTabViewModel(loadNewsSettingsUseCase)
 
     @JvmStatic
     @Provides

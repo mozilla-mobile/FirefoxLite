@@ -25,7 +25,6 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsRepository
-import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 import org.mozilla.rocket.content.portal.ContentFeature
@@ -39,9 +38,6 @@ class NewsFragment : Fragment(), NewsListingEventListener {
 
     @Inject
     lateinit var newsViewModelCreator: Lazy<NewsViewModel>
-
-    @Inject
-    lateinit var newsSettingsRepository: NewsSettingsRepository
 
     private lateinit var newsViewModel: NewsViewModel
     private var recyclerView: RecyclerView? = null
@@ -102,8 +98,6 @@ class NewsFragment : Fragment(), NewsListingEventListener {
         })
         updateSourcePriority()
         loadMore()
-
-        newsViewModel.newsSettingsRepository = newsSettingsRepository
 
         newsAdapter = NewsAdapter(this)
         recyclerView?.adapter = newsAdapter
