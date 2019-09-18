@@ -19,24 +19,38 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/onboarding_dialog"
-        android:layout_width="296dp"
-        android:layout_height="78dp"
+        android:layout_width="232dp"
+        android:layout_height="104dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="104dp"
         app:cardElevation="12dp"
-        app:contentPadding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
-            android:lineSpacingExtra="6sp"
             android:text="@string/shopping_search_cs_onboarding_message"
             android:textColor="@color/paletteDarkGreyD100"
             android:textSize="14sp"
             android:textStyle="normal" />
+
+        <Button
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/button"
+            android:layout_width="96dp"
+            android:layout_height="32dp"
+            android:layout_gravity="bottom|end"
+            android:background="@drawable/bg_onboarding_button"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:text="@string/action_ok" />
 
     </androidx.cardview.widget.CardView>
 
