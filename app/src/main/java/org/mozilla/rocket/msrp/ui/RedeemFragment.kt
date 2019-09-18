@@ -9,8 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_redeem.rd_code
-import kotlinx.android.synthetic.main.fragment_redeem.rd_text
+import kotlinx.android.synthetic.main.fragment_redeem.*
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.rocket.content.appComponent
@@ -55,6 +54,9 @@ class RedeemFragment : Fragment(), ScreenNavigator.RedeemSceen {
                 ?: "https://rocket-dev01.appspot.com/api/v1/redeem/mission_daily?mid=AZ19ZOreJer4cAZMilrQ" // for development
 //                throw IllegalStateException("Use UI to navigate to RedeemFragment")
 
+        // consume all touch events to prevent from clicking through
+        coupon_root.setOnTouchListener { _, _ -> true }
+
         tryRedeem(redeemUrl)
 
         observeRedeemResult()
@@ -87,8 +89,8 @@ class RedeemFragment : Fragment(), ScreenNavigator.RedeemSceen {
     }
 
     private fun showSuccessUi(rewardCouponDoc: RewardCouponDoc) {
-        rd_code.text = rewardCouponDoc.code
-        rd_text.text = rewardCouponDoc.title
+        coupon_code.text = rewardCouponDoc.code
+//        rd_text.text = rewardCouponDoc.title
         // TODO: show content..etc
     }
 

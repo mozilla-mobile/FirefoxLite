@@ -210,7 +210,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.hasPendingMissions.observe(this, Observer {
             mission_button.isActivated = it
         })
-        mission_button.setOnClickListener { showMissionFragment() }
+        mission_button.setOnClickListener { showRedeem() }
         profile_button.setOnClickListener {
             ScreenNavigator.get(context).addFxLogin()
         }
@@ -218,6 +218,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun showMissionFragment() {
         ScreenNavigator.get(context).addMissionDetail()
+    }
+
+    private fun showRedeem() {
+        ScreenNavigator.get(context).addRedeem()
     }
 
     private fun observeNightMode() {
