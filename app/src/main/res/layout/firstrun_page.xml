@@ -16,7 +16,8 @@
         android:layout_gravity="center"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        android:elevation="4dp"
+        android:translationZ="12dp"
+        android:elevation="12dp"
         cardview:cardBackgroundColor="#FFF9F9FA"
         cardview:cardCornerRadius="6dp">
 
@@ -94,12 +95,14 @@
             </ScrollView>
 
             <Button
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_marginBottom="24dp"
                 android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="?android:attr/selectableItemBackground"
-                android:textColor="@color/colorAccent"
+                android:layout_width="113dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_onboarding_button"
+                android:textColor="@android:color/white"
                 android:textSize="14sp"
                 tools:text="@string/firstrun_next_button" />
 
