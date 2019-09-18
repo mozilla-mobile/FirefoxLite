@@ -27,7 +27,7 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideKeywordSuggestionRepository(): KeywordSuggestionRepository = KeywordSuggestionRepository()
+    fun provideKeywordSuggestionRepository(appContext: Context): KeywordSuggestionRepository = KeywordSuggestionRepository(appContext)
 
     @JvmStatic
     @Singleton
