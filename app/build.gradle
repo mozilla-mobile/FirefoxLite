@@ -134,9 +134,8 @@ android {
 
         preview {
             dimension "product"
-            applicationId "gro.allizom.zelda.beta"
-            applicationIdSuffix ""
-            versionNameSuffix ".nightly"
+            applicationIdSuffix ".beta"
+            versionNameSuffix ".beta"
         }
 
         // We can build with two engines: webkit or gecko
