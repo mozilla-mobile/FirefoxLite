@@ -49,11 +49,6 @@ def getEnabledLocales() {
     return langs
 }
 
-task generateBetaLocaleList(type: GenerateLocaleTask) {
-    directory = getGenerateDirectory("beta")
-    locales = getEnabledLocales()
-}
-
 task generatePreviewLocaleList(type: GenerateLocaleTask) {
     directory = getGenerateDirectory("preview")
     locales = getEnabledLocales()
