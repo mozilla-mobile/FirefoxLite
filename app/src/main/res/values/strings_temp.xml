@@ -33,4 +33,7 @@
     <string name="msrp_challenge_detail_btn_im_in" translatable="false">I’m In!</string>
     <string name="msrp_challenge_detail_btn_terms_of_use" translatable="false">By clicking “I’m in” you are agreeing to our <a href="#">Terms of Use</a>.</string>
     <string name="msrp_challenge_detail_btn_quit" translatable="false">I quit for now</string>
+
+    <string name="onboarding_turbo_mode_title" translatable="false">Brand-new %s</string>
+    <string name="onboarding_turbo_mode_message" translatable="false">Remain Fast and Lightweight.\nWe added smart shopping search and content to make internet browsing more fun and enjoyable!</string>
 </resources>

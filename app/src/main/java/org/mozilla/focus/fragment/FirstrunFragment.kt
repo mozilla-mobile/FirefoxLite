@@ -21,7 +21,6 @@ import android.view.View
 import android.view.ViewGroup
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
-import org.mozilla.focus.firstrun.DefaultFirstrunPagerAdapter
 import org.mozilla.focus.firstrun.UpgradeFirstrunPagerAdapter
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -157,16 +156,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     }
 
     private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
-        val pagerAdapter: PagerAdapter?
-        val shown = NewFeatureNotice.getInstance(getContext()).hasShownFirstRun()
-        pagerAdapter = if (!shown) {
-            DefaultFirstrunPagerAdapter(context, wrapButtonClickListener(onClickListener))
-        } else if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
+        return if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
             UpgradeFirstrunPagerAdapter(context, onClickListener)
         } else {
             null
         }
-        return pagerAdapter
     }
 
     private fun wrapButtonClickListener(onClickListener: View.OnClickListener): View.OnClickListener {
@@ -191,7 +185,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     // lots of drawable resources
     private fun initDrawables() {
         // TODO: needs to remove bg_homescreen_color
-        bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme), resources.getDrawable(R.drawable.bg_homescreen_color, context?.theme))
+        bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme), resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme), resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme), resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme))
 
         bgTransitionDrawable = TransitionDrawable(bgDrawables)
         bgTransitionDrawable.setId(0, R.id.first_run_bg_even)
