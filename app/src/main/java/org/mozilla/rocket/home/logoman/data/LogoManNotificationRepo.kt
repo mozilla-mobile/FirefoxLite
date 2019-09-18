@@ -4,10 +4,15 @@ import android.content.Context
 import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.focus.utils.FirebaseHelper
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class LogoManNotificationRepo(appContext: Context) {
 
-    private val preference = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    private val preference = StrictModeViolation.tempGrant({ builder ->
+        builder.permitDiskReads()
+    }, {
+        appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    })
 
     fun getNotification(): Notification? =
             FirebaseHelper.getFirebase().getRcString(STR_LOGO_MAN_NOTIFICATION)

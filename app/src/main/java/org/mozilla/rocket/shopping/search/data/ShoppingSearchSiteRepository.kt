@@ -6,10 +6,16 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.preference.stringLiveData
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class ShoppingSearchSiteRepository(appContext: Context) {
 
-    private val preference = appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    private val preference = StrictModeViolation.tempGrant({ builder ->
+        builder.permitDiskReads()
+    }, {
+        appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    })
+
     private val mockPreferenceSiteList = listOf(
         ShoppingSite("Lazada", "https://www.lazada.co.id/catalog/?q=", "lazada.co.id", isEnabled = true),
         ShoppingSite("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D=", "bukalapak.com", isEnabled = true),
