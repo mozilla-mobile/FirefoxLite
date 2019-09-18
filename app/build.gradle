@@ -126,12 +126,6 @@ android {
             dimension "product"
         }
 
-        beta {
-            dimension "product"
-            applicationIdSuffix ".beta"
-            versionNameSuffix ".beta"
-        }
-
         preview {
             dimension "product"
             applicationIdSuffix ".beta"
@@ -148,7 +142,7 @@ android {
     variantFilter { variant ->
         def flavors = variant.flavors*.name
         // We only need a nightly release for now
-        if ((flavors.contains("preview") || flavors.contains("beta")) && variant.buildType.name != "release") {
+        if (flavors.contains("preview") && variant.buildType.name != "release") {
             setIgnore(true)
         }
     }
@@ -165,10 +159,6 @@ android {
 
         preview {
             res.srcDir 'src/preview/res'
-        }
-
-        beta {
-            res.srcDir 'src/beta/res'
         }
 
         // used by Room, to test migrations
@@ -340,7 +330,7 @@ android.applicationVariants.all { variant ->
 
         if (token != null) {
             buildConfigField 'String', 'ADJUST_TOKEN', '"' + token + '"'
-            if (variantName.contains("preview") || variantName.contains("beta")) {
+            if (variantName.contains("preview")) {
                 buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'com.adjust.sdk.AdjustConfig.ENVIRONMENT_SANDBOX'
             } else if (variantName.contains("focus")) {
                 buildConfigField 'String', 'ADJUST_ENVIRONMENT', 'com.adjust.sdk.AdjustConfig.ENVIRONMENT_PRODUCTION'
@@ -399,7 +389,6 @@ android.applicationVariants.all { variant ->
 
 tasks.whenTaskAdded { task ->
     if (name.contains("compile")) {
-        task.dependsOn generateBetaLocaleList
         task.dependsOn generatePreviewLocaleList
         task.dependsOn generateFocusLocaleList
     }
