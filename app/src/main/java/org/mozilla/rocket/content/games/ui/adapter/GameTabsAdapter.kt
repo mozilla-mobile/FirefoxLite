@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import org.mozilla.focus.R
 import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
 
 @Suppress("DEPRECATION")
@@ -19,17 +20,17 @@ class GameTabsAdapter(
 
     override fun getCount(): Int = items.size
 
-    override fun getPageTitle(position: Int): CharSequence? = items[position].title
+    override fun getPageTitle(position: Int): CharSequence? = resource.getString(items[position].titleResId)
 
     data class TabItem(
         val fragment: Fragment,
-        val title: String // TODO: change to 'titleResId'
+        val titleResId: Int
     )
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(
-            TabItem(BrowserGamesFragment.newInstance(BrowserGamesFragment.Companion.GameType.TYPE_BROWSER), "Browser Games"),
-            TabItem(BrowserGamesFragment.newInstance(BrowserGamesFragment.Companion.GameType.TYPE_PREMIUM), "Premium Games")
+            TabItem(BrowserGamesFragment.newInstance(BrowserGamesFragment.Companion.GameType.TYPE_BROWSER), R.string.gaming_vertical_category_1),
+            TabItem(BrowserGamesFragment.newInstance(BrowserGamesFragment.Companion.GameType.TYPE_PREMIUM), R.string.gaming_vertical_category_2)
         )
     }
 }

@@ -21,6 +21,7 @@
         app:tabTextColor="@color/paletteDarkGreyC30"
         app:tabIndicatorColor="@android:color/transparent"
         app:tabBackground="@android:color/transparent"
+        app:tabTextAppearance="@style/GameTabText"
         app:tabUnboundedRipple="true" />
 
     <androidx.viewpager.widget.ViewPager
