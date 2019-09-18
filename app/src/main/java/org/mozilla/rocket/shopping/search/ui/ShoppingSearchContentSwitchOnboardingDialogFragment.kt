@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import dagger.Lazy
+import kotlinx.android.synthetic.main.fragment_shopping_search_onbarding.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
@@ -33,6 +34,9 @@ class ShoppingSearchContentSwitchOnboardingDialogFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         view?.setOnClickListener {
+            viewModel.dismissEvent.call()
+        }
+        button.setOnClickListener {
             viewModel.dismissEvent.call()
         }
         observeAction()
