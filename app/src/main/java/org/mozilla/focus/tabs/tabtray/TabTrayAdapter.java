@@ -101,8 +101,8 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch (getItemViewType(position)) {
             case VIEW_TYPE_SHOPPING_SEARCH: {
                 ShoppingSearchViewHolder ssHolder = (ShoppingSearchViewHolder) holder;
-                String title = TextUtils.isEmpty(keyword) ? resources.getString(R.string.tab_tray_shopping_search) :
-                        String.format("%s: \"%s\"", resources.getString(R.string.tab_tray_shopping_search), keyword);
+                String title = TextUtils.isEmpty(keyword) ? resources.getString(R.string.shopping_switch_ui_tabtray_title_no_keyword) :
+                        resources.getString(R.string.shopping_switch_ui_tabtray_title, keyword);
                 ssHolder.title.setText(title);
                 break;
             }

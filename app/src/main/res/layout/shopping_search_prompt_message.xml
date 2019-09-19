@@ -36,7 +36,7 @@
 
         <Button
             android:textAllCaps="false"
-            android:text="@string/shopping_search_prompt_search"
+            android:text="@string/shopping_search_prompt_message_button"
             android:id="@+id/bottom_sheet_search"
             android:background="@drawable/bottom_sheet_search"
             android:layout_width="68dp"
@@ -57,7 +57,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="sans-serif"
-            android:text="@string/shopping_search_prompt_message"
+            android:text="@string/shopping_search_prompt_message_body"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             android:textStyle="normal"

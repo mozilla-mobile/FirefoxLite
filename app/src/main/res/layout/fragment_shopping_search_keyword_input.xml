@@ -35,7 +35,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:hint="@string/urlbar_hint"
+                android:hint="@string/shopping_search_placeholder"
                 android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
                 android:inputType="textUri"
                 android:lines="1"
@@ -100,7 +100,7 @@
                     android:layout_marginTop="16dp"
                     android:fontFamily="sans-serif"
                     android:gravity="center_horizontal"
-                    android:text="@string/hint_title_shopping_search_keyword_input"
+                    android:text="@string/shopping_search_onboarding_title"
                     android:textColor="@color/paletteWhite100"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -113,7 +113,7 @@
                     android:gravity="center_horizontal"
                     android:letterSpacing="0.01"
                     android:lineSpacingExtra="4sp"
-                    android:text="@string/hint_desc_shopping_search_keyword_input"
+                    android:text="@string/shopping_search_onboarding_body"
                     android:textColor="@color/paletteLightGreyB100"
                     android:textSize="16sp"
                     android:textStyle="normal" />

@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif"
-            android:text="@string/shopping_search_cs_onboarding_message"
+            android:text="@string/shopping_switch_ui_onboarding_body"
             android:textColor="@color/paletteDarkGreyD100"
             android:textSize="14sp"
             android:textStyle="normal" />

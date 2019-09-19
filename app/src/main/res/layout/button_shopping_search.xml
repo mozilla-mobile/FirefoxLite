@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <org.mozilla.rocket.nightmode.themed.ThemedImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/action_shopping_search"
     style="@style/HomeMenuButton"
     android:layout_gravity="center"
     android:clickable="false"
-    android:contentDescription="@string/content_description_shopping_search"
-    android:src="@drawable/shopping" />
+    android:src="@drawable/shopping"
+    tools:ignore="contentDescription" />

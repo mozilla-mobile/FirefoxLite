@@ -41,10 +41,10 @@ class GameViewHolder(
         val intent = Intent()
         intent.putExtra("gameType", gamesViewModel.selectedGame.type)
         if (gamesViewModel.canShare())
-            menu?.add(0, R.id.share, 0, R.string.game_contextmenu_share)
+            menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)
         if (gamesViewModel.canCreateShortCut())
-            menu?.add(0, R.id.shortcut, 0, R.string.game_contextmenu_create_shortcut)
+            menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)
         if (gamesViewModel.canRemoveFromList())
-            menu?.add(0, R.id.remove, 0, R.string.game_contextmenu_remove_from_gamelist)
+            menu?.add(0, R.id.remove, 0, R.string.gaming_vertical_menu_option_3)
     }
 }

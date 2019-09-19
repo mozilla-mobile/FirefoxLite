@@ -16,8 +16,8 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
 
         if (featureNotice.from21to40()) {
             this.pages.add(new FirstrunPage(
-                    context.getString(R.string.onboarding_turbo_mode_title, context.getString(R.string.app_name)),
-                    context.getString(R.string.onboarding_turbo_mode_message),
+                    context.getString(R.string.onboarding_2_introduction_title, context.getString(R.string.app_name)),
+                    context.getString(R.string.onboarding_2_introduction_description),
                     R.drawable.ic_onboarding_first_use));
         }
 
