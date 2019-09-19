@@ -46,9 +46,9 @@
     <color name="themeGradientCenter">#41C3CF</color>
     <color name="themeGradientEnd">#15A4F7</color>
 
-    <color name="themeGradientStart01">#1B3F7A</color>
-    <color name="themeGradientCenter01">#2C3F64</color>
-    <color name="themeGradientEnd01">#13265A</color>
+    <color name="themeGradientStart01">#355570</color>
+    <color name="themeGradientCenter01">#2B3D55</color>
+    <color name="themeGradientEnd01">#2B354A</color>
 
     <color name="themeGradientStart02">#FC65C6</color>
     <color name="themeGradientCenter02">#BA33C7</color>
