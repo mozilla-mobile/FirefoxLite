@@ -291,22 +291,20 @@
         <activity
             android:name="org.mozilla.rocket.content.games.ui.GamesActivity"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=".content.game" />
 
         <activity
             android:name="org.mozilla.rocket.content.games.ui.GameModeActivity"
-            android:theme="@style/GameModeTheme"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/GameModeTheme" />
 
         <activity
             android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:taskAffinity=".shopping.search" />
+            android:taskAffinity=".shopping.search"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name="org.mozilla.rocket.content.common.ui.ContentTabActivity"
@@ -317,14 +315,12 @@
         <activity
             android:name="org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=".content.ecommerce" />
 
         <activity
             android:name="org.mozilla.rocket.content.news.ui.NewsActivity"
             android:exported="false"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=".content.news" />
 
