@@ -29,6 +29,7 @@ import org.mozilla.focus.utils.FirebaseContract;
 import org.mozilla.focus.utils.FirebaseHelper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.widget.DefaultBrowserPreference;
+import org.mozilla.rocket.debugging.DebugActivity;
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.privately.ShortcutUtils;
 import org.mozilla.telemetry.TelemetryHolder;
@@ -53,6 +54,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
             Preference experimentCategory = findPreference(getString(R.string.pref_key_category_experiment));
             rootPreferences.removePreference(experimentCategory);
+
+            Preference debuggingCategory = findPreference(getString(R.string.pref_key_category_debug));
+            rootPreferences.removePreference(debuggingCategory);
         }
 
         final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
@@ -84,6 +88,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         } else if (keyClicked.equals(resources.getString(R.string.pref_key_private_mode_shortcut))) {
             TelemetryWrapper.clickPrivateShortcutItemInSettings();
             ShortcutUtils.Companion.createShortcut(preference.getContext().getApplicationContext());
+        } else if (keyClicked.equals(resources.getString(R.string.pref_key_debug_page))) {
+            startActivity(DebugActivity.Companion.getStartIntent(preference.getContext()));
         }
 
         return super.onPreferenceTreeClick(preferenceScreen, preference);
