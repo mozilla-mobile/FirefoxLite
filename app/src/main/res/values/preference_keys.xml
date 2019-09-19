@@ -44,6 +44,9 @@
 
     <string name="pref_key_category_experiment" translatable="false"><xliff:g id="preference_key">pref_category_experiment</xliff:g></string>
 
+    <string name="pref_key_category_debug" translatable="false"><xliff:g id="preference_key">pref_key_category_debug</xliff:g></string>
+    <string name="pref_key_debug_page" translatable="false"><xliff:g id="preference_key">pref_key_debug_page</xliff:g></string>
+
     <!-- data saving -->
     <string name="pref_key_data_saving_block_ads" translatable="false"><xliff:g id="preference_key">pref_data_saving_block_ads</xliff:g></string>
     <string name="pref_key_data_saving_block_webfonts" translatable="false"><xliff:g id="preference_key">pref_data_saving_block_webfonts</xliff:g></string>

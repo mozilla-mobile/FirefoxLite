@@ -102,4 +102,16 @@
 
     </PreferenceCategory>
 
+    <!-- Preferences for debugging purpose, only visible in dev-build -->
+    <PreferenceCategory
+        android:key="@string/pref_key_category_debug"
+        android:title="For debugging">
+
+        <Preference
+            android:key="@string/pref_key_debug_page"
+            android:layout="@layout/focus_preference"
+            android:title="Debug Page"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>
