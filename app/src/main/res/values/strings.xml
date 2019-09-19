@@ -629,6 +629,7 @@
 
     <!-- Name of low priority notification channel, this will be shown on the app info page in the system setting -->
     <string name="low_priority_notification_channel">Hidden notifications</string>
+    
     <!--Shopping Vertical-->
     <!--Artboard Name: 1.1 Shopping Search Overview-->
     <!--Shopping Search Onboarding-->
@@ -648,11 +649,11 @@
     <string name="shopping_switch_ui_preferences_title">Shopping Search Settings</string>
     <string name="shopping_switch_ui_preferences_subtitle">Sites to compare</string>
 
-    <!--Artboard Name: 3.1 Switch UI Navigation Overview-->
+    <!--Artboard Name: 3.1 Switch UI Navigation - Activity Switch-->
     <!--Switch UI Tab Tray-->
     <string name="shopping_switch_ui_tabtray_title">Shopping Search: “Keywords”</string>
 
-    <!--Artboard Name: 3.2 Switch UI Remove Tab-->
+    <!--Artboard Name: 3.3 Switch UI Navigation - Tab Tray-->
     <!--Closing dialog content.-->
     <string name="shopping_closing_dialog_close">Close All</string>
     <string name="shopping_closing_dialog_cancel">Cancel</string>
@@ -668,9 +669,12 @@
     <string name="shopping_deal_subcategory_1">Top Rated</string>
     <string name="shopping_deal_subcategory_2">Best Sellers</string>
 
-    <!--Artboard Name: 5.1 Shopping Coupons Overview-->
+    <!--Artboard Name: 5.2 Shopping Coupons Update-->
     <!--Shopping Coupons-->
-    <string name="shopping_coupon_subcategory">Hot Coupons</string>
+    <string name="shopping_coupon_expire_zero">Expired</string>
+    <string name="shopping_coupon_expire_one">1 day left</string>
+    <string name="shopping_coupon_expire_other">%1$d days left</string>
+
 
     <!--Gaming Vertical-->
     <!--Gaming Home-->
@@ -707,17 +711,19 @@
     <string name="gaming_vertical_genre_12">Girls</string>
 
     <!-- Home 2.0 -->
-    <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0 -->
-    <string name="onboarding_2.0_introduction_description">Remain Fast and Lightweight. We added smart shopping search and content to make internet browsing more fun and enjoyable!</string>
+    <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0. %1$s will be replaced with the name of the app (e.g. Firefox Lite) -->
+    <string name="onboarding_2_introduction_title">Brand-new %1$s</string>
+    <string name="onboarding_2_introduction_description">Remain Fast and Lightweight. We added smart shopping search and content to make internet browsing more fun and enjoyable!</string>
     <!-- Onboarding for new users to introduce Firefox Lite 2.0 -->
     <!-- Introduce Content & Services -->
-    <string name="onboarding_2.0_content_services_news_shopping_games">Tap to read the trendy news, find good deals or play the hottest free games to have fun!</string>
-    <string name="onboarding_2.0_content_services_news_games">Tap to read the trendy news or play the hottest free games to have fun!</string>
-    <string name="onboarding_2.0_content_services_games">Tap to play the hottest free games to have fun!</string>
+    <string name="onboarding_2_content_services_news_shopping_games">Tap to read the trendy news, find good deals or play the hottest free games to have fun!</string>
+    <string name="onboarding_2_content_services_news_games">Tap to read the trendy news or play the hottest free games to have fun!</string>
+    <string name="onboarding_2_content_services_games">Tap to play the hottest free games to have fun!</string>
     <!-- Introduce Smart Shopping Search -->
-    <string name="onboarding_2.0_smart_shopping_search_title">Smart Shopping Search</string>
-    <string name="onboarding_2.0_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
-
+    <string name="onboarding_2_smart_shopping_search_title">Smart Shopping Search</string>
+    <string name="onboarding_2_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
+    <string name="home_search_bar_text">Search...</string>
+    
     <!-- Content & Services -->
     <!-- Title of Content & Services -->
     <string name="home_Content_Services">Content &amp; Services</string>
