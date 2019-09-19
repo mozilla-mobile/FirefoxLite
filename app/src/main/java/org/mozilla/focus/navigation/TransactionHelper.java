@@ -27,6 +27,7 @@ import static org.mozilla.focus.navigation.ScreenNavigator.HOME_FRAGMENT_TAG;
 import static org.mozilla.focus.navigation.ScreenNavigator.HomeScreen;
 import static org.mozilla.focus.navigation.ScreenNavigator.MISSION_DETAIL_TAG;
 import static org.mozilla.focus.navigation.ScreenNavigator.REDEEM_TAG;
+import static org.mozilla.focus.navigation.ScreenNavigator.REWARD_TAG;
 import static org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TAG;
 
 class TransactionHelper implements DefaultLifecycleObserver {
@@ -87,6 +88,9 @@ class TransactionHelper implements DefaultLifecycleObserver {
                 break;
             case FX_LOGIN_TAG:
                 screen = this.activity.createFxLoginScreen();
+                break;
+            case REWARD_TAG:
+                screen = this.activity.createRewardScreen();
                 break;
             default:
                 throw new IllegalStateException("No such MSRP fragment");

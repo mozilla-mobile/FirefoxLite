@@ -356,6 +356,13 @@ class PrivateModeActivity : BaseActivity(),
         TODO("PrivateModeActivity should never show Mission Detail")
     }
 
+    override fun createRewardScreen(): ScreenNavigator.RewardScreen {
+        if (BuildConfig.DEBUG) {
+            throw RuntimeException("PrivateModeActivity should never show Reward")
+        }
+        TODO("PrivateModeActivity should never show Reward")
+    }
+
     override fun createFxLoginScreen(): ScreenNavigator.FxLoginScreen {
         if (BuildConfig.DEBUG) {
             throw RuntimeException("PrivateModeActivity should never show FxLogin")

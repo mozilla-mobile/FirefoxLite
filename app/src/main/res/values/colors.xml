@@ -165,6 +165,7 @@
 
     <!-- Content common -->
     <color name="contentHeaderTextColor">#0C0C0D</color>
+    <color name="contentHeaderTextColor87">#DE0C0C0D</color>
 
     <!-- Shopping Search -->
     <color name="shoppingSearchInputBackgroundGradientStart">#FF3C61</color>
@@ -175,4 +176,10 @@
     <!--  Shopping -->
     <color name="colorProductPrice">#EC6255</color>
     <color name="colorProductDiscount">#EC1C52</color>
+
+    <!-- MSRP -->
+    <color name="msrpRedDotColor">#EC1C52</color>
+    <color name="msrpMissionListBgColor">#FAFAFA</color>
+    <color name="msrpMissionListSeparatorColor">#F0F0F0</color>
+
 </resources>

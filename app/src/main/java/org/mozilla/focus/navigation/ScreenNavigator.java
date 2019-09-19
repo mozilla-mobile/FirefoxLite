@@ -32,6 +32,7 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public static final String BROWSER_FRAGMENT_TAG = "browser_screen";
     public static final String URL_INPUT_FRAGMENT_TAG = "url_input_sceen";
     static final String MISSION_DETAIL_TAG = "mission_detail_tag";
+    static final String REWARD_TAG = "reward_tag";
     static final String REDEEM_TAG = "redeem_tag";
     static final String FX_LOGIN_TAG = "fx_login_tag";
 
@@ -178,6 +179,11 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         this.transactionHelper.showMSRPFragment(MISSION_DETAIL_TAG);
     }
 
+    public void addReward() {
+        logMethod();
+        this.transactionHelper.showMSRPFragment(REWARD_TAG);
+    }
+
     public void addRedeem() {
         logMethod();
         this.transactionHelper.showMSRPFragment(REDEEM_TAG);
@@ -292,6 +298,8 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
         MissionDetailScreen createMissionDetailScreen();
 
+        RewardScreen createRewardScreen();
+
         FxLoginScreen createFxLoginScreen();
 
         RedeemSceen createRedeemScreen();
@@ -350,6 +358,12 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * Contract class for ScreenNavigator, to present an RedeemSceen
      */
     public interface RedeemSceen extends Screen {
+    }
+
+    /**
+     * Contract class for ScreenNavigator, to present a RewardScreen
+     */
+    public interface RewardScreen extends Screen {
     }
 
     /**
