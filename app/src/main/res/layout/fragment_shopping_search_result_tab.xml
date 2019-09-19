@@ -67,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/paletteLightGreyB100"
+                android:layout_marginEnd="48dp"
                 app:tabBackground="@drawable/shopping_search_tab_item_selector"
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabMode="scrollable"
