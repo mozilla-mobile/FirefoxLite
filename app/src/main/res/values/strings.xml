@@ -650,8 +650,8 @@
     <string name="shopping_switch_ui_preferences_subtitle">Sites to compare</string>
 
     <!--Artboard Name: 3.1 Switch UI Navigation - Activity Switch-->
-    <!--Switch UI Tab Tray-->
-    <string name="shopping_switch_ui_tabtray_title">Shopping Search: “Keywords”</string>
+    <!--Switch UI Tab Tray. %1$s is the keyword user input -->
+    <string name="shopping_switch_ui_tabtray_title">Shopping Search: “%1$s”</string>
 
     <!--Artboard Name: 3.3 Switch UI Navigation - Tab Tray-->
     <!--Closing dialog content.-->
@@ -693,8 +693,8 @@
     <string name="gaming_vertical_menu_option_2">Create shortcut on home screen</string>
     <string name="gaming_vertical_menu_option_3">Remove from list</string>
     
-    <!--Gaming Share Message-->
-    <string name="gaming_vertical_share_message">I’m playing a really cool game. Check it out!</string>
+    <!--Gaming Share Message. %1$s is the url of the game -->
+    <string name="gaming_vertical_share_message">I’m playing a really cool game. Check it out!\n%1$s</string>
 
     <!--Gaming Genres-->
     <string name="gaming_vertical_genre_1">Recently played</string>
@@ -726,8 +726,8 @@
     
     <!-- Content & Services -->
     <!-- Title of Content & Services -->
-    <string name="home_Content_Services">Content &amp; Services</string>
-    <string name="home_Discovery">Discovery</string>
+    <string name="home_content_services">Content &amp; Services</string>
+    <string name="home_discovery">Discovery</string>
     <!-- Actions in context menu. Users can long press an item then show the context menu to select an action -->
     <string name="content_home_context_menu_add_to_home_screen">Add to Home screen</string>
     <string name="content_home_context_menu_share_link">Share link</string>
