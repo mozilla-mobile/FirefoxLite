@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
@@ -28,6 +29,7 @@ class ShoppingSearchKeywordInputViewModel(
         get() = _uiModel
 
     val navigateToResultTab = SingleLiveEvent<String>()
+    private var fetchSuggestionsJob: Job? = null
     private var isFirstRun = false
 
     init {
@@ -35,21 +37,27 @@ class ShoppingSearchKeywordInputViewModel(
         emitUiModel(ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun))
     }
 
-    fun fetchSuggestions(keyword: String) = viewModelScope.launch(Dispatchers.Default) {
-        val newUiModel: ShoppingSearchKeywordInputUiModel
-        if (TextUtils.isEmpty(keyword)) {
-            newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun)
-        } else {
-            var styledSuggestions: List<CharSequence>? = null
-            val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
-            if (fetchKeywordSuggestionResult is Result.Success) {
-                styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
-            }
-            newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, true, true, true)
+    fun fetchSuggestions(keyword: String) {
+        if (fetchSuggestionsJob?.isCompleted == false) {
+            fetchSuggestionsJob?.cancel()
         }
 
-        withContext(Dispatchers.Main) {
-            emitUiModel(newUiModel)
+        fetchSuggestionsJob = viewModelScope.launch(Dispatchers.Default) {
+            val newUiModel: ShoppingSearchKeywordInputUiModel
+            if (TextUtils.isEmpty(keyword)) {
+                newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun)
+            } else {
+                var styledSuggestions: List<CharSequence>? = null
+                val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
+                if (fetchKeywordSuggestionResult is Result.Success) {
+                    styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
+                }
+                newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, true, true, true)
+            }
+
+            withContext(Dispatchers.Main) {
+                emitUiModel(newUiModel)
+            }
         }
     }
 
