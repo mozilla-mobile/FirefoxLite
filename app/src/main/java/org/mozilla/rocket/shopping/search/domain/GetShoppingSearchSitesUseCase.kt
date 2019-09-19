@@ -1,9 +1,9 @@
 package org.mozilla.rocket.shopping.search.domain
 
-import org.mozilla.rocket.shopping.search.data.ShoppingSearchSiteRepository
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import java.net.URLEncoder
 
-class GetShoppingSearchSitesUseCase(val repository: ShoppingSearchSiteRepository) {
+class GetShoppingSearchSitesUseCase(val repository: ShoppingSearchRepository) {
 
     operator fun invoke(searchKeyword: String): List<ShoppingSearchSite> =
             repository.getShoppingSites()

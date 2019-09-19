@@ -1,7 +1,6 @@
 package org.mozilla.rocket.menu
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -31,7 +30,6 @@ import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.extension.toActivity
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
-import org.mozilla.rocket.privately.PrivateModeActivity
 import javax.inject.Inject
 
 class MenuDialog : BottomSheetDialog {
@@ -94,9 +92,7 @@ class MenuDialog : BottomSheetDialog {
                     MenuItemAdapter.TYPE_SCREENSHOTS -> chromeViewModel.showScreenshots()
                     MenuItemAdapter.TYPE_TURBO_MODE -> chromeViewModel.onTurboModeToggled()
                     MenuItemAdapter.TYPE_PRIVATE_BROWSING -> {
-                        val intent = Intent(context, PrivateModeActivity::class.java)
-                        startActivity(context, intent, null)
-                        overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out)
+                        chromeViewModel.togglePrivateMode.call()
                         TelemetryWrapper.togglePrivateMode(true)
                     }
                     MenuItemAdapter.TYPE_NIGHT_MODE -> chromeViewModel.onNightModeToggled()

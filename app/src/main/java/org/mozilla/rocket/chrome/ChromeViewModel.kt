@@ -173,7 +173,6 @@ class ChromeViewModel(
     private fun updateMenu() {
         updateMenu.call()
         checkIfShowPrivateBrowsingOnBoarding()
-        checkIfPrivateBrowsingActive()
     }
 
     private fun checkIfShowPrivateBrowsingOnBoarding() {
@@ -183,8 +182,7 @@ class ChromeViewModel(
         }
     }
 
-    // TODO: find a better way to observe if there is private session
-    private fun checkIfPrivateBrowsingActive() {
+    fun checkIfPrivateBrowsingActive() {
         val hasPrivateSession = privateMode.hasPrivateSession()
         if (isPrivateBrowsingActive.value != hasPrivateSession) {
             isPrivateBrowsingActive.value = hasPrivateSession

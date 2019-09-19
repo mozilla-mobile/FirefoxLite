@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
 import org.mozilla.rocket.shopping.search.data.OnboardingSharedPreferenceRepository
-import org.mozilla.rocket.shopping.search.data.ShoppingSearchSiteRepository
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.domain.CheckContentSwitchOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.CheckOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.CompleteContentSwitchOnboardingFirstRunUseCase
@@ -47,12 +47,12 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideShoppingSearchSiteRepository(appContext: Context): ShoppingSearchSiteRepository = ShoppingSearchSiteRepository(appContext)
+    fun provideShoppingSearchSiteRepository(appContext: Context): ShoppingSearchRepository = ShoppingSearchRepository(appContext)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideSearchShoppingSiteUseCase(repo: ShoppingSearchSiteRepository) = GetShoppingSearchSitesUseCase(repo)
+    fun provideSearchShoppingSiteUseCase(repo: ShoppingSearchRepository) = GetShoppingSearchSitesUseCase(repo)
 
     @JvmStatic
     @Provides
@@ -71,12 +71,12 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun providePreferencesShoppingSiteUseCase(repo: ShoppingSearchSiteRepository) = GetShoppingSitesUseCase(repo)
+    fun providePreferencesShoppingSiteUseCase(repo: ShoppingSearchRepository) = GetShoppingSitesUseCase(repo)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideSaveListToPreferenceUseCase(repo: ShoppingSearchSiteRepository) = UpdateShoppingSitesUseCase(repo)
+    fun provideSaveListToPreferenceUseCase(repo: ShoppingSearchRepository) = UpdateShoppingSitesUseCase(repo)
 
     @JvmStatic
     @Provides

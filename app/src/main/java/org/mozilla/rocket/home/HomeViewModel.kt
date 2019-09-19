@@ -9,6 +9,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
@@ -29,7 +30,8 @@ class HomeViewModel(
     private val getContentHubItemsUseCase: GetContentHubItemsUseCase,
     getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
-    private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase
+    private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
+    private val isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -39,10 +41,12 @@ class HomeViewModel(
     val hasPendingMissions = MutableLiveData<Boolean>()
     val logoManNotification = MutableLiveData<StateNotification?>()
     val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
+    val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
-    val launchShoppingSearch = SingleLiveEvent<Unit>()
+    val openShoppingSearch = SingleLiveEvent<Unit>()
+    val openPrivateMode = SingleLiveEvent<Unit>()
     val openBrowser = SingleLiveEvent<Site>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
@@ -81,7 +85,12 @@ class HomeViewModel(
     }
 
     fun onShoppingButtonClicked() {
-        launchShoppingSearch.call()
+        openShoppingSearch.call()
+    }
+
+    fun onPrivateModeButtonClicked() {
+        openPrivateMode.call()
+        TelemetryWrapper.togglePrivateMode(true)
     }
 
     fun onTopSiteClicked(site: Site, position: Int) {

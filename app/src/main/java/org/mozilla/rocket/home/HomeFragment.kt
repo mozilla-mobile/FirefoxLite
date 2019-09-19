@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.mission_button
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
+import kotlinx.android.synthetic.main.fragment_home.private_mode_button
 import kotlinx.android.synthetic.main.fragment_home.profile_button
 import kotlinx.android.synthetic.main.fragment_home.search_panel
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
@@ -112,9 +114,20 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         chromeViewModel.tabCount.observe(this, Observer {
             setTabCount(it ?: 0)
         })
+        homeViewModel.isShoppingSearchEnabled.observe(this, Observer { isEnabled ->
+            shopping_button.isVisible = isEnabled
+            private_mode_button.isVisible = !isEnabled
+        })
         shopping_button.setOnClickListener { homeViewModel.onShoppingButtonClicked() }
-        homeViewModel.launchShoppingSearch.observe(this, Observer {
+        homeViewModel.openShoppingSearch.observe(this, Observer {
             showShoppingSearch()
+        })
+        chromeViewModel.isPrivateBrowsingActive.observe(this, Observer {
+            private_mode_button.isActivated = it
+        })
+        private_mode_button.setOnClickListener { homeViewModel.onPrivateModeButtonClicked() }
+        homeViewModel.openPrivateMode.observe(this, Observer {
+            chromeViewModel.togglePrivateMode.call()
         })
     }
 
