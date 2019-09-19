@@ -81,6 +81,7 @@ import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.msrp.ui.MissionDetailFragment
 import org.mozilla.rocket.msrp.ui.RedeemFragment
+import org.mozilla.rocket.msrp.ui.RewardFragment
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.promotion.PromotionModel
 import org.mozilla.rocket.promotion.PromotionPresenter
@@ -578,6 +579,8 @@ class MainActivity : BaseActivity(),
     override fun createHomeScreen(): ScreenNavigator.HomeScreen = HomeFragment()
 
     override fun createMissionDetailScreen(): ScreenNavigator.MissionDetailScreen = MissionDetailFragment()
+
+    override fun createRewardScreen(): ScreenNavigator.RewardScreen = RewardFragment()
 
     override fun createFxLoginScreen(): ScreenNavigator.FxLoginScreen = FxLoginFragment.create(FirebaseHelper.getUid())
 
