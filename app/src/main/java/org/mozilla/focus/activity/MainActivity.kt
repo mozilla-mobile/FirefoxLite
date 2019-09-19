@@ -83,6 +83,7 @@ import org.mozilla.rocket.msrp.ui.MissionDetailFragment
 import org.mozilla.rocket.msrp.ui.RedeemFragment
 import org.mozilla.rocket.msrp.ui.RewardFragment
 import org.mozilla.rocket.privately.PrivateMode
+import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.promotion.PromotionModel
 import org.mozilla.rocket.promotion.PromotionPresenter
 import org.mozilla.rocket.promotion.PromotionViewContract
@@ -313,6 +314,7 @@ class MainActivity : BaseActivity(),
             showBookmarks.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_BOOKMARKS) })
             showHistory.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_HISTORY) })
             showScreenshots.observe(this@MainActivity, Observer { showListPanel(ListPanelDialog.TYPE_SCREENSHOTS) })
+            togglePrivateMode.observe(this@MainActivity, Observer { openPrivateMode() })
         }
     }
 
@@ -332,6 +334,7 @@ class MainActivity : BaseActivity(),
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
         contentResolver.registerContentObserver(DownloadContract.Download.CONTENT_URI, true, downloadObserver)
         downloadIndicatorViewModel.updateIndicator()
+        chromeViewModel.checkIfPrivateBrowsingActive()
     }
 
     override fun onPause() {
@@ -501,6 +504,11 @@ class MainActivity : BaseActivity(),
     private fun driveDefaultBrowser() {
         DialogUtils.showDefaultSettingNotification(this)
         TelemetryWrapper.showDefaultSettingNotification()
+    }
+
+    private fun openPrivateMode() {
+        startActivity(Intent(this, PrivateModeActivity::class.java))
+        overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out)
     }
 
     private fun exitApp() {

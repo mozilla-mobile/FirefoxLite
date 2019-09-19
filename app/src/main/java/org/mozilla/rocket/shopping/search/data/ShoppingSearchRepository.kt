@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import org.json.JSONArray
 import org.json.JSONObject
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.preference.stringLiveData
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
-class ShoppingSearchSiteRepository(appContext: Context) {
+class ShoppingSearchRepository(appContext: Context) {
 
     private val preference = StrictModeViolation.tempGrant({ builder ->
         builder.permitDiskReads()
@@ -24,6 +25,9 @@ class ShoppingSearchSiteRepository(appContext: Context) {
         ShoppingSite("Shopee", "https://shopee.co.id/search?keyword=", "shopee.co.id", isEnabled = true),
         ShoppingSite("BliBli", "https://www.blibli.com/jual/backpack?searchTerm=", "blibli.com", isEnabled = true)
     )
+
+    fun isShoppingSearchEnabled(): Boolean =
+            FirebaseHelper.getFirebase().getRcBoolean(RC_KEY_ENABLE_SHOPPING_SEARCH)
 
     fun getShoppingSites(): List<ShoppingSite> {
         val shoppingSitesJsonString = preference.getString(KEY_SHOPPING_SEARCH_SITE, "")
@@ -59,6 +63,7 @@ class ShoppingSearchSiteRepository(appContext: Context) {
     companion object {
         const val PREF_NAME = "shopping_search"
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"
+        const val RC_KEY_ENABLE_SHOPPING_SEARCH = "key_enable_shopping_search"
     }
 }
 

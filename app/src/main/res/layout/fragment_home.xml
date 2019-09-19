@@ -156,17 +156,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <org.mozilla.rocket.nightmode.themed.ThemedImageView
+                android:id="@+id/private_mode_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/bg_shopping_search_btn"
+                android:elevation="1dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/private_browsing_mask_states"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <org.mozilla.rocket.nightmode.themed.ThemedView
                 android:id="@+id/home_fragment_fake_input"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="72dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_shopping_search_btn"
                 android:elevation="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/shopping_button"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <org.mozilla.rocket.nightmode.themed.ThemedImageView

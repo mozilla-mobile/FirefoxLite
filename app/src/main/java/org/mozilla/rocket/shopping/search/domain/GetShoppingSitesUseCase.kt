@@ -2,11 +2,11 @@ package org.mozilla.rocket.shopping.search.domain
 
 import androidx.lifecycle.LiveData
 import org.mozilla.rocket.extension.map
-import org.mozilla.rocket.shopping.search.data.ShoppingSearchSiteRepository
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.data.ShoppingSite
 import org.mozilla.rocket.shopping.search.ui.adapter.ShoppingSiteItem
 
-class GetShoppingSitesUseCase(val repository: ShoppingSearchSiteRepository) {
+class GetShoppingSitesUseCase(val repository: ShoppingSearchRepository) {
 
     operator fun invoke(): LiveData<List<ShoppingSiteItem>> =
             repository.getShoppingSitesLiveData()

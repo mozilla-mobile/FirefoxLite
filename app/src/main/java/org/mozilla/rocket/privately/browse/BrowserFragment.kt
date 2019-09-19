@@ -356,7 +356,7 @@ class BrowserFragment : LocaleAwareFragment(),
                     BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
                     BottomBarItemAdapter.TYPE_PRIVATE_HOME -> {
                         chromeViewModel.togglePrivateMode.call()
-                        TelemetryWrapper.togglePrivateMode(false)
+                        TelemetryWrapper.togglePrivateMode(true)
                     }
                     BottomBarItemAdapter.TYPE_DELETE -> onDeleteClicked()
                     BottomBarItemAdapter.TYPE_TRACKER -> onTrackerButtonClicked()
