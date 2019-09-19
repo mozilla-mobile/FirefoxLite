@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/shoppingSearchPreferencesToolbarBackground"
-            app:title="@string/shopping_search_preferences_name"
+            app:title="@string/shopping_switch_ui_preferences_title"
             app:titleTextColor="@android:color/white"
             app:navigationIcon="@drawable/ic_back_preferences"/>
 
@@ -35,7 +35,7 @@
             android:gravity="center|start"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:text="@string/shopping_search_preferences_title"
+            android:text="@string/shopping_switch_ui_preferences_subtitle"
             android:textSize="16sp"
             android:textColor="@color/paletteBlack87" />
 

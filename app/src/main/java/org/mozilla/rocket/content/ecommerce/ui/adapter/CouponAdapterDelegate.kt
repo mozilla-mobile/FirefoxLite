@@ -30,7 +30,7 @@ class CouponViewHolder(
 
         coupon_brand.text = couponItem.brand
         coupon_title.text = couponItem.title
-        val remainFormat = itemView.context.getString(R.string.coupon_remain)
+        val remainFormat = itemView.context.getString(R.string.shopping_coupon_expire_other)
         coupon_remain.text = String.format(remainFormat, couponItem.remain)
 
         GlideApp.with(itemView.context)

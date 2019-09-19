@@ -266,12 +266,12 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     public void onShoppingSearchCloseClick() {
         if (closeShoppingSearchDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            closeShoppingSearchDialog = builder.setMessage(R.string.tab_tray_close_shopping_search_dialog_msg)
-                    .setPositiveButton(R.string.action_ok, (dialog, which) -> {
+            closeShoppingSearchDialog = builder.setMessage(R.string.shopping_closing_dialog_body)
+                    .setPositiveButton(R.string.shopping_closing_dialog_close, (dialog, which) -> {
                         tabTrayViewModel.finishShoppingSearchMode(getContext());
                         presenter.shoppingSearchCloseClicked();
                     })
-                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> {
+                    .setNegativeButton(R.string.shopping_closing_dialog_cancel, (dialog, which) -> {
                         dialog.dismiss();
                     })
                     .show();

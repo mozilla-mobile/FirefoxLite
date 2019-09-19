@@ -121,7 +121,7 @@ class BrowserGamesFragment : Fragment() {
                     val sendIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND
                         putExtra(Intent.EXTRA_SUBJECT, gamesViewModel.selectedGame.name)
-                        putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.share_game_dialog_text, gamesViewModel.selectedGame.linkUrl))
+                        putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.gaming_vertical_share_message, gamesViewModel.selectedGame.linkUrl))
                         type = "text/plain"
                     }
                     startActivity(Intent.createChooser(sendIntent, null))

@@ -31,9 +31,9 @@ class ShoppingTabsAdapter(
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(
-                TabItem(DealFragment(), R.string.label_menu_e_commerce_deal),
-                TabItem(CouponFragment(), R.string.label_menu_e_commerce_coupon),
-                TabItem(VoucherFragment(), R.string.label_menu_e_commerce_voucher)
+                TabItem(DealFragment(), R.string.shopping_vertical_category_1),
+                TabItem(CouponFragment(), R.string.shopping_vertical_category_2),
+                TabItem(VoucherFragment(), R.string.shopping_vertical_category_3)
         )
     }
 }

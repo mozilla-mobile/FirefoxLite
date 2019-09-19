@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="56dp"
     android:minHeight="?attr/actionBarSize"
-    app:title="@string/games"
+    app:title="@string/gaming_vertical_title"
     app:titleMarginStart="16dp"
     app:titleTextColor="#0C0C0D">
 

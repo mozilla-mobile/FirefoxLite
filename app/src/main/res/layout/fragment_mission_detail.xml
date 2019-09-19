@@ -438,7 +438,7 @@
                 android:layout_marginTop="24dp"
                 android:background="@drawable/bg_mission_detail_button"
                 android:enabled="false"
-                android:text="@string/msrp_challenge_detail_btn_redeem"
+                android:text="@string/msrp_challenge_button_4"
                 android:textAllCaps="false"
                 android:textColor="@color/paletteWhite100"
                 android:textSize="@dimen/msrp_mission_detail_button_text_size" />
@@ -454,7 +454,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:text="@string/msrp_challenge_detail_desc_point_1_title"
+                android:text="@string/msrp_challenge_details_title_1"
                 android:textColor="#000"
                 android:textSize="@dimen/msrp_mission_detail_button_text_size" />
 
@@ -472,7 +472,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:text="@string/msrp_challenge_detail_desc_point_1_message"
+                android:text="@string/msrp_challenge_details_body_1"
                 android:textColor="@color/paletteDarkGreyD100"
                 android:textSize="12sp" />
 
@@ -481,7 +481,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:text="@string/msrp_challenge_detail_desc_point_2_title"
+                android:text="@string/msrp_challenge_details_title_2"
                 android:textColor="#000"
                 android:textSize="@dimen/msrp_mission_detail_button_text_size" />
 
@@ -490,7 +490,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:text="@string/msrp_challenge_detail_desc_point_2_message"
+                android:text="@string/msrp_challenge_details_body_2"
                 android:textColor="@color/paletteDarkGreyD100"
                 android:textSize="12sp" />
 
@@ -501,7 +501,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_mission_detail_button"
-                android:text="@string/msrp_challenge_detail_btn_im_in"
+                android:text="@string/msrp_challenge_button_1"
                 android:textAllCaps="false"
                 android:textColor="@color/paletteWhite100"
                 android:textSize="@dimen/msrp_mission_detail_button_text_size" />
@@ -511,7 +511,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
-                android:text="@string/msrp_challenge_detail_btn_terms_of_use"
+                android:text="@string/msrp_challenge_tou"
                 android:textColor="@color/paletteDarkGreyD100"
                 android:textSize="12sp" />
 
@@ -529,7 +529,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/bg_mission_detail_button_quit"
-                android:text="@string/msrp_challenge_detail_btn_quit"
+                android:text="@string/msrp_challenge_button_2"
                 android:textAllCaps="false"
                 android:textColor="@color/palettePeach100"
                 android:textSize="@dimen/msrp_mission_detail_button_text_size" />
