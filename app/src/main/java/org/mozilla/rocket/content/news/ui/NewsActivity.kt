@@ -19,6 +19,7 @@ class NewsActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun getStartIntent(context: Context) = Intent(context, NewsActivity::class.java)
+        fun getStartIntent(context: Context) =
+            Intent(context, NewsActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     }
 }

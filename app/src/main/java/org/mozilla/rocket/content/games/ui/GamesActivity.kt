@@ -84,6 +84,7 @@ class GamesActivity : FragmentActivity() {
     }
 
     companion object {
-        fun getStartIntent(context: Context) = Intent(context, GamesActivity::class.java)
+        fun getStartIntent(context: Context) =
+            Intent(context, GamesActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     }
 }

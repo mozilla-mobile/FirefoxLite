@@ -47,6 +47,7 @@ class ShoppingSearchActivity : BaseActivity(), TabsSessionProvider.SessionHost {
     }
 
     companion object {
-        fun getStartIntent(context: Context) = Intent(context, ShoppingSearchActivity::class.java)
+        fun getStartIntent(context: Context) =
+            Intent(context, ShoppingSearchActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     }
 }

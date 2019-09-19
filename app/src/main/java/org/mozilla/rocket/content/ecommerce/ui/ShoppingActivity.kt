@@ -76,6 +76,7 @@ class ShoppingActivity : FragmentActivity() {
         const val TAB_DEAL = 0
         const val TAB_COUPON = 1
         const val TAB_VOUCHER = 2
-        fun getStartIntent(context: Context) = Intent(context, ShoppingActivity::class.java)
+        fun getStartIntent(context: Context) =
+            Intent(context, ShoppingActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     }
 }
