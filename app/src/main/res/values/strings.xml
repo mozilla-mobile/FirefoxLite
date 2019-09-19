@@ -652,6 +652,7 @@
     <!--Artboard Name: 3.1 Switch UI Navigation - Activity Switch-->
     <!--Switch UI Tab Tray. %1$s is the keyword user input -->
     <string name="shopping_switch_ui_tabtray_title">Shopping Search: “%1$s”</string>
+    <string name="shopping_switch_ui_tabtray_title_no_keyword">Shopping Search</string>
 
     <!--Artboard Name: 3.3 Switch UI Navigation - Tab Tray-->
     <!--Closing dialog content.-->
