@@ -21,7 +21,7 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/news_item_img_bg"
+            android:src="@drawable/placeholder"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

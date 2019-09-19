@@ -25,7 +25,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/news_item_img_bg"
+        android:background="@drawable/placeholder"
         android:elevation="4dp"
         android:padding="18dp" />
 

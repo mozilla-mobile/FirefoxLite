@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="170dp"
             android:scaleType="fitCenter"
-            android:background="@drawable/news_item_img_bg"
+            android:background="@drawable/placeholder"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

@@ -39,7 +39,7 @@ class CouponViewHolder(
             .asBitmap()
             .load(couponItem.imageUrl)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .placeholder(R.drawable.news_item_img_bg)
+            .placeholder(R.drawable.placeholder)
             .listener(object : RequestListener<Bitmap> {
                 override fun onLoadFailed(e: GlideException?, model: Any, target: com.bumptech.glide.request.target.Target<Bitmap>, isFirstResource: Boolean): Boolean {
                     return false
