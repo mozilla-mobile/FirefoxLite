@@ -3,8 +3,10 @@ package org.mozilla.rocket.content.ecommerce.ui.adapter
 import android.graphics.Bitmap
 import android.view.View
 import androidx.palette.graphics.Palette
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import kotlinx.android.synthetic.main.item_coupon.*
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
@@ -36,29 +38,34 @@ class CouponViewHolder(
         GlideApp.with(itemView.context)
             .asBitmap()
             .load(couponItem.imageUrl)
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>) {
-                    coupon_image.setImageBitmap(resource)
-                    obtainBackgroundColor(resource)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(R.drawable.news_item_img_bg)
+            .listener(object : RequestListener<Bitmap> {
+                override fun onLoadFailed(e: GlideException?, model: Any, target: com.bumptech.glide.request.target.Target<Bitmap>, isFirstResource: Boolean): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(resource: Bitmap?, model: Any, target: com.bumptech.glide.request.target.Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                    if (resource != null) {
+                        coupon_image.setBackgroundColor(obtainBackgroundColor(resource))
+                    }
+                    return false
                 }
             })
+            .into(coupon_image)
     }
 
-    private fun obtainBackgroundColor(resource: Bitmap) {
-        Palette.from(resource).generate { palette ->
-            if (palette == null) {
-                return@generate
+    private fun obtainBackgroundColor(resource: Bitmap): Int {
+        val palette = Palette.from(resource).generate()
+        var maxPopulation = 0
+        var bodyColor = 0
+        for (swatch in palette.swatches) {
+            if (swatch.population > maxPopulation) {
+                maxPopulation = swatch.population
+                bodyColor = swatch.rgb
             }
-            var maxPopulation = 0
-            var bodyColor = 0
-            for (swatch in palette.swatches) {
-                if (swatch.population > maxPopulation) {
-                    maxPopulation = swatch.population
-                    bodyColor = swatch.rgb
-                }
-            }
-            coupon_image.setBackgroundColor(bodyColor)
         }
+        return bodyColor
     }
 }
 
