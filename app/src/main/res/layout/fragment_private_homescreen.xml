@@ -93,7 +93,7 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:paddingStart="12dp"
-        android:text="@string/home_search_hint"
+        android:text="@string/home_search_bar_text"
         android:textColor="@color/paletteWhite60"
         android:textSize="16sp" />
 
