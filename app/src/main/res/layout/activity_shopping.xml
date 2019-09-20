@@ -33,6 +33,7 @@
         app:tabSelectedTextColor="@color/paletteDarkGreyC100"
         app:tabTextColor="@color/paletteDarkGreyC30"
         app:tabIndicatorColor="@color/paletteDarkGreyC100"
+        app:tabIndicatorFullWidth="false"
         app:tabUnboundedRipple="true"
         app:tabTextAppearance="@style/EcTabText" />
 
