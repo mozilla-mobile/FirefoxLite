@@ -22,13 +22,9 @@ import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.content.view.BottomBar
-import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.privately.ShortcutUtils
 import org.mozilla.rocket.privately.ShortcutViewModel
 import org.mozilla.rocket.widget.CustomViewDialogData
@@ -39,14 +35,12 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         ScreenNavigator.HomeScreen {
 
     @Inject
-    lateinit var privateBottomBarViewModelCreator: Lazy<PrivateBottomBarViewModel>
-    @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var logoMan: LottieAnimationView
     private lateinit var fakeInput: View
-    private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
+    private lateinit var privateModeBtn: View
 
     @Override
     override fun onCreate(bundle: Bundle?) {
@@ -65,7 +59,11 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         chromeViewModel.isHomePageUrlInputShowing.observe(this, Observer { isShowing ->
             if (isShowing == true) hideFakeInput() else showFakeInput()
         })
-        setupBottomBar(view)
+        privateModeBtn = view.findViewById(R.id.pm_home_private_mode_btn)
+        privateModeBtn.setOnClickListener {
+            chromeViewModel.togglePrivateMode.call()
+            TelemetryWrapper.togglePrivateMode(false)
+        }
         observeViewModel()
 
         return view
@@ -73,29 +71,6 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     override fun getFragment(): Fragment {
         return this
-    }
-
-    private fun setupBottomBar(rootView: View) {
-        val bottomBar = rootView.findViewById<BottomBar>(R.id.bottom_bar)
-        // Hard code to only show the first item in private home page
-        bottomBar.setItemVisibility(1, View.INVISIBLE)
-        bottomBar.setItemVisibility(2, View.INVISIBLE)
-        bottomBar.setItemVisibility(3, View.INVISIBLE)
-        bottomBar.setItemVisibility(4, View.INVISIBLE)
-        bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
-            override fun onItemClick(type: Int, position: Int) {
-                when (type) {
-                    BottomBarItemAdapter.TYPE_PRIVATE_HOME -> {
-                        chromeViewModel.togglePrivateMode.call()
-                        TelemetryWrapper.togglePrivateMode(false)
-                    }
-                    else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
-                }
-            }
-        })
-        bottomBarItemAdapter = BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.PrivateMode)
-        val bottomBarViewModel = getActivityViewModel(privateBottomBarViewModelCreator)
-        bottomBarViewModel.items.nonNullObserve(this, bottomBarItemAdapter::setItems)
     }
 
     private fun observeViewModel() {
@@ -152,7 +127,9 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     private fun animatePrivateHome() {
-        bottomBarItemAdapter.animatePrivateHome()
+        privateModeBtn.apply {
+            findViewById<LottieAnimationView>(R.id.pm_home_mask).playAnimation()
+        }
         logoMan.playAnimation()
     }
 

@@ -310,7 +310,7 @@
             android:name="org.mozilla.rocket.content.common.ui.ContentTabActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
-            android:theme="@style/PrivateModeTheme" />
+            android:theme="@style/ContentTabTheme" />
 
         <activity
             android:name="org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity"

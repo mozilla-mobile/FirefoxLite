@@ -49,6 +49,7 @@
 
     </style>
     <style name="PrivateModeTheme" parent="PrivateModeTheme.Base"/>
+    <style name="ContentTabTheme" parent="PrivateModeTheme.Base"/>
 
     <style name="GameModeTheme.Base" parent="AppThemeBase">
         <item name="android:windowNoTitle">true</item>

@@ -65,4 +65,8 @@
     <color name="themeGradientStartNight">#103266</color>
     <color name="themeGradientCenterNight">#140B45</color>
     <color name="themeGradientEndNight">#140623</color>
+
+    <color name="themeGradientStartPrivate">#8700BD</color>
+    <color name="themeGradientCenterPrivate">#220092</color>
+    <color name="themeGradientEndPrivate">#170067</color>
 </resources>

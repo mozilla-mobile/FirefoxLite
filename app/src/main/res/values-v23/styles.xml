@@ -15,7 +15,10 @@
         <item name="android:windowBackground">@color/privateBackground</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
-    <style name="PrivateModeTheme" parent="PrivateModeTheme.V23"/>
+    <style name="PrivateModeTheme" parent="PrivateModeTheme.V23">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+    <style name="ContentTabTheme" parent="PrivateModeTheme.V23"/>
 
     <style name="PrivateActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="actionMenuTextColor">@color/bookmarkEditToolbarText</item>
