@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_shopping.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ShoppingTabsAdapter
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
@@ -17,14 +18,19 @@ import javax.inject.Inject
 class ShoppingActivity : FragmentActivity() {
 
     @Inject
+    lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
+
+    @Inject
     lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
 
+    private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var shoppingViewModel: ShoppingViewModel
     private lateinit var adapter: ShoppingTabsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        runwayViewModel = getViewModel(runwayViewModelCreator)
         shoppingViewModel = getViewModel(shoppingViewModelCreator)
         setContentView(R.layout.activity_shopping)
         initViewPager()
@@ -55,7 +61,7 @@ class ShoppingActivity : FragmentActivity() {
     }
 
     private fun observeShoppingAction() {
-        shoppingViewModel.openRunway.observe(this, Observer { linkUrl ->
+        runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
             startActivity(ContentTabActivity.getStartIntent(this, linkUrl))
         })
 

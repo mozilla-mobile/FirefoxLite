@@ -8,7 +8,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
-import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
@@ -48,14 +47,9 @@ class ShoppingViewModel(
     }
     val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
 
-    val openRunway = SingleLiveEvent<String>()
     val openProduct = SingleLiveEvent<String>()
     val openCoupon = SingleLiveEvent<String>()
     val openVoucher = SingleLiveEvent<String>()
-
-    fun onRunwayItemClicked(runwayItem: RunwayItem) {
-        openRunway.value = runwayItem.linkUrl
-    }
 
     fun onProductItemClicked(productItem: ProductItem) {
         openProduct.value = productItem.linkUrl

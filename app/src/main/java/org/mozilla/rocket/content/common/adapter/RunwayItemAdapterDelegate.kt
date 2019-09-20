@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce.ui.adapter
+package org.mozilla.rocket.content.common.adapter
 
 import android.view.View
 import android.widget.FrameLayout
@@ -7,17 +7,17 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
+import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import kotlin.math.min
 
-class RunwayItemAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class RunwayItemAdapterDelegate(private val runwayViewModel: RunwayViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            RunwayItemViewHolder(view, shoppingViewModel)
+            RunwayItemViewHolder(view, runwayViewModel)
 }
 
 class RunwayItemViewHolder(
     override val containerView: View,
-    private val shoppingViewModel: ShoppingViewModel
+    private val runwayViewModel: RunwayViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     init {
@@ -34,7 +34,7 @@ class RunwayItemViewHolder(
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val runwayItem = uiModel as RunwayItem
 
-        runway_card.setOnClickListener { shoppingViewModel.onRunwayItemClicked(runwayItem) }
+        runway_card.setOnClickListener { runwayViewModel.onRunwayItemClicked(runwayItem) }
 
         runway_source.text = runwayItem.source
 

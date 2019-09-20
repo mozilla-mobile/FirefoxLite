@@ -14,22 +14,28 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategoryAdapterDelegate
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
-import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 
 class DealFragment : Fragment() {
 
     @Inject
+    lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
+
+    @Inject
     lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
 
+    private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var shoppingViewModel: ShoppingViewModel
     private lateinit var dealAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         shoppingViewModel = getActivityViewModel(shoppingViewModelCreator)
     }
 
@@ -47,7 +53,7 @@ class DealFragment : Fragment() {
     private fun initDeals() {
         dealAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(shoppingViewModel))
+                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
                 add(ProductCategory::class, R.layout.item_product_category, ProductCategoryAdapterDelegate(shoppingViewModel))
             }
         )
