@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.shopping.search.domain.CheckContentSwitchOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.CompleteContentSwitchOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
@@ -15,11 +16,10 @@ class ShoppingSearchResultViewModel(
     completeContentSwitchOnboardingFirstRunUseCase: CompleteContentSwitchOnboardingFirstRunUseCase
 ) : ViewModel() {
 
-    private val _shoppingSearchSites = MutableLiveData<List<ShoppingSearchSite>>()
-    val shoppingSearchSites: LiveData<List<ShoppingSearchSite>>
-        get() = _shoppingSearchSites
+    private val searchKeyword = MutableLiveData<String>()
+    val shoppingSearchSites: LiveData<List<ShoppingSearchSite>> = searchKeyword.switchMap { getShoppingSearchSitesUseCase(it) }
     val goPreferences = SingleLiveEvent<Unit>()
-    val showOnboardingDialog = SingleLiveEvent<Unit> ()
+    val showOnboardingDialog = SingleLiveEvent<Unit>()
 
     init {
         if (checkContentSwitchOnboardingFirstRunUseCase()) {
@@ -28,7 +28,7 @@ class ShoppingSearchResultViewModel(
         }
     }
 
-    fun search(searchKeyword: String) {
-        _shoppingSearchSites.value = getShoppingSearchSitesUseCase(searchKeyword)
+    fun search(keyword: String) {
+        searchKeyword.postValue(keyword)
     }
 }

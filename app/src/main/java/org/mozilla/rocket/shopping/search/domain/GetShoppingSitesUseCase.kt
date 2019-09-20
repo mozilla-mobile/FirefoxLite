@@ -9,15 +9,15 @@ import org.mozilla.rocket.shopping.search.ui.adapter.ShoppingSiteItem
 class GetShoppingSitesUseCase(val repository: ShoppingSearchRepository) {
 
     operator fun invoke(): LiveData<List<ShoppingSiteItem>> =
-            repository.getShoppingSitesLiveData()
-                .map {
-                    it.toShoppingSiteItems().apply {
-                        val allowSwitchOff = count { item -> item.isChecked } > MIN_SHOPPING_SITE_COUNT
-                        forEach { item ->
-                            item.isEnabled = !item.isChecked || allowSwitchOff
-                        }
+        repository.getShoppingSitesData()
+            .map {
+                it.toShoppingSiteItems().apply {
+                    val allowSwitchOff = count { item -> item.isChecked } > MIN_SHOPPING_SITE_COUNT
+                    forEach { item ->
+                        item.isEnabled = !item.isChecked || allowSwitchOff
                     }
                 }
+            }
 
     companion object {
         private const val MIN_SHOPPING_SITE_COUNT = 2
@@ -25,12 +25,12 @@ class GetShoppingSitesUseCase(val repository: ShoppingSearchRepository) {
 }
 
 private fun List<ShoppingSite>.toShoppingSiteItems(): List<ShoppingSiteItem> =
-        map { it.toShoppingSiteItem() }
+    map { it.toShoppingSiteItem() }
 
 private fun ShoppingSite.toShoppingSiteItem(): ShoppingSiteItem =
-        ShoppingSiteItem(
-            title,
-            searchUrl,
-            displayUrl,
-            isChecked = isEnabled
-        )
+    ShoppingSiteItem(
+        title,
+        searchUrl,
+        displayUrl,
+        isChecked = isEnabled
+    )

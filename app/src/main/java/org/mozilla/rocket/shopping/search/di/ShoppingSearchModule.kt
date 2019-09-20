@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
 import org.mozilla.rocket.shopping.search.data.OnboardingSharedPreferenceRepository
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchLocalDataSource
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.domain.CheckContentSwitchOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.CheckOnboardingFirstRunUseCase
@@ -15,9 +17,9 @@ import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.UpdateShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchBottomBarViewModel
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchPreferencesViewModel
-import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultViewModel
 import javax.inject.Singleton
 
@@ -47,7 +49,22 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideShoppingSearchSiteRepository(appContext: Context): ShoppingSearchRepository = ShoppingSearchRepository(appContext)
+    fun provideShoppingSearchRemoteDataSource(): ShoppingSearchRemoteDataSource =
+        ShoppingSearchRemoteDataSource()
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShoppingSearchLocalDataSource(context: Context): ShoppingSearchLocalDataSource =
+        ShoppingSearchLocalDataSource(context)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShoppingSearchRepository(
+        shoppingSearchRemoteDataSource: ShoppingSearchRemoteDataSource,
+        shoppingSearchLocalDataSource: ShoppingSearchLocalDataSource
+    ): ShoppingSearchRepository = ShoppingSearchRepository(shoppingSearchRemoteDataSource, shoppingSearchLocalDataSource)
 
     @JvmStatic
     @Singleton
@@ -81,7 +98,7 @@ object ShoppingSearchModule {
     @JvmStatic
     @Provides
     fun provideShoppingSearchPreferencesViewModel(usecase: GetShoppingSitesUseCase, saveUseCase: UpdateShoppingSitesUseCase): ShoppingSearchPreferencesViewModel =
-            ShoppingSearchPreferencesViewModel(usecase, saveUseCase)
+        ShoppingSearchPreferencesViewModel(usecase, saveUseCase)
 
     @JvmStatic
     @Singleton
