@@ -5,8 +5,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import org.junit.*
 import org.junit.Assert.assertEquals
+import org.junit.After
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Rule
+import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mozilla.rocket.util.LiveDataTestUtil

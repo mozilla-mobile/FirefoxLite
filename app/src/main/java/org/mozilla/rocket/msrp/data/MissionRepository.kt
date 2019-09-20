@@ -477,4 +477,3 @@ sealed class MissionJoinStatus {
         }
     }
 }
-
