@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/paletteWhite100"
+    android:orientation="vertical">
 
-    <include layout="@layout/toolbar_game"
-        android:id="@+id/main_toolbar"
-        android:layout_height="56dp"
-        android:layout_width="match_parent" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        app:title="@string/gaming_vertical_title">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/refresh_button"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_gravity="end"
+            android:src="@drawable/action_refresh"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/games_tabs"
@@ -16,13 +29,17 @@
         android:layout_height="@dimen/common_margin_m7"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:tabPaddingStart="0dp"
         app:tabSelectedTextColor="@color/paletteDarkGreyC100"
         app:tabTextColor="@color/paletteDarkGreyC30"
-        app:tabIndicatorColor="@android:color/transparent"
-        app:tabBackground="@android:color/transparent"
-        app:tabTextAppearance="@style/GameTabText"
-        app:tabUnboundedRipple="true" />
+        app:tabIndicatorColor="@color/paletteDarkGreyC100"
+        app:tabIndicatorFullWidth="false"
+        app:tabUnboundedRipple="true"
+        app:tabTextAppearance="@style/GameTabText" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/paletteLightGreyA100" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
@@ -30,7 +47,7 @@
         android:layout_height="match_parent"/>
 
     <FrameLayout
-        android:id="@+id/container"
+        android:id="@+id/snack_bar_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
