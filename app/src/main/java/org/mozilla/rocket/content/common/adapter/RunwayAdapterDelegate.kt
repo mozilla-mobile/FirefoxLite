@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce.ui.adapter
+package org.mozilla.rocket.content.common.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -7,22 +7,22 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 
-class RunwayAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class RunwayAdapterDelegate(private val runwayViewModel: RunwayViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            RunwayViewHolder(view, shoppingViewModel)
+            RunwayViewHolder(view, runwayViewModel)
 }
 
 class RunwayViewHolder(
     override val containerView: View,
-    private val shoppingViewModel: ShoppingViewModel
+    private val runwayViewModel: RunwayViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(RunwayItem::class, R.layout.item_runway, RunwayItemAdapterDelegate(shoppingViewModel))
+            add(RunwayItem::class, R.layout.item_runway, RunwayItemAdapterDelegate(runwayViewModel))
         }
     )
 

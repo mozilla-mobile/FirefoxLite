@@ -11,8 +11,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Runway
-import org.mozilla.rocket.content.ecommerce.ui.adapter.RunwayItem
+import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.util.AssetsUtils
@@ -24,9 +24,9 @@ class ShoppingRepo(private val appContext: Context) {
     suspend fun getDeals(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
             listOf(
-                Runway(
-                    getMockRunwayItems() ?: emptyList()
-                ),
+                    Runway(
+                            getMockRunwayItems() ?: emptyList()
+                    ),
                 ProductCategory(UUID.randomUUID().toString(),
                     "Top Rated",
                     getMockProductItems()?.subList(0, 15) ?: emptyList()
@@ -85,10 +85,10 @@ private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
 
 private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
         RunwayItem(
-            jsonObject.optInt("id"),
-            jsonObject.optString("image_url"),
-            jsonObject.optString("link_url"),
-            jsonObject.optString("source")
+                jsonObject.optInt("id"),
+                jsonObject.optString("image_url"),
+                jsonObject.optString("link_url"),
+                jsonObject.optString("source")
         )
 
 private fun String.jsonStringToProductItems(): List<ProductItem>? {
