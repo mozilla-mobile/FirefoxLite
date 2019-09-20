@@ -39,7 +39,7 @@ object TestData {
         endpoint = "/v1/daily_mission/xxdase-eadsad",
         redeem = "/v1/redeem/asdsa-esadsa=das-dased-sadas",
 
-        minVersion= 4321,
+        minVersion = 4321,
         missionType = "mission_daily",
 
         missionProgress = MissionProgress.TypeDaily(
