@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.rocket.msrp.data.LoadMissionsResult
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.data.RedeemResult
 import org.mozilla.rocket.msrp.data.RewardServiceException
@@ -33,18 +34,31 @@ class MissionViewModel(
     private val _missionViewState = MediatorLiveData<State>()
 
     init {
-        loadMissions(FAKE_URL)
+        loadMissions()
     }
 
-    fun loadMissions(missionGroupURI: String) {
+    fun loadMissions() {
         launchDataLoad {
-            loadMissionsUseCase.execute(LoadMissionsUseCaseParameter(missionGroupURI)).items.let {
-                if (it.isEmpty()) {
-                    _missionViewState.postValue(State.Empty)
-                } else {
-                    _missionViewState.postValue(State.Idle)
+            System.out.println("here")
+            when (val result = loadMissionsUseCase.execute(LoadMissionsUseCaseParameter())) {
+                is LoadMissionsResult.Success -> {
+                    _missionViewState.postValue(if (result.missions.isEmpty()) {
+                        State.Idle
+                    } else {
+                        State.Empty
+                    })
+                    System.out.println("here 1")
+                    _missions.postValue(result.missions)
                 }
-                _missions.postValue(it)
+
+                is LoadMissionsResult.Failure -> {
+                    System.out.println("here 2")
+                    _missionViewState.postValue(State.ServerError)
+                }
+
+                else -> {
+                    System.out.println("here 3, result=$result")
+                }
             }
         }
     }

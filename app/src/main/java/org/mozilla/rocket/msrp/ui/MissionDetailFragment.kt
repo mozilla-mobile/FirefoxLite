@@ -48,6 +48,6 @@ class MissionDetailFragment : Fragment(), ScreenNavigator.MissionDetailScreen {
         viewModel.missions.observe(viewLifecycleOwner, Observer {
             Toast.makeText(context, "size:${it?.size}", Toast.LENGTH_LONG).show()
         })
-        viewModel.loadMissions(MissionViewModel.FAKE_URL)
+        viewModel.loadMissions()
     }
 }

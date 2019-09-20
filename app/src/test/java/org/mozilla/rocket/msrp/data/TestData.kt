@@ -6,7 +6,6 @@ object TestData {
         mid = "000001",
         title = "TypeDaily Mission 1",
         description = "Click vertical everyday",
-        expireDate = System.currentTimeMillis(),
 
         events = listOf("CLICK_PANEL_PIN_TOP_SITE"),
 
@@ -16,11 +15,15 @@ object TestData {
         endpoint = "/v1/daily_mission/xxdase-eadsad",
         redeem = "/v1/redeem/asdsa-esadsa=das-dased-sadas",
 
+        minVersion = 1234,
+        missionType = "mission_daily",
+
         missionProgress = MissionProgress.TypeDaily(
             // progress, TODO: make it another class
             joinDate = null,
             currentDay = null,
-            totalDays = 10
+            totalDays = 10,
+            message = ""
         )
     )
 
@@ -28,7 +31,6 @@ object TestData {
         mid = "000002",
         title = "TypeDaily Mission 1",
         description = "Click vertical everyday",
-        expireDate = System.currentTimeMillis(),
 
         events = listOf("CLICK_PANEL_PIN_TOP_SITE"),
 
@@ -37,11 +39,15 @@ object TestData {
         endpoint = "/v1/daily_mission/xxdase-eadsad",
         redeem = "/v1/redeem/asdsa-esadsa=das-dased-sadas",
 
+        minVersion= 4321,
+        missionType = "mission_daily",
+
         missionProgress = MissionProgress.TypeDaily(
             // progress, TODO: make it another class
             joinDate = null,
             currentDay = null,
-            totalDays = 10
+            totalDays = 10,
+            message = ""
         )
     )
 

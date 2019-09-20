@@ -25,8 +25,10 @@ object MissionModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun providLoadMissionsUseCase(missionRepository: MissionRepository): LoadMissionsUseCase =
-        LoadMissionsUseCase(missionRepository)
+    fun provideLoadMissionsUseCase(
+        missionRepository: MissionRepository,
+        userRepository: UserRepository
+    ): LoadMissionsUseCase = LoadMissionsUseCase(missionRepository, userRepository)
 
     @JvmStatic
     @Singleton
