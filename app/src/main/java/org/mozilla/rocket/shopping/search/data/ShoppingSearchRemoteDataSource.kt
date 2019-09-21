@@ -16,6 +16,6 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
     }
 
     companion object {
-        const val RC_KEY_ENABLE_SHOPPING_SEARCH = "key_enable_shopping_search"
+        const val RC_KEY_ENABLE_SHOPPING_SEARCH = "enable_shopping_search"
     }
 }
