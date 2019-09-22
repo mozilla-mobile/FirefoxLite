@@ -42,13 +42,6 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
         preference.edit().putString(KEY_SHOPPING_SEARCH_SITE, siteJsonArray.toString()).apply()
     }
 
-    private fun String.toPreferenceSiteList(): List<ShoppingSite> =
-        JSONArray(this).run {
-            (0 until length())
-                .map { index -> optJSONObject(index) }
-                .map { jsonObject -> ShoppingSite(jsonObject) }
-        }
-
     companion object {
         const val PREF_NAME = "shopping_search"
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"
