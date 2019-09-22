@@ -2,6 +2,7 @@ package org.mozilla.rocket.shopping.search.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.json.JSONArray
 import org.json.JSONObject
 
 class ShoppingSearchRepository(
@@ -36,7 +37,7 @@ data class ShoppingSite(
         obj.optString("title"),
         obj.optString("searchUrl"),
         obj.optString("displayUrl"),
-        obj.optBoolean("isEnabled")
+        obj.optBoolean("isEnabled", true)
     )
 
     fun toJson(): JSONObject = JSONObject().apply {
@@ -46,3 +47,10 @@ data class ShoppingSite(
         put("isEnabled", isEnabled)
     }
 }
+
+fun String.toPreferenceSiteList(): List<ShoppingSite> =
+    JSONArray(this).run {
+        (0 until length())
+            .map { index -> optJSONObject(index) }
+            .map { jsonObject -> ShoppingSite(jsonObject) }
+    }

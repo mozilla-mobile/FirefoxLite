@@ -8,7 +8,12 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
         FirebaseHelper.getFirebase().getRcBoolean(RC_KEY_ENABLE_SHOPPING_SEARCH)
 
     override fun getShoppingSites(): List<ShoppingSite> {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        val shoppingSearchSites = FirebaseHelper.getFirebase().getRcString(RC_KEY_STR_SHOPPING_SEARCH_SITES)
+        if (shoppingSearchSites.isNotEmpty()) {
+            return shoppingSearchSites.toPreferenceSiteList()
+        }
+
+        return emptyList()
     }
 
     override fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
@@ -17,5 +22,6 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
 
     companion object {
         const val RC_KEY_ENABLE_SHOPPING_SEARCH = "enable_shopping_search"
+        const val RC_KEY_STR_SHOPPING_SEARCH_SITES = "str_shopping_search_sites"
     }
 }
