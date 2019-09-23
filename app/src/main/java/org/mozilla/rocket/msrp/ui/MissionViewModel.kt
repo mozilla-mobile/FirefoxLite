@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.mozilla.rocket.msrp.data.LoadMissionsResult
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.data.RedeemResult
 import org.mozilla.rocket.msrp.data.RewardServiceException
@@ -15,6 +14,7 @@ import org.mozilla.rocket.msrp.domain.LoadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.LoadMissionsUseCaseParameter
 import org.mozilla.rocket.msrp.domain.RedeemRequest
 import org.mozilla.rocket.msrp.domain.RedeemUseCase
+import org.mozilla.rocket.util.Result
 
 class MissionViewModel(
     private val loadMissionsUseCase: LoadMissionsUseCase,
@@ -39,25 +39,20 @@ class MissionViewModel(
 
     fun loadMissions() {
         launchDataLoad {
-            System.out.println("here")
-            when (val result = loadMissionsUseCase.execute(LoadMissionsUseCaseParameter())) {
-                is LoadMissionsResult.Success -> {
-                    _missionViewState.postValue(if (result.missions.isEmpty()) {
+            val result = loadMissionsUseCase.execute(LoadMissionsUseCaseParameter())
+            when (result.status) {
+                Result.Status.Success -> {
+                    val missions = result.data ?: emptyList()
+                    _missionViewState.postValue(if (missions.isEmpty()) {
                         State.Idle
                     } else {
                         State.Empty
                     })
-                    System.out.println("here 1")
-                    _missions.postValue(result.missions)
+                    _missions.postValue(missions)
                 }
 
-                is LoadMissionsResult.Failure -> {
-                    System.out.println("here 2")
+                Result.Status.Error -> {
                     _missionViewState.postValue(State.ServerError)
-                }
-
-                else -> {
-                    System.out.println("here 3, result=$result")
                 }
             }
         }

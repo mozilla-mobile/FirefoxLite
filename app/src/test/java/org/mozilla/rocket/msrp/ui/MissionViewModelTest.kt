@@ -14,7 +14,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mozilla.rocket.util.LiveDataTestUtil
-import org.mozilla.rocket.msrp.data.LoadMissionsResult
+import org.mozilla.rocket.util.Result
 import org.mozilla.rocket.msrp.data.TestData
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.data.MissionRepository
@@ -62,7 +62,7 @@ class MissionViewModelTest {
     fun `When there's data, ViewModel will show data page`() {
 
         Mockito.`when`(missionRepository.fetchMission(Mockito.anyString()))
-                .thenReturn(LoadMissionsResult.Success(testMissions))
+                .thenReturn(Result.success(testMissions))
 
         missionViewModel = MissionViewModel(createLoadMissionsUseCase(), createRedeemUseCase())
 
@@ -84,7 +84,7 @@ class MissionViewModelTest {
         val emptyList = listOf<Mission>()
 
         Mockito.`when`(missionRepository.fetchMission(Mockito.anyString()))
-                .thenReturn(LoadMissionsResult.Success(emptyList()))
+                .thenReturn(Result.success(emptyList()))
 
         missionViewModel = MissionViewModel(createLoadMissionsUseCase(), createRedeemUseCase())
 
