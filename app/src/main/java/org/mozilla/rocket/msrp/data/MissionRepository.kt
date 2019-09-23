@@ -11,6 +11,7 @@ import org.json.JSONObject
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.utils.FirebaseHelper
 import java.util.TimeZone
+import org.mozilla.rocket.util.Result
 
 open class MissionRepository {
 
@@ -29,12 +30,12 @@ open class MissionRepository {
      *
      * @return a list of [Mission]s the user can join or has joined
      */
-    open fun fetchMission(accessToken: String?): LoadMissionsResult {
+    open fun fetchMission(accessToken: String?): Result<List<Mission>, RewardServiceError> {
         val token = accessToken
-                ?: return LoadMissionsResult.Failure(error = RewardServiceError.Unauthorized)
+                ?: return Result.error(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return LoadMissionsResult.Failure(error = RewardServiceError.MsrpDisabled)
+            return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
         val endpoint = "$missionListEndpoint?tz=${TimeZone.getDefault().id}"
@@ -45,14 +46,14 @@ open class MissionRepository {
             },
             onError = {
                 log("fetch mission failed, msg=${it.message}")
-                LoadMissionsResult.Failure(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
             }
         )
     }
 
-    private fun parseMissionListResponse(response: Response): LoadMissionsResult {
+    private fun parseMissionListResponse(response: Response): Result<List<Mission>, RewardServiceError> {
         return when (response.status) {
-            400 -> LoadMissionsResult.Failure(error = RewardServiceError.Unauthorized)
+            400 -> Result.error(error = RewardServiceError.Unauthorized)
             200 -> {
                 val json = response.body.string()
                 log("response=$json")
@@ -60,9 +61,9 @@ open class MissionRepository {
                 val missions = convertToMissionList(json)
                 log("mission list=$missions")
 
-                LoadMissionsResult.Success(missions)
+                Result.success(missions)
             }
-            else -> return LoadMissionsResult.Failure(error = RewardServiceError.Unknown(response.body.string()))
+            else -> Result.error(error = RewardServiceError.Unknown(response.body.string()))
         }
     }
 
@@ -117,12 +118,12 @@ open class MissionRepository {
     /**
      * Join to the given mission
      */
-    fun joinMission(mission: Mission, accessToken: String?): JoinMissionResult {
+    fun joinMission(mission: Mission, accessToken: String?): Result<JoinMissionResult, RewardServiceError> {
         val token = accessToken
-                ?: return JoinMissionResult.Failure(error = RewardServiceError.Unauthorized)
+                ?: return Result.error(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return JoinMissionResult.Failure(error = RewardServiceError.MsrpDisabled)
+            return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
         val endpoint = "$MSRP_HOST/missions${mission.endpoint}?tz=${TimeZone.getDefault().id}"
@@ -133,12 +134,12 @@ open class MissionRepository {
                 },
                 onError = {
                     log("join mission failed, msg=${it.message}")
-                    JoinMissionResult.Failure(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                    Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
                 }
         )
     }
 
-    private fun parseJoinMissionResponse(response: Response): JoinMissionResult {
+    private fun parseJoinMissionResponse(response: Response): Result<JoinMissionResult, RewardServiceError> {
         val body = response.body.string()
         val root = JSONObject(body)
 
@@ -150,14 +151,14 @@ open class MissionRepository {
                 val mid = result.optString("mid")
 
                 val status = MissionJoinStatus.valueOf(result.optInt("status"))
-                status ?: return JoinMissionResult.Failure("unknown join status=$status")
+                status ?: return Result.error("unknown join status=$status")
 
-                JoinMissionResult.Success(mid, status)
+                Result.success(JoinMissionResult(mid, status))
             }
 
             else -> {
                 val msg = root.optString("message")
-                JoinMissionResult.Failure("join failed, code=${response.status}, msg=$msg")
+                Result.error("join failed, code=${response.status}, msg=$msg")
             }
         }
     }
@@ -165,12 +166,12 @@ open class MissionRepository {
     /**
      * Check-in missions that is interested in the given ping
      */
-    fun checkInMission(ping: String, accessToken: String?): CheckInMissionResult {
+    fun checkInMission(ping: String, accessToken: String?): Result<List<CheckedInMission>, RewardServiceError> {
         val token = accessToken
-                ?: return CheckInMissionResult.Failure(error = RewardServiceError.Unauthorized)
+                ?: return Result.error(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return CheckInMissionResult.Failure(error = RewardServiceError.MsrpDisabled)
+            return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
         val endpoint = "$MSRP_HOST/ping/$ping?tz=${TimeZone.getDefault().id}"
@@ -181,12 +182,12 @@ open class MissionRepository {
                 },
                 onError = {
                     log("check-in mission failed, msg=${it.message}")
-                    CheckInMissionResult.Failure(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                    Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
                 }
         )
     }
 
-    private fun parseCheckInMissionResponse(response: Response): CheckInMissionResult {
+    private fun parseCheckInMissionResponse(response: Response): Result<List<CheckedInMission>, RewardServiceError> {
         val body = response.body.string()
         val root = JSONObject(body)
 
@@ -210,22 +211,22 @@ open class MissionRepository {
                     )
                 }
 
-                return CheckInMissionResult.Success(missions)
+                return Result.success(missions)
             }
 
             else -> {
                 val msg = root.optString("message")
-                CheckInMissionResult.Failure("check-in failed, code=${response.status}, msg=$msg")
+                Result.error("check-in failed, code=${response.status}, msg=$msg")
             }
         }
     }
 
-    fun quitMission(mission: Mission, accessToken: String?): QuitMissionResult {
+    fun quitMission(mission: Mission, accessToken: String?): Result<QuitMissionResult, RewardServiceError> {
         val token = accessToken
-                ?: return QuitMissionResult.Failure(error = RewardServiceError.Unauthorized)
+                ?: return Result.error(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return QuitMissionResult.Failure(error = RewardServiceError.MsrpDisabled)
+            return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
         val endpoint = "$MSRP_HOST/missions${mission.endpoint}?tz=${TimeZone.getDefault().id}"
@@ -236,12 +237,12 @@ open class MissionRepository {
                 },
                 onError = {
                     log("join mission failed, msg=${it.message}")
-                    QuitMissionResult.Failure(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                    Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
                 }
         )
     }
 
-    private fun parseQuitMissionResponse(response: Response): QuitMissionResult {
+    private fun parseQuitMissionResponse(response: Response): Result<QuitMissionResult, RewardServiceError> {
         val body = response.body.string()
         val root = JSONObject(body)
 
@@ -252,14 +253,14 @@ open class MissionRepository {
                 val mid = root.optString("mid")
 
                 val status = MissionJoinStatus.valueOf(root.optInt("status"))
-                status ?: return QuitMissionResult.Failure("unknown join status=$status")
+                status ?: return Result.error("unknown join status=$status")
 
-                QuitMissionResult.Success(mid, status)
+                Result.success(QuitMissionResult(mid, status))
             }
 
             else -> {
                 val msg = root.optString("message")
-                QuitMissionResult.Failure("quit failed, code=${response.status}, msg=$msg")
+                Result.error("quit failed, code=${response.status}, msg=$msg")
             }
         }
     }
@@ -388,28 +389,10 @@ sealed class RewardServiceError {
 }
 
 @Suppress("UNUSED_PARAMETER")
-sealed class LoadMissionsResult {
-    class Success(val missions: List<Mission>) : LoadMissionsResult()
-    class Failure(val message: String = "", error: RewardServiceError? = null) : LoadMissionsResult()
-}
+class JoinMissionResult(val mid: String, val status: MissionJoinStatus)
 
 @Suppress("UNUSED_PARAMETER")
-sealed class JoinMissionResult {
-    class Success(val mid: String, val status: MissionJoinStatus) : JoinMissionResult()
-    class Failure(val message: String = "", val error: RewardServiceError? = null) : JoinMissionResult()
-}
-
-@Suppress("UNUSED_PARAMETER")
-sealed class CheckInMissionResult {
-    class Success(val missions: List<CheckedInMission>) : CheckInMissionResult()
-    class Failure(val message: String = "", val error: RewardServiceError? = null) : CheckInMissionResult()
-}
-
-@Suppress("UNUSED_PARAMETER")
-sealed class QuitMissionResult {
-    class Success(mis: String, status: MissionJoinStatus) : QuitMissionResult()
-    class Failure(val message: String = "", val error: RewardServiceError? = null) : QuitMissionResult()
-}
+class QuitMissionResult(val mid: String, val status: MissionJoinStatus)
 
 data class CheckedInMission(
     val mid: String,
