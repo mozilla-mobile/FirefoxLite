@@ -2,15 +2,13 @@ package org.mozilla.rocket.content.games.ui.adapter
 
 import android.content.Intent
 import android.view.View
-import kotlinx.android.synthetic.main.item_game.image
-import kotlinx.android.synthetic.main.item_game.name
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.games.ui.GamesViewModel
 import android.view.ContextMenu
-import org.mozilla.rocket.content.games.vo.Game
+import kotlinx.android.synthetic.main.item_game.*
 
 class GameAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
@@ -22,14 +20,13 @@ class GameViewHolder(
     private val gamesViewModel: GamesViewModel
 ) : DelegateAdapter.ViewHolder(containerView), View.OnCreateContextMenuListener {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        var gameItem = uiModel as Game
-        name.text = gameItem.name
+        val gameItem = uiModel as Game
+        game_name.text = gameItem.name
         GlideApp.with(itemView.context)
             .asBitmap()
             .placeholder(R.drawable.placeholder)
-            .fitCenter()
             .load(gameItem.imageUrl)
-            .into(image)
+            .into(game_image)
 
         itemView.setOnClickListener { gamesViewModel.onGameItemClicked(gameItem) }
         itemView.setOnLongClickListener { gamesViewModel.onGameItemLongClicked(gameItem) }
@@ -37,14 +34,28 @@ class GameViewHolder(
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        menu?.setHeaderTitle(name.text)
+        menu?.setHeaderTitle(game_name.text)
         val intent = Intent()
         intent.putExtra("gameType", gamesViewModel.selectedGame.type)
-        if (gamesViewModel.canShare())
-            menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)
-        if (gamesViewModel.canCreateShortCut())
-            menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)
-        if (gamesViewModel.canRemoveFromList())
-            menu?.add(0, R.id.remove, 0, R.string.gaming_vertical_menu_option_3)
+//        if (gamesViewModel.canShare())
+//            menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)
+//        if (gamesViewModel.canCreateShortCut())
+//            menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)
+//        if (gamesViewModel.canRemoveFromList())
+//            menu?.add(0, R.id.remove, 0, R.string.gaming_vertical_menu_option_3)
     }
+}
+
+data class Game(
+    val id: Long,
+    val brand: String,
+    val imageUrl: String,
+    val linkUrl: String,
+    val name: String,
+    val type: GameType = GameType.BASIC,
+    val packageName: String = ""
+) : DelegateAdapter.UiModel()
+
+enum class GameType {
+    BASIC, PREMIUM
 }

@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.games.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.games.data.GamesRepo
@@ -12,7 +13,7 @@ object GamesModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGamesRepo(): GamesRepo = GamesRepo()
+    fun provideGamesRepo(appContext: Context): GamesRepo = GamesRepo(appContext)
 
     @JvmStatic
     @Provides

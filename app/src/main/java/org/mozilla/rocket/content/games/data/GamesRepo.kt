@@ -1,138 +1,95 @@
 package org.mozilla.rocket.content.games.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import org.mozilla.rocket.content.common.adapter.CarouselBannerAdapter
-import org.mozilla.rocket.content.games.vo.Game
-import org.mozilla.rocket.content.games.vo.GameCategory
 import org.json.JSONArray
-import java.util.Scanner
+import org.json.JSONException
+import org.json.JSONObject
+import org.mozilla.focus.R
+import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.games.ui.adapter.Game
+import org.mozilla.rocket.content.games.ui.adapter.GameCategory
+import org.mozilla.rocket.content.games.ui.adapter.GameType
+import org.mozilla.rocket.util.AssetsUtils
+import org.mozilla.rocket.util.toJsonObject
 
-class GamesRepo {
-    // mutablelist to cache Gamelist
-    private var _browserGameCategoryList = mutableListOf<GameCategory>()
-    private var _premiumGameCategoryList = mutableListOf<GameCategory>()
+class GamesRepo(private val appContext: Context) {
 
-    // mutable LiveData
-    private var _premiumBanner: MutableLiveData<List<CarouselBannerAdapter.BannerItem>> = MutableLiveData()
-    private var _premiumGameCategories: MutableLiveData<List<GameCategory>> = MutableLiveData()
-    private var _browserBanner: MutableLiveData<List<CarouselBannerAdapter.BannerItem>> = MutableLiveData()
-    private var _browserGameCategories: MutableLiveData<List<GameCategory>> = MutableLiveData()
-
-    // LiveData to return to viewmodel
-    private var premiumBanner: LiveData<List<CarouselBannerAdapter.BannerItem>> = _premiumBanner
-    private var premiumGameCategories: LiveData<List<GameCategory>> = _premiumGameCategories
-    private var browserBanner: LiveData<List<CarouselBannerAdapter.BannerItem>> = _browserBanner
-    private var browserGameCategories: LiveData<List<GameCategory>> = _browserGameCategories
-
-    // Recently play and Installed game list
-    private var _recentPremiumGamelist = mutableListOf<Game>()
-    private var _recentBrowserGamelist = mutableListOf<Game>()
-
-    // API for viewmodel to get data
-    fun loadPremiumGames() = premiumGameCategories
-    fun loadPremiumBanner() = premiumBanner
-    fun loadBrowserGames() = browserGameCategories
-    fun loadBrowserBanner() = browserBanner
-
-    suspend fun getFakeData() {
+    suspend fun getBasicGameCategoryList(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
-            delay(2000)
+            getMockGameCategoryList(GameType.BASIC) ?: emptyList()
         }
     }
 
-    fun removeRecentPlayGame(game: Game) {
-        when (game.type) {
-            "Browser" -> {
-                if (_recentBrowserGamelist.count() > 0) {
-                    if (_recentBrowserGamelist.contains(game)) {
-                        _recentBrowserGamelist.remove(game)
-                        if (_recentBrowserGamelist.count() == 0) {
-                            _browserGameCategoryList.removeAt(0)
-                        }
-                    }
-                }
-                _browserGameCategories.value = _browserGameCategoryList
-            }
+    suspend fun getPremiumGameCategoryList(): List<DelegateAdapter.UiModel> {
+        return withContext(Dispatchers.IO) {
+            getMockGameCategoryList(GameType.PREMIUM) ?: emptyList()
         }
     }
 
-    fun insertRecentPlayGame(_game: Game) {
-        var game = Game(_game.id, _game.name, _game.imageUrl, _game.linkUrl, "", _game.type, true)
-        if (game.type == "Browser") {
-                if (_recentBrowserGamelist.count() == 0) {
-                    _recentBrowserGamelist.add(game)
-                _browserGameCategoryList.add(0, GameCategory("Recently played", _recentBrowserGamelist))
-                } else {
-                    if (_recentBrowserGamelist.contains(game)) {
-                        _recentBrowserGamelist.remove(game)
-                    }
-                    _recentBrowserGamelist.add(0, game)
-                }
-            _browserGameCategories.value = _browserGameCategoryList
-        }
-    }
+    // TODO: remove mock data
+    private fun getMockGameCategoryList(gameType: GameType): List<DelegateAdapter.UiModel>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.game_mock_items)
+                ?.jsonStringToGameCategoryList(gameType)
+}
 
-    init {
-        initGamesRepo()
-    }
-
-    fun initGamesRepo() {
-        val inputStream = this.javaClass.classLoader!!.getResourceAsStream("res/raw/gamedata.json")
-        val jsonString = Scanner(inputStream).useDelimiter("\\A").next()
-        val jsonArray = JSONArray(jsonString)
-
-        for (i in 0..(jsonArray.length() - 1)) {
-            var _bannerList = mutableListOf<CarouselBannerAdapter.BannerItem>()
-            var _gameList = mutableListOf<GameCategory>()
-            var gamesdb = jsonArray.getJSONObject(i)
-            val gameType = gamesdb.optString("type")
-            val banners = gamesdb.optJSONArray("banner")
-            val gamelists = gamesdb.optJSONArray("gamelist")
-
-            // banners
-            for (j in 0..(banners.length() - 1)) {
-                val banner = banners.optJSONObject(j)
-                _bannerList.add(CarouselBannerAdapter.BannerItem(banner.optString("id"), banner.optString("imageUrl"), banner.optString("linkUrl")))
-    }
-
-            // game categories
-            for (j in 0..(gamelists.length() - 1)) {
-                val gamelist = gamelists.optJSONObject(j)
-                val gameCategory = gamelist.optString("type")
-                val games = gamelist.optJSONArray("games")
-                var _games = mutableListOf<Game>()
-                // games
-                for (k in 0..(games.length() - 1)) {
-                    val game = games.optJSONObject(k)
-
-                    _games.add(Game(game.optLong("id"),
-                            game.optString("name"),
-                            game.optString("imageUrl"),
-                            game.optString("linkUrl"),
-                            "",
-                            gameType,
-                            false,
-                            false))
-                }
-                _gameList.add(GameCategory(gameCategory, _games))
-            }
-
-            when (gameType) {
-                "Premium" -> {
-                    _premiumBanner.value = _bannerList
-                    _premiumGameCategoryList = _gameList
-                    _premiumGameCategories.value = _premiumGameCategoryList.toList()
-                }
-                "Browser" -> {
-                    _browserBanner.value = _bannerList
-                    _browserGameCategoryList = _gameList
-                    _browserGameCategories.value = _browserGameCategoryList.toList()
-                }
-            }
-        }
+private fun String.jsonStringToGameCategoryList(gameType: GameType): List<DelegateAdapter.UiModel>? {
+    return try {
+        val jsonObject = this.toJsonObject()
+        val jsonArray = jsonObject.optJSONArray("subcategory")
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jObj -> createGameCategory(gameType, jObj) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
     }
 }
+
+private fun createGameCategory(gameType: GameType, jsonObject: JSONObject): DelegateAdapter.UiModel =
+        if (jsonObject.optString("component_type") == BANNER) {
+            Runway(
+                createRunwayItemList(jsonObject.optJSONArray("items"))
+            )
+        } else {
+            GameCategory(
+                jsonObject.optString("component_type"),
+                jsonObject.optString("subcategory_name"),
+                createGameItemList(gameType, jsonObject.optJSONArray("items"))
+            )
+        }
+
+private fun createRunwayItemList(jsonArray: JSONArray): List<RunwayItem> =
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> createRunwayItem(jsonObject) }
+
+private fun createGameItemList(gameType: GameType, jsonArray: JSONArray): List<Game> =
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> createGameItem(gameType, jsonObject) }
+
+private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
+        RunwayItem(
+            jsonObject.optInt("id"),
+            jsonObject.optString("image_url"),
+            jsonObject.optString("link_url"),
+            jsonObject.optString("source")
+        )
+
+private fun createGameItem(gameType: GameType, jsonObject: JSONObject): Game =
+        Game(
+            jsonObject.optLong("id"),
+            jsonObject.optString("source"),
+            jsonObject.optString("image_url"),
+            if (gameType == GameType.BASIC) jsonObject.optString("link_url") else TEST_GAME_APK_URL,
+            jsonObject.optString("title"),
+            gameType
+        )
+
+const val TEST_GAME_APK_URL = "https://github.com/mozilla-tw/FirefoxLite/releases/download/v1.8.0/Firefox-Lite-12883.apk"
+const val BANNER = "banner"
+const val CARD = "scard"
