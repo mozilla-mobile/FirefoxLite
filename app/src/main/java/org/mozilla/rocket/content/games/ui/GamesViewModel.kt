@@ -55,6 +55,18 @@ class GamesViewModel(
         return false
     }
 
+    fun getLatestBasicGames() {
+        launchDataLoad {
+            _basicGameItems.postValue(gamesRepo.getBasicGameCategoryList())
+        }
+    }
+
+    fun getLatestPremiumGames() {
+        launchDataLoad {
+            _premiumGameItems.postValue(gamesRepo.getPremiumGameCategoryList())
+        }
+    }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
