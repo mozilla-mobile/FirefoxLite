@@ -11,11 +11,11 @@ class ShoppingSearchPromptViewModel(
     private val getShoppingSiteUseCase: GetShoppingSitesUseCase
 ) : ViewModel() {
     val isUrlShoppingSite = MutableLiveData<Boolean>()
-    private val shoppingSiteList: LiveData<List<ShoppingSiteItem>> = getShoppingSiteUseCase.invoke()
+    val shoppingSiteList: LiveData<List<ShoppingSiteItem>> = getShoppingSiteUseCase.invoke()
 
     val openShoppingSearch = SingleLiveEvent<Unit>()
 
     fun checkIsShoppingSite(url: String) {
-        isUrlShoppingSite.value = shoppingSiteList.value?.any { site -> site.displayUrl.contentEquals(url) }
+        isUrlShoppingSite.value = shoppingSiteList.value?.any { site -> url.contains(site.displayUrl, true) }
     }
 }
