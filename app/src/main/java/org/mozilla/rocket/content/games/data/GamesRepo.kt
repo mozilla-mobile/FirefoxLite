@@ -49,28 +49,31 @@ private fun String.jsonStringToGameCategoryList(gameType: GameType): List<Delega
     }
 }
 
-private fun createGameCategory(gameType: GameType, jsonObject: JSONObject): DelegateAdapter.UiModel =
-        if (jsonObject.optString("component_type") == BANNER) {
-            Runway(
+private fun createGameCategory(gameType: GameType, jsonObject: JSONObject): DelegateAdapter.UiModel {
+    return if (jsonObject.optString("component_type") == BANNER) {
+        Runway(
                 createRunwayItemList(jsonObject.optJSONArray("items"))
-            )
-        } else {
-            GameCategory(
+        )
+    } else {
+        GameCategory(
                 jsonObject.optString("component_type"),
                 jsonObject.optString("subcategory_name"),
                 createGameItemList(gameType, jsonObject.optJSONArray("items"))
-            )
-        }
+        )
+    }
+}
 
 private fun createRunwayItemList(jsonArray: JSONArray): List<RunwayItem> =
         (0 until jsonArray.length())
                 .map { index -> jsonArray.getJSONObject(index) }
                 .map { jsonObject -> createRunwayItem(jsonObject) }
+                .shuffled()
 
 private fun createGameItemList(gameType: GameType, jsonArray: JSONArray): List<Game> =
         (0 until jsonArray.length())
                 .map { index -> jsonArray.getJSONObject(index) }
                 .map { jsonObject -> createGameItem(gameType, jsonObject) }
+                .shuffled()
 
 private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
         RunwayItem(
