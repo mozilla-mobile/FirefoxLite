@@ -15,16 +15,83 @@ class ShoppingSearchRepository(
     fun isShoppingSearchEnabled() = remoteDataSource.isShoppingSearchEnabled()
 
     fun getShoppingSitesData(): LiveData<List<ShoppingSite>> {
-        val shoppingSearchSites = localDataSource.getShoppingSites()
-        if (shoppingSearchSites.isNotEmpty()) {
-            shoppingSitesData.postValue(shoppingSearchSites)
+        val remoteShoppingSites = remoteDataSource.getShoppingSites()
+        val localShoppingSites = localDataSource.getShoppingSites()
+
+        if (localShoppingSites.isEmpty() && remoteShoppingSites.isNotEmpty()) {
+            updateShoppingSites(remoteShoppingSites)
+            shoppingSitesData.postValue(remoteShoppingSites)
+        } else if (localShoppingSites.isNotEmpty()) {
+            val mergedShoppingSites = arrayListOf<ShoppingSite>()
+            if (shouldMergeShoppingSites(remoteShoppingSites, localShoppingSites)) {
+                mergedShoppingSites.addAll(getMergedShoppingSites(remoteShoppingSites, localShoppingSites))
+                updateShoppingSites(mergedShoppingSites)
+            } else {
+                mergedShoppingSites.addAll(localShoppingSites)
+            }
+            shoppingSitesData.postValue(mergedShoppingSites)
         }
 
         return shoppingSitesData
     }
 
-    fun updateShoppingSites(shoppingSites: List<ShoppingSite>) =
+    fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
         localDataSource.updateShoppingSites(shoppingSites)
+        shoppingSitesData.postValue(shoppingSites)
+    }
+
+    private fun shouldMergeShoppingSites(remoteShoppingSites: List<ShoppingSite>, localShoppingSites: List<ShoppingSite>): Boolean {
+        if (remoteShoppingSites.size != localShoppingSites.size) {
+            return true
+        }
+
+        val remoteSites = remoteShoppingSites.sortedBy { it.title }
+        val localSites = localShoppingSites.sortedBy { it.title }
+        remoteSites.forEachIndexed { index, remoteSite ->
+            if (!remoteSite.contentEquals(localSites[index])) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun getMergedShoppingSites(remoteShoppingSites: List<ShoppingSite>, localShoppingSites: List<ShoppingSite>): List<ShoppingSite> {
+        val sitesToAdd = arrayListOf<ShoppingSite>()
+        for (remoteSite in remoteShoppingSites) {
+            var matched = false
+            for (localSite in localShoppingSites) {
+                if (localSite.contentEquals(remoteSite)) {
+                    matched = true
+                    break
+                }
+            }
+            if (!matched) {
+                sitesToAdd.add(remoteSite)
+            }
+        }
+
+        val sitesToDelete = arrayListOf<ShoppingSite>()
+        for (localSite in localShoppingSites) {
+            var matched = false
+            for (remoteSite in remoteShoppingSites) {
+                if (localSite.contentEquals(remoteSite)) {
+                    matched = true
+                    break
+                }
+            }
+            if (!matched) {
+                sitesToDelete.add(localSite)
+            }
+        }
+
+        val mergedSites = arrayListOf<ShoppingSite>()
+        mergedSites.addAll(localShoppingSites)
+        mergedSites.removeAll(sitesToDelete)
+        mergedSites.addAll(sitesToAdd)
+
+        return mergedSites
+    }
 }
 
 data class ShoppingSite(
@@ -45,6 +112,12 @@ data class ShoppingSite(
         put("searchUrl", searchUrl)
         put("displayUrl", displayUrl)
         put("isEnabled", isEnabled)
+    }
+
+    fun contentEquals(shoppingSite: ShoppingSite): Boolean {
+        return this.title == shoppingSite.title &&
+            this.searchUrl == shoppingSite.searchUrl &&
+            this.displayUrl == shoppingSite.displayUrl
     }
 }
 
