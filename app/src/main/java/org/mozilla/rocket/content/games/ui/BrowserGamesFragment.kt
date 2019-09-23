@@ -12,12 +12,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_games.recycler_view
 import kotlinx.android.synthetic.main.fragment_games.spinner
@@ -25,28 +23,32 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.games.ui.adapter.CarouselBanner
-import org.mozilla.rocket.content.games.ui.adapter.CarouselBannerAdapterDelegate
 import org.mozilla.rocket.content.games.ui.adapter.GameCategoryAdapterDelegate
-import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
 import org.mozilla.rocket.content.appContext
-import org.mozilla.rocket.content.games.vo.GameCategory
 import java.util.Arrays
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.web.WebViewProvider
+import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.games.ui.adapter.GameCategory
+import org.mozilla.rocket.content.games.ui.adapter.GameType
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.tabs.web.Download
-import java.net.HttpURLConnection
-import java.net.URL
 
 class BrowserGamesFragment : Fragment() {
 
     @Inject
+    lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
+
+    @Inject
     lateinit var gamesViewModelCreator: Lazy<GamesViewModel>
 
+    private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var gamesViewModel: GamesViewModel
     private lateinit var adapter: DelegateAdapter
     private lateinit var gameType: GameType
@@ -54,7 +56,8 @@ class BrowserGamesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        gamesViewModel = getViewModel(gamesViewModelCreator)
+        runwayViewModel = getActivityViewModel(runwayViewModelCreator)
+        gamesViewModel = getActivityViewModel(gamesViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,89 +69,20 @@ class BrowserGamesFragment : Fragment() {
         initRecyclerView()
         bindListData()
         bindPageState()
-        registerForContextMenu(recycler_view)
         observeGameAction()
-    }
-
-    fun createShortcut(gameName: String, gameURL: String, gameIcon: Bitmap) {
-        val i = Intent(appContext(),
-                GameModeActivity::class.java)
-        i.action = Intent.ACTION_MAIN
-        i.data = Uri.parse(gameURL)
-        i.putExtra(GAME_URL, gameURL)
-
-        if (Build.VERSION.SDK_INT < 26) {
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            val installer = Intent()
-            installer.putExtra("android.intent.extra.shortcut.INTENT", i)
-            installer.putExtra("android.intent.extra.shortcut.NAME", gameName)
-            installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT")
-            installer.putExtra("duplicate", false)
-            installer.putExtra("android.intent.extra.shortcut.ICON", gameIcon)
-            appContext().sendBroadcast(installer)
-        } else {
-            val shortcutManager = activity?.getSystemService(ShortcutManager::class.java)
-
-            if (shortcutManager!!.isRequestPinShortcutSupported) {
-                val shortcut = ShortcutInfo.Builder(context, gameName)
-                        .setShortLabel(gameName)
-                        .setIcon(Icon.createWithAdaptiveBitmap(gameIcon))
-                        .setIntent(i).build()
-
-                shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut))
-                if (shortcutManager.isRequestPinShortcutSupported) {
-
-                    val pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(shortcut)
-                    val successCallback = PendingIntent.getBroadcast(activity, 0,
-                            pinnedShortcutCallbackIntent, 0)
-                    shortcutManager.requestPinShortcut(shortcut, successCallback.intentSender)
-                }
-            }
-        }
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        val intent = item.getIntent()
-        var gameType = ""
-        if (intent != null) {
-            gameType = intent.getStringExtra("gameType")
-        }
-        if ((gameType == "Browser" && this.gameType == GameType.TYPE_BROWSER) ||
-                (gameType == "Premium" && this.gameType == GameType.TYPE_PREMIUM)) {
-            when (item.getItemId()) {
-                R.id.share -> {
-                    val sendIntent: Intent = Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_SUBJECT, gamesViewModel.selectedGame.name)
-                        putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.gaming_vertical_share_message, gamesViewModel.selectedGame.linkUrl))
-                        type = "text/plain"
-                    }
-                    startActivity(Intent.createChooser(sendIntent, null))
-                }
-                R.id.remove -> {
-                    gamesViewModel.removeGameFromRecentPlayList(gamesViewModel.selectedGame)
-                }
-                R.id.shortcut -> {
-                    gamesViewModel.createShortCut()
-                }
-            }
-            return true
-        }
-        return false
     }
 
     private fun initRecyclerView() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(CarouselBanner::class, R.layout.item_carousel_banner, CarouselBannerAdapterDelegate(gamesViewModel))
+                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
                 add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
             }
         )
         recycler_view.apply {
             adapter = this@BrowserGamesFragment.adapter
-            layoutManager = LinearLayoutManager(context)
         }
+        registerForContextMenu(recycler_view)
     }
 
     private fun bindListData() {
@@ -157,49 +91,23 @@ class BrowserGamesFragment : Fragment() {
         }
 
         when (gameType) {
-            GameType.TYPE_BROWSER -> gamesViewModel.browserGamesItems.observe(this@BrowserGamesFragment, Observer {
+            GameType.BASIC -> gamesViewModel.basicGameItems.observe(this@BrowserGamesFragment, Observer {
                 adapter.setData(it)
             })
-            GameType.TYPE_PREMIUM -> gamesViewModel.premiumGamesItems.observe(this@BrowserGamesFragment, Observer {
+            GameType.PREMIUM -> gamesViewModel.premiumGameItems.observe(this@BrowserGamesFragment, Observer {
                 adapter.setData(it)
             })
         }
     }
 
     private fun bindPageState() {
-        gamesViewModel.browserGamesState.observe(this@BrowserGamesFragment, Observer { state ->
+        gamesViewModel.isDataLoading.observe(this@BrowserGamesFragment, Observer { state ->
             when (state) {
                 is GamesViewModel.State.Idle -> showContentView()
                 is GamesViewModel.State.Loading -> showLoadingView()
                 is GamesViewModel.State.Error -> showErrorView()
             }
         })
-    }
-
-    private fun queueDownload(download: Download?, url: String) {
-        val activity = activity
-        if (activity == null || download == null) {
-            return
-        }
-
-        EnqueueDownloadTask(getActivity()!!, download, url).execute()
-    }
-
-    fun downloadPremiumGame(downloadURL: String) {
-        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // We do have the permission to write to the external storage. Proceed with the download.
-            var url = downloadURL
-            var contentDisposition = ""
-            var mimetype = "application/vnd.android.package-archive"
-            var name = URLUtil.guessFileName(url, contentDisposition, mimetype)
-            var download = Download(url,
-                    name,
-                    WebViewProvider.getUserAgentString(context),
-                    contentDisposition,
-                    mimetype, 0, false)
-
-            queueDownload(download, url)
-        }
     }
 
     private fun observeGameAction() {
@@ -231,6 +139,70 @@ class BrowserGamesFragment : Fragment() {
         })
     }
 
+    fun createShortcut(gameName: String, gameURL: String, gameIcon: Bitmap) {
+        val i = Intent(appContext(),
+                GameModeActivity::class.java)
+        i.action = Intent.ACTION_MAIN
+        i.data = Uri.parse(gameURL)
+        i.putExtra(GAME_URL, gameURL)
+
+        if (Build.VERSION.SDK_INT < 26) {
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val installer = Intent()
+            installer.putExtra("android.intent.extra.shortcut.INTENT", i)
+            installer.putExtra("android.intent.extra.shortcut.NAME", gameName)
+            installer.action = "com.android.launcher.action.INSTALL_SHORTCUT"
+            installer.putExtra("duplicate", false)
+            installer.putExtra("android.intent.extra.shortcut.ICON", gameIcon)
+            appContext().sendBroadcast(installer)
+        } else {
+            val shortcutManager = activity?.getSystemService(ShortcutManager::class.java)
+
+            if (shortcutManager!!.isRequestPinShortcutSupported) {
+                val shortcut = ShortcutInfo.Builder(context, gameName)
+                        .setShortLabel(gameName)
+                        .setIcon(Icon.createWithAdaptiveBitmap(gameIcon))
+                        .setIntent(i).build()
+
+                shortcutManager.dynamicShortcuts = Arrays.asList(shortcut)
+                if (shortcutManager.isRequestPinShortcutSupported) {
+
+                    val pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(shortcut)
+                    val successCallback = PendingIntent.getBroadcast(activity, 0,
+                            pinnedShortcutCallbackIntent, 0)
+                    shortcutManager.requestPinShortcut(shortcut, successCallback.intentSender)
+                }
+            }
+        }
+    }
+
+    private fun queueDownload(download: Download?, url: String) {
+        val activity = activity
+        if (activity == null || download == null) {
+            return
+        }
+
+        EnqueueDownloadTask(getActivity()!!, download, url).execute()
+    }
+
+    fun downloadPremiumGame(downloadURL: String) {
+        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            // We do have the permission to write to the external storage. Proceed with the download.
+            var url = downloadURL
+            var contentDisposition = ""
+            var mimetype = "application/vnd.android.package-archive"
+            var name = URLUtil.guessFileName(url, contentDisposition, mimetype)
+            var download = Download(url,
+                    name,
+                    WebViewProvider.getUserAgentString(context),
+                    contentDisposition,
+                    mimetype, 0, false)
+
+            queueDownload(download, url)
+        }
+    }
+
     private fun showLoadingView() {
         spinner.visibility = View.VISIBLE
     }
@@ -243,32 +215,10 @@ class BrowserGamesFragment : Fragment() {
         TODO("not implemented")
     }
 
-    fun getFinalURL(url: String): String {
-
-        try {
-            var con = URL(url).openConnection() as HttpURLConnection
-            con.setInstanceFollowRedirects(false)
-            con.connect()
-            con.getInputStream()
-
-            if (con.getResponseCode() == HttpURLConnection.HTTP_MOVED_PERM || con.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
-                var redirectUrl = con.getHeaderField("Location")
-                return getFinalURL(redirectUrl)
-            }
-        } catch (e: Exception) {
-            TODO("not implemented")
-        }
-            return url
-        }
-
     companion object {
-
         private const val GAME_TYPE = "game_type"
         private const val GAME_URL = "url"
-        enum class GameType {
-            TYPE_BROWSER,
-            TYPE_PREMIUM
-        }
+
         @JvmStatic
         fun newInstance(gameType: GameType) = BrowserGamesFragment().apply {
             arguments = Bundle().apply {

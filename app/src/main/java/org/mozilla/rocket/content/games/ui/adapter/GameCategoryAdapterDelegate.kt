@@ -1,18 +1,15 @@
 package org.mozilla.rocket.content.games.ui.adapter
 
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_game_category.category_title
 import kotlinx.android.synthetic.main.item_game_category.game_list
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.games.ui.GameItemDecoration
+import org.mozilla.rocket.content.ecommerce.StartSnapHelper
+import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
 import org.mozilla.rocket.content.games.ui.GamesViewModel
-import org.mozilla.rocket.content.games.vo.Game
-import org.mozilla.rocket.content.games.vo.GameCategory
 
 class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
@@ -21,29 +18,32 @@ class GameCategoryAdapterDelegate(private val gamesViewModel: GamesViewModel) : 
 
 class GameCategoryViewHolder(
     override val containerView: View,
-    viewModel: GamesViewModel
+    gameViewModel: GamesViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(Game::class, R.layout.item_game, GameAdapterDelegate(viewModel))
+            add(Game::class, R.layout.item_game, GameAdapterDelegate(gameViewModel))
         }
     )
-    /* paddingLeftRight is padding for boundary and the first/last item
-       paddingInBetween is padding for each item */
-    private val paddingWidth = 16
-    private val spaceWidth = 4
 
     init {
-        game_list.apply {
-            adapter = this@GameCategoryViewHolder.adapter
-            layoutManager = LinearLayoutManager(containerView.context, RecyclerView.HORIZONTAL, false)
-        }
-        game_list.addItemDecoration(GameItemDecoration(paddingWidth, spaceWidth))
+        val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
+        val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
+        game_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth, padding))
+        game_list.adapter = this@GameCategoryViewHolder.adapter
+        val snapHelper = StartSnapHelper()
+        snapHelper.attachToRecyclerView(game_list)
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        uiModel as GameCategory
-        category_title.text = uiModel.type
-        adapter.setData(uiModel.games)
+        val gameCategoryItem = uiModel as GameCategory
+        category_title.text = gameCategoryItem.name
+        adapter.setData(gameCategoryItem.items)
     }
 }
+
+data class GameCategory(
+    val type: String,
+    val name: String,
+    val items: List<DelegateAdapter.UiModel>
+) : DelegateAdapter.UiModel()

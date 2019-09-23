@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/category_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center_vertical"
         android:textSize="16sp"
-        android:paddingTop="10dp"
-        android:paddingLeft="16dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/paletteLightBlack100"
-        android:fontFamily="sans-serif"/>
+        android:textColor="@color/paletteBlack87"
+        tools:text="Arcade" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/game_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_game" />
 
 </LinearLayout>

@@ -51,7 +51,7 @@ class GamesActivity : FragmentActivity() {
 
     private fun initToolBar() {
         refresh_button.setOnClickListener {
-            gamesViewModel.onRefreshGameListButtonClicked()
+//            gamesViewModel.onRefreshGameListButtonClicked()
         }
     }
 
