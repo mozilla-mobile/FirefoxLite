@@ -51,6 +51,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -498,10 +499,15 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 if (shoppingSearchViewStub.getParent() != null) {
                     setupShoppingSearchPrompt(shoppingSearchViewStub.inflate());
                 }
+
                 sheetState = BottomSheetBehavior.STATE_EXPANDED;
             }
 
             changeShoppingSearchPromptMessageState(sheetState);
+        });
+
+        shoppingSearchPromptMessageViewModel.getShoppingSiteList().observe(this, unit -> {
+            shoppingSearchPromptMessageViewModel.checkIsShoppingSite(getUrl());
         });
     }
     private void setupShoppingSearchPrompt(View view) {
