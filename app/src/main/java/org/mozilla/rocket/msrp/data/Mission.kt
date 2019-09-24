@@ -3,18 +3,24 @@ package org.mozilla.rocket.msrp.data
 data class Mission(
 
     val mid: String,
-    val title: String,
-    val description: String,
-    val events: List<String>,
-    val important: Boolean,
-    val status: Int, // 0:new, 1:joined, 2:redeem-able 3:redeemed
-    val endpoint: String, // Use this API to request to join the mission
-    val redeem: String?, // Use this API to retrieve the reward
-    val minVersion: Int,
     val missionType: String,
 
-    val missionProgress: MissionProgress
+    val title: String,
+    val description: String,
+    val imageUrl: String,
 
+    val endpoint: String, // Use this API to request to join the mission
+    val redeem: String?, // Use this API to retrieve the reward
+
+    val events: List<String>,
+    val important: Boolean,
+    val minVersion: Int,
+
+    val joinEndDate: Long,
+    val expiredDate: Long,
+
+    val status: Int, // 0:new, 1:joined, 2:redeem-able 3:redeemed
+    val missionProgress: MissionProgress
 )
 
 /**
