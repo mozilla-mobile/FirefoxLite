@@ -84,16 +84,19 @@ open class MissionRepository {
 
             Mission(
                 mid = missionJson.optString("mid"),
+                missionType = missionJson.optString("missionType"),
                 title = missionJson.optString("title"),
                 description = missionJson.optString("description"),
-                endpoint = missionJson.optString("endpoint"),
+                imageUrl = missionJson.optString("imageUrl"),
+                endpoint = missionJson.optString("joinEndpoint"),
+                redeem = missionJson.optString("redeemEndpoint"),
                 events = interestEvents,
                 important = missionJson.optBoolean("important"),
-                status = missionJson.optInt("status"),
                 minVersion = missionJson.optInt("minVersion"),
-                missionType = missionJson.optString("missionType"),
-                missionProgress = progress,
-                redeem = ""
+                joinEndDate = missionJson.optLong("joinEndDate"),
+                expiredDate = missionJson.optLong("expiredDate"),
+                status = missionJson.optInt("status"),
+                missionProgress = progress
             )
         }
     }
@@ -126,7 +129,7 @@ open class MissionRepository {
             return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "$MSRP_HOST/missions${mission.endpoint}?tz=${TimeZone.getDefault().id}"
+        val endpoint = "$MSRP_HOST${mission.endpoint}?tz=${TimeZone.getDefault().id}"
         return sendRequest(
                 request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.POST),
                 onSuccess = {
@@ -174,7 +177,7 @@ open class MissionRepository {
             return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "$MSRP_HOST/ping/$ping?tz=${TimeZone.getDefault().id}"
+        val endpoint = "$MSRP_HOST/api/v1/ping/$ping?tz=${TimeZone.getDefault().id}"
         return sendRequest(
                 request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.PUT),
                 onSuccess = {
@@ -229,7 +232,7 @@ open class MissionRepository {
             return Result.error(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "$MSRP_HOST/missions${mission.endpoint}?tz=${TimeZone.getDefault().id}"
+        val endpoint = "$MSRP_HOST${mission.endpoint}?tz=${TimeZone.getDefault().id}"
         return sendRequest(
                 request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.DELETE),
                 onSuccess = {
@@ -368,7 +371,7 @@ open class MissionRepository {
         private const val STR_RC_MISSION_LIST_ENDPOINT = "str_mission_list_endpoint"
 
         // TODO: Update host url
-        private const val MSRP_HOST = "https://rocket-dev01.appspot.com/api/v1/"
+        private const val MSRP_HOST = "https://rocket-dev01.appspot.com"
     }
 }
 

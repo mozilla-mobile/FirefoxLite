@@ -17,6 +17,9 @@ object TestData {
 
         minVersion = 1234,
         missionType = "mission_daily",
+        imageUrl = "",
+        expiredDate = 12345,
+        joinEndDate = 54321,
 
         missionProgress = MissionProgress.TypeDaily(
             // progress, TODO: make it another class
@@ -41,6 +44,9 @@ object TestData {
 
         minVersion = 4321,
         missionType = "mission_daily",
+        imageUrl = "",
+        expiredDate = 12345,
+        joinEndDate = 54321,
 
         missionProgress = MissionProgress.TypeDaily(
             // progress, TODO: make it another class
