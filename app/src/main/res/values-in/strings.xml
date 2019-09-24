@@ -297,4 +297,210 @@
   <string name="http_auth_dialog_user_name">Nama pengguna</string>
   <string name="http_auth_dialog_password">Kata sandi</string>
   <string name="low_priority_notification_channel">Notifikasi tersembunyi</string>
+  
+  <!--Shopping Vertical-->
+  <!--Artboard Name: 1.1 Shopping Search Overview-->
+  <!--Shopping Search Onboarding-->
+  <string name="shopping_search_onboarding_title">Selalu dapatkan harga terbaik</string>
+  <string name="shopping_search_onboarding_body">Bandingkan harga di berbagai toko online dengan fitur pintar Cari Harga.</string>
+  <!--Shopping Search Input Placeholder-->
+  <string name="shopping_search_placeholder">Ketik produk yang ingin dicari</string>
+  <!--Shopping Search Prompt Message-->
+  <string name="shopping_search_prompt_message_body">Bandingkan harga di berbagai toko online dengan fitur pintar Cari Harga.</string>
+  <string name="shopping_search_prompt_message_button">Cari</string>
+  <!--Switch UI Onboarding-->
+  <string name="shopping_switch_ui_onboarding_body">Gulir ke kiri untuk melihat toko online lainnya, atau ketuk tombol ini untuk meng-edit.</string>
+  <string name="shopping_switch_ui_onboarding_button">Oke</string>
+
+  <!--Artboard Name: 2.2 Switch UI Preference Behaviors-->
+  <!--Switch UI Preferences-->
+  <string name="shopping_switch_ui_preferences_title">Pengaturan Cari Harga</string>
+  <string name="shopping_switch_ui_preferences_subtitle">Situs yang ingin dibandingkan</string>
+
+  <!--Artboard Name: 3.1 Switch UI Navigation - Activity Switch-->
+  <!--Switch UI Tab Tray. %1$s is the keyword user input -->
+  <string name="shopping_switch_ui_tabtray_title">Cari Harga: “%1$s”</string>
+  <string name="shopping_switch_ui_tabtray_title_no_keyword">Cari Harga</string>
+
+  <!--Artboard Name: 3.3 Switch UI Navigation - Tab Tray-->
+  <!--Closing dialog content.-->
+  <string name="shopping_closing_dialog_close">Tutup Semua</string>
+  <string name="shopping_closing_dialog_cancel">Batalkan</string>
+  <string name="shopping_closing_dialog_body">Tutup semua hasil pencarian?</string>
+
+  <!--Artboard Name: 4.1 Shopping Deals Overview-->
+  <!--Shopping Home-->
+  <string name="shopping_vertical_title">Belanja</string>
+  <string name="shopping_vertical_category_1">Promo</string>
+  <string name="shopping_vertical_category_2">Kupon</string>
+  <string name="shopping_vertical_category_3">Vouchers</string>
+  <!--Shopping Deals-->
+  <string name="shopping_deal_subcategory_1">Produk Unggulan</string>
+  <string name="shopping_deal_subcategory_2">Best Seller</string>
+
+  <!--Artboard Name: 5.2 Shopping Coupons Update-->
+  <!--Shopping Coupons-->
+  <string name="shopping_coupon_expire_zero">Kupon habis</string>
+  <string name="shopping_coupon_expire_one">1 hari lagi</string>
+  <string name="shopping_coupon_expire_other">%1$d hari lagi</string>
+
+
+  <!--Gaming Vertical-->
+  <!--Gaming Home-->
+  <string name="gaming_vertical_title">Game</string>
+  <string name="gaming_vertical_category_1">Main langsung</string>
+  <string name="gaming_vertical_category_2">Download</string>
+  <string name="gaming_vertical_new">Terbaru</string>
+
+  <!--Gaming Contextual Hint-->
+  <string name="gaming_vertical_hint_title">Akses cepat game favoritmu</string>
+  <string name="gaming_vertical_hint_body">Ketuk untuk menambahkan game ke Layar Utama.</string>
+  <string name="gaming_vertical_hint_button">Oke</string>
+
+  <!--Gaming Longpress Menu-->
+  <string name="gaming_vertical_menu_option_1">Bagikan game</string>
+  <string name="gaming_vertical_menu_option_2">Tambahkan game ke Layar Utama</string>
+  <string name="gaming_vertical_menu_option_3">Hapus dari daftar</string>
+
+  <!--Gaming Share Message. %1$s is the url of the game -->
+  <string name="gaming_vertical_share_message">Game ini keren! Mainkan di sini \n%1$s</string>
+
+  <!--Gaming Genres-->
+  <string name="gaming_vertical_genre_1">Terakhir dimainkan</string>
+  <string name="gaming_vertical_genre_2">Game minggu ini</string>
+  <string name="gaming_vertical_genre_3">My game</string>
+  <string name="gaming_vertical_genre_4">Sering dimainkan</string>
+  <string name="gaming_vertical_genre_5">Game offline</string>
+  <string name="gaming_vertical_genre_6">Strategi</string>
+  <string name="gaming_vertical_genre_7">Petualangan</string>
+  <string name="gaming_vertical_genre_8">Aksi</string>
+  <string name="gaming_vertical_genre_9">Arcade</string>
+  <string name="gaming_vertical_genre_10">Puzzle &amp; Teka-Teki</string>
+  <string name="gaming_vertical_genre_11">Olahraga &amp; Mengemudi</string>
+  <string name="gaming_vertical_genre_12">Perempuan</string>
+
+  <!-- Home 2.0 -->
+  <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0. %1$s will be replaced with the name of the app (e.g. Firefox Lite) -->
+  <string name="onboarding_2_introduction_title">%1$s versi terbaru</string>
+  <string name="onboarding_2_introduction_description">Selalu CEPAT dan RINGAN. Fitur Cari Harga, Game, dan Berita bikin internet makin asyik dan menyenangkan!</string>
+  <!-- Onboarding for new users to introduce Firefox Lite 2.0 -->
+  <!-- Introduce Content & Services -->
+  <string name="onboarding_2_content_services_news_shopping_games">Baca berita terhangat, belanja harga terbaik dan mainkan game terbaru. Ketuk di sini!</string>
+  <string name="onboarding_2_content_services_news_games">Baca berita terhangat dan mainkan game terbaru. Ketuk di sini!</string>
+  <string name="onboarding_2_content_services_games">Mainkan game terbaru. Ketuk di sini!</string>
+  <!-- Introduce Smart Shopping Search -->
+  <string name="onboarding_2_smart_shopping_search_title">Cari Harga lebih pintar</string>
+  <string name="onboarding_2_smart_shopping_search_description">Cara termudah bandingkan harga di berbagai toko online. Coba sekarang!</string>
+  <string name="home_search_bar_text">Search...</string>
+
+  <!-- Content & Services -->
+  <!-- Title of Content & Services -->
+  <string name="home_content_services">Konten &amp; Layanan</string>
+  <string name="home_discovery">Temukan</string>
+  <!-- Actions in context menu. Users can long press an item then show the context menu to select an action -->
+  <string name="content_home_context_menu_add_to_home_screen">Tambahkan ke Layar Utama</string>
+  <string name="content_home_context_menu_share_link">Bagikan link</string>
+  <!-- Error message. E.g. when open a service and server is not working then show error message to users -->
+  <string name="content_home_error_message">Maaf!\nAda sesuatu yang tidak beres</string>
+
+  <!-- Private mode home 2.0 -->
+  <!-- Title of Private mode -->
+  <string name="private_home_title">Mode Pribadi Tingkat Lanjut</string>
+  <!-- Description of Private mode -->
+  <string name="private_home_description">Jelajahi internet dengan rahasia, tanpa riwayat dan perekaman kata sandi. Aktivitas anda tidak akan dapat dilacak oleh orang lain yang menggunakan handphone ini.\n\nTidak seperti Mode Pribadi browser lainnya, Mode Pribadi ini dapat <font color='white'>menghentikan pelacakan</font> yang dilakukan berbagai pengiklan dan situs web.</string>
+
+  <!--MSRP Vertical-->
+
+  <!--Logoman-->
+  <string name="msrp_logoman_message">Menangkan kupon gratismu</string>
+
+  <!--Contextual hint-->
+  <string name="msrp_home_hint">Coba fitur terbaru ini!</string>
+
+  <!--Reward-->
+  <string name="msrp_reward_title">Reward</string>
+  <string name="msrp_reward_category_1">Misi</string>
+  <string name="msrp_reward_category_2">Hadiah</string>
+  <string name="msrp_reward_challenge_title">Ikuti tantangan 7 hari dan menangkan kupon belanja senilai Rs 15,000</string>
+  <string name="msrp_reward_challenge_expire">Tanggal berakhir 03-09-2020</string>
+
+  <!--Challenge-->
+  <string name="msrp_challenge_title">Tantangan 7 hari menangkan kupon Rs 15,000</string>
+  <string name="msrp_challenge_details_title_1">1. Ikuti tantangan selama 7 hari</string>
+  <string name="msrp_challenge_details_body_1">Coba fitur-fitur Firefox Lite terbaru dengan mengetuk tombolnya setiap hari selama 7 hari penuh.</string>
+  <string name="msrp_challenge_details_title_2">2. Gunakan akun Firefox untuk menebus hadiah anda</string>
+  <string name="msrp_challenge_details_body_2">Masukkan alamat email anda. Pastikan akun yang ingin anda pakai sudah benar sebelum menebus hadiah.</string>
+  <string name="msrp_challenge_button_1">Ikuti Tantangan!</string>
+  <string name="msrp_challenge_tou">Dengan mengetuk “Ikuti Tantangan”, anda bersiap mengikuti Syarat dan Ketentuan yang berlaku</string>
+  <string name="msrp_challenge_button_2">Tinggalkan Tantangan</string>
+  <string name="msrp_challenge_separator">Cara menebus hadiah</string>
+  <string name="msrp_challenge_button_4">Gunakan akun Firefox untuk menebus</string>
+
+  <!--Challenge (Leaving confirmation)-->
+  <string name="msrp_challenge_leaving_body">Semua hasil anda akan dihapus. Yakin ingin meninggalkan tantangan ini?</string>
+  <string name="msrp_challenge_leaving_button_1">BATALKAN</string>
+  <string name="msrp_challenge_leaving_button_2">TINGGALKAN TANTANGAN</string>
+
+
+  <!--Challenge  completed (popup)-->
+  <string name="msrp_completed_popup_title">Selamat!</string>
+  <string name="msrp_completed_popup_body">Terima kasih telah mencoba fitur-fitur terbaru kami. Kami harap anda senang menggunakannya!</string>
+  <string name="msrp_completed_popup_button1">Gunakan akun Firefox untuk menebus</string>
+  <string name="msrp_completed_popup_button2">Nanti</string>
+
+  <!--Challenge completed (full screen)-->
+  <string name="msrp_challenge_completed_title">Selamat!</string>
+  <string name="msrp_challenge_completed_body">Terima kasih telah mencoba fitur-fitur terbaru kami. Kami harap anda senang menggunakannya!</string>
+  <string name="msrp_challenge_button_5">Tebus nanti</string>
+
+  <!--Coupon-->
+  <string name="msrp_coupon_title">Kupon anda telah siap!</string>
+  <string name="msrp_coupon_body_1">Kupon hanya berlaku dalam waktu terbatas. Kami berhak mengubah atau membatalkan kupon kapan saja.</string>
+  <string name="msrp_coupon_body_2">Kami berhak, mengubah, memodifikasi, menambah atau menghapus bagian dari Syarat dan Ketentuan ini kapan saja.</string>
+  <string name="msrp_coupon_expire">Berlaku hingga 03-09-2021</string>
+  <string name="msrp_coupon_button_2">Salin kupon dan mulai belanja</string>
+  <string name="msrp_coupon_button_1">Salin</string>
+
+  <!--Redeem-->
+  <string name="msrp_reward_redeem_redeem">Tebus</string>
+  <string name="msrp_reward_redeem_coupon">Kupon</string>
+
+  <!--Suspicious account activity-->
+  <string name="msrp_disqualification_title_1">Peringatan: lebih dari satu akun Firefox terdeteksi</string>
+  <string name="msrp_disqualification_body_1">Tantangan 7 hari ini hanya dapat diikuti oleh satu akun Firefox. Anda akan didiskualifikasi dari tantangan ini jika anda beralih menggunakan akun Firefox lain.</string>
+  <string name="msrp_disqualification_button_1">Saya mengerti</string>
+
+  <string name="msrp_disqualification_title_2">Peringatan terakhir: lebih dari satu akun Firefox terdeteksi</string>
+
+  <string name="msrp_disqualification_title_3">Akun di-nonaktifkan</string>
+  <string name="msrp_disqualification_body_3">Anda tidak lagi dapat mengikuti tantangan 7 hari.</string>
+  <string name="msrp_disqualification_button_3">Tutup</string>
+
+
+  <!--Check-in toasts for each day-->
+  <string name="msrp_completed_toast_day1">Bagus! Anda telah berhasil menyelesaikan tugas hari pertama.</string>
+  <string name="msrp_completed_toast_day2">Sip! Anda telah menyelesaikan tugas hari kedua.</string>
+  <string name="msrp_completed_toast_day3">Luar biasa! Anda telah menyelesaikan tugas hari ketiga. Terus lanjutkan!</string>
+  <string name="msrp_completed_toast_day4">Selamat! Anda telah menyelesaikan tugas hari keempat.</string>
+  <string name="msrp_completed_toast_day5">Hebat! Anda telah menyelesaikan tugas hari kelima.</string>
+  <string name="msrp_completed_toast_day6">Wow! Hadiah akan anda dapatkan esok hari. Terus lanjutkan!</string>
+  <string name="msrp_completed_toast_day7">Anda telah memenangkan kupon belanja! Silakan buka halaman Reward untuk menebus hadiah.</string>
+
+  <!--Notifications for last 3 days-->
+  <string name="msrp_notification_reminder">Ingin menangkan kupon belanja? Jangan lupa mencoba fitur baru hari ini!</string>
+
+  <!--No data-->
+  <string name="msrp_reward_challenge_nodata">Semua tantangan selesai</string>
+  <string name="msrp_reward_redeem_nodata">Semua hadiah terkumpul</string>
+
+  <!--Error messages-->
+  <string name="msrp_reward_challenge_nointernet">Pastikan anda terhubung ke internet</string>
+  <string name="msrp_reward_challenge_error_button">COBA LAGI</string>
+  <string name="msrp_reward_challenge_error">Maaf! Ada sesuatu yang tidak beres</string>
+
+  <!--Activity killed-->
+  <string name="msrp_activitykilled_snackbar_button">TEBUS</string>
+  <string name="msrp_activitykilled_snackbar_body">Anda telah memenangkan kupon belanja!</string>
+  
+  
 </resources>
