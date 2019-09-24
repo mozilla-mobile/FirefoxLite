@@ -18,27 +18,18 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import org.mozilla.focus.BuildConfig.FXA_API_URL
 import org.mozilla.focus.BuildConfig.FXA_CLIENT_ID
 import org.mozilla.focus.R
-import org.mozilla.focus.navigation.ScreenNavigator
 import java.net.URL
 
-class FxLoginFragment : Fragment(), ScreenNavigator.FxLoginScreen {
+class FxLoginFragment : Fragment() {
 
-    override fun getFragment() = this
-
-    private lateinit var prevUid: String
+    private val safeArgs: FxLoginFragmentArgs by navArgs()
+    private val prevUid by lazy { safeArgs.prevUid }
     private var mWebView: WebView? = null
     private var listener: OnLoginCompleteListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            prevUid = it.getString(PREV_UID) ?: error("get no argument PREV_UID")
-        }
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -131,21 +122,9 @@ class FxLoginFragment : Fragment(), ScreenNavigator.FxLoginScreen {
     }
 
     companion object {
-        const val PREV_UID = "authUrl"
         // scope:"profile", "https://identity.mozilla.com/apps/oldsync"
         const val AUTH_END_UID_PLACEHOLDER = "[auth_end_uid_placeholder]"
         const val AUTH_END = "$FXA_API_URL?client_id=$FXA_CLIENT_ID&state=$AUTH_END_UID_PLACEHOLDER&scope=profile"
         const val REDIRECT_URL = "?jwt="
-
-        fun create(uid: String?): FxLoginFragment {
-            if (uid == null) {
-                throw java.lang.IllegalStateException("uid can't be null")
-            }
-            return FxLoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(PREV_UID, uid)
-                }
-            }
-        }
     }
 }

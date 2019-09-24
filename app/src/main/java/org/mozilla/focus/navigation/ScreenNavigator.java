@@ -5,16 +5,17 @@
 
 package org.mozilla.focus.navigation;
 
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
 import android.content.Context;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import android.util.Log;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.widget.BackKeyHandleable;
@@ -31,10 +32,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
     public static final String HOME_FRAGMENT_TAG = "home_screen";
     public static final String BROWSER_FRAGMENT_TAG = "browser_screen";
     public static final String URL_INPUT_FRAGMENT_TAG = "url_input_sceen";
-    static final String MISSION_DETAIL_TAG = "mission_detail_tag";
-    static final String REWARD_TAG = "reward_tag";
-    static final String REDEEM_TAG = "redeem_tag";
-    static final String FX_LOGIN_TAG = "fx_login_tag";
 
     private static final String LOG_TAG = "ScreenNavigator";
     private static final boolean LOG_NAVIGATION = false;
@@ -174,26 +171,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
         this.transactionHelper.showFirstRun();
     }
 
-    public void addMissionDetail() {
-        logMethod();
-        this.transactionHelper.showMSRPFragment(MISSION_DETAIL_TAG);
-    }
-
-    public void addReward() {
-        logMethod();
-        this.transactionHelper.showMSRPFragment(REWARD_TAG);
-    }
-
-    public void addRedeem() {
-        logMethod();
-        this.transactionHelper.showMSRPFragment(REDEEM_TAG);
-    }
-
-    public void addFxLogin() {
-        logMethod();
-        this.transactionHelper.showMSRPFragment(FX_LOGIN_TAG);
-    }
-
     public void addUrlScreen(String url) {
         logMethod();
         Fragment top = getTopFragment();
@@ -296,14 +273,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
 
         HomeScreen createHomeScreen();
 
-        MissionDetailScreen createMissionDetailScreen();
-
-        RewardScreen createRewardScreen();
-
-        FxLoginScreen createFxLoginScreen();
-
-        RedeemSceen createRedeemScreen();
-
         UrlInputScreen createUrlInputScreen(@Nullable String url, String parentFragmentTag);
 
     }
@@ -344,32 +313,6 @@ public class ScreenNavigator implements DefaultLifecycleObserver {
      * Contract class for ScreenNavigator, to present an UrlInputFragment
      */
     public interface UrlInputScreen extends Screen {
-    }
-
-
-    /**
-     * Contract class for ScreenNavigator, to present an MissionDetailScreen
-     */
-    public interface MissionDetailScreen extends Screen {
-    }
-
-
-    /**
-     * Contract class for ScreenNavigator, to present an RedeemSceen
-     */
-    public interface RedeemSceen extends Screen {
-    }
-
-    /**
-     * Contract class for ScreenNavigator, to present a RewardScreen
-     */
-    public interface RewardScreen extends Screen {
-    }
-
-    /**
-     * Contract class for ScreenNavigator, to present an FxLoginScreen
-     */
-    public interface FxLoginScreen extends Screen {
     }
 
     public static class NavigationState {

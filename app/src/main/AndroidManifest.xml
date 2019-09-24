@@ -331,6 +331,11 @@
             android:theme="@style/ShoppingSearchPreferencesTheme"/>
 
         <activity
+            android:name="org.mozilla.rocket.msrp.ui.RewardActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name="org.mozilla.rocket.debugging.DebugActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
