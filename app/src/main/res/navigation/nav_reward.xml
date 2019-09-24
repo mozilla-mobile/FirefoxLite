@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_reward"
+    app:startDestination="@+id/reward_dest">
+
+    <fragment
+        android:id="@+id/reward_dest"
+        android:name="org.mozilla.rocket.msrp.ui.RewardFragment"
+        android:label="Reward"
+        tools:layout="@layout/fragment_reward">
+        <action
+            android:id="@+id/action_reward_dest_to_mission_detail_dest"
+            app:destination="@+id/mission_detail_dest" />
+        <action
+            android:id="@+id/action_reward_dest_to_redeem_dest"
+            app:destination="@id/redeem_dest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mission_detail_dest"
+        android:name="org.mozilla.rocket.msrp.ui.MissionDetailFragment"
+        android:label="MissionDetail"
+        tools:layout="@layout/fragment_mission_detail">
+        <action
+            android:id="@+id/action_mission_detail_dest_to_fx_login_dest"
+            app:destination="@id/fx_login_dest" />
+        <action
+            android:id="@+id/action_mission_detail_dest_to_reward_dest"
+            app:destination="@id/reward_dest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fx_login_dest"
+        android:name="org.mozilla.rocket.fxa.FxLoginFragment"
+        android:label="FxLogin"
+        tools:layout="@layout/fragment_fx_login">
+        <action
+            android:id="@+id/action_fx_login_dest_to_redeem_dest"
+            app:destination="@id/redeem_dest" />
+        <argument
+            android:name="prevUid"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/redeem_dest"
+        android:name="org.mozilla.rocket.msrp.ui.RedeemFragment"
+        android:label="Redeem"
+        tools:layout="@layout/fragment_redeem" />
+
+</navigation>

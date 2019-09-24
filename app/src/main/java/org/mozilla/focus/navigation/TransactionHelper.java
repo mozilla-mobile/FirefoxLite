@@ -5,29 +5,26 @@
 
 package org.mozilla.focus.navigation;
 
-import androidx.lifecycle.DefaultLifecycleObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.text.TextUtils;
+import android.view.animation.Animation;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.text.TextUtils;
-import android.view.animation.Animation;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.mozilla.focus.R;
 
 import static org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen;
 import static org.mozilla.focus.navigation.ScreenNavigator.FIRST_RUN_FRAGMENT_TAG;
-import static org.mozilla.focus.navigation.ScreenNavigator.FX_LOGIN_TAG;
 import static org.mozilla.focus.navigation.ScreenNavigator.HOME_FRAGMENT_TAG;
 import static org.mozilla.focus.navigation.ScreenNavigator.HomeScreen;
-import static org.mozilla.focus.navigation.ScreenNavigator.MISSION_DETAIL_TAG;
-import static org.mozilla.focus.navigation.ScreenNavigator.REDEEM_TAG;
-import static org.mozilla.focus.navigation.ScreenNavigator.REWARD_TAG;
 import static org.mozilla.focus.navigation.ScreenNavigator.URL_INPUT_FRAGMENT_TAG;
 
 class TransactionHelper implements DefaultLifecycleObserver {
@@ -67,38 +64,6 @@ class TransactionHelper implements DefaultLifecycleObserver {
             return;
         }
         this.prepareFirstRun().commit();
-    }
-
-    void showMSRPFragment(String fragmentTag) {
-        if (isStateSaved()) {
-            return;
-        }
-        final FragmentManager fragmentManager = this.activity.getSupportFragmentManager();
-        final Fragment existingFragment = fragmentManager.findFragmentByTag(fragmentTag);
-        if (existingFragment != null && existingFragment.isAdded() && !existingFragment.isRemoving()) {
-            return;
-        }
-        ScreenNavigator.Screen screen;
-        switch (fragmentTag) {
-            case MISSION_DETAIL_TAG:
-                screen = this.activity.createMissionDetailScreen();
-                break;
-            case REDEEM_TAG:
-                screen = this.activity.createRedeemScreen();
-                break;
-            case FX_LOGIN_TAG:
-                screen = this.activity.createFxLoginScreen();
-                break;
-            case REWARD_TAG:
-                screen = this.activity.createRewardScreen();
-                break;
-            default:
-                throw new IllegalStateException("No such MSRP fragment");
-        }
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.container, screen.getFragment(), fragmentTag)
-                .addToBackStack(makeEntryTag(fragmentTag, EntryData.TYPE_FLOATING))
-                .commit();
     }
 
     void showUrlInput(@Nullable String url, String sourceFragment) {

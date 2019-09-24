@@ -348,32 +348,4 @@ class PrivateModeActivity : BaseActivity(),
                     continuation()
                 })
     }
-
-    override fun createMissionDetailScreen(): ScreenNavigator.MissionDetailScreen {
-        if (BuildConfig.DEBUG) {
-            throw RuntimeException("PrivateModeActivity should never show Mission Detail")
-        }
-        TODO("PrivateModeActivity should never show Mission Detail")
-    }
-
-    override fun createRewardScreen(): ScreenNavigator.RewardScreen {
-        if (BuildConfig.DEBUG) {
-            throw RuntimeException("PrivateModeActivity should never show Reward")
-        }
-        TODO("PrivateModeActivity should never show Reward")
-    }
-
-    override fun createFxLoginScreen(): ScreenNavigator.FxLoginScreen {
-        if (BuildConfig.DEBUG) {
-            throw RuntimeException("PrivateModeActivity should never show FxLogin")
-        }
-        TODO("PrivateModeActivity should never show FxLogin")
-    }
-
-    override fun createRedeemScreen(): ScreenNavigator.RedeemSceen {
-        if (BuildConfig.DEBUG) {
-            throw RuntimeException("PrivateModeActivity should never show Redeem")
-        }
-        TODO("PrivateModeActivity should never show Redeem")
-    }
 }
