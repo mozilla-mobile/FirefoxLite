@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager.widget.ViewPager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -22,6 +23,7 @@ import org.mozilla.focus.utils.AppConstants
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.common.ui.ContentTabHelper
 import org.mozilla.rocket.content.common.ui.ContentTabViewContract
 import org.mozilla.rocket.content.getActivityViewModel
@@ -31,8 +33,10 @@ import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchTabsAdapter.TabItem
+import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabsSessionProvider
+import org.mozilla.rocket.tabs.utils.TabUtil
 import javax.inject.Inject
 
 class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
@@ -158,11 +162,35 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     private fun initViewPager() {
         shoppingSearchResultViewModel.shoppingSearchSites.observe(this, Observer { shoppingSearchSites ->
-            val tabItems = shoppingSearchSites.map { site ->
-                TabItem(site.title, site.searchUrl)
+            val tabItems = shoppingSearchSites.mapIndexed { index, site ->
+                TabItem(site.title, site.searchUrl, createTabSession(site.searchUrl, index == 0))
             }
-            view_pager.adapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
+            val shoppingSearchTabsAdapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
+            view_pager.adapter = shoppingSearchTabsAdapter
+            view_pager.clearOnPageChangeListeners()
+            view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) = Unit
+
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+
+                override fun onPageSelected(position: Int) {
+                    getCurrentSession()?.unregisterObservers()
+                    (shoppingSearchTabsAdapter.getRegisteredFragment(position) as ContentTabFragment).switchToFocusTab()
+                    getCurrentSession()?.register(contentTabObserver)
+                }
+            })
         })
+    }
+
+    private fun createTabSession(url: String, focus: Boolean): Session {
+        val tabId = sessionManager.addTab("https://", TabUtil.argument(null, false, focus))
+        val tabSession = sessionManager.getTabs().find { it.id == tabId }!!
+        tabSession.engineSession?.tabView?.apply {
+            setContentBlockingEnabled(true)
+            loadUrl(url)
+        }
+
+        return tabSession
     }
 
     private fun initTabLayout() {

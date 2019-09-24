@@ -25,7 +25,7 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private lateinit var sessionManager: SessionManager
-    private lateinit var tabSession: Session
+    private var tabSession: Session? = null
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewSlot: ViewGroup
 
@@ -50,19 +50,27 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
 
         sessionManager = TabsSessionProvider.getOrThrow(activity)
 
-        val tabId = sessionManager.addTab("https://", TabUtil.argument(null, false, true))
-        tabSession = sessionManager.getTabs().find { it.id == tabId }!!
-        if (tabViewSlot.childCount == 0) {
-            tabSession.engineSession?.tabView?.apply {
+        if (tabSession == null) {
+            val tabId = sessionManager.addTab("https://", TabUtil.argument(null, false, true))
+            tabSession = sessionManager.getTabs().find { it.id == tabId }!!
+            tabSession?.engineSession?.tabView?.apply {
                 val enableTurboMode = arguments?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
                 setContentBlockingEnabled(enableTurboMode)
+
+                val url = arguments?.getString(EXTRA_URL)
+                if (!url.isNullOrEmpty()) {
+                    loadUrl(url)
+                }
+            }
+        }
+
+        if (tabViewSlot.childCount == 0) {
+            tabSession?.engineSession?.tabView?.apply {
                 tabViewSlot.addView(view)
             }
         }
 
         observeChromeAction()
-
-        arguments?.getString(EXTRA_URL)?.apply { loadUrl(this) }
     }
 
     override fun onResume() {
@@ -75,6 +83,11 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         sessionManager.pause()
     }
 
+    override fun onDestroyView() {
+        tabViewSlot.removeAllViews()
+        super.onDestroyView()
+    }
+
     override fun applyLocale() {
         // We create and destroy a new WebView here to force the internal state of WebView to know
         // about the new language. See issue #666.
@@ -83,15 +96,23 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
     }
 
     override fun onBackPressed(): Boolean {
-        val tabView = tabSession.engineSession?.tabView ?: return false
+        val tabView = tabSession?.engineSession?.tabView ?: return false
 
         if (tabView.canGoBack()) {
             goBack()
             return true
         }
 
-        sessionManager.dropTab(tabSession.id)
+        tabSession?.id?.let {
+            sessionManager.dropTab(it)
+        }
         return false
+    }
+
+    fun switchToFocusTab() {
+        tabSession?.id?.let {
+            sessionManager.switchToTab(it)
+        }
     }
 
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
@@ -117,14 +138,6 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         })
     }
 
-    private fun loadUrl(url: String) {
-        if (url.isNotBlank()) {
-            tabSession.engineSession?.tabView?.apply {
-                loadUrl(url)
-            }
-        }
-    }
-
     companion object {
         const val EXTRA_URL = "url"
         private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
@@ -136,6 +149,16 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
             }
             return ContentTabFragment().apply {
                 arguments = args
+            }
+        }
+
+        fun newInstance(url: String, session: Session): ContentTabFragment {
+            val args = Bundle().apply {
+                putString(EXTRA_URL, url)
+            }
+            return ContentTabFragment().apply {
+                arguments = args
+                tabSession = session
             }
         }
     }

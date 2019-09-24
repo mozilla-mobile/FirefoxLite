@@ -305,6 +305,11 @@ class ContentTabHelper(private val contentTabViewContract: ContentTabViewContrac
         override fun onFocusChanged(session: Session?, factor: SessionManager.Factor) {
             contentTabViewContract.getChromeViewModel().onFocusedUrlChanged(session?.url)
             contentTabViewContract.getChromeViewModel().onFocusedTitleChanged(session?.title)
+            session?.url?.let {
+                if (!UrlUtils.isInternalErrorURL(it)) {
+                    contentTabViewContract.getDisplayUrlView()?.text = it
+                }
+            }
             if (session != null) {
                 val canGoBack = contentTabViewContract.getCurrentSession()?.canGoBack ?: false
                 val canGoForward = contentTabViewContract.getCurrentSession()?.canGoForward ?: false
