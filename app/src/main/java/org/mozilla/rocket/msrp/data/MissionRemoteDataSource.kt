@@ -13,6 +13,7 @@ import org.json.JSONObject
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.util.Result
+import java.io.IOException
 import java.util.TimeZone
 
 class MissionRemoteDataSource {
@@ -47,8 +48,8 @@ class MissionRemoteDataSource {
                     parseMissionListResponse(it)
                 },
                 onError = {
-                    log("fetch mission failed, msg=${it.message}")
-                    Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                    log("fetch mission failed, msg=$it")
+                    Result.error(error = RewardServiceError.NetworkError)
                 }
         )
     }
@@ -138,8 +139,8 @@ class MissionRemoteDataSource {
                     parseJoinMissionResponse(it)
                 },
                 onError = {
-                    log("join mission failed, msg=${it.message}")
-                    Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                    log("join mission failed, msg=$it")
+                    Result.error(error = RewardServiceError.NetworkError)
                 }
         )
     }
@@ -186,8 +187,8 @@ class MissionRemoteDataSource {
                     parseCheckInMissionResponse(it)
                 },
                 onError = {
-                    log("check-in mission failed, msg=${it.message}")
-                    Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                    log("check-in mission failed, msg=$it")
+                    Result.error(error = RewardServiceError.NetworkError)
                 }
         )
     }
@@ -241,8 +242,8 @@ class MissionRemoteDataSource {
                 parseQuitMissionResponse(it)
             },
             onError = {
-                log("join mission failed, msg=${it.message}")
-                Result.error(error = RewardServiceError.Unknown(it.message.orEmpty()))
+                log("join mission failed, msg=$it")
+                Result.error(error = RewardServiceError.NetworkError)
             }
         )
     }
@@ -338,6 +339,9 @@ class MissionRemoteDataSource {
                     }
                 }
             }
+        } catch (e: IOException) {
+            log("Redeem network error, msg=$e")
+            return@withContext Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.NetworkError)
         } catch (e: Exception) {
             Log.e(TAG, "Redeem error $e")
             return@withContext Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.Failure("Something is wrong"))
@@ -356,7 +360,7 @@ class MissionRemoteDataSource {
                     .withInterceptors(LoggingInterceptor())
                     .fetch(request)
                     .use { onSuccess(it) }
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             onError(e)
         }
     }
@@ -379,6 +383,7 @@ class MissionRemoteDataSource {
 
 @Suppress("UNUSED_PARAMETER")
 sealed class RewardServiceError {
+    object NetworkError : RewardServiceError()
     object MsrpDisabled : RewardServiceError()
     object Unauthorized : RewardServiceError()
     class Unknown(msg: String) : RewardServiceError()
@@ -397,6 +402,7 @@ data class CheckedInMission(
 )
 
 sealed class RedeemServiceError {
+    object NetworkError : RedeemServiceError()
     class UsedUp(val message: String) : RedeemServiceError()
     class NotReady(val message: String) : RedeemServiceError()
     class Failure(val message: String) : RedeemServiceError()
