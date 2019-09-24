@@ -33,6 +33,7 @@ class LoadMissionsUseCase(
     }
 
     private fun parseRewardError(error: RewardServiceError): Error = when (error) {
+        is RewardServiceError.NetworkError -> Error.NoConnectionError
         is RewardServiceError.MsrpDisabled,
         is RewardServiceError.Unauthorized,
         is RewardServiceError.Unknown -> Error.UnknownError

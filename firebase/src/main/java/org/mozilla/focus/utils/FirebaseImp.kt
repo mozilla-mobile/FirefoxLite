@@ -161,8 +161,8 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         // some http request(mission/redeem) needs user token to access the backend.
         // we need Firebase SDK to get the user token
         // TODO: maybe wrap this logic in a MSRP client SDK
-        firebaseAuth.currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
-            val token = task.result?.token
+        firebaseAuth.currentUser?.getIdToken(false)?.addOnCompleteListener { task ->
+            val token = if (task.isSuccessful) { task.result?.token } else { null }
             Log.d(TAG, "jwt====$token")
 
             func(token)
