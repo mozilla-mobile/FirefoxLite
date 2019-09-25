@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -59,8 +60,19 @@ class DebugActivity : AppCompatActivity() {
                     val selectedLocale = data[which]
                     FirebaseHelper.setUserProperty(appContext, "debug_locale", selectedLocale)
                     saveDebugLocale(selectedLocale)
+                    refreshAppConfigs()
                 }
                 .create().show()
+    }
+
+    private fun refreshAppConfigs() {
+        FirebaseHelper.refreshRemoteConfig { isSuccess, exception ->
+            if (isSuccess) {
+                Toast.makeText(this, "Refresh successfully", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Refresh failed: $exception", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     companion object {
