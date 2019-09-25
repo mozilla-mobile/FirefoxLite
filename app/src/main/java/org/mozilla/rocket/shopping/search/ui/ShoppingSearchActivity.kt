@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
+import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.rocket.privately.PrivateTabViewProvider
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
@@ -26,6 +27,26 @@ class ShoppingSearchActivity : BaseActivity(), TabsSessionProvider.SessionHost {
     override fun onDestroy() {
         super.onDestroy()
         sessionManager?.destroy()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.isStateSaved) {
+            return
+        }
+
+        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        navHost?.let { navFragment ->
+            navFragment.childFragmentManager.primaryNavigationFragment?.let { fragment ->
+                if (fragment is BackKeyHandleable) {
+                    val handled = fragment.onBackPressed()
+                    if (handled) {
+                        return
+                    }
+                }
+            }
+        }
+
+        super.onBackPressed()
     }
 
     override fun applyLocale() = Unit
