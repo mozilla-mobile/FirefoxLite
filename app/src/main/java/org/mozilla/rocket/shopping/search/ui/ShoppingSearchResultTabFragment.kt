@@ -179,6 +179,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
                     getCurrentSession()?.register(contentTabObserver)
                 }
             })
+            view_pager.setSwipeable(false)
         })
     }
 
