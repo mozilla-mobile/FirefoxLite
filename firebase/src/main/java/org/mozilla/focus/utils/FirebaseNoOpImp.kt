@@ -82,4 +82,7 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun getUserToken(func: (String?) -> Unit) {
     }
+
+    override fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit) {
+    }
 }

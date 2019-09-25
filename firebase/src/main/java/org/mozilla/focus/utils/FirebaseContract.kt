@@ -61,4 +61,6 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
     }
 
     abstract fun getUserToken(func: (String?) -> Unit)
+
+    abstract fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit)
 }

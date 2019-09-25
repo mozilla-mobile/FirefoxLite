@@ -15,12 +15,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.mozilla.focus.R
 import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.rocket.content.news.data.NewsSourceManager
+import org.mozilla.rocket.content.news.data.NewsSourceManager.Companion.PREF_INT_NEWS_PRIORITY
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.threadutils.ThreadUtils
-
 import java.util.HashMap
-
-import org.mozilla.rocket.content.news.data.NewsSourceManager.Companion.PREF_INT_NEWS_PRIORITY
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -314,5 +312,10 @@ object FirebaseHelper {
                 continuation.resume(p1)
             }
         })
+    }
+
+    @JvmStatic
+    fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit) {
+        firebaseContract.refreshRemoteConfig(callback)
     }
 }

@@ -85,7 +85,7 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
                 remoteConfig.activateFetched()
                 callback.onRemoteConfigFetched()
             } else {
-                Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ")
+                Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ${task.exception}")
             }
         }
     }
@@ -184,6 +184,19 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
             } else {
                 Log.d(TAG, "===fxuid====$fxUid====")
                 Log.d(TAG, "===oldFbUid====$oldFbUid====")
+            }
+        }
+    }
+
+    override fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit) {
+        remoteConfig.fetch(0).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "Firebase RemoteConfig Fetch Successfully ")
+                callback(true, null)
+                remoteConfig.activateFetched()
+            } else {
+                Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ${task.exception}")
+                callback(false, task.exception)
             }
         }
     }
