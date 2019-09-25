@@ -222,8 +222,17 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
             }
         })
         chromeViewModel.share.observe(this, Observer {
-            sendShareIntent()
+            chromeViewModel.currentUrl.value?.let { url ->
+                onShareClicked(url)
+            }
         })
+    }
+
+    private fun onShareClicked(url: String) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_TEXT, url)
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share_dialog_title)))
     }
 
     private fun sendHomeIntent(context: Context) {
@@ -239,23 +248,6 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
         )
-    }
-
-    private fun sendShareIntent() {
-        val list = shoppingSearchResultViewModel.shoppingSearchSites.value
-        list?.apply {
-            val index = view_pager.currentItem
-            val item = list[index]
-            val subject = item.title
-            val text = item.title
-            val share = Intent(Intent.ACTION_SEND)
-
-            share.type = "text/plain"
-            share.putExtra(Intent.EXTRA_SUBJECT, subject)
-            share.putExtra(Intent.EXTRA_TEXT, text)
-
-            startActivity(share)
-        }
     }
 
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
