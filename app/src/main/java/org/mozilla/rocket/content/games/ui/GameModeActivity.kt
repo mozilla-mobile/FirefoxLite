@@ -63,6 +63,16 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        sessionManager.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sessionManager.pause()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         sessionManager.unregister(contentTabObserver)

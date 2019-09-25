@@ -95,6 +95,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
 
     override fun onResume() {
         super.onResume()
+        sessionManager.resume()
         val uiActionFilter = IntentFilter()
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
@@ -103,6 +104,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
 
     override fun onPause() {
         super.onPause()
+        sessionManager.pause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
     }
 
