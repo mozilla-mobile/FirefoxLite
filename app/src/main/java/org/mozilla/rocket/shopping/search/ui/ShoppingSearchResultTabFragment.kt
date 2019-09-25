@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
@@ -39,7 +40,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
 import javax.inject.Inject
 
-class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
+class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, BackKeyHandleable {
 
     @Inject
     lateinit var viewModelCreator: Lazy<ShoppingSearchResultViewModel>
@@ -59,6 +60,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     private val safeArgs: ShoppingSearchResultTabFragmentArgs by navArgs()
     private val searchKeyword by lazy { safeArgs.searchKeyword }
+    private val tabItems = arrayListOf<TabItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -144,6 +146,22 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     override fun getFullScreenContainerView(): ViewGroup = video_container
 
+    override fun onBackPressed(): Boolean {
+        val tabItem =
+            if (tabItems.size > view_pager.currentItem) {
+                tabItems[view_pager.currentItem]
+            } else {
+                null
+            }
+        val tabView = tabItem?.session?.engineSession?.tabView ?: return false
+        if (tabView.canGoBack()) {
+            goBack()
+            return true
+        }
+
+        return false
+    }
+
     private fun setupBottomBar(rootView: View) {
         val bottomBar = rootView.findViewById<BottomBar>(R.id.bottom_bar)
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
@@ -172,9 +190,10 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
 
     private fun initViewPager() {
         shoppingSearchResultViewModel.shoppingSearchSites.observe(this, Observer { shoppingSearchSites ->
-            val tabItems = shoppingSearchSites.mapIndexed { index, site ->
+            tabItems.clear()
+            tabItems.addAll(shoppingSearchSites.mapIndexed { index, site ->
                 TabItem(site.title, site.searchUrl, createTabSession(site.searchUrl, index == 0))
-            }
+            })
             val shoppingSearchTabsAdapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
             view_pager.adapter = shoppingSearchTabsAdapter
             view_pager.clearOnPageChangeListeners()
