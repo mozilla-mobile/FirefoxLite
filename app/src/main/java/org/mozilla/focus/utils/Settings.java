@@ -118,7 +118,7 @@ public class Settings {
     }
 
     public boolean shouldShowFirstrun() {
-        return newFeatureNotice.shouldShowLiteUpdate() || !newFeatureNotice.hasShownFirstRun();
+        return newFeatureNotice.shouldShowLiteUpdate() && newFeatureNotice.hasShownFirstRun();
     }
 
     public boolean shouldSaveToRemovableStorage() {

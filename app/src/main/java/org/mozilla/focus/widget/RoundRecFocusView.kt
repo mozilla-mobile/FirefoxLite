@@ -6,18 +6,22 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import org.mozilla.focus.utils.ViewUtils
 
-class FocusView : View {
+class RoundRecFocusView : View {
     private val transparentPaint: Paint = Paint()
     private val path = Path()
     private var centerX: Int = 0
     private var centerY: Int = 0
     private var statusBarOffset = 0
     private var radius: Int = 0
-    private var backgroundDimColor: Int = 0
+    private var rectangleHeight: Int = 0
+    private var rectangleWidth: Int = 0
+    private var backgroundDimColor = 0
+    private lateinit var rectF: RectF
 
     constructor(context: Context) : super(context) {
         initPaints()
@@ -31,14 +35,21 @@ class FocusView : View {
         initPaints()
     }
 
-    /** FocusView will draw a spotlight circle(total transparent) at coordinates X = centerX and Y = centerY with radius.
-     * The view's background except the spotlight circle is half-transparent. */
-    constructor(context: Context, centerX: Int, centerY: Int, radius: Int, backgroundColor: Int) : super(context) {
+    constructor(context: Context, centerX: Int, centerY: Int, offsetY: Int, radius: Int, height: Int, width: Int, backgroundColor: Int) : super(context) {
         this.centerX = centerX
-        this.centerY = centerY
+        this.centerY = centerY - offsetY
         this.statusBarOffset = ViewUtils.getStatusBarHeight(context as Activity)
         this.radius = radius
+        this.rectangleHeight = height
+        this.rectangleWidth = width
         this.backgroundDimColor = backgroundColor
+
+        val left = centerX - rectangleWidth / 2
+        val top = this.centerY - rectangleHeight / 2 - statusBarOffset
+        val right = centerX + rectangleWidth / 2
+        val bottom = this.centerY + rectangleHeight / 2 - statusBarOffset
+        this.rectF = RectF(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
+
         initPaints()
     }
 
@@ -51,11 +62,10 @@ class FocusView : View {
         super.onDraw(canvas)
 
         path.reset()
-
-        path.addCircle(centerX.toFloat(), (centerY - statusBarOffset).toFloat(), radius.toFloat(), Path.Direction.CW)
+        path.addRoundRect(rectF, radius.toFloat(), radius.toFloat(), Path.Direction.CW)
         path.fillType = Path.FillType.INVERSE_EVEN_ODD
 
-        canvas.drawCircle(centerX.toFloat(), (centerY - statusBarOffset).toFloat(), radius.toFloat(), transparentPaint)
+        canvas.drawRoundRect(rectF, radius.toFloat(), radius.toFloat(), transparentPaint)
         canvas.clipPath(path)
         canvas.drawColor(backgroundDimColor)
     }

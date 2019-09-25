@@ -14,6 +14,10 @@ import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.home.onboarding.CheckFirstRunUseCase
+import org.mozilla.rocket.home.onboarding.CheckLiteUpdate
+import org.mozilla.rocket.home.onboarding.CompleteFirstRunUseCase
+import org.mozilla.rocket.home.onboarding.CompleteLiteUpdate
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -31,7 +35,11 @@ class HomeViewModel(
     getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
-    private val isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase
+    private val isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
+    checkFirstRunUseCase: CheckFirstRunUseCase,
+    completeFirstRunUseCase: CompleteFirstRunUseCase,
+    checkLiteUpdate: CheckLiteUpdate,
+    completeLiteUpdate: CompleteLiteUpdate
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -50,10 +58,16 @@ class HomeViewModel(
     val openBrowser = SingleLiveEvent<Site>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
+    val showOnboardingSpotlight = SingleLiveEvent<Unit> ()
 
     init {
         getLogoManNotificationUseCase()?.let { notification ->
             logoManNotification.value = StateNotification(notification, true)
+        }
+        if (!checkFirstRunUseCase() || !checkLiteUpdate()) {
+            completeFirstRunUseCase()
+            completeLiteUpdate()
+            showOnboardingSpotlight.call()
         }
     }
 
