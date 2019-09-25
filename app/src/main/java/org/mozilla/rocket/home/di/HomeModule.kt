@@ -21,6 +21,10 @@ import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
+import org.mozilla.rocket.home.onboarding.CheckFirstRunUseCase
+import org.mozilla.rocket.home.onboarding.CheckLiteUpdate
+import org.mozilla.rocket.home.onboarding.CompleteFirstRunUseCase
+import org.mozilla.rocket.home.onboarding.CompleteLiteUpdate
 import javax.inject.Singleton
 
 @Module
@@ -38,7 +42,11 @@ object HomeModule {
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
         dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
-        isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase
+        isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
+        checkFirstRunUseCase: CheckFirstRunUseCase,
+        completeFirstRunUseCase: CompleteFirstRunUseCase,
+        checkLiteUpdate: CheckLiteUpdate,
+        completeLiteUpdate: CompleteLiteUpdate
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -49,7 +57,11 @@ object HomeModule {
         getLogoManNotificationUseCase,
         dismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase,
-        isShoppingButtonEnabledUseCase
+        isShoppingButtonEnabledUseCase,
+        checkFirstRunUseCase,
+        completeFirstRunUseCase,
+        checkLiteUpdate,
+        completeLiteUpdate
     )
 
     @JvmStatic
@@ -123,4 +135,28 @@ object HomeModule {
     @Provides
     fun provideIsShoppingButtonEnabledUseCase(shoppingSearchRepository: ShoppingSearchRepository): IsShoppingButtonEnabledUseCase =
             IsShoppingButtonEnabledUseCase(shoppingSearchRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCheckFirstRunUseCase(appContext: Context): CheckFirstRunUseCase =
+        CheckFirstRunUseCase(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCheckLiteUpdateUseCase(appContext: Context): CheckLiteUpdate =
+        CheckLiteUpdate(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCompleteFirstRunUseCase(appContext: Context): CompleteFirstRunUseCase =
+        CompleteFirstRunUseCase(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCompleteLiteUpdateUseCase(appContext: Context): CompleteLiteUpdate =
+        CompleteLiteUpdate(appContext)
 }
