@@ -73,16 +73,6 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         observeChromeAction()
     }
 
-    override fun onResume() {
-        super.onResume()
-        sessionManager.resume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        sessionManager.pause()
-    }
-
     override fun onDestroyView() {
         tabViewSlot.removeAllViews()
         super.onDestroyView()

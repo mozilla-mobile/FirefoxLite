@@ -109,6 +109,16 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        sessionManager.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        sessionManager.pause()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
 
