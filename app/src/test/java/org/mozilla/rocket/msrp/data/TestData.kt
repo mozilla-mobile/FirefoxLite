@@ -21,13 +21,7 @@ object TestData {
         expiredDate = 12345,
         joinEndDate = 54321,
 
-        missionProgress = MissionProgress.TypeDaily(
-            // progress, TODO: make it another class
-            joinDate = null,
-            currentDay = null,
-            totalDays = 10,
-            message = ""
-        )
+        missionProgress = null
     )
 
     val mission02 = Mission(
@@ -50,8 +44,8 @@ object TestData {
 
         missionProgress = MissionProgress.TypeDaily(
             // progress, TODO: make it another class
-            joinDate = null,
-            currentDay = null,
+            joinDate = 0,
+            currentDay = 1,
             totalDays = 10,
             message = ""
         )

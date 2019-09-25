@@ -21,3 +21,18 @@ data class Result<out T, E>(
         object Error : Status()
     }
 }
+
+inline fun <T, E> Result<T, E>.get(fallback: (E) -> Unit): T? {
+    return when (status) {
+        is Result.Status.Success -> data ?: error("Result status 'success' with data: null")
+        is Result.Status.Error -> {
+            val nonNullError = error ?: error("Result status 'Error' with error: null")
+            fallback(nonNullError)
+            return null
+        }
+    }
+}
+
+inline fun <T, E> Result<T, E>.getNotNull(fallback: (E) -> Unit): T {
+    return get(fallback) ?: error("You must return out before the end of the fallback")
+}

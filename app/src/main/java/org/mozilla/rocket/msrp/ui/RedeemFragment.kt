@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_redeem.coupon_code
 import kotlinx.android.synthetic.main.fragment_redeem.coupon_root
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.msrp.data.RedeemResult
 import org.mozilla.rocket.msrp.data.RewardCouponDoc
 import org.mozilla.rocket.widget.FxToast
 import javax.inject.Inject
@@ -47,45 +45,50 @@ class RedeemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = getActivityViewModel(missionViewModelCreator)
 
-        val redeemUrl =
-            arguments?.getString(ARGUMENT_URL)
-                ?: "https://rocket-dev01.appspot.com/api/v1/redeem/mission_daily?mid=AZ19ZOreJer4cAZMilrQ" // for development
+        // TODO: Evan
+//        val redeemUrl =
+//            arguments?.getString(ARGUMENT_URL)
+//                ?: "https://rocket-dev01.appspot.com/api/v1/redeem/mission_daily?mid=AZ19ZOreJer4cAZMilrQ" // for development
 //                throw IllegalStateException("Use UI to navigate to RedeemFragment")
 
         // consume all touch events to prevent from clicking through
         coupon_root.setOnTouchListener { _, _ -> true }
 
-        tryRedeem(redeemUrl)
+        // TODO: Evan
+//        tryRedeem(redeemUrl)
 
         observeRedeemResult()
     }
 
-    private fun tryRedeem(redeemUrl: String) {
-        viewModel.redeem(redeemUrl)
-    }
+    // TODO: Evan
+//    private fun tryRedeem(redeemUrl: String) {
+//        viewModel.redeem(redeemUrl)
+//    }
 
     private fun observeRedeemResult() {
-        viewModel.redeemResult.observe(viewLifecycleOwner, Observer { redeemResult ->
-            updateUi(redeemResult)
-        })
+        // TODO: Evan
+//        viewModel.redeemResult.observe(viewLifecycleOwner, Observer { redeemResult ->
+//            updateUi(redeemResult)
+//        })
     }
 
-    private fun updateUi(redeemResult: RedeemResult?) {
-
-        when (redeemResult) {
-            null -> {
-            } // init state,
-            is RedeemResult.Success -> showSuccessUi(redeemResult.rewardCouponDoc)
-            is RedeemResult.UsedUp -> toast(redeemResult.message)
-            is RedeemResult.NotReady -> toast(redeemResult.message)
-            is RedeemResult.Failure -> toast(redeemResult.message)
-            is RedeemResult.NotLogin -> {
-                toast(redeemResult.message)
-                // TODO: Evan
+    // TODO: Evan
+//    private fun updateUi(redeemResult: RedeemResult?) {
+//
+//        when (redeemResult) {
+//            null -> {
+//            } // init state,
+//            is RedeemResult.Success -> showSuccessUi(redeemResult.rewardCouponDoc)
+//            is RedeemResult.UsedUp -> toast(redeemResult.message)
+//            is RedeemResult.NotReady -> toast(redeemResult.message)
+//            is RedeemResult.Failure -> toast(redeemResult.message)
+//            is RedeemResult.NotLogin -> {
+//                toast(redeemResult.message)
+//                // TODO: Evan
 //                ScreenNavigator.get(context).addFxLogin()
-            }
-        }
-    }
+//            }
+//        }
+//    }
 
     private fun showSuccessUi(rewardCouponDoc: RewardCouponDoc) {
         coupon_code.text = rewardCouponDoc.code
