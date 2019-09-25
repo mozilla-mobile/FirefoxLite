@@ -34,6 +34,7 @@ import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.BrowsingSession
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
@@ -430,8 +431,9 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         override fun handleExternalUrl(url: String?): Boolean {
-            // do nothing, exist for interface compatibility only.
-            return false
+            return fragment.context?.let {
+                IntentUtils.handleExternalUri(it, url)
+            } ?: false
         }
 
         override fun onShowFileChooser(
