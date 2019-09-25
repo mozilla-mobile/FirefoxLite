@@ -325,6 +325,12 @@
         <item name="android:spacing">0dp</item>
     </style>
 
+    <style name="Headline5">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:spacing">0dp</item>
+    </style>
+
     <style name="HintTextAppearance">
         <item name="android:textColor">@color/paletteBlack100</item>
         <item name="android:textSize">12sp</item>

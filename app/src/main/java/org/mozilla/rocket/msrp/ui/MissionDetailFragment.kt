@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dagger.Lazy
 import org.mozilla.focus.R
@@ -43,10 +41,10 @@ class MissionDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = getActivityViewModel(missionViewModelCreator)
-        viewModel.missions.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(context, "size:${it?.size}", Toast.LENGTH_LONG).show()
-        })
-        viewModel.loadMissions()
+//        viewModel.missions.observe(viewLifecycleOwner, Observer {
+//            Toast.makeText(context, "size:${it?.size}", Toast.LENGTH_LONG).show()
+//        })
+//        viewModel.loadMissions()
     }
 
     private fun openFxLoginPage(prevUid: String) {

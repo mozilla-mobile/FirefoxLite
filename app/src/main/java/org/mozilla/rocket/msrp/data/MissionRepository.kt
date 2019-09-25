@@ -1,6 +1,8 @@
 package org.mozilla.rocket.msrp.data
 
 import android.util.Log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
 import mozilla.components.concept.fetch.Response
@@ -10,8 +12,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.utils.FirebaseHelper
-import java.util.TimeZone
 import org.mozilla.rocket.util.Result
+import java.util.TimeZone
 
 open class MissionRepository {
 
@@ -30,16 +32,16 @@ open class MissionRepository {
      *
      * @return a list of [Mission]s the user can join or has joined
      */
-    open fun fetchMission(accessToken: String?): Result<List<Mission>, RewardServiceError> {
+    open suspend fun fetchMission(accessToken: String?): Result<List<Mission>, RewardServiceError> = withContext(Dispatchers.IO) {
         val token = accessToken
-                ?: return Result.error(error = RewardServiceError.Unauthorized)
+                ?: return@withContext Result.error<List<Mission>, RewardServiceError>(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return Result.error(error = RewardServiceError.MsrpDisabled)
+            return@withContext Result.error<List<Mission>, RewardServiceError>(error = RewardServiceError.MsrpDisabled)
         }
 
         val endpoint = "$missionListEndpoint?tz=${TimeZone.getDefault().id}"
-        return sendRequest(
+        return@withContext sendRequest(
             request = Request(url = endpoint, headers = createHeader(token)),
             onSuccess = {
                 parseMissionListResponse(it)
@@ -268,10 +270,10 @@ open class MissionRepository {
         }
     }
 
-    fun redeem(userToken: String?, redeemUrl: String): RedeemResult {
+    suspend fun redeem(userToken: String?, redeemUrl: String): Result<RewardCouponDoc, RedeemServiceError> = withContext(Dispatchers.IO) {
 
         if (userToken == null) {
-            return RedeemResult.NotLogin("Please login first")
+            return@withContext Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.NotLogin("Please login first"))
         }
         val request = Request(
             url = redeemUrl,
@@ -287,26 +289,26 @@ open class MissionRepository {
             // pretending we are doing some network request here...
             // since we only have one data source, we'll just do it in the repository.
             HttpURLConnectionClient().withInterceptors(LoggingInterceptor()).fetch(request).use { response ->
-                return when {
+                return@withContext when {
                     response.status == 500 -> { // 500 is define in the server spec...in the future.
                         val resJson = JSONObject(response.body.string())
                         val message = resJson.optString("message")
-                        RedeemResult.Failure(message) // return failure with message
+                        Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.Failure(message)) // return failure with message
                     }
                     response.status == 400 -> {
                         val resJson = JSONObject(response.body.string())
                         val message = resJson.optString("message")
-                        RedeemResult.InvalidRewardType(message) // return failure with message
+                        Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.InvalidRewardType(message)) // return failure with message
                     }
                     response.status == 403 -> {
                         val resJson = JSONObject(response.body.string())
                         val message = resJson.optString("message")
-                        RedeemResult.NotReady(message) // return failure with message
+                        Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.NotReady(message)) // return failure with message
                     }
                     response.status == 404 -> {
                         val resJson = JSONObject(response.body.string())
                         val message = resJson.optString("message")
-                        RedeemResult.UsedUp(message) // return failure with message
+                        Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.UsedUp(message)) // return failure with message
                     }
                     response.status == 200 -> {
                         val responseStr = response.body.string()
@@ -325,20 +327,20 @@ open class MissionRepository {
                             resJson.optLong("updated_timestamp")
                         )
 
-                        RedeemResult.Success(reward) // return failure with message
+                        Result.success(reward) // return failure with message
                     }
                     else -> {
                         if (BuildConfig.DEBUG) {
                             throw RuntimeException("Should not reach this")
                         } else {
-                            RedeemResult.Failure("Something is wrong")
+                            Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.Failure("Something is wrong"))
                         }
                     }
                 }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Redeem error $e")
-            return RedeemResult.Failure("Something is wrong")
+            return@withContext Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.Failure("Something is wrong"))
         }
     }
 
@@ -375,17 +377,8 @@ open class MissionRepository {
     }
 }
 
-/**
- * Force the client to handle possible exceptions
- * */
-sealed class RewardServiceException : RuntimeException() {
-    class ServerErrorException : RewardServiceException()
-    class AuthorizationException : RewardServiceException()
-}
-
 @Suppress("UNUSED_PARAMETER")
 sealed class RewardServiceError {
-
     object MsrpDisabled : RewardServiceError()
     object Unauthorized : RewardServiceError()
     class Unknown(msg: String) : RewardServiceError()
@@ -403,20 +396,13 @@ data class CheckedInMission(
     val progress: MissionProgress
 )
 
-/**
- * copy from backend code
- * TODO: share the code in the future.
- * */
-sealed class RedeemResult {
-    class Success(val rewardCouponDoc: RewardCouponDoc) : RedeemResult()
-    class UsedUp(val message: String) : RedeemResult()
-    class NotReady(val message: String) : RedeemResult()
-    class Failure(val message: String) : RedeemResult()
-    class InvalidRewardType(val message: String) : RedeemResult()
-    class NotLogin(val message: String) : RedeemResult()
+sealed class RedeemServiceError {
+    class UsedUp(val message: String) : RedeemServiceError()
+    class NotReady(val message: String) : RedeemServiceError()
+    class Failure(val message: String) : RedeemServiceError()
+    class InvalidRewardType(val message: String) : RedeemServiceError()
+    class NotLogin(val message: String) : RedeemServiceError()
 }
-
-class RedeemResponse(var rewardCouponDoc: RewardCouponDoc)
 
 class RewardCouponDoc(
     var rid: String? = null,
