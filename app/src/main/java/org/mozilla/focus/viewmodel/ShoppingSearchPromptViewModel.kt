@@ -11,7 +11,7 @@ class ShoppingSearchPromptViewModel(
     private val getShoppingSiteUseCase: GetShoppingSitesUseCase
 ) : ViewModel() {
     val isUrlShoppingSite = MutableLiveData<Boolean>()
-    val shoppingSiteList: LiveData<List<ShoppingSiteItem>> = getShoppingSiteUseCase.invoke()
+    val shoppingSiteList: LiveData<List<ShoppingSiteItem>> = getShoppingSiteUseCase()
 
     val openShoppingSearch = SingleLiveEvent<Unit>()
 
