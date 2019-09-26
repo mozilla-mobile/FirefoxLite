@@ -11,6 +11,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,6 +49,7 @@ public class MenuTest {
      * - Third row : Find in page, Clear cache, Settings, Exit
      */
     @Test
+    @Ignore
     public void checkMenuLayout() {
 
         activityRule.launchActivity(new Intent());

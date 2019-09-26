@@ -6,6 +6,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,7 @@ public class ClearCacheTest {
      * 4. Check toast message "cache cleared"
      */
     @Test
+    @Ignore
     public void clearCache() {
 
         // Tap menu
