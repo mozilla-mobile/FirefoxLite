@@ -309,7 +309,7 @@
   <string name="shopping_search_prompt_message_body">Bandingkan harga di berbagai toko online dengan fitur pintar Cari Harga.</string>
   <string name="shopping_search_prompt_message_button">Cari</string>
   <!--Switch UI Onboarding-->
-  <string name="shopping_switch_ui_onboarding_body">Gulir ke kiri untuk melihat toko online lainnya, atau ketuk tombol ini untuk meng-edit.</string>
+  <string name="shopping_switch_ui_onboarding_body">Ketuk situs belanja di bawah ini untuk menelusuri lebih banyak hasil, atau ketuk tombol ini untuk meng-edit.</string>
   <string name="shopping_switch_ui_onboarding_button">Oke</string>
 
   <!--Artboard Name: 2.2 Switch UI Preference Behaviors-->
