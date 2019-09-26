@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.ecommerce.data
 
 import android.content.Context
+import androidx.fragment.app.Fragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -13,6 +14,9 @@ import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
+import org.mozilla.rocket.content.ecommerce.ui.DealFragment
+import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.util.AssetsUtils
@@ -68,6 +72,10 @@ class ShoppingRepo(private val appContext: Context) {
 
     private fun getVoucherItems(): List<Voucher>? =
             FirebaseHelper.getFirebase().getRcString("str_e_commerce_shoppinglinks").jsonStringToVoucherItems()
+
+    fun getShoppingTabItems(): List<ShoppingTabItem> =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.shopping_tab_items)
+                ?.jsonStringToShoppingTabItems() ?: emptyList()
 }
 
 private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
@@ -163,3 +171,30 @@ private fun createVoucherItem(jsonObject: JSONObject): Voucher =
             jsonObject.optString(VoucherKey.KEY_IMAGE),
             jsonObject.optString(VoucherKey.KEY_SOURCE)
         )
+
+private fun String.jsonStringToShoppingTabItems(): List<ShoppingTabItem>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> jsonObject.getInt("type") }
+                .map { type -> createShoppingTabItem(type) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+sealed class ShoppingTabItem(val fragment: Fragment, val titleResId: Int) {
+    class Deal : ShoppingTabItem(DealFragment(), R.string.shopping_vertical_category_1)
+    class Coupon : ShoppingTabItem(CouponFragment(), R.string.shopping_vertical_category_2)
+    class Voucher : ShoppingTabItem(VoucherFragment(), R.string.shopping_vertical_category_3)
+}
+
+private fun createShoppingTabItem(type: Int): ShoppingTabItem =
+        when (type) {
+            1 -> ShoppingTabItem.Deal()
+            2 -> ShoppingTabItem.Coupon()
+            3 -> ShoppingTabItem.Voucher()
+            else -> error("Unsupported shopping tab item type $type")
+        }

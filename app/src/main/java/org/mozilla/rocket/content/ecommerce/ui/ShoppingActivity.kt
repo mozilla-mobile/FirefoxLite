@@ -40,10 +40,12 @@ class ShoppingActivity : FragmentActivity() {
     }
 
     private fun initViewPager() {
-        adapter = ShoppingTabsAdapter(supportFragmentManager, this)
-        view_pager.apply {
-            adapter = this@ShoppingActivity.adapter
-        }
+        shoppingViewModel.shoppingTabItems.observe(this, Observer { items ->
+            adapter = ShoppingTabsAdapter(supportFragmentManager, this, items)
+            view_pager.apply {
+                adapter = this@ShoppingActivity.adapter
+            }
+        })
     }
 
     private fun initTabLayout() {
