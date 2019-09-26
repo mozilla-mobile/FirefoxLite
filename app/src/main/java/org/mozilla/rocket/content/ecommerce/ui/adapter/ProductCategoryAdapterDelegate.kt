@@ -27,8 +27,7 @@ class ProductCategoryViewHolder(
 
     init {
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
-        val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
-        product_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth, padding))
+        product_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth))
         product_list.adapter = this@ProductCategoryViewHolder.adapter
         val snapHelper = StartSnapHelper()
         snapHelper.attachToRecyclerView(product_list)

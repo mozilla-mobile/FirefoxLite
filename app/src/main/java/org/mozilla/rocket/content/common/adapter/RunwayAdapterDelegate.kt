@@ -28,8 +28,7 @@ class RunwayViewHolder(
 
     init {
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
-        val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
-        runway_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth, padding))
+        runway_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth))
         runway_list.adapter = this@RunwayViewHolder.adapter
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(runway_list)
