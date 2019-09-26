@@ -30,6 +30,7 @@ public class AppConfigWrapper {
     static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPON_BANNER_DEFAULT = "";
+    static final boolean RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT = true;
 
 
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */

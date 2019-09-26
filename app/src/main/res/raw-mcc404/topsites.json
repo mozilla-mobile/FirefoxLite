@@ -1,59 +1,87 @@
 [
   {
     "id": -1,
-    "url": "https://m.youtube.com/",
-    "title": "YouTube",
-    "favicon": "ic_youtube.png",
+    "url": "https://m.youtube.com",
+    "title": "Youtube",
+    "favicon": "",
     "viewCount": 20
   },
   {
     "id": -2,
-    "url": "https://m.facebook.com/",
+    "url": "https://m.facebook.com",
     "title": "Facebook",
-    "favicon": "ic_facebook.png",
+    "favicon": "",
     "viewCount": 18
   },
   {
     "id": -3,
-    "url": "https://www.wikipedia.org/",
+    "url": "https://www.wikipedia.org",
     "title": "Wikipedia",
-    "favicon": "ic_wikipedia.png",
+    "favicon": "",
     "viewCount": 16
   },
   {
     "id": -4,
-    "url": "https://www.flipkart.com",
-    "title": "Flipkart",
-    "favicon": "ic_flipkart.png",
+    "url": "https://www.indiatimes.com",
+    "title": "Indiatimes",
+    "favicon": "",
     "viewCount": 14
   },
   {
     "id": -5,
-    "url": "https://m.indiatimes.com/",
-    "title": "Indiatimes",
-    "favicon": "ic_indiatimes.png",
+    "url": "https://stackoverflow.com",
+    "title": "Stackoverflow",
+    "favicon": "",
     "viewCount": 12
   },
   {
     "id": -6,
-    "url": "https://www.instagram.com/",
-    "title": "Instagram",
-    "favicon": "ic_instagram.png",
+    "url": "https://www.hotstar.com",
+    "title": "Hotstar",
+    "favicon": "",
     "viewCount": 10
   },
   {
     "id": -7,
-    "url": "https://www.hotstar.com/",
-    "title": "Hotstar",
-    "favicon": "ic_hotstar.png",
+    "url": "mobile.twitter.com",
+    "title": "Twitter",
+    "favicon": "",
     "viewCount": 8
   },
   {
     "id": -8,
-    "url": "https://www.linkedin.com/",
+    "url": "https://www.linkedin.com",
     "title": "Linkedin",
-    "favicon": "ic_linkedin.png",
+    "favicon": "",
     "viewCount": 6
+  },
+  {
+    "id": -9,
+    "url": "https://www.ndtv.com",
+    "title": "NDTV",
+    "favicon": "",
+    "viewCount": 5
+  },
+  {
+    "id": -10,
+    "url": "https://www.reddit.com",
+    "title": "Reddit",
+    "favicon": "",
+    "viewCount": 4
+  },
+  {
+    "id": -11,
+    "url": "https://www.instagram.com",
+    "title": "Instagram",
+    "favicon": "",
+    "viewCount": 3
+  },
+  {
+    "id": -12,
+    "url": "https://medium.com",
+    "title": "Medium",
+    "favicon": "",
+    "viewCount": 2
   }
 
 ]

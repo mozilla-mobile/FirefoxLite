@@ -1,44 +1,87 @@
 [
   {
     "id": -1,
-    "url": "http://m.tribunnews.com/",
-    "title": "Tribunnews",
-    "favicon": "ic_tribunnews.png",
-    "viewCount": 16
+    "url": "https://www.okezone.com",
+    "title": "Okezone",
+    "favicon": "",
+    "viewCount": 20
   },
   {
     "id": -2,
-    "url": "https://m.youtube.com/",
-    "title": "YouTube",
-    "favicon": "ic_youtube.png",
-    "viewCount": 14
+    "url": "http://m.tribunnews.com",
+    "title": "Tribunnews",
+    "favicon": "",
+    "viewCount": 18
   },
   {
     "id": -3,
-    "url": "https://detik.com/",
-    "title": "Detik",
-    "favicon": "ic_detik.png",
-    "viewCount": 12
+    "url": "https://m.youtube.com",
+    "title": "Youtube",
+    "favicon": "",
+    "viewCount": 16
   },
   {
     "id": -4,
-    "url": "https://www.okezone.com/",
-    "title": "Okezone",
-    "favicon": "ic_okezone.png",
-    "viewCount": 10
+    "url": "https://detik.com",
+    "title": "Detik",
+    "favicon": "",
+    "viewCount": 14
   },
   {
     "id": -5,
-    "url": "https://www.sindonews.com/",
+    "url": "https://www.sindonews.com",
     "title": "SINDOnews",
-    "favicon": "ic_sindonews.png",
-    "viewCount": 8
+    "favicon": "",
+    "viewCount": 12
   },
   {
     "id": -6,
-    "url": "http://www.kompas.com/",
+    "url": "https://m.liputan6.com",
+    "title": "Liputan6",
+    "favicon": "",
+    "viewCount": 10
+  },
+  {
+    "id": -7,
+    "url": "https://www.kompas.com",
     "title": "Kompas",
-    "favicon": "ic_kompas.png",
+    "favicon": "",
+    "viewCount": 8
+  },
+  {
+    "id": -8,
+    "url": "https://www.grid.id",
+    "title": "Grid.id",
+    "favicon": "",
     "viewCount": 6
+  },
+  {
+    "id": -9,
+    "url": "https://www.idntimes.com",
+    "title": "IDN TIMES",
+    "favicon": "",
+    "viewCount": 5
+  },
+  {
+    "id": -10,
+    "url": "https://m.kumparan.com",
+    "title": "Kumparan",
+    "favicon": "",
+    "viewCount": 4
+  },
+  {
+    "id": -11,
+    "url": "https://m.suara.com",
+    "title": "Suara",
+    "favicon": "",
+    "viewCount": 3
+  },
+  {
+    "id": -12,
+    "url": "https://m.cnnindonesia.com/",
+    "title": "CNN Indonesia",
+    "favicon": "",
+    "viewCount": 2
   }
+
 ]
