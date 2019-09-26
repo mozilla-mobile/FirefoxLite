@@ -10,6 +10,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
+import org.mozilla.rocket.content.ecommerce.data.ShoppingTabItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 import org.mozilla.rocket.download.SingleLiveEvent
 
@@ -46,6 +47,11 @@ class ShoppingViewModel(
         }
     }
     val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
+
+    private val _shoppingTabItems by lazy {
+        MutableLiveData<List<ShoppingTabItem>>().apply { value = shoppingRepo.getShoppingTabItems() }
+    }
+    val shoppingTabItems: LiveData<List<ShoppingTabItem>> = _shoppingTabItems
 
     val openProduct = SingleLiveEvent<String>()
     val openCoupon = SingleLiveEvent<String>()
