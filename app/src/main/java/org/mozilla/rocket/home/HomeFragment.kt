@@ -51,12 +51,17 @@ import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
+import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
 import org.mozilla.rocket.home.topsites.ui.SiteViewHolder.Companion.TOP_SITE_LONG_CLICK_TARGET
+import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DEFAULT
+import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DOWNLOADING
+import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_UNREAD
+import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_WARNING
 import org.mozilla.rocket.msrp.ui.RewardActivity
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
@@ -68,9 +73,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     lateinit var homeViewModelCreator: Lazy<HomeViewModel>
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
+    @Inject
+    lateinit var downloadIndicatorViewModelCreator: Lazy<DownloadIndicatorViewModel>
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var chromeViewModel: ChromeViewModel
+    private lateinit var downloadIndicatorViewModel: DownloadIndicatorViewModel
     private lateinit var themeManager: ThemeManager
     private lateinit var topSitesAdapter: DelegateAdapter
     private lateinit var contentServiceSpotlightDialog: Dialog
@@ -88,6 +96,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         super.onCreate(savedInstanceState)
         homeViewModel = getActivityViewModel(homeViewModelCreator)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
+        downloadIndicatorViewModel = getActivityViewModel(downloadIndicatorViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -112,9 +121,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             chromeViewModel.showUrlInput.call()
             TelemetryWrapper.showSearchBarHome()
         }
-        home_fragment_menu_button.setOnClickListener {
-            chromeViewModel.showMenu.call()
-            TelemetryWrapper.showMenuHome()
+        home_fragment_menu_button.apply {
+            setOnClickListener {
+                chromeViewModel.showMenu.call()
+                TelemetryWrapper.showMenuHome()
+            }
+            setOnLongClickListener {
+                chromeViewModel.showDownloadPanel.call()
+                TelemetryWrapper.longPressDownloadIndicator()
+                true
+            }
         }
         home_fragment_tab_counter.setOnClickListener {
             chromeViewModel.showTabTray.call()
@@ -137,6 +153,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         private_mode_button.setOnClickListener { homeViewModel.onPrivateModeButtonClicked() }
         homeViewModel.openPrivateMode.observe(this, Observer {
             chromeViewModel.togglePrivateMode.call()
+        })
+        downloadIndicatorViewModel.downloadIndicatorObservable.observe(this, Observer {
+            home_fragment_menu_button.apply {
+                when (it) {
+                    DownloadIndicatorViewModel.Status.DOWNLOADING -> setDownloadState(DOWNLOAD_STATE_DOWNLOADING)
+                    DownloadIndicatorViewModel.Status.UNREAD -> setDownloadState(DOWNLOAD_STATE_UNREAD)
+                    DownloadIndicatorViewModel.Status.WARNING -> setDownloadState(DOWNLOAD_STATE_WARNING)
+                    else -> setDownloadState(DOWNLOAD_STATE_DEFAULT)
+                }
+            }
         })
     }
 
@@ -264,6 +290,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             home_fragment_menu_button.setNightMode(isNightMode)
             account_layout.setNightMode(isNightMode)
             shopping_button.setNightMode(isNightMode)
+            private_mode_button.setNightMode(isNightMode)
         })
     }
 

@@ -189,7 +189,7 @@
                 android:layout_marginStart="12dp"
                 android:elevation="1dp"
                 android:src="@drawable/ic_search_home"
-                android:tint="@color/home_shopping_search"
+                android:tint="@color/home_search_bar_widget"
                 app:layout_constraintBottom_toBottomOf="@id/home_fragment_fake_input"
                 app:layout_constraintStart_toStartOf="@id/home_fragment_fake_input"
                 app:layout_constraintTop_toTopOf="@id/home_fragment_fake_input" />
@@ -209,15 +209,12 @@
                 app:layout_constraintStart_toEndOf="@id/home_fragment_fake_input_icon"
                 app:layout_constraintTop_toTopOf="@id/home_fragment_fake_input" />
 
-            <org.mozilla.rocket.nightmode.themed.ThemedImageView
+            <org.mozilla.rocket.home.ui.MenuButton
                 android:id="@+id/home_fragment_menu_button"
-                android:layout_width="40dp"
+                android:layout_width="44dp"
                 android:layout_height="48dp"
                 android:elevation="1dp"
                 android:paddingEnd="4dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_menu_home"
-                android:tint="@color/home_shopping_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/home_fragment_fake_input"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -227,7 +224,7 @@
                 android:layout_width="40dp"
                 android:layout_height="48dp"
                 android:elevation="1dp"
-                app:drawableColor="@color/home_shopping_search"
+                app:drawableColor="@color/home_search_bar_widget"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/home_fragment_menu_button"
                 app:layout_constraintTop_toTopOf="parent" />

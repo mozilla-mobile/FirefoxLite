@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mozilla.focus.R;
@@ -46,6 +47,7 @@ public class ShareWithFriendTest {
      * 5. Check intent sent
      */
     @Test
+    @Ignore
     public void shareWithFriends() {
 
         // Start MainActivity
