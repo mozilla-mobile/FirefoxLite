@@ -4,22 +4,17 @@ import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.data.RedeemServiceError
 import org.mozilla.rocket.msrp.data.RewardCouponDoc
 import org.mozilla.rocket.msrp.data.UserRepository
-import org.mozilla.rocket.msrp.data.UserServiceError
 import org.mozilla.rocket.util.Result
 import org.mozilla.rocket.util.getNotNull
 
 class RedeemUseCase(
     private val missionRepository: MissionRepository,
     private val userRepository: UserRepository
-) : UseCase<RedeemRequest, Result<RewardCouponDoc, RedeemUseCase.Error>>() {
+) {
 
-    override suspend fun execute(parameters: RedeemRequest): Result<RewardCouponDoc, Error> {
-        val userToken = userRepository.getUserToken().getNotNull { error ->
-            when (error) {
-                is UserServiceError.GetUserTokenError -> Result.error<RewardCouponDoc, Error>(error = Error.UnknownError)
-            }
-        }
-        val rewardCouponDoc = missionRepository.redeem(userToken, parameters.redeemUrl).getNotNull { error ->
+    suspend operator fun invoke(redeemUrl: String): Result<RewardCouponDoc, Error> {
+        val userToken = userRepository.getUserToken()
+        val rewardCouponDoc = missionRepository.redeem(userToken, redeemUrl).getNotNull { error ->
             when (error) {
                 is RedeemServiceError.Failure,
                 is RedeemServiceError.UsedUp,
@@ -36,5 +31,3 @@ class RedeemUseCase(
         object UnknownError : Error()
     }
 }
-
-class RedeemRequest(val redeemUrl: String)

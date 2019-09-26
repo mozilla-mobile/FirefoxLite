@@ -55,7 +55,7 @@ class MissionViewModelTest {
     @Test
     fun `When there's data, ViewModel will show data page`() {
 
-//        Mockito.`when`(missionRepository.fetchMission(Mockito.anyString()))
+//        Mockito.`when`(missionRepository.getMissions(Mockito.anyString()))
 //                .thenReturn(Result.success(testMissions))
 //
 //        missionViewModel = MissionViewModel(createLoadMissionsUseCase(), createRedeemUseCase())
@@ -77,7 +77,7 @@ class MissionViewModelTest {
 
 //        val emptyList = listOf<Mission>()
 //
-//        Mockito.`when`(missionRepository.fetchMission(Mockito.anyString()))
+//        Mockito.`when`(missionRepository.getMissions(Mockito.anyString()))
 //                .thenReturn(Result.success(emptyList()))
 //
 //        missionViewModel = MissionViewModel(createLoadMissionsUseCase(), createRedeemUseCase())
@@ -93,7 +93,7 @@ class MissionViewModelTest {
     @Test
     fun `When there's a ServerErrorException, ViewModel will show ServerError page`() {
 
-//        Mockito.`when`(missionRepository.fetchMission(MISSION_GROUP_URI))
+//        Mockito.`when`(missionRepository.getMissions(MISSION_GROUP_URI))
 //            .thenThrow(RewardServiceException.ServerErrorException())
 //
 //        missionViewModel = MissionViewModel(createLoadMissionsUseCase(), createRedeemUseCase())
@@ -107,7 +107,7 @@ class MissionViewModelTest {
     @Test
     fun `When there's a AuthorizationException, ViewModel will show AuthError page`() {
 
-//        Mockito.`when`(missionRepository.fetchMission(MISSION_GROUP_URI))
+//        Mockito.`when`(missionRepository.getMissions(MISSION_GROUP_URI))
 //            .thenThrow(RewardServiceException.AuthorizationException())
 //
 //        missionViewModel = MissionViewModel(createLoadMissionsUseCase(), createRedeemUseCase())
