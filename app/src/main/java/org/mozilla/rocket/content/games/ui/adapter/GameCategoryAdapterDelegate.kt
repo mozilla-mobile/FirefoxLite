@@ -28,8 +28,7 @@ class GameCategoryViewHolder(
 
     init {
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
-        val padding = itemView.resources.getDimensionPixelSize(R.dimen.card_padding)
-        game_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth, padding))
+        game_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth))
         game_list.adapter = this@GameCategoryViewHolder.adapter
         val snapHelper = StartSnapHelper()
         snapHelper.attachToRecyclerView(game_list)
