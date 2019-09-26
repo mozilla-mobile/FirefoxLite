@@ -641,7 +641,7 @@
     <string name="shopping_search_prompt_message_body">Compare prices across many online stores with Smart Shopping Search.</string>
     <string name="shopping_search_prompt_message_button">Search</string>
     <!--Switch UI Onboarding-->
-    <string name="shopping_switch_ui_onboarding_body">Swipe left to load other shopping sites, or tap this button to edit.</string>
+    <string name="shopping_switch_ui_onboarding_body">Tap the shopping sites below to browse more results, or tap this button to edit.</string>
     <string name="shopping_switch_ui_onboarding_button">OK</string>
 
     <!--Artboard Name: 2.2 Switch UI Preference Behaviors-->
