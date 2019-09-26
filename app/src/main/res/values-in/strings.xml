@@ -301,7 +301,7 @@
   <!--Shopping Vertical-->
   <!--Artboard Name: 1.1 Shopping Search Overview-->
   <!--Shopping Search Onboarding-->
-  <string name="shopping_search_onboarding_title">Selalu dapatkan harga terbaik</string>
+  <string name="shopping_search_onboarding_title">Cek harga sebelum belanja.</string>
   <string name="shopping_search_onboarding_body">Bandingkan harga di berbagai toko online dengan fitur pintar Cari Harga.</string>
   <!--Shopping Search Input Placeholder-->
   <string name="shopping_search_placeholder">Ketik produk yang ingin dicari</string>
