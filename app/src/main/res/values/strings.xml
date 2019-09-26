@@ -633,7 +633,7 @@
     <!--Shopping Vertical-->
     <!--Artboard Name: 1.1 Shopping Search Overview-->
     <!--Shopping Search Onboarding-->
-    <string name="shopping_search_onboarding_title">Check before you shop.</string>
+    <string name="shopping_search_onboarding_title">Check before you shop</string>
     <string name="shopping_search_onboarding_body">Compare prices across many online stores with Smart Shopping Search.</string>
     <!--Shopping Search Input Placeholder-->
     <string name="shopping_search_placeholder">Type the product you want to search</string>
