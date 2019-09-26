@@ -21,6 +21,8 @@ data class Mission(
     val status: Int, // STATUS_NEW, STATUS_NEW, STATUS_REDEEMABLE, STATUS_REDEEMED
     val missionProgress: MissionProgress?
 ) {
+    var unread = false
+
     companion object {
         const val STATUS_NEW = 0
         const val STATUS_JOINED = 1

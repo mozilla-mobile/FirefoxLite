@@ -1,13 +1,15 @@
 package org.mozilla.rocket.msrp.ui.adapter
 
 import android.view.View
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import kotlinx.android.synthetic.main.item_joined_mission.expiration_text
-import kotlinx.android.synthetic.main.item_joined_mission.image
-import kotlinx.android.synthetic.main.item_joined_mission.title
+import kotlinx.android.synthetic.main.item_unjoined_mission.expiration_text
+import kotlinx.android.synthetic.main.item_unjoined_mission.image
+import kotlinx.android.synthetic.main.item_unjoined_mission.red_dot
+import kotlinx.android.synthetic.main.item_unjoined_mission.title
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.extension.dpToPx
@@ -26,6 +28,7 @@ class UnjoinedMissionsViewHolder(override val containerView: View) : DelegateAda
 
         title.text = uiModel.title
         expiration_text.text = uiModel.expirationText
+        red_dot.isVisible = uiModel.showRedDot
 
         Glide.with(containerView.context)
                 .load(uiModel.imageUrl)
