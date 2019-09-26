@@ -14,14 +14,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/image_pulsa"
-        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:spanCount="2"
         tools:itemCount="6"
         tools:listitem="@layout/item_voucher" />
 

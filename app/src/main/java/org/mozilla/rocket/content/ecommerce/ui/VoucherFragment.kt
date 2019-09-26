@@ -42,14 +42,14 @@ class VoucherFragment : Fragment() {
     }
 
     private fun initVouchers() {
+        val spaceWidth = resources.getDimensionPixelSize(R.dimen.card_space_width)
+        content_voucher_list.addItemDecoration(GridSpaceItemDecoration(spaceWidth, 2))
         voucherAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(Voucher::class, R.layout.item_voucher, VoucherAdapterDelegate(shoppingViewModel))
             }
         )
-        content_voucher_list.apply {
-            adapter = voucherAdapter
-        }
+        content_voucher_list.adapter = voucherAdapter
     }
 
     private fun bindListData() {
