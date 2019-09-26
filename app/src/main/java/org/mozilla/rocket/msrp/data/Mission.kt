@@ -17,6 +17,7 @@ data class Mission(
 
     val joinEndDate: Long,
     val expiredDate: Long,
+    val redeemedDate: Long,
 
     val status: Int, // STATUS_NEW, STATUS_NEW, STATUS_REDEEMABLE, STATUS_REDEEMED
     val missionProgress: MissionProgress?
