@@ -17,6 +17,7 @@ import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.news.data.NewsSourceManager.Companion.PREF_INT_NEWS_PRIORITY
 import org.mozilla.rocket.periodic.FirstLaunchWorker
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource.Companion.RC_KEY_ENABLE_SHOPPING_SEARCH
 import org.mozilla.threadutils.ThreadUtils
 import java.util.HashMap
 import kotlin.coroutines.resume
@@ -274,6 +275,7 @@ object FirebaseHelper {
         map[STR_E_COMMERCE_SHOPPINGLINKS] = AppConfigWrapper.STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT
         map[STR_E_COMMERCE_COUPONS] = AppConfigWrapper.STR_E_COMMERCE_COUPONS_DEFAULT
         map[STR_COUPON_BANNER_MANIFEST] = AppConfigWrapper.STR_E_COMMERCE_COUPON_BANNER_DEFAULT
+        map[RC_KEY_ENABLE_SHOPPING_SEARCH] = AppConfigWrapper.RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT
 
         return map
     }
