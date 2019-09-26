@@ -3,84 +3,84 @@
     "id": -1,
     "url": "https://www.okezone.com",
     "title": "Okezone",
-    "favicon": "",
+    "favicon": "ic_okezone.png",
     "viewCount": 20
   },
   {
     "id": -2,
     "url": "http://m.tribunnews.com",
     "title": "Tribunnews",
-    "favicon": "",
+    "favicon": "ic_tribunnews.png",
     "viewCount": 18
   },
   {
     "id": -3,
     "url": "https://m.youtube.com",
     "title": "Youtube",
-    "favicon": "",
+    "favicon": "ic_youtube.png",
     "viewCount": 16
   },
   {
     "id": -4,
     "url": "https://detik.com",
     "title": "Detik",
-    "favicon": "",
+    "favicon": "ic_detik.png",
     "viewCount": 14
   },
   {
     "id": -5,
     "url": "https://www.sindonews.com",
     "title": "SINDOnews",
-    "favicon": "",
+    "favicon": "ic_sindonews.png",
     "viewCount": 12
   },
   {
     "id": -6,
     "url": "https://m.liputan6.com",
     "title": "Liputan6",
-    "favicon": "",
+    "favicon": "ic_liputan6.png",
     "viewCount": 10
   },
   {
     "id": -7,
     "url": "https://www.kompas.com",
     "title": "Kompas",
-    "favicon": "",
+    "favicon": "ic_kompas.png",
     "viewCount": 8
   },
   {
     "id": -8,
     "url": "https://www.grid.id",
     "title": "Grid.id",
-    "favicon": "",
+    "favicon": "ic_grid.webp",
     "viewCount": 6
   },
   {
     "id": -9,
     "url": "https://www.idntimes.com",
     "title": "IDN TIMES",
-    "favicon": "",
+    "favicon": "ic_idntimes.webp",
     "viewCount": 5
   },
   {
     "id": -10,
     "url": "https://m.kumparan.com",
     "title": "Kumparan",
-    "favicon": "",
+    "favicon": "ic_kumparan.webp",
     "viewCount": 4
   },
   {
     "id": -11,
     "url": "https://m.suara.com",
     "title": "Suara",
-    "favicon": "",
+    "favicon": "ic_suara.webp",
     "viewCount": 3
   },
   {
     "id": -12,
     "url": "https://m.cnnindonesia.com/",
     "title": "CNN Indonesia",
-    "favicon": "",
+    "favicon": "ic_cnnindonesia.webp",
     "viewCount": 2
   }
 

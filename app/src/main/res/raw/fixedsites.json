@@ -3,28 +3,28 @@
     "id": -100,
     "url": "https://frvr.com/",
     "title": "FRVR Games",
-    "favicon": "",
+    "favicon": "ic_frvr.webp",
     "viewCount": 0
   },
   {
     "id": -101,
     "url": "https://www.booking.com/",
     "title": "Booking.com",
-    "favicon": "",
+    "favicon": "ic_booking.webp",
     "viewCount": 0
   },
   {
     "id": -102,
     "url": "https://m.kkday.com/",
     "title": "KKday",
-    "favicon": "",
+    "favicon": "ic_kkday.webp",
     "viewCount": 0
   },
   {
     "id": -103,
     "url": "https://shopee.com",
     "title": "Shopee",
-    "favicon": "",
+    "favicon": "ic_shopee.png",
     "viewCount": 0
   }
 ]
