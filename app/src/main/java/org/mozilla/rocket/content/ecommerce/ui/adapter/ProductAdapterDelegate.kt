@@ -7,7 +7,6 @@ import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
-import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
 class ProductAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
@@ -21,10 +20,9 @@ class ProductViewHolder(
 ) : DelegateAdapter.ViewHolder(containerView) {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val productItem = uiModel as ProductItem
-        product_name.text = productItem.name
-        product_brand.text = productItem.brand
-        product_currency.text = productItem.currency
-        product_price.text = productItem.priceWithFormat
+        product_name.text = productItem.title
+        product_brand.text = productItem.source
+        product_price.text = productItem.price
         product_rating.updateRatingInfo(productItem.ratingCount, productItem.reviews)
         product_discount.apply {
             if (productItem.discount.isNotEmpty()) {
@@ -47,20 +45,16 @@ class ProductViewHolder(
 }
 
 data class ProductItem(
-    val id: Int,
-    val name: String,
-    val currency: String,
-    val price: Int,
-    val discount: String,
-    val brand: String,
-    val linkUrl: String,
+    val source: String,
     val imageUrl: String,
-    val rating: Float,
-    val reviews: Int
+    val linkUrl: String,
+    val title: String,
+    val componentId: String,
+    val price: String = "",
+    var discount: String = "",
+    var rating: Float = 0F,
+    var reviews: Int = 0
 ) : DelegateAdapter.UiModel() {
-
-    val priceWithFormat: String
-        get() = DecimalFormat("#,###").format(price)
 
     val ratingCount: Int
         get() = rating.roundToInt()

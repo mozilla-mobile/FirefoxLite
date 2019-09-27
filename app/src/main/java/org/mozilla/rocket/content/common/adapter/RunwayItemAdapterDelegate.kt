@@ -48,8 +48,9 @@ class RunwayItemViewHolder(
 }
 
 data class RunwayItem(
-    val id: Int,
+    val source: String,
     val imageUrl: String,
     val linkUrl: String,
-    val source: String
+    val title: String,
+    val componentId: String
 ) : DelegateAdapter.UiModel()

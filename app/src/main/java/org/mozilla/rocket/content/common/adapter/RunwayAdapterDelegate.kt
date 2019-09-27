@@ -36,8 +36,13 @@ class RunwayViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val runway = uiModel as Runway
-        adapter.setData(runway.runwayItems)
+        adapter.setData(runway.items)
     }
 }
 
-data class Runway(val runwayItems: List<RunwayItem>) : DelegateAdapter.UiModel()
+data class Runway(
+    val componentType: String,
+    val subcategoryName: String,
+    val subcategoryId: Int,
+    val items: List<RunwayItem>
+) : DelegateAdapter.UiModel()

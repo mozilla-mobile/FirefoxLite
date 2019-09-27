@@ -10,10 +10,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
-import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
-import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
-import org.mozilla.rocket.content.common.adapter.Runway
-import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
 import org.mozilla.rocket.content.ecommerce.ui.DealFragment
 import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
@@ -21,25 +17,12 @@ import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
-import java.util.UUID
 
 class ShoppingRepo(private val appContext: Context) {
 
-    suspend fun getDeals(): List<DelegateAdapter.UiModel> {
+    suspend fun getDeals(): List<DelegateAdapter.UiModel>? {
         return withContext(Dispatchers.IO) {
-            listOf(
-                    Runway(
-                            getMockRunwayItems() ?: emptyList()
-                    ),
-                ProductCategory(UUID.randomUUID().toString(),
-                    "Top Rated",
-                    getMockProductItems()?.subList(0, 15) ?: emptyList()
-                ),
-                ProductCategory(UUID.randomUUID().toString(),
-                    "Best Sellers",
-                    getMockProductItems()?.subList(16, 30) ?: emptyList()
-                )
-            )
+            getDealItems()
         }
     }
 
@@ -55,15 +38,9 @@ class ShoppingRepo(private val appContext: Context) {
         }
     }
 
-    // TODO: remove mock data
-    private fun getMockRunwayItems(): List<RunwayItem>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.runway_mock_items)
-                ?.jsonStringToRunwayItems()
-
-    // TODO: remove mock data
-    private fun getMockProductItems(): List<ProductItem>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.product_mock_items)
-                ?.jsonStringToProductItems()
+    private fun getDealItems(): List<DelegateAdapter.UiModel> {
+        return DealMapper.toDeals(DealEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.product_mock_items)))
+    }
 
     // TODO: remove mock data
     private fun getMockCouponItems(): List<Coupon>? =
@@ -77,54 +54,6 @@ class ShoppingRepo(private val appContext: Context) {
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.shopping_tab_items)
                 ?.jsonStringToShoppingTabItems() ?: emptyList()
 }
-
-private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createRunwayItem(jsonObject) }
-                .shuffled()
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
-        RunwayItem(
-                jsonObject.optInt("id"),
-                jsonObject.optString("image_url"),
-                jsonObject.optString("link_url"),
-                jsonObject.optString("source")
-        )
-
-private fun String.jsonStringToProductItems(): List<ProductItem>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createProductItem(jsonObject) }
-                .shuffled()
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createProductItem(jsonObject: JSONObject): ProductItem =
-        ProductItem(
-            jsonObject.optInt("id"),
-            jsonObject.optString("name"),
-            "Rp",
-            jsonObject.optInt("price"),
-            jsonObject.optString("discount"),
-            jsonObject.optString("brand"),
-            jsonObject.optString("link_url"),
-            jsonObject.optString("image_url"),
-            jsonObject.optDouble("rating").toFloat(),
-            jsonObject.optInt("reviews")
-        )
 
 private fun String.jsonStringToCouponItems(): List<Coupon>? {
     return try {
@@ -186,15 +115,15 @@ private fun String.jsonStringToShoppingTabItems(): List<ShoppingTabItem>? {
 }
 
 sealed class ShoppingTabItem(val fragment: Fragment, val titleResId: Int) {
-    class Deal : ShoppingTabItem(DealFragment(), R.string.shopping_vertical_category_1)
-    class Coupon : ShoppingTabItem(CouponFragment(), R.string.shopping_vertical_category_2)
-    class Voucher : ShoppingTabItem(VoucherFragment(), R.string.shopping_vertical_category_3)
+    class DealTab : ShoppingTabItem(DealFragment(), R.string.shopping_vertical_category_1)
+    class CouponTab : ShoppingTabItem(CouponFragment(), R.string.shopping_vertical_category_2)
+    class VoucherTab : ShoppingTabItem(VoucherFragment(), R.string.shopping_vertical_category_3)
 }
 
 private fun createShoppingTabItem(type: Int): ShoppingTabItem =
         when (type) {
-            1 -> ShoppingTabItem.Deal()
-            2 -> ShoppingTabItem.Coupon()
-            3 -> ShoppingTabItem.Voucher()
+            1 -> ShoppingTabItem.DealTab()
+            2 -> ShoppingTabItem.CouponTab()
+            3 -> ShoppingTabItem.VoucherTab()
             else -> error("Unsupported shopping tab item type $type")
         }
