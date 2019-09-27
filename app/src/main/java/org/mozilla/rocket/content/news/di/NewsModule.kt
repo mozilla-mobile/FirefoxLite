@@ -7,11 +7,13 @@ import org.mozilla.lite.newspoint.RepositoryNewsPoint
 import org.mozilla.lite.partner.NewsItem
 import org.mozilla.lite.partner.Repository
 import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
@@ -70,9 +72,15 @@ object NewsModule {
         SetUserPreferenceCategoriesUseCase(newsSettingsRepository)
 
     @JvmStatic
+    @Singleton
     @Provides
-    fun provideNewsViewModel(): NewsViewModel =
-        NewsViewModel()
+    fun provideLoadNewsUseCase(newsRepositoryProvider: NewsRepositoryProvider): LoadNewsUseCase =
+        LoadNewsUseCase(newsRepositoryProvider)
+
+    @JvmStatic
+    @Provides
+    fun provideNewsViewModel(loadNews: LoadNewsUseCase): NewsViewModel =
+        NewsViewModel(loadNews)
 
     @JvmStatic
     @Provides
@@ -88,6 +96,12 @@ object NewsModule {
         setUserPreferenceCategoriesUseCase: SetUserPreferenceCategoriesUseCase
     ): NewsSettingsViewModel =
         NewsSettingsViewModel(loadNewsSettingsUseCase, loadNewsLanguagesUseCase, setUserPreferenceLanguageUseCase, setUserPreferenceCategoriesUseCase)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideNewsRepositoryProvider(): NewsRepositoryProvider =
+        NewsRepositoryProvider()
 
     @JvmStatic
     @Singleton
