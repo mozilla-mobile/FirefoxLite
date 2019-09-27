@@ -16,38 +16,31 @@
 
 package org.mozilla.rocket.content.news.domain
 
-import org.mozilla.lite.partner.NewsItem
-import org.mozilla.lite.partner.Repository
-import org.mozilla.rocket.content.MediatorUseCase
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.news.data.NewsItem
+import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
 
-class LoadNewsUseCase(private val repository: Repository<out NewsItem>) :
-    MediatorUseCase<LoadNewsParameter, LoadNewsResult>(),
-    Repository.OnDataChangedListener<NewsItem> {
+class LoadNewsUseCase(private val repositoryProvider: NewsRepositoryProvider) {
 
-    init {
-        repository.setOnDataChangedListener(this)
-    }
+    val repository = repositoryProvider.provideNewsRepository()
 
-    override fun onDataChanged(itemPojoList: MutableList<NewsItem>?) {
-        if (itemPojoList == null) {
-            result.value = Result.Error(NewsNotFoundException())
-        } else {
-            result.value = Result.Success(LoadNewsResult(itemPojoList))
-        }
-    }
-
-    override fun execute(parameters: LoadNewsParameter) {
-        repository.loadMore()
+    suspend operator fun invoke(loadNewsParameter: LoadNewsParameter): Result<List<NewsItem>> {
+        return repository.getNewsItems(
+            loadNewsParameter.topic,
+            loadNewsParameter.language,
+            loadNewsParameter.pages,
+            loadNewsParameter.pageSize
+        )
     }
 }
 
-class NewsNotFoundException : Exception()
-
-data class LoadNewsResult(
-    val items: MutableList<NewsItem>
-)
-
 data class LoadNewsParameter(
-    val category: String
+    val topic: String,
+    val language: String,
+    val pages: Int,
+    val pageSize: Int
 )
+
+fun LoadNewsParameter.nextPage(): LoadNewsParameter {
+    return LoadNewsParameter(topic, language, pages + 1, pageSize)
+}

@@ -14,46 +14,40 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
-import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.lite.partner.NewsItem
+import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 
-class NewsAdapter<T : NewsItem>(private val listener: NewsListingEventListener) :
-    ListAdapter<NewsItem, NewsViewHolder<T>>(
+class NewsAdapter(private val listener: NewsListingEventListener) :
+    ListAdapter<NewsItem, NewsViewHolder>(
         COMPARATOR
     ) {
 
     object COMPARATOR : DiffUtil.ItemCallback<NewsItem>() {
 
         override fun areItemsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.title == newItem.title
         }
 
         override fun areContentsTheSame(oldItem: NewsItem, newItem: NewsItem): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder<T> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
         return NewsViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: NewsViewHolder<T>, position: Int) {
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
-            TelemetryWrapper.clickOnNewsItem(
-                pos = position.toString(),
-                feed = item.source,
-                source = item.partner,
-                category = item.category,
-                subCategory = item.subcategory)
-            listener.onItemClicked(item.newsUrl)
+            // TODO: Refine news click telemetry
+            listener.onItemClicked(item.link)
         })
     }
 }
 
-class NewsViewHolder<T : NewsItem>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
         var requestOptions =
@@ -79,12 +73,12 @@ class NewsViewHolder<T : NewsItem>(itemView: View) : RecyclerView.ViewHolder(ite
 
         headline?.text = item.title
 
-        item.partner.let {
+        item.source.let {
             source?.text = it
         }
 
         time?.text = DateUtils.getRelativeTimeSpanString(
-            item.time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
+            item.publishTime, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
         )
 
         item.imageUrl?.let {

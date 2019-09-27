@@ -16,10 +16,10 @@ import kotlinx.android.synthetic.main.fragment_news_tab.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.portal.ContentFeature
 import javax.inject.Inject

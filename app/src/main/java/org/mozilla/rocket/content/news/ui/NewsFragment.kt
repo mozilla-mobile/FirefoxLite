@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,15 +20,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.Settings
-import org.mozilla.lite.partner.NewsItem
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
-import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 import org.mozilla.rocket.content.portal.ContentFeature
-import org.mozilla.threadutils.ThreadUtils
 import javax.inject.Inject
 
 class NewsFragment : Fragment(), NewsListingEventListener {
@@ -43,12 +41,13 @@ class NewsFragment : Fragment(), NewsListingEventListener {
     private var recyclerView: RecyclerView? = null
     private var newsEmptyView: View? = null
     private var newsProgressCenter: ProgressBar? = null
-    private var newsAdapter: NewsAdapter<NewsItem>? = null
+    private var newsAdapter: NewsAdapter? = null
     private var newsListLayoutManager: LinearLayoutManager? = null
 
     private var isLoading = false
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private var stateLoadingJob: Job? = null
+    private var loadMoreJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -80,24 +79,14 @@ class NewsFragment : Fragment(), NewsListingEventListener {
         super.onActivityCreated(savedInstanceState)
 
         newsViewModel = getActivityViewModel(newsViewModelCreator)
-        // creating a repository will also create a new subscription.
-        // we deliberately create a new subscription again to load data aggressively.
-        val newsRepo = NewsRepository.newInstance(
-            context,
-            hashMapOf(
-                NewsRepository.CONFIG_URL to NewsSourceManager.instance.newsSourceUrl,
-                NewsRepository.CONFIG_CATEGORY to getCategory(),
-                NewsRepository.CONFIG_LANGUAGE to getLanguage()
-            )
-        )
-        val newsLiveData: MediatorLiveData<List<NewsItem>>? =
-            newsViewModel.getNews(getCategory(), getLanguage(), newsRepo)
+
+        val newsLiveData: LiveData<NewsViewModel.NewsUiModel>? =
+            newsViewModel.startToObserveNews(getCategory(), getLanguage())
         newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
-            updateNews(items)
+            updateNews(items.newsList)
             isLoading = false
         })
         updateSourcePriority()
-        loadMore()
 
         newsAdapter = NewsAdapter(this)
         recyclerView?.adapter = newsAdapter
@@ -166,12 +155,14 @@ class NewsFragment : Fragment(), NewsListingEventListener {
 
     private fun loadMore() {
         if (!isLoading) {
-            newsViewModel.loadMore(getCategory())
             isLoading = true
-            ThreadUtils.postToMainThreadDelayed(
-                { isLoading = false },
-                LOAD_MORE_THRESHOLD
-            )
+
+            newsViewModel.loadMore(getCategory())
+
+            loadMoreJob = uiScope.launch {
+                delay(LOAD_MORE_THRESHOLD)
+                isLoading = false
+            }
         }
     }
 
