@@ -35,13 +35,14 @@ class ProductCategoryViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val productCategory = uiModel as ProductCategory
-        category_title.text = productCategory.title
-        adapter.setData(productCategory.productList)
+        category_title.text = productCategory.subcategoryName
+        adapter.setData(productCategory.items)
     }
 }
 
 data class ProductCategory(
-    val id: String,
-    val title: String,
-    val productList: List<ProductItem>
+    val componentType: String,
+    val subcategoryName: String,
+    val subcategoryId: Int,
+    val items: List<ProductItem>
 ) : DelegateAdapter.UiModel()

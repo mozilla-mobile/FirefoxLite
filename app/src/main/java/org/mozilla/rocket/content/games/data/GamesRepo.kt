@@ -52,13 +52,16 @@ private fun String.jsonStringToGameCategoryList(gameType: GameType): List<Delega
 private fun createGameCategory(gameType: GameType, jsonObject: JSONObject): DelegateAdapter.UiModel {
     return if (jsonObject.optString("component_type") == BANNER) {
         Runway(
-                createRunwayItemList(jsonObject.optJSONArray("items"))
+            jsonObject.optString("component_type"),
+            jsonObject.optString("subcategory_name"),
+            jsonObject.optInt("subcategory_id"),
+            createRunwayItemList(jsonObject.optJSONArray("items"))
         )
     } else {
         GameCategory(
-                jsonObject.optString("component_type"),
-                jsonObject.optString("subcategory_name"),
-                createGameItemList(gameType, jsonObject.optJSONArray("items"))
+            jsonObject.optString("component_type"),
+            jsonObject.optString("subcategory_name"),
+            createGameItemList(gameType, jsonObject.optJSONArray("items"))
         )
     }
 }
@@ -77,10 +80,11 @@ private fun createGameItemList(gameType: GameType, jsonArray: JSONArray): List<G
 
 private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
         RunwayItem(
-            jsonObject.optInt("id"),
+            jsonObject.optString("source"),
             jsonObject.optString("image_url"),
             jsonObject.optString("link_url"),
-            jsonObject.optString("source")
+            "",
+            jsonObject.optInt("id").toString()
         )
 
 private fun createGameItem(gameType: GameType, jsonObject: JSONObject): Game =

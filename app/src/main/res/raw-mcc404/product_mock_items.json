@@ -1,0 +1,404 @@
+{
+    "version": 1,
+    "subcategories": [
+        {
+            "componentType": "banner",
+            "subcategoryName": "banner",
+            "subcategoryId": 4,
+            "items": [
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/1440/640/image/c17480802f3886a9.jpg?q=90",
+                    "linkUrl": "https://www.flipkart.com/fashion-bbd19-sneak-peak-store?param=1",
+                    "title": "",
+                    "componentId": "b649cd4aedc352577f336dc2906ad06dfa5b8f77ff93ba572af1c2d3ecba1bae",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/1440/640/image/69ec96c8387c70a1.jpg?q=90",
+                    "linkUrl": "https://www.flipkart.com/big-billion-days-specials-store?param=198912388213",
+                    "title": "",
+                    "componentId": "2d8fde88942ced9feb0aedcb2d5cfdfcc0eac4abeec53ddf36dd94dfafd150b3",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/1440/640/image/4ca2f501323d9f50.jpg?q=90",
+                    "linkUrl": "https://www.flipkart.com/redmi-8a-matte-blue-32-gb/p/itmfhz4cztznu8kk?pid=MOBFKF98FFAAY8EB&pageUID=1569399524856",
+                    "title": "",
+                    "componentId": "a7348c33a51d07b9426ffd86f6830e72fc8c727992634ebed94916cca9d4c3b2",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/G/31/img17/AmazonDevices/2019/jupiter/bunk/mob._CB452464492_SY367_.jpg",
+                    "linkUrl": "https://www.amazon.in/b?_encoding=UTF8&ie=UTF8&node=18039422031&pf_rd_i=mobile&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_p=499583d5-02db-46a9-aead-733aa186d7b4&pf_rd_r=JVNNAFTYH3FVB63ZEYRS&pf_rd_s=mobile-hero-slide-7&pf_rd_t=36701&ref_=Oct_Arh_mobile-hero-slide-7_01e923b6-b9f4-4bc8-8f87-7130ee4cd094",
+                    "title": "",
+                    "componentId": "64a5b385f82caaeb05565356d143a9b737bc29bb8342e30005ae2f3b50ad3b84",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/G/31/img19/Events/Wave-1/GW/Countdown/Unrec/1242x550_w1_4_FST._CB452479475_SY367_.jpg",
+                    "linkUrl": "https://www.amazon.in/b?_encoding=UTF8&node=3419926031&pf_rd_i=mobile&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_p=b1d337eb-94e4-4ee8-a434-76c487b85c4f&pf_rd_r=Z8JPH0ZMGEE184X7B3E1&pf_rd_s=mobile-hero-slide-1&pf_rd_t=36701&ref_=Oct_Arh_mobile-hero-slide-1_15a7bd8a-9ea7-49fa-bb2c-fc65aaf343c8",
+                    "title": "",
+                    "componentId": "d0214f7cadc8f288ab624d968cae12bb802893ad25f4cb9b9bdbc230a37911b8",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                }
+            ]
+        },
+        {
+            "componentType": "Mcard",
+            "subcategoryName": "Best Seller",
+            "subcategoryId": 2,
+            "items": [
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/352/352/jmkwya80/sports-action-camera/n/j/m/hero-7-hero-7-chdhx-701-rw-gopro-original-imaf9fegntmxfhfs.jpeg?q=70",
+                    "linkUrl": "https://www.flipkart.com/gopro-hero-7-sports-action-camera/p/itmf9fs3rufrgjep?pid=SAYF9FEPR2YM5NJM&srno=b_1_1&otracker=hp_omu_Best%2Bof%2BElectronic%2BDevices_3_22.dealCard.OMU_WKIUF7DK5SPE_18&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Best%2Bof%2BElectronic%2BDevices_NA_dealCard_cc_3_NA_view-all_18&lid=LSTSAYF9FEPR2YM5NJMQOAKDI&fm=organic&iid=b9be2242-f408-4eda-be3c-07c74a9a6cff.SAYF9FEPR2YM5NJM.SEARCH&ssid=63mjvm03ls0000001569399860597",
+                    "title": "GoPro HERO 7 Sports and Action Camera  (Black, 12 MP)",
+                    "componentId": "4d7ae3d3edd563f61f3037ccd278bd22938a5597f6ce6fa9ebab2e21a165b4e4",
+                    "price": "₹27,280",
+                    "discount": "26%",
+                    "rating": 4.5,
+                    "reviews": 795
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/714/857/jmz7csw0/slipper-flip-flop/s/a/z/19103309-11-puma-peacoat-white-limepunch-original-imaf9qzfmagzuqkm.jpeg?q=50",
+                    "linkUrl": "https://www.flipkart.com/puma-blink-duo-idp-slippers/p/itmf6ygsyavwa6tw?pid=SFFF6YGTRBKPHBXE&lid=LSTSFFF6YGTRBKPHBXED9ZAE5&marketplace=FLIPKART&srno=b_1_3&otracker=hp_omu_Fashion%2Bfor%2BTravel%2BLovers_4_20.dealCard.OMU_MH5VV8G8UAOR_16&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Fashion%2Bfor%2BTravel%2BLovers_NA_dealCard_cc_4_NA_view-all_16&fm=organic&iid=1474436e-9362-479e-9367-0c4c1d0f4ca7.SFFF6YGTRBKPHBXE.SEARCH&ppt=browse&ppn=browse&ssid=n8p977jbl03x03r41569399857284",
+                    "title": "Blink Duo IDP Slippers",
+                    "componentId": "6db0bdfd0061932f46092f48242b83d7b553294761252baca12b79552348a89e",
+                    "price": "₹585",
+                    "discount": "54%",
+                    "rating": 4.3,
+                    "reviews": 5992
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/714/857/jmqmpow0-1/sunglass/t/2/w/one-size-fits-all-p429gr3-fastrack-original-imaf9kx9fuceyggz.jpeg?q=50",
+                    "linkUrl": "https://www.flipkart.com/fastrack-wayfarer-sunglasses/p/itmf79dqjqucq9f3?pid=SGLF79DQR8NQAT2W&lid=LSTSGLF79DQR8NQAT2WZTFJ3O&marketplace=FLIPKART&srno=b_1_2&otracker=hp_omu_Fashion%2Bfor%2BTravel%2BLovers_1_20.dealCard.OMU_YD5LDN6AP7_16&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Fashion%2Bfor%2BTravel%2BLovers_NA_dealCard_cc_1_NA_view-all_16&fm=organic&iid=40911f58-1136-4f4a-977a-296ecdadf662.SGLF79DQR8NQAT2W.SEARCH&ppt=browse&ppn=browse&ssid=lt026f5lnoq9enls1569399787144",
+                    "title": "UV Protection Wayfarer Sunglasses (Free Size)  (Green)",
+                    "componentId": "4010134a5c3c3619a5b6b90b4dbd3ee148f5226e19215c8766946d4f0a1e7208",
+                    "price": "₹558",
+                    "discount": "30%",
+                    "rating": 4.2,
+                    "reviews": 14822
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/352/352/j9it30w0/bulb/p/x/j/929001834413-2-philips-original-imaezatuwpm3xsbw.jpeg?q=70",
+                    "linkUrl": "https://www.flipkart.com/philips-8-5-w-round-b22-led-bulb/p/itmez6ff3qjygp3q?pid=BLBEZ6FFWZZZ8PXJ&lid=LSTBLBEZ6FFWZZZ8PXJGETXGV&marketplace=FLIPKART&spotlightTagId=BestsellerId_jhg%2Fyqn%2Ffeb&srno=b_1_2&otracker=hp_omu_Home%2BUtility_3_19.dealCard.OMU_ZGXHB6IXY6YQ_15&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Home%2BUtility_NA_dealCard_cc_3_NA_view-all_15&iid=ff46b9a5-d14f-4a0d-a0e9-3795068f0945.BLBEZ6FFWZZZ8PXJ.SEARCH&ppt=browse&ppn=browse&ssid=0tlf273hdvurrjsw1569399785657",
+                    "title": "Philips 8.5 W Round B22 LED Bulb  (White, Pack of 2)",
+                    "componentId": "68b5f58738d62b205fa94043793816334450b39baad7f13924ca21b0c32222a3",
+                    "price": "₹200",
+                    "discount": "41%",
+                    "rating": 4.3,
+                    "reviews": 19452
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/352/352/js0o9zk0/shoe-rack/m/q/f/4-step-black-benesta-original-imaevhkqgcxzhx3m.jpeg?q=70",
+                    "linkUrl": "https://www.flipkart.com/benesta-metal-shoe-stand/p/itmevhpfpsh28afe?pid=SHKEVHPF9MM6B6BH&lid=LSTSHKEVHPF9MM6B6BHRB42Y6&marketplace=FLIPKART&srno=b_1_16&otracker=hp_omu_Budget%2BFriendly%2BFurniture_4_16.dealCard.OMU_K3EAM39C2JMP_12&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Budget%2BFriendly%2BFurniture_NA_dealCard_cc_4_NA_view-all_12&fm=organic&iid=ca7505c1-23e4-41ca-af78-aea436c087bc.SHKEVHPF9MM6B6BH.SEARCH&ppt=browse&ppn=browse",
+                    "title": "Benesta Metal Shoe Stand  (Black, 4 Shelves)",
+                    "componentId": "53aa8262cd7ebae019e32e36058dfae35c9aace1407f0786a0c0465aa5ec181a",
+                    "price": "₹699",
+                    "discount": "59%",
+                    "rating": 4,
+                    "reviews": 3247
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/352/352/jt1tq4w0/portable-laptop-table/y/j/q/mfb-melamine-fiberboard-shi-01-memeho-black-original-imafeh4dnwcpyfxy.jpeg?q=70",
+                    "linkUrl": "https://www.flipkart.com/memeho-bl-wood-portable-laptop-table/p/itmfeh45kastqbhc?pid=PLLFEE65DXEHFYJQ&lid=LSTPLLFEE65DXEHFYJQYV0DFP&marketplace=FLIPKART&srno=b_1_8&otracker=hp_omu_Budget%2BFriendly%2BFurniture_4_16.dealCard.OMU_K3EAM39C2JMP_12&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Budget%2BFriendly%2BFurniture_NA_dealCard_cc_4_NA_view-all_12&fm=organic&iid=bb402799-6408-40c6-8f6a-7961b797b619.PLLFEE65DXEHFYJQ.SEARCH&ppt=browse&ppn=browse&ssid=4jx3g42dzb7xei2o1569399778792",
+                    "title": "MemeHO BL Wood Portable Laptop Table  (Finish Color - Black)",
+                    "componentId": "8a4f478c7fad471cf9546d79ccc88f2542387ebc4d8e4b034e36b899df768d54",
+                    "price": "₹899",
+                    "discount": "40%",
+                    "rating": 4.4,
+                    "reviews": 2005
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/714/857/jtkeg7k0/watch/h/x/u/iik-1034w-iik-collection-original-imafevxatvpbgha7.jpeg?q=50",
+                    "linkUrl": "https://www.flipkart.com/iik-collection-iik-1034w-luxury-analog-watch-women/p/itmf3zhhhvf5x2mr?pid=WATEBY29THRCTHXU&lid=LSTWATEBY29THRCTHXU9KQQ81&marketplace=FLIPKART&srno=b_1_6&otracker=hp_omu_Fashion%2BAccessories_2_15.dealCard.OMU_CVMDEYVQUQAC_11&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Fashion%2BAccessories_NA_dealCard_cc_2_NA_view-all_11&fm=organic&iid=0cb900e2-b10c-4af3-8396-87971540f452.WATEBY29THRCTHXU.SEARCH&ppt=browse&ppn=browse&ssid=z6zf0c2w449tghz41569399776852",
+                    "title": "IIK-1034W Luxury Analog Watch - For Women",
+                    "componentId": "96fc81fa203bf98ce6fd787d352099715c62b95e35c918f5a3240a6a6e6ce962",
+                    "price": "₹191",
+                    "discount": "70%",
+                    "rating": 3.4,
+                    "reviews": 2368
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/714/857/jrtj2q80/wallet-card-wallet/y/b/g/beige-slider-casuel-wallet-samtroh-original-imafdg9ymwdzfwea.jpeg?q=50",
+                    "linkUrl": "https://www.flipkart.com/samtroh-men-casual-beige-artificial-leather-wallet/p/itmfdjax8yhvfxh4?pid=WCWFDGA5RQFHYYBG&lid=LSTWCWFDGA5RQFHYYBGB3QASX&marketplace=FLIPKART&srno=b_1_13&otracker=hp_omu_Fashion%2BAccessories_1_15.dealCard.OMU_LOM1P6PMFGME_11&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Fashion%2BAccessories_NA_dealCard_cc_1_NA_view-all_11&fm=organic&iid=691ec7f5-92e9-4ce2-a0f8-5d9b4aab92f2.WCWFDGA5RQFHYYBG.SEARCH&ppt=browse&ppn=browse&ssid=lpz8p92dhdr8c3cw1569399773703",
+                    "title": "Men Casual Beige Artificial Leather Wallet  (8 Card Slots)",
+                    "componentId": "ffe85673b8db15d26fee2094d260f255c30e9ea76b5683a935101c5a6e50d7a5",
+                    "price": "₹199",
+                    "discount": "80%",
+                    "rating": 4.1,
+                    "reviews": 6656
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/714/857/jkzrc7k0/sari/4/g/w/free-mango-black-ng-creation-original-imaf5hhx5dz6hb6c.jpeg?q=50",
+                    "linkUrl": "https://www.flipkart.com/satyam-weaves-paisley-banarasi-cotton-silk-saree/p/itmex2zuw8w4g7rr?pid=SAREX257KV8DEHY4&lid=LSTSAREX257KV8DEHY4R5VA1U&marketplace=FLIPKART&srno=b_1_3&otracker=hp_reco_Trending%2BOffers_1_10.dealCard.OMU_cid%3AS_F_N_2oq_c1r_3pj_7od__o_nb_mp_083f8f4623__NONE_ALL%3Bnid%3A2oq_c1r_3pj_7od_%3Bmp%3AF%3Bct%3Ao%3B_7&otracker1=hp_reco_WHITELISTED_personalisedRecommendation%2FC2_Trending%2BOffers_DESKTOP_HORIZONTAL_dealCard_cc_1_NA_view-all_7&fm=organic&iid=52b10f97-b00c-45ba-85e9-e9e2b4da28f4.SAREX257KV8DEHY4.SEARCH&ppt=browse&ppn=browse&ssid=eugmax18by0ndkhs1569399765913",
+                    "title": "Paisley Banarasi Cotton Silk Saree  (Multicolor)",
+                    "componentId": "462a204385f58e1f65320563e9aab7ee3aff3d6169eff945f311c7f60182ba6d",
+                    "price": "₹584",
+                    "discount": "83%",
+                    "rating": 4,
+                    "reviews": 16282
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/image/352/352/jyxaw7k0/mobile/4/k/h/mi-redmi-note-7s-mzb7745in-original-imafe48ru3s66sjd.jpeg?q=70",
+                    "linkUrl": "https://www.flipkart.com/redmi-note-7s-sapphire-blue-64-gb/p/itmfh75f4rhcjdfk?pid=MOBFGGJ8CKGVHHZU&srno=b_1_1&otracker=hp_omu_Snapdragon%2BProcessor%2BPhones_1_7.dealCard.OMU_HLCJUNO2E952_5&otracker1=hp_omu_WHITELISTED_neo%2Fmerchandising_Snapdragon%2BProcessor%2BPhones_NA_dealCard_cc_1_NA_view-all_5&lid=LSTMOBFGGJ8CKGVHHZULJU9WG&fm=organic&iid=c8c9ee24-a47a-4bb9-8eee-76ec191de09d.MOBFGGJ8CKGVHHZU.SEARCH&ssid=p45p40yi4w0000001569399762413",
+                    "title": "Redmi Note 7S (Sapphire Blue, 64 GB)  (4 GB RAM)",
+                    "componentId": "3355184e023338995c218b72e1013cff57e2683d676bcfafb4b7a111ecc9ab03",
+                    "price": "₹11,999",
+                    "discount": "14%",
+                    "rating": 4.4,
+                    "reviews": 89448
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/81MDEe44E4L._UL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/Centrino-Black-Moccasins-10-India-CEN-FEB-223A/dp/B079LJR9BK?pf_rd_p=a5767adc-062d-4107-8adf-a0174fb3cf44&pd_rd_wg=VwOK4&pf_rd_r=P6JMZK2BCD69EFHBY2JC&ref_=pd_gw_unk&pd_rd_w=vlwRI&pd_rd_r=b47cde33-1467-40d1-b5e1-f3991e549c88",
+                    "title": "Centrino Men's Moccasins",
+                    "componentId": "c316e97efd53b89a754bcb0c88a3c3cda78dc83b3101dd7094dda9341ddb7477",
+                    "price": "₹299",
+                    "discount": "40%",
+                    "rating": 3.6,
+                    "reviews": 13
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/61LD0lHyAnL._SL1390_.jpg",
+                    "linkUrl": "https://www.amazon.in/Pigeon-Stovekraft-Plastic-Chopper-Blades/dp/B01LWYDEQ7?pf_rd_p=0ae71da8-75c9-5648-b794-8a2c8e277799&pf_rd_r=P6JMZK2BCD69EFHBY2JC&pd_rd_wg=VwOK4&ref_=pd_gw_ri&pd_rd_w=PZDYX&pd_rd_r=b47cde33-1467-40d1-b5e1-f3991e549c88",
+                    "title": "Pigeon by Stovekraft New Handy Mini Plastic Chopper with 3 Blades, Green",
+                    "componentId": "a61e197ccee8a9409fee1fcb37067aef13790cdaaa52f31fdcba183d9fe53ad2",
+                    "price": "₹249",
+                    "discount": "58%",
+                    "rating": 4.5,
+                    "reviews": 20391
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/714PoaOnBBL._SL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/Renewed-Zoook-Boombox-Bluetooth-Speakers/dp/B07JC4Q7QN/ref=lp_16182118031_1_1?s=electronics&ie=UTF8&qid=1569400343&sr=1-1",
+                    "title": "(Renewed) Zoook Rocker Boombox+ 32W Bluetooth Speakers (Black)\n",
+                    "componentId": "c516f6fabbf096794eca26a66226a3393abf41114ccd7201808a143dc00ed8f4",
+                    "price": "₹2,890",
+                    "discount": "28%",
+                    "rating": 4.4,
+                    "reviews": 10
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/71s6BRnLADL._SL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/product/B01F9RGJJO/ref=s9_acsd_al_bw_c_x_1_w?pf_rd_m=A1K21FY43GMZF8&pf_rd_s=merchandised-search-2&pf_rd_r=PPCE9PRX39RJC6MP07CR&pf_rd_t=101&pf_rd_p=3061274c-1b29-417a-8270-185ba1ea0658&pf_rd_i=16406633031",
+                    "title": "AmazonBasics Nylon Braided USB A to Lightning Compatible Cable - Apple MFi Certified - Dark Grey (3 Feet/0.9 Meter)\n",
+                    "componentId": "d101ebe0b7c7b26edc4e6157f331dc42de3d78364eb3eb30c9f3e1b2399d0f7a",
+                    "price": "₹719",
+                    "discount": "44%",
+                    "rating": 4,
+                    "reviews": 4334
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/81dZ97Jc2GL._UL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/Diverse-Mens-Relaxed-Jeans-DCMDT03RC12L03-31C_Indigo_34W/dp/B07FZ2KFSP/ref=lp_17134258031_1_1?s=apparel&ie=UTF8&qid=1569400349&sr=1-1",
+                    "title": "Diverse Men's Relaxed Fit Stretchable Jeans",
+                    "componentId": "c93bbd878a334ef3bacf0713e8a35b601a0a4bf1247623d37725615aa9205ed5",
+                    "price": "₹599",
+                    "discount": "",
+                    "rating": 3.2,
+                    "reviews": 29
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/41-5nd-r6bL._SL1000_.jpg",
+                    "linkUrl": "https://www.amazon.in/dp/B00YQLG7GK/ref=psdc_1380065031_t1_B071GKY7HW",
+                    "title": "Philips Daily Collection HL1655/00 250-Watt Hand Blender (White)",
+                    "componentId": "127d876d295e0a96173970dc1102878afc45147819790e3a7a2a0f103633598f",
+                    "price": "₹1,378",
+                    "discount": "19%",
+                    "rating": 4,
+                    "reviews": 528
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91v-bvsLAxL._SL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/product/B07FXT5HBD/ref=s9_acsd_al_bw_c_x_1_w?pf_rd_m=A1K21FY43GMZF8&pf_rd_s=merchandised-search-3&pf_rd_r=6GRQPGAQB906SNYB5MB9&pf_rd_t=101&pf_rd_p=2aeda0a3-5ec9-4994-a59f-1d9f301ad503&pf_rd_i=16692168031",
+                    "title": "Amazon Brand - Solimo Checkered Jar Set of 18",
+                    "componentId": "b6e71ae9e3d0ebea1a85dfd9e9a137683773edf732f4cf79fa1321c1c05f1f38",
+                    "price": "₹489",
+                    "discount": "42%",
+                    "rating": 4.2,
+                    "reviews": 850
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/71SmJ4MvBzL._SL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/dp/B07H94YY16/ref=psdc_1380037031_t1_B0123UKA54",
+                    "title": "Cello Prima Induction Base Non-Stick Aluminium Cookware Set, 3-Pieces, Cherry",
+                    "componentId": "e7d9410df015d36f8036308adc18231b021baeed81a9207d90d6cb6a5724d54a",
+                    "price": "₹1,359",
+                    "discount": "48%",
+                    "rating": 3.8,
+                    "reviews": 717
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/91LvKER5jhL._SL1500_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/product/B07P7ZWQMZ/ref=s9_acsd_al_bw_c_x_1_w?pf_rd_m=A1K21FY43GMZF8&pf_rd_s=merchandised-search-5&pf_rd_r=6GRQPGAQB906SNYB5MB9&pf_rd_t=101&pf_rd_p=bb56a223-1fa6-4cb1-9712-7e45792cf613&pf_rd_i=16692168031",
+                    "title": "Amazon Brand – Solimo Plastic Fridge Bottle Set (6 pieces, 1L, Checkered pattern, Multicolour)\n",
+                    "componentId": "3836a82142f22088bb5149cbec5f0a8ff6332539d915accba2ed4f1ddb755763",
+                    "price": "₹349",
+                    "discount": "50%",
+                    "rating": 4.4,
+                    "reviews": 406
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/51tjMeONVoL._SL1044_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/product/B07FFMYKW2/ref=s9_acsd_al_bw_c_x_1_w?pf_rd_m=A1K21FY43GMZF8&pf_rd_s=merchandised-search-6&pf_rd_r=6GRQPGAQB906SNYB5MB9&pf_rd_t=101&pf_rd_p=b40c8d6d-ea40-456e-9cd9-f5d3f9ab1c8c&pf_rd_i=16692168031",
+                    "title": "Amazon Brand - Solimo 500 ml Large Vegetable Chopper with 3 Blades, Blue",
+                    "componentId": "5472d090698726edf6d4fcf676db4e120bb53991a08078746d1e3e47c86c3da4",
+                    "price": "₹239",
+                    "discount": "66%",
+                    "rating": 4.5,
+                    "reviews": 1072
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n1.sdlcdn.com/imgs/i/t/k/PTron-Rhythm-Smart-Watches-White-SDL850252175-1-c1834.jpg",
+                    "linkUrl": "https://www.snapdeal.com/product/ptron-rhythm-smart-watches-white/660632845515",
+                    "title": "PTron Rhythm Bluetooth Smart Watch (Camera Support) SIM Card Pedometer Wrist Watch For All",
+                    "componentId": "38d8a289806998b74ce3b8ee331719bb97558d3ba9b95dd81365b8455f65f5df",
+                    "price": "₹1,199",
+                    "discount": "60%",
+                    "rating": 3.7,
+                    "reviews": 3
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n1.sdlcdn.com/imgs/i/o/x/HP-15-da0352tu-Notebook-Core-SDL424223849-1-24ca2.png",
+                    "linkUrl": "https://www.snapdeal.com/product/hp-15-da0352tu-notebook-core/621007528635",
+                    "title": "HP 15- Da0352tu ( 5XD50PA )15.6-inch Laptop (7th Gen Intel Core i3-7020U/4GB/1TB/Windows 10",
+                    "componentId": "1cd32a11428d02d2d23b3da4281ce2ebfcdd751cebb0b886f3e29908a1b047ec",
+                    "price": "₹29,123",
+                    "discount": "17%",
+                    "rating": 5,
+                    "reviews": 1
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n1.sdlcdn.com/imgs/i/e/d/Ample-Grey-Half-Sleeve-T-SDL799513025-1-d0025.jpeg",
+                    "linkUrl": "https://www.snapdeal.com/product/ample-grey-half-sleeve-tshirt/624372236620#bcrumbLabelId:3033",
+                    "title": "Ample Grey Half Sleeve T-Shirt",
+                    "componentId": "efe0184663f8801608cd5d5c3f432caa641a50ec7186fa12b33db21d9178b28a",
+                    "price": "₹234",
+                    "discount": "74%",
+                    "rating": 3.8,
+                    "reviews": 652
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n1.sdlcdn.com/imgs/i/g/m/Ambrane-PP-111-10000-mAh-SDL074452640-1-d0cc6.jpeg",
+                    "linkUrl": "https://www.snapdeal.com/product/ambrane-pp111black-10000-mah-lipolymer/651130470398",
+                    "title": "Ambrane PP-111 10000 -mAh Li-Polymer Power Bank Black",
+                    "componentId": "3e09c6d4c53253b117df5dd35eacc36006e00314365582ab9b6d534a0876e265",
+                    "price": "₹649",
+                    "discount": "57%",
+                    "rating": 4.1,
+                    "reviews": 226
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n1.sdlcdn.com/imgs/i/e/6/KC_Spatula_Image_processed-a249b.jpg",
+                    "linkUrl": "https://www.snapdeal.com/product/worthy-shoppee-wood-spatula-5/672813057141",
+                    "title": "Worthy Shoppee Handmade Pine Wood Serving and Cooking Spoon Kitchen Tools Utensil, Set of 5",
+                    "componentId": "82e33cd6c7d13dc2d7001486d87f634e664b176b5bc3e5a6c851e034c4524f83",
+                    "price": "₹99",
+                    "discount": "80%",
+                    "rating": 3.8,
+                    "reviews": 19301
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n4.sdlcdn.com/imgs/i/f/l/HTC-AT-1107b-Beard-Trimmer-SDL917746026-1-5d0ec.jpg",
+                    "linkUrl": "https://www.snapdeal.com/product/htc-at1107b-beard-trimmer-multicolour-/627369954048#bcrumbLabelId:4582",
+                    "title": "HTC AT-1107b Beard Trimmer ( Black )",
+                    "componentId": "663296d71a60335a4a1931aee3b623ce87dc843d4e8809beef327858eff6c853",
+                    "price": "₹349",
+                    "discount": "65%",
+                    "rating": 3.6,
+                    "reviews": 3235
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n4.sdlcdn.com/imgs/i/i/x/LSC-NHC-2009-Hair-Straightener-SDL858177178-1-bd803.jpg",
+                    "linkUrl": "https://www.snapdeal.com/product/lsc-nhc2009-hair-straightener-pink-/640789761620#bcrumbLabelId:4582",
+                    "title": "LSC NHC-2009 Hair Straightener ( pink )",
+                    "componentId": "f62810c5922240b8ba0b80fcb0ad789304504f8095988a08df7ab66bce82f7ed",
+                    "price": "₹303",
+                    "discount": "70%",
+                    "rating": 3.6,
+                    "reviews": 155
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n3.sdlcdn.com/imgs/f/y/e/Bajaj_Pluto_500_Watt_3_SDL815862454_1_a8e84_aa915-edeb0.jpg",
+                    "linkUrl": "https://www.snapdeal.com/product/bajaj-pluto-500-watt-3/653812629707",
+                    "title": "Bajaj Pluto 500 Watt 3 Jar Mixer Grinder",
+                    "componentId": "0fb26fb580cf29f3d969f0d220a9c040f07b4fbf5b5929207535f109c5019abf",
+                    "price": "₹1,956",
+                    "discount": "49%",
+                    "rating": 3.8,
+                    "reviews": 1065
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n1.sdlcdn.com/imgs/h/a/i/Altek-Black-Block-Heels-SDL187338607-1-8b274.jpeg",
+                    "linkUrl": "https://www.snapdeal.com/product/altek-black-kitten-heels/624219136811",
+                    "title": "Altek Black Cone Heels",
+                    "componentId": "4d43cae6ec4ee40f84db90dd76901facfeff0737789a6c9892810ab120372435",
+                    "price": "₹299",
+                    "discount": "70%",
+                    "rating": 3.7,
+                    "reviews": 83
+                },
+                {
+                    "source": "Snapdeal",
+                    "imageUrl": "https://n4.sdlcdn.com/imgs/i/i/1/absorbing-Crepe-Regular-Tops-Beige-SDL043197816-1-adc0b.jpeg",
+                    "linkUrl": "https://www.snapdeal.com/product/absorbing-crepe-regular-tops-beige/651995251231#bcrumbLabelId:23",
+                    "title": "absorbing Crepe Regular Tops - Beige",
+                    "componentId": "7e090225042f5a084853f508b2478be14fbee3afa69bbb867df1455b21f73c54",
+                    "price": "₹359",
+                    "discount": "64%",
+                    "rating": 3.6,
+                    "reviews": 82
+                }
+            ]
+        }
+    ]
+}
