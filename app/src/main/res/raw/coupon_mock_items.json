@@ -1,302 +1,254 @@
-[
-    {
-        "id": 1,
-        "title": "Raih Promo Gratis Ongkir untuk Penuhi Kebutuhan Makanan & Kesehatan + Diskon Hingga 50%!",
-        "brand": "Tokopedia",
-        "start_date": "8/26",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.tokopedia.com/promo/gratis-ongkir/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/Feature-Image-1200x6758.jpg"
-    },
-    {
-        "id": 2,
-        "title": "Kecil-kecil Cabe Rawit, Beli Powerbank ACMIC Lebih Hemat",
-        "brand": "Tokopedia",
-        "start_date": "8/27",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.tokopedia.com/promo/acmic/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/03/Feature3.jpg"
-    },
-    {
-        "id": 3,
-        "title": "Promo Nature Republic - Berhadiah Merchandise EXO, Cashback 50%!",
-        "brand": "Tokopedia",
-        "start_date": "8/27",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.tokopedia.com/promo/nature-republic/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/NatureRepublic-feature.jpg"
-    },
-    {
-        "id": 4,
-        "title": "Promo Fashion Wanita - Dapatkan Ongkir Hingga 20 ribu | Tokopedia",
-        "brand": "Tokopedia",
-        "start_date": "8/26",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.tokopedia.com/promo/fashion-wanita/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/1200X675-FEATURE-Tanpa-10th.jpg"
-    },
-    {
-        "id": 5,
-        "title": "Kembangkan Keceriaan Si Kecil dengan Mainan Favoritnya! Diskon s.d 50%",
-        "brand": "Tokopedia",
-        "start_date": "8/19",
-        "end_date": "9/1",
-        "remain": -5,
-        "link_url": "https://www.tokopedia.com/promo/payday/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/07/image-feature.png"
-    },
-    {
-        "id": 6,
-        "title": "Tokopedia Food Market, Gratis Ongkir Hingga Rp15.000 dari Grab Express",
-        "brand": "Tokopedia",
-        "start_date": "8/19",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://www.tokopedia.com/promo/grab/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/Feature-Image-940x339.png"
-    },
-    {
-        "id": 7,
-        "title": "Lengkapi Koleksimu Main Makin Seru, Cashback hingga Rp50 Ribu",
-        "brand": "Tokopedia",
-        "start_date": "8/25",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://www.tokopedia.com/promo/j-shop/?cta_src=363",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/07/JShop-FEATURE.png"
-    },
-    {
-        "id": 8,
-        "title": "Pria Gaya Suka-Suka, Cashback hingga Rp15.000",
-        "brand": "Tokopedia",
-        "start_date": "8/26",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.tokopedia.com/promo/manzone/?cta_src=0",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/03/Feature-Image-21.png"
-    },
-    {
-        "id": 9,
-        "title": "Gajian Tiba, Hobi Baca Jadi Lebih Lega! Buku Favorit Diskon s.d 30%",
-        "brand": "Tokopedia",
-        "start_date": "8/26",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.tokopedia.com/promo/kompas/?cta_src=0",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/kompas-payday-microsite-feature.png"
-    },
-    {
-        "id": 10,
-        "title": "Diskon Rp200 Ribu",
-        "brand": "Tokopedia",
-        "start_date": "8/26",
-        "end_date": "9/1",
-        "remain": -5,
-        "link_url": "https://www.tokopedia.com/promo/samsung/?cta_src=0",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/08/Tokopedia-Banner-Samsung-Galaxy-A70-1200x675px-23-Agustus-2019.jpg"
-    },
-    {
-        "id": 11,
-        "title": "Paket Eksklusif Fitmee x Bits & Bobs ada di Official Store, Lho",
-        "brand": "Tokopedia",
-        "start_date": "8/25",
-        "end_date": "9/15",
-        "remain": 9,
-        "link_url": "https://www.tokopedia.com/promo/fitmee/?cta_src=0",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2018/12/Feature-Image1.png"
-    },
-    {
-        "id": 12,
-        "title": "Cashback 130rb Untuk Kamu yang di Bali dan Palembang",
-        "brand": "Tokopedia",
-        "start_date": "8/24",
-        "end_date": "9/8",
-        "remain": 2,
-        "link_url": "https://www.tokopedia.com/promo/finansial-home-credit-2/?cta_src=0",
-        "image_url": "https://ecs7.tokopedia.net/img/blog/promo/2019/07/Feature-940x339-6.jpg"
-    },
-    {
-        "id": 13,
-        "title": "9.9 Super Shopping Day | Super Gratis Ongkir + Cashback Day | 16 Aug - 12 Sep",
-        "brand": "Shopee",
-        "start_date": "8/16",
-        "end_date": "9/12",
-        "remain": 6,
-        "link_url": "https://shopee.co.id/m/9-9-super-gratis-ongkir-day-118",
-        "image_url": "https://cf.shopee.co.id/file/d8e4021920ce70f9aa8912e0df1ce7d9"
-    },
-    {
-        "id": 14,
-        "title": "Produk Terlaris Masa Kini Disc. up to 70% | 29 Ags - 1 Sep ",
-        "brand": "Shopee",
-        "start_date": "8/29",
-        "end_date": "9/1",
-        "remain": -5,
-        "link_url": "https://shopee.co.id/collections/237662/",
-        "image_url": "https://cf.shopee.co.id/file/34a347d5ea1a01832170d4d13b8dbcc1"
-    },
-    {
-        "id": 15,
-        "title": "Nikmati promo Cegah Sakit di Pergantian Musim Mulai Dari 20RB hanya di Shopee!",
-        "brand": "Shopee",
-        "start_date": "",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://shopee.co.id/m/cegah-sakit-di-pergantian-musim",
-        "image_url": "https://cf.shopee.co.id/file/321e873bc0d95c666f464f29bc005e5b"
-    },
-    {
-        "id": 16,
-        "title": "Nikmati promo Tas & Sepatu Favorit Wanita Disc. Up to 70% hanya di Shopee!",
-        "brand": "Shopee",
-        "start_date": "",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://shopee.co.id/m/tas-sepatu-favorit-wanita",
-        "image_url": "https://cf.shopee.co.id/file/54db961684f9d1bbae31ae81e591372a"
-    },
-    {
-        "id": 17,
-        "title": "Nikmati Promo Bayar Di Tempat Disc. Up To 70% Hanya Di Shopee!",
-        "brand": "Shopee",
-        "start_date": "",
-        "end_date": "9/2",
-        "remain": -4,
-        "link_url": "https://shopee.co.id/m/bayar-di-tempat-101",
-        "image_url": "https://cf.shopee.co.id/file/a42289baf58e9d5afd1b84a556d369d6"
-    },
-    {
-        "id": 18,
-        "title": "Produk Terbaik Komunitas",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://www.bukalapak.com/promo/produk-terbaik-komunitas?from=promo-page",
-        "image_url": "https://www.bukalapak.com/promo/produk-terbaik-komunitas"
-    },
-    {
-        "id": 19,
-        "title": "Nikmati Promo Aktivitas Outdoor Seru diskon hingga 80% Hanya di Shopee!",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "9/2",
-        "remain": -4,
-        "link_url": "https://shopee.co.id/collections/242876/?source=allpromo",
-        "image_url": "https://cf.shopee.co.id/file/0feb2cc7b977a515163db80a8844020d"
-    },
-    {
-        "id": 20,
-        "title": "Nikmati Promo Seru Kebutuhan Pria di 9.9 Serbu Promo Seru Hanya di Shopee!",
-        "brand": "bukalapak",
-        "start_date": "8/29",
-        "end_date": "9/2",
-        "remain": -4,
-        "link_url": "https://shopee.co.id/m/promo-seru-kebutuhan-pria%20",
-        "image_url": "https://cf.shopee.co.id/file/6322d537275a9c50b0420b4ba42c018e"
-    },
-    {
-        "id": 21,
-        "title": "Beli Gadget Dapat Cashback",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "9/2",
-        "remain": -4,
-        "link_url": "https://www.bukalapak.com/promo/beli-gadget-dapat-cashback?from=promo-page",
-        "image_url": "https://s1.bukalapak.com/uploads/campaign/86283/960x150_Voucher.jpg"
-    },
-    {
-        "id": 22,
-        "title": "Electronic Fair",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "8/30",
-        "remain": -7,
-        "link_url": "https://m.bukalapak.com/exclusive/electronic-mega-deals?utm_source=homepage&utm_medium=flash_banner&utm_promo=flash_banner_9&g=2?g=2&from=current-day-promo-old-2",
-        "image_url": "https://s3.bukalapak.com/uploads/dynamic_page_content/83793/original/1.jpg"
-    },
-    {
-        "id": 23,
-        "title": "Inspriasi Korean Style",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "",
-        "remain": 0,
-        "link_url": "https://www.bukalapak.com/promo/inspirasi-korean-style?g=2&from=current-day-promo-old-3",
-        "image_url": "https://s4.bukalapak.com/uploads/campaign/32973/KOREAN_STYLE_B_960x150.jpg"
-    },
-    {
-        "id": 24,
-        "title": "aptop dan Aksesoris Lengkap",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "",
-        "remain": 0,
-        "link_url": "https://www.bukalapak.com/promo/laptop-dan-aksesoris-lengkap?g=1&from=current-day-promo-old-4",
-        "image_url": "https://s3.bukalapak.com/uploads/campaign/84973/laptop_a_960x150.jpg"
-    },
-    {
-        "id": 25,
-        "title": "Produk Terbaik Komunitas",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "",
-        "remain": 0,
-        "link_url": "https://m.bukalapak.com/exclusive/produk-terbaik-komunitas?g=1&from=current-day-promo-old-5",
-        "image_url": "https://s3.bukalapak.com/uploads/dynamic_page_content/38204/original/01_REV.jpg"
-    },
-    {
-        "id": 26,
-        "title": "Koleksi Kamera Andalan",
-        "brand": "bukalapak",
-        "start_date": "",
-        "end_date": "",
-        "remain": 0,
-        "link_url": "https://www.bukalapak.com/promo/koleksi-kamera-andalan?g=2&from=current-day-promo-old-6",
-        "image_url": "https://s4.bukalapak.com/uploads/campaign/85973/kamera_a_Product_List_960x150.jpg"
-    },
-    {
-        "id": 27,
-        "title": "Bayar tagihan Kartu Kredit dan dapatkan Cashback Hingga Rp120.000",
-        "brand": "bukalapak",
-        "start_date": "8/1",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://www.bukalapak.com/promo-detail/bayar-kartu-kredit-dijamin-irit?from=promo-page",
-        "image_url": "https://s4.bukalapak.com/uploads/promo_partnerinfo_bloggy/1038/Bloggy_1.jpg"
-    },
-    {
-        "id": 28,
-        "title": "Bayar tagihan Listrik Pascabayar dan dapatkan Cashback hingga Rp90.000",
-        "brand": "bukalapak",
-        "start_date": "8/1",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://www.bukalapak.com/promo-detail/bayar-tagihan-listrik-jadi-makin-asik?from=promo-page",
-        "image_url": "https://s0.bukalapak.com/uploads/promo_partnerinfo_bloggy/1138/Bloggy_1_Copy_2.jpg"
-    },
-    {
-        "id": 29,
-        "title": "Beli Produk Virtual Pakai DANA, Cashbacknya Sampai 90%",
-        "brand": "bukalapak",
-        "start_date": "8/26",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://www.bukalapak.com/promo-detail/promo-vp-dana?from=promo-page",
-        "image_url": "https://s1.bukalapak.com/uploads/promo_partnerinfo_bloggy/3909/Bloggy_1_danahemat.jpg"
-    },
-    {
-        "id": 30,
-        "title": "Bisa Top Up Bigo, Jadi Lebih Asik",
-        "brand": "bukalapak",
-        "start_date": "8/1",
-        "end_date": "8/31",
-        "remain": -6,
-        "link_url": "https://www.bukalapak.com/promo-detail/bisa-top-up-bigo-jadi-lebih-asik?from=promo-page",
-        "image_url": "https://s3.bukalapak.com/uploads/promo_partnerinfo_bloggy/8558/Bloggy_1_AGUSTUS.jpg"
-    }
-]
+{
+    "version": 1,
+    "subcategories": [
+        {
+            "componentType": "Lcard_bucket list",
+            "subcategoryName": "Hot coupons",
+            "subcategoryId": 3,
+            "items": [
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/31%2BA2-UYHaL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/save-15-on-puma-merchandise/A3UGROKK060PNC?ie=UTF8&heroAsin=B07DBVV8XW&source=catp_db_Test%20Node",
+                    "title": "Save 15% on Puma Merchandise\n",
+                    "componentId": "80c550f2aed0cc5289b904d9336ed6c8f98f5ab0ed381f4d2b34406a04e0c220",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/41oQaxObFTL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/flying-machine-men-s-clothing-coupon/A1QHL04JGDWVPC?ie=UTF8&heroAsin=B07DSFTW3F&source=catp_db_Test%20Node",
+                    "title": "Flying Machine Men's Clothing Coupon Offer on New Selection\n",
+                    "componentId": "c07e7444ac94cd28f4b4bdfc745031393383a11e7884ceabda2814f657801c3e",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/51jHq8T0IFL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/amazon-brand-myx-women-s-straight-kurta/APA9SQQ1HVBGE?ie=UTF8&heroAsin=B07H3VPGR4&source=catp_db_Test%20Node",
+                    "title": "Amazon Brand - Myx Women's Straight Kurta (Pack of 2)\n",
+                    "componentId": "3e9a7e0a78d91b48ed2d5e632c9a624b8025fa3b8eb322b9a9a79258b3ba84d8",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/51bm6THXd1L._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/crystal-stainless-steel-cutlery-set-24/A3UOYGB8O0ZH0J?ie=UTF8&heroAsin=B00UHEI8MG&source=catp_db_Test%20Node",
+                    "title": "Crystal Stainless Steel Cutlery Set, 24-Pieces, Silver\n",
+                    "componentId": "addb683f1274b70df8b4f0395eae00b0d769fc44af37c4bcd786115fc78e5409",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/51y0mVo8ijL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/surf-excel-matic-liquid-detergent-front/A188TZRT6DFVAG?ie=UTF8&heroAsin=B07F889J16&source=catp_db_Test%20Node",
+                    "title": "Surf Excel Matic Liquid Detergent Front Load Pouch 2l",
+                    "componentId": "fcccbf49698f2631967b0cf2e4dc11504cbb6afc2ccc8c31440512844030e0b6",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/41JigxZPZOL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/amazon-brand-symbol-men-s-sneakers/A3MAGMNDAVOBYA?ie=UTF8&heroAsin=B07DJ8ZXJT&source=catp_db_Test%20Node",
+                    "title": "Amazon Brand - Symbol Men's Sneakers\n",
+                    "componentId": "d67dcce602caee73cb0ea1c12257784b9abdeab92778160830e585f463d44c32",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/41rXc03qA8L._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/save-5-on-mobile-accessories/AEMXIO0SAYQTL?ie=UTF8&heroAsin=B07H4V1FCP&source=catp_db_Test%20Node",
+                    "title": "Save 5% on Mobile Accessories\n",
+                    "componentId": "76fb5770a294c4f67b4733c2d11a84b44d97ef742f85cecf16bd8b69d74aebe4",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/41kkYNlj3zL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/mixer-grinder-promotion/A1W6R2W6TCEW4K?ie=UTF8&heroAsin=B0188KPKB2&source=catp_db_Test%20Node",
+                    "title": "Mixer Grinder Promotion",
+                    "componentId": "6d515b57e0c18eb28ea00fea3cc3696b6035bec4a68199db565f8cf63ffc21eb",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/41N-wF9LpDL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/save-5-on-mosiso-bag-case/A17KNGSMT4Z8Z?ie=UTF8&heroAsin=B01HHKA1PY&source=catp_db_Test%20Node",
+                    "title": "Save 5% on MOSISO Bag Case\n",
+                    "componentId": "a742d9eec0a355cddfc21462a54a15c5e8690277f3296a62e079a7e9f32e0a2d",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Amazon.in",
+                    "imageUrl": "https://images-eu.ssl-images-amazon.com/images/I/41TGAV9ccRL._SL500_SS170_.jpg",
+                    "linkUrl": "https://www.amazon.in/gp/coupon/save-35-on-sep-of-the-season/A27EXBLW7FKQDC?ie=UTF8&heroAsin=B06Y4FBZFF&source=catp_db_Test%20Node",
+                    "title": "Save ₹ 35 on sep of the season\n",
+                    "componentId": "2e7532fa9a5bea1efd6026384ed983a14895a54a104a305530abfde790f970b9",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/31efaad41a3e4208.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/home-kitchen/~cs-8x18je1kvi/pr?sid=j9e&otracker=hp_banner_1_5.bannerX3.BANNER_I4T2T46AL3PX&fm=neo%2Fmerchandising&iid=M_686dc1be-b014-4431-9059-d4487c7ff60f_5.I4T2T46AL3PX&ppt=hp&ppn=hp&ssid=alckmjrf1c0000001569464644291",
+                    "title": "",
+                    "componentId": "c844a8fad1cc5016003dc345a9610718b6bad21e1c3db2a3d9c02aed43fb80dd",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/d9b6cb39085321db.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/cateogory-offer-store?otracker=clp_banner_2_1.bannerX3.BANNER_offers-store_KZ7C8TP9RURJ&fm=neo%2Fmerchandising&iid=M_a5e84c13-07d7-49a2-ab01-9a6246e26e6c_1.KZ7C8TP9RURJ&ppt=clp&ppn=offers-store&ssid=2vt8le0mobp1ezgg1569479822522",
+                    "title": "",
+                    "componentId": "4f4082cf0ac9aa837b51a4620f9211680679e8c87b385144b4b474e39f374a0d",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/adc5eb3b6e6e4360.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/bsow-store?otracker=clp_banner_3_1.bannerX3.BANNER_dotd-store_LYC6S9BS208A&fm=neo%2Fmerchandising&iid=M_ebbb6387-e981-4cc2-b08a-1adaa738302b_1.LYC6S9BS208A&ppt=clp&ppn=dotd-store&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "59cd69b5b1d7ef195f60a852f3909dd6e4a522f95efec0d1da2a59d0176f38de",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/31efaad41a3e4208.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/home-kitchen/~cs-8x18je1kvi/pr?sid=j9e&otracker=hp_banner_1_5.bannerX3.BANNER_I4T2T46AL3PX&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_5.I4T2T46AL3PX&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "156ce8e04d30a27f5bb868d9de069854d60dbf6a5a80f017e4f332c14a532644",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/acb0f5b4e3a62436.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/wearable-smart-devices/~fitbit-inspire-and-fitbit-versa-lite/pr?sid=ajy&otracker=hp_banner_2_5.bannerX3.BANNER_15XS7S0DL3V0&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_5.15XS7S0DL3V0&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "23cb2ef508c2223731c5d1c56df8e6a6dd65b564c1b40d8cee08434fa1d09910",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/a77e6cb36764debb.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/laptops/~top-core-i5/pr?sid=6bo%2Cb5g&otracker=hp_banner_3_5.bannerX3.BANNER_6JBJ8W3FEW1W&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_5.6JBJ8W3FEW1W&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "8beb912daee80f025deadcc745b15ee7a44169e1b9d6b0ed98d4ca0c84b39d7c",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/0a6b07fcc6e2d276.jpg?q=50",
+                    "linkUrl": "https://www.2gud.com/?ref=flipkart&otracker=hp_banner_1_8.bannerX3.BANNER_E8K5MQIVRTAR&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_8.E8K5MQIVRTAR&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "39f4c880d3f1f0e7d790fa260209eb5f61ebcaeda4324d91a1d776c948c5af4b",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/5e4fee5d6f75aa0f.jpg?q=50",
+                    "linkUrl": "https://www.2gud.com/electronic-accessories-store?ref=flipkart&otracker=hp_banner_2_8.bannerX3.BANNER_SKFP0WGSX6ZT&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_8.SKFP0WGSX6ZT&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "04d3898a8692d9a4329a687b8c1e0d9fd2728f8c6e211e84ea8cccc0343fe126",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/2e21bc008a8440fa.jpg?q=50",
+                    "linkUrl": "https://www.2gud.com/refurbished-zone-store?ref=flipkart&otracker=hp_banner_3_8.bannerX3.BANNER_1M0QZBRSQ50R&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_8.1M0QZBRSQ50R&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "6b9be2652977874990aeaa4f49d39007d1c797a6c2cce2dfaff50c5f0a896eaf",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/156d7b982fc2965c.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/televisions/~cs-f5ah26fb1f/pr?sid=ckf%2Cczl&otracker=hp_banner_1_11.bannerX3.BANNER_2TH0XX7CZSP0&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_11.2TH0XX7CZSP0&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "03b317338badba9de134a0f87906d4b4f76e784df8fa2492843d9413d3b9243f",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/14d80f.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/mobile-accessories/power-banks/pr?sid=tyy%2C4mr%2Cfu6&marketplace=FLIPKART&p%5B%5D=facets.fulfilled_by%255B%255D%3DFlipkart%2BAssured&p%5B%5D=facets.price_range.from%3DMin&p%5B%5D=facets.price_range.to%3D999&otracker=hp_banner_2_11.bannerX3.BANNER_9W8X7HR34C5A&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_11.9W8X7HR34C5A&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "772afd62814705be5df4d981eca0a43991be8eb33555a0b242c66d610a39818d",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                },
+                {
+                    "source": "Flipkart",
+                    "imageUrl": "https://rukminim1.flixcart.com/flap/960/960/image/d04ac0acc1d77dde.jpg?q=50",
+                    "linkUrl": "https://www.flipkart.com/refrigerators/pr?count=40&p%5B%5D=facets.brand%255B%255D%3DGodrej&sid=j9e%2Fabm%2Fhzg&otracker=hp_banner_3_11.bannerX3.BANNER_QJ1GPNSBNP4Q&fm=neo%2Fmerchandising&iid=M_a8ed406d-d9f7-4a2b-b7bc-04f7a440987d_11.QJ1GPNSBNP4Q&ppt=hp&ppn=hp&ssid=p8v4vvofy80000001569468574955",
+                    "title": "",
+                    "componentId": "072151e55a71dd7e602654a3d6d227a820e87d77b8186eaef5d3f7f7d80685af",
+                    "price": "",
+                    "discount": "",
+                    "rating": 0,
+                    "reviews": 0
+                }
+            ]
+        }
+    ]
+}
