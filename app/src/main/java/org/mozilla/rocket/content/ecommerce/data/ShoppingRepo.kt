@@ -9,7 +9,6 @@ import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
 import org.mozilla.rocket.content.ecommerce.ui.DealFragment
 import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
@@ -28,7 +27,7 @@ class ShoppingRepo(private val appContext: Context) {
 
     suspend fun getCoupons(): List<DelegateAdapter.UiModel> {
         return withContext(Dispatchers.IO) {
-            getMockCouponItems() ?: emptyList()
+            getCouponItems()
         }
     }
 
@@ -38,14 +37,13 @@ class ShoppingRepo(private val appContext: Context) {
         }
     }
 
-    private fun getDealItems(): List<DelegateAdapter.UiModel> {
-        return DealMapper.toDeals(DealEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.product_mock_items)))
-    }
+    // TODO: remove mock data
+    private fun getDealItems(): List<DelegateAdapter.UiModel> =
+            ShoppingMapper.toDeals(DealEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.product_mock_items)))
 
     // TODO: remove mock data
-    private fun getMockCouponItems(): List<Coupon>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.coupon_mock_items)
-                ?.jsonStringToCouponItems()
+    private fun getCouponItems(): List<DelegateAdapter.UiModel> =
+            ShoppingMapper.toCoupons(DealEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.coupon_mock_items)))
 
     private fun getVoucherItems(): List<Voucher>? =
             FirebaseHelper.getFirebase().getRcString("str_e_commerce_shoppinglinks").jsonStringToVoucherItems()
@@ -54,31 +52,6 @@ class ShoppingRepo(private val appContext: Context) {
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.shopping_tab_items)
                 ?.jsonStringToShoppingTabItems() ?: emptyList()
 }
-
-private fun String.jsonStringToCouponItems(): List<Coupon>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createCouponItem(jsonObject) }
-                .shuffled()
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createCouponItem(jsonObject: JSONObject): Coupon =
-        Coupon(
-            jsonObject.optInt("id"),
-            jsonObject.optString("title"),
-            jsonObject.optString("brand"),
-            jsonObject.optString("start_date"),
-            jsonObject.optString("end_date"),
-            jsonObject.optInt("remain"),
-            jsonObject.optString("link_url"),
-            jsonObject.optString("image_url")
-        )
 
 private fun String.jsonStringToVoucherItems(): List<Voucher>? {
     return try {

@@ -3,10 +3,11 @@ package org.mozilla.rocket.content.ecommerce.data
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 
-object DealMapper {
+object ShoppingMapper {
 
     private const val BANNER = "banner"
 
@@ -51,4 +52,18 @@ object DealMapper {
                 item.rating,
                 item.reviews
             )
+
+    fun toCoupons(entity: DealEntity): List<DelegateAdapter.UiModel> {
+        return entity.subcategories[0].items
+                .map { item ->
+                    Coupon(
+                        item.source,
+                        item.imageUrl,
+                        item.linkUrl,
+                        item.title,
+                        item.componentId,
+                        3L
+                    )
+                }
+    }
 }
