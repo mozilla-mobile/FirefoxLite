@@ -280,9 +280,6 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
     firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
 
-    implementation project(':newspoint')
-    implementation project(':partnerrepository')
-
     implementation "com.google.android.play:core:${Versions.play}"
 }
 
