@@ -1,0 +1,23 @@
+[
+    {
+        "type": "flight",
+        "source": "Skyscanner",
+        "price": 24000,
+        "currency": "Rp",
+        "link_url": ""
+    },
+    {
+        "type": "car_rental",
+        "source": "Skyscanner",
+        "price": 24000,
+        "currency": "Rp",
+        "link_url": ""
+    },
+    {
+        "type": "hotel",
+        "source": "Booking.com",
+        "price": 24000,
+        "currency": "Rp",
+        "link_url": ""
+    }
+]
