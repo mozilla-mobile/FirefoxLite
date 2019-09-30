@@ -35,12 +35,6 @@ project(':telemetry-compiler').projectDir = new File(rootDir, 'components/servic
 include ':permissionhandler'
 project(':permissionhandler').projectDir = new File('components/utils/android-permission-handler/permissionhandler')
 
-include ':newspoint'
-project(':newspoint').projectDir = new File(rootDir, 'components/partners/newspoint')
-
-include ':partnerrepository'
-project(':partnerrepository').projectDir = new File(rootDir, 'components/partners/partnerrepository')
-
 include ':strictmodeviolator'
 project(':strictmodeviolator').projectDir = new File(rootDir, 'components/utils/strictmodeviolator')
 

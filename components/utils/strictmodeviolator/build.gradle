@@ -8,7 +8,6 @@ apply from: "$rootProject.projectDir/buildSrc/findbugs.gradle"
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(':partnerrepository')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"
     implementation "androidx.appcompat:appcompat:${Versions.appcompat}"
