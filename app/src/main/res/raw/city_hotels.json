@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "image_url": "",
+        "source": "Booking.com",
+        "title": "Hotel 1",
+        "distance": 1,
+        "rating": 4.5,
+        "freeWifi": true,
+        "price": 34000,
+        "currency": "Rp"
+    },
+    {
+        "id": 2,
+        "image_url": "",
+        "source": "Booking.com",
+        "title": "Hotel 2",
+        "distance": 3.5,
+        "rating": 4,
+        "freeWifi": true,
+        "price": 34000,
+        "currency": "Rp"
+    },
+    {
+        "id": 3,
+        "image_url": "",
+        "source": "Booking.com",
+        "title": "Hotel 2",
+        "distance": 10,
+        "rating": 3,
+        "freeWifi": false,
+        "price": 12000,
+        "currency": "Rp"
+    }
+]

@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "image_url": "",
+        "title": "Article 1",
+        "source": "TBD",
+        "read": false
+    },
+    {
+        "id": 2,
+        "image_url": "",
+        "title": "Article 2",
+        "source": "TBD",
+        "read": false
+    },
+    {
+        "id": 3,
+        "image_url": "",
+        "title": "Article 3",
+        "source": "TBD",
+        "read": false
+    },
+    {
+        "id": 4,
+        "image_url": "",
+        "title": "Article 4",
+        "source": "TBD",
+        "read": false
+    },
+    {
+        "id": 5,
+        "image_url": "",
+        "title": "Article 5",
+        "source": "TBD",
+        "read": false
+    }
+]
