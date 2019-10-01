@@ -4,9 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
-import org.mozilla.rocket.content.news.data.NewsSettingsLocalDataSource
-import org.mozilla.rocket.content.news.data.NewsSettingsRemoteDataSource
-import org.mozilla.rocket.content.news.data.NewsSettingsRepository
+import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
@@ -23,47 +21,26 @@ object NewsModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideNewsSettingsRemoteDataSource(): NewsSettingsRemoteDataSource =
-        NewsSettingsRemoteDataSource()
+    fun provideLoadNewsSettingsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): LoadNewsSettingsUseCase =
+        LoadNewsSettingsUseCase(newsSettingsRepositoryProvider)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideNewsSettingsLocalDataSource(context: Context): NewsSettingsLocalDataSource =
-        NewsSettingsLocalDataSource(context)
+    fun provideLoadNewsLanguagesUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): LoadNewsLanguagesUseCase =
+        LoadNewsLanguagesUseCase(newsSettingsRepositoryProvider)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideNewsSettingsRepository(
-        newsSettingsRemoteDataSource: NewsSettingsRemoteDataSource,
-        newsSettingsLocalDataSource: NewsSettingsLocalDataSource
-    ): NewsSettingsRepository =
-        NewsSettingsRepository(newsSettingsRemoteDataSource, newsSettingsLocalDataSource)
+    fun provideSetUserPreferenceLanguageUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): SetUserPreferenceLanguageUseCase =
+        SetUserPreferenceLanguageUseCase(newsSettingsRepositoryProvider)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideLoadNewsSettingsUseCase(newsSettingsRepository: NewsSettingsRepository): LoadNewsSettingsUseCase =
-        LoadNewsSettingsUseCase(newsSettingsRepository)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideLoadNewsLanguagesUseCase(newsSettingsRepository: NewsSettingsRepository): LoadNewsLanguagesUseCase =
-        LoadNewsLanguagesUseCase(newsSettingsRepository)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideSetUserPreferenceLanguageUseCase(newsSettingsRepository: NewsSettingsRepository): SetUserPreferenceLanguageUseCase =
-        SetUserPreferenceLanguageUseCase(newsSettingsRepository)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideSetUserPreferenceCategoriesUseCase(newsSettingsRepository: NewsSettingsRepository): SetUserPreferenceCategoriesUseCase =
-        SetUserPreferenceCategoriesUseCase(newsSettingsRepository)
+    fun provideSetUserPreferenceCategoriesUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): SetUserPreferenceCategoriesUseCase =
+        SetUserPreferenceCategoriesUseCase(newsSettingsRepositoryProvider)
 
     @JvmStatic
     @Singleton
@@ -96,4 +73,10 @@ object NewsModule {
     @Provides
     fun provideNewsRepositoryProvider(): NewsRepositoryProvider =
         NewsRepositoryProvider()
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideNewsSettingsRepositoryProvider(context: Context): NewsSettingsRepositoryProvider =
+        NewsSettingsRepositoryProvider(context)
 }

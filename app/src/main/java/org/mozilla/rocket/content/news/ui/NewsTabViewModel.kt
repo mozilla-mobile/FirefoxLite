@@ -10,6 +10,7 @@ import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.data.NewsSettings
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 
@@ -31,16 +32,19 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
     }
 
     fun refresh() {
-        _uiModel.value = NewsTabUiModel(Pair(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE, emptyList()))
+        _uiModel.value = NewsTabUiModel(
+            Pair(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE, emptyList()),
+            _uiModel.value?.hasSettingsMenu ?: false
+        )
         getNewsSettings()
     }
 
-    private fun emitUiModel(newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
-        _uiModel.value = NewsTabUiModel(newsSettings)
+    private fun emitUiModel(newsSettings: NewsSettings) {
+        _uiModel.value = NewsTabUiModel(Pair(newsSettings.newsLanguage, newsSettings.newsCategories), newsSettings.shouldEnableNewsSettings)
     }
 }
 
-// TODO update to hold the entire news elements
 data class NewsTabUiModel(
-    val newsSettings: Pair<NewsLanguage, List<NewsCategory>>
+    val newsSettings: Pair<NewsLanguage, List<NewsCategory>>,
+    val hasSettingsMenu: Boolean
 )

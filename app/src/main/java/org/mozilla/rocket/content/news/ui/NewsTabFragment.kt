@@ -57,6 +57,10 @@ class NewsTabFragment : Fragment() {
                     if (newsSettings != it.newsSettings) {
                         newsSettings = it.newsSettings
                         setupViewPager(view, it.newsSettings)
+                        news_setting.visibility = if (it.hasSettingsMenu)
+                            View.VISIBLE
+                        else
+                            View.GONE
                     }
                 }
             })

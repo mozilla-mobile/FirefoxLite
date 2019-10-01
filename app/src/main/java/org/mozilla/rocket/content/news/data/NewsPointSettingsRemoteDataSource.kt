@@ -9,7 +9,7 @@ import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 
-class NewsSettingsRemoteDataSource : NewsSettingsDataSource {
+class NewsPointSettingsRemoteDataSource : NewsSettingsDataSource {
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
@@ -59,6 +59,10 @@ class NewsSettingsRemoteDataSource : NewsSettingsDataSource {
 
     override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
         throw UnsupportedOperationException("Can't set user preference news category setting to server")
+    }
+
+    override fun shouldEnableNewsSettings(): Boolean {
+        throw UnsupportedOperationException("Can't get menu setting from server")
     }
 
     private fun getLanguageApiEndpoint(): String {

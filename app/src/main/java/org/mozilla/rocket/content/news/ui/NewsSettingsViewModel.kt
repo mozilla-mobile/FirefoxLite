@@ -59,8 +59,8 @@ class NewsSettingsViewModel(
             if (languagesResult is Result.Success) {
                 val supportLanguages = filterSupportedLanguages(languagesResult.data)
                 withContext(Dispatchers.Main) {
-                    preferenceLanguage = newsSettings.first
-                    categories = newsSettings.second
+                    preferenceLanguage = newsSettings.newsLanguage
+                    categories = newsSettings.newsCategories
                     newsLanguages = supportLanguages
                     emitUiModel(preferenceLanguage, categories, newsLanguages)
                 }
