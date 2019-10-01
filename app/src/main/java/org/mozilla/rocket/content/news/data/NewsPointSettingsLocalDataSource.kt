@@ -11,7 +11,7 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Error
 import org.mozilla.rocket.content.Result.Success
 
-class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
+class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext try {
@@ -94,6 +94,8 @@ class NewsSettingsLocalDataSource(private val context: Context) : NewsSettingsDa
             categoryListToJsonArray(userPreferenceCategories).toString()
         ).apply()
     }
+
+    override fun shouldEnableNewsSettings() = true
 
     private fun getPreferences(): SharedPreferences {
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

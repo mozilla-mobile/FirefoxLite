@@ -11,4 +11,5 @@ interface NewsSettingsDataSource {
     suspend fun setSupportCategories(language: String, supportCategories: List<String>)
     suspend fun getUserPreferenceCategories(language: String): Result<List<String>>
     suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>)
+    fun shouldEnableNewsSettings(): Boolean
 }

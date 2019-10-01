@@ -20,7 +20,7 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
 
-class LoadNewsUseCase(private val repositoryProvider: NewsRepositoryProvider) {
+class LoadNewsUseCase(repositoryProvider: NewsRepositoryProvider) {
 
     val repository = repositoryProvider.provideNewsRepository()
 

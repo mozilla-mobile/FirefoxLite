@@ -34,7 +34,7 @@ class NewsSettingsRepository(
         localDataSource.setUserPreferenceLanguage(language)
     }
 
-    suspend fun getNewsSettings(defaultLanguage: NewsLanguage): Result<Pair<NewsLanguage, List<NewsCategory>>> {
+    suspend fun getNewsSettings(defaultLanguage: NewsLanguage): Result<NewsSettings> {
         val userPreferenceLanguageResult = localDataSource.getUserPreferenceLanguage()
         val userPreferenceLanguage =
             if (userPreferenceLanguageResult is Result.Success && userPreferenceLanguageResult.data != null) {
@@ -46,7 +46,8 @@ class NewsSettingsRepository(
         val categoriesByLanguageResult = getCategoriesByLanguage(userPreferenceLanguage.apiId)
         if (categoriesByLanguageResult is Result.Success && categoriesByLanguageResult.data.isNotEmpty()) {
             val supportCategories = categoriesByLanguageResult.data
-            return Result.Success(Pair(userPreferenceLanguage, supportCategories))
+            val shouldEnableNewsSettings = localDataSource.shouldEnableNewsSettings()
+            return Result.Success(NewsSettings(userPreferenceLanguage, supportCategories, shouldEnableNewsSettings))
         }
 
         return Result.Error(Exception("Fail to get news settings result"))
