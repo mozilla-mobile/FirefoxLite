@@ -630,10 +630,13 @@
     <!-- Name of low priority notification channel, this will be shown on the app info page in the system setting -->
     <string name="low_priority_notification_channel">Hidden notifications</string>
     
+    <string name="about_link_terms_of_service”>Terms of Service</string>
+   
+    
     <!--Shopping Vertical-->
     <!--Artboard Name: 1.1 Shopping Search Overview-->
     <!--Shopping Search Onboarding-->
-    <string name="shopping_search_onboarding_title">Check before you shop</string>
+    <string name="shopping_search_onboarding_title">Find great prices</string>
     <string name="shopping_search_onboarding_body">Compare prices across many online stores with Smart Shopping Search.</string>
     <!--Shopping Search Input Placeholder-->
     <string name="shopping_search_placeholder">Type the product you want to search</string>
@@ -744,22 +747,24 @@
     <!--MSRP Vertical-->
  
     <!--Logoman-->
-    <string name="msrp_logoman_message">Win your free coupon</string>
-    
+    <string name="msrp_logoman_message">Win %1$s %2$s voucher</string>
+    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"-->    
     <!--Contextual hint-->
-    <string name="msrp_home_hint">Try these features!</string>
+    <string name="msrp_home_hint">Try Shopping, News, Game everyday to win %1$s %2$s voucher</string>
+    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"--> 
     
     <!--Reward-->
     <string name="msrp_reward_title">Reward</string>
     <string name="msrp_reward_category_1">Mission</string>
     <string name="msrp_reward_category_2">Gift</string>
-    <string name="msrp_reward_challenge_title">7-Day challenge for Rs 15,000 shopping coupon</string>
-    <string name="msrp_reward_challenge_expire">Expires 03/09/2020</string>
-    
+    <string name="msrp_reward_challenge_title">Try Shopping, News, Game for 7 days in a row!</string>                                            
+    <string name="msrp_reward_challenge_expire">Expires %3$s</string>
+    <!-- The %3$s here is a placeholder for "date"-->     
     <!--Challenge-->
-    <string name="msrp_challenge_title">7-day challenge for Rs 15,000 shopping coupon</string>
+    <string name="msrp_challenge_title">7-day challenge for %1$s %2$s voucher</string>
+    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"-->                                
     <string name="msrp_challenge_details_title_1">1. Join the 7-Day challenge</string>
-    <string name="msrp_challenge_details_body_1">Try out new features “Discovery” on Firefox Lite home by simply clicking the buttons for seven days in a row.</string>
+    <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on Firefox Lite home by simply clicking the buttons for seven days in a row.</string>
     <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
     <string name="msrp_challenge_button_1">I’m In!</string>
@@ -785,17 +790,19 @@
     <string name="msrp_challenge_completed_body">Thanks for trying out some of our new features. We hope you’ve enjoyed using them!</string>
     <string name="msrp_challenge_button_5">Redeem later</string>
     
-    <!--Coupon-->
-    <string name="msrp_coupon_title">Your coupon is ready!</string>
-    <string name="msrp_coupon_body_1">Coupons are valid for a limited time only. We reserve the right to modify or cancel coupons at any time.</string>
-    <string name="msrp_coupon_body_2">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
-    <string name="msrp_coupon_expire">Expires 03/09/2021</string>
-    <string name="msrp_coupon_button_2">Copy coupon and go shopping</string>
-    <string name="msrp_coupon_button_1">Copy</string>
+    <!--Voucher-->
+    <string name="msrp_voucher_title">Your %2$s voucher is ready!</string>
+    <!-- The %2$s here is a placeholder for "shopping site"--> 
+    <string name="msrp_voucher_body_1">Voucher is valid for a limited time only. We reserve the right to modify or cancel voucher at any time.</string>
+    <string name="msrp_voucher_body_2">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
+    <string name="msrp_voucher_expire">Expires %3$s</string>
+    <!-- The %3$s here is a placeholder for "date"--> 
+    <string name="msrp_voucher_body_3">Voucher can only be applied through this URL below:</string>
+    <string name="msrp_voucher_button_1">Copy</string>
     
     <!--Redeem-->
     <string name="msrp_reward_redeem_redeem">Redeem</string>
-    <string name="msrp_reward_redeem_coupon">Coupon</string>
+    <string name="msrp_reward_redeem_voucher">Voucher</string>
     
     <!--Suspicious account activity-->
     <string name="msrp_disqualification_title_1">Warning: multiple Firefox accounts detected</string>
@@ -810,17 +817,17 @@
     
     
     <!--Check-in toasts for each day-->
-    <string name="msrp_completed_toast_day1">Great! You have successfully completed your first daily task!</string>
-    <string name="msrp_completed_toast_day2">Cool! You have completed the second daily task!</string>
-    <string name="msrp_completed_toast_day3">Awesome! You have completed the third daily task, keep it up!</string>
-    <string name="msrp_completed_toast_day4">Congrats! You have completed the fourth daily task!</string>
-    <string name="msrp_completed_toast_day5">Terrific! You have completed the fifth daily task!</string>
-    <string name="msrp_completed_toast_day6">Wow! You are just one day away from getting the prize!</string>
-    <string name="msrp_completed_toast_day7">You’ve won a shopping coupon! Please go to Reward page to redeem your prize!</string>
+    <string name="msrp_completed_toast_day1">Great! You have successfully completed your first daily challenge!</string>
+    <string name="msrp_completed_toast_day2">Cool! You have completed the second daily challenge!</string>
+    <string name="msrp_completed_toast_day3">Awesome! You have completed the third daily challenge, keep it up!</string>
+    <string name="msrp_completed_toast_day4">Congrats! You have completed the fourth daily challenge!</string>
+    <string name="msrp_completed_toast_day5">Terrific! You have completed the fifth daily challenge!</string>
+    <string name="msrp_completed_toast_day6">Wow! You are just one day away from getting the voucher!</string>
+    <string name="msrp_completed_toast_day7">You’ve completed the challenge! Please go back to Firefox Lite Home to redeem your voucher!</string>
     
     <!--Notifications for last 3 days-->
-    <string name="msrp_notification_reminder">Want to win a shopping coupon? Don’t forget to try a new feature today!</string>
-    
+    <string name="msrp_notification_reminder">Want to win a %2$s voucher? Don’t forget to try Shopping, News, Game today!</string>
+    <!-- The %2$s here is a placeholder for "shopping site"-->      
     <!--No data-->
     <string name="msrp_reward_challenge_nodata">All challenges completed</string>
     <string name="msrp_reward_redeem_nodata">All rewards collected</string>
@@ -832,6 +839,6 @@
     
     <!--Activity killed-->
     <string name="msrp_activitykilled_snackbar_button">REDEEM</string>
-    <string name="msrp_activitykilled_snackbar_body">You’ve won a shopping coupon!</string>
+    <string name="msrp_activitykilled_snackbar_body">You’ve won a shopping voucher!</string>
     
 </resources>
