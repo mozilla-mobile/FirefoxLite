@@ -51,6 +51,7 @@ import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
+import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification
@@ -245,7 +246,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             navigateToContentPage.observe(this@HomeFragment, Observer {
                 val context = requireContext()
                 when (it) {
-//                    is ContentHub.Item.Travel -> // TODO: navigation
+                    is ContentHub.Item.Travel -> startActivity(TravelActivity.getStartIntent(context))
                     is ContentHub.Item.Shopping -> startActivity(ShoppingActivity.getStartIntent(context))
                     is ContentHub.Item.News -> startActivity(NewsActivity.getStartIntent(context))
                     is ContentHub.Item.Games -> startActivity(GamesActivity.getStartIntent(context))
