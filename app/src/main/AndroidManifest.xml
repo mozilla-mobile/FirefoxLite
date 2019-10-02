@@ -336,6 +336,11 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name="org.mozilla.rocket.content.travel.ui.TravelActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name="org.mozilla.rocket.debugging.DebugActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
