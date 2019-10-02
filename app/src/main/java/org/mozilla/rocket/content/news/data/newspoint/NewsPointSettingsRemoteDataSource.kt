@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news.data
+package org.mozilla.rocket.content.news.data.newspoint
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -6,6 +6,9 @@ import org.json.JSONArray
 import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 
@@ -33,15 +36,17 @@ class NewsPointSettingsRemoteDataSource : NewsSettingsDataSource {
         throw UnsupportedOperationException("Can't set user preference news languages setting to server")
     }
 
-    override suspend fun getSupportCategories(language: String): Result<List<String>> = withContext(Dispatchers.IO) {
+    override suspend fun getSupportCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
                 val responseBody = getHttpResult(getCategoryApiEndpoint(language))
-                val result = ArrayList<String>()
+                val result = ArrayList<NewsCategory>()
                 val items = JSONArray(responseBody)
                 for (i in 0 until items.length()) {
                     val categoryId = items.optString(i)
-                    result.add(categoryId)
+                    NewsCategory.getCategoryById(categoryId)?.let {
+                        result.add(it)
+                    }
                 }
                 Success(result)
             },

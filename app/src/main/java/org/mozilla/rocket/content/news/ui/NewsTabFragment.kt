@@ -147,7 +147,10 @@ class NewsTabFragment : Fragment() {
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return getString(displayCategories[position].stringResourceId)
+            return if (displayCategories[position].stringResourceId != 0)
+                getString(displayCategories[position].stringResourceId)
+            else
+                displayCategories[position].categoryId
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {

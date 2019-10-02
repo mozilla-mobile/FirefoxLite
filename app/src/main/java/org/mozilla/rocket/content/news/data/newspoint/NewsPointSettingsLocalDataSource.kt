@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.news.data
+package org.mozilla.rocket.content.news.data.newspoint
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -10,6 +10,10 @@ import org.json.JSONException
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Error
 import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.content.news.data.NewsCategory
+import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
+import org.mozilla.rocket.content.news.data.toJson
 
 class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
 
@@ -56,11 +60,20 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
         getPreferences().edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
     }
 
-    override suspend fun getSupportCategories(language: String): Result<List<String>> = withContext(Dispatchers.IO) {
+    override suspend fun getSupportCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext try {
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language, "") ?: ""
-            Success(toCategoryList(jsonString))
+            val supportCategories = ArrayList<NewsCategory>()
+            toCategoryList(jsonString).let {
+                supportCategories.addAll(
+                    it.asSequence()
+                        .mapNotNull { categoryId -> NewsCategory.getCategoryById(categoryId) }
+                        .sortedBy { item -> item.order }
+                        .toList()
+                )
+            }
+            Success(supportCategories)
         } catch (e: Exception) {
             Error(e)
         }

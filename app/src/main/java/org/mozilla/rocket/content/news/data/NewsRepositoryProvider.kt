@@ -1,7 +1,9 @@
 package org.mozilla.rocket.content.news.data
 
-class NewsRepositoryProvider(/*private val appContext: Context*/) {
+import org.mozilla.rocket.content.news.data.rss.RssNewsRemoteDataSource
+
+class NewsRepositoryProvider {
     fun provideNewsRepository(): NewsRepository {
-        return NewsRepository(NewsPointRemoteDataSource())
+        return NewsRepository(RssNewsRemoteDataSource())
     }
 }
