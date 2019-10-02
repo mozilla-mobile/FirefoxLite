@@ -20,13 +20,11 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsSettings
-import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.succeeded
 import java.util.Locale
 
-open class LoadNewsSettingsUseCase(repositoryProvider: NewsSettingsRepositoryProvider) {
-
-    val repository = repositoryProvider.provideNewsSettingsRepository()
+open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepository) {
 
     suspend operator fun invoke(): Result<NewsSettings> {
         var defaultLanguage = LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE

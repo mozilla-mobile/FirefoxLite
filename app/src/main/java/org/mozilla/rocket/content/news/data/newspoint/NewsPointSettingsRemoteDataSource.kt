@@ -8,11 +8,12 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 
-class NewsPointSettingsRemoteDataSource : NewsSettingsDataSource {
+class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsSettingsDataSource {
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
@@ -71,16 +72,22 @@ class NewsPointSettingsRemoteDataSource : NewsSettingsDataSource {
     }
 
     private fun getLanguageApiEndpoint(): String {
-        return "https://envoy.indiatimes.com/NPRSS/language/names"
+        return newsProvider?.languagesUrl ?: DEFAULT_LANGUAGE_LIST_URL
     }
 
     private fun getCategoryApiEndpoint(language: String): String {
-        return "https://envoy.indiatimes.com/NPRSS/pivot/section?lang=$language"
+        val url = newsProvider?.categoriesUrl ?: DEFAULT_CATEGORY_LIST_URL
+        return String.format(url, language)
     }
 
     private fun getHttpResult(endpointUrl: String): String {
         var responseBody = HttpRequest.get(URL(endpointUrl), "")
         responseBody = responseBody.replace("\n", "")
         return responseBody
+    }
+
+    companion object {
+        private const val DEFAULT_LANGUAGE_LIST_URL = "https://envoy.indiatimes.com/NPRSS/language/names"
+        private const val DEFAULT_CATEGORY_LIST_URL = "https://envoy.indiatimes.com/NPRSS/pivot/section?lang=%s"
     }
 }

@@ -7,13 +7,14 @@ import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsDataSource
 import org.mozilla.rocket.content.news.data.NewsItem
+import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class NewsPointNewsRemoteDataSource : NewsDataSource {
+class NewsPointNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDataSource {
 
     override suspend fun getNewsItems(category: String, language: String, pages: Int, pageSize: Int): Result<List<NewsItem>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
@@ -32,7 +33,8 @@ class NewsPointNewsRemoteDataSource : NewsDataSource {
     }
 
     private fun getApiEndpoint(category: String, language: String, pages: Int, pageSize: Int): String {
-        return String.format(Locale.US, DEFAULT_URL, category, language, pages, pageSize)
+        val url = newsProvider?.newsUrl ?: DEFAULT_URL
+        return String.format(Locale.US, url, category, language, pages, pageSize)
     }
 
     private fun fromJson(jsonString: String): List<NewsItem> {

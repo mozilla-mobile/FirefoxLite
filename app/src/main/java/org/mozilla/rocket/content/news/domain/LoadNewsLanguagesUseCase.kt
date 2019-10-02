@@ -3,12 +3,10 @@ package org.mozilla.rocket.content.news.domain
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.content.news.data.NewsLanguage
-import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
+import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import java.util.Locale
 
-class LoadNewsLanguagesUseCase(repositoryProvider: NewsSettingsRepositoryProvider) {
-
-    val repository = repositoryProvider.provideNewsSettingsRepository()
+class LoadNewsLanguagesUseCase(private val repository: NewsSettingsRepository) {
 
     suspend operator fun invoke(): Result<List<NewsLanguage>> {
         var defaultLanguage = DEFAULT_LANGUAGE

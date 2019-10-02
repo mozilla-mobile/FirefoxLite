@@ -8,12 +8,13 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
 import org.mozilla.rocket.content.news.data.rss.RssSettingsLocalDataSource.Companion.DUMMY_NEWS_LANGUAGE
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 
-class RssSettingsRemoteDataSource : NewsSettingsDataSource {
+class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsSettingsDataSource {
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> {
         return Success(listOf(DUMMY_NEWS_LANGUAGE))
@@ -64,12 +65,16 @@ class RssSettingsRemoteDataSource : NewsSettingsDataSource {
     }
 
     private fun getCategoryApiEndpoint(): String {
-        return "https://rocket-dev01.appspot.com/api/v1/news/google/topics"
+        return newsProvider?.categoriesUrl ?: DEFAULT_CATEGORY_LIST_URL
     }
 
     private fun getHttpResult(endpointUrl: String): String {
         var responseBody = HttpRequest.get(URL(endpointUrl), "")
         responseBody = responseBody.replace("\n", "")
         return responseBody
+    }
+
+    companion object {
+        private const val DEFAULT_CATEGORY_LIST_URL = "https://rocket-dev01.appspot.com/api/v1/news/google/topics"
     }
 }
