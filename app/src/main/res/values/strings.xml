@@ -630,7 +630,7 @@
     <!-- Name of low priority notification channel, this will be shown on the app info page in the system setting -->
     <string name="low_priority_notification_channel">Hidden notifications</string>
     
-    <string name="about_link_terms_of_service”>Terms of Service</string>
+    <string name="about_link_terms_of_service">Terms of Service</string>
    
     
     <!--Shopping Vertical-->
@@ -747,24 +747,28 @@
     <!--MSRP Vertical-->
  
     <!--Logoman-->
+    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"-->   
     <string name="msrp_logoman_message">Win %1$s %2$s voucher</string>
-    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"-->    
+ 
     <!--Contextual hint-->
-    <string name="msrp_home_hint">Try Shopping, News, Game everyday to win %1$s %2$s voucher</string>
     <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"--> 
+    <string name="msrp_home_hint">Try Shopping, News, Game everyday to win %1$s %2$s voucher</string>
+
     
     <!--Reward-->
     <string name="msrp_reward_title">Reward</string>
     <string name="msrp_reward_category_1">Mission</string>
     <string name="msrp_reward_category_2">Gift</string>
     <string name="msrp_reward_challenge_title">Try Shopping, News, Game for 7 days in a row!</string>                                            
-    <string name="msrp_reward_challenge_expire">Expires %3$s</string>
-    <!-- The %3$s here is a placeholder for "date"-->     
+    <!-- The %1$s here is a placeholder for "date"-->   
+    <string name="msrp_reward_challenge_expire">Expires %1$s</string>
+  
     <!--Challenge-->
-    <string name="msrp_challenge_title">7-day challenge for %1$s %2$s voucher</string>
-    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"-->                                
+    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"--> 
+    <string name="msrp_challenge_title">7-day challenge for %1$s %2$s voucher</string>                               
     <string name="msrp_challenge_details_title_1">1. Join the 7-Day challenge</string>
-    <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on Firefox Lite home by simply clicking the buttons for seven days in a row.</string>
+    <!-- The %1$s here is a placeholder for "Firefox Lite"--> 
+    <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on %1$s Home by simply clicking the buttons for seven days in a row.</string>
     <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
     <string name="msrp_challenge_button_1">I’m In!</string>
@@ -791,12 +795,12 @@
     <string name="msrp_challenge_button_5">Redeem later</string>
     
     <!--Voucher-->
-    <string name="msrp_voucher_title">Your %2$s voucher is ready!</string>
-    <!-- The %2$s here is a placeholder for "shopping site"--> 
+    <!-- The %1$s here is a placeholder for "shopping site"-->
+    <string name="msrp_voucher_title">Your %1$s voucher is ready!</string>
     <string name="msrp_voucher_body_1">Voucher is valid for a limited time only. We reserve the right to modify or cancel voucher at any time.</string>
     <string name="msrp_voucher_body_2">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
-    <string name="msrp_voucher_expire">Expires %3$s</string>
-    <!-- The %3$s here is a placeholder for "date"--> 
+    <!-- The %1$s here is a placeholder for "date"--> 
+    <string name="msrp_voucher_expire">Expires %1$s</string>
     <string name="msrp_voucher_body_3">Voucher can only be applied through this URL below:</string>
     <string name="msrp_voucher_button_1">Copy</string>
     
@@ -823,11 +827,12 @@
     <string name="msrp_completed_toast_day4">Congrats! You have completed the fourth daily challenge!</string>
     <string name="msrp_completed_toast_day5">Terrific! You have completed the fifth daily challenge!</string>
     <string name="msrp_completed_toast_day6">Wow! You are just one day away from getting the voucher!</string>
-    <string name="msrp_completed_toast_day7">You’ve completed the challenge! Please go back to Firefox Lite Home to redeem your voucher!</string>
+    <!-- The %1$s here is a placeholder for "Firefox Lite"-->  
+    <string name="msrp_completed_toast_day7">You’ve completed the challenge! Please go back to %1$s Home to redeem your voucher!</string>
     
     <!--Notifications for last 3 days-->
-    <string name="msrp_notification_reminder">Want to win a %2$s voucher? Don’t forget to try Shopping, News, Game today!</string>
-    <!-- The %2$s here is a placeholder for "shopping site"-->      
+    <!-- The %1$s here is a placeholder for "shopping site"-->  
+    <string name="msrp_notification_reminder">Want to win a %1$s voucher? Don’t forget to try Shopping, News, Game today!</string>    
     <!--No data-->
     <string name="msrp_reward_challenge_nodata">All challenges completed</string>
     <string name="msrp_reward_redeem_nodata">All rewards collected</string>
