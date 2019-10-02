@@ -18,11 +18,9 @@ package org.mozilla.rocket.content.news.domain
 
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsItem
-import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
+import org.mozilla.rocket.content.news.data.NewsRepository
 
-class LoadNewsUseCase(repositoryProvider: NewsRepositoryProvider) {
-
-    val repository = repositoryProvider.provideNewsRepository()
+class LoadNewsUseCase(private val repository: NewsRepository) {
 
     suspend operator fun invoke(loadNewsParameter: LoadNewsParameter): Result<List<NewsItem>> {
         return repository.getNewsItems(

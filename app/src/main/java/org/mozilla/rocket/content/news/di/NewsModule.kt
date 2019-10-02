@@ -22,31 +22,31 @@ object NewsModule {
     @Singleton
     @Provides
     fun provideLoadNewsSettingsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): LoadNewsSettingsUseCase =
-        LoadNewsSettingsUseCase(newsSettingsRepositoryProvider)
+        LoadNewsSettingsUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideLoadNewsLanguagesUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): LoadNewsLanguagesUseCase =
-        LoadNewsLanguagesUseCase(newsSettingsRepositoryProvider)
+        LoadNewsLanguagesUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideSetUserPreferenceLanguageUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): SetUserPreferenceLanguageUseCase =
-        SetUserPreferenceLanguageUseCase(newsSettingsRepositoryProvider)
+        SetUserPreferenceLanguageUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideSetUserPreferenceCategoriesUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): SetUserPreferenceCategoriesUseCase =
-        SetUserPreferenceCategoriesUseCase(newsSettingsRepositoryProvider)
+        SetUserPreferenceCategoriesUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideLoadNewsUseCase(newsRepositoryProvider: NewsRepositoryProvider): LoadNewsUseCase =
-        LoadNewsUseCase(newsRepositoryProvider)
+        LoadNewsUseCase(newsRepositoryProvider.provideNewsRepository())
 
     @JvmStatic
     @Provides
