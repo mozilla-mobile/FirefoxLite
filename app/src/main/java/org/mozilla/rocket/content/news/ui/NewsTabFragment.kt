@@ -21,7 +21,6 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsLanguage
-import org.mozilla.rocket.content.portal.ContentFeature
 import javax.inject.Inject
 
 class NewsTabFragment : Fragment() {
@@ -80,18 +79,18 @@ class NewsTabFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == ContentFeature.SETTING_REQUEST_CODE) {
+        if (requestCode == SETTING_REQUEST_CODE) {
             newsTabViewModel.getNewsSettings()
         }
     }
 
     fun setting() {
         val intent = Intent().run {
-            putExtra(ContentFeature.EXTRA_CONFIG_NEWS, "config")
+            putExtra(EXTRA_CONFIG_NEWS, "config")
             setClass(context!!, SettingsActivity::class.java)
         }
         TelemetryWrapper.clickOnNewsSetting()
-        startActivityForResult(intent, ContentFeature.SETTING_REQUEST_CODE)
+        startActivityForResult(intent, SETTING_REQUEST_CODE)
     }
 
     private fun setupViewPager(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
@@ -119,6 +118,11 @@ class NewsTabFragment : Fragment() {
     }
 
     companion object {
+        const val TYPE_KEY = "contentType"
+        const val EXTRA_CONFIG_NEWS = "extra_config_news"
+        const val EXTRA_NEWS_LANGUAGE = "extra_news_language"
+        const val SETTING_REQUEST_CODE = 1492
+
         fun newInstance(): NewsTabFragment {
             return NewsTabFragment()
         }
@@ -159,8 +163,8 @@ class NewsTabFragment : Fragment() {
             // the fragment instance previously instantiated.
             fragment.arguments?.apply {
                 val category = displayCategories[position]
-                putString(ContentFeature.TYPE_KEY, category.categoryId)
-                putString(ContentFeature.EXTRA_NEWS_LANGUAGE, language)
+                putString(TYPE_KEY, category.categoryId)
+                putString(EXTRA_NEWS_LANGUAGE, language)
             }
             return fragment
         }
