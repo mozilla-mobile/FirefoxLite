@@ -49,9 +49,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         addPreferencesFromResource(R.xml.settings);
         final PreferenceScreen rootPreferences = (PreferenceScreen) findPreference(PREF_KEY_ROOT);
         if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild() && !AppConstants.isNightlyBuild()) {
-            Preference developmentCategory = findPreference(getString(R.string.pref_key_category_development));
-            rootPreferences.removePreference(developmentCategory);
-
             Preference experimentCategory = findPreference(getString(R.string.pref_key_category_experiment));
             rootPreferences.removePreference(experimentCategory);
 
@@ -61,7 +58,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         final Preference preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness));
         preferenceNightMode.setEnabled(Settings.getInstance(getActivity()).isNightModeEnable());
-
     }
 
     @Override

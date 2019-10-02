@@ -14,19 +14,13 @@ import org.mozilla.rocket.appupdate.InAppUpdateConfig;
 import org.mozilla.rocket.appupdate.InAppUpdateIntro;
 import org.mozilla.rocket.chrome.BottomBarItemAdapter;
 import org.mozilla.rocket.chrome.MenuItemAdapter;
-import org.mozilla.rocket.content.news.data.NewsProviderConfig;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
-    static final boolean PRIVATE_MODE_ENABLED_DEFAULT = true;
-    static final boolean LIFE_FEED_ENABLED_DEFAULT = false;
     static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
-    static final String LIFE_FEED_PROVIDERS_DEFAULT = "";
     static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";
     static final String STR_E_COMMERCE_COUPON_BANNER_DEFAULT = "";
@@ -36,18 +30,6 @@ public class AppConfigWrapper {
     /* Disabled since v1.0.4, keep related code in case we want to enable it again in the future */
     private static final boolean SURVEY_NOTIFICATION_ENABLED = false;
     static final int DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD = 2;
-
-    /* For Newspoint, we have an new url endpoint to support category tab feature. In order to backward compatible to the legacy user,
-     * we use a different feature name as key on the Firebase remote config. So the existing config entry can be shared by different app version */
-    private static final Map<String, NewsProviderConfig> lifeFeedProviderConfigNameMapping = new HashMap<>();
-
-    static {
-        lifeFeedProviderConfigNameMapping.put("Newspoint",
-                new NewsProviderConfig(
-                        "NewspointCategory",
-                        "http://partnersnp.indiatimes.com/feed/fx/atp?channel=*&section=%s&lang=%s&curpg=%s&pp=%s&v=v1&fromtime=1551267146210"
-                ));
-    }
 
     public static long getRateAppNotificationLaunchTimeThreshold() {
         return FirebaseHelper.getFirebase().getRcLong(FirebaseHelper.RATE_APP_NOTIFICATION_THRESHOLD);
@@ -108,43 +90,6 @@ public class AppConfigWrapper {
 
     public static String getFirstLaunchNotificationMessage() {
         return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
-    }
-
-    /**
-     * @return true if Content Portal News is enabled in Firebase Remote Config
-     */
-    public static boolean hasNewsPortal() {
-        return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_LIFE_FEED);
-    }
-
-    public static String getNewsProviderUrl(String provider) {
-        String source = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.LIFE_FEED_PROVIDERS);
-        String url = "";
-
-        try {
-            JSONArray rows = new JSONArray(source);
-            for (int i = 0; i < rows.length(); i++) {
-                JSONObject row = rows.getJSONObject(i);
-                if (row.getString("name").equalsIgnoreCase(getProviderConfigName(provider))) {
-                    url = row.getString("url");
-                    break;
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return !url.isEmpty() ? url : getProviderDefaultUrl(provider);
-    }
-
-    private static String getProviderConfigName(String provider) {
-        NewsProviderConfig providerConfig = lifeFeedProviderConfigNameMapping.get(provider);
-        return (providerConfig != null) ? providerConfig.getConfigName() : "";
-    }
-
-    private static String getProviderDefaultUrl(String provider) {
-        NewsProviderConfig providerConfig = lifeFeedProviderConfigNameMapping.get(provider);
-        return (providerConfig != null) ? providerConfig.getDefaultUrl() : "";
     }
 
     static String getShareAppDialogTitle() {

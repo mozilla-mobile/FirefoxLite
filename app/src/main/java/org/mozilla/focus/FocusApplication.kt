@@ -18,7 +18,6 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
-import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
 import org.mozilla.rocket.di.DaggerAppComponent
@@ -84,7 +83,6 @@ open class FocusApplication : LocaleAwareApplication() {
         enableStrictMode()
 
         SearchEngineManager.getInstance().init(this)
-        NewsSourceManager.instance.init(this)
 
         TelemetryWrapper.init(this)
         AdjustHelper.setupAdjustIfNeeded(this)

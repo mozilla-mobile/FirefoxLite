@@ -373,7 +373,6 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_default_browser),
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
                             resources.getString(R.string.pref_key_webview_version),
-                            resources.getString(R.string.pref_s_news),
                             resources.getString(R.string.pref_key_locale),
                             trackerTokenPrefKey
                     )
@@ -2908,7 +2907,6 @@ object TelemetryWrapper {
                 val context = TelemetryHolder.get().configuration.context ?: return
                 val prefKeyWhitelist = HashMap<String, String>()
                 prefKeyWhitelist[context.getString(R.string.pref_key_search_engine)] = "search_engine"
-                prefKeyWhitelist[context.getString(R.string.pref_s_news)] = "pref_s_news"
 
                 prefKeyWhitelist[context.getString(R.string.pref_key_privacy_block_ads)] = "privacy_ads"
                 prefKeyWhitelist[context.getString(R.string.pref_key_privacy_block_analytics)] = "privacy_analytics"

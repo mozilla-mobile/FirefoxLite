@@ -19,14 +19,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
-import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsItem
-import org.mozilla.rocket.content.news.data.NewsSourceManager
 import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
-import org.mozilla.rocket.content.portal.ContentFeature
 import javax.inject.Inject
 
 class NewsFragment : Fragment(), NewsListingEventListener {
@@ -86,7 +83,6 @@ class NewsFragment : Fragment(), NewsListingEventListener {
             updateNews(items.newsList)
             isLoading = false
         })
-        updateSourcePriority()
 
         newsAdapter = NewsAdapter(this)
         recyclerView?.adapter = newsAdapter
@@ -167,22 +163,17 @@ class NewsFragment : Fragment(), NewsListingEventListener {
     }
 
     private fun getCategory(): String {
-        return arguments?.getString(ContentFeature.TYPE_KEY) ?: "top-news"
+        return arguments?.getString(NewsTabFragment.TYPE_KEY) ?: "top-news"
     }
 
     private fun getLanguage(): String {
-        return arguments?.getString(ContentFeature.EXTRA_NEWS_LANGUAGE) ?: "english"
+        return arguments?.getString(NewsTabFragment.EXTRA_NEWS_LANGUAGE) ?: "english"
     }
 
     private fun updateNews(items: List<NewsItem>?) {
         onStatus(items)
 
         newsAdapter?.submitList(items)
-    }
-
-    private fun updateSourcePriority() {
-        // the user had seen the news. Treat it as an user selection so no on can change it
-        Settings.getInstance(context).setPriority(NewsSourceManager.PREF_INT_NEWS_PRIORITY, Settings.PRIORITY_USER)
     }
 
     companion object {
@@ -192,8 +183,8 @@ class NewsFragment : Fragment(), NewsListingEventListener {
 
         fun newInstance(category: String, language: String): NewsFragment {
             val args = Bundle().apply {
-                putString(ContentFeature.TYPE_KEY, category)
-                putString(ContentFeature.EXTRA_NEWS_LANGUAGE, language)
+                putString(NewsTabFragment.TYPE_KEY, category)
+                putString(NewsTabFragment.EXTRA_NEWS_LANGUAGE, language)
             }
             return NewsFragment().apply {
                 arguments = args
