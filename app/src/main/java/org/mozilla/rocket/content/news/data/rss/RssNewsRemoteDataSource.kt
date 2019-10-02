@@ -1,23 +1,29 @@
-package org.mozilla.rocket.content.news.data
+package org.mozilla.rocket.content.news.data.rss
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
+import org.json.JSONArray
 import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.news.data.NewsDataSource
+import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class NewsPointRemoteDataSource : NewsDataSource {
+class RssNewsRemoteDataSource : NewsDataSource {
 
     override suspend fun getNewsItems(category: String, language: String, pages: Int, pageSize: Int): Result<List<NewsItem>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getApiEndpoint(category, language, pages, pageSize))
-                Result.Success(fromJson(responseBody))
+                if (pages != 1) {
+                    Result.Error(Exception("No pagination support for the RSS news"))
+                } else {
+                    val responseBody = getHttpResult(getApiEndpoint(category))
+                    Result.Success(fromJson(responseBody))
+                }
             },
             errorMessage = "Unable to get news items ($category, $language, $pages, $pageSize)"
         )
@@ -29,27 +35,26 @@ class NewsPointRemoteDataSource : NewsDataSource {
         return responseBody
     }
 
-    private fun getApiEndpoint(category: String, language: String, pages: Int, pageSize: Int): String {
-        return String.format(Locale.US, DEFAULT_URL, category, language, pages, pageSize)
+    private fun getApiEndpoint(category: String): String {
+        return String.format(Locale.getDefault(), DEFAULT_URL, category, Locale.getDefault().toLanguageTag(), Locale.getDefault().country)
     }
 
     private fun fromJson(jsonString: String): List<NewsItem> {
         val newsList = ArrayList<NewsItem>()
-        val items = JSONObject(jsonString).getJSONArray("items")
+        val items = JSONArray(jsonString)
         for (i in 0 until items.length()) {
             val jsonObject = items.getJSONObject(i)
-            val id = jsonObject.optString("id")
-            val title = jsonObject.optString("hl")
-            val link = jsonObject.optString("mwu")
-            val imageUrl = jsonObject.optJSONArray("images")?.getString(0)
-            val source = jsonObject.optString("pn")
-            val publishDate = jsonObject.optString("dl")
-            if (id == null || title == null || link == null || publishDate == null) {
+            val title = jsonObject.optString("title")
+            val link = jsonObject.optString("link")
+            val imageUrl = jsonObject.optString("image")
+            val source = jsonObject.optString("source")
+            val publishDate = jsonObject.optString("pubDate")
+            if (title == null || link == null || publishDate == null) {
                 continue
             }
             var publishTime: Long
             try {
-                publishTime = SimpleDateFormat("EEE MMM dd HH:mm:ss 'IST' yyyy", Locale.US).parse(publishDate).time
+                publishTime = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault()).parse(publishDate).time
             } catch (e: ParseException) {
                 e.printStackTrace()
                 // skip this item
@@ -62,6 +67,6 @@ class NewsPointRemoteDataSource : NewsDataSource {
     }
 
     companion object {
-        private const val DEFAULT_URL = "http://partnersnp.indiatimes.com/feed/fx/atp?channel=*&section=%s&lang=%s&curpg=%s&pp=%s&v=v1&fromtime=1551267146210"
+        private const val DEFAULT_URL = "https://rocket-dev01.appspot.com/api/v1/news/google/topic/%s?language=%s&country=%s"
     }
 }
