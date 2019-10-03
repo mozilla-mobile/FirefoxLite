@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
+import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 
@@ -83,7 +83,11 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         item.imageUrl?.let {
             if (image != null) {
-                Glide.with(itemView.context).load(it).apply(requestOptions)
+                GlideApp.with(itemView.context)
+                    .asBitmap()
+                    .placeholder(R.drawable.placeholder)
+                    .centerCrop()
+                    .load(it)
                     .into(image)
             }
         }
