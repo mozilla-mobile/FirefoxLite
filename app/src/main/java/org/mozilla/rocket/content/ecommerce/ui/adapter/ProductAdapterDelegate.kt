@@ -6,17 +6,17 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
+import org.mozilla.rocket.content.ecommerce.ui.DealViewModel
 import kotlin.math.roundToInt
 
-class ProductAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class ProductAdapterDelegate(private val dealViewModel: DealViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        ProductViewHolder(view, shoppingViewModel)
+        ProductViewHolder(view, dealViewModel)
 }
 
 class ProductViewHolder(
     override val containerView: View,
-    private val shoppingViewModel: ShoppingViewModel
+    private val dealViewModel: DealViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val productItem = uiModel as ProductItem
@@ -40,7 +40,7 @@ class ProductViewHolder(
             .load(productItem.imageUrl)
             .into(product_image)
 
-        itemView.setOnClickListener { shoppingViewModel.onProductItemClicked(productItem) }
+        itemView.setOnClickListener { dealViewModel.onProductItemClicked(productItem) }
     }
 }
 

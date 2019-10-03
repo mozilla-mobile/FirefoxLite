@@ -4,13 +4,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import org.mozilla.rocket.content.ecommerce.data.ShoppingTabItem
+import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 
 @Suppress("DEPRECATION")
 class ShoppingTabsAdapter(
     fm: FragmentManager,
     activity: FragmentActivity,
-    private val items: List<ShoppingTabItem>
+    private val items: List<ShoppingViewModel.ShoppingTabItem>
 ) : FragmentPagerAdapter(fm) {
 
     private val resource = activity.resources

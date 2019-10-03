@@ -12,6 +12,7 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -20,15 +21,15 @@ import javax.inject.Inject
 class VoucherFragment : Fragment() {
 
     @Inject
-    lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
+    lateinit var voucherViewModelCreator: Lazy<VoucherViewModel>
 
-    private lateinit var shoppingViewModel: ShoppingViewModel
+    private lateinit var voucherViewModel: VoucherViewModel
     private lateinit var voucherAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        shoppingViewModel = getActivityViewModel(shoppingViewModelCreator)
+        voucherViewModel = getActivityViewModel(voucherViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,6 +40,7 @@ class VoucherFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initVouchers()
         bindListData()
+        observeAction()
     }
 
     private fun initVouchers() {
@@ -46,15 +48,23 @@ class VoucherFragment : Fragment() {
         content_voucher_list.addItemDecoration(GridSpaceItemDecoration(spaceWidth, 2))
         voucherAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Voucher::class, R.layout.item_voucher, VoucherAdapterDelegate(shoppingViewModel))
+                add(Voucher::class, R.layout.item_voucher, VoucherAdapterDelegate(voucherViewModel))
             }
         )
         content_voucher_list.adapter = voucherAdapter
     }
 
     private fun bindListData() {
-        shoppingViewModel.voucherItems.observe(this@VoucherFragment, Observer {
+        voucherViewModel.voucherItems.observe(this@VoucherFragment, Observer {
             voucherAdapter.setData(it)
+        })
+    }
+
+    private fun observeAction() {
+        voucherViewModel.openVoucher.observe(this, Observer { linkUrl ->
+            context?.let {
+                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+            }
         })
     }
 }

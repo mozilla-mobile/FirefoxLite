@@ -12,23 +12,23 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
+import org.mozilla.rocket.content.ecommerce.ui.CouponViewModel
 
-class CouponAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class CouponAdapterDelegate(private val couponViewModel: CouponViewModel) : AdapterDelegate {
 
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            CouponViewHolder(view, shoppingViewModel)
+        CouponViewHolder(view, couponViewModel)
 }
 
 class CouponViewHolder(
     override val containerView: View,
-    private val shoppingViewModel: ShoppingViewModel
+    private val couponViewModel: CouponViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val couponItem = uiModel as Coupon
 
-        itemView.setOnClickListener { shoppingViewModel.onCouponItemClicked(couponItem) }
+        itemView.setOnClickListener { couponViewModel.onCouponItemClicked(couponItem) }
 
         coupon_brand.text = couponItem.source
         coupon_title.text = couponItem.title

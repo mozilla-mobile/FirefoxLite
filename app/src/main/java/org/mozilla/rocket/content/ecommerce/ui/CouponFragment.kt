@@ -12,6 +12,7 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -20,15 +21,15 @@ import javax.inject.Inject
 class CouponFragment : Fragment() {
 
     @Inject
-    lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
+    lateinit var couponViewModelCreator: Lazy<CouponViewModel>
 
-    private lateinit var shoppingViewModel: ShoppingViewModel
+    private lateinit var couponViewModel: CouponViewModel
     private lateinit var couponAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        shoppingViewModel = getActivityViewModel(shoppingViewModelCreator)
+        couponViewModel = getActivityViewModel(couponViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -40,29 +41,38 @@ class CouponFragment : Fragment() {
         initCoupons()
         bindListData()
         bindPageState()
+        observeAction()
     }
 
     private fun initCoupons() {
         couponAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(shoppingViewModel))
+                add(Coupon::class, R.layout.item_coupon, CouponAdapterDelegate(couponViewModel))
             }
         )
         coupon_list.adapter = couponAdapter
     }
 
     private fun bindListData() {
-        shoppingViewModel.couponItems.observe(this@CouponFragment, Observer {
+        couponViewModel.couponItems.observe(this@CouponFragment, Observer {
             couponAdapter.setData(it)
         })
     }
 
     private fun bindPageState() {
-        shoppingViewModel.isDataLoading.observe(this@CouponFragment, Observer { state ->
+        couponViewModel.isDataLoading.observe(this@CouponFragment, Observer { state ->
             when (state) {
-                is ShoppingViewModel.State.Idle -> showContentView()
-                is ShoppingViewModel.State.Loading -> showLoadingView()
-                is ShoppingViewModel.State.Error -> showErrorView()
+                is CouponViewModel.State.Idle -> showContentView()
+                is CouponViewModel.State.Loading -> showLoadingView()
+                is CouponViewModel.State.Error -> showErrorView()
+            }
+        })
+    }
+
+    private fun observeAction() {
+        couponViewModel.openCoupon.observe(this, Observer { linkUrl ->
+            context?.let {
+                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
             }
         })
     }
