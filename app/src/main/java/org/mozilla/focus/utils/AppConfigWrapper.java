@@ -21,9 +21,6 @@ import java.util.List;
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
     static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
-    static final String STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT = "";
-    static final String STR_E_COMMERCE_COUPONS_DEFAULT = "";
-    static final String STR_E_COMMERCE_COUPON_BANNER_DEFAULT = "";
     static final boolean RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT = true;
 
 

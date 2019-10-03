@@ -47,9 +47,6 @@ object FirebaseHelper {
     internal const val SCREENSHOT_CATEGORY_MANIFEST = "screenshot_category_manifest"
     internal const val FIRST_LAUNCH_TIMER_MINUTES = "first_launch_timer_minutes"
     internal const val FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message"
-    internal const val STR_E_COMMERCE_SHOPPINGLINKS = "str_e_commerce_shoppinglinks"
-    internal const val STR_E_COMMERCE_COUPONS = "str_e_commerce_coupons"
-    internal const val STR_COUPON_BANNER_MANIFEST = "str_coupon_banner_manifest"
 
     private const val FIREBASE_WEB_ID = "default_web_client_id"
     private const val FIREBASE_DB_URL = "firebase_database_url"
@@ -248,9 +245,6 @@ object FirebaseHelper {
         map[ENABLE_MY_SHOT_UNREAD] = AppConfigWrapper.ENABLE_MY_SHOT_UNREAD_DEFAULT
         map[SCREENSHOT_CATEGORY_MANIFEST] = ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT
         map[FIRST_LAUNCH_TIMER_MINUTES] = FirstLaunchWorker.TIMER_DISABLED
-        map[STR_E_COMMERCE_SHOPPINGLINKS] = AppConfigWrapper.STR_E_COMMERCE_SHOPPINGLINKS_DEFAULT
-        map[STR_E_COMMERCE_COUPONS] = AppConfigWrapper.STR_E_COMMERCE_COUPONS_DEFAULT
-        map[STR_COUPON_BANNER_MANIFEST] = AppConfigWrapper.STR_E_COMMERCE_COUPON_BANNER_DEFAULT
         map[RC_KEY_ENABLE_SHOPPING_SEARCH] = AppConfigWrapper.RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT
 
         return map

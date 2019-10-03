@@ -1,9 +1,7 @@
 package org.mozilla.rocket.content.ecommerce.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
-import org.mozilla.rocket.content.ecommerce.data.ShoppingLocalDataSource
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRemoteDataSource
 import org.mozilla.rocket.content.ecommerce.data.ShoppingRepository
 import org.mozilla.rocket.content.ecommerce.domain.GetCouponsUseCase
@@ -18,12 +16,6 @@ import javax.inject.Singleton
 
 @Module
 object ShoppingModule {
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideShoppingLocalDataSource(appContext: Context): ShoppingLocalDataSource =
-        ShoppingLocalDataSource(appContext)
 
     @JvmStatic
     @Singleton
