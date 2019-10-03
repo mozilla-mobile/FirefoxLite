@@ -8,7 +8,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.ecommerce.data.ShoppingMapper
 import org.mozilla.rocket.content.ecommerce.domain.GetCouponsUseCase
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.download.SingleLiveEvent
