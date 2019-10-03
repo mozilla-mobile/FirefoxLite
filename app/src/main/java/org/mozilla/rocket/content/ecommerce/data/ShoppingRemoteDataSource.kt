@@ -53,11 +53,21 @@ class ShoppingRemoteDataSource : ShoppingDataSource {
     }
 
     private fun getDealsApiEndpoint(): String {
-        return "https://rocket-dev01.appspot.com/api/v1/content?locale=id-ID&category=shoppingDeal"
+        val dealApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_SHOPPING_DEAL_ENDPOINT)
+        return if (dealApiEndpoint.isNotEmpty()) {
+            dealApiEndpoint
+        } else {
+            DEFAULT_DEAL_URL_ENDPOINT
+        }
     }
 
     private fun getCouponsApiEndpoint(): String {
-        return "https://rocket-dev01.appspot.com/api/v1/content?locale=id-ID&category=shoppingCoupon"
+        val couponApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_SHOPPING_COUPON_ENDPOINT)
+        return if (couponApiEndpoint.isNotEmpty()) {
+            couponApiEndpoint
+        } else {
+            DEFAULT_COUPON_URL_ENDPOINT
+        }
     }
 
     private fun getHttpResult(endpointUrl: String): String {
@@ -67,7 +77,11 @@ class ShoppingRemoteDataSource : ShoppingDataSource {
     }
 
     companion object {
+        private const val STR_SHOPPING_DEAL_ENDPOINT = "str_shopping_deal_endpoint"
+        private const val STR_SHOPPING_COUPON_ENDPOINT = "str_shopping_coupon_endpoint"
         private const val STR_E_COMMERCE_SHOPPING_LINKS = "str_e_commerce_shoppinglinks"
+        private const val DEFAULT_DEAL_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=en-IN&category=shoppingDeal"
+        private const val DEFAULT_COUPON_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=en-IN&category=shoppingCoupon"
         private const val SHOPPING_TAB_ITEMS = "[{\"type\":1},{\"type\":2}]"
         private const val SHOPPING_TAB_ITEMS_WITH_VOUCHERS = "[{\"type\":1},{\"type\":2},{\"type\":3}]"
     }
