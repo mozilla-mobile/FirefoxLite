@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
-    android:background="@drawable/background_menu"
+    android:background="@color/paletteLightGreyD100"
     tools:context="org.mozilla.rocket.content.news.ui.NewsFragment">
 
     <ProgressBar
@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="60dp"
+        android:paddingTop="8dp"
         android:visibility="gone" />
 
     <RelativeLayout

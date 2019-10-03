@@ -1,96 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-
-<org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginBottom="@dimen/tab_tray_item_space"
-    android:background="@drawable/tab_tray_item_bkg"
-    android:elevation="1dp"
-    android:outlineProvider="background"
-    tools:ignore="contentDescription">
+    android:layout_marginStart="@dimen/common_margin_m3"
+    android:layout_marginEnd="@dimen/common_margin_m3"
+    android:layout_marginBottom="@dimen/common_margin_m2"
+    android:clipToPadding="false"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/paletteLightGreyA100"
+    app:strokeWidth="1dp">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/placeholder"
-        android:elevation="4dp"
-        android:padding="18dp" />
-
-    <ImageView
-        android:id="@+id/news_item_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="4dp"
-        android:scaleType="centerCrop" />
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:layout_toEndOf="@id/news_item_image"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <org.mozilla.rocket.nightmode.themed.ThemedTextView
+        <ImageView
+            android:id="@+id/news_item_image"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/news_item_headline"
-            style="@style/Body2"
-            android:layout_width="match_parent"
+            style="@style/Body1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/common_margin_m3"
+            android:layout_marginTop="@dimen/common_margin_m3"
+            android:layout_marginEnd="@dimen/common_margin_m3"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColor="@color/paletteDarkGreyB100"
-            tools:text="website_title" />
+            android:textColor="@color/paletteBlack100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/news_item_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="New title..." />
 
-        <org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/news_item_source"
+            style="@style/Body5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_margin_m3"
+            android:layout_marginTop="@dimen/common_margin_m2"
+            android:layout_marginEnd="@dimen/common_margin_m1"
+            android:layout_marginBottom="@dimen/common_margin_m2"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="@color/paletteDarkGreyD100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/news_item_time"
+            app:layout_constraintStart_toEndOf="@id/news_item_image"
+            tools:text="BBC News BBC News BBC News BBC News BBC News" />
 
-            <TextView
-                android:id="@+id/news_item_source"
-                style="@style/Body5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="24dp"
-                android:layout_toStartOf="@id/news_item_time"
-                android:gravity="start"
-                android:maxLines="1"
-                android:textColor="@color/paletteDarkGreyD100"
-                tools:text="234567345632456345634563456345345" />
+        <TextView
+            android:id="@+id/news_item_time"
+            style="@style/Body5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_margin_m2"
+            android:layout_marginEnd="@dimen/common_margin_m3"
+            android:layout_marginBottom="@dimen/common_margin_m2"
+            android:maxLines="1"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/paletteDarkGreyD100"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="2 hours ago" />
 
-            <TextView
-                android:id="@+id/news_item_time"
-                style="@style/Body5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:maxLines="1"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/paletteDarkGreyD100"
-                tools:text="5 month ago....." />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
-
-    </LinearLayout>
-    
-</org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
+</com.google.android.material.card.MaterialCardView>

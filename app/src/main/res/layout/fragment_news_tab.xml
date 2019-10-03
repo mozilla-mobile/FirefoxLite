@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/new_tab_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_menu"
+    android:background="@color/paletteWhite100"
     android:orientation="vertical"
     tools:context="org.mozilla.rocket.content.news.ui.NewsTabFragment">
 
@@ -56,19 +56,23 @@
         android:id="@+id/news_tab"
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_margin_m7"
-        android:layout_below="@+id/news_tab_title"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:tabIndicatorColor="@android:color/transparent"
-        app:tabPaddingStart="0dp"
+        app:tabIndicatorColor="@color/paletteDarkGreyC100"
+        app:tabIndicatorFullWidth="false"
         app:tabSelectedTextColor="@color/paletteDarkGreyC100"
+        app:tabTextAppearance="@style/NewsTabText"
         app:tabTextColor="@color/paletteDarkGreyC30"
         app:tabUnboundedRipple="true" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/paletteLightGreyA100" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/news_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/news_tab" />
+        android:layout_height="match_parent" />
 
-</RelativeLayout>
+</LinearLayout>
