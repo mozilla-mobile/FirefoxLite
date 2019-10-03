@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="waiting_for_redemption" tools:ignore="MissingTranslation">Waiting for redemption</string>
+    <string name="waiting_for_redemption" translatable="false" tools:ignore="MissingTranslation">Waiting for redemption</string>
 
-    <string name="travel_vertical_title" tools:ignore="MissingTranslation">Travel</string>
-    <string name="travel_vertical_category_1" tools:ignore="MissingTranslation">Explore</string>
-    <string name="travel_vertical_category_2" tools:ignore="MissingTranslation">Bucket list</string>
-
+    <string name="travel_vertical_title" translatable="false" tools:ignore="MissingTranslation">Travel</string>
+    <string name="travel_vertical_category_1" translatable="false" tools:ignore="MissingTranslation">Explore</string>
+    <string name="travel_vertical_category_2" translatable="false" tools:ignore="MissingTranslation">Bucket list</string>
 </resources>
