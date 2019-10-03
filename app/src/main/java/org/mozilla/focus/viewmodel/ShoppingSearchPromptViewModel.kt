@@ -15,7 +15,7 @@ class ShoppingSearchPromptViewModel(
 
     val openShoppingSearch = SingleLiveEvent<Unit>()
 
-    fun checkIsShoppingSite(url: String) {
-        isUrlShoppingSite.value = shoppingSiteList.value?.any { site -> url.contains(site.displayUrl, true) }
+    fun checkIsShoppingSite(url: String?) {
+        isUrlShoppingSite.value = shoppingSiteList.value?.any { site -> url?.contains(site.displayUrl, true) == true }
     }
 }
