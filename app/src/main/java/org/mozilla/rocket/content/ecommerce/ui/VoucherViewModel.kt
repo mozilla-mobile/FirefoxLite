@@ -47,7 +47,6 @@ class VoucherViewModel(
             (0 until jsonArray.length())
                 .map { index -> jsonArray.getJSONObject(index) }
                 .map { jsonObject -> createVoucherItem(jsonObject) }
-                .shuffled()
         } catch (e: JSONException) {
             e.printStackTrace()
             null

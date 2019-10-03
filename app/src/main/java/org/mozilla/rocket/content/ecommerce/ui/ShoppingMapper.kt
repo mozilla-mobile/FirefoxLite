@@ -1,8 +1,10 @@
-package org.mozilla.rocket.content.ecommerce.data
+package org.mozilla.rocket.content.ecommerce.ui
 
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.ecommerce.data.DealEntity
+import org.mozilla.rocket.content.ecommerce.data.DealItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
@@ -32,38 +34,38 @@ object ShoppingMapper {
     }
 
     private fun toRunwayItem(item: DealItem): RunwayItem =
-            RunwayItem(
-                item.source,
-                item.imageUrl,
-                item.linkUrl,
-                item.title,
-                item.componentId
-            )
+        RunwayItem(
+            item.source,
+            item.imageUrl,
+            item.linkUrl,
+            item.title,
+            item.componentId
+        )
 
     private fun toProductItem(item: DealItem): ProductItem =
-            ProductItem(
-                item.source,
-                item.imageUrl,
-                item.linkUrl,
-                item.title,
-                item.componentId,
-                item.price,
-                item.discount,
-                item.rating,
-                item.reviews
-            )
+        ProductItem(
+            item.source,
+            item.imageUrl,
+            item.linkUrl,
+            item.title,
+            item.componentId,
+            item.price,
+            item.discount,
+            item.rating,
+            item.reviews
+        )
 
     fun toCoupons(entity: DealEntity): List<DelegateAdapter.UiModel> {
         return entity.subcategories[0].items
-                .map { item ->
-                    Coupon(
-                        item.source,
-                        item.imageUrl,
-                        item.linkUrl,
-                        item.title,
-                        item.componentId,
-                        3L
-                    )
-                }
+            .map { item ->
+                Coupon(
+                    item.source,
+                    item.imageUrl,
+                    item.linkUrl,
+                    item.title,
+                    item.componentId,
+                    3L
+                )
+            }
     }
 }

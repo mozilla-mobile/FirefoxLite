@@ -8,12 +8,13 @@ data class DealEntity(
     val subcategories: List<DealCategory>
 ) {
     companion object {
+        private const val KEY_RESULT = "result"
         private const val KEY_VERSION = "version"
         private const val KEY_SUBCATEGORIES = "subcategories"
 
         fun fromJson(jsonString: String?): DealEntity {
             return if (jsonString != null) {
-                val jsonObject = jsonString.toJsonObject()
+                val jsonObject = jsonString.toJsonObject().optJSONObject(KEY_RESULT)
                 val jsonArray = jsonObject.optJSONArray(KEY_SUBCATEGORIES)
                 val subcategories =
                     (0 until jsonArray.length())
