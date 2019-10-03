@@ -183,4 +183,7 @@
     <color name="msrpMissionListBgColor">#FAFAFA</color>
     <color name="msrpMissionListSeparatorColor">#F0F0F0</color>
 
+    <!--Travel-->
+    <color name="travelSearchHeaderTextColor87">#DE0C0C0D</color>
+
 </resources>
