@@ -7,21 +7,21 @@ import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.StartSnapHelper
+import org.mozilla.rocket.content.ecommerce.ui.DealViewModel
 import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
 
-class ProductCategoryAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class ProductCategoryAdapterDelegate(private val dealViewModel: DealViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        ProductCategoryViewHolder(view, shoppingViewModel)
+        ProductCategoryViewHolder(view, dealViewModel)
 }
 
 class ProductCategoryViewHolder(
     override val containerView: View,
-    private val shoppingViewModel: ShoppingViewModel
+    private val dealViewModel: DealViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(ProductItem::class, R.layout.item_product, ProductAdapterDelegate(shoppingViewModel))
+            add(ProductItem::class, R.layout.item_product, ProductAdapterDelegate(dealViewModel))
         }
     )
 

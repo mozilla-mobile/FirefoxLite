@@ -5,24 +5,24 @@ import kotlinx.android.synthetic.main.item_voucher.*
 import org.mozilla.focus.utils.DrawableUtils
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingViewModel
+import org.mozilla.rocket.content.ecommerce.ui.VoucherViewModel
 
-class VoucherAdapterDelegate(private val shoppingViewModel: ShoppingViewModel) : AdapterDelegate {
+class VoucherAdapterDelegate(private val voucherViewModel: VoucherViewModel) : AdapterDelegate {
 
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            VoucherViewHolder(view, shoppingViewModel)
+        VoucherViewHolder(view, voucherViewModel)
 }
 
 class VoucherViewHolder(
     override val containerView: View,
-    private val shoppingViewModel: ShoppingViewModel
+    private val voucherViewModel: VoucherViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val voucherItem = uiModel as Voucher
 
         voucher_item.setOnClickListener {
-            shoppingViewModel.onVoucherItemClicked(voucherItem)
+            voucherViewModel.onVoucherItemClicked(voucherItem)
         }
 
         voucher_category_text.text = voucherItem.name

@@ -12,11 +12,12 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
-import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategoryAdapterDelegate
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
+import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategoryAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 
@@ -26,17 +27,17 @@ class DealFragment : Fragment() {
     lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
 
     @Inject
-    lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
+    lateinit var dealViewModelCreator: Lazy<DealViewModel>
 
     private lateinit var runwayViewModel: RunwayViewModel
-    private lateinit var shoppingViewModel: ShoppingViewModel
+    private lateinit var dealViewModel: DealViewModel
     private lateinit var dealAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
-        shoppingViewModel = getActivityViewModel(shoppingViewModelCreator)
+        dealViewModel = getActivityViewModel(dealViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -48,13 +49,14 @@ class DealFragment : Fragment() {
         initDeals()
         bindListData()
         bindPageState()
+        observeAction()
     }
 
     private fun initDeals() {
         dealAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
-                add(ProductCategory::class, R.layout.item_product_category, ProductCategoryAdapterDelegate(shoppingViewModel))
+                add(ProductCategory::class, R.layout.item_product_category, ProductCategoryAdapterDelegate(dealViewModel))
             }
         )
         content_deals.apply {
@@ -63,17 +65,31 @@ class DealFragment : Fragment() {
     }
 
     private fun bindListData() {
-        shoppingViewModel.dealItems.observe(this@DealFragment, Observer {
+        dealViewModel.dealItems.observe(this@DealFragment, Observer {
             dealAdapter.setData(it)
         })
     }
 
     private fun bindPageState() {
-        shoppingViewModel.isDataLoading.observe(this@DealFragment, Observer { state ->
+        dealViewModel.isDataLoading.observe(this@DealFragment, Observer { state ->
             when (state) {
-                is ShoppingViewModel.State.Idle -> showContentView()
-                is ShoppingViewModel.State.Loading -> showLoadingView()
-                is ShoppingViewModel.State.Error -> showErrorView()
+                is DealViewModel.State.Idle -> showContentView()
+                is DealViewModel.State.Loading -> showLoadingView()
+                is DealViewModel.State.Error -> showErrorView()
+            }
+        })
+    }
+
+    private fun observeAction() {
+        runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
+            context?.let {
+                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+            }
+        })
+
+        dealViewModel.openProduct.observe(this, Observer { linkUrl ->
+            context?.let {
+                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
             }
         })
     }

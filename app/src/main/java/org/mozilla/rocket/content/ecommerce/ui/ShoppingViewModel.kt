@@ -1,107 +1,68 @@
 package org.mozilla.rocket.content.ecommerce.ui
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
-import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
-import org.mozilla.rocket.content.ecommerce.data.ShoppingRepo
-import org.mozilla.rocket.content.ecommerce.data.ShoppingTabItem
-import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
-import org.mozilla.rocket.download.SingleLiveEvent
+import org.json.JSONException
+import org.mozilla.focus.R
+import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.ecommerce.domain.GetShoppingTabItemsUseCase
+import org.mozilla.rocket.util.toJsonArray
 
 class ShoppingViewModel(
-    private val shoppingRepo: ShoppingRepo
+    private val getShoppingTabItems: GetShoppingTabItemsUseCase
 ) : ViewModel() {
 
-    private val _isDataLoading = MutableLiveData<State>()
-    val isDataLoading: LiveData<State> = _isDataLoading
-
-    private val _dealItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                value = shoppingRepo.getDeals()
-            }
-        }
-    }
-    val dealItems: LiveData<List<DelegateAdapter.UiModel>> = _dealItems
-
-    private val _couponItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                value = shoppingRepo.getCoupons()
-            }
-        }
-    }
-    val couponItems: LiveData<List<DelegateAdapter.UiModel>> = _couponItems
-
-    private val _voucherItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                value = shoppingRepo.getVouchers()
-            }
-        }
-    }
-    val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
-
     private val _shoppingTabItems by lazy {
-        MutableLiveData<List<ShoppingTabItem>>().apply { value = shoppingRepo.getShoppingTabItems() }
+        MutableLiveData<List<ShoppingTabItem>>().apply {
+            viewModelScope.launch {
+                val result = getShoppingTabItems()
+                if (result is Result.Success) {
+                    value = result.data.jsonStringToShoppingTabItems()
+                }
+            }
+        }
     }
     val shoppingTabItems: LiveData<List<ShoppingTabItem>> = _shoppingTabItems
 
-    val openProduct = SingleLiveEvent<String>()
-    val openCoupon = SingleLiveEvent<String>()
-    val openVoucher = SingleLiveEvent<String>()
+    fun refresh() {
+        _shoppingTabItems.value = emptyList()
 
-    fun onProductItemClicked(productItem: ProductItem) {
-        openProduct.value = productItem.linkUrl
-    }
-
-    fun onCouponItemClicked(couponItem: Coupon) {
-        openCoupon.value = couponItem.linkUrl
-    }
-
-    fun onVoucherItemClicked(voucherItem: Voucher) {
-        openVoucher.value = voucherItem.url
-    }
-
-    fun getLatestDeals() {
-        launchDataLoad {
-            _dealItems.postValue(shoppingRepo.getDeals())
-        }
-    }
-
-    fun getLatestCoupons() {
-        launchDataLoad {
-            _couponItems.postValue(shoppingRepo.getCoupons())
-        }
-    }
-
-    fun getLatestVouchers() {
-        launchDataLoad {
-            _voucherItems.postValue(shoppingRepo.getVouchers())
-        }
-    }
-
-    private fun launchDataLoad(block: suspend () -> Unit): Job {
-        return viewModelScope.launch {
-            try {
-                _isDataLoading.value = State.Loading
-                block()
-                _isDataLoading.value = State.Idle
-            } catch (t: Throwable) {
-                _isDataLoading.value = State.Error(t)
+        viewModelScope.launch {
+            val result = getShoppingTabItems()
+            if (result is Result.Success) {
+                _shoppingTabItems.value = result.data.jsonStringToShoppingTabItems()
             }
         }
     }
 
-    sealed class State {
-        object Idle : State()
-        object Loading : State()
-        class Error(val t: Throwable) : State()
+    private fun String.jsonStringToShoppingTabItems(): List<ShoppingTabItem>? {
+        return try {
+            val jsonArray = this.toJsonArray()
+            (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .map { jsonObject -> jsonObject.getInt("type") }
+                .map { type -> createShoppingTabItem(type) }
+        } catch (e: JSONException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    private fun createShoppingTabItem(type: Int): ShoppingTabItem =
+        when (type) {
+            1 -> ShoppingTabItem.DealTab()
+            2 -> ShoppingTabItem.CouponTab()
+            3 -> ShoppingTabItem.VoucherTab()
+            else -> error("Unsupported shopping tab item type $type")
+        }
+
+    sealed class ShoppingTabItem(val fragment: Fragment, val titleResId: Int) {
+        class DealTab : ShoppingTabItem(DealFragment(), R.string.shopping_vertical_category_1)
+        class CouponTab : ShoppingTabItem(CouponFragment(), R.string.shopping_vertical_category_2)
+        class VoucherTab : ShoppingTabItem(VoucherFragment(), R.string.shopping_vertical_category_3)
     }
 }
