@@ -29,8 +29,8 @@ class GameTabsAdapter(
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(
-            TabItem(BrowserGamesFragment.newInstance(GameType.BASIC), R.string.gaming_vertical_category_1),
-            TabItem(BrowserGamesFragment.newInstance(GameType.PREMIUM), R.string.gaming_vertical_category_2)
+            TabItem(BrowserGamesFragment.newInstance(GameType.INSTANT), R.string.gaming_vertical_category_1),
+            TabItem(BrowserGamesFragment.newInstance(GameType.DOWNLOAD), R.string.gaming_vertical_category_2)
         )
     }
 }
