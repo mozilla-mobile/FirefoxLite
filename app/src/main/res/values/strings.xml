@@ -576,7 +576,7 @@
     <string name="news_category_option_astrology">Astrology</string>
     <string name="news_category_option_science">Science</string>
     <string name="news_category_option_jokes">Jokes</string>
-    <string name="news_category_option_nation”>Nation</string>
+    <string name="news_category_option_nation">Nation</string>
     
     <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
     <string name="logo_text">Service provided by</string>
