@@ -91,10 +91,10 @@ class BrowserGamesFragment : Fragment() {
         }
 
         when (gameType) {
-            GameType.BASIC -> gamesViewModel.basicGameItems.observe(this@BrowserGamesFragment, Observer {
+            GameType.INSTANT -> gamesViewModel.instantGameItems.observe(this@BrowserGamesFragment, Observer {
                 adapter.setData(it)
             })
-            GameType.PREMIUM -> gamesViewModel.premiumGameItems.observe(this@BrowserGamesFragment, Observer {
+            GameType.DOWNLOAD -> gamesViewModel.downloadGameItems.observe(this@BrowserGamesFragment, Observer {
                 adapter.setData(it)
             })
         }

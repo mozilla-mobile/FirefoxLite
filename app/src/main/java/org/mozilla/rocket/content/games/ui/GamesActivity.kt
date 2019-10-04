@@ -52,8 +52,8 @@ class GamesActivity : FragmentActivity() {
     private fun initToolBar() {
         refresh_button.setOnClickListener {
             when (games_tabs.selectedTabPosition) {
-                TAB_BASIC -> gamesViewModel.getLatestBasicGames()
-                TAB_PREMIUM -> gamesViewModel.getLatestPremiumGames()
+                TAB_INSTANT -> gamesViewModel.getLatestInstantGames()
+                TAB_DOWNLOAD -> gamesViewModel.getLatestDownloadGames()
             }
         }
     }
@@ -82,8 +82,8 @@ class GamesActivity : FragmentActivity() {
     }
 
     companion object {
-        const val TAB_BASIC = 0
-        const val TAB_PREMIUM = 1
+        const val TAB_INSTANT = 0
+        const val TAB_DOWNLOAD = 1
         fun getStartIntent(context: Context) =
             Intent(context, GamesActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     }

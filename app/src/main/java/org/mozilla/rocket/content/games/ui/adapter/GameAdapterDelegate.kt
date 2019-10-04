@@ -47,15 +47,15 @@ class GameViewHolder(
 }
 
 data class Game(
-    val id: Long,
     val brand: String,
     val imageUrl: String,
     val linkUrl: String,
     val name: String,
-    val type: GameType = GameType.BASIC,
-    val packageName: String = ""
+    val packageName: String,
+    val componentId: String,
+    val type: GameType = GameType.INSTANT
 ) : DelegateAdapter.UiModel()
 
 enum class GameType {
-    BASIC, PREMIUM
+    INSTANT, DOWNLOAD
 }
