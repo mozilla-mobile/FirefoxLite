@@ -152,7 +152,7 @@ private fun createPriceItem(jsonObject: JSONObject): PriceItem =
         PriceItem(
                 jsonObject.optString("type"),
                 jsonObject.optString("source"),
-                jsonObject.optDouble("price").toFloat(),
+                jsonObject.optDouble("price", 0.toDouble()).toFloat(),
                 jsonObject.optString("currency"),
                 jsonObject.optString("link_url")
         )
@@ -198,9 +198,9 @@ private fun createHotel(jsonObject: JSONObject): Hotel =
                 jsonObject.optString("image_url"),
                 jsonObject.optString("source"),
                 jsonObject.optString("title"),
-                jsonObject.optDouble("distance").toFloat(),
-                jsonObject.optDouble("rating").toFloat(),
+                jsonObject.optDouble("distance", 0.toDouble()).toFloat(),
+                jsonObject.optDouble("rating", 0.toDouble()).toFloat(),
                 jsonObject.optBoolean("freeWifi"),
-                jsonObject.optDouble("price").toFloat(),
+                jsonObject.optDouble("price", 0.toDouble()).toFloat(),
                 jsonObject.optString("currency")
         )

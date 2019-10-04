@@ -92,7 +92,7 @@ data class DealItem(
                 jsonObject.optString(KEY_COMPONENT_ID),
                 jsonObject.optString(KEY_PRICE),
                 jsonObject.optString(KEY_DISCOUNT),
-                jsonObject.optDouble(KEY_RATING).toFloat(),
+                jsonObject.optDouble(KEY_RATING, 0.toDouble()).toFloat(),
                 jsonObject.optInt(KEY_REVIEWS)
             )
     }
