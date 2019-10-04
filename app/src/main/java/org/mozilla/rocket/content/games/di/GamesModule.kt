@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.games.data.GameLocalDataSource
 import org.mozilla.rocket.content.games.data.GameRepository
+import org.mozilla.rocket.content.games.domain.GetDownloadGameListUseCase
+import org.mozilla.rocket.content.games.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.games.ui.GamesViewModel
 import javax.inject.Singleton
 
@@ -24,7 +26,22 @@ object GamesModule {
         GameRepository(gameDataSource)
 
     @JvmStatic
+    @Singleton
     @Provides
-    fun provideGamesViewModel(gameRepository: GameRepository): GamesViewModel =
-        GamesViewModel(gameRepository)
+    fun provideGetInstantGameListUseCase(repo: GameRepository): GetInstantGameListUseCase =
+        GetInstantGameListUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetDownloadGameListUseCase(repo: GameRepository): GetDownloadGameListUseCase =
+        GetDownloadGameListUseCase(repo)
+
+    @JvmStatic
+    @Provides
+    fun provideGamesViewModel(
+        getInstantGameListUseCase: GetInstantGameListUseCase,
+        getDownloadGameListUseCase: GetDownloadGameListUseCase
+    ): GamesViewModel =
+        GamesViewModel(getInstantGameListUseCase, getDownloadGameListUseCase)
 }
