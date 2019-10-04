@@ -54,13 +54,11 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
             if (title == null || link == null || publishDate == null) {
                 continue
             }
-            var publishTime: Long
-            try {
-                publishTime = SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.getDefault()).parse(publishDate).time
+            val publishTime = try {
+                SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US).parse(publishDate).time
             } catch (e: ParseException) {
                 e.printStackTrace()
-                // skip this item
-                continue
+                Long.MIN_VALUE
             }
 
             newsList.add(NewsItem(title, link, imageUrl, source, publishTime))

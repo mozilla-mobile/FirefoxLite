@@ -77,9 +77,14 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             source?.text = it
         }
 
-        time?.text = DateUtils.getRelativeTimeSpanString(
-            item.publishTime, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
-        )
+        time?.text =
+            if (item.publishTime == Long.MIN_VALUE) {
+                ""
+            } else {
+                DateUtils.getRelativeTimeSpanString(
+                    item.publishTime, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
+                )
+            }
 
         item.imageUrl?.let {
             if (image != null) {
