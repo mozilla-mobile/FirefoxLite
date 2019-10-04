@@ -38,7 +38,14 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
 
     private fun getApiEndpoint(category: String): String {
         val url = newsProvider?.newsUrl ?: DEFAULT_URL
-        return String.format(Locale.getDefault(), url, category, Locale.getDefault().toLanguageTag(), Locale.getDefault().country)
+        return String.format(
+            Locale.US,
+            url,
+            category,
+            Locale.getDefault().language,
+            Locale.getDefault().country,
+            Locale.getDefault().country + ":" + Locale.getDefault().language
+        )
     }
 
     private fun fromJson(jsonString: String): List<NewsItem> {
@@ -67,6 +74,6 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
     }
 
     companion object {
-        private const val DEFAULT_URL = "https://rocket-dev01.appspot.com/api/v1/news/google/topic/%s?language=%s&country=%s"
+        private const val DEFAULT_URL = "https://rocket-dev01.appspot.com/api/v1/news/google/topic/%s?hl=%s&gl=%s&ceid=%s"
     }
 }
