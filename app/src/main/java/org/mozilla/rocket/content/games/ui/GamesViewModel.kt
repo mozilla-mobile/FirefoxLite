@@ -9,13 +9,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.games.data.GameRepository
+import org.mozilla.rocket.content.games.domain.GetDownloadGameListUseCase
+import org.mozilla.rocket.content.games.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.games.ui.adapter.Game
 import org.mozilla.rocket.content.games.ui.adapter.GameType
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class GamesViewModel(
-    private val gameRepository: GameRepository
+    private val getInstantGameList: GetInstantGameListUseCase,
+    private val getDownloadGameList: GetDownloadGameListUseCase
 ) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
@@ -24,7 +26,7 @@ class GamesViewModel(
     private val _instantGameItems by lazy {
         MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
             launchDataLoad {
-                val result = gameRepository.getInstantGameList()
+                val result = getInstantGameList()
                 if (result is Result.Success) {
                     value = GameDataMapper.toGameUiModel(result.data)
                 }
@@ -36,7 +38,7 @@ class GamesViewModel(
     private val _downloadGameItems by lazy {
         MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
             launchDataLoad {
-                val result = gameRepository.getDownloadGameList()
+                val result = getDownloadGameList()
                 if (result is Result.Success) {
                     value = GameDataMapper.toGameUiModel(result.data)
                 }
@@ -64,7 +66,7 @@ class GamesViewModel(
 
     fun getLatestInstantGames() {
         launchDataLoad {
-            val result = gameRepository.getInstantGameList()
+            val result = getInstantGameList()
             if (result is Result.Success) {
                 _instantGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
             }
@@ -73,7 +75,7 @@ class GamesViewModel(
 
     fun getLatestDownloadGames() {
         launchDataLoad {
-            val result = gameRepository.getDownloadGameList()
+            val result = getDownloadGameList()
             if (result is Result.Success) {
                 _downloadGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
             }
