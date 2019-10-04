@@ -54,15 +54,29 @@ class ShoppingViewModel(
 
     private fun createShoppingTabItem(type: Int): ShoppingTabItem =
         when (type) {
-            1 -> ShoppingTabItem.DealTab()
-            2 -> ShoppingTabItem.CouponTab()
-            3 -> ShoppingTabItem.VoucherTab()
+            ShoppingTabItem.TYPE_DEAL_TAB -> ShoppingTabItem(ShoppingTabItem.TYPE_DEAL_TAB, R.string.shopping_vertical_category_1)
+            ShoppingTabItem.TYPE_COUPON_TAB -> ShoppingTabItem(ShoppingTabItem.TYPE_COUPON_TAB, R.string.shopping_vertical_category_2)
+            ShoppingTabItem.TYPE_VOUCHER_TAB -> ShoppingTabItem(ShoppingTabItem.TYPE_VOUCHER_TAB, R.string.shopping_vertical_category_3)
             else -> error("Unsupported shopping tab item type $type")
         }
 
-    sealed class ShoppingTabItem(val fragment: Fragment, val titleResId: Int) {
-        class DealTab : ShoppingTabItem(DealFragment(), R.string.shopping_vertical_category_1)
-        class CouponTab : ShoppingTabItem(CouponFragment(), R.string.shopping_vertical_category_2)
-        class VoucherTab : ShoppingTabItem(VoucherFragment(), R.string.shopping_vertical_category_3)
+    data class ShoppingTabItem(
+        val type: Int,
+        val titleResId: Int
+    ) {
+        fun createFragment(): Fragment {
+            return when (type) {
+                TYPE_DEAL_TAB -> DealFragment()
+                TYPE_COUPON_TAB -> CouponFragment()
+                TYPE_VOUCHER_TAB -> VoucherFragment()
+                else -> error("Unsupported shopping tab item type $type")
+            }
+        }
+
+        companion object {
+            const val TYPE_DEAL_TAB = 1
+            const val TYPE_COUPON_TAB = 2
+            const val TYPE_VOUCHER_TAB = 3
+        }
     }
 }
