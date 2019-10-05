@@ -1,9 +1,8 @@
 package org.mozilla.rocket.content.game.di
 
-import android.content.Context
 import dagger.Module
 import dagger.Provides
-import org.mozilla.rocket.content.game.data.GameLocalDataSource
+import org.mozilla.rocket.content.game.data.GameRemoteDataSource
 import org.mozilla.rocket.content.game.data.GameRepository
 import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
@@ -17,14 +16,14 @@ object GameModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGameLocalDataSource(appContext: Context): GameLocalDataSource =
-        GameLocalDataSource(appContext)
+    fun provideGameRemoteDataSource(): GameRemoteDataSource =
+        GameRemoteDataSource()
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGameRepository(gameDataSource: GameLocalDataSource): GameRepository =
-        GameRepository(gameDataSource)
+    fun provideGameRepository(gameRemoteDataSource: GameRemoteDataSource): GameRepository =
+        GameRepository(gameRemoteDataSource)
 
     @JvmStatic
     @Singleton
