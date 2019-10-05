@@ -5,7 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
-import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
+import org.mozilla.rocket.content.games.ui.DownloadGameFragment
+import org.mozilla.rocket.content.games.ui.InstantGameFragment
 
 @Suppress("DEPRECATION")
 class GameTabsAdapter(
@@ -29,8 +30,8 @@ class GameTabsAdapter(
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(
-            TabItem(BrowserGamesFragment.newInstance(GameType.INSTANT), R.string.gaming_vertical_category_1),
-            TabItem(BrowserGamesFragment.newInstance(GameType.DOWNLOAD), R.string.gaming_vertical_category_2)
+            TabItem(InstantGameFragment.newInstance(), R.string.gaming_vertical_category_1),
+            TabItem(DownloadGameFragment.newInstance(), R.string.gaming_vertical_category_2)
         )
     }
 }
