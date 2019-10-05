@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.game.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
@@ -31,11 +32,21 @@ class GameRemoteDataSource : GameDataSource {
     }
 
     private fun getInstantGameApiEndpoint(): String {
-        return DEFAULT_INSTANT_GAME_URL_ENDPOINT
+        val instantGameApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_INSTANT_GAME_ENDPOINT)
+        return if (instantGameApiEndpoint.isNotEmpty()) {
+            instantGameApiEndpoint
+        } else {
+            DEFAULT_INSTANT_GAME_URL_ENDPOINT
+        }
     }
 
     private fun getDownloadGameApiEndpoint(): String {
-        return DEFAULT_DOWNLOAD_GAME_URL_ENDPOINT
+        val instantGameApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_DOWNLOAD_GAME_ENDPOINT)
+        return if (instantGameApiEndpoint.isNotEmpty()) {
+            instantGameApiEndpoint
+        } else {
+            DEFAULT_DOWNLOAD_GAME_URL_ENDPOINT
+        }
     }
 
     private fun getHttpResult(endpointUrl: String): String {
@@ -45,6 +56,8 @@ class GameRemoteDataSource : GameDataSource {
     }
 
     companion object {
+        private const val STR_INSTANT_GAME_ENDPOINT = "str_instant_game_endpoint"
+        private const val STR_DOWNLOAD_GAME_ENDPOINT = "str_apk_game_endpoint"
         private const val DEFAULT_INSTANT_GAME_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=all&category=html5Game"
         private const val DEFAULT_DOWNLOAD_GAME_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=all&category=apkGame"
     }
