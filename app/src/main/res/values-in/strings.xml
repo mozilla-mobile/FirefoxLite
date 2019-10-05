@@ -422,7 +422,7 @@
   <string name="msrp_reward_category_1">Misi</string>
   <string name="msrp_reward_category_2">Hadiah</string>
   <string name="msrp_reward_challenge_title">Ikuti tantangan 7 hari dan menangkan kupon belanja senilai Rs 15,000</string>
-  <string name="msrp_reward_challenge_expire">Tanggal berakhir 03-09-2020</string>
+  <string name="msrp_reward_challenge_expire">Tanggal berakhir %s</string>
 
   <!--Challenge-->
   <string name="msrp_challenge_title">Tantangan 7 hari menangkan kupon Rs 15,000</string>

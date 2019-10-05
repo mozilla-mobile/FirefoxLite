@@ -263,11 +263,10 @@ object FirebaseHelper {
     @JvmStatic
     fun signInWithCustomToken(
         jwt: String,
-        activity: Activity,
         onSuccess: Function2<String?, String?, Unit>,
         onFail: Function1<String, Unit>
     ) {
-        firebaseContract.signInWithCustomToken(jwt, activity, onSuccess, onFail)
+        firebaseContract.signInWithCustomToken(jwt, onSuccess, onFail)
     }
 
     /**
@@ -285,6 +284,9 @@ object FirebaseHelper {
             }
         })
     }
+
+    @JvmStatic
+    fun isAnonymous(): Boolean? = firebaseContract.isAnonymous()
 
     @JvmStatic
     fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit) {

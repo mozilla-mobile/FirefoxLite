@@ -763,7 +763,7 @@
     <string name="msrp_reward_challenge_title">Try Shopping, News, Game for 7 days in a row!</string>                                            
     <!-- The %1$s here is a placeholder for "date"-->   
     <string name="msrp_reward_challenge_expire">Expires %1$s</string>
-  
+
     <!--Challenge-->
     <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"--> 
     <string name="msrp_challenge_title">7-day challenge for %1$s %2$s voucher</string>                               

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.Lazy
 import kotlinx.android.synthetic.main.content_error_view.error_text
 import kotlinx.android.synthetic.main.content_error_view.retry_button
+import kotlinx.android.synthetic.main.fragment_challenge_list.content_layout
 import kotlinx.android.synthetic.main.fragment_challenge_list.empty_view
 import kotlinx.android.synthetic.main.fragment_challenge_list.error_view
 import kotlinx.android.synthetic.main.fragment_challenge_list.loading_view
@@ -48,14 +49,15 @@ class ChallengeListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         initErrorView()
-        bindChallengesViewState()
+        bindListData()
+        bindChallengeListViewState()
     }
 
     private fun initRecyclerView() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(MissionUiModel.UnjoinedMission::class, R.layout.item_unjoined_mission, UnjoinedMissionsAdapterDelegate())
-                add(MissionUiModel.JoinedMission::class, R.layout.item_joined_mission, JoinedMissionsAdapterDelegate())
+                add(MissionUiModel.UnjoinedMission::class, R.layout.item_unjoined_mission, UnjoinedMissionsAdapterDelegate(missionViewModel))
+                add(MissionUiModel.JoinedMission::class, R.layout.item_joined_mission, JoinedMissionsAdapterDelegate(missionViewModel))
             }
         )
         recycler_view.apply {
@@ -70,18 +72,33 @@ class ChallengeListFragment : Fragment() {
         }
     }
 
-    private fun bindChallengesViewState() {
-//        val fakeChallenge = MissionUiModel(
-//            title = "7-day challenge for free VPN",
-//            expirationTime = "Expires 02/08/2019",
-//            progress = 74,
-//            imageUrl = "http://www.gameloft.com/central/upload/Asphalt-9-Legends-Slider-logo-2.jpg",
-//            showRedDot = true
-//        )
+    private fun bindListData() {
+        missionViewModel.challengeList.observe(this, Observer {
+            adapter.setData(it)
+        })
+        missionViewModel.isChallengeListEmpty.observe(this, Observer { isEmpty ->
+            if (isEmpty) {
+                showEmptyView()
+            } else {
+                showContentView()
+            }
+        })
+    }
+
+    private fun showContentView() {
+        recycler_view.isVisible = true
+        empty_view.isVisible = false
+    }
+
+    private fun showEmptyView() {
+        recycler_view.isVisible = false
+        empty_view.isVisible = true
+    }
+
+    private fun bindChallengeListViewState() {
         missionViewModel.challengeListViewState.observe(this, Observer { state ->
             when (state) {
-                is MissionViewModel.State.Loaded -> showMissionData(state.data)
-                is MissionViewModel.State.Empty -> showEmptyView()
+                is MissionViewModel.State.Loaded -> showLoaded()
                 is MissionViewModel.State.Loading -> showLoading()
                 is MissionViewModel.State.NoConnectionError -> showNoConnectionErrorView()
                 is MissionViewModel.State.UnknownError -> showUnknownErrorView()
@@ -89,41 +106,31 @@ class ChallengeListFragment : Fragment() {
         })
     }
 
-    private fun showMissionData(data: List<MissionUiModel>) {
-        adapter.setData(data)
-        recycler_view.isVisible = true
-        empty_view.isVisible = false
-        error_view.isVisible = false
-        loading_view.isVisible = false
-    }
-
-    private fun showEmptyView() {
-        recycler_view.isVisible = false
-        empty_view.isVisible = true
+    private fun showLoaded() {
+        content_layout.isVisible = true
         error_view.isVisible = false
         loading_view.isVisible = false
     }
 
     private fun showLoading() {
-        recycler_view.isVisible = false
-        empty_view.isVisible = false
+        content_layout.isVisible = false
         error_view.isVisible = false
         loading_view.isVisible = true
     }
 
     private fun showNoConnectionErrorView() {
-        error_text.text = resources.getText(R.string.msrp_reward_challenge_nointernet)
-        recycler_view.isVisible = false
-        empty_view.isVisible = false
+        content_layout.isVisible = false
         error_view.isVisible = true
         loading_view.isVisible = false
+
+        error_text.text = resources.getText(R.string.msrp_reward_challenge_nointernet)
     }
 
     private fun showUnknownErrorView() {
-        error_text.text = resources.getText(R.string.msrp_reward_challenge_error)
-        recycler_view.isVisible = false
-        empty_view.isVisible = false
+        content_layout.isVisible = false
         error_view.isVisible = true
         loading_view.isVisible = false
+
+        error_text.text = resources.getText(R.string.msrp_reward_challenge_error)
     }
 }

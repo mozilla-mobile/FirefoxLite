@@ -1,553 +1,650 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dmd_container"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/paletteWhite100"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="@color/paletteWhite100">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="360:268"
-            android:background="@drawable/bg_mission_detail_header"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="75dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/bg_mission_detail_container"
+            android:background="@color/paletteWhite100"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/dmd_mission_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="75dp"
-                android:gravity="center"
-                android:text="7-day challenge for Rs 15,000 shopping coupon"
-                android:textColor="@color/contentHeaderTextColor"
-                android:textSize="20sp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="28dp">
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="1dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/dmd_day_1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_0_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_checked" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textColor="@color/paletteWhite100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_0_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 12"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/dmd_day_2"
-                    app:layout_constraintStart_toEndOf="@id/dmd_day_0"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_1_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="2"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_1_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 13"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/dmd_day_3"
-                    app:layout_constraintStart_toEndOf="@id/dmd_day_1"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_2_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="3"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_2_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 14"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/dmd_day_2"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_3_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="4"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_3_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 15"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="28dp">
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginEnd="1dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/dmd_day_5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_chainStyle="spread_inside">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_4_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="5"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_4_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 16"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/dmd_day_6"
-                    app:layout_constraintStart_toEndOf="@id/dmd_day_4"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_5_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="6"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_5_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 17"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/dmd_day_7"
-                    app:layout_constraintStart_toEndOf="@id/dmd_day_5"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_6_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="7"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_6_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 18"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/dmd_day_7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/dmd_day_6"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <FrameLayout
-                        android:layout_width="@dimen/msrp_mission_detail_day_width"
-                        android:layout_height="@dimen/msrp_mission_detail_day_width">
-
-                        <ImageView
-                            android:id="@+id/dmd_day_7_image"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@null"
-                            android:src="@drawable/bg_mission_detail_day_normal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="8"
-                            android:textColor="@color/paletteLightGreyA100"
-                            android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/dmd_day_7_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
-                        android:gravity="center"
-                        android:text="Sep 19"
-                        android:textColor="@color/paletteDarkGreyE100"
-                        android:textSize="@dimen/msrp_mission_detail_day_text_size" />
-
-                </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Button
-                android:id="@+id/dmd_redeem"
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="@dimen/msrp_mission_detail_button_height"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_mission_detail_button"
-                android:enabled="false"
-                android:text="@string/msrp_challenge_button_4"
-                android:textAllCaps="false"
-                android:textColor="@color/paletteWhite100"
-                android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="25dp"
-                android:background="@color/paletteLightGreyA100" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="360:268"
+                android:background="@drawable/bg_mission_detail_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="@string/msrp_challenge_details_title_1"
-                android:textColor="#000"
-                android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="75dp"
+                android:layout_marginEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="75dp"
+                android:paddingBottom="44dp"
+                android:clipToPadding="false"
+                android:clipChildren="false"
+                android:background="@drawable/bg_mission_detail_container"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:textColor="@color/contentHeaderTextColor"
+                    android:textSize="20sp"
+                    tools:text="7-day challenge for Rs 15,000 shopping coupon"/>
+
+                <LinearLayout
+                    android:id="@+id/congrats_title_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/msrp_congrats_title"
+                        android:textColor="@color/contentHeaderTextColor"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center_horizontal"
+                        android:lineSpacingExtra="4dp"
+                        android:text="@string/msrp_congrats_subtitle"
+                        android:textColor="@color/paletteDarkGreyD100"
+                        android:textSize="12sp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/redeem_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/date_layout_row_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp">
+
+                        <LinearLayout
+                            android:id="@+id/day_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="1dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/day_2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="1"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 12"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/day_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/day_3"
+                            app:layout_constraintStart_toEndOf="@id/day_1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="2"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 13"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/day_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/day_4"
+                            app:layout_constraintStart_toEndOf="@id/day_2"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="3"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 14"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/day_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/day_3"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="4"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 15"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/date_layout_row_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp">
+
+                        <LinearLayout
+                            android:id="@+id/day_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginEnd="1dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/day_6"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintHorizontal_chainStyle="spread_inside"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="5"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 16"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/day_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/day_7"
+                            app:layout_constraintStart_toEndOf="@id/day_5"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="6"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 17"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/day_7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/day_8"
+                            app:layout_constraintStart_toEndOf="@id/day_6"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="7"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 18"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/day_8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/day_7"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            tools:visibility="visible">
+
+                            <FrameLayout
+                                android:layout_width="@dimen/msrp_mission_detail_day_width"
+                                android:layout_height="@dimen/msrp_mission_detail_day_width">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@null"
+                                    android:src="@drawable/bg_mission_detail_day" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:textColor="@color/mission_detail_day_text"
+                                    android:textSize="@dimen/msrp_mission_detail_button_text_size"
+                                    android:text="8"/>
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@id/day_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="@dimen/msrp_mission_detail_day_text_margin_top"
+                                android:gravity="center"
+                                android:textColor="@color/paletteDarkGreyE100"
+                                android:textSize="@dimen/msrp_mission_detail_day_text_size"
+                                tools:text="Sep 19"/>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <Button
+                        android:id="@+id/redeem_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_marginBottom="9dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/bg_mission_detail_button"
+                        android:enabled="false"
+                        android:text="@string/msrp_challenge_button_4"
+                        android:textAllCaps="false"
+                        android:textColor="@color/paletteWhite100"
+                        android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+
+                    <Button
+                        android:id="@+id/redeem_later_button"
+                        style="@android:style/Widget.Holo.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:text="@string/msrp_challenge_button_5"
+                        android:textAllCaps="false"
+                        android:textColor="@color/paletteDarkGreyD100"
+                        android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/join_layout_separator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/paletteLightGreyA100"
+                    android:layout_marginTop="15.5dp"
+                    android:layout_marginBottom="15.5dp"/>
+
+                <LinearLayout
+                    android:id="@+id/join_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/msrp_challenge_details_title_1"
+                        android:textColor="#000"
+                        android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+
+                    <ImageView
+                        android:layout_width="184dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:background="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_challenge_details" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/msrp_challenge_details_body_1"
+                        android:textColor="@color/paletteDarkGreyD100"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/msrp_challenge_details_title_2"
+                        android:textColor="#000"
+                        android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/msrp_challenge_details_body_2"
+                        android:textColor="@color/paletteDarkGreyD100"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/join_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_mission_detail_button"
+                        android:text="@string/msrp_challenge_button_1"
+                        android:textAllCaps="false"
+                        android:textColor="@color/paletteWhite100"
+                        android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+
+                    <TextView
+                        android:id="@+id/join_terms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/msrp_challenge_tou"
+                        android:textColor="@color/paletteDarkGreyD100"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:id="@+id/quit_button_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/paletteLightGreyA100"
+                        android:layout_marginTop="15.5dp"
+                        android:layout_marginBottom="15.5dp"/>
+
+                    <Button
+                        android:id="@+id/quit_button"
+                        android:layout_width="@dimen/match_parent"
+                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_mission_detail_button_quit"
+                        android:text="@string/msrp_challenge_button_2"
+                        android:textAllCaps="false"
+                        android:textColor="@color/palettePeach100"
+                        android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <ImageView
-                android:layout_width="184dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:id="@+id/reward_landing"
+                android:layout_width="151dp"
+                android:layout_height="124dp"
+                android:layout_marginTop="13dp"
                 android:background="@null"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_challenge_details" />
+                android:src="@drawable/ic_reward_ribbon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:text="@string/msrp_challenge_details_body_1"
-                android:textColor="@color/paletteDarkGreyD100"
-                android:textSize="12sp" />
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="89dp"
+                android:layout_height="89dp"
+                android:padding="2dp"
+                android:background="@null"
+                app:layout_constraintStart_toStartOf="@id/reward_landing"
+                app:layout_constraintEnd_toEndOf="@id/reward_landing"
+                app:layout_constraintTop_toTopOf="@id/reward_landing"
+                app:layout_constraintBottom_toBottomOf="@id/reward_landing"/>
 
-            <TextView
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:text="@string/msrp_challenge_details_title_2"
-                android:textColor="#000"
-                android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:text="@string/msrp_challenge_details_body_2"
-                android:textColor="@color/paletteDarkGreyD100"
-                android:textSize="12sp" />
+    </ScrollView>
 
-            <Button
-                android:id="@+id/dmd_im_in"
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="@dimen/msrp_mission_detail_button_height"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_mission_detail_button"
-                android:text="@string/msrp_challenge_button_1"
-                android:textAllCaps="false"
-                android:textColor="@color/paletteWhite100"
-                android:textSize="@dimen/msrp_mission_detail_button_text_size" />
+    <ProgressBar
+        android:id="@+id/loading_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:indeterminate="true"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
 
-            <TextView
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:text="@string/msrp_challenge_tou"
-                android:textColor="@color/paletteDarkGreyD100"
-                android:textSize="12sp" />
-
-            <View
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="1dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/paletteLightGreyA100" />
-
-            <Button
-                android:id="@+id/dmd_quit"
-                android:layout_width="@dimen/msrp_mission_detail_horizontal_width"
-                android:layout_height="@dimen/msrp_mission_detail_button_height"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/bg_mission_detail_button_quit"
-                android:text="@string/msrp_challenge_button_2"
-                android:textAllCaps="false"
-                android:textColor="@color/palettePeach100"
-                android:textSize="@dimen/msrp_mission_detail_button_text_size" />
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/dmd_reward_landing"
-            android:layout_width="151dp"
-            android:layout_height="124dp"
-            android:layout_marginTop="13dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_reward_ribbon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</FrameLayout>

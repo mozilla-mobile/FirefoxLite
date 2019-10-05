@@ -48,8 +48,18 @@ class MissionLocalDataSource(appContext: Context) {
                 }
             }
 
+    fun hasJoinedAnyMissionBefore(): Boolean =
+            preference.getBoolean(KEY_HAS_JOINED_ANY_MISSION_BEFORE, false)
+
+    fun setJoinedAnyMissionBefore() {
+        preference.edit().apply {
+            putBoolean(KEY_HAS_JOINED_ANY_MISSION_BEFORE, true)
+        }.apply()
+    }
+
     companion object {
         private const val PREF_NAME = "msrp"
         private const val KEY_READ_MISSIONS = "read_missions"
+        private const val KEY_HAS_JOINED_ANY_MISSION_BEFORE = "has_joined_any_mission_before"
     }
 }

@@ -11,16 +11,23 @@ import kotlinx.android.synthetic.main.item_joined_mission.image
 import kotlinx.android.synthetic.main.item_joined_mission.progress
 import kotlinx.android.synthetic.main.item_joined_mission.progress_text
 import kotlinx.android.synthetic.main.item_joined_mission.title
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.extension.dpToPx
+import org.mozilla.rocket.msrp.ui.MissionViewModel
 
-class JoinedMissionsAdapterDelegate : AdapterDelegate {
+class JoinedMissionsAdapterDelegate(
+    private val missionViewModel: MissionViewModel
+) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            JoinedMissionsViewHolder(view)
+            JoinedMissionsViewHolder(missionViewModel, view)
 }
 
-class JoinedMissionsViewHolder(override val containerView: View) : DelegateAdapter.ViewHolder(containerView) {
+class JoinedMissionsViewHolder(
+    private val missionViewModel: MissionViewModel,
+    override val containerView: View
+) : DelegateAdapter.ViewHolder(containerView) {
 
     private val imgReqOpts = RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(containerView.dpToPx(4f))) }
 
@@ -28,7 +35,7 @@ class JoinedMissionsViewHolder(override val containerView: View) : DelegateAdapt
         uiModel as MissionUiModel.JoinedMission
 
         title.text = uiModel.title
-        expiration_text.text = uiModel.expirationText
+        expiration_text.text = itemView.resources.getString(R.string.msrp_reward_challenge_expire, uiModel.expirationTime)
         progress.progress = uiModel.progress
         @SuppressLint("SetTextI18n")
         progress_text.text = "${uiModel.progress}%"
@@ -37,5 +44,9 @@ class JoinedMissionsViewHolder(override val containerView: View) : DelegateAdapt
                 .load(uiModel.imageUrl)
                 .apply(imgReqOpts)
                 .into(image)
+
+        itemView.setOnClickListener {
+            missionViewModel.onChallengeItemClicked(adapterPosition)
+        }
     }
 }

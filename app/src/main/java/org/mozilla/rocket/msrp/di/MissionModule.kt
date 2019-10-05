@@ -7,10 +7,26 @@ import org.mozilla.rocket.msrp.data.MissionLocalDataSource
 import org.mozilla.rocket.msrp.data.MissionRemoteDataSource
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.data.UserRepository
+import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
+import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
+import org.mozilla.rocket.msrp.domain.GetChallengeMissionsUseCase
+import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
+import org.mozilla.rocket.msrp.domain.GetCouponUseCase
+import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.GetRedeemMissionsUseCase
+import org.mozilla.rocket.msrp.domain.GetUserIdUseCase
 import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
-import org.mozilla.rocket.msrp.domain.LoadMissionsUseCase
+import org.mozilla.rocket.msrp.domain.IsFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.IsNeedJoinMissionOnboardingUseCase
+import org.mozilla.rocket.msrp.domain.JoinMissionUseCase
+import org.mozilla.rocket.msrp.domain.QuitMissionUseCase
 import org.mozilla.rocket.msrp.domain.ReadMissionUseCase
 import org.mozilla.rocket.msrp.domain.RedeemUseCase
+import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
+import org.mozilla.rocket.msrp.domain.RequestContentHubClickOnboardingUseCase
+import org.mozilla.rocket.msrp.ui.MissionCouponViewModel
+import org.mozilla.rocket.msrp.ui.MissionDetailViewModel
 import org.mozilla.rocket.msrp.ui.MissionViewModel
 import javax.inject.Singleton
 
@@ -47,10 +63,24 @@ object MissionModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideLoadMissionsUseCase(
+    fun provideGetChallengeMissionsUseCase(
+        missionRepository: MissionRepository
+    ): GetChallengeMissionsUseCase = GetChallengeMissionsUseCase(missionRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetMissionsUseCase(
+        missionRepository: MissionRepository
+    ): GetRedeemMissionsUseCase = GetRedeemMissionsUseCase(missionRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideRefreshMissionsUseCase(
         missionRepository: MissionRepository,
         userRepository: UserRepository
-    ): LoadMissionsUseCase = LoadMissionsUseCase(missionRepository, userRepository)
+    ): RefreshMissionsUseCase = RefreshMissionsUseCase(missionRepository, userRepository)
 
     @JvmStatic
     @Singleton
@@ -61,7 +91,32 @@ object MissionModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideHasUnreadMissionsUseCase() = HasUnreadMissionsUseCase()
+    fun provideHasUnreadMissionsUseCase(missionRepository: MissionRepository) =
+            HasUnreadMissionsUseCase(missionRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideJoinMissionUseCase(
+        missionRepository: MissionRepository,
+        userRepository: UserRepository
+    ) = JoinMissionUseCase(missionRepository, userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideQuitMissionUseCase(
+        missionRepository: MissionRepository,
+        userRepository: UserRepository
+    ) = QuitMissionUseCase(missionRepository, userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCheckInMissionUseCase(
+        missionRepository: MissionRepository,
+        userRepository: UserRepository
+    ) = CheckInMissionUseCase(missionRepository, userRepository)
 
     @JvmStatic
     @Singleton
@@ -72,16 +127,112 @@ object MissionModule {
     ) = RedeemUseCase(missionRepository, userRepository)
 
     @JvmStatic
+    @Singleton
+    @Provides
+    fun provideIsFxAccountUseCase(
+        userRepository: UserRepository
+    ) = IsFxAccountUseCase(userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetIsFxAccountUseCase(
+        userRepository: UserRepository
+    ) = GetIsFxAccountUseCase(userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetUserIdUseCase(
+        userRepository: UserRepository
+    ) = GetUserIdUseCase(userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetCouponUseCase(
+        missionRepository: MissionRepository,
+        userRepository: UserRepository
+    ) = GetCouponUseCase(missionRepository, userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideBindFxAccountUseCase(
+        userRepository: UserRepository
+    ) = BindFxAccountUseCase(userRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideIsNeedJoinMissionOnboardingUseCase(
+        missionRepository: MissionRepository
+    ) = IsNeedJoinMissionOnboardingUseCase(missionRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCompleteJoinMissionOnboardingUseCase(
+        missionRepository: MissionRepository
+    ) = CompleteJoinMissionOnboardingUseCase(missionRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetContentHubClickOnboardingEventUseCase(
+        missionRepository: MissionRepository
+    ) = GetContentHubClickOnboardingEventUseCase(missionRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideRequestContentHubClickOnboardingUseCase(
+        missionRepository: MissionRepository
+    ) = RequestContentHubClickOnboardingUseCase(missionRepository)
+
+    @JvmStatic
     @Provides
     fun provideMissionViewModel(
-        loadMissionsUseCase: LoadMissionsUseCase,
-        readMissionUseCase: ReadMissionUseCase,
-        hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
-        redeemUseCase: RedeemUseCase
+        getChallengeMissionsUseCase: GetChallengeMissionsUseCase,
+        getRedeemMissionsUseCase: GetRedeemMissionsUseCase,
+        refreshMissionsUseCase: RefreshMissionsUseCase
     ): MissionViewModel = MissionViewModel(
-        loadMissionsUseCase,
+        getChallengeMissionsUseCase,
+        getRedeemMissionsUseCase,
+        refreshMissionsUseCase
+    )
+
+    @JvmStatic
+    @Provides
+    fun provideMissionDetailViewModel(
+        readMissionUseCase: ReadMissionUseCase,
+        joinMissionUseCase: JoinMissionUseCase,
+        quitMissionUseCase: QuitMissionUseCase,
+        refreshMissionsUseCase: RefreshMissionsUseCase,
+        redeemUseCase: RedeemUseCase,
+        isFxAccountUseCase: IsFxAccountUseCase,
+        getUserIdUseCase: GetUserIdUseCase,
+        bindFxAccountUseCase: BindFxAccountUseCase,
+        isNeedJoinMissionOnboardingUseCase: IsNeedJoinMissionOnboardingUseCase,
+        requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase
+    ): MissionDetailViewModel = MissionDetailViewModel(
         readMissionUseCase,
-        hasUnreadMissionsUseCase,
-        redeemUseCase
+        joinMissionUseCase,
+        quitMissionUseCase,
+        refreshMissionsUseCase,
+        redeemUseCase,
+        isFxAccountUseCase,
+        getUserIdUseCase,
+        bindFxAccountUseCase,
+        isNeedJoinMissionOnboardingUseCase,
+        requestContentHubClickOnboardingUseCase
+    )
+
+    @JvmStatic
+    @Provides
+    fun provideMissionCouponViewModel(
+        getCouponUseCase: GetCouponUseCase
+    ): MissionCouponViewModel = MissionCouponViewModel(
+        getCouponUseCase
     )
 }

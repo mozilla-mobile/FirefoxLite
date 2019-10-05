@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/mission_button"
+            android:id="@+id/reward_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
@@ -37,7 +37,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_account" />
+            android:src="@drawable/ic_account_states" />
 
     </org.mozilla.rocket.nightmode.themed.ThemedLinearLayout>
 

@@ -12,7 +12,7 @@ import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
-import org.mozilla.rocket.home.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
 import org.mozilla.rocket.home.onboarding.CheckFirstRunUseCase
 import org.mozilla.rocket.home.onboarding.CheckLiteUpdate
 import org.mozilla.rocket.home.onboarding.CompleteFirstRunUseCase
@@ -25,6 +25,12 @@ import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.msrp.data.MissionRepository
+import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
+import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
+import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
+import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
+import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import javax.inject.Singleton
 
@@ -32,7 +38,6 @@ import javax.inject.Singleton
 object HomeModule {
 
     @JvmStatic
-    @Singleton
     @Provides
     fun provideHomeViewModel(
         settings: Settings,
@@ -48,7 +53,13 @@ object HomeModule {
         checkFirstRunUseCase: CheckFirstRunUseCase,
         completeFirstRunUseCase: CompleteFirstRunUseCase,
         checkLiteUpdate: CheckLiteUpdate,
-        completeLiteUpdate: CompleteLiteUpdate
+        completeLiteUpdate: CompleteLiteUpdate,
+        checkInMissionUseCase: CheckInMissionUseCase,
+        completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
+        getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
+        refreshMissionsUseCase: RefreshMissionsUseCase,
+        hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
+        getIsFxAccountUseCase: GetIsFxAccountUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -63,7 +74,13 @@ object HomeModule {
         checkFirstRunUseCase,
         completeFirstRunUseCase,
         checkLiteUpdate,
-        completeLiteUpdate
+        completeLiteUpdate,
+        checkInMissionUseCase,
+        completeJoinMissionOnboardingUseCase,
+        getContentHubClickOnboardingEventUseCase,
+        refreshMissionsUseCase,
+        hasUnreadMissionsUseCase,
+        getIsFxAccountUseCase
     )
 
     @JvmStatic
@@ -142,23 +159,23 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideCheckFirstRunUseCase(appContext: Context): CheckFirstRunUseCase =
-        CheckFirstRunUseCase(appContext)
+            CheckFirstRunUseCase(appContext)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideCheckLiteUpdateUseCase(appContext: Context): CheckLiteUpdate =
-        CheckLiteUpdate(appContext)
+            CheckLiteUpdate(appContext)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideCompleteFirstRunUseCase(appContext: Context): CompleteFirstRunUseCase =
-        CompleteFirstRunUseCase(appContext)
+            CompleteFirstRunUseCase(appContext)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideCompleteLiteUpdateUseCase(appContext: Context): CompleteLiteUpdate =
-        CompleteLiteUpdate(appContext)
+            CompleteLiteUpdate(appContext)
 }

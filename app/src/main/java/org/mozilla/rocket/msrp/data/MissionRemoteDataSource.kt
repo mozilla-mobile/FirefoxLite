@@ -18,6 +18,9 @@ import java.util.TimeZone
 
 class MissionRemoteDataSource {
 
+    private val msrpApiHost: String
+        get() = FirebaseHelper.getFirebase().getRcString(STR_RC_MSRP_API_HOST)
+
     private val missionListEndpoint: String
         get() = FirebaseHelper.getFirebase().getRcString(STR_RC_MISSION_LIST_ENDPOINT)
 
@@ -41,7 +44,7 @@ class MissionRemoteDataSource {
             return@withContext Result.error<List<Mission>, RewardServiceError>(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "$missionListEndpoint?tz=${TimeZone.getDefault().id}"
+        val endpoint = "$msrpApiHost$missionListEndpoint?tz=${TimeZone.getDefault().id}"
         return@withContext sendRequest(
                 request = Request(url = endpoint, headers = createHeader(token)),
                 onSuccess = {
@@ -125,16 +128,16 @@ class MissionRemoteDataSource {
     /**
      * Join to the given mission
      */
-    fun joinMission(mission: Mission, accessToken: String?): Result<JoinMissionResult, RewardServiceError> {
+    suspend fun joinMission(mission: Mission, accessToken: String?): Result<JoinMissionResult, RewardServiceError> = withContext(Dispatchers.IO) {
         val token = accessToken
-                ?: return Result.error(error = RewardServiceError.Unauthorized)
+                ?: return@withContext Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return Result.error(error = RewardServiceError.MsrpDisabled)
+            return@withContext Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "${MSRP_HOST}${mission.endpoint}?tz=${TimeZone.getDefault().id}"
-        return sendRequest(
+        val endpoint = "${msrpApiHost}${mission.endpoint}?tz=${TimeZone.getDefault().id}"
+        return@withContext sendRequest(
                 request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.POST),
                 onSuccess = {
                     parseJoinMissionResponse(it)
@@ -158,14 +161,14 @@ class MissionRemoteDataSource {
                 val mid = result.optString("mid")
 
                 val status = MissionJoinStatus.valueOf(result.optInt("status"))
-                status ?: return Result.error("unknown join status=$status")
+                status ?: return Result.error("unknown join status=$status", error = RewardServiceError.Unknown("unknown join status=$status"))
 
                 Result.success(JoinMissionResult(mid, status))
             }
 
             else -> {
                 val msg = root.optString("message")
-                Result.error("join failed, code=${response.status}, msg=$msg")
+                Result.error("join failed, code=${response.status}, msg=$msg", error = RewardServiceError.Unknown(msg))
             }
         }
     }
@@ -173,19 +176,20 @@ class MissionRemoteDataSource {
     /**
      * Check-in missions that is interested in the given ping
      */
-    fun checkInMission(ping: String, accessToken: String?): Result<List<CheckedInMission>, RewardServiceError> {
+    suspend fun checkInMission(ping: String, accessToken: String?): Result<List<Mission>, RewardServiceError> = withContext(Dispatchers.IO) {
         val token = accessToken
-                ?: return Result.error(error = RewardServiceError.Unauthorized)
+                ?: return@withContext Result.error<List<Mission>, RewardServiceError>(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return Result.error(error = RewardServiceError.MsrpDisabled)
+            return@withContext Result.error<List<Mission>, RewardServiceError>(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "$MSRP_HOST/api/v1/ping/$ping?tz=${TimeZone.getDefault().id}"
-        return sendRequest(
+        val endpoint = "$msrpApiHost/$MSRP_API_VERSION_PATH/ping/$ping?tz=${TimeZone.getDefault().id}"
+        return@withContext sendRequest(
                 request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.PUT),
                 onSuccess = {
-                    parseCheckInMissionResponse(it)
+                    parseMissionListResponse(it)
+//                    parseCheckInMissionResponse(it)
                 },
                 onError = {
                     log("check-in mission failed, msg=$it")
@@ -194,50 +198,50 @@ class MissionRemoteDataSource {
         )
     }
 
-    private fun parseCheckInMissionResponse(response: Response): Result<List<CheckedInMission>, RewardServiceError> {
-        val body = response.body.string()
-        val root = JSONObject(body)
+//    private fun parseCheckInMissionResponse(response: Response): Result<List<Mission>, RewardServiceError> {
+//        val body = response.body.string()
+//        val root = JSONObject(body)
+//
+//        log("check-in response, code=${response.status}, body=$body")
+//
+//        return when (response.status) {
+//            200 -> {
+//                val missionArray = root.optJSONArray("result")
+//                val missions = (0 until missionArray.length()).mapNotNull {
+//                    val missionJson = missionArray.getJSONObject(it)
+//                    val missionType = MissionType.valueOf(missionJson.optString("missionType"))
+//                            ?: return@mapNotNull null
+//
+//                    val progress = parseProgress(missionType, missionJson.optJSONObject("progress"))
+//                            ?: return@mapNotNull null
+//
+//                    CheckedInMission(
+//                        mid = missionJson.optString("mid"),
+//                        missionType = missionType,
+//                        progress = progress
+//                    )
+//                }
+//
+//                return Result.success(missions)
+//            }
+//
+//            else -> {
+//                val msg = root.optString("message")
+//                Result.error("check-in failed, code=${response.status}, msg=$msg", error = RewardServiceError.Unknown(msg))
+//            }
+//        }
+//    }
 
-        log("check-in response, code=${response.status}, body=$body")
-
-        return when (response.status) {
-            200 -> {
-                val missionArray = root.optJSONArray("result")
-                val missions = (0 until missionArray.length()).mapNotNull {
-                    val missionJson = missionArray.getJSONObject(it)
-                    val missionType = MissionType.valueOf(missionJson.optString("missionType"))
-                            ?: return@mapNotNull null
-
-                    val progress = parseProgress(missionType, missionJson.optJSONObject("progress"))
-                            ?: return@mapNotNull null
-
-                    CheckedInMission(
-                        mid = missionJson.optString("mid"),
-                        missionType = missionType,
-                        progress = progress
-                    )
-                }
-
-                return Result.success(missions)
-            }
-
-            else -> {
-                val msg = root.optString("message")
-                Result.error("check-in failed, code=${response.status}, msg=$msg")
-            }
-        }
-    }
-
-    fun quitMission(mission: Mission, accessToken: String?): Result<QuitMissionResult, RewardServiceError> {
+    suspend fun quitMission(mission: Mission, accessToken: String?): Result<QuitMissionResult, RewardServiceError> = withContext(Dispatchers.IO) {
         val token = accessToken
-                ?: return Result.error(error = RewardServiceError.Unauthorized)
+                ?: return@withContext Result.error<QuitMissionResult, RewardServiceError>(error = RewardServiceError.Unauthorized)
 
         if (!isMsrpAvailable()) {
-            return Result.error(error = RewardServiceError.MsrpDisabled)
+            return@withContext Result.error<QuitMissionResult, RewardServiceError>(error = RewardServiceError.MsrpDisabled)
         }
 
-        val endpoint = "${MSRP_HOST}${mission.endpoint}?tz=${TimeZone.getDefault().id}"
-        return sendRequest(
+        val endpoint = "${msrpApiHost}${mission.endpoint}?tz=${TimeZone.getDefault().id}"
+        return@withContext sendRequest(
             request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.DELETE),
             onSuccess = {
                 parseQuitMissionResponse(it)
@@ -260,25 +264,32 @@ class MissionRemoteDataSource {
                 val mid = root.optString("mid")
 
                 val status = MissionJoinStatus.valueOf(root.optInt("status"))
-                status ?: return Result.error("unknown join status=$status")
+                status ?: return Result.error("unknown join status=$status", error = RewardServiceError.Unknown("unknown join status=$status"))
 
                 Result.success(QuitMissionResult(mid, status))
             }
 
             else -> {
                 val msg = root.optString("message")
-                Result.error("quit failed, code=${response.status}, msg=$msg")
+                Result.error("quit failed, code=${response.status}, msg=$msg", error = RewardServiceError.Unknown(msg))
             }
         }
     }
 
-    suspend fun redeem(userToken: String?, redeemUrl: String): Result<RewardCouponDoc, RedeemServiceError> = withContext(Dispatchers.IO) {
+    suspend fun redeem(userToken: String?, redeemEndPoint: String): Result<RewardCouponDoc, RedeemServiceError> = withContext(Dispatchers.IO) {
 
         if (userToken == null) {
             return@withContext Result.error<RewardCouponDoc, RedeemServiceError>(error = RedeemServiceError.NotLogin("Please login first"))
         }
+        val hasParams = redeemEndPoint.contains("?")
+        val concatSymbol = if (hasParams) {
+            "&"
+        } else {
+            "?"
+        }
+        val url = "${msrpApiHost}${redeemEndPoint}${concatSymbol}tz=${TimeZone.getDefault().id}"
         val request = Request(
-                url = redeemUrl,
+                url = url,
                 headers = MutableHeaders(
                     "Accept" to "application/json; q=0.5",
                     "Accept" to "application/vnd.github.v3+json",
@@ -376,53 +387,12 @@ class MissionRemoteDataSource {
         private const val TAG = "MissionRepository"
         private const val BOOL_RC_MSRP_ENABLED = "bool_msrp_enabled"
         private const val STR_RC_MISSION_LIST_ENDPOINT = "str_mission_list_endpoint"
+        private const val STR_RC_MSRP_API_HOST = "str_msrp_api_host"
 
-        // TODO: Update host url
-        private const val MSRP_HOST = "https://rocket-dev01.appspot.com"
+        // TODO: to be updated
+        private const val MSRP_API_VERSION_PATH = "api/v1/"
     }
 }
-
-@Suppress("UNUSED_PARAMETER")
-sealed class RewardServiceError {
-    object NetworkError : RewardServiceError()
-    object MsrpDisabled : RewardServiceError()
-    object Unauthorized : RewardServiceError()
-    class Unknown(msg: String) : RewardServiceError()
-}
-
-@Suppress("UNUSED_PARAMETER")
-class JoinMissionResult(val mid: String, val status: MissionJoinStatus)
-
-@Suppress("UNUSED_PARAMETER")
-class QuitMissionResult(val mid: String, val status: MissionJoinStatus)
-
-data class CheckedInMission(
-    val mid: String,
-    val missionType: MissionType,
-    val progress: MissionProgress
-)
-
-sealed class RedeemServiceError {
-    object NetworkError : RedeemServiceError()
-    class UsedUp(val message: String) : RedeemServiceError()
-    class NotReady(val message: String) : RedeemServiceError()
-    class Failure(val message: String) : RedeemServiceError()
-    class InvalidRewardType(val message: String) : RedeemServiceError()
-    class NotLogin(val message: String) : RedeemServiceError()
-}
-
-class RewardCouponDoc(
-    var rid: String? = null,
-    var uid: String? = null,
-    var mid: String? = null,
-    var code: String? = null,
-    var campaign: String? = null,
-    var title: String? = null,
-    var content: String? = null,
-    var expire_date: Long? = null,
-    var created_timestamp: Long? = null,
-    var updated_timestamp: Long? = null
-)
 
 sealed class MissionType {
 
@@ -455,4 +425,37 @@ sealed class MissionJoinStatus {
             }
         }
     }
+}
+
+class JoinMissionResult(val mid: String, val status: MissionJoinStatus)
+
+class QuitMissionResult(val mid: String, val status: MissionJoinStatus)
+
+class RewardCouponDoc(
+    var rid: String? = null,
+    var uid: String? = null,
+    var mid: String? = null,
+    var code: String? = null,
+    var campaign: String? = null,
+    var title: String? = null,
+    var content: String? = null,
+    var expire_date: Long? = null,
+    var created_timestamp: Long? = null,
+    var updated_timestamp: Long? = null
+)
+
+sealed class RewardServiceError {
+    object NetworkError : RewardServiceError()
+    object MsrpDisabled : RewardServiceError()
+    object Unauthorized : RewardServiceError()
+    class Unknown(val msg: String) : RewardServiceError()
+}
+
+sealed class RedeemServiceError {
+    object NetworkError : RedeemServiceError()
+    class UsedUp(val message: String) : RedeemServiceError()
+    class NotReady(val message: String) : RedeemServiceError()
+    class Failure(val message: String) : RedeemServiceError()
+    class InvalidRewardType(val message: String) : RedeemServiceError()
+    class NotLogin(val message: String) : RedeemServiceError()
 }

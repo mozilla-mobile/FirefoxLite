@@ -342,6 +342,11 @@
             android:taskAffinity=".content.travel" />
 
         <activity
+            android:name="org.mozilla.rocket.fxa.ProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name="org.mozilla.rocket.debugging.DebugActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
