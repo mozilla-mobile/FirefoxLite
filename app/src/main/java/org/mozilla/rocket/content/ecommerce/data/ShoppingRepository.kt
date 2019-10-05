@@ -1,14 +1,15 @@
 package org.mozilla.rocket.content.ecommerce.data
 
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ApiEntity
 
 class ShoppingRepository(private val shoppingDataSource: ShoppingDataSource) {
 
-    suspend fun getDeals(): Result<DealEntity> {
+    suspend fun getDeals(): Result<ApiEntity> {
         return shoppingDataSource.getDeals()
     }
 
-    suspend fun getCoupons(): Result<DealEntity> {
+    suspend fun getCoupons(): Result<ApiEntity> {
         return shoppingDataSource.getCoupons()
     }
 
