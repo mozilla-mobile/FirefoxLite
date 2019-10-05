@@ -5,14 +5,14 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 sealed class MissionUiModel : DelegateAdapter.UiModel() {
     data class UnjoinedMission(
         val title: String,
-        val expirationText: String,
+        val expirationTime: String,
         val imageUrl: String,
         val showRedDot: Boolean
     ) : MissionUiModel()
 
     data class JoinedMission(
         val title: String,
-        val expirationText: String,
+        val expirationTime: String,
         val imageUrl: String,
         val progress: Int
     ) : MissionUiModel()
@@ -28,6 +28,6 @@ sealed class MissionUiModel : DelegateAdapter.UiModel() {
 
     data class ExpiredMission(
         val title: String,
-        val expirationText: String
+        val expirationTime: String
     ) : MissionUiModel()
 }

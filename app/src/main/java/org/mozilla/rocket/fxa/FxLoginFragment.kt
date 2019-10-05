@@ -24,10 +24,10 @@ import org.mozilla.focus.BuildConfig.FXA_CLIENT_ID
 import org.mozilla.focus.R
 import java.net.URL
 
-class FxLoginFragment : Fragment() {
+open class FxLoginFragment : Fragment() {
 
     private val safeArgs: FxLoginFragmentArgs by navArgs()
-    private val prevUid by lazy { safeArgs.prevUid }
+    private val uid by lazy { safeArgs.uid }
     private var mWebView: WebView? = null
     private var listener: OnLoginCompleteListener? = null
 
@@ -47,11 +47,14 @@ class FxLoginFragment : Fragment() {
                     progress.visibility = View.VISIBLE
                     val map = getQueryMap(URL(url).query)
 
-                    if (map.size > 1) {
-                        listener?.onLoginComplete(
+                    if (map.size > 1 && map["login_success"]?.toBoolean() == true) {
+                        listener?.onLoginSuccess(
                             map["jwt"] ?: error("missing required field`jwt`"),
-                            this@FxLoginFragment
+                            map["disabled"]?.toBoolean() ?: error("missing required field`disabled`"),
+                            map["times"]?.toInt() ?: error("missing required field`times`")
                         )
+                    } else {
+                        listener?.onLoginFailure()
                     }
                 }
 
@@ -68,7 +71,7 @@ class FxLoginFragment : Fragment() {
                 return false
             }
         }
-        webView.loadUrl(getFxaAuthorizationEndpoint(prevUid))
+        webView.loadUrl(getFxaAuthorizationEndpoint(uid))
 
         mWebView = webView
 
@@ -101,7 +104,8 @@ class FxLoginFragment : Fragment() {
     }
 
     interface OnLoginCompleteListener {
-        fun onLoginComplete(jwt: String, fragmentFx: FxLoginFragment)
+        fun onLoginSuccess(jwt: String, isDisabled: Boolean, times: Int)
+        fun onLoginFailure()
     }
 
     fun getQueryMap(query: String): Map<String, String> {

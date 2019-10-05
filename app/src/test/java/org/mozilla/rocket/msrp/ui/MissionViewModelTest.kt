@@ -14,7 +14,7 @@ import org.mockito.Mockito.mock
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.data.TestData
 import org.mozilla.rocket.msrp.data.UserRepository
-import org.mozilla.rocket.msrp.domain.LoadMissionsUseCase
+import org.mozilla.rocket.msrp.domain.GetRedeemMissionsUseCase
 import org.mozilla.rocket.msrp.domain.RedeemUseCase
 import java.util.concurrent.Executors
 
@@ -46,9 +46,9 @@ class MissionViewModelTest {
         mainThreadSurrogate.close()
     }
 
-    private fun createLoadMissionsUseCase(): LoadMissionsUseCase {
+    private fun createLoadMissionsUseCase(): GetRedeemMissionsUseCase {
 
-        return LoadMissionsUseCase(missionRepository, userRepository)
+        return GetRedeemMissionsUseCase(missionRepository)
     }
 
     @Ignore

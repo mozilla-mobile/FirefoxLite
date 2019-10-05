@@ -11,8 +11,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.view.isVisible
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -31,10 +31,10 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
-import kotlinx.android.synthetic.main.fragment_home.mission_button
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
 import kotlinx.android.synthetic.main.fragment_home.private_mode_button
 import kotlinx.android.synthetic.main.fragment_home.profile_button
+import kotlinx.android.synthetic.main.fragment_home.reward_button
 import kotlinx.android.synthetic.main.fragment_home.search_panel
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
@@ -53,6 +53,8 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
+import org.mozilla.rocket.extension.showToast
+import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification
 import org.mozilla.rocket.home.topsites.ui.Site
@@ -63,9 +65,11 @@ import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DEFAULT
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DOWNLOADING
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_UNREAD
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_WARNING
+import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.ui.RewardActivity
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
+import org.mozilla.rocket.util.ToastMessage
 import javax.inject.Inject
 
 class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
@@ -91,6 +95,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             homeViewModel.onTopSitesPagePositionChanged(position)
         }
     }
+    private val toastObserver = Observer<ToastMessage> {
+        context?.run { showToast(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -115,6 +122,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initLogoManNotification()
         observeNightMode()
         initOnboardingSpotlight()
+
+        observeActions()
     }
 
     private fun initSearchToolBar() {
@@ -243,7 +252,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 }
                 content_hub.setItems(it)
             })
-            navigateToContentPage.observe(this@HomeFragment, Observer {
+            openContentPage.observe(this@HomeFragment, Observer {
                 val context = requireContext()
                 when (it) {
                     is ContentHub.Item.Travel -> startActivity(TravelActivity.getStartIntent(context))
@@ -259,19 +268,14 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.isAccountLayerVisible.observe(this, Observer {
             account_layout.isVisible = it
         })
-        homeViewModel.hasPendingMissions.observe(this, Observer {
-            mission_button.isActivated = it
+        homeViewModel.hasUnreadMissions.observe(this, Observer {
+            reward_button.isActivated = it
         })
-        mission_button.setOnClickListener { showRewardPage() }
-        profile_button.setOnClickListener { showProfilePage() }
-    }
-
-    private fun showRewardPage() {
-        startActivity(RewardActivity.getStartIntent(requireContext()))
-    }
-
-    private fun showProfilePage() {
-        // TODO: Evan
+        homeViewModel.isFxAccount.observe(this, Observer {
+            profile_button.isActivated = it
+        })
+        reward_button.setOnClickListener { homeViewModel.onRewardButtonClicked() }
+        profile_button.setOnClickListener { homeViewModel.onProfileButtonClicked() }
     }
 
     private fun observeNightMode() {
@@ -309,6 +313,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         super.onDestroyView()
         themeManager.unsubscribeThemeChange(home_background)
         main_list.unregisterOnPageChangeCallback(topSitesPageChangeCallback)
+        homeViewModel.showToast.removeObserver(toastObserver)
     }
 
     override fun getFragment(): Fragment = this
@@ -393,7 +398,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         activity?.let {
             content_hub.post {
                 setOnboardingStatusBarColor()
-                contentServiceSpotlightDialog = DialogUtils.showContentServiceSpotlight(it, content_hub, {
+                contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, {
                 }) {
                     closeContentServiceSpotlight()
                     showShoppingSearchSpotlight()
@@ -414,6 +419,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 setOnboardingStatusBarColor()
                 shoppingSearchSpotlightDialog = DialogUtils.showShoppingSearchSpotlight(it, shopping_button, {
                     restoreStatusBarColor()
+                    shopping_button.isVisible = currentShoppingBtnVisibleState
+                    private_mode_button.isVisible = !currentShoppingBtnVisibleState
                 }) {
                     closeShoppingSearchSpotlight()
                 }
@@ -429,8 +436,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun restoreStatusBarColor() {
         activity?.window?.statusBarColor = Color.TRANSPARENT
-        shopping_button.isVisible = currentShoppingBtnVisibleState
-        private_mode_button.isVisible = !currentShoppingBtnVisibleState
     }
 
     private fun setOnboardingStatusBarColor() {
@@ -446,5 +451,56 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             private_mode_button.isVisible = false
             showContentServiceSpotlight()
         })
+    }
+
+    private fun observeActions() {
+        homeViewModel.showToast.observeForever(toastObserver)
+        homeViewModel.openRewardPage.observe(this, Observer {
+            openRewardPage()
+        })
+        homeViewModel.openProfilePage.observe(this, Observer {
+            openProfilePage()
+        })
+        homeViewModel.showMissionCompleteDialog.observe(this, Observer { mission ->
+            showMissionCompleteDialog(mission)
+        })
+        homeViewModel.openMissionRedeemPage.observe(this, Observer { mission ->
+            openMissionRedeemPage(mission)
+        })
+        homeViewModel.showContentHubClickOnboarding.observe(this, Observer {
+            showRequestClickContentHubOnboarding()
+        })
+    }
+
+    private fun showMissionCompleteDialog(mission: Mission) {
+        DialogUtils.createMissionCompleteDialog(requireContext())
+                .onPositive {
+                    homeViewModel.onRedeemCompletedMissionButtonClicked(mission)
+                }
+                .show()
+    }
+
+    private fun showRequestClickContentHubOnboarding() {
+        activity?.let {
+            content_hub.post {
+                setOnboardingStatusBarColor()
+                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub) {
+                    restoreStatusBarColor()
+                    homeViewModel.onContentHubRequestClickHintDismissed()
+                }
+            }
+        }
+    }
+
+    private fun openRewardPage() {
+        startActivity(RewardActivity.getStartIntent(requireContext()))
+    }
+
+    private fun openProfilePage() {
+        startActivity(ProfileActivity.getStartIntent(requireContext()))
+    }
+
+    private fun openMissionRedeemPage(mission: Mission) {
+        startActivity(RewardActivity.getStartIntent(requireContext(), RewardActivity.DeepLink.MissionDetailPage(mission)))
     }
 }

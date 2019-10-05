@@ -4,16 +4,26 @@ import android.view.View
 import kotlinx.android.synthetic.main.item_redeemable_mission.title
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.msrp.ui.MissionViewModel
 
-class RedeemableMissionAdapterDelegate : AdapterDelegate {
+class RedeemableMissionAdapterDelegate(
+    private val missionViewModel: MissionViewModel
+) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            RedeemableMissionsViewHolder(view)
+            RedeemableMissionsViewHolder(missionViewModel, view)
 }
 
-class RedeemableMissionsViewHolder(override val containerView: View) : DelegateAdapter.ViewHolder(containerView) {
+class RedeemableMissionsViewHolder(
+    private val missionViewModel: MissionViewModel,
+    override val containerView: View
+) : DelegateAdapter.ViewHolder(containerView) {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         uiModel as MissionUiModel.RedeemableMission
 
         title.text = uiModel.title
+
+        itemView.setOnClickListener {
+            missionViewModel.onRedeemItemClicked(adapterPosition)
+        }
     }
 }

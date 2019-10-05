@@ -1,4 +1,4 @@
-package org.mozilla.rocket.home.msrp.domain
+package org.mozilla.rocket.msrp.domain
 
 import org.mozilla.rocket.msrp.data.MissionRepository
 

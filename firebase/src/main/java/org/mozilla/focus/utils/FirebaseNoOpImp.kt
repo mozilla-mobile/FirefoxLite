@@ -71,7 +71,6 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun signInWithCustomToken(
         jwt: String,
-        activity: Activity,
         onSuccess: (String?, String?) -> Unit,
         onFail: (error: String) -> Unit
     ) {
@@ -82,6 +81,8 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun getUserToken(func: (String?) -> Unit) {
     }
+
+    override fun isAnonymous(): Boolean? = null
 
     override fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit) {
     }

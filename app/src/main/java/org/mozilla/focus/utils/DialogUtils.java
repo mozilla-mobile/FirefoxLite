@@ -11,19 +11,20 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.FragmentActivity;
-
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
@@ -149,6 +150,43 @@ public class DialogUtils {
         } else if (context instanceof SettingsActivity) {
             TelemetryWrapper.promoteShareClickEvent(value, TelemetryWrapper.Extra_Value.SETTING);
         }
+    }
+
+    public static void showLoginMultipleTimesWarningDialog(Context context) {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.msrp_disqualification_title_1)
+                .setMessage(R.string.msrp_disqualification_body_1)
+                .setPositiveButton(R.string.msrp_disqualification_button_1, (dialog1, which) -> {
+                })
+                .setCancelable(false)
+                .create();
+        dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.palettePeach100));
+    }
+
+    public static void showLoginMultipleTimesFinalWarningDialog(Context context) {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.msrp_disqualification_title_2)
+                .setMessage(R.string.msrp_disqualification_body_1)
+                .setPositiveButton(R.string.msrp_disqualification_button_1, (dialog1, which) -> {
+                })
+                .setCancelable(false)
+                .create();
+        dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.palettePeach100));
+    }
+
+    public static void showAccountDisabledDialog(Context context, DialogInterface.OnDismissListener dismissListener) {
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.msrp_disqualification_title_3)
+                .setMessage(R.string.msrp_disqualification_body_3)
+                .setPositiveButton(R.string.msrp_disqualification_button_3, (dialog1, which) -> {
+                })
+                .setCancelable(false)
+                .setOnDismissListener(dismissListener)
+                .create();
+        dialog.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.palettePeach100));
     }
 
     public static void showRateAppNotification(Context context) {
@@ -284,7 +322,7 @@ public class DialogUtils {
 
     }
 
-    public static Dialog showContentServiceSpotlight(
+    public static Dialog showContentServiceOnboardingSpotlight(
             @NonNull final FragmentActivity activity,
             @NonNull final View targetView,
             @NonNull final DialogInterface.OnDismissListener dismissListener,
@@ -297,13 +335,32 @@ public class DialogUtils {
         Dialog dialog = createContentServiceSpotlightDialog(activity, targetView, container,
                 activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
                 activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_height),
-                activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_width));
+                activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_width),
+                false);
 
         dialog.setOnDismissListener(dismissListener);
         dialog.show();
 
         return dialog;
+    }
 
+    public static Dialog showContentServiceRequestClickSpotlight(
+            @NonNull final FragmentActivity activity,
+            @NonNull final View targetView,
+            @NonNull final DialogInterface.OnDismissListener dismissListener) {
+
+        final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_content_services_request_click, null);
+
+        Dialog dialog = createContentServiceSpotlightDialog(activity, targetView, container,
+                activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
+                activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_height),
+                activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_width),
+                true);
+
+        dialog.setOnDismissListener(dismissListener);
+        dialog.show();
+
+        return dialog;
     }
 
     @CheckResult
@@ -350,7 +407,8 @@ public class DialogUtils {
             final @NonNull ViewGroup container,
             final @NonNull Integer radius,
             final @NonNull Integer height,
-            final @NonNull Integer width) {
+            final @NonNull Integer width,
+            final @NonNull Boolean cancelOnTouchOutside) {
         return createSpotlightDialog(
                 activity,
                 targetView,
@@ -361,10 +419,9 @@ public class DialogUtils {
                 width,
                 FocusViewType.ROUND_REC,
                 ContextCompat.getColor(activity, R.color.paletteBlack50),
-                false
+                cancelOnTouchOutside
         );
     }
-
 
     @CheckResult
     private static Dialog createSpotlightDialog(
@@ -432,22 +489,8 @@ public class DialogUtils {
         data.setNegativeText(context.getString(R.string.msrp_completed_popup_button2));
         data.setShowCloseButton(true);
 
-        PromotionDialog dialog = new PromotionDialog(context, data)
-                .onPositive(() -> {
-                    return null;
-                })
-                .onClose(() -> {
-                    return null;
-                })
-                .onCancel(() -> {
-                    return null;
-                })
-                .addOnShowListener(() -> {
-                    return null;
-                })
-                .setCancellable(true);
-
-        return dialog;
+        return new PromotionDialog(context, data)
+                .setCancellable(false);
     }
 
     private static View getFocusView(Context context, int centerX, int centerY, int offsetY, int radius, int height, int width, FocusViewType type, int backgroundDimColor) {

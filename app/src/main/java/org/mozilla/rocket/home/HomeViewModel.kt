@@ -1,5 +1,6 @@
 package org.mozilla.rocket.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +14,7 @@ import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
-import org.mozilla.rocket.home.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
 import org.mozilla.rocket.home.onboarding.CheckFirstRunUseCase
 import org.mozilla.rocket.home.onboarding.CheckLiteUpdate
 import org.mozilla.rocket.home.onboarding.CompleteFirstRunUseCase
@@ -24,6 +25,15 @@ import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
+import org.mozilla.rocket.msrp.data.Mission
+import org.mozilla.rocket.msrp.data.MissionProgress
+import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
+import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
+import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
+import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
+import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
+import org.mozilla.rocket.util.ToastMessage
 
 class HomeViewModel(
     private val settings: Settings,
@@ -39,17 +49,24 @@ class HomeViewModel(
     checkFirstRunUseCase: CheckFirstRunUseCase,
     completeFirstRunUseCase: CompleteFirstRunUseCase,
     checkLiteUpdate: CheckLiteUpdate,
-    completeLiteUpdate: CompleteLiteUpdate
+    completeLiteUpdate: CompleteLiteUpdate,
+    private val checkInMissionUseCase: CheckInMissionUseCase,
+    private val completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
+    getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
+    refreshMissionsUseCase: RefreshMissionsUseCase,
+    hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
+    getIsFxAccountUseCase: GetIsFxAccountUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
     val topSitesPageIndex = MutableLiveData<Int>()
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
     val contentHubItems = MutableLiveData<List<ContentHub.Item>>().apply { value = getContentHubItemsUseCase() }
-    val hasPendingMissions = MutableLiveData<Boolean>()
     val logoManNotification = MutableLiveData<StateNotification?>()
     val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
+    val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
+    val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -57,10 +74,21 @@ class HomeViewModel(
     val openPrivateMode = SingleLiveEvent<Unit>()
     val openBrowser = SingleLiveEvent<Site>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
-    val navigateToContentPage = SingleLiveEvent<ContentHub.Item>()
-    val showOnboardingSpotlight = SingleLiveEvent<Unit> ()
+    val openContentPage = SingleLiveEvent<ContentHub.Item>()
+    val showOnboardingSpotlight = SingleLiveEvent<Unit>()
+    val showToast = SingleLiveEvent<ToastMessage>()
+    val openRewardPage = SingleLiveEvent<Unit>()
+    val openProfilePage = SingleLiveEvent<Unit>()
+    val showMissionCompleteDialog = SingleLiveEvent<Mission>()
+    val openMissionRedeemPage = SingleLiveEvent<Mission>()
+    val showContentHubClickOnboarding = getContentHubClickOnboardingEventUseCase()
 
     init {
+        viewModelScope.launch {
+            if (isMsrpAvailableUseCase()) {
+                refreshMissionsUseCase()
+            }
+        }
         getLogoManNotificationUseCase()?.let { notification ->
             logoManNotification.value = StateNotification(notification, true)
         }
@@ -140,9 +168,29 @@ class HomeViewModel(
         TelemetryWrapper.removeTopSite(site.isDefault)
     }
 
-    fun onContentHubItemClicked(item: ContentHub.Item) {
-        navigateToContentPage.value = item
+    fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
+        openContentPage.value = item
         TelemetryWrapper.clickContentHub(item)
+        val checkInResult = checkInMissionUseCase(
+            when (item) {
+                is ContentHub.Item.Travel -> CheckInMissionUseCase.PingType.Travel()
+                is ContentHub.Item.Shopping -> CheckInMissionUseCase.PingType.Shopping()
+                is ContentHub.Item.News -> CheckInMissionUseCase.PingType.Lifestyle()
+                is ContentHub.Item.Games -> CheckInMissionUseCase.PingType.Game()
+            }
+        )
+        checkInResult.data?.let { (mission, hasMissionCompleted) ->
+            val message = when (val progress = mission.missionProgress) {
+                is MissionProgress.TypeDaily -> progress.message
+                null -> error("Unknown MissionProgress type")
+            }
+            if (message.isNotEmpty()) {
+                showToast.value = ToastMessage(message)
+            }
+            if (hasMissionCompleted) {
+                showMissionCompleteDialog.value = mission
+            }
+        }
     }
 
     fun onLogoManShown() {
@@ -155,6 +203,22 @@ class HomeViewModel(
             dismissLogoManNotificationUseCase(it.notification)
         }
         logoManNotification.value = null
+    }
+
+    fun onRewardButtonClicked() {
+        openRewardPage.call()
+    }
+
+    fun onProfileButtonClicked() {
+        openProfilePage.call()
+    }
+
+    fun onRedeemCompletedMissionButtonClicked(mission: Mission) {
+        openMissionRedeemPage.value = mission
+    }
+
+    fun onContentHubRequestClickHintDismissed() {
+        completeJoinMissionOnboardingUseCase()
     }
 
     data class ShowTopSiteMenuData(

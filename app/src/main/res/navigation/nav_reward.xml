@@ -15,7 +15,7 @@
             app:destination="@+id/mission_detail_dest" />
         <action
             android:id="@+id/action_reward_dest_to_redeem_dest"
-            app:destination="@id/redeem_dest" />
+            app:destination="@id/mission_coupon_dest" />
     </fragment>
 
     <fragment
@@ -23,12 +23,26 @@
         android:name="org.mozilla.rocket.msrp.ui.MissionDetailFragment"
         android:label="MissionDetail"
         tools:layout="@layout/fragment_mission_detail">
+        <argument
+            android:name="mission"
+            app:argType="org.mozilla.rocket.msrp.data.Mission" />
         <action
             android:id="@+id/action_mission_detail_dest_to_fx_login_dest"
             app:destination="@id/fx_login_dest" />
         <action
-            android:id="@+id/action_mission_detail_dest_to_reward_dest"
-            app:destination="@id/reward_dest" />
+            android:id="@+id/action_mission_detail_dest_to_mission_coupon_dest"
+            app:destination="@id/mission_coupon_dest"
+            app:popUpTo="@id/reward_dest"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/mission_coupon_dest"
+        android:name="org.mozilla.rocket.msrp.ui.MissionCouponFragment"
+        android:label="MissionCoupon"
+        tools:layout="@layout/fragment_mission_coupon">
+        <argument
+            android:name="mission"
+            app:argType="org.mozilla.rocket.msrp.data.Mission" />
     </fragment>
 
     <fragment
@@ -36,18 +50,9 @@
         android:name="org.mozilla.rocket.fxa.FxLoginFragment"
         android:label="FxLogin"
         tools:layout="@layout/fragment_fx_login">
-        <action
-            android:id="@+id/action_fx_login_dest_to_redeem_dest"
-            app:destination="@id/redeem_dest" />
         <argument
-            android:name="prevUid"
+            android:name="uid"
             app:argType="string" />
     </fragment>
-
-    <fragment
-        android:id="@+id/redeem_dest"
-        android:name="org.mozilla.rocket.msrp.ui.RedeemFragment"
-        android:label="Redeem"
-        tools:layout="@layout/fragment_redeem" />
 
 </navigation>

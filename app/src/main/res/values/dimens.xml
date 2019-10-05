@@ -111,7 +111,6 @@
     <dimen name="content_services_offset">14dp</dimen>
 
     <!--  MissionDetailFragment  -->
-    <item name="msrp_mission_detail_horizontal_width" type="dimen">296dp</item>
     <item name="msrp_mission_detail_button_height" type="dimen">40dp</item>
     <item name="msrp_mission_detail_button_text_size" type="dimen">14sp</item>
     <item name="msrp_mission_detail_day_width" type="dimen">50dp</item>

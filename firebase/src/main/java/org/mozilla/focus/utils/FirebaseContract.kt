@@ -37,7 +37,6 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun signInWithCustomToken(
         jwt: String,
-        activity: Activity,
         onSuccess: (String?, String?) -> Unit,
         onFail: (error: String) -> Unit
     )
@@ -61,6 +60,8 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
     }
 
     abstract fun getUserToken(func: (String?) -> Unit)
+
+    abstract fun isAnonymous(): Boolean?
 
     abstract fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit)
 }

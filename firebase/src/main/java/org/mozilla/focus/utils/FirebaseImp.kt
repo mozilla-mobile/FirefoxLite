@@ -123,11 +123,10 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
 
     override fun signInWithCustomToken(
         jwt: String,
-        activity: Activity,
         onSuccess: (String?, String?) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        firebaseAuth.signInWithCustomToken(jwt).addOnCompleteListener(activity) { task ->
+        firebaseAuth.signInWithCustomToken(jwt).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(TAG, "=====signInWithCustomToken success=====")
                 fetchClaim(onSuccess)
@@ -168,6 +167,8 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
             func(token)
         } ?: func(null)
     }
+
+    override fun isAnonymous(): Boolean? = firebaseAuth.currentUser?.isAnonymous
 
     private fun fetchClaim(onClaimFetched: (String?, String?) -> Unit) {
         Log.d(TAG, "current====${firebaseAuth.currentUser?.uid}")

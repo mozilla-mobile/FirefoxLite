@@ -263,7 +263,7 @@ class MainActivity : BaseActivity(),
     private fun observeChromeAction() {
         chromeViewModel.run {
             showToast.nonNullObserve(this@MainActivity) { message ->
-                Toast.makeText(this@MainActivity, getString(message.stringResId, *message.args), message.duration).show()
+                Toast.makeText(this@MainActivity, getString(message.stringResId!!, *message.args), message.duration).show()
             }
             openUrl.nonNullObserve(this@MainActivity) { action ->
                 screenNavigator.showBrowserScreen(action.url, action.withNewTab, action.isFromExternal)
