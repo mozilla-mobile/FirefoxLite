@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/paletteWhite100"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="org.mozilla.rocket.content.games.ui.GameActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,8 +19,8 @@
             android:layout_width="?android:attr/actionBarSize"
             android:layout_height="?android:attr/actionBarSize"
             android:layout_gravity="end"
-            android:src="@drawable/action_refresh"
-            android:background="?android:attr/selectableItemBackgroundBorderless" />
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/action_refresh" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -29,12 +30,12 @@
         android:layout_height="@dimen/common_margin_m7"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:tabSelectedTextColor="@color/paletteDarkGreyC100"
-        app:tabTextColor="@color/paletteDarkGreyC30"
         app:tabIndicatorColor="@color/paletteDarkGreyC100"
         app:tabIndicatorFullWidth="false"
-        app:tabUnboundedRipple="true"
-        app:tabTextAppearance="@style/GameTabText" />
+        app:tabSelectedTextColor="@color/paletteDarkGreyC100"
+        app:tabTextAppearance="@style/GameTabText"
+        app:tabTextColor="@color/paletteDarkGreyC30"
+        app:tabUnboundedRipple="true" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -44,7 +45,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <FrameLayout
         android:id="@+id/snack_bar_container"

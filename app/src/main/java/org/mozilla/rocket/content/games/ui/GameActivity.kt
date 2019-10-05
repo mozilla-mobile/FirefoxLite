@@ -7,14 +7,14 @@ import android.content.IntentFilter
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import kotlinx.android.synthetic.main.activity_games.*
+import kotlinx.android.synthetic.main.activity_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.games.ui.adapter.GameTabsAdapter
 
-class GamesActivity : FragmentActivity() {
+class GameActivity : FragmentActivity() {
 
     private lateinit var adapter: GameTabsAdapter
     private lateinit var uiMessageReceiver: BroadcastReceiver
@@ -22,7 +22,7 @@ class GamesActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_games)
+        setContentView(R.layout.activity_game)
         initViewPager()
         initTabLayout()
         initToolBar()
@@ -33,7 +33,7 @@ class GamesActivity : FragmentActivity() {
     private fun initViewPager() {
         adapter = GameTabsAdapter(supportFragmentManager, this)
         view_pager.apply {
-            adapter = this@GamesActivity.adapter
+            adapter = this@GameActivity.adapter
         }
     }
 
@@ -64,7 +64,7 @@ class GamesActivity : FragmentActivity() {
         uiMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
-                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snack_bar_container, this@GamesActivity.javaClass.name)
+                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snack_bar_container, this@GameActivity.javaClass.name)
                 }
             }
         }
@@ -72,6 +72,6 @@ class GamesActivity : FragmentActivity() {
 
     companion object {
         fun getStartIntent(context: Context) =
-            Intent(context, GamesActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+            Intent(context, GameActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     }
 }

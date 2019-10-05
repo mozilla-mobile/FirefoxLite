@@ -48,7 +48,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
-import org.mozilla.rocket.content.games.ui.GamesActivity
+import org.mozilla.rocket.content.games.ui.GameActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity
@@ -258,7 +258,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     is ContentHub.Item.Travel -> startActivity(TravelActivity.getStartIntent(context))
                     is ContentHub.Item.Shopping -> startActivity(ShoppingActivity.getStartIntent(context))
                     is ContentHub.Item.News -> startActivity(NewsActivity.getStartIntent(context))
-                    is ContentHub.Item.Games -> startActivity(GamesActivity.getStartIntent(context))
+                    is ContentHub.Item.Games -> startActivity(GameActivity.getStartIntent(context))
                 }
             })
         }
