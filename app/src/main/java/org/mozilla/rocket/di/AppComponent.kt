@@ -37,7 +37,8 @@ import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
 import org.mozilla.rocket.content.ecommerce.ui.DealFragment
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
-import org.mozilla.rocket.content.games.ui.BrowserGamesFragment
+import org.mozilla.rocket.content.games.ui.InstantGameFragment
+import org.mozilla.rocket.content.games.ui.DownloadGameFragment
 import org.mozilla.rocket.content.games.ui.GameModeActivity
 import org.mozilla.rocket.content.games.ui.GamesActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
@@ -103,7 +104,8 @@ interface AppComponent {
     fun inject(privateModeActivity: PrivateModeActivity)
     fun inject(gamesActivity: GamesActivity)
     fun inject(gameModeActivity: GameModeActivity)
-    fun inject(browserGamesFragment: BrowserGamesFragment)
+    fun inject(instantGameFragment: InstantGameFragment)
+    fun inject(downloadGameFragment: DownloadGameFragment)
     fun inject(contentTabActivity: ContentTabActivity)
     fun inject(contentTabFragment: ContentTabFragment)
     fun inject(shoppingSearchKeywordInputFragment: ShoppingSearchKeywordInputFragment)
