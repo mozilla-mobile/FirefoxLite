@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.annotation.VisibleForTesting
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
+import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.Task
 
 enum class DeepLinkType {
@@ -14,6 +15,15 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: Uri) {
             addTask(StartGameActivityTask())
+        }
+    },
+
+    NEWS_HOME {
+        override fun match(uri: Uri) =
+            isContentLink(uri) && DeepLinkConstants.PATH_NEWS == uri.path && uri.query.isNullOrEmpty()
+
+        override fun addTasks(uri: Uri) {
+            addTask(StartNewsActivityTask())
         }
     },
 
