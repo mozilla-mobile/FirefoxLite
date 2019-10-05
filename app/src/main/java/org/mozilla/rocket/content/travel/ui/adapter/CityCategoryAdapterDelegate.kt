@@ -8,18 +8,20 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.StartSnapHelper
 import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
+import org.mozilla.rocket.content.travel.ui.TravelExploreViewModel
 
-class CityCategoryAdapterDelegate() : AdapterDelegate {
+class CityCategoryAdapterDelegate(private val travelExploreViewModel: TravelExploreViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        CityCategoryViewHolder(view)
+        CityCategoryViewHolder(view, travelExploreViewModel)
 }
 
 class CityCategoryViewHolder(
-    override val containerView: View
+    override val containerView: View,
+    private val travelExploreViewModel: TravelExploreViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(CityItem::class, R.layout.item_city, CityAdapterDelegate())
+            add(CityUiModel::class, R.layout.item_city, CityAdapterDelegate(travelExploreViewModel))
         }
     )
 
@@ -27,19 +29,19 @@ class CityCategoryViewHolder(
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
         city_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth))
         city_list.adapter = this@CityCategoryViewHolder.adapter
-        //kinse check what is this
         val snapHelper = StartSnapHelper()
         snapHelper.attachToRecyclerView(city_list)
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        val cityCategory = uiModel as CityCategory
-        category_title.text = cityCategory.categoryName
-        adapter.setData(cityCategory.items)
+        val cityCategory = uiModel as CityCategoryUiModel
+        category_title.text = cityCategory.title
+        adapter.setData(cityCategory.cityList)
     }
 }
 
-data class CityCategory(
-    val categoryName: String,
-    val items: List<CityItem>
+data class CityCategoryUiModel(
+        val id: Int,
+        val title: String,
+        val cityList: List<CityUiModel>
 ) : DelegateAdapter.UiModel()

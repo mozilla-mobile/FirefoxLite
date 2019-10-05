@@ -22,7 +22,7 @@
         android:textStyle="bold"
         android:textColor="@color/travelSearchHeaderTextColor87"
         android:letterSpacing="0.01"
-        tools:text="Which city would you like to visit?"/>
+        android:text="@string/travel_vertical_search_title"/>
 
     <LinearLayout
         android:id="@+id/city_search_edit_area"
@@ -53,7 +53,7 @@
             android:textSize="16sp"
             android:fontFamily="sans-serif"
             android:textColor="@color/paletteLightBlack30"
-            tools:text="Try “Bali”"/>
+            android:text="@string/travel_vertical_search_hint"/>
 
     </LinearLayout>
     
