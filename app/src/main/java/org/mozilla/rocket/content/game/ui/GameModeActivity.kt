@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui
+package org.mozilla.rocket.content.game.ui
 
 import android.content.Context
 import android.content.Intent

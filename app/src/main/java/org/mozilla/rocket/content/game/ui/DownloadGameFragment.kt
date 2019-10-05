@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui
+package org.mozilla.rocket.content.game.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -22,8 +22,8 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
-import org.mozilla.rocket.content.games.ui.adapter.DownloadGameCategoryAdapterDelegate
-import org.mozilla.rocket.content.games.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.adapter.DownloadGameCategoryAdapterDelegate
+import org.mozilla.rocket.content.game.ui.model.GameCategory
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.tabs.web.Download
 import javax.inject.Inject

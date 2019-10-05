@@ -289,13 +289,13 @@
             android:exported="false" />
 
         <activity
-            android:name="org.mozilla.rocket.content.games.ui.GameActivity"
+            android:name="org.mozilla.rocket.content.game.ui.GameActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:taskAffinity=".content.game" />
 
         <activity
-            android:name="org.mozilla.rocket.content.games.ui.GameModeActivity"
+            android:name="org.mozilla.rocket.content.game.ui.GameModeActivity"
             android:exported="false"
             android:theme="@style/GameModeTheme" />
 

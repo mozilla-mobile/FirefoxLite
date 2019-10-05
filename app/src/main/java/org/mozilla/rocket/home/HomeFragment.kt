@@ -48,7 +48,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
-import org.mozilla.rocket.content.games.ui.GameActivity
+import org.mozilla.rocket.content.game.ui.GameActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity

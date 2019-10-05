@@ -1,12 +1,12 @@
-package org.mozilla.rocket.content.games.ui
+package org.mozilla.rocket.content.game.ui
 
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.content.common.data.ApiItem
-import org.mozilla.rocket.content.games.ui.model.Game
-import org.mozilla.rocket.content.games.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.model.Game
+import org.mozilla.rocket.content.game.ui.model.GameCategory
 
 object GameDataMapper {
 

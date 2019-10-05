@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui.adapter
+package org.mozilla.rocket.content.game.ui.adapter
 
 import android.view.ContextMenu
 import android.view.View
@@ -7,17 +7,17 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.games.ui.InstantGameViewModel
-import org.mozilla.rocket.content.games.ui.model.Game
+import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
+import org.mozilla.rocket.content.game.ui.model.Game
 
-class InstantGameAdapterDelegate(private val instantGameViewModel: InstantGameViewModel) : AdapterDelegate {
+class DownloadGameAdapterDelegate(private val downloadGameViewModel: DownloadGameViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        InstantGameViewHolder(view, instantGameViewModel)
+        GameViewHolder(view, downloadGameViewModel)
 }
 
-class InstantGameViewHolder(
+class GameViewHolder(
     override val containerView: View,
-    private val instantGameViewModel: InstantGameViewModel
+    private val downloadGameViewModel: DownloadGameViewModel
 ) : DelegateAdapter.ViewHolder(containerView), View.OnCreateContextMenuListener {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val gameItem = uiModel as Game
@@ -28,20 +28,20 @@ class InstantGameViewHolder(
             .load(gameItem.imageUrl)
             .into(game_image)
 
-        itemView.setOnClickListener { instantGameViewModel.onGameItemClicked(gameItem) }
-        itemView.setOnLongClickListener { instantGameViewModel.onGameItemLongClicked(gameItem) }
+        itemView.setOnClickListener { downloadGameViewModel.onGameItemClicked(gameItem) }
+        itemView.setOnLongClickListener { downloadGameViewModel.onGameItemLongClicked(gameItem) }
         itemView.setOnCreateContextMenuListener(this)
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         menu?.setHeaderTitle(game_name.text)
 //        val intent = Intent()
-//        intent.putExtra("gameType", instantGameViewModel.selectedGame.type)
-//        if (gamesViewModel.canShare())
+//        intent.putExtra("gameType", downloadGameViewModel.selectedGame.type)
+//        if (downloadGameViewModel.canShare())
 //            menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)
-//        if (gamesViewModel.canCreateShortCut())
+//        if (downloadGameViewModel.canCreateShortCut())
 //            menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)
-//        if (gamesViewModel.canRemoveFromList())
+//        if (downloadGameViewModel.canRemoveFromList())
 //            menu?.add(0, R.id.remove, 0, R.string.gaming_vertical_menu_option_3)
     }
 }

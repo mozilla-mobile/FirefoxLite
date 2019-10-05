@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui
+package org.mozilla.rocket.content.game.ui
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -25,8 +25,8 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
-import org.mozilla.rocket.content.games.ui.adapter.InstantGameCategoryAdapterDelegate
-import org.mozilla.rocket.content.games.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.adapter.InstantGameCategoryAdapterDelegate
+import org.mozilla.rocket.content.game.ui.model.GameCategory
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 

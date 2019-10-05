@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.data
+package org.mozilla.rocket.content.game.data
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
