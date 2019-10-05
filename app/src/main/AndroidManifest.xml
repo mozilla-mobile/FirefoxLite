@@ -289,7 +289,7 @@
             android:exported="false" />
 
         <activity
-            android:name="org.mozilla.rocket.content.games.ui.GamesActivity"
+            android:name="org.mozilla.rocket.content.games.ui.GameActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:taskAffinity=".content.game" />
