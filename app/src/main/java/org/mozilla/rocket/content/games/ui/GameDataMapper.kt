@@ -5,8 +5,8 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.content.common.data.ApiItem
-import org.mozilla.rocket.content.games.ui.adapter.Game
-import org.mozilla.rocket.content.games.ui.adapter.GameCategory
+import org.mozilla.rocket.content.games.ui.model.Game
+import org.mozilla.rocket.content.games.ui.model.GameCategory
 
 object GameDataMapper {
 

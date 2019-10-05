@@ -7,11 +7,12 @@ import org.mozilla.rocket.content.games.data.GameLocalDataSource
 import org.mozilla.rocket.content.games.data.GameRepository
 import org.mozilla.rocket.content.games.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.games.domain.GetInstantGameListUseCase
-import org.mozilla.rocket.content.games.ui.GamesViewModel
+import org.mozilla.rocket.content.games.ui.DownloadGameViewModel
+import org.mozilla.rocket.content.games.ui.InstantGameViewModel
 import javax.inject.Singleton
 
 @Module
-object GamesModule {
+object GameModule {
 
     @JvmStatic
     @Singleton
@@ -39,9 +40,11 @@ object GamesModule {
 
     @JvmStatic
     @Provides
-    fun provideGamesViewModel(
-        getInstantGameListUseCase: GetInstantGameListUseCase,
-        getDownloadGameListUseCase: GetDownloadGameListUseCase
-    ): GamesViewModel =
-        GamesViewModel(getInstantGameListUseCase, getDownloadGameListUseCase)
+    fun provideInstantGameViewModel(getInstantGameListUseCase: GetInstantGameListUseCase): InstantGameViewModel =
+        InstantGameViewModel(getInstantGameListUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideDownloadGameViewModel(getDownloadGameListUseCase: GetDownloadGameListUseCase): DownloadGameViewModel =
+        DownloadGameViewModel(getDownloadGameListUseCase)
 }

@@ -9,16 +9,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.games.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.games.domain.GetInstantGameListUseCase
-import org.mozilla.rocket.content.games.ui.adapter.Game
-import org.mozilla.rocket.content.games.ui.adapter.GameType
+import org.mozilla.rocket.content.games.ui.model.Game
 import org.mozilla.rocket.download.SingleLiveEvent
 
-class GamesViewModel(
-    private val getInstantGameList: GetInstantGameListUseCase,
-    private val getDownloadGameList: GetDownloadGameListUseCase
-) : ViewModel() {
+class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUseCase) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
@@ -35,51 +30,18 @@ class GamesViewModel(
     }
     val instantGameItems: LiveData<List<DelegateAdapter.UiModel>> = _instantGameItems
 
-    private val _downloadGameItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val result = getDownloadGameList()
-                if (result is Result.Success) {
-                    value = GameDataMapper.toGameUiModel(result.data)
-                }
-            }
-        }
-    }
-    val downloadGameItems: LiveData<List<DelegateAdapter.UiModel>> = _downloadGameItems
-
     var event = SingleLiveEvent<GameAction>()
     var createShortcutEvent = SingleLiveEvent<GameShortcut>()
 
     lateinit var selectedGame: Game
 
     fun onGameItemClicked(gameItem: Game) {
-        when (gameItem.type) {
-            GameType.INSTANT -> event.value = GameAction.Play(gameItem.linkUrl)
-            GameType.DOWNLOAD -> event.value = GameAction.Install(gameItem.linkUrl)
-        }
+        event.value = GameAction.Play(gameItem.linkUrl)
     }
 
     fun onGameItemLongClicked(gameItem: Game): Boolean {
         selectedGame = gameItem
         return false
-    }
-
-    fun getLatestInstantGames() {
-        launchDataLoad {
-            val result = getInstantGameList()
-            if (result is Result.Success) {
-                _instantGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
-            }
-        }
-    }
-
-    fun getLatestDownloadGames() {
-        launchDataLoad {
-            val result = getDownloadGameList()
-            if (result is Result.Success) {
-                _downloadGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
-            }
-        }
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
@@ -102,7 +64,6 @@ class GamesViewModel(
 
     sealed class GameAction {
         data class Play(val url: String) : GameAction()
-        data class Install(val url: String) : GameAction()
         data class OpenLink(val url: String) : GameAction()
     }
 
