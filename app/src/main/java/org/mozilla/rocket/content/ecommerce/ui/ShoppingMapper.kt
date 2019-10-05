@@ -3,8 +3,8 @@ package org.mozilla.rocket.content.ecommerce.ui
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
-import org.mozilla.rocket.content.ecommerce.data.DealEntity
-import org.mozilla.rocket.content.ecommerce.data.DealItem
+import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
@@ -13,8 +13,8 @@ object ShoppingMapper {
 
     private const val BANNER = "banner"
 
-    fun toDeals(entity: DealEntity): List<DelegateAdapter.UiModel> {
-        return entity.subcategories.map { subcategory ->
+    fun toDeals(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
+        return apiEntity.subcategories.map { subcategory ->
             if (subcategory.componentType == BANNER) {
                 Runway(
                     subcategory.componentType,
@@ -33,35 +33,35 @@ object ShoppingMapper {
         }
     }
 
-    private fun toRunwayItem(item: DealItem): RunwayItem =
+    private fun toRunwayItem(item: ApiItem): RunwayItem =
         RunwayItem(
-            item.source,
-            item.imageUrl,
-            item.linkUrl,
+            item.sourceName,
+            item.image,
+            item.destination,
             item.title,
             item.componentId
         )
 
-    private fun toProductItem(item: DealItem): ProductItem =
+    private fun toProductItem(item: ApiItem): ProductItem =
         ProductItem(
-            item.source,
-            item.imageUrl,
-            item.linkUrl,
+            item.sourceName,
+            item.image,
+            item.destination,
             item.title,
             item.componentId,
             item.price,
             item.discount,
-            item.rating,
-            item.reviews
+            item.score,
+            item.scoreReviews
         )
 
-    fun toCoupons(entity: DealEntity): List<DelegateAdapter.UiModel> {
-        return entity.subcategories[0].items
+    fun toCoupons(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
+        return apiEntity.subcategories[0].items
             .map { item ->
                 Coupon(
-                    item.source,
-                    item.imageUrl,
-                    item.linkUrl,
+                    item.sourceName,
+                    item.image,
+                    item.destination,
                     item.title,
                     item.componentId,
                     3L

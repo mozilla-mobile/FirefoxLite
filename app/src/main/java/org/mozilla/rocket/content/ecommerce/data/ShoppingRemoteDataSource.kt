@@ -7,26 +7,27 @@ import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Error
 import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.util.safeApiCall
 import java.net.URL
 
 class ShoppingRemoteDataSource : ShoppingDataSource {
 
-    override suspend fun getDeals(): Result<DealEntity> = withContext(Dispatchers.IO) {
+    override suspend fun getDeals(): Result<ApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
                 val responseBody = getHttpResult(getDealsApiEndpoint())
-                Success(DealEntity.fromJson(responseBody))
+                Success(ApiEntity.fromJson(responseBody))
             },
             errorMessage = "Unable to get remote deals products"
         )
     }
 
-    override suspend fun getCoupons(): Result<DealEntity> = withContext(Dispatchers.IO) {
+    override suspend fun getCoupons(): Result<ApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
                 val responseBody = getHttpResult(getCouponsApiEndpoint())
-                Success(DealEntity.fromJson(responseBody))
+                Success(ApiEntity.fromJson(responseBody))
             },
             errorMessage = "Unable to get remote coupons"
         )
