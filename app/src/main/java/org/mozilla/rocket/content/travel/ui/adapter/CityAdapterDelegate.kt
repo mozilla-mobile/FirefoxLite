@@ -6,18 +6,20 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.travel.ui.TravelExploreViewModel
 
-class CityAdapterDelegate() : AdapterDelegate {
+class CityAdapterDelegate(private val travelExploreViewModel: TravelExploreViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        CityViewHolder(view)
+        CityViewHolder(view, travelExploreViewModel)
 }
 
 class CityViewHolder(
-    override val containerView: View
+    override val containerView: View,
+    private val travelExploreViewModel: TravelExploreViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        val cityItem = uiModel as CityItem
-        city_name.text = cityItem.title
+        val cityItem = uiModel as CityUiModel
+        city_name.text = cityItem.name
 
         GlideApp.with(itemView.context)
             .asBitmap()
@@ -26,13 +28,12 @@ class CityViewHolder(
             .load(cityItem.imageUrl)
             .into(city_image)
 
-        //TODO handle click with view model
-        //itemView.setOnClickListener {}
+        itemView.setOnClickListener { travelExploreViewModel.onCityItemClicked(cityItem) }
     }
 }
 
-data class CityItem(
-    val imageUrl: String,
-    val linkUrl: String,
-    val title: String
+data class CityUiModel(
+        val id: Int,
+        val imageUrl: String,
+        val name: String
 ) : DelegateAdapter.UiModel()

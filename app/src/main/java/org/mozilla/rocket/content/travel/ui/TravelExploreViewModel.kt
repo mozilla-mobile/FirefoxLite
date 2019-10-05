@@ -10,6 +10,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.GetCityCategoriesUseCase
 import org.mozilla.rocket.content.travel.domain.GetRunwayItemsUseCase
+import org.mozilla.rocket.content.travel.ui.adapter.CityUiModel
+import org.mozilla.rocket.download.SingleLiveEvent
 
 class TravelExploreViewModel(
     private val getRunwayItems: GetRunwayItemsUseCase,
@@ -49,6 +51,18 @@ class TravelExploreViewModel(
             }
         }
     }
+
+    val openCity = SingleLiveEvent<String>()
+    val goSearch = SingleLiveEvent<Unit>()
+
+    fun onCityItemClicked(cityItem: CityUiModel) {
+        openCity.value = cityItem.name
+    }
+
+    fun onSearchInputClicked() {
+        goSearch.call()
+    }
+
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

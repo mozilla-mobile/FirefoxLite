@@ -4,29 +4,24 @@ import android.view.View
 import kotlinx.android.synthetic.main.city_search.*
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.travel.ui.TravelExploreViewModel
 
-class CitySearchAdapterDelegate() : AdapterDelegate {
+class CitySearchAdapterDelegate(private val travelExploreViewModel:TravelExploreViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        CitySearchViewHolder(view)
+        CitySearchViewHolder(view,travelExploreViewModel)
 }
 
 class CitySearchViewHolder(
-    override val containerView: View
+    override val containerView: View,
+    private val travelExploreViewModel: TravelExploreViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        val citySearch = uiModel as CitySearch
 
         city_search_edit_area.setOnClickListener {
-            //TODO go search activity
+            travelExploreViewModel.onSearchInputClicked()
         }
-
-        city_search_title.text = citySearch.title
-        city_search_hint.text = citySearch.hint
     }
 }
 
-data class CitySearch(
-    val title: String,
-    val hint: String
-) : DelegateAdapter.UiModel()
+class CitySearchUiModel : DelegateAdapter.UiModel()

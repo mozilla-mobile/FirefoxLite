@@ -18,15 +18,22 @@ class TravelActivity : FragmentActivity() {
 
     @Inject
     lateinit var travelViewModelCreator: Lazy<TravelViewModel>
+    @Inject
+    lateinit var travelExploreViewModelCreator: Lazy<TravelExploreViewModel>
 
     private lateinit var adapter: TravelTabsAdapter
     private lateinit var travelViewModel: TravelViewModel
+    private lateinit var travelExploreViewModel: TravelExploreViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_travel)
+
         travelViewModel = getViewModel(travelViewModelCreator)
+        travelExploreViewModel = getViewModel(travelExploreViewModelCreator)
+
+        setContentView(R.layout.activity_travel)
+
         initViewPager()
         initTabLayout()
         initToolBar()
