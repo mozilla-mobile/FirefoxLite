@@ -5,7 +5,7 @@ import dagger.Provides
 import org.mozilla.rocket.content.common.ui.ContentTabBottomBarViewModel
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.ecommerce.di.ShoppingModule
-import org.mozilla.rocket.content.games.di.GameModule
+import org.mozilla.rocket.content.game.di.GameModule
 import org.mozilla.rocket.content.news.di.NewsModule
 
 @Module(includes = [GameModule::class, ShoppingModule::class, NewsModule::class])

@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui.adapter
+package org.mozilla.rocket.content.game.ui.adapter
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_game_category.*
@@ -8,29 +8,29 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.StartSnapHelper
 import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
-import org.mozilla.rocket.content.games.ui.InstantGameViewModel
-import org.mozilla.rocket.content.games.ui.model.Game
-import org.mozilla.rocket.content.games.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
+import org.mozilla.rocket.content.game.ui.model.Game
+import org.mozilla.rocket.content.game.ui.model.GameCategory
 
-class InstantGameCategoryAdapterDelegate(private val instantGameViewModel: InstantGameViewModel) : AdapterDelegate {
+class DownloadGameCategoryAdapterDelegate(private val downloadGameViewModel: DownloadGameViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        InstantGameCategoryViewHolder(view, instantGameViewModel)
+        DownloadGameCategoryViewHolder(view, downloadGameViewModel)
 }
 
-class InstantGameCategoryViewHolder(
+class DownloadGameCategoryViewHolder(
     override val containerView: View,
-    instantGameViewModel: InstantGameViewModel
+    downloadGameViewModel: DownloadGameViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(Game::class, R.layout.item_game, InstantGameAdapterDelegate(instantGameViewModel))
+            add(Game::class, R.layout.item_game, DownloadGameAdapterDelegate(downloadGameViewModel))
         }
     )
 
     init {
         val spaceWidth = itemView.resources.getDimensionPixelSize(R.dimen.card_space_width)
         game_list.addItemDecoration(HorizontalSpaceItemDecoration(spaceWidth))
-        game_list.adapter = this@InstantGameCategoryViewHolder.adapter
+        game_list.adapter = this@DownloadGameCategoryViewHolder.adapter
         val snapHelper = StartSnapHelper()
         snapHelper.attachToRecyclerView(game_list)
     }

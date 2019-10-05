@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui.model
+package org.mozilla.rocket.content.game.ui.model
 
 import org.mozilla.rocket.adapter.DelegateAdapter
 

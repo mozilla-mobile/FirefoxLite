@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.data
+package org.mozilla.rocket.content.game.data
 
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity

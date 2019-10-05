@@ -1,12 +1,12 @@
-package org.mozilla.rocket.content.games.ui.adapter
+package org.mozilla.rocket.content.game.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import org.mozilla.focus.R
-import org.mozilla.rocket.content.games.ui.DownloadGameFragment
-import org.mozilla.rocket.content.games.ui.InstantGameFragment
+import org.mozilla.rocket.content.game.ui.DownloadGameFragment
+import org.mozilla.rocket.content.game.ui.InstantGameFragment
 
 @Suppress("DEPRECATION")
 class GameTabsAdapter(

@@ -1,5 +1,6 @@
-package org.mozilla.rocket.content.games.ui
+package org.mozilla.rocket.content.game.ui
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,33 +9,34 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.games.domain.GetDownloadGameListUseCase
-import org.mozilla.rocket.content.games.ui.model.Game
+import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
+import org.mozilla.rocket.content.game.ui.model.Game
 import org.mozilla.rocket.download.SingleLiveEvent
 
-class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameListUseCase) : ViewModel() {
+class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUseCase) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _downloadGameItems by lazy {
+    private val _instantGameItems by lazy {
         MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
             launchDataLoad {
-                val result = getDownloadGameList()
+                val result = getInstantGameList()
                 if (result is Result.Success) {
                     value = GameDataMapper.toGameUiModel(result.data)
                 }
             }
         }
     }
-    val downloadGameItems: LiveData<List<DelegateAdapter.UiModel>> = _downloadGameItems
+    val instantGameItems: LiveData<List<DelegateAdapter.UiModel>> = _instantGameItems
 
     var event = SingleLiveEvent<GameAction>()
+    var createShortcutEvent = SingleLiveEvent<GameShortcut>()
 
     lateinit var selectedGame: Game
 
     fun onGameItemClicked(gameItem: Game) {
-        event.value = GameAction.Install(gameItem.linkUrl)
+        event.value = GameAction.Play(gameItem.linkUrl)
     }
 
     fun onGameItemLongClicked(gameItem: Game): Boolean {
@@ -61,7 +63,13 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
     }
 
     sealed class GameAction {
-        data class Install(val url: String) : GameAction()
+        data class Play(val url: String) : GameAction()
         data class OpenLink(val url: String) : GameAction()
     }
+
+    data class GameShortcut(
+        val gameName: String,
+        val gameUrl: String,
+        val gameBitmap: Bitmap
+    )
 }

@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.games.ui
+package org.mozilla.rocket.content.game.ui
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,7 +12,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.games.ui.adapter.GameTabsAdapter
+import org.mozilla.rocket.content.game.ui.adapter.GameTabsAdapter
 
 class GameActivity : FragmentActivity() {
 

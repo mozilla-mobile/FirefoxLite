@@ -1,14 +1,14 @@
-package org.mozilla.rocket.content.games.di
+package org.mozilla.rocket.content.game.di
 
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import org.mozilla.rocket.content.games.data.GameLocalDataSource
-import org.mozilla.rocket.content.games.data.GameRepository
-import org.mozilla.rocket.content.games.domain.GetDownloadGameListUseCase
-import org.mozilla.rocket.content.games.domain.GetInstantGameListUseCase
-import org.mozilla.rocket.content.games.ui.DownloadGameViewModel
-import org.mozilla.rocket.content.games.ui.InstantGameViewModel
+import org.mozilla.rocket.content.game.data.GameLocalDataSource
+import org.mozilla.rocket.content.game.data.GameRepository
+import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
+import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
+import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
+import org.mozilla.rocket.content.game.ui.InstantGameViewModel
 import javax.inject.Singleton
 
 @Module
