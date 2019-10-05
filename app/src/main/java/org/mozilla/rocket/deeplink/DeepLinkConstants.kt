@@ -5,4 +5,5 @@ object DeepLinkConstants {
     const val HOST_CONTENT = "content"
     const val PATH_GAME = "/game"
     const val PATH_NEWS = "/news"
+    const val PATH_SHOPPING = "/shopping"
 }
