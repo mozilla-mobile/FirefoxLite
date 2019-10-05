@@ -25,9 +25,8 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
-import org.mozilla.rocket.content.games.ui.adapter.GameCategory
-import org.mozilla.rocket.content.games.ui.adapter.GameCategoryAdapterDelegate
-import org.mozilla.rocket.content.games.ui.adapter.GameType
+import org.mozilla.rocket.content.games.ui.adapter.InstantGameCategoryAdapterDelegate
+import org.mozilla.rocket.content.games.ui.model.GameCategory
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 
@@ -37,18 +36,17 @@ class InstantGameFragment : Fragment() {
     lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
 
     @Inject
-    lateinit var gamesViewModelCreator: Lazy<GamesViewModel>
+    lateinit var instantGameViewModelCreator: Lazy<InstantGameViewModel>
 
     private lateinit var runwayViewModel: RunwayViewModel
-    private lateinit var gamesViewModel: GamesViewModel
+    private lateinit var instantGamesViewModel: InstantGameViewModel
     private lateinit var adapter: DelegateAdapter
-    private lateinit var gameType: GameType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
-        gamesViewModel = getActivityViewModel(gamesViewModelCreator)
+        instantGamesViewModel = getActivityViewModel(instantGameViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,7 +65,7 @@ class InstantGameFragment : Fragment() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
-                add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
+                add(GameCategory::class, R.layout.item_game_category, InstantGameCategoryAdapterDelegate(instantGamesViewModel))
             }
         )
         recycler_view.apply {
@@ -77,36 +75,36 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun bindListData() {
-        gamesViewModel.instantGameItems.observe(this@InstantGameFragment, Observer {
+        instantGamesViewModel.instantGameItems.observe(this@InstantGameFragment, Observer {
             adapter.setData(it)
         })
     }
 
     private fun bindPageState() {
-        gamesViewModel.isDataLoading.observe(this@InstantGameFragment, Observer { state ->
+        instantGamesViewModel.isDataLoading.observe(this@InstantGameFragment, Observer { state ->
             when (state) {
-                is GamesViewModel.State.Idle -> showContentView()
-                is GamesViewModel.State.Loading -> showLoadingView()
-                is GamesViewModel.State.Error -> showErrorView()
+                is InstantGameViewModel.State.Idle -> showContentView()
+                is InstantGameViewModel.State.Loading -> showLoadingView()
+                is InstantGameViewModel.State.Error -> showErrorView()
             }
         })
     }
 
     private fun observeGameAction() {
-        gamesViewModel.createShortcutEvent.observe(this, Observer { gameShortcut ->
+        instantGamesViewModel.createShortcutEvent.observe(this, Observer { gameShortcut ->
             createShortcut(gameShortcut.gameName, gameShortcut.gameUrl, gameShortcut.gameBitmap)
         })
 
-        gamesViewModel.event.observe(this, Observer { event ->
+        instantGamesViewModel.event.observe(this, Observer { event ->
             when (event) {
-                is GamesViewModel.GameAction.Play -> {
-                    val play: GamesViewModel.GameAction.Play = event
+                is InstantGameViewModel.GameAction.Play -> {
+                    val play: InstantGameViewModel.GameAction.Play = event
                     context?.let {
                         startActivity(GameModeActivity.getStartIntent(it, play.url))
                     }
                 }
-                is GamesViewModel.GameAction.OpenLink -> {
-                    val openLink: GamesViewModel.GameAction.OpenLink = event
+                is InstantGameViewModel.GameAction.OpenLink -> {
+                    val openLink: InstantGameViewModel.GameAction.OpenLink = event
                     context?.let {
                         startActivity(ContentTabActivity.getStartIntent(it, openLink.url))
                     }

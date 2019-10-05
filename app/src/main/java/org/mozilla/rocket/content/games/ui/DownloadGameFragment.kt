@@ -22,9 +22,8 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
-import org.mozilla.rocket.content.games.ui.adapter.GameCategory
-import org.mozilla.rocket.content.games.ui.adapter.GameCategoryAdapterDelegate
-import org.mozilla.rocket.content.games.ui.adapter.GameType
+import org.mozilla.rocket.content.games.ui.adapter.DownloadGameCategoryAdapterDelegate
+import org.mozilla.rocket.content.games.ui.model.GameCategory
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.tabs.web.Download
 import javax.inject.Inject
@@ -35,18 +34,17 @@ class DownloadGameFragment : Fragment() {
     lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
 
     @Inject
-    lateinit var gamesViewModelCreator: Lazy<GamesViewModel>
+    lateinit var downloadGameViewModelCreator: Lazy<DownloadGameViewModel>
 
     private lateinit var runwayViewModel: RunwayViewModel
-    private lateinit var gamesViewModel: GamesViewModel
+    private lateinit var downloadGameViewModel: DownloadGameViewModel
     private lateinit var adapter: DelegateAdapter
-    private lateinit var gameType: GameType
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
-        gamesViewModel = getActivityViewModel(gamesViewModelCreator)
+        downloadGameViewModel = getActivityViewModel(downloadGameViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,7 +63,7 @@ class DownloadGameFragment : Fragment() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
-                add(GameCategory::class, R.layout.item_game_category, GameCategoryAdapterDelegate(gamesViewModel))
+                add(GameCategory::class, R.layout.item_game_category, DownloadGameCategoryAdapterDelegate(downloadGameViewModel))
             }
         )
         recycler_view.apply {
@@ -75,32 +73,32 @@ class DownloadGameFragment : Fragment() {
     }
 
     private fun bindListData() {
-        gamesViewModel.downloadGameItems.observe(this@DownloadGameFragment, Observer {
+        downloadGameViewModel.downloadGameItems.observe(this@DownloadGameFragment, Observer {
             adapter.setData(it)
         })
     }
 
     private fun bindPageState() {
-        gamesViewModel.isDataLoading.observe(this@DownloadGameFragment, Observer { state ->
+        downloadGameViewModel.isDataLoading.observe(this@DownloadGameFragment, Observer { state ->
             when (state) {
-                is GamesViewModel.State.Idle -> showContentView()
-                is GamesViewModel.State.Loading -> showLoadingView()
-                is GamesViewModel.State.Error -> showErrorView()
+                is DownloadGameViewModel.State.Idle -> showContentView()
+                is DownloadGameViewModel.State.Loading -> showLoadingView()
+                is DownloadGameViewModel.State.Error -> showErrorView()
             }
         })
     }
 
     private fun observeGameAction() {
-        gamesViewModel.event.observe(this, Observer { event ->
+        downloadGameViewModel.event.observe(this, Observer { event ->
             when (event) {
-                is GamesViewModel.GameAction.Install -> {
-                    // val install: GamesViewModel.GameAction.Install = event
+                is DownloadGameViewModel.GameAction.Install -> {
+                    // val install: DownloadGameViewModel.GameAction.Install = event
                     // install a APK
-                    val install: GamesViewModel.GameAction.Install = event
+                    val install: DownloadGameViewModel.GameAction.Install = event
                     downloadGame(install.url)
                 }
-                is GamesViewModel.GameAction.OpenLink -> {
-                    val openLink: GamesViewModel.GameAction.OpenLink = event
+                is DownloadGameViewModel.GameAction.OpenLink -> {
+                    val openLink: DownloadGameViewModel.GameAction.OpenLink = event
                     context?.let {
                         startActivity(ContentTabActivity.getStartIntent(it, openLink.url))
                     }
