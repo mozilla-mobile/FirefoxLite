@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <LinearLayout
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/no_result_view_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/no_internet"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            style="@style/Body3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_margin_m2"
+            android:layout_marginBottom="40dp"
+            android:gravity="center"
+            android:text="@string/error_page_recover_a"
+            android:textColor="@color/paletteDarkGreyD100" />
+
+        <Button
+            android:id="@+id/no_result_view_button"
+            style="@style/ButtonText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/error_page_button"
+            android:textColor="@color/paletteDarkBlueC100" />
+
+    </LinearLayout>
+
+</merge>
