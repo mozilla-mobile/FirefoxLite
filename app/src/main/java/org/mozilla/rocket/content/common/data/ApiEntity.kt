@@ -8,13 +8,12 @@ data class ApiEntity(
     val subcategories: List<ApiCategory>
 ) {
     companion object {
-        private const val KEY_RESULT = "result"
         private const val KEY_VERSION = "version"
         private const val KEY_SUBCATEGORIES = "subcategories"
 
         fun fromJson(jsonString: String?): ApiEntity {
             return if (jsonString != null) {
-                val jsonObject = jsonString.toJsonObject().optJSONObject(KEY_RESULT)
+                val jsonObject = jsonString.toJsonObject()
                 val jsonArray = jsonObject.optJSONArray(KEY_SUBCATEGORIES)
                 val subcategories =
                     (0 until jsonArray.length())
