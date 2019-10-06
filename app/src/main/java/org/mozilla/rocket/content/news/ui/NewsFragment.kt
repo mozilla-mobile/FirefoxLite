@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -21,6 +20,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.NoResultView
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
@@ -36,7 +36,7 @@ class NewsFragment : Fragment(), NewsListingEventListener {
 
     private lateinit var newsViewModel: NewsViewModel
     private var recyclerView: RecyclerView? = null
-    private var newsEmptyView: View? = null
+    private var newsEmptyView: NoResultView? = null
     private var newsProgressCenter: ProgressBar? = null
     private var newsAdapter: NewsAdapter? = null
     private var newsListLayoutManager: LinearLayoutManager? = null
@@ -63,13 +63,13 @@ class NewsFragment : Fragment(), NewsListingEventListener {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = view.findViewById(R.id.news_list)
-        newsEmptyView = view.findViewById(R.id.empty_view_container)
+        newsEmptyView = view.findViewById(R.id.no_result_view)
         newsProgressCenter = view.findViewById(R.id.news_progress_center)
-        view.findViewById<Button>(R.id.news_try_again)?.setOnClickListener {
+        newsEmptyView?.setButtonOnClickListener(View.OnClickListener {
             // call onStatus() again with null to display the loading indicator
             onStatus(null)
             loadMore()
-        }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

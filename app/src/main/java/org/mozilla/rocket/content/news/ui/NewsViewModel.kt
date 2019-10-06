@@ -54,6 +54,10 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
             withContext(Dispatchers.Main) {
                 emitUiModel(loadNewsParameter.topic, newsItems)
             }
+        } else {
+            withContext(Dispatchers.Main) {
+                emitUiModel(loadNewsParameter.topic, emptyList())
+            }
         }
     }
 
