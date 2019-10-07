@@ -1,15 +1,19 @@
 package org.mozilla.rocket.content.travel.ui
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_travel_city.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
+import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
@@ -33,6 +37,7 @@ class TravelCityActivity : BaseActivity() {
     private lateinit var travelCityViewModel: TravelCityViewModel
     private lateinit var name: String
     private lateinit var detailAdapter: DelegateAdapter
+    private lateinit var onboardingSpotlightDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -46,6 +51,26 @@ class TravelCityActivity : BaseActivity() {
         initDetail()
         bindListData()
         initExploreActions()
+        initOnboardingSpotlight(name)
+    }
+
+    private fun initOnboardingSpotlight(name: String) {
+        travelCityViewModel.showOnboardingSpotlight.observe(this, Observer {
+            showOnboardingSpotlight(name)
+        })
+    }
+
+    private fun showOnboardingSpotlight(name: String) {
+        favorite_button.post {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.paletteBlack50)
+            onboardingSpotlightDialog = DialogUtils.showTravelSpotlight(this, favorite_button, name, {
+                window?.statusBarColor = Color.TRANSPARENT
+            }) {
+                if (::onboardingSpotlightDialog.isInitialized) {
+                    onboardingSpotlightDialog.dismiss()
+                }
+            }
+        }
     }
 
     override fun applyLocale() = Unit

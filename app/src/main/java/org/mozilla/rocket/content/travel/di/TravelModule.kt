@@ -4,8 +4,11 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.travel.data.TravelLocalDataSource
+import org.mozilla.rocket.content.travel.data.TravelOnboardingRepository
 import org.mozilla.rocket.content.travel.data.TravelRemoteDataSource
 import org.mozilla.rocket.content.travel.data.TravelRepository
+import org.mozilla.rocket.content.travel.domain.CheckOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.CompleteOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.GetBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityCategoriesUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
@@ -103,10 +106,29 @@ object TravelModule {
         getCityIgUseCase: GetCityIgUseCase,
         getCityWikiUseCase: GetCityWikiUseCase,
         getCityVideosUseCase: GetCityVideosUseCase,
-        getCityHotelsUseCase: GetCityHotelsUseCase
-    ): TravelCityViewModel = TravelCityViewModel(getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase)
+        getCityHotelsUseCase: GetCityHotelsUseCase,
+        checkOnboardingUseCase: CheckOnboardingUseCase,
+        completeOnboardingUseCase: CompleteOnboardingUseCase
+    ): TravelCityViewModel = TravelCityViewModel(getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase, checkOnboardingUseCase, completeOnboardingUseCase)
 
     @JvmStatic
     @Provides
     fun provideTravelViewModel(): TravelViewModel = TravelViewModel()
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCheckOnboardingUseCase(travelOnboardingRepository: TravelOnboardingRepository): CheckOnboardingUseCase = CheckOnboardingUseCase(travelOnboardingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideCompleteOnboardingUseCase(travelOnboardingRepository: TravelOnboardingRepository): CompleteOnboardingUseCase = CompleteOnboardingUseCase(travelOnboardingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideTravelOnboardingRepository(
+        appContext: Context
+    ): TravelOnboardingRepository = TravelOnboardingRepository(appContext)
 }
