@@ -14,8 +14,10 @@
     <color name="paletteDarkGreyA100">#FF323232</color>
     <color name="paletteDarkGreyB100">#FF2A2A2E</color>
     <color name="paletteDarkGreyC100">#FF38383D</color>
+    <color name="paletteDarkGreyC60">#9938383D</color>
     <color name="paletteDarkGreyC30">#4D38383D</color>
     <color name="paletteDarkGreyC10">#1938383D</color>
+    <color name="paletteDarkGreyC0">#0038383D</color>
     <color name="paletteDarkGreyD100">#FF737373</color>
     <color name="paletteDarkGreyD50">#7F737373</color>
     <color name="paletteDarkGreyE100">#B1B1B3</color>
