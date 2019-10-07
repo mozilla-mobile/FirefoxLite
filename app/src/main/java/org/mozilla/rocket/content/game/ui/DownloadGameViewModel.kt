@@ -23,6 +23,8 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
                 val result = getDownloadGameList()
                 if (result is Result.Success) {
                     value = GameDataMapper.toGameUiModel(result.data)
+                } else if (result is Result.Error) {
+                    throw (result.exception)
                 }
             }
         }
@@ -40,6 +42,17 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
     fun onGameItemLongClicked(gameItem: Game): Boolean {
         selectedGame = gameItem
         return false
+    }
+
+    fun onRetryButtonClicked() {
+        launchDataLoad {
+            val result = getDownloadGameList()
+            if (result is Result.Success) {
+                _downloadGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
+            } else if (result is Result.Error) {
+                throw (result.exception)
+            }
+        }
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

@@ -59,6 +59,7 @@ class InstantGameFragment : Fragment() {
         bindListData()
         bindPageState()
         observeGameAction()
+        initNoResultView()
     }
 
     private fun initRecyclerView() {
@@ -113,6 +114,12 @@ class InstantGameFragment : Fragment() {
         })
     }
 
+    private fun initNoResultView() {
+        no_result_view.setButtonOnClickListener(View.OnClickListener {
+            instantGamesViewModel.onRetryButtonClicked()
+        })
+    }
+
     private fun createShortcut(gameName: String, gameURL: String, gameIcon: Bitmap) {
         val intent = Intent(appContext(), GameModeActivity::class.java)
         intent.action = Intent.ACTION_MAIN
@@ -154,14 +161,20 @@ class InstantGameFragment : Fragment() {
 
     private fun showLoadingView() {
         spinner.visibility = View.VISIBLE
+        recycler_view.visibility = View.GONE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showContentView() {
         spinner.visibility = View.GONE
+        recycler_view.visibility = View.VISIBLE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showErrorView() {
-        TODO("not implemented")
+        spinner.visibility = View.GONE
+        recycler_view.visibility = View.GONE
+        no_result_view.visibility = View.VISIBLE
     }
 
     companion object {
