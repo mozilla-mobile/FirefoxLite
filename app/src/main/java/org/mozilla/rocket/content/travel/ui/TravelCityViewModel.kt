@@ -8,6 +8,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.travel.domain.CheckOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.CompleteOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
@@ -22,7 +24,9 @@ class TravelCityViewModel(
     private val getIg: GetCityIgUseCase,
     private val getWiki: GetCityWikiUseCase,
     private val getVideos: GetCityVideosUseCase,
-    private val getHotels: GetCityHotelsUseCase
+    private val getHotels: GetCityHotelsUseCase,
+    private val checkOnboarding: CheckOnboardingUseCase,
+    private val completeOnboarding: CompleteOnboardingUseCase
 ) : ViewModel() {
 
     private val data = ArrayList<DelegateAdapter.UiModel>()
@@ -47,6 +51,15 @@ class TravelCityViewModel(
 
     private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
+
+    val showOnboardingSpotlight = SingleLiveEvent<Unit>()
+
+    init {
+        if (checkOnboarding()) {
+            showOnboardingSpotlight.call()
+            completeOnboarding()
+        }
+    }
 
     fun getLatestItems(name: String) {
         data.clear()

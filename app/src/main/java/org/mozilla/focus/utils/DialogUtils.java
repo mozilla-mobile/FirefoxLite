@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import org.mozilla.focus.R;
@@ -361,6 +362,35 @@ public class DialogUtils {
         dialog.show();
 
         return dialog;
+    }
+
+    public static Dialog showTravelSpotlight(
+            @NonNull final Activity activity,
+            @NonNull final View targetView,
+            @NonNull final String cityName,
+            @NonNull final DialogInterface.OnDismissListener dismissListener,
+            View.OnClickListener ok) {
+
+        final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_travel, null);
+        TextView title = container.findViewById(R.id.travel_details_onboarding_title);
+        TextView message = container.findViewById(R.id.travel_details_onboarding_message);
+        title.setText(activity.getString(R.string.travel_details_onboarding_title, cityName));
+        message.setText(activity.getString(R.string.travel_details_onboarding_message, cityName));
+        container.findViewById(R.id.next).setOnClickListener(ok);
+
+        Dialog dialog = createShoppingSearchSpotlightDialog(
+                activity,
+                targetView,
+                container,
+                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_radius),
+                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_height),
+                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_width));
+
+        dialog.setOnDismissListener(dismissListener);
+        dialog.show();
+
+        return dialog;
+
     }
 
     @CheckResult

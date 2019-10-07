@@ -24,5 +24,7 @@
     <string name="msrp_try_content_hubs" tools:ignore="MissingTranslation">Try new features to check in.</string>
     <string name="search_city_hint" translatable="false" tools:ignore="MissingTranslation">Enter a city</string>
     <string name="mission_no_quota" translatable="false" tools:ignore="MissingTranslation">Voucher is out of stock</string>
+    <string name="travel_details_onboarding_title" tools:ignore="MissingTranslation">Love %s?</string>
+    <string name="travel_details_onboarding_message" tools:ignore="MissingTranslation">Tab here to save %s in your bucket list for quickly access latest travel guides and  prices and estimation.</string>
 
 </resources>

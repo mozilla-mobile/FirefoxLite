@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/spotlight_mock_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/mock_button"
+        android:layout_marginEnd="53dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="48dp"
+        android:layout_height="48dp"/>
+
+    <View
+        android:layout_below="@id/mock_button"
+        android:layout_alignParentEnd="true"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/tooltip_pointer"
+        android:elevation="12dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginTop="4dp"/>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mock_button"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/onboarding_dialog"
+        android:layout_marginEnd="17dp"
+        android:layout_marginTop="19dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:minHeight="140dp"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/travel_details_onboarding_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/rate_app_dialog_text_title"
+                    android:textColor="@color/paletteLightBlack100"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"/>
+
+                <TextView
+                    android:id="@+id/travel_details_onboarding_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/onboarding_2_smart_shopping_search_description"
+                    android:textColor="@color/paletteLightBlack100"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="4dp"/>
+
+                <Button
+                    android:id="@+id/next"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="96dp"
+                    android:layout_height="32dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="14sp"
+                    android:background="@drawable/bg_plateform_onboarding_button"
+                    android:text="@string/action_ok"
+                    android:layout_gravity="bottom|end"/>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/travel_rocky"
+        android:layout_below="@id/onboarding_dialog"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="17dp"/>
+
+</RelativeLayout>
