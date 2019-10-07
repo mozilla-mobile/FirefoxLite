@@ -25,6 +25,8 @@ class DealViewModel(
                 val result = getDeals()
                 if (result is Result.Success) {
                     value = ShoppingMapper.toDeals(result.data)
+                } else if (result is Result.Error) {
+                    throw (result.exception)
                 }
             }
         }
@@ -35,6 +37,17 @@ class DealViewModel(
 
     fun onProductItemClicked(productItem: ProductItem) {
         openProduct.value = productItem.linkUrl
+    }
+
+    fun onRetryButtonClicked() {
+        launchDataLoad {
+            val result = getDeals()
+            if (result is Result.Success) {
+                _dealItems.postValue(ShoppingMapper.toDeals(result.data))
+            } else if (result is Result.Error) {
+                throw (result.exception)
+            }
+        }
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

@@ -25,6 +25,8 @@ class CouponViewModel(
                 val result = getCoupons()
                 if (result is Result.Success) {
                     value = ShoppingMapper.toCoupons(result.data)
+                } else if (result is Result.Error) {
+                    throw (result.exception)
                 }
             }
         }
@@ -36,6 +38,17 @@ class CouponViewModel(
 
     fun onCouponItemClicked(couponItem: Coupon) {
         openCoupon.value = couponItem.linkUrl
+    }
+
+    fun onRetryButtonClicked() {
+        launchDataLoad {
+            val result = getCoupons()
+            if (result is Result.Success) {
+                _couponItems.postValue(ShoppingMapper.toCoupons(result.data))
+            } else if (result is Result.Error) {
+                throw (result.exception)
+            }
+        }
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
