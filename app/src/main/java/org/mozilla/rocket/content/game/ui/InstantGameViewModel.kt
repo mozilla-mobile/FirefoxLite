@@ -24,6 +24,8 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
                 val result = getInstantGameList()
                 if (result is Result.Success) {
                     value = GameDataMapper.toGameUiModel(result.data)
+                } else if (result is Result.Error) {
+                    throw (result.exception)
                 }
             }
         }
@@ -42,6 +44,17 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
     fun onGameItemLongClicked(gameItem: Game): Boolean {
         selectedGame = gameItem
         return false
+    }
+
+    fun onRetryButtonClicked() {
+        launchDataLoad {
+            val result = getInstantGameList()
+            if (result is Result.Success) {
+                _instantGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
+            } else if (result is Result.Error) {
+                throw (result.exception)
+            }
+        }
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

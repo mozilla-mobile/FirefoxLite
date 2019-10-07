@@ -57,6 +57,7 @@ class DownloadGameFragment : Fragment() {
         bindListData()
         bindPageState()
         observeGameAction()
+        initNoResultView()
     }
 
     private fun initRecyclerView() {
@@ -107,6 +108,12 @@ class DownloadGameFragment : Fragment() {
         })
     }
 
+    private fun initNoResultView() {
+        no_result_view.setButtonOnClickListener(View.OnClickListener {
+            downloadGameViewModel.onRetryButtonClicked()
+        })
+    }
+
     private fun queueDownload(download: Download?, url: String) {
         val activity = activity
         if (activity == null || download == null) {
@@ -139,14 +146,20 @@ class DownloadGameFragment : Fragment() {
 
     private fun showLoadingView() {
         spinner.visibility = View.VISIBLE
+        recycler_view.visibility = View.GONE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showContentView() {
         spinner.visibility = View.GONE
+        recycler_view.visibility = View.VISIBLE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showErrorView() {
-        TODO("not implemented")
+        spinner.visibility = View.GONE
+        recycler_view.visibility = View.GONE
+        no_result_view.visibility = View.VISIBLE
     }
 
     companion object {
