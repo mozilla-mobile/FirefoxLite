@@ -50,6 +50,7 @@ class DealFragment : Fragment() {
         bindListData()
         bindPageState()
         observeAction()
+        initNoResultView()
     }
 
     private fun initDeals() {
@@ -94,15 +95,27 @@ class DealFragment : Fragment() {
         })
     }
 
+    private fun initNoResultView() {
+        no_result_view.setButtonOnClickListener(View.OnClickListener {
+            dealViewModel.onRetryButtonClicked()
+        })
+    }
+
     private fun showLoadingView() {
         spinner.visibility = View.VISIBLE
+        content_deals.visibility = View.GONE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showContentView() {
         spinner.visibility = View.GONE
+        content_deals.visibility = View.VISIBLE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showErrorView() {
-        TODO("not implemented")
+        spinner.visibility = View.GONE
+        content_deals.visibility = View.GONE
+        no_result_view.visibility = View.VISIBLE
     }
 }

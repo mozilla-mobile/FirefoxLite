@@ -42,6 +42,7 @@ class CouponFragment : Fragment() {
         bindListData()
         bindPageState()
         observeAction()
+        initNoResultView()
     }
 
     private fun initCoupons() {
@@ -77,15 +78,27 @@ class CouponFragment : Fragment() {
         })
     }
 
+    private fun initNoResultView() {
+        no_result_view.setButtonOnClickListener(View.OnClickListener {
+            couponViewModel.onRetryButtonClicked()
+        })
+    }
+
     private fun showLoadingView() {
         spinner.visibility = View.VISIBLE
+        coupon_list.visibility = View.GONE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showContentView() {
         spinner.visibility = View.GONE
+        coupon_list.visibility = View.VISIBLE
+        no_result_view.visibility = View.GONE
     }
 
     private fun showErrorView() {
-        TODO("not implemented")
+        spinner.visibility = View.GONE
+        coupon_list.visibility = View.GONE
+        no_result_view.visibility = View.VISIBLE
     }
 }
