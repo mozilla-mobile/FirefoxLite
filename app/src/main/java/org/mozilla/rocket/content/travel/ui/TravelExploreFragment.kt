@@ -90,8 +90,10 @@ class TravelExploreFragment : Fragment() {
                 startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
             }
         })
-        travelExploreViewModel.openCity.observe(this, Observer {
-            // TODO go city detail activity
+        travelExploreViewModel.openCity.observe(this, Observer { name ->
+            context?.let {
+                startActivity(TravelCityActivity.getStartIntent(it, name))
+            }
         })
 
         travelExploreViewModel.goSearch.observe(this, Observer {
