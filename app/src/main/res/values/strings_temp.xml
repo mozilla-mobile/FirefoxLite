@@ -10,6 +10,8 @@
     <string name="travel_detail_section_explore_title" translatable="false" tools:ignore="MissingTranslation">Explore %s</string>
     <string name="travel_detail_section_explore_ig_title" translatable="false" tools:ignore="MissingTranslation">#%s on IG</string>
     <string name="travel_detail_section_hotel_title" translatable="false" tools:ignore="MissingTranslation">Top Hotels</string>
+    <string name="travel_detail_bucket_list_saved" translatable="false" tools:ignore="MissingTranslation">Saved in your bucket list</string>
+    <string name="travel_detail_bucket_list_saved_view" translatable="false" tools:ignore="MissingTranslation">VIEW</string>
     <string name="msrp_reward_challenge_expired" tools:ignore="MissingTranslation">Expired on %s</string>
     <string name="msrp_reward_challenge_used" tools:ignore="MissingTranslation">Used on %s</string>
     <string name="msrp_congrats_title" tools:ignore="MissingTranslation">Congratulations!</string>
