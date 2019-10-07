@@ -10,7 +10,7 @@
     app:strokeColor="@color/paletteLightGreyA100"
     app:strokeWidth="1dp"
     app:cardCornerRadius="4dp"
-    app:cardElevation="0dp">
+    app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,10 +19,22 @@
         <ImageView
             android:id="@+id/city_image"
             android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_height="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder"
+            app:layout_constraintDimensionRatio="160:200"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/city_name_background"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/bg_travel_city"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -30,18 +42,20 @@
             android:id="@+id/city_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:maxLines="1"
             android:ellipsize="end"
-            android:textSize="14sp"
-            android:textColor="@color/paletteBlack100"
-            app:layout_constraintTop_toBottomOf="@id/city_image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/paletteWhite100"
+            android:letterSpacing="0.01"
+            app:layout_constraintTop_toTopOf="@id/city_name_background"
+            app:layout_constraintBottom_toBottomOf="@id/city_name_background"
+            app:layout_constraintStart_toStartOf="@id/city_name_background"
+            app:layout_constraintEnd_toEndOf="@id/city_name_background"
             tools:text="Bangkok" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

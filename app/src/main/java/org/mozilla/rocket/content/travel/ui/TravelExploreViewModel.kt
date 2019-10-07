@@ -10,6 +10,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.GetCityCategoriesUseCase
 import org.mozilla.rocket.content.travel.domain.GetRunwayItemsUseCase
+import org.mozilla.rocket.content.travel.ui.adapter.CitySearchUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityUiModel
 import org.mozilla.rocket.download.SingleLiveEvent
 

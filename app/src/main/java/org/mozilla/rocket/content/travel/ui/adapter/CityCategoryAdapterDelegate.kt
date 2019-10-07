@@ -41,7 +41,7 @@ class CityCategoryViewHolder(
 }
 
 data class CityCategoryUiModel(
-        val id: Int,
-        val title: String,
-        val cityList: List<CityUiModel>
+    val id: Int,
+    val title: String,
+    val cityList: List<CityUiModel>
 ) : DelegateAdapter.UiModel()
