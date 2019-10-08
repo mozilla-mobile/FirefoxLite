@@ -38,19 +38,35 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
-    override suspend fun getCityPriceItems(id: Int): Result<List<PriceItem>> {
+    override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
         return withContext(Dispatchers.IO) {
             Success(getMockPriceItems() ?: emptyList())
         }
     }
 
-    override suspend fun getCityArticles(id: Int): Result<List<Article>> {
-        return withContext(Dispatchers.IO) {
-            Success(getMockArticles() ?: emptyList())
+    override suspend fun getCityIg(name: String): Result<Ig> {
+        return withContext(Dispatchers.Default) {
+            val normalizedName = name.replace("\\s".toRegex(), "").toLowerCase()
+            Success(Ig(
+                    normalizedName,
+                    String.format("https://www.instagram.com/explore/tags/%s/", normalizedName)
+            ))
         }
     }
 
-    override suspend fun getCityHotels(id: Int): Result<List<Hotel>> {
+    override suspend fun getCityWiki(name: String): Result<Wiki> {
+        return withContext(Dispatchers.Default) {
+            Success(getMockWiki())
+        }
+    }
+
+    override suspend fun getCityVideos(name: String): Result<List<Video>> {
+        return withContext(Dispatchers.IO) {
+            Success(getMockVideos() ?: emptyList())
+        }
+    }
+
+    override suspend fun getCityHotels(name: String): Result<List<Hotel>> {
         return withContext(Dispatchers.IO) {
             Success(getMockHotels() ?: emptyList())
         }
@@ -72,9 +88,17 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
                     ?.jsonStringToPriceItems()
 
     // TODO: remove mock data
-    private fun getMockArticles(): List<Article>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_articles)
-                    ?.jsonStringToArticles()
+    private fun getMockWiki(): Wiki =
+            Wiki(
+                "https://en.wikipedia.org/wiki/Bali#/media/File:Tanah-Lot_Bali_Indonesia_Pura-Tanah-Lot-01.jpg",
+                "Bali is a province of Indonesia and the westernmost of the Lesser Sunda Islands. Located east of Java and west of Lombok, the province includes the island of Bali and a few smaller neighbouring islands, notably Nusa Penida, Nusa Lembongan, and Nusa Ceningan. The provincial capital, Denpasar, is the most populous city in the Lesser Sunda Islands and the second largest, after Makassar, in Eastern Indonesia. Bali is the only Hindu-majority province in Indonesia, with 83.5% of the population adhering to Balinese Hinduism.",
+                "https://en.wikipedia.org/wiki/Bali"
+            )
+
+    // TODO: remove mock data
+    private fun getMockVideos(): List<Video>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_videos)
+                    ?.jsonStringToVideos()
 
     // TODO: remove mock data
     private fun getMockHotels(): List<Hotel>? =
@@ -97,10 +121,10 @@ private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
 
 private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
         RunwayItem(
-                jsonObject.optInt("id"),
-                jsonObject.optString("image_url"),
-                jsonObject.optString("link_url"),
-                jsonObject.optString("source")
+            jsonObject.optInt("id"),
+            jsonObject.optString("image_url"),
+            jsonObject.optString("link_url"),
+            jsonObject.optString("source")
         )
 
 private fun String.jsonStringToCityCategories(): List<CityCategory>? {
@@ -117,9 +141,9 @@ private fun String.jsonStringToCityCategories(): List<CityCategory>? {
 
 private fun createCityCategory(jsonObject: JSONObject): CityCategory =
         CityCategory(
-                jsonObject.optInt("id"),
-                jsonObject.optString("title"),
-                createCityItems(jsonObject.optJSONArray("city_list"))
+            jsonObject.optInt("id"),
+            jsonObject.optString("title"),
+            createCityItems(jsonObject.optJSONArray("city_list"))
         )
 
 private fun createCityItems(jsonArray: JSONArray): List<City> {
@@ -131,9 +155,9 @@ private fun createCityItems(jsonArray: JSONArray): List<City> {
 
 private fun createCityItem(jsonObject: JSONObject): City =
         City(
-                jsonObject.optInt("id"),
-                jsonObject.optString("image_url"),
-                jsonObject.optString("name")
+            jsonObject.optInt("id"),
+            jsonObject.optString("image_url"),
+            jsonObject.optString("name")
         )
 
 private fun String.jsonStringToPriceItems(): List<PriceItem>? {
@@ -150,19 +174,19 @@ private fun String.jsonStringToPriceItems(): List<PriceItem>? {
 
 private fun createPriceItem(jsonObject: JSONObject): PriceItem =
         PriceItem(
-                jsonObject.optString("type"),
-                jsonObject.optString("source"),
-                jsonObject.optDouble("price", 0.toDouble()).toFloat(),
-                jsonObject.optString("currency"),
-                jsonObject.optString("link_url")
+            jsonObject.optString("type"),
+            jsonObject.optString("source"),
+            jsonObject.optDouble("price", 0.toDouble()).toFloat(),
+            jsonObject.optString("currency"),
+            jsonObject.optString("link_url")
         )
 
-private fun String.jsonStringToArticles(): List<Article>? {
+private fun String.jsonStringToVideos(): List<Video>? {
     return try {
         val jsonArray = this.toJsonArray()
         (0 until jsonArray.length())
                 .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createArticle(jsonObject) }
+                .map { jsonObject -> createVideo(jsonObject) }
                 .shuffled()
     } catch (e: JSONException) {
         e.printStackTrace()
@@ -170,13 +194,16 @@ private fun String.jsonStringToArticles(): List<Article>? {
     }
 }
 
-private fun createArticle(jsonObject: JSONObject): Article =
-        Article(
-                jsonObject.optInt("id"),
-                jsonObject.optString("image_url"),
-                jsonObject.optString("title"),
-                jsonObject.optString("source"),
-                jsonObject.optBoolean("read")
+private fun createVideo(jsonObject: JSONObject): Video =
+        Video(
+            jsonObject.optString("id"),
+            jsonObject.optString("image_url"),
+            jsonObject.optInt("length"),
+            jsonObject.optString("title"),
+            jsonObject.optString("author"),
+            jsonObject.optInt("view_count"),
+            jsonObject.optString("date"),
+            String.format("https://www.youtube.com/watch?v=%s", jsonObject.optString("id"))
         )
 
 private fun String.jsonStringToHotels(): List<Hotel>? {
@@ -194,13 +221,16 @@ private fun String.jsonStringToHotels(): List<Hotel>? {
 
 private fun createHotel(jsonObject: JSONObject): Hotel =
         Hotel(
-                jsonObject.optInt("id"),
-                jsonObject.optString("image_url"),
-                jsonObject.optString("source"),
-                jsonObject.optString("title"),
-                jsonObject.optDouble("distance", 0.toDouble()).toFloat(),
-                jsonObject.optDouble("rating", 0.toDouble()).toFloat(),
-                jsonObject.optBoolean("freeWifi"),
-                jsonObject.optDouble("price", 0.toDouble()).toFloat(),
-                jsonObject.optString("currency")
+            jsonObject.optInt("id"),
+            jsonObject.optString("image_url"),
+            jsonObject.optString("source"),
+            jsonObject.optString("name"),
+            jsonObject.optDouble("distance", 0.toDouble()).toFloat(),
+            jsonObject.optDouble("rating", 0.toDouble()).toFloat(),
+            jsonObject.optBoolean("has_free_wifi"),
+            jsonObject.optDouble("price", 0.toDouble()).toFloat(),
+            jsonObject.optString("currency"),
+            jsonObject.optBoolean("has_free_cancellation"),
+            jsonObject.optBoolean("can_pay_at_property"),
+            jsonObject.optString("link_url")
         )

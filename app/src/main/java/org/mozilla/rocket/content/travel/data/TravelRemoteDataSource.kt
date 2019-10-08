@@ -20,15 +20,23 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun getCityPriceItems(id: Int): Result<List<PriceItem>> {
+    override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
         TODO("not implemented")
     }
 
-    override suspend fun getCityArticles(id: Int): Result<List<Article>> {
+    override suspend fun getCityIg(name: String): Result<Ig> {
         TODO("not implemented")
     }
 
-    override suspend fun getCityHotels(id: Int): Result<List<Hotel>> {
+    override suspend fun getCityWiki(name: String): Result<Wiki> {
+        TODO("not implemented")
+    }
+
+    override suspend fun getCityVideos(name: String): Result<List<Video>> {
+        TODO("not implemented")
+    }
+
+    override suspend fun getCityHotels(name: String): Result<List<Hotel>> {
         TODO("not implemented")
     }
 }

@@ -23,15 +23,23 @@ class TravelRepository(
         return localDataSource.searchCity(keyword)
     }
 
-    suspend fun getCityPriceItems(id: Int): Result<List<PriceItem>> {
-        return localDataSource.getCityPriceItems(id)
+    suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
+        return localDataSource.getCityPriceItems(name)
     }
 
-    suspend fun getCityArticles(id: Int): Result<List<Article>> {
-        return localDataSource.getCityArticles(id)
+    suspend fun getCityIg(name: String): Result<Ig> {
+        return localDataSource.getCityIg(name)
     }
 
-    suspend fun getCityHotels(id: Int): Result<List<Hotel>> {
-        return localDataSource.getCityHotels(id)
+    suspend fun getCityWiki(name: String): Result<Wiki> {
+        return localDataSource.getCityWiki(name)
+    }
+
+    suspend fun getCityVideos(name: String): Result<List<Video>> {
+        return localDataSource.getCityVideos(name)
+    }
+
+    suspend fun getCityHotels(name: String): Result<List<Hotel>> {
+        return localDataSource.getCityHotels(name)
     }
 }
