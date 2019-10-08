@@ -4,7 +4,7 @@ import org.json.JSONObject
 import org.mozilla.rocket.util.toJsonObject
 
 data class ApiEntity(
-    val version: Int,
+    val version: Long,
     val subcategories: List<ApiCategory>
 ) {
     companion object {
@@ -21,7 +21,7 @@ data class ApiEntity(
                         .map { jObj -> ApiCategory.fromJson(jObj) }
 
                 ApiEntity(
-                    jsonObject.optInt(KEY_VERSION),
+                    jsonObject.optLong(KEY_VERSION),
                     subcategories
                 )
             } else {
