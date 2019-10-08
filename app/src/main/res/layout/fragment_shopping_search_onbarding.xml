@@ -15,44 +15,59 @@
         android:background="@drawable/onboarding_pointer"
         android:elevation="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/onboarding_dialog" />
+        app:layout_constraintTop_toBottomOf="@id/onboarding_dialog_container" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/onboarding_dialog"
-        android:layout_width="232dp"
-        android:layout_height="104dp"
+    <FrameLayout
+        android:id="@+id/onboarding_dialog_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="104dp"
-        app:cardElevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="sans-serif"
-            android:text="@string/shopping_switch_ui_onboarding_body"
-            android:textColor="@color/paletteDarkGreyD100"
-            android:textSize="14sp"
-            android:textStyle="normal" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/onboarding_dialog"
+            android:layout_width="232dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="12dp">
 
-        <Button
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="12dp"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/button"
-            android:layout_width="96dp"
-            android:layout_height="32dp"
-            android:layout_gravity="bottom|end"
-            android:background="@drawable/bg_onboarding_button"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:text="@string/action_ok" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </androidx.cardview.widget.CardView>
+                <TextView
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/shopping_switch_ui_onboarding_body"
+                    android:textColor="@color/paletteDarkGreyD100"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+
+                <Button
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="12dp"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:id="@+id/button"
+                    android:layout_width="96dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_onboarding_button"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:text="@string/action_ok" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="48dp"
@@ -68,5 +83,12 @@
             android:src="@drawable/ic_arrowhead_up_light_black" />
 
     </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_shopping_search_logo_man"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
