@@ -110,6 +110,17 @@ class InstantGameFragment : Fragment() {
                         startActivity(ContentTabActivity.getStartIntent(it, openLink.url))
                     }
                 }
+                is InstantGameViewModel.GameAction.Share -> {
+                    val share: InstantGameViewModel.GameAction.Share = event
+                    context?.let {
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.gaming_vertical_share_message, share.url))
+                            type = "text/plain"
+                        }
+                        startActivity(Intent.createChooser(sendIntent, null))
+                    }
+                }
             }
         })
     }
