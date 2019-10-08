@@ -87,7 +87,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_shopping_search_logo_man"
+        android:src="@drawable/shopping_search_onboarding_logo_man"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
