@@ -46,6 +46,15 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
         return false
     }
 
+    fun onContextMenuClicked(contextMenuAction: ContextMenuAction): Boolean {
+        when (contextMenuAction) {
+            is ContextMenuAction.ContextMenuShare -> {
+                event.value = GameAction.Share(selectedGame.linkUrl)
+            }
+        }
+        return false
+    }
+
     fun onRetryButtonClicked() {
         launchDataLoad {
             val result = getInstantGameList()
@@ -78,6 +87,11 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
     sealed class GameAction {
         data class Play(val url: String) : GameAction()
         data class OpenLink(val url: String) : GameAction()
+        data class Share(val url: String) : GameAction()
+    }
+
+    sealed class ContextMenuAction {
+        object ContextMenuShare : ContextMenuAction()
     }
 
     data class GameShortcut(
