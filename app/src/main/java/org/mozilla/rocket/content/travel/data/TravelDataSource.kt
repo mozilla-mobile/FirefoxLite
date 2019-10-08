@@ -7,9 +7,11 @@ interface TravelDataSource {
     suspend fun getCityCategories(): Result<List<CityCategory>>
     suspend fun getBucketList(): Result<List<City>>
     suspend fun searchCity(keyword: String): Result<List<City>>
-    suspend fun getCityPriceItems(id: Int): Result<List<PriceItem>>
-    suspend fun getCityArticles(id: Int): Result<List<Article>>
-    suspend fun getCityHotels(id: Int): Result<List<Hotel>>
+    suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
+    suspend fun getCityIg(name: String): Result<Ig>
+    suspend fun getCityWiki(name: String): Result<Wiki>
+    suspend fun getCityVideos(name: String): Result<List<Video>>
+    suspend fun getCityHotels(name: String): Result<List<Hotel>>
 }
 
 data class RunwayItem(
@@ -39,22 +41,39 @@ data class PriceItem(
     val linkUrl: String
 )
 
-data class Article(
-    val id: Int,
+data class Ig(
+    val name: String,
+    val linkUrl: String
+)
+
+data class Wiki(
     val imageUrl: String,
+    val introduction: String,
+    val linkUrl: String
+)
+
+data class Video(
+    val id: String,
+    val imageUrl: String,
+    val length: Int,
     val title: String,
-    val source: String,
-    val read: Boolean
+    val author: String,
+    val viewCount: Int,
+    val date: String,
+    val linkUrl: String
 )
 
 data class Hotel(
     val id: Int,
     val imageUrl: String,
     val source: String,
-    val title: String,
+    val name: String,
     val distance: Float,
     val rating: Float,
-    val freeWifi: Boolean,
+    val hasFreeWifi: Boolean,
     val price: Float,
-    val currency: String
+    val currency: String,
+    val hasFreeCancellation: Boolean,
+    val canPayAtProperty: Boolean,
+    val linkUrl: String
 )

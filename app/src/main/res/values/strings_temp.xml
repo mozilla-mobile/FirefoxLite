@@ -5,6 +5,9 @@
     <string name="travel_vertical_title" translatable="false" tools:ignore="MissingTranslation">Travel</string>
     <string name="travel_vertical_category_1" translatable="false" tools:ignore="MissingTranslation">Explore</string>
     <string name="travel_vertical_category_2" translatable="false" tools:ignore="MissingTranslation">Bucket list</string>
+    <string name="travel_detail_section_explore_title" translatable="false" tools:ignore="MissingTranslation">Explore %s</string>
+    <string name="travel_detail_section_explore_ig_title" translatable="false" tools:ignore="MissingTranslation">#%s on IG</string>
+    <string name="travel_detail_section_hotel_title" translatable="false" tools:ignore="MissingTranslation">Top Hotels</string>
     <string name="msrp_reward_challenge_expired" tools:ignore="MissingTranslation">Expired on %s</string>
     <string name="msrp_reward_challenge_used" tools:ignore="MissingTranslation">Used on %s</string>
     <string name="msrp_congrats_title" tools:ignore="MissingTranslation">Congratulations!</string>

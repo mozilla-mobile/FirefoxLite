@@ -1,35 +1,58 @@
 [
     {
         "id": 1,
-        "image_url": "",
+        "image_url": "https://r-cf.bstatic.com/images/hotel/max1280x900/175/175970596.jpg",
         "source": "Booking.com",
-        "title": "Hotel 1",
+        "name": "Heaven in Bali",
         "distance": 1,
         "rating": 4.5,
-        "freeWifi": true,
+        "has_free_wifi": true,
         "price": 34000,
-        "currency": "Rp"
+        "currency": "Rp",
+        "has_free_cancellation": true,
+        "can_pay_at_property": true,
+        "link_url": "https://www.booking.com/hotel/id/orchid-villa.html?label=gen173nr-1DCAEoggI46AdIMFgEaOcBiAEBmAEwuAEHyAEM2AED6AEB-AECiAIBqAIDuALeguLsBcACAQ;sid=f086a0a5fa31aa51435d73202c1f1ebd;dest_id=835;dest_type=region;dist=0;group_adults=2;group_children=0;hapos=4;hpos=4;no_rooms=1;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1570275689;srpvid=984b52346793023d;type=total;ucfs=1&#hotelTmpl"
     },
     {
         "id": 2,
-        "image_url": "",
+        "image_url": "https://r-cf.bstatic.com/images/hotel/max1280x900/173/173726407.jpg",
         "source": "Booking.com",
-        "title": "Hotel 2",
+        "name": "OYO 190 BSB Hotel",
         "distance": 3.5,
         "rating": 4,
         "freeWifi": true,
         "price": 34000,
-        "currency": "Rp"
+        "currency": "Rp",
+        "has_free_cancellation": true,
+        "can_pay_at_property": false,
+        "link_url": "https://www.booking.com/hotel/id/oyo-190-bsb-blahbatu.html?label=gen173nr-1DCAEoggI46AdIMFgEaOcBiAEBmAEwuAEHyAEM2AED6AEB-AECiAIBqAIDuALeguLsBcACAQ;sid=f086a0a5fa31aa51435d73202c1f1ebd;dest_id=835;dest_type=region;dist=0;group_adults=2;group_children=0;hapos=4;hpos=4;no_rooms=1;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1570275718;srpvid=c0d55243215e0100;type=total;ucfs=1&#hotelTmpl"
     },
     {
         "id": 3,
-        "image_url": "",
+        "image_url": "https://r-cf.bstatic.com/images/hotel/max1280x900/121/121505318.jpg",
         "source": "Booking.com",
-        "title": "Hotel 2",
+        "name": "Bella Kita Mountain Retreat & Spa",
         "distance": 10,
         "rating": 3,
         "freeWifi": false,
         "price": 12000,
-        "currency": "Rp"
+        "currency": "Rp",
+        "has_free_cancellation": false,
+        "can_pay_at_property": true,
+        "link_url": "https://www.booking.com/hotel/id/bella-kita-mountain-retreat-amp-spa.html?label=gen173nr-1DCAEoggI46AdIMFgEaOcBiAEBmAEwuAEHyAEM2AED6AEB-AECiAIBqAIDuALeguLsBcACAQ;sid=f086a0a5fa31aa51435d73202c1f1ebd;dest_id=835;dest_type=region;dist=0;group_adults=2;group_children=0;hapos=2;hpos=2;no_rooms=1;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1570275689;srpvid=984b52346793023d;type=total;ucfs=1&#hotelTmpl"
+    },
+    {
+        "id": 4,
+        "image_url": "https://q-cf.bstatic.com/images/hotel/max1280x900/127/127248815.jpg",
+        "source": "Booking.com",
+        "name": "The Royal Purnama - Art Suites and Villas",
+        "distance": 13,
+        "rating": 4,
+        "freeWifi": false,
+        "price": 10000,
+        "currency": "Rp",
+        "has_free_cancellation": false,
+        "can_pay_at_property": false,
+        "link_url": "https://www.booking.com/hotel/id/the-royal-purnama-art-suites-and-villas.html?label=gen173nr-1DCAEoggI46AdIMFgEaOcBiAEBmAEwuAEHyAEM2AED6AEB-AECiAIBqAIDuALeguLsBcACAQ;sid=f086a0a5fa31aa51435d73202c1f1ebd;dest_id=835;dest_type=region;dist=0;group_adults=2;group_children=0;hapos=1;hpos=1;no_rooms=1;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1570275689;srpvid=984b52346793023d;type=total;ucfs=1&#hotelTmpl"
     }
 ]
