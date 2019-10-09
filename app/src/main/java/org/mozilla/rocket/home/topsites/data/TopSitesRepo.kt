@@ -26,7 +26,6 @@ import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
-import java.lang.ref.WeakReference
 import java.util.ArrayList
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -148,15 +147,13 @@ class TopSitesRepo(
 
     fun isPinned(site: Site): Boolean = pinSiteManager.isPinned(site)
 
-    private class MigrateHistoryRunnable(handler: Handler, context: Context) : Runnable {
-
-        private val handlerWeakReference: WeakReference<Handler> = WeakReference(handler)
-        private val contextWeakReference: WeakReference<Context> = WeakReference(context)
+    private class MigrateHistoryRunnable(
+        private val handler: Handler,
+        private val appContext: Context
+    ) : Runnable {
 
         override fun run() {
-            val context = contextWeakReference.get() ?: return
-
-            val helper = HistoryDatabase.getInstance(context).openHelper
+            val helper = HistoryDatabase.getInstance(appContext).openHelper
             val db = helper.writableDatabase
             // We can't differentiate if this is a new install or upgrade given the db version will
             // already become the latest version here. We create a temp table if no migration is
@@ -166,7 +163,7 @@ class TopSitesRepo(
             val columns = arrayOf(HistoryContract.BrowsingHistory._ID, HistoryContract.BrowsingHistory.URL, HistoryContract.BrowsingHistory.FAV_ICON)
             builder.columns(columns)
             val query = builder.create()
-            val faviconFolder = FileUtils.getFaviconFolder(context)
+            val faviconFolder = FileUtils.getFaviconFolder(appContext)
             val urls = ArrayList<String>()
             val icons = ArrayList<ByteArray>()
             db.query(query).use { cursor ->
@@ -177,16 +174,15 @@ class TopSitesRepo(
                     parseCursorToSite(cursor, urls, icons)
                 }
             }
-            val handler = handlerWeakReference.get() ?: return
             if (icons.size == 0) {
                 scheduleRefresh(handler)
             } else {
                 // Refresh is still scheduled implicitly in SaveBitmapsTask
-                FavIconUtils.SaveBitmapsTask(faviconFolder, urls, icons, UpdateHistoryWrapper(urls, handlerWeakReference),
+                FavIconUtils.SaveBitmapsTask(faviconFolder, urls, icons, UpdateHistoryWrapper(urls, handler),
                         Bitmap.CompressFormat.PNG, DimenUtils.PNG_QUALITY_DONT_CARE).execute()
             }
             db.execSQL("DROP TABLE " + HistoryDatabaseHelper.Tables.BROWSING_HISTORY_LEGACY)
-            PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(TOP_SITES_V2_PREF, true).apply()
+            PreferenceManager.getDefaultSharedPreferences(appContext).edit().putBoolean(TOP_SITES_V2_PREF, true).apply()
         }
 
         private fun parseCursorToSite(cursor: Cursor, urls: MutableList<String>, icons: MutableList<ByteArray>) {
@@ -204,12 +200,11 @@ class TopSitesRepo(
 
     private class UpdateHistoryWrapper(
         private val urls: List<String>,
-        private val handlerWeakReference: WeakReference<Handler>
+        private val handler: Handler
     ) : FavIconUtils.Consumer<List<String>> {
 
         override fun accept(fileUris: List<String>) {
             val listener = QueryHandler.AsyncUpdateListener {
-                val handler = handlerWeakReference.get() ?: return@AsyncUpdateListener
                 scheduleRefresh(handler)
             }
             for (i in fileUris.indices) {
