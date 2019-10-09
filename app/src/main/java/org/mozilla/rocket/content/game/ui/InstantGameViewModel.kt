@@ -9,11 +9,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.game.ui.model.Game
 import org.mozilla.rocket.download.SingleLiveEvent
 
-class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUseCase) : ViewModel() {
+class InstantGameViewModel(
+    private val getInstantGameList: GetInstantGameListUseCase,
+    private val getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
+) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
@@ -33,7 +37,6 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
     val instantGameItems: LiveData<List<DelegateAdapter.UiModel>> = _instantGameItems
 
     var event = SingleLiveEvent<GameAction>()
-    var createShortcutEvent = SingleLiveEvent<GameShortcut>()
 
     lateinit var selectedGame: Game
 
@@ -50,6 +53,14 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
         when (contextMenuAction) {
             is ContextMenuAction.ContextMenuShare -> {
                 event.value = GameAction.Share(selectedGame.linkUrl)
+            }
+            is ContextMenuAction.ContextMenuCreateShortcut -> {
+                viewModelScope.launch {
+                    val bitmapResult = getBitmapFromImageLinkUseCase(selectedGame.imageUrl)
+                    if (bitmapResult is Result.Success) {
+                        event.postValue(GameAction.CreateShortcut(selectedGame.name, selectedGame.linkUrl, bitmapResult.data))
+                    }
+                }
             }
         }
         return false
@@ -88,15 +99,11 @@ class InstantGameViewModel(private val getInstantGameList: GetInstantGameListUse
         data class Play(val url: String) : GameAction()
         data class OpenLink(val url: String) : GameAction()
         data class Share(val url: String) : GameAction()
+        data class CreateShortcut(val name: String, val url: String, val bitmap: Bitmap) : GameAction()
     }
 
     sealed class ContextMenuAction {
         object ContextMenuShare : ContextMenuAction()
+        object ContextMenuCreateShortcut : ContextMenuAction()
     }
-
-    data class GameShortcut(
-        val gameName: String,
-        val gameUrl: String,
-        val gameBitmap: Bitmap
-    )
 }

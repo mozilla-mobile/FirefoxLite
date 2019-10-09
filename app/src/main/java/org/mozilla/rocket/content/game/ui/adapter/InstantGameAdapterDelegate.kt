@@ -38,6 +38,8 @@ class InstantGameViewHolder(
         menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)?.setOnMenuItemClickListener {
             instantGameViewModel.onContextMenuClicked(InstantGameViewModel.ContextMenuAction.ContextMenuShare)
         }
-        menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)
+        menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)?.setOnMenuItemClickListener {
+            instantGameViewModel.onContextMenuClicked(InstantGameViewModel.ContextMenuAction.ContextMenuCreateShortcut)
+        }
     }
 }

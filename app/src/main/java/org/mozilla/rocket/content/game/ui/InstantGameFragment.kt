@@ -92,10 +92,6 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun observeGameAction() {
-        instantGamesViewModel.createShortcutEvent.observe(this, Observer { gameShortcut ->
-            createShortcut(gameShortcut.gameName, gameShortcut.gameUrl, gameShortcut.gameBitmap)
-        })
-
         instantGamesViewModel.event.observe(this, Observer { event ->
             when (event) {
                 is InstantGameViewModel.GameAction.Play -> {
@@ -119,6 +115,12 @@ class InstantGameFragment : Fragment() {
                             type = "text/plain"
                         }
                         startActivity(Intent.createChooser(sendIntent, null))
+                    }
+                }
+                is InstantGameViewModel.GameAction.CreateShortcut -> {
+                    val shortcut: InstantGameViewModel.GameAction.CreateShortcut = event
+                    context?.let {
+                        createShortcut(shortcut.name, shortcut.url, shortcut.bitmap)
                     }
                 }
             }
