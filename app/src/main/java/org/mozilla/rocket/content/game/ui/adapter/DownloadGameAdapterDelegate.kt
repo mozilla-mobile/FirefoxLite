@@ -35,13 +35,8 @@ class GameViewHolder(
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         menu?.setHeaderTitle(game_name.text)
-//        val intent = Intent()
-//        intent.putExtra("gameType", downloadGameViewModel.selectedGame.type)
-//        if (downloadGameViewModel.canShare())
-//            menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)
-//        if (downloadGameViewModel.canCreateShortCut())
-//            menu?.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)
-//        if (downloadGameViewModel.canRemoveFromList())
-//            menu?.add(0, R.id.remove, 0, R.string.gaming_vertical_menu_option_3)
+        menu?.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)?.setOnMenuItemClickListener {
+            downloadGameViewModel.onContextMenuClicked(DownloadGameViewModel.ContextMenuAction.ContextMenuShare)
+        }
     }
 }

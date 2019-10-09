@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.game.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -104,6 +105,17 @@ class DownloadGameFragment : Fragment() {
                         startActivity(ContentTabActivity.getStartIntent(it, openLink.url))
                     }
                 }
+                is DownloadGameViewModel.GameAction.Share -> {
+                    val share: DownloadGameViewModel.GameAction.Share = event
+                    context?.let {
+                        val sendIntent: Intent = Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.gaming_vertical_share_message, share.url))
+                            type = "text/plain"
+                        }
+                        startActivity(Intent.createChooser(sendIntent, null))
+                    }
+                }
             }
         })
     }
@@ -124,23 +136,24 @@ class DownloadGameFragment : Fragment() {
     }
 
     private fun downloadGame(downloadURL: String) {
-        if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(context!!, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // We do have the permission to write to the external storage. Proceed with the download.
-            val url = downloadURL
-            val contentDisposition = ""
-            val mimetype = "application/vnd.android.package-archive"
-            val name = URLUtil.guessFileName(url, contentDisposition, mimetype)
-            val download = Download(
-                url,
-                name,
-                WebViewProvider.getUserAgentString(context),
-                contentDisposition,
-                mimetype,
-                0,
-                false
-            )
+        context?.let {
+            if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // We do have the permission to write to the external storage. Proceed with the download.
+                val contentDisposition = ""
+                val mimeType = "application/vnd.android.package-archive"
+                val name = URLUtil.guessFileName(downloadURL, contentDisposition, mimeType)
+                val download = Download(
+                    downloadURL,
+                    name,
+                    WebViewProvider.getUserAgentString(it),
+                    contentDisposition,
+                    mimeType,
+                    0,
+                    false
+                )
 
-            queueDownload(download, url)
+                queueDownload(download, downloadURL)
+            }
         }
     }
 
