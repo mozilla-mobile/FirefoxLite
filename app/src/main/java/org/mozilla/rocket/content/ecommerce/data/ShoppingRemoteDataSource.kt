@@ -2,22 +2,28 @@ package org.mozilla.rocket.content.ecommerce.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mozilla.components.concept.fetch.Request
 import org.mozilla.focus.utils.FirebaseHelper
-import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Error
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.util.safeApiCall
-import java.net.URL
+import org.mozilla.rocket.util.sendHttpRequest
 
 class ShoppingRemoteDataSource : ShoppingDataSource {
 
     override suspend fun getDeals(): Result<ApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getDealsApiEndpoint())
-                Success(ApiEntity.fromJson(responseBody))
+                sendHttpRequest(request = Request(url = getDealsApiEndpoint(), method = Request.Method.GET),
+                    onSuccess = {
+                        Success(ApiEntity.fromJson(it.body.string()))
+                    },
+                    onError = {
+                        Error(it)
+                    }
+                )
             },
             errorMessage = "Unable to get remote deals products"
         )
@@ -26,8 +32,14 @@ class ShoppingRemoteDataSource : ShoppingDataSource {
     override suspend fun getCoupons(): Result<ApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getCouponsApiEndpoint())
-                Success(ApiEntity.fromJson(responseBody))
+                sendHttpRequest(request = Request(url = getCouponsApiEndpoint(), method = Request.Method.GET),
+                    onSuccess = {
+                        Success(ApiEntity.fromJson(it.body.string()))
+                    },
+                    onError = {
+                        Error(it)
+                    }
+                )
             },
             errorMessage = "Unable to get remote coupons"
         )
@@ -69,12 +81,6 @@ class ShoppingRemoteDataSource : ShoppingDataSource {
         } else {
             DEFAULT_COUPON_URL_ENDPOINT
         }
-    }
-
-    private fun getHttpResult(endpointUrl: String): String {
-        var responseBody = HttpRequest.get(URL(endpointUrl), "")
-        responseBody = responseBody.replace("\n", "")
-        return responseBody
     }
 
     companion object {

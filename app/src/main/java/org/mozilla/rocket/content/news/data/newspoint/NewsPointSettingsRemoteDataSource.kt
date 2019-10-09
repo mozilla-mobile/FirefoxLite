@@ -2,8 +2,8 @@ package org.mozilla.rocket.content.news.data.newspoint
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mozilla.components.concept.fetch.Request
 import org.json.JSONArray
-import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -11,15 +11,21 @@ import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
 import org.mozilla.rocket.util.safeApiCall
-import java.net.URL
+import org.mozilla.rocket.util.sendHttpRequest
 
 class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsSettingsDataSource {
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getLanguageApiEndpoint())
-                Success(NewsLanguage.fromJson(responseBody))
+                sendHttpRequest(request = Request(url = getLanguageApiEndpoint(), method = Request.Method.GET),
+                    onSuccess = {
+                        Success(NewsLanguage.fromJson(it.body.string()))
+                    },
+                    onError = {
+                        Result.Error(it)
+                    }
+                )
             },
             errorMessage = "Unable to get remote news languages"
         )
@@ -40,16 +46,14 @@ class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?)
     override suspend fun getSupportCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getCategoryApiEndpoint(language))
-                val result = ArrayList<NewsCategory>()
-                val items = JSONArray(responseBody)
-                for (i in 0 until items.length()) {
-                    val categoryId = items.optString(i)
-                    NewsCategory.getCategoryById(categoryId)?.let {
-                        result.add(it)
+                sendHttpRequest(request = Request(url = getCategoryApiEndpoint(language), method = Request.Method.GET),
+                    onSuccess = {
+                        Success(parseCategoriesResult(it.body.string()))
+                    },
+                    onError = {
+                        Result.Error(it)
                     }
-                }
-                Success(result)
+                )
             },
             errorMessage = "Unable to get remote news categories"
         )
@@ -80,10 +84,16 @@ class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?)
         return String.format(url, language)
     }
 
-    private fun getHttpResult(endpointUrl: String): String {
-        var responseBody = HttpRequest.get(URL(endpointUrl), "")
-        responseBody = responseBody.replace("\n", "")
-        return responseBody
+    private fun parseCategoriesResult(jsonString: String): List<NewsCategory> {
+        val result = ArrayList<NewsCategory>()
+        val items = JSONArray(jsonString)
+        for (i in 0 until items.length()) {
+            val categoryId = items.optString(i)
+            NewsCategory.getCategoryById(categoryId)?.let {
+                result.add(it)
+            }
+        }
+        return result
     }
 
     companion object {

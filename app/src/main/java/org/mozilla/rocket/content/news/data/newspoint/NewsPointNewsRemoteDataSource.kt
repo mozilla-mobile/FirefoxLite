@@ -2,14 +2,14 @@ package org.mozilla.rocket.content.news.data.newspoint
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mozilla.components.concept.fetch.Request
 import org.json.JSONObject
-import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsDataSource
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.util.safeApiCall
-import java.net.URL
+import org.mozilla.rocket.util.sendHttpRequest
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -19,17 +19,17 @@ class NewsPointNewsRemoteDataSource(private val newsProvider: NewsProvider?) : N
     override suspend fun getNewsItems(category: String, language: String, pages: Int, pageSize: Int): Result<List<NewsItem>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getApiEndpoint(category, language, pages, pageSize))
-                Result.Success(fromJson(responseBody))
+                sendHttpRequest(request = Request(url = getApiEndpoint(category, language, pages, pageSize), method = Request.Method.GET),
+                    onSuccess = {
+                        Result.Success(fromJson(it.body.string()))
+                    },
+                    onError = {
+                        Result.Error(it)
+                    }
+                )
             },
             errorMessage = "Unable to get news items ($category, $language, $pages, $pageSize)"
         )
-    }
-
-    private fun getHttpResult(endpointUrl: String): String {
-        var responseBody = HttpRequest.get(URL(endpointUrl), "")
-        responseBody = responseBody.replace("\n", "")
-        return responseBody
     }
 
     private fun getApiEndpoint(category: String, language: String, pages: Int, pageSize: Int): String {

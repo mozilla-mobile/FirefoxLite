@@ -2,14 +2,14 @@ package org.mozilla.rocket.content.news.data.rss
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mozilla.components.concept.fetch.Request
 import org.json.JSONArray
-import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsDataSource
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.util.safeApiCall
-import java.net.URL
+import org.mozilla.rocket.util.sendHttpRequest
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -22,18 +22,18 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
                 if (pages != 1) {
                     Result.Error(Exception("No pagination support for the RSS news"))
                 } else {
-                    val responseBody = getHttpResult(getApiEndpoint(category))
-                    Result.Success(fromJson(responseBody))
+                    sendHttpRequest(request = Request(url = getApiEndpoint(category), method = Request.Method.GET),
+                        onSuccess = {
+                            Result.Success(fromJson(it.body.string()))
+                        },
+                        onError = {
+                            Result.Error(it)
+                        }
+                    )
                 }
             },
             errorMessage = "Unable to get news items ($category, $language, $pages, $pageSize)"
         )
-    }
-
-    private fun getHttpResult(endpointUrl: String): String {
-        var responseBody = HttpRequest.get(URL(endpointUrl), "")
-        responseBody = responseBody.replace("\n", "")
-        return responseBody
     }
 
     private fun getApiEndpoint(category: String): String {

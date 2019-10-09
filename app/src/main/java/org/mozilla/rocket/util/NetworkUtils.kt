@@ -16,6 +16,9 @@
 
 package org.mozilla.rocket.util
 
+import mozilla.components.concept.fetch.Request
+import mozilla.components.concept.fetch.Response
+import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import org.mozilla.rocket.content.Result
 import java.io.IOException
 
@@ -29,5 +32,15 @@ suspend fun <T : Any> safeApiCall(call: suspend () -> Result<T>, errorMessage: S
     } catch (e: Exception) {
         // An exception was thrown when calling the API so we're converting this to an IOException
         Result.Error(IOException(errorMessage, e))
+    }
+}
+
+fun <T> sendHttpRequest(request: Request, onSuccess: (Response) -> T, onError: (Exception) -> T): T {
+    return try {
+        return HttpURLConnectionClient()
+            .fetch(request)
+            .use { onSuccess(it) }
+    } catch (e: IOException) {
+        onError(e)
     }
 }
