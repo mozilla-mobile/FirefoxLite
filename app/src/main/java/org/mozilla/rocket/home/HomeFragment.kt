@@ -327,7 +327,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     override fun applyLocale() {
-        home_fragment_fake_input_text.text = "" // TODO: use resource id after defined
+        home_fragment_fake_input_text.text = getString(R.string.home_search_bar_text)
     }
 
     private fun showTopSiteMenu(anchorView: View, pinEnabled: Boolean, site: Site, position: Int) {
