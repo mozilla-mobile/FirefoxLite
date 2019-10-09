@@ -36,9 +36,9 @@ class InstantGameViewModel(
     }
     val instantGameItems: LiveData<List<DelegateAdapter.UiModel>> = _instantGameItems
 
-    var event = SingleLiveEvent<GameAction>()
+    private lateinit var selectedGame: Game
 
-    lateinit var selectedGame: Game
+    var event = SingleLiveEvent<GameAction>()
 
     fun onGameItemClicked(gameItem: Game) {
         event.value = GameAction.Play(gameItem.linkUrl)
@@ -97,7 +97,6 @@ class InstantGameViewModel(
 
     sealed class GameAction {
         data class Play(val url: String) : GameAction()
-        data class OpenLink(val url: String) : GameAction()
         data class Share(val url: String) : GameAction()
         data class CreateShortcut(val name: String, val url: String, val bitmap: Bitmap) : GameAction()
     }

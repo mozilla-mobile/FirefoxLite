@@ -92,18 +92,18 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun observeGameAction() {
+        runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
+            context?.let {
+                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+            }
+        })
+
         instantGamesViewModel.event.observe(this, Observer { event ->
             when (event) {
                 is InstantGameViewModel.GameAction.Play -> {
                     val play: InstantGameViewModel.GameAction.Play = event
                     context?.let {
                         startActivity(GameModeActivity.getStartIntent(it, play.url))
-                    }
-                }
-                is InstantGameViewModel.GameAction.OpenLink -> {
-                    val openLink: InstantGameViewModel.GameAction.OpenLink = event
-                    context?.let {
-                        startActivity(ContentTabActivity.getStartIntent(it, openLink.url))
                     }
                 }
                 is InstantGameViewModel.GameAction.Share -> {
