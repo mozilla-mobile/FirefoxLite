@@ -135,14 +135,19 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGetLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): GetLogoManNotificationUseCase =
-            GetLogoManNotificationUseCase(logoManNotificationRepo)
+    fun provideGetLogoManNotificationUseCase(
+        logoManNotificationRepo: LogoManNotificationRepo,
+        missionRepo: MissionRepository
+    ): GetLogoManNotificationUseCase = GetLogoManNotificationUseCase(logoManNotificationRepo, missionRepo)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideDismissLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): DismissLogoManNotificationUseCase =
-            DismissLogoManNotificationUseCase(logoManNotificationRepo)
+    fun provideDismissLogoManNotificationUseCase(
+        logoManNotificationRepo: LogoManNotificationRepo,
+        missionRepo: MissionRepository
+    ): DismissLogoManNotificationUseCase =
+            DismissLogoManNotificationUseCase(logoManNotificationRepo, missionRepo)
 
     @JvmStatic
     @Singleton

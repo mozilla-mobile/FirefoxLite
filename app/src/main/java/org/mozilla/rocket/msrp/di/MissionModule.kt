@@ -53,9 +53,11 @@ object MissionModule {
     @Singleton
     @Provides
     fun provideMissionRepo(
+        appContext: Context,
         missionLocalDataSource: MissionLocalDataSource,
         missionRemoteDataSource: MissionRemoteDataSource
     ): MissionRepository = MissionRepository(
+        appContext,
         missionLocalDataSource,
         missionRemoteDataSource
     )

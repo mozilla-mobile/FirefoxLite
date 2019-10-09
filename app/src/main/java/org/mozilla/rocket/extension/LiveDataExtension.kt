@@ -17,6 +17,21 @@ fun <T> LiveData<T>.nonNullObserve(owner: LifecycleOwner, observer: (t: T) -> Un
     })
 }
 
+fun <X> LiveData<X>.take(count: Int): LiveData<X> {
+    var remain = count
+    val mediator = MediatorLiveData<X>()
+    mediator.addSource(this) {
+        mediator.value = it
+        if (--remain == 0) {
+            mediator.removeSource(this)
+        }
+    }
+
+    return mediator
+}
+
+fun <X> LiveData<X>.first(): LiveData<X> = take(1)
+
 /** Uses `Transformations.map` on a LiveData */
 fun <X, Y> LiveData<X>.map(body: (X) -> Y): LiveData<Y> {
     return Transformations.map(this, body)
@@ -30,45 +45,20 @@ fun <X, Y> LiveData<X>.switchMap(body: (X) -> LiveData<Y>): LiveData<Y> {
 fun <X, Y> LiveData<X>.switchFrom(source: LiveData<Y>): LiveData<X> =
         source.switchMap { this.map { it } }
 
-fun <A, B> combineLatest(a: LiveData<A>, b: LiveData<B>): LiveData<Pair<A, B>> {
-    return MediatorLiveData<Pair<A, B>>().apply {
-        var lastA: A? = null
-        var lastB: B? = null
+fun <A, B> combineLatest(a: LiveData<A>, b: LiveData<B>): LiveData<Pair<A, B>> =
+        MediatorLiveData<Pair<A, B>>().apply {
+            var lastA: WrapperClass<A>? = null
+            var lastB: WrapperClass<B>? = null
 
-        addSource(a) {
-            if (it == null && value != null) value = null
-            lastA = it
-            if (lastA != null && lastB != null) value = lastA!! to lastB!!
+            addSource(a) {
+                lastA = WrapperClass(it)
+                if (lastB != null) value = lastA!!.data to lastB!!.data
+            }
+
+            addSource(b) {
+                lastB = WrapperClass(it)
+                if (lastA != null) value = lastA!!.data to lastB!!.data
+            }
         }
 
-        addSource(b) {
-            if (it == null && value != null) value = null
-            lastB = it
-            if (lastA != null && lastB != null) value = lastA!! to lastB!!
-        }
-    }
-}
-
-fun <A, B, C> combineLatest(a: LiveData<A>, b: LiveData<B>, c: LiveData<C>): LiveData<Triple<A?, B?, C?>> {
-
-    fun Triple<A?, B?, C?>?.copyWithFirst(first: A?): Triple<A?, B?, C?> {
-        if (this@copyWithFirst == null) return Triple<A?, B?, C?>(first, null, null)
-        return this@copyWithFirst.copy(first = first)
-    }
-
-    fun Triple<A?, B?, C?>?.copyWithSecond(second: B?): Triple<A?, B?, C?> {
-        if (this@copyWithSecond == null) return Triple<A?, B?, C?>(null, second, null)
-        return this@copyWithSecond.copy(second = second)
-    }
-
-    fun Triple<A?, B?, C?>?.copyWithThird(third: C?): Triple<A?, B?, C?> {
-        if (this@copyWithThird == null) return Triple<A?, B?, C?>(null, null, third)
-        return this@copyWithThird.copy(third = third)
-    }
-
-    return MediatorLiveData<Triple<A?, B?, C?>>().apply {
-        addSource(a) { value = value.copyWithFirst(it) }
-        addSource(b) { value = value.copyWithSecond(it) }
-        addSource(c) { value = value.copyWithThird(it) }
-    }
-}
+private class WrapperClass<T>(var data: T)
