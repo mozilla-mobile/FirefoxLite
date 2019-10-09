@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.game.data.GameRemoteDataSource
 import org.mozilla.rocket.content.game.data.GameRepository
+import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
@@ -38,9 +39,18 @@ object GameModule {
         GetDownloadGameListUseCase(repo)
 
     @JvmStatic
+    @Singleton
     @Provides
-    fun provideInstantGameViewModel(getInstantGameListUseCase: GetInstantGameListUseCase): InstantGameViewModel =
-        InstantGameViewModel(getInstantGameListUseCase)
+    fun provideBitmapFromImageLinkUseCase(repo: GameRepository): GetBitmapFromImageLinkUseCase =
+        GetBitmapFromImageLinkUseCase(repo)
+
+    @JvmStatic
+    @Provides
+    fun provideInstantGameViewModel(
+        getInstantGameListUseCase: GetInstantGameListUseCase,
+        getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
+    ): InstantGameViewModel =
+        InstantGameViewModel(getInstantGameListUseCase, getBitmapFromImageLinkUseCase)
 
     @JvmStatic
     @Provides

@@ -1,5 +1,7 @@
 package org.mozilla.rocket.content.game.data
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.Request
@@ -8,6 +10,8 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
+import java.io.InputStream
+import java.net.URL
 
 class GameRemoteDataSource : GameDataSource {
 
@@ -40,6 +44,18 @@ class GameRemoteDataSource : GameDataSource {
                 )
             },
             errorMessage = "Unable to get remote download game list"
+        )
+    }
+
+    override suspend fun getBitmapFromImageLink(imageUrl: String): Result<Bitmap> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+            call = {
+                val inputStream = URL(imageUrl).content as InputStream
+                val imageBitmap = BitmapFactory.decodeStream(inputStream)
+                inputStream.close()
+                Result.Success(imageBitmap)
+            },
+            errorMessage = "Unable to get bitmap from the image link: $imageUrl"
         )
     }
 
