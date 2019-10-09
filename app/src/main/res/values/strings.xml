@@ -532,9 +532,9 @@
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
     <!-- Title of news preferences -->
-    <string name="title_news_preferences">News Settings</string>
+    <string name="title_news_settings">News Settings</string>
     <!-- This is the dialog for choosing news language -->
-    <string name="news_language_dialog_title">Language</string>
+    <string name="news_language_title">Language</string>
     <string name="news_language_dialog_option_english">English</string>
     <string name="news_language_dialog_option_hindi">Hindi</string>
     <string name="news_language_dialog_option_marathi">Marathi</string>
@@ -576,6 +576,7 @@
     <string name="news_category_option_astrology">Astrology</string>
     <string name="news_category_option_science">Science</string>
     <string name="news_category_option_jokes">Jokes</string>
+    <!--"Nation" is one of the news category meaning local news. Its position is same as Top-News/Technology/Education...-->
     <string name="news_category_option_nation">Nation</string>
     
     <!-- A prefix that shows before the logo of a given partner. This string tries to show a user that the service he/she is using is provided by this given partner. -->
@@ -638,10 +639,11 @@
     <!--Artboard Name: 1.1 Shopping Search Overview-->
     <!--Shopping Search Onboarding-->
     <string name="shopping_search_onboarding_title">Find great prices</string>
+    <!--Shopping Search Onboarding Message, and would need to localize "Smart Shopping Search"-->
     <string name="shopping_search_onboarding_body">Compare prices across many online stores with Smart Shopping Search.</string>
     <!--Shopping Search Input Placeholder-->
     <string name="shopping_search_placeholder">Type the product you want to search</string>
-    <!--Shopping Search Prompt Message-->
+    <!--Shopping Search Prompt Message, and would need to localize "Smart Shopping Search"-->
     <string name="shopping_search_prompt_message_body">Compare prices across many online stores with Smart Shopping Search.</string>
     <string name="shopping_search_prompt_message_button">Search</string>
     <!--Switch UI Onboarding-->
@@ -678,6 +680,7 @@
     <!--Shopping Coupons-->
     <string name="shopping_coupon_expire_zero">Expired</string>
     <string name="shopping_coupon_expire_one">1 day left</string>
+    <!--%1$d is the decimal for how many days left till the shopping coupon expired.-->
     <string name="shopping_coupon_expire_other">%1$d days left</string>
 
 
@@ -686,6 +689,7 @@
     <string name="gaming_vertical_title">Game</string>
     <string name="gaming_vertical_category_1">Instant play</string>
     <string name="gaming_vertical_category_2">Download to play</string>
+    <!--"New" is a small tag to let users know that it is a new game.-->
     <string name="gaming_vertical_new">New</string>
     
     <!--Gaming Contextual Hint-->
@@ -727,7 +731,7 @@
     <!-- Introduce Smart Shopping Search -->
     <string name="onboarding_2_smart_shopping_search_title">Smart Shopping Search</string>
     <string name="onboarding_2_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
-    <string name="home_search_bar_text">Search...</string>
+    <string name="home_search_bar_text">Search…</string>
     
     <!-- Content & Services -->
     <!-- Title of Content & Services -->
@@ -772,9 +776,12 @@
     <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on %1$s Home by simply clicking the buttons for seven days in a row.</string>
     <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
+    <!--"I'm In!" is a button where users can press to join the reward program--> 
     <string name="msrp_challenge_button_1">I’m In!</string>
     <string name="msrp_challenge_tou">By clicking “I’m in” you are agreeing to our Terms of Use</string>
+    <!--"Leave mission" is a button for users to exit the reward program-->     
     <string name="msrp_challenge_button_2">Leave mission</string>
+    <!--"How to redeem" is the title for a section to let users know how to redeem the voucher--> 
     <string name="msrp_challenge_separator">How to redeem</string>
     <string name="msrp_challenge_button_4">Use Firefox account to redeem</string>
     
@@ -804,6 +811,7 @@
     <string name="msrp_voucher_expire">Expires %1$s</string>
     <string name="msrp_voucher_button_2">Voucher can only be applied through this URL below:</string>
     <string name="msrp_voucher_button_1">Copy</string>
+    <string name="msrp_voucher_toast">Voucher code copied</string>
    
     <!--Coupon-->
     <!-- The %1$s here is a placeholder for "shopping site"-->
