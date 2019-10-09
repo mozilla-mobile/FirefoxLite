@@ -532,9 +532,9 @@
     <!-- Button on the news portal page when a newer list is found. When a user tap it, the page will refresh and show the latest list. -->
     <string name="news_update_btn">New update</string>
     <!-- Title of news preferences -->
-    <string name="title_news_settings">News Settings</string>
+    <string name="title_news_preferences">News Settings</string>
     <!-- This is the dialog for choosing news language -->
-    <string name="news_language_title">Language</string>
+    <string name="news_language_dialog_title">Language</string>
     <string name="news_language_dialog_option_english">English</string>
     <string name="news_language_dialog_option_hindi">Hindi</string>
     <string name="news_language_dialog_option_marathi">Marathi</string>
