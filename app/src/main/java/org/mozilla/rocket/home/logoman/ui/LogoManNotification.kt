@@ -40,13 +40,12 @@ class LogoManNotification : FrameLayout {
         inflate(context, R.layout.logo_man_notification, this)
         minimumHeight = dpToPx(MIN_HEIGHT_IN_DP)
         initNotificationBoard()
-        notification_board.setOnClickListener { actionListener?.onNotificationClick() }
     }
 
     private fun initNotificationBoard() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Notification::class, R.layout.home_notification_board, NotificationAdapterDelegate())
+                add(Notification::class, R.layout.home_notification_board, NotificationAdapterDelegate { actionListener?.onNotificationClick() })
             }
         )
         notification_board.apply {
@@ -93,8 +92,8 @@ class LogoManNotification : FrameLayout {
         if (animate) {
             startSwipeIn()
         } else {
-            logo_man.translationY = LOGO_MAN_SWIPE_IN_3_END_Y_IN_DP
-            notification_board.translationY = NOTIFICATION_BOARD_SWIPE_IN_2_END_Y_IN_DP
+            logo_man.translationY = dpToPx(LOGO_MAN_SWIPE_IN_3_END_Y_IN_DP).toFloat()
+            notification_board.translationY = dpToPx(NOTIFICATION_BOARD_SWIPE_IN_2_END_Y_IN_DP).toFloat()
         }
     }
 
@@ -183,23 +182,32 @@ class LogoManNotification : FrameLayout {
         actionListener = listener
     }
 
-    private class NotificationAdapterDelegate : AdapterDelegate {
+    private class NotificationAdapterDelegate(private val clickListener: () -> Unit) : AdapterDelegate {
         override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-                NotificationViewHolder(view)
+                NotificationViewHolder(view, clickListener)
     }
 
-    private class NotificationViewHolder(override val containerView: View) : DelegateAdapter.ViewHolder(containerView) {
+    private class NotificationViewHolder(
+        override val containerView: View,
+        private val clickListener: () -> Unit
+    ) : DelegateAdapter.ViewHolder(containerView) {
         override fun bind(uiModel: DelegateAdapter.UiModel) {
             uiModel as Notification
             notification_title.text = uiModel.title
             notification_subtitle.text = uiModel.subtitle
+            if (uiModel.subtitle.isNullOrEmpty()) {
+                notification_title.maxLines = 3
+            } else {
+                notification_title.maxLines = 1
+            }
+            itemView.setOnClickListener { clickListener() }
         }
     }
 
     data class Notification(
-        val id: Long,
+        val id: String,
         val title: String,
-        val subtitle: String
+        val subtitle: String?
     ) : DelegateAdapter.UiModel()
 
     interface NotificationActionListener {

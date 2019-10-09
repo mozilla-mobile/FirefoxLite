@@ -24,6 +24,7 @@ import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.msrp.data.MissionRepository
+import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
 import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
 import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
@@ -33,7 +34,9 @@ import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import javax.inject.Singleton
 
-@Module
+@Module(
+    includes = [MissionModule::class]
+)
 object HomeModule {
 
     @JvmStatic
@@ -134,14 +137,19 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGetLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): GetLogoManNotificationUseCase =
-            GetLogoManNotificationUseCase(logoManNotificationRepo)
+    fun provideGetLogoManNotificationUseCase(
+        logoManNotificationRepo: LogoManNotificationRepo,
+        missionRepo: MissionRepository
+    ): GetLogoManNotificationUseCase = GetLogoManNotificationUseCase(logoManNotificationRepo, missionRepo)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideDismissLogoManNotificationUseCase(logoManNotificationRepo: LogoManNotificationRepo): DismissLogoManNotificationUseCase =
-            DismissLogoManNotificationUseCase(logoManNotificationRepo)
+    fun provideDismissLogoManNotificationUseCase(
+        logoManNotificationRepo: LogoManNotificationRepo,
+        missionRepo: MissionRepository
+    ): DismissLogoManNotificationUseCase =
+            DismissLogoManNotificationUseCase(logoManNotificationRepo, missionRepo)
 
     @JvmStatic
     @Singleton

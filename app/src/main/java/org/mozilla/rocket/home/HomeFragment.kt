@@ -380,7 +380,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
         logo_man_notification.setNotificationActionListener(object : LogoManNotification.NotificationActionListener {
             override fun onNotificationClick() {
-                // TODO:
+                homeViewModel.onLogoManNotificationClicked()
             }
 
             override fun onNotificationDismiss() {
@@ -464,8 +464,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.showMissionCompleteDialog.observe(this, Observer { mission ->
             showMissionCompleteDialog(mission)
         })
-        homeViewModel.openMissionRedeemPage.observe(this, Observer { mission ->
-            openMissionRedeemPage(mission)
+        homeViewModel.openMissionDetailPage.observe(this, Observer { mission ->
+            openMissionDetailPage(mission)
         })
         homeViewModel.showContentHubClickOnboarding.observe(this, Observer {
             showRequestClickContentHubOnboarding()
@@ -500,7 +500,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         startActivity(ProfileActivity.getStartIntent(requireContext()))
     }
 
-    private fun openMissionRedeemPage(mission: Mission) {
+    private fun openMissionDetailPage(mission: Mission) {
         startActivity(RewardActivity.getStartIntent(requireContext(), RewardActivity.DeepLink.MissionDetailPage(mission)))
     }
 }
