@@ -44,6 +44,15 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
         return false
     }
 
+    fun onContextMenuClicked(contextMenuAction: ContextMenuAction): Boolean {
+        when (contextMenuAction) {
+            is ContextMenuAction.ContextMenuShare -> {
+                event.value = GameAction.Share(selectedGame.linkUrl)
+            }
+        }
+        return false
+    }
+
     fun onRetryButtonClicked() {
         launchDataLoad {
             val result = getDownloadGameList()
@@ -76,5 +85,10 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
     sealed class GameAction {
         data class Install(val url: String) : GameAction()
         data class OpenLink(val url: String) : GameAction()
+        data class Share(val url: String) : GameAction()
+    }
+
+    sealed class ContextMenuAction {
+        object ContextMenuShare : ContextMenuAction()
     }
 }
