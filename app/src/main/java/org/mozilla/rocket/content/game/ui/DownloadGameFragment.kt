@@ -91,6 +91,12 @@ class DownloadGameFragment : Fragment() {
     }
 
     private fun observeGameAction() {
+        runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
+            context?.let {
+                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+            }
+        })
+
         downloadGameViewModel.event.observe(this, Observer { event ->
             when (event) {
                 is DownloadGameViewModel.GameAction.Install -> {
@@ -98,12 +104,6 @@ class DownloadGameFragment : Fragment() {
                     // install a APK
                     val install: DownloadGameViewModel.GameAction.Install = event
                     downloadGame(install.url)
-                }
-                is DownloadGameViewModel.GameAction.OpenLink -> {
-                    val openLink: DownloadGameViewModel.GameAction.OpenLink = event
-                    context?.let {
-                        startActivity(ContentTabActivity.getStartIntent(it, openLink.url))
-                    }
                 }
                 is DownloadGameViewModel.GameAction.Share -> {
                     val share: DownloadGameViewModel.GameAction.Share = event

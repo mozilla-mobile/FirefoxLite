@@ -31,9 +31,9 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
     }
     val downloadGameItems: LiveData<List<DelegateAdapter.UiModel>> = _downloadGameItems
 
-    var event = SingleLiveEvent<GameAction>()
+    private lateinit var selectedGame: Game
 
-    lateinit var selectedGame: Game
+    var event = SingleLiveEvent<GameAction>()
 
     fun onGameItemClicked(gameItem: Game) {
         event.value = GameAction.Install(gameItem.linkUrl)
@@ -84,7 +84,6 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
 
     sealed class GameAction {
         data class Install(val url: String) : GameAction()
-        data class OpenLink(val url: String) : GameAction()
         data class Share(val url: String) : GameAction()
     }
 
