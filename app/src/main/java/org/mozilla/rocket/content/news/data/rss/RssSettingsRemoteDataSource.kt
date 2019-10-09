@@ -2,8 +2,8 @@ package org.mozilla.rocket.content.news.data.rss
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mozilla.components.concept.fetch.Request
 import org.json.JSONArray
-import org.mozilla.httprequest.HttpRequest
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -12,7 +12,7 @@ import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
 import org.mozilla.rocket.content.news.data.rss.RssSettingsLocalDataSource.Companion.DUMMY_NEWS_LANGUAGE
 import org.mozilla.rocket.util.safeApiCall
-import java.net.URL
+import org.mozilla.rocket.util.sendHttpRequest
 
 class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsSettingsDataSource {
 
@@ -35,14 +35,14 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
     override suspend fun getSupportCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
-                val responseBody = getHttpResult(getCategoryApiEndpoint())
-                val result = ArrayList<NewsCategory>()
-                val items = JSONArray(responseBody)
-                for (i in 0 until items.length()) {
-                    val categoryId = items.optString(i)
-                    result.add(NewsCategory(categoryId, 0, i, true))
-                }
-                Success(result)
+                sendHttpRequest(request = Request(url = getCategoryApiEndpoint(), method = Request.Method.GET),
+                    onSuccess = {
+                        Success(parseCategoriesResult(it.body.string()))
+                    },
+                    onError = {
+                        Result.Error(it)
+                    }
+                )
             },
             errorMessage = "Unable to get remote news categories"
         )
@@ -68,10 +68,14 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
         return newsProvider?.categoriesUrl ?: DEFAULT_CATEGORY_LIST_URL
     }
 
-    private fun getHttpResult(endpointUrl: String): String {
-        var responseBody = HttpRequest.get(URL(endpointUrl), "")
-        responseBody = responseBody.replace("\n", "")
-        return responseBody
+    private fun parseCategoriesResult(jsonString: String): List<NewsCategory> {
+        val result = ArrayList<NewsCategory>()
+        val items = JSONArray(jsonString)
+        for (i in 0 until items.length()) {
+            val categoryId = items.optString(i)
+            result.add(NewsCategory(categoryId, 0, i, true))
+        }
+        return result
     }
 
     companion object {
