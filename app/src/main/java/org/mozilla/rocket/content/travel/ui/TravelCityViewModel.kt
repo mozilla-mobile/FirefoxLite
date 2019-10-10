@@ -7,11 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
+import org.mozilla.rocket.download.SingleLiveEvent
 
 class TravelCityViewModel(
     private val getIg: GetCityIgUseCase,
@@ -25,6 +30,21 @@ class TravelCityViewModel(
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
+    val openLinkUrl = SingleLiveEvent<String>()
+
+    fun onIgClicked(igItem: IgUiModel) {
+        openLinkUrl.value = igItem.linkUrl
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onVideoClicked(videoItem: VideoUiModel) {
+        // TODO handle video click
+    }
+
+    fun onWikiClicked(wikiItem: WikiUiModel) {
+        openLinkUrl.value = wikiItem.linkUrl
+    }
+
     private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
@@ -37,15 +57,9 @@ class TravelCityViewModel(
             data.add(SectionHeaderUiModel(SectionType.Explore(name)))
 
             // TODO: uncomment these while corresponding adapter delegates is added
-            /*
             val igResult = getIg(name)
             if (igResult is Result.Success) {
                 data.add(TravelMapper.toExploreIgUiModel(igResult.data))
-            }
-
-            val wikiResult = getWiki(name)
-            if (wikiResult is Result.Success) {
-                data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data))
             }
 
             val videoResult = getVideos(name)
@@ -57,7 +71,11 @@ class TravelCityViewModel(
                         }
                 )
             }
-            */
+
+            val wikiResult = getWiki(name)
+            if (wikiResult is Result.Success) {
+                data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data))
+            }
 
             // add hotel
             data.add(SectionHeaderUiModel(SectionType.TopHotels))
