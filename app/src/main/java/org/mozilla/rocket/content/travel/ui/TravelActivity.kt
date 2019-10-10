@@ -36,14 +36,6 @@ class TravelActivity : FragmentActivity() {
         initViewPager()
         initTabLayout()
         initToolBar()
-        makeStatusBarTransparent()
-    }
-
-    private fun makeStatusBarTransparent() {
-        var visibility = window.decorView.systemUiVisibility
-        // do not overwrite existing value
-        visibility = visibility or (View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-        window.decorView.systemUiVisibility = visibility
     }
 
     private fun initViewPager() {
