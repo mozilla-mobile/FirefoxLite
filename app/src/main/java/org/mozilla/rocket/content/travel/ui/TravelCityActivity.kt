@@ -13,9 +13,16 @@ import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.content.travel.ui.adapter.ExploreIgAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.ExploreVideoAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.ExploreWikiAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
 import javax.inject.Inject
 
 class TravelCityActivity : BaseActivity() {
@@ -38,6 +45,7 @@ class TravelCityActivity : BaseActivity() {
         initToolBar()
         initDetail()
         bindListData()
+        initExploreActions()
     }
 
     override fun applyLocale() = Unit
@@ -47,6 +55,9 @@ class TravelCityActivity : BaseActivity() {
             AdapterDelegatesManager().apply {
                 // TODO: add adapter delegates
                 add(SectionHeaderUiModel::class, R.layout.item_section_header, SectionHeaderAdapterDelegate(travelCityViewModel))
+                add(IgUiModel::class, R.layout.item_travel_detail_ig, ExploreIgAdapterDelegate(travelCityViewModel))
+                add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
+                add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
             }
         )
         city_details.apply {
@@ -74,6 +85,13 @@ class TravelCityActivity : BaseActivity() {
         refresh_button.setOnClickListener {
             travelCityViewModel.getLatestItems(name)
         }
+    }
+
+    private fun initExploreActions() {
+
+        travelCityViewModel.openLinkUrl.observe(this, Observer { linkUrl ->
+            startActivity(ContentTabActivity.getStartIntent(this@TravelCityActivity, linkUrl))
+        })
     }
 
     private fun showBucketListAddedSnackbar() {

@@ -12,6 +12,9 @@ import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
 
 object TravelMapper {
 
@@ -66,14 +69,14 @@ object TravelMapper {
                 name
             )
 
-    fun toExploreIgUiModel(ig: Ig): ExploreIgUiModel =
-            ExploreIgUiModel(
+    fun toExploreIgUiModel(ig: Ig): IgUiModel =
+            IgUiModel(
                 ig.name,
                 ig.linkUrl
             )
 
-    fun toExploreWikiUiModel(wiki: Wiki): ExploreWikiUiModel =
-            ExploreWikiUiModel(
+    fun toExploreWikiUiModel(wiki: Wiki): WikiUiModel =
+            WikiUiModel(
                 wiki.imageUrl,
                 SOURCE_WIKI,
                 wiki.introduction,

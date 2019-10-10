@@ -2,30 +2,6 @@ package org.mozilla.rocket.content.travel.ui
 
 import org.mozilla.rocket.adapter.DelegateAdapter
 
-data class ExploreIgUiModel(
-    val title: String,
-    val linkUrl: String
-) : DelegateAdapter.UiModel()
-
-data class ExploreWikiUiModel(
-    val imageUrl: String,
-    val source: String,
-    val introduction: String,
-    val linkUrl: String
-) : DelegateAdapter.UiModel()
-
-data class VideoUiModel(
-    val id: String,
-    val imageUrl: String,
-    val length: Int,
-    val title: String,
-    val author: String,
-    val viewCount: Int,
-    val date: String,
-    val read: Boolean,
-    val linkUrl: String
-) : DelegateAdapter.UiModel()
-
 data class HotelUiModel(
     val imageUrl: String,
     val source: String,
