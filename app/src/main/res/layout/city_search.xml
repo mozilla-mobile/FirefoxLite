@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif"
         android:letterSpacing="0.01"
         android:text="@string/travel_vertical_search_title"
-        android:textColor="@color/travelSearchHeaderTextColor87"
+        android:textColor="@color/contentHeaderTextColor87"
         android:textSize="18sp"
         android:textStyle="bold" />
 
