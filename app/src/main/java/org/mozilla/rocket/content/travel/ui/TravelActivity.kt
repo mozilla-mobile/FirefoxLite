@@ -3,8 +3,8 @@ package org.mozilla.rocket.content.travel.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_travel.*
 import org.mozilla.focus.R
