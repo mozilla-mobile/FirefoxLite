@@ -6,19 +6,21 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.travel.ui.TravelBucketListViewModel
 
-class BucketListCityAdapterDelegate() : AdapterDelegate {
+class BucketListCityAdapterDelegate(private val travelBucketListViewModel: TravelBucketListViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        BucketListCityViewHolder(view)
+        BucketListCityViewHolder(view, travelBucketListViewModel)
 }
 
 class BucketListCityViewHolder(
-    override val containerView: View
+    override val containerView: View,
+    private val travelBucketListViewModel: TravelBucketListViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
-        val bucketListCity = uiModel as BucketListCityItem
-        city_name.text = bucketListCity.cityName
+        val bucketListCity = uiModel as BucketListCityUiModel
+        city_name.text = bucketListCity.name
 
         GlideApp.with(itemView.context)
                 .asBitmap()
@@ -27,13 +29,16 @@ class BucketListCityViewHolder(
                 .load(bucketListCity.imageUrl)
                 .into(city_image)
 
-        city_favorite_btn.isSelected = bucketListCity.isFavorite
+        city_favorite_btn.isSelected = bucketListCity.favorite
+
+        itemView.setOnClickListener { travelBucketListViewModel.onBucketListCityClicked(bucketListCity) }
+        city_favorite_btn.setOnClickListener { travelBucketListViewModel.removeCityFromBucket(bucketListCity) }
     }
 }
 
-data class BucketListCityItem(
-    val cityName: String,
+data class BucketListCityUiModel(
+    val id: Int,
     val imageUrl: String,
-    val linkUrl: String,
-    val isFavorite: Boolean
+    val name: String,
+    val favorite: Boolean
 ) : DelegateAdapter.UiModel()

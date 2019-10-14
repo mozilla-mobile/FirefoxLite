@@ -4,18 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_travel_bucket_list.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.VerticalSpaceItemDecoration
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityAdapterDelegate
-import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityItem
+import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
+import javax.inject.Inject
 
 class TravelBucketListFragment : Fragment() {
 
+    @Inject
+    lateinit var travelBucketListViewModelCreator: Lazy<TravelBucketListViewModel>
+
+    private lateinit var travelBucketListViewModel: TravelBucketListViewModel
     private lateinit var bucketListAdapter: DelegateAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
+        super.onCreate(savedInstanceState)
+        travelBucketListViewModel = getActivityViewModel(travelBucketListViewModelCreator)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_travel_bucket_list, container, false)
@@ -24,13 +40,15 @@ class TravelBucketListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBucketList()
-        bindExploreData()
+        bindBucketListData()
+        bindLoadingState()
+        observeBucketListActions()
     }
 
     private fun initBucketList() {
         bucketListAdapter = DelegateAdapter(
                 AdapterDelegatesManager().apply {
-                    add(BucketListCityItem::class, R.layout.item_bucket_list, BucketListCityAdapterDelegate())
+                    add(BucketListCityUiModel::class, R.layout.item_bucket_list, BucketListCityAdapterDelegate(travelBucketListViewModel))
                 }
         )
 
@@ -40,21 +58,53 @@ class TravelBucketListFragment : Fragment() {
 
             adapter = bucketListAdapter
         }
+
+        bucket_list_empty_explore.setOnClickListener {
+            // TODO hook to travel view model for go search action
+        }
     }
 
-    private fun bindExploreData() {
-        //TODO bind view model for data
-        bucketListAdapter.setData(DEFAULT_CITY_ITEMS)
+    private fun bindBucketListData() {
+
+        travelBucketListViewModel.items.observe(this, Observer {
+            bucketListAdapter.setData(it)
+        })
+
+        travelBucketListViewModel.isListEmpty.observe(this, Observer { isEmpty ->
+            bucket_list_empty_view.isVisible = isEmpty
+        })
     }
 
-    companion object {
+    private fun bindLoadingState() {
+        travelBucketListViewModel.isDataLoading.observe(this@TravelBucketListFragment, Observer { state ->
+            when (state) {
+                is TravelBucketListViewModel.State.Idle -> showContentView()
+                is TravelBucketListViewModel.State.Loading -> showLoadingView()
+                is TravelBucketListViewModel.State.Error -> showErrorView()
+            }
+        })
+    }
 
-        @JvmStatic
-        val DEFAULT_CITY_ITEMS = listOf(
-            BucketListCityItem("Bali","https://rukminim1.flixcart.com/flap/1440/640/image/c17480802f3886a9.jpg?q=90","", true),
-            BucketListCityItem("Los Angeles","https://rukminim1.flixcart.com/flap/1440/640/image/69ec96c8387c70a1.jpg?q=90","", true),
-            BucketListCityItem("Athens, Greece","https://rukminim1.flixcart.com/flap/1440/640/image/4ca2f501323d9f50.jpg?q=90","", false),
-            BucketListCityItem("PingTung, Taiwan","https://images-eu.ssl-images-amazon.com/images/G/31/img17/AmazonDevices/2019/jupiter/bunk/mob._CB452464492_SY367_.jpg","", true)
-        )
+    private fun observeBucketListActions() {
+
+        travelBucketListViewModel.openCity.observe(this, Observer {
+            // TODO go city detail activity
+        })
+
+        // TODO observe go search event from travel view model
+    }
+
+    private fun showLoadingView() {
+        spinner.isVisible = true
+        bucket_list_recycler_view.isVisible = false
+    }
+
+    private fun showContentView() {
+        spinner.isVisible = false
+        bucket_list_recycler_view.isVisible = true
+    }
+
+    private fun showErrorView() {
+        TODO("not implemented")
     }
 }

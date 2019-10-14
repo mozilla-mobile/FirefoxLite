@@ -46,6 +46,7 @@ import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.content.travel.ui.TravelCityActivity
+import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
 import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
@@ -131,6 +132,7 @@ interface AppComponent {
     fun inject(travelCityActivity: TravelCityActivity)
     fun inject(travelExploreFragment: TravelExploreFragment)
     fun inject(travelCitySearchActivity: TravelCitySearchActivity)
+    fun inject(travelBucketListFragment: TravelBucketListFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
