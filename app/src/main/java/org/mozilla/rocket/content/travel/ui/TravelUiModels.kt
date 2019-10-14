@@ -14,10 +14,6 @@ data class CitySearchResultUiModel(
     val name: CharSequence
 )
 
-data class SectionUiModel(
-    val type: SectionType
-) : DelegateAdapter.UiModel()
-
 data class ExploreIgUiModel(
     val title: String,
     val linkUrl: String
@@ -55,8 +51,3 @@ data class HotelUiModel(
     val canPayAtProperty: Boolean,
     val linkUrl: String
 ) : DelegateAdapter.UiModel()
-
-sealed class SectionType {
-    data class Explore(val name: String) : SectionType()
-    data class TopHotels(val linkUrl: String) : SectionType()
-}
