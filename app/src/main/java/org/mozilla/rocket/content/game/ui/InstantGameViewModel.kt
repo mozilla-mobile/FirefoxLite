@@ -1,12 +1,14 @@
 package org.mozilla.rocket.content.game.ui
 
 import android.graphics.Bitmap
+import android.view.ContextMenu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.adapter.Runway
@@ -49,21 +51,14 @@ class InstantGameViewModel(
         return false
     }
 
-    fun onContextMenuClicked(contextMenuAction: ContextMenuAction): Boolean {
-        when (contextMenuAction) {
-            is ContextMenuAction.ContextMenuShare -> {
-                event.value = GameAction.Share(selectedGame.linkUrl)
-            }
-            is ContextMenuAction.ContextMenuCreateShortcut -> {
-                viewModelScope.launch {
-                    val bitmapResult = getBitmapFromImageLinkUseCase(selectedGame.imageUrl)
-                    if (bitmapResult is Result.Success) {
-                        event.postValue(GameAction.CreateShortcut(selectedGame.name, selectedGame.linkUrl, bitmapResult.data))
-                    }
-                }
-            }
+    fun onCreateContextMenu(menu: ContextMenu) {
+        menu.setHeaderTitle(selectedGame.name)
+        menu.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)?.setOnMenuItemClickListener {
+            onContextMenuClicked(ContextMenuAction.Share)
         }
-        return false
+        menu.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)?.setOnMenuItemClickListener {
+            onContextMenuClicked(ContextMenuAction.CreateShortcut)
+        }
     }
 
     fun onRetryButtonClicked() {
@@ -110,6 +105,23 @@ class InstantGameViewModel(
         }
     }
 
+    private fun onContextMenuClicked(contextMenuAction: ContextMenuAction): Boolean {
+        when (contextMenuAction) {
+            is ContextMenuAction.Share -> {
+                event.value = GameAction.Share(selectedGame.linkUrl)
+            }
+            is ContextMenuAction.CreateShortcut -> {
+                viewModelScope.launch {
+                    val bitmapResult = getBitmapFromImageLinkUseCase(selectedGame.imageUrl)
+                    if (bitmapResult is Result.Success) {
+                        event.postValue(GameAction.CreateShortcut(selectedGame.name, selectedGame.linkUrl, bitmapResult.data))
+                    }
+                }
+            }
+        }
+        return false
+    }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
@@ -135,7 +147,7 @@ class InstantGameViewModel(
     }
 
     sealed class ContextMenuAction {
-        object ContextMenuShare : ContextMenuAction()
-        object ContextMenuCreateShortcut : ContextMenuAction()
+        object Share : ContextMenuAction()
+        object CreateShortcut : ContextMenuAction()
     }
 }
