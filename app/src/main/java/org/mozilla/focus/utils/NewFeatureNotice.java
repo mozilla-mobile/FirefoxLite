@@ -3,26 +3,24 @@ package org.mozilla.focus.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.annotation.VisibleForTesting;
 
-import org.mozilla.rocket.home.topsites.data.PinSiteManager;
-import org.mozilla.rocket.home.topsites.data.PinSiteManagerKt;
+import androidx.annotation.VisibleForTesting;
 
 public class NewFeatureNotice {
 
     private static final String PREF_KEY_BOOLEAN_FIRSTRUN_SHOWN = "firstrun_shown";
     private static final String PREF_KEY_INT_FEATURE_UPGRADE_VERSION = "firstrun_upgrade_version";
+    private static final String PREF_KEY_BOOLEAN_HOME_PAGE_ONBOARDING = "has_home_page_onboarding_shown";
 
     private static final int MULTI_TAB_FROM_VERSION_1_0_TO_2_0 = 1;
     private static final int FIREBASE_FROM_VERSION_2_0_TO_2_1 = 2;
     private static final int LITE_FROM_VERSION_2_1_TO_4_0 = 3;
     private static final int LITE_FROM_VERSION_4_0_TO_1_1_4 = 4;
+    private static final int LITE_FROM_VERSION_1_0_0_TO_2_0_0 = 5;
 
     private static NewFeatureNotice instance;
 
     private final SharedPreferences preferences;
-
-    private final PinSiteManager pinSiteManager;
 
     public synchronized static NewFeatureNotice getInstance(Context context) {
         if (instance == null) {
@@ -33,23 +31,18 @@ public class NewFeatureNotice {
 
     private NewFeatureNotice(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        this.pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
     }
 
     public boolean shouldShowLiteUpdate() {
-        // TODO: To be removed, force to disable pin site tutorial
-//        boolean showPinSite = pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable();
-        boolean showPinSite = false;
-        return from21to40() || showPinSite;
+        return hasShownFirstRun() && needToShow100To200Update();
     }
 
-    public boolean from21to40() {
-        return LITE_FROM_VERSION_2_1_TO_4_0 > getLastShownFeatureVersion();
+    public boolean needToShow100To200Update() {
+        return getLastShownFeatureVersion() < LITE_FROM_VERSION_1_0_0_TO_2_0_0;
     }
 
     public void setLiteUpdateDidShow() {
-        setFirstRunDidShow();
-        setLastShownFeatureVersion(LITE_FROM_VERSION_4_0_TO_1_1_4);
+        setLastShownFeatureVersion(LITE_FROM_VERSION_1_0_0_TO_2_0_0);
     }
 
     public boolean shouldShowPrivacyPolicyUpdate() {
@@ -99,5 +92,22 @@ public class NewFeatureNotice {
 
     public int getLastShownFeatureVersion() {
         return preferences.getInt(PREF_KEY_INT_FEATURE_UPGRADE_VERSION, 0);
+    }
+
+    public boolean hasHomePageOnboardingShown() {
+        return preferences.getBoolean(PREF_KEY_BOOLEAN_HOME_PAGE_ONBOARDING, false);
+    }
+
+    public void setHomePageOnboardingDidShow() {
+        preferences.edit()
+                .putBoolean(PREF_KEY_BOOLEAN_HOME_PAGE_ONBOARDING, true)
+                .apply();
+    }
+
+    @VisibleForTesting
+    public void resetHomePageOnboardingDidShow() {
+        preferences.edit()
+                .putBoolean(PREF_KEY_BOOLEAN_HOME_PAGE_ONBOARDING, false)
+                .apply();
     }
 }

@@ -21,6 +21,7 @@ import org.mozilla.focus.activity.MainActivity.Companion.ACTION_INSTALL_IN_APP_U
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.extension.nonNullObserve
 
@@ -52,7 +53,7 @@ class InAppUpdateController(
     private var inAppUpdateManager = InAppUpdateManager(inAppUpdateModel)
 
     private var installFromIntent = false
-    private var shouldShowFirstRun = Settings.getInstance(appContext).shouldShowFirstrun()
+    private var shouldShowFirstRun = NewFeatureNotice.getInstance(appContext).shouldShowLiteUpdate()
     private var isSideLoaded = try {
         appContext.packageManager.getInstallerPackageName(appContext.packageName)
     } catch (e: IllegalArgumentException) {

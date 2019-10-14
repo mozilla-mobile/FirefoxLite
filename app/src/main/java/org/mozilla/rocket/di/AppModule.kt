@@ -20,6 +20,7 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import dagger.Module
 import dagger.Provides
+import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import javax.inject.Singleton
 
@@ -44,4 +45,8 @@ class AppModule(private val appContext: Context) {
     @Singleton
     @Provides
     fun provideSettings(appContext: Context): Settings = Settings.getInstance(appContext)
+
+    @Singleton
+    @Provides
+    fun provideNewFeatureNotice(appContext: Context): NewFeatureNotice = NewFeatureNotice.getInstance(appContext)
 }

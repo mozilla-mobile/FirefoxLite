@@ -17,10 +17,8 @@ import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
-import org.mozilla.rocket.home.onboarding.CheckFirstRunUseCase
-import org.mozilla.rocket.home.onboarding.CheckLiteUpdate
-import org.mozilla.rocket.home.onboarding.CompleteFirstRunUseCase
-import org.mozilla.rocket.home.onboarding.CompleteLiteUpdate
+import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -49,10 +47,8 @@ class HomeViewModel(
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
     private val isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
-    checkFirstRunUseCase: CheckFirstRunUseCase,
-    completeFirstRunUseCase: CompleteFirstRunUseCase,
-    checkLiteUpdate: CheckLiteUpdate,
-    completeLiteUpdate: CompleteLiteUpdate,
+    isNeedToShowHomeOnboardingUseCase: IsNeedToShowHomeOnboardingUseCase,
+    completeHomeOnboardingUseCase: CompleteHomeOnboardingUseCase,
     private val checkInMissionUseCase: CheckInMissionUseCase,
     private val completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
     getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
@@ -96,9 +92,8 @@ class HomeViewModel(
                 refreshMissionsUseCase()
             }
         }
-        if (!checkFirstRunUseCase() || !checkLiteUpdate()) {
-            completeFirstRunUseCase()
-            completeLiteUpdate()
+        if (isNeedToShowHomeOnboardingUseCase()) {
+            completeHomeOnboardingUseCase()
             showOnboardingSpotlight.call()
         }
     }
