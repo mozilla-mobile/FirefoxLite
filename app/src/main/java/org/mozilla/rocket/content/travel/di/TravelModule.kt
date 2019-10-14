@@ -13,6 +13,7 @@ import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
 import org.mozilla.rocket.content.travel.domain.GetRunwayItemsUseCase
+import org.mozilla.rocket.content.travel.domain.GetSectionHeadersUseCase
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
 import org.mozilla.rocket.content.travel.ui.TravelBucketListViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
@@ -65,6 +66,11 @@ object TravelModule {
     @JvmStatic
     @Singleton
     @Provides
+    fun provideGetSectionHeadersUseCase(travelRepository: TravelRepository): GetSectionHeadersUseCase = GetSectionHeadersUseCase(travelRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
     fun provideGetCityIgUseCase(travelRepository: TravelRepository): GetCityIgUseCase = GetCityIgUseCase(travelRepository)
 
     @JvmStatic
@@ -100,11 +106,12 @@ object TravelModule {
     @JvmStatic
     @Provides
     fun provideTravelCityViewModel(
+        getSectionHeadersUseCase: GetSectionHeadersUseCase,
         getCityIgUseCase: GetCityIgUseCase,
         getCityWikiUseCase: GetCityWikiUseCase,
         getCityVideosUseCase: GetCityVideosUseCase,
         getCityHotelsUseCase: GetCityHotelsUseCase
-    ): TravelCityViewModel = TravelCityViewModel(getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase)
+    ): TravelCityViewModel = TravelCityViewModel(getSectionHeadersUseCase, getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase)
 
     @JvmStatic
     @Provides

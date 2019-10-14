@@ -23,6 +23,10 @@ class TravelRepository(
         return localDataSource.searchCity(keyword)
     }
 
+    suspend fun getSectionHeaders(name: String): Result<List<SectionType>> {
+        return localDataSource.getSectionHeaders(name)
+    }
+
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
         return localDataSource.getCityPriceItems(name)
     }

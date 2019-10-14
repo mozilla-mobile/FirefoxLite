@@ -38,6 +38,15 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
+    override suspend fun getSectionHeaders(name: String): Result<List<SectionType>> {
+        return withContext(Dispatchers.IO) {
+            Success(listOf(
+                    SectionType.Explore(name),
+                    SectionType.TopHotels("https://www.booking.com/searchresults.html?label=gen173nr-1FCAEoggI46AdIMFgEaOcBiAEBmAEwuAEHyAEM2AEB6AEB-AECiAIBqAIDuAK07-DsBcACAQ;sid=f086a0a5fa31aa51435d73202c1f1ebd;tmpl=searchresults;class_interval=1;dest_id=835;dest_type=region;dtdisc=0;from_sf=1;group_adults=2;group_children=0;inac=0;index_postcard=0;label_click=undef;lang=en-us;no_rooms=1;offset=0;postcard=0;room1=A%2CA;sb_price_type=total;shw_aparth=1;slp_r_match=0;soz=1;src=index;src_elem=sb;srpvid=30882d64a1250024;ss=Bali;ss_all=0;ssb=empty;sshis=0;top_ufis=1&")
+            ))
+        }
+    }
+
     override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
         return withContext(Dispatchers.IO) {
             Success(getMockPriceItems() ?: emptyList())

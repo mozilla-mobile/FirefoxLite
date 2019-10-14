@@ -14,6 +14,8 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import javax.inject.Inject
 
 class TravelCityActivity : BaseActivity() {
@@ -44,6 +46,7 @@ class TravelCityActivity : BaseActivity() {
         detailAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 // TODO: add adapter delegates
+                add(SectionHeaderUiModel::class, R.layout.item_section_header, SectionHeaderAdapterDelegate(travelCityViewModel))
             }
         )
         city_details.apply {
@@ -55,8 +58,7 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel.items.observe(this, Observer {
             detailAdapter.setData(it)
         })
-        // TODO: uncomment this while all adapter delegates are added
-//        travelCityViewModel.getLatestItems(name)
+        travelCityViewModel.getLatestItems(name)
     }
 
     private fun initToolBar() {

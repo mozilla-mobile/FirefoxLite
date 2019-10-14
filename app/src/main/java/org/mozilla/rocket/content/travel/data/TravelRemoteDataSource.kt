@@ -20,6 +20,10 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
+    override suspend fun getSectionHeaders(name: String): Result<List<SectionType>> {
+        TODO("not implemented")
+    }
+
     override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
         TODO("not implemented")
     }
