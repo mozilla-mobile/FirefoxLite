@@ -9,39 +9,39 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.game.domain.AddRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
+import org.mozilla.rocket.content.game.domain.GetRecentlyPlayedGameListUseCase
 import org.mozilla.rocket.content.game.ui.model.Game
+import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class InstantGameViewModel(
     private val getInstantGameList: GetInstantGameListUseCase,
+    private val addRecentlyPlayedGame: AddRecentlyPlayedGameUseCase,
+    private val getRecentlyPlayedGameList: GetRecentlyPlayedGameListUseCase,
     private val getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
 ) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _instantGameItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val result = getInstantGameList()
-                if (result is Result.Success) {
-                    value = GameDataMapper.toGameUiModel(result.data)
-                } else if (result is Result.Error) {
-                    throw (result.exception)
-                }
-            }
-        }
-    }
+    private val _instantGameItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val instantGameItems: LiveData<List<DelegateAdapter.UiModel>> = _instantGameItems
 
     private lateinit var selectedGame: Game
 
     var event = SingleLiveEvent<GameAction>()
 
+    init {
+        getGameUiModelList()
+    }
+
     fun onGameItemClicked(gameItem: Game) {
         event.value = GameAction.Play(gameItem.linkUrl)
+        addToRecentlyPlayedGameList(gameItem)
     }
 
     fun onGameItemLongClicked(gameItem: Game): Boolean {
@@ -67,13 +67,46 @@ class InstantGameViewModel(
     }
 
     fun onRetryButtonClicked() {
+        getGameUiModelList()
+    }
+
+    private fun getGameUiModelList() {
         launchDataLoad {
             val result = getInstantGameList()
             if (result is Result.Success) {
-                _instantGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
+                val instantGameList = GameDataMapper.toGameUiModel(result.data)
+                getRecentlyPlayedCategoryUiModel()?.let {
+                    mergeRecentlyPlayedToGameUiModelList(instantGameList, it)
+                }
+                _instantGameItems.postValue(instantGameList)
             } else if (result is Result.Error) {
                 throw (result.exception)
             }
+        }
+    }
+
+    private suspend fun getRecentlyPlayedCategoryUiModel(): DelegateAdapter.UiModel? {
+        val result = getRecentlyPlayedGameList()
+        return if (result is Result.Success && result.isNotEmpty) {
+            GameDataMapper.toGameUiModel(result.data)[0]
+        } else {
+            null
+        }
+    }
+
+    private fun mergeRecentlyPlayedToGameUiModelList(gameUiModelList: List<DelegateAdapter.UiModel>, recentlyPlayedGameListCategory: DelegateAdapter.UiModel) {
+        val mergePosition = if (gameUiModelList.isNotEmpty() && gameUiModelList[0] is Runway) {
+            1
+        } else {
+            0
+        }
+        (gameUiModelList as ArrayList).add(mergePosition, recentlyPlayedGameListCategory)
+    }
+
+    private fun addToRecentlyPlayedGameList(gameItem: Game) {
+        viewModelScope.launch {
+            addRecentlyPlayedGame(GameDataMapper.toApiItem(gameItem))
+            getGameUiModelList()
         }
     }
 

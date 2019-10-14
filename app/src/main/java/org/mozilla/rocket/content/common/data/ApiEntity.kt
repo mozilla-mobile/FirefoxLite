@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.common.data
 
+import org.json.JSONArray
 import org.json.JSONObject
 import org.mozilla.rocket.util.toJsonObject
 
@@ -7,6 +8,18 @@ data class ApiEntity(
     val version: Long,
     val subcategories: List<ApiCategory>
 ) {
+
+    fun toJsonObject(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put(KEY_VERSION, version)
+        val jsonArray = JSONArray()
+        for (subcategory in subcategories) {
+            jsonArray.put(subcategory.toJsonObject())
+        }
+        jsonObject.put(KEY_SUBCATEGORIES, jsonArray)
+        return jsonObject
+    }
+
     companion object {
         private const val KEY_VERSION = "version"
         private const val KEY_SUBCATEGORIES = "subcategories"
@@ -37,6 +50,20 @@ data class ApiCategory(
     val subcategoryId: Int,
     val items: List<ApiItem>
 ) {
+
+    fun toJsonObject(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put(KEY_COMPONENT_TYPE, componentType)
+        jsonObject.put(KEY_SUBCATEGORY_NAME, subcategoryName)
+        jsonObject.put(KEY_SUBCATEGORY_ID, subcategoryId)
+        val jsonArray = JSONArray()
+        for (apiItem in items) {
+            jsonArray.put(apiItem.toJsonObject())
+        }
+        jsonObject.put(KEY_ITEMS, jsonArray)
+        return jsonObject
+    }
+
     companion object {
         private const val KEY_COMPONENT_TYPE = "componentType"
         private const val KEY_SUBCATEGORY_NAME = "subcategoryName"
@@ -72,6 +99,22 @@ data class ApiItem(
     var scoreReviews: Int = 0,
     var description: String = ""
 ) {
+
+    fun toJsonObject(): JSONObject {
+        val jsonObject = JSONObject()
+        jsonObject.put(KEY_SOURCE_NAME, sourceName)
+        jsonObject.put(KEY_IMAGE, image)
+        jsonObject.put(KEY_DESTINATION, destination)
+        jsonObject.put(KEY_TITLE, title)
+        jsonObject.put(KEY_COMPONENT_ID, componentId)
+        jsonObject.put(KEY_PRICE, price)
+        jsonObject.put(KEY_DISCOUNT, discount)
+        jsonObject.put(KEY_SCORE, score)
+        jsonObject.put(KEY_SCORE_REVIEWS, scoreReviews)
+        jsonObject.put(KEY_DESCRIPTION, description)
+        return jsonObject
+    }
+
     companion object {
         private const val KEY_SOURCE_NAME = "source_name"
         private const val KEY_IMAGE = "image"

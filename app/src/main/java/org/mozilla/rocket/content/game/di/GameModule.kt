@@ -1,12 +1,16 @@
 package org.mozilla.rocket.content.game.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.mozilla.rocket.content.game.data.GameLocalDataSource
 import org.mozilla.rocket.content.game.data.GameRemoteDataSource
 import org.mozilla.rocket.content.game.data.GameRepository
+import org.mozilla.rocket.content.game.domain.AddRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
+import org.mozilla.rocket.content.game.domain.GetRecentlyPlayedGameListUseCase
 import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
 import org.mozilla.rocket.content.game.ui.InstantGameViewModel
 import javax.inject.Singleton
@@ -23,8 +27,14 @@ object GameModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGameRepository(gameRemoteDataSource: GameRemoteDataSource): GameRepository =
-        GameRepository(gameRemoteDataSource)
+    fun provideGameLocalDataSource(appContext: Context): GameLocalDataSource =
+        GameLocalDataSource(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGameRepository(gameRemoteDataSource: GameRemoteDataSource, gameLocalDataSource: GameLocalDataSource): GameRepository =
+        GameRepository(gameRemoteDataSource, gameLocalDataSource)
 
     @JvmStatic
     @Singleton
@@ -41,6 +51,18 @@ object GameModule {
     @JvmStatic
     @Singleton
     @Provides
+    fun provideAddRecentlyPlayedGameUseCase(repo: GameRepository): AddRecentlyPlayedGameUseCase =
+        AddRecentlyPlayedGameUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetRecentlyPlayedGameListUseCase(repo: GameRepository): GetRecentlyPlayedGameListUseCase =
+        GetRecentlyPlayedGameListUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
     fun provideBitmapFromImageLinkUseCase(repo: GameRepository): GetBitmapFromImageLinkUseCase =
         GetBitmapFromImageLinkUseCase(repo)
 
@@ -48,9 +70,11 @@ object GameModule {
     @Provides
     fun provideInstantGameViewModel(
         getInstantGameListUseCase: GetInstantGameListUseCase,
+        addRecentlyPlayedGame: AddRecentlyPlayedGameUseCase,
+        getRecentlyPlayedGameList: GetRecentlyPlayedGameListUseCase,
         getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
     ): InstantGameViewModel =
-        InstantGameViewModel(getInstantGameListUseCase, getBitmapFromImageLinkUseCase)
+        InstantGameViewModel(getInstantGameListUseCase, addRecentlyPlayedGame, getRecentlyPlayedGameList, getBitmapFromImageLinkUseCase)
 
     @JvmStatic
     @Provides
