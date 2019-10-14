@@ -11,6 +11,7 @@ import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetRecentlyPlayedGameListUseCase
+import org.mozilla.rocket.content.game.domain.RemoveRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
 import org.mozilla.rocket.content.game.ui.InstantGameViewModel
 import javax.inject.Singleton
@@ -57,6 +58,12 @@ object GameModule {
     @JvmStatic
     @Singleton
     @Provides
+    fun provideRemoveRecentlyPlayedGameUseCase(repo: GameRepository): RemoveRecentlyPlayedGameUseCase =
+        RemoveRecentlyPlayedGameUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
     fun provideGetRecentlyPlayedGameListUseCase(repo: GameRepository): GetRecentlyPlayedGameListUseCase =
         GetRecentlyPlayedGameListUseCase(repo)
 
@@ -71,10 +78,17 @@ object GameModule {
     fun provideInstantGameViewModel(
         getInstantGameListUseCase: GetInstantGameListUseCase,
         addRecentlyPlayedGame: AddRecentlyPlayedGameUseCase,
+        removeRecentlyPlayedGame: RemoveRecentlyPlayedGameUseCase,
         getRecentlyPlayedGameList: GetRecentlyPlayedGameListUseCase,
         getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
     ): InstantGameViewModel =
-        InstantGameViewModel(getInstantGameListUseCase, addRecentlyPlayedGame, getRecentlyPlayedGameList, getBitmapFromImageLinkUseCase)
+        InstantGameViewModel(
+            getInstantGameListUseCase,
+            addRecentlyPlayedGame,
+            removeRecentlyPlayedGame,
+            getRecentlyPlayedGameList,
+            getBitmapFromImageLinkUseCase
+        )
 
     @JvmStatic
     @Provides

@@ -18,5 +18,7 @@ class GameRepository(
 
     suspend fun addRecentlyPlayedGame(game: ApiItem) = localDataSource.addRecentlyPlayedGame(game)
 
+    suspend fun removeRecentlyPlayedGame(game: ApiItem) = localDataSource.removeRecentlyPlayedGame(game)
+
     suspend fun getRecentlyPlayedGames(): Result<ApiEntity> = localDataSource.getRecentlyPlayedGameList()
 }
