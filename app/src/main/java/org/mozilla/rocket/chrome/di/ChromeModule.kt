@@ -6,6 +6,7 @@ import dagger.Provides
 import org.mozilla.focus.persistence.BookmarksDatabase
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.Browsers
+import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.viewmodel.BookmarkViewModel
 import org.mozilla.focus.viewmodel.ShoppingSearchPromptViewModel
@@ -103,11 +104,19 @@ object ChromeModule {
     @Provides
     fun provideChromeViewModel(
         settings: Settings,
+        newFeatureNotice: NewFeatureNotice,
         bookmarkRepo: BookmarkRepository,
         privateMode: PrivateMode,
         browsers: Browsers,
         storageHelper: StorageHelper
-    ): ChromeViewModel = ChromeViewModel(settings, bookmarkRepo, privateMode, browsers, storageHelper)
+    ): ChromeViewModel = ChromeViewModel(
+        settings,
+        newFeatureNotice,
+        bookmarkRepo,
+        privateMode,
+        browsers,
+        storageHelper
+    )
 
     @JvmStatic
     @Provides

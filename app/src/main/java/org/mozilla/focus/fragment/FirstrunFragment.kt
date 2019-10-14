@@ -156,7 +156,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     }
 
     private fun findPagerAdapter(context: Context, onClickListener: View.OnClickListener): PagerAdapter? {
-        return if (NewFeatureNotice.getInstance(getContext()).hasShownFirstRun() && NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
+        return if (NewFeatureNotice.getInstance(getContext()).shouldShowLiteUpdate()) {
             UpgradeFirstrunPagerAdapter(context, onClickListener)
         } else {
             null
@@ -175,6 +175,8 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     }
 
     private fun finishFirstrun() {
+        NewFeatureNotice.getInstance(context).setFirstRunDidShow()
+        NewFeatureNotice.getInstance(context).setLiteUpdateDidShow()
         (activity as MainActivity).firstrunFinished()
     }
 

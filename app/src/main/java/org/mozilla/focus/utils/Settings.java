@@ -48,14 +48,12 @@ public class Settings {
     private final SharedPreferences preferences;
     private final Resources resources;
     private final EventHistory eventHistory;
-    private final NewFeatureNotice newFeatureNotice;
     private final SettingPreferenceWrapper settingPreferenceWrapper;
 
     private Settings(Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         resources = context.getResources();
         eventHistory = new EventHistory(preferences);
-        newFeatureNotice = NewFeatureNotice.getInstance(context);
         settingPreferenceWrapper = new SettingPreferenceWrapper(context.getContentResolver());
     }
 
@@ -106,10 +104,6 @@ public class Settings {
     public boolean showNightModeSpotlight() {
         return settingPreferenceWrapper.getBoolean(resources.getString(R.string.pref_key_night_mode_brightness_dirty),
                 false);
-    }
-
-    public boolean shouldShowFirstrun() {
-        return newFeatureNotice.shouldShowLiteUpdate() && newFeatureNotice.hasShownFirstRun();
     }
 
     public boolean shouldSaveToRemovableStorage() {

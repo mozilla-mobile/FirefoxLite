@@ -12,6 +12,7 @@ import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Browsers
+import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.map
@@ -26,6 +27,7 @@ import kotlin.concurrent.thread
 
 class ChromeViewModel(
     private val settings: Settings,
+    private var newFeatureNotice: NewFeatureNotice,
     private val bookmarkRepo: BookmarkRepository,
     private val privateMode: PrivateMode,
     private val browsers: Browsers,
@@ -50,7 +52,7 @@ class ChromeViewModel(
     val isPrivateBrowsingActive = MutableLiveData<Boolean>()
 
     val shouldShowFirstrun: Boolean
-        get() = settings.shouldShowFirstrun()
+        get() = newFeatureNotice.shouldShowLiteUpdate()
 
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()

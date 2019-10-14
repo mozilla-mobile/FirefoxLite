@@ -19,6 +19,7 @@ import org.mozilla.focus.utils.Settings;
 public class BeforeTestTask {
     private boolean enableRateAppPromotion;
     private boolean skipFirstRun;
+    private boolean skipHomePageOnboarding;
     private boolean clearBrowsingHistory;
     private boolean enableSreenshotOnBoarding;
     private boolean enableDownloadIndicatorIntro;
@@ -26,6 +27,7 @@ public class BeforeTestTask {
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
+        this.skipHomePageOnboarding = builder.skipHomePageOnboarding;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
         this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
         this.enableDownloadIndicatorIntro = builder.enableDownloadIndicatorIntro;
@@ -42,6 +44,11 @@ public class BeforeTestTask {
             NewFeatureNotice.getInstance(context).setLiteUpdateDidShow();
         } else {
             NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
+        }
+        if (this.skipHomePageOnboarding) {
+            NewFeatureNotice.getInstance(context).setHomePageOnboardingDidShow();
+        } else {
+            NewFeatureNotice.getInstance(context).resetHomePageOnboardingDidShow();
         }
         final Settings settings = Settings.getInstance(context);
         if (settings != null) {
@@ -76,11 +83,13 @@ public class BeforeTestTask {
         private boolean enableDownloadIndicatorIntro;
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
+        private boolean skipHomePageOnboarding;
         private boolean clearBrowsingHistory;
 
         public Builder() {
             this.enableRateAppPromotion = false;
             this.skipFirstRun = true;
+            this.skipHomePageOnboarding = true;
             this.clearBrowsingHistory = false;
             this.enableSreenshotOnBoarding = false;
             this.enableDownloadIndicatorIntro = false;
@@ -93,6 +102,11 @@ public class BeforeTestTask {
 
         public Builder setSkipFirstRun(boolean skipFirstRun) {
             this.skipFirstRun = skipFirstRun;
+            return this;
+        }
+
+        public Builder setSkipHomePageOnboarding(boolean skipHomePageOnboarding) {
+            this.skipHomePageOnboarding = skipHomePageOnboarding;
             return this;
         }
 
