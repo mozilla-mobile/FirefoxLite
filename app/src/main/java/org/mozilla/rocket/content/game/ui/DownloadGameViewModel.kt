@@ -1,11 +1,13 @@
 package org.mozilla.rocket.content.game.ui
 
+import android.view.ContextMenu
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
@@ -44,13 +46,11 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
         return false
     }
 
-    fun onContextMenuClicked(contextMenuAction: ContextMenuAction): Boolean {
-        when (contextMenuAction) {
-            is ContextMenuAction.ContextMenuShare -> {
-                event.value = GameAction.Share(selectedGame.linkUrl)
-            }
+    fun onCreateContextMenu(menu: ContextMenu) {
+        menu.setHeaderTitle(selectedGame.name)
+        menu.add(0, R.id.share, 0, R.string.gaming_vertical_menu_option_1)?.setOnMenuItemClickListener {
+            onContextMenuClicked(ContextMenuAction.Share)
         }
-        return false
     }
 
     fun onRetryButtonClicked() {
@@ -62,6 +62,15 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
                 throw (result.exception)
             }
         }
+    }
+
+    private fun onContextMenuClicked(contextMenuAction: ContextMenuAction): Boolean {
+        when (contextMenuAction) {
+            is ContextMenuAction.Share -> {
+                event.value = GameAction.Share(selectedGame.linkUrl)
+            }
+        }
+        return false
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
@@ -88,6 +97,6 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
     }
 
     sealed class ContextMenuAction {
-        object ContextMenuShare : ContextMenuAction()
+        object Share : ContextMenuAction()
     }
 }
