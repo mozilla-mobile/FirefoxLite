@@ -49,4 +49,14 @@ object GameDataMapper {
             item.description,
             item.componentId
         )
+
+    fun toApiItem(game: Game): ApiItem =
+        ApiItem(
+            game.brand,
+            game.imageUrl,
+            game.linkUrl,
+            game.name,
+            game.componentId,
+            description = game.packageName
+        )
 }

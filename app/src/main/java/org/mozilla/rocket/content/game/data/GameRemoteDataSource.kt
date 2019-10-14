@@ -8,6 +8,7 @@ import mozilla.components.concept.fetch.Request
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 import java.io.InputStream
@@ -57,6 +58,14 @@ class GameRemoteDataSource : GameDataSource {
             },
             errorMessage = "Unable to get bitmap from the image link: $imageUrl"
         )
+    }
+
+    override suspend fun addRecentlyPlayedGame(game: ApiItem) {
+        throw UnsupportedOperationException("Can't add recently played game to server")
+    }
+
+    override suspend fun getRecentlyPlayedGameList(): Result<ApiEntity> {
+        throw UnsupportedOperationException("Can't get recently played game from server")
     }
 
     private fun getInstantGameApiEndpoint(): String {
