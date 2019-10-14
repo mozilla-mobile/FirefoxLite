@@ -2,13 +2,6 @@ package org.mozilla.rocket.content.travel.ui
 
 import org.mozilla.rocket.adapter.DelegateAdapter
 
-data class BucketListCityUiModel(
-    val id: Int,
-    val imageUrl: String,
-    val name: String,
-    val favorite: Boolean
-) : DelegateAdapter.UiModel()
-
 data class ExploreIgUiModel(
     val title: String,
     val linkUrl: String

@@ -12,6 +12,9 @@
     <string name="travel_detail_section_hotel_title" translatable="false" tools:ignore="MissingTranslation">Top Hotels</string>
     <string name="travel_detail_bucket_list_saved" translatable="false" tools:ignore="MissingTranslation">Saved in your bucket list</string>
     <string name="travel_detail_bucket_list_saved_view" translatable="false" tools:ignore="MissingTranslation">VIEW</string>
+    <string name="travel_bucket_list_no_bookmark" translatable="false" tools:ignore="MissingTranslation">“I haven’t been everywhere,\nbut it’s on my list.”</string>
+    <string name="travel_bucket_list_no_bookmark_name" translatable="false" tools:ignore="MissingTranslation">- Susn Sontag</string>
+    <string name="travel_bucket_list_no_bookmark_explore" translatable="false" tools:ignore="MissingTranslation">Explore a city</string>
     <string name="msrp_reward_challenge_expired" tools:ignore="MissingTranslation">Expired on %s</string>
     <string name="msrp_reward_challenge_used" tools:ignore="MissingTranslation">Used on %s</string>
     <string name="msrp_congrats_title" tools:ignore="MissingTranslation">Congratulations!</string>

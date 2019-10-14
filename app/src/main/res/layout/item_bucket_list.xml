@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bucket_list_card"
@@ -9,10 +8,10 @@
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:clipToPadding="false"
-    app:strokeColor="@color/paletteLightGreyA100"
-    app:strokeWidth="1dp"
     app:cardCornerRadius="4dp"
-    app:cardElevation="0dp">
+    app:cardElevation="1dp"
+    app:strokeColor="@color/paletteLightGreyA100"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,41 +21,54 @@
             android:id="@+id/city_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="328:160"
             android:scaleType="centerCrop"
             android:src="@drawable/placeholder"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="328:200"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/city_name_background"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:background="@drawable/bg_travel_city"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/city_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
             android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
-            android:maxLines="1"
+            android:layout_marginBottom="8dp"
             android:ellipsize="end"
-            android:textSize="14sp"
-            android:textColor="@color/paletteBlack100"
-            app:layout_constraintTop_toBottomOf="@id/city_image"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.01"
+            android:maxLines="1"
+            android:textColor="@color/paletteWhite100"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/city_name_background"
+            app:layout_constraintEnd_toEndOf="@id/city_name_background"
+            app:layout_constraintStart_toStartOf="@id/city_name_background"
+            app:layout_constraintTop_toTopOf="@id/city_name_background"
             tools:text="Bali" />
-        
+
         <ImageButton
             android:id="@+id/city_favorite_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="11dp"
             android:background="@null"
-            android:src="@drawable/ic_favorite_states"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:src="@drawable/ic_favorite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
