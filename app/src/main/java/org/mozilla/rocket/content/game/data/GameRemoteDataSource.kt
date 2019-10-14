@@ -64,6 +64,10 @@ class GameRemoteDataSource : GameDataSource {
         throw UnsupportedOperationException("Can't add recently played game to server")
     }
 
+    override suspend fun removeRecentlyPlayedGame(game: ApiItem) {
+        throw UnsupportedOperationException("Can't remove recently played game from server")
+    }
+
     override suspend fun getRecentlyPlayedGameList(): Result<ApiEntity> {
         throw UnsupportedOperationException("Can't get recently played game from server")
     }

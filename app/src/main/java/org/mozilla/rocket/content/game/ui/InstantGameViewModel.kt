@@ -16,13 +16,17 @@ import org.mozilla.rocket.content.game.domain.AddRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetRecentlyPlayedGameListUseCase
+import org.mozilla.rocket.content.game.domain.RemoveRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.ui.model.Game
+import org.mozilla.rocket.content.game.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.model.GameType
 import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class InstantGameViewModel(
     private val getInstantGameList: GetInstantGameListUseCase,
     private val addRecentlyPlayedGame: AddRecentlyPlayedGameUseCase,
+    private val removeRecentlyPlayedGame: RemoveRecentlyPlayedGameUseCase,
     private val getRecentlyPlayedGameList: GetRecentlyPlayedGameListUseCase,
     private val getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
 ) : ViewModel() {
@@ -58,6 +62,11 @@ class InstantGameViewModel(
         }
         menu.add(0, R.id.shortcut, 0, R.string.gaming_vertical_menu_option_2)?.setOnMenuItemClickListener {
             onContextMenuClicked(ContextMenuAction.CreateShortcut)
+        }
+        if (selectedGame.gameType == GameType.RecentlyPlayed) {
+            menu.add(0, R.id.remove, 0, R.string.gaming_vertical_menu_option_3)?.setOnMenuItemClickListener {
+                onContextMenuClicked(ContextMenuAction.RemoveFromRecentlyPlayed)
+            }
         }
     }
 
@@ -95,7 +104,9 @@ class InstantGameViewModel(
         } else {
             0
         }
-        (gameUiModelList as ArrayList).add(mergePosition, recentlyPlayedGameListCategory)
+        if (recentlyPlayedGameListCategory is GameCategory && recentlyPlayedGameListCategory.items.isNotEmpty()) {
+            (gameUiModelList as ArrayList).add(mergePosition, recentlyPlayedGameListCategory)
+        }
     }
 
     private fun addToRecentlyPlayedGameList(gameItem: Game) {
@@ -116,6 +127,12 @@ class InstantGameViewModel(
                     if (bitmapResult is Result.Success) {
                         event.postValue(GameAction.CreateShortcut(selectedGame.name, selectedGame.linkUrl, bitmapResult.data))
                     }
+                }
+            }
+            is ContextMenuAction.RemoveFromRecentlyPlayed -> {
+                viewModelScope.launch {
+                    removeRecentlyPlayedGame(GameDataMapper.toApiItem(selectedGame))
+                    getGameUiModelList()
                 }
             }
         }
@@ -149,5 +166,6 @@ class InstantGameViewModel(
     sealed class ContextMenuAction {
         object Share : ContextMenuAction()
         object CreateShortcut : ContextMenuAction()
+        object RemoveFromRecentlyPlayed : ContextMenuAction()
     }
 }

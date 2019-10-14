@@ -5,12 +5,13 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.content.common.data.ApiItem
+import org.mozilla.rocket.content.game.data.BANNER
+import org.mozilla.rocket.content.game.data.RECENT
 import org.mozilla.rocket.content.game.ui.model.Game
 import org.mozilla.rocket.content.game.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.model.GameType
 
 object GameDataMapper {
-
-    private const val BANNER = "banner"
 
     fun toGameUiModel(entity: ApiEntity): List<DelegateAdapter.UiModel> {
         return entity.subcategories.map { subcategory ->
@@ -25,7 +26,13 @@ object GameDataMapper {
                 GameCategory(
                     subcategory.componentType,
                     subcategory.subcategoryName,
-                    subcategory.items.map { gameItem -> toGameItem(gameItem) }
+                    subcategory.items.map { gameItem ->
+                        if (subcategory.componentType == RECENT) {
+                            toGameItem(gameItem, GameType.RecentlyPlayed)
+                        } else {
+                            toGameItem(gameItem)
+                        }
+                    }
                 )
             }
         }
@@ -40,14 +47,15 @@ object GameDataMapper {
             item.componentId
         )
 
-    private fun toGameItem(item: ApiItem): Game =
+    private fun toGameItem(item: ApiItem, gameType: GameType = GameType.Normal): Game =
         Game(
             item.sourceName,
             item.image,
             item.destination,
             item.title,
             item.description,
-            item.componentId
+            item.componentId,
+            gameType
         )
 
     fun toApiItem(game: Game): ApiItem =

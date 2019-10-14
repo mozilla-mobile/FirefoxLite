@@ -4,13 +4,14 @@ import android.content.Context
 import android.graphics.Bitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiCategory
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
-class GameLocalDataSource(appContext: Context) : GameDataSource {
+class GameLocalDataSource(private val appContext: Context) : GameDataSource {
 
     private val preference = StrictModeViolation.tempGrant({ builder ->
         builder.permitDiskReads()
@@ -31,21 +32,11 @@ class GameLocalDataSource(appContext: Context) : GameDataSource {
     }
 
     override suspend fun addRecentlyPlayedGame(game: ApiItem) = withContext(Dispatchers.IO) {
-        val result = getRecentlyPlayedGameList()
-        val recentlyPlayedList = arrayListOf(game)
+        saveRecentlyPlayedGameList(game, game)
+    }
 
-        if (result is Result.Success && result.data.subcategories.isNotEmpty()) {
-            recentlyPlayedList.addAll(
-                // remove duplicated item
-                result.data.subcategories[0].items.filter {
-                    it.destination != game.destination
-                }
-            )
-        }
-
-        val apiCategory = ApiCategory("Scard", "Recently played", -1, recentlyPlayedList)
-        val apiEntity = ApiEntity(1, listOf(apiCategory))
-        preference.edit().putString(KEY_RECENTLY_PLAYED, apiEntity.toJsonObject().toString()).apply()
+    override suspend fun removeRecentlyPlayedGame(game: ApiItem) = withContext(Dispatchers.IO) {
+        saveRecentlyPlayedGameList(null, game)
     }
 
     override suspend fun getRecentlyPlayedGameList(): Result<ApiEntity> = withContext(Dispatchers.IO) {
@@ -55,6 +46,26 @@ class GameLocalDataSource(appContext: Context) : GameDataSource {
         } else {
             Result.Error(IllegalArgumentException("No recently played game saved"))
         }
+    }
+
+    private suspend fun saveRecentlyPlayedGameList(gameToBeAdded: ApiItem?, gameToBeFiltered: ApiItem) {
+        val result = getRecentlyPlayedGameList()
+        val recentlyPlayedList = ArrayList<ApiItem>()
+
+        gameToBeAdded?.let { recentlyPlayedList.add(it) }
+
+        if (result is Result.Success && result.data.subcategories.isNotEmpty()) {
+            recentlyPlayedList.addAll(
+                result.data.subcategories[0].items.filter {
+                    it.destination != gameToBeFiltered.destination
+                }
+            )
+        }
+
+        val apiCategory = ApiCategory(RECENT, appContext.getString(R.string.gaming_vertical_genre_1), -1, recentlyPlayedList)
+        val apiEntity = ApiEntity(1, listOf(apiCategory))
+
+        preference.edit().putString(KEY_RECENTLY_PLAYED, apiEntity.toJsonObject().toString()).apply()
     }
 
     companion object {

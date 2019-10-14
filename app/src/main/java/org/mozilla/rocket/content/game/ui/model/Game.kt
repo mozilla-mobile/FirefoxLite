@@ -8,5 +8,11 @@ data class Game(
     val linkUrl: String,
     val name: String,
     val packageName: String,
-    val componentId: String
+    val componentId: String,
+    val gameType: GameType
 ) : DelegateAdapter.UiModel()
+
+sealed class GameType {
+    object Normal : GameType()
+    object RecentlyPlayed : GameType()
+}
