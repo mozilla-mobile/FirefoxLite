@@ -18,6 +18,7 @@ import org.mozilla.rocket.content.travel.ui.TravelBucketListViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import org.mozilla.rocket.content.travel.ui.TravelExploreViewModel
+import org.mozilla.rocket.content.travel.ui.TravelViewModel
 import javax.inject.Singleton
 
 @Module
@@ -104,4 +105,8 @@ object TravelModule {
         getCityVideosUseCase: GetCityVideosUseCase,
         getCityHotelsUseCase: GetCityHotelsUseCase
     ): TravelCityViewModel = TravelCityViewModel(getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideTravelViewModel(): TravelViewModel = TravelViewModel()
 }

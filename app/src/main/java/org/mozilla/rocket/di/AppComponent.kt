@@ -44,6 +44,7 @@ import org.mozilla.rocket.content.game.ui.GameActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
+import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
@@ -123,6 +124,7 @@ interface AppComponent {
     fun inject(shoppingSearchContentSwitchOnboardingDialogFragment: ShoppingSearchContentSwitchOnboardingDialogFragment)
     fun inject(rewardActivity: RewardActivity)
     fun inject(profileActivity: ProfileActivity)
+    fun inject(travelActivity: TravelActivity)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
