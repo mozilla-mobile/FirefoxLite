@@ -77,6 +77,7 @@
                     android:id="@+id/next"
                     android:layout_marginEnd="16dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginBottom="16dp"
                     android:textColor="@android:color/white"
                     android:layout_width="96dp"
                     android:layout_height="32dp"
@@ -96,9 +97,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/rocky"
-        android:layout_marginBottom="132dp"
+        android:layout_marginBottom="-26dp"
         android:layout_marginEnd="10dp"
-        android:layout_above="@id/mock_button"
+        android:layout_above="@id/onboarding_dialog"
         android:layout_alignEnd="@id/onboarding_dialog"/>
 
 </RelativeLayout>
