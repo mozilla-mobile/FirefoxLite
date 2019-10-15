@@ -10,8 +10,8 @@ import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.GetUserIdUseCase
 import org.mozilla.rocket.msrp.domain.IsFxAccountUseCase
-import org.mozilla.rocket.msrp.domain.JoinMissionUseCase
 import org.mozilla.rocket.msrp.domain.IsNeedJoinMissionOnboardingUseCase
+import org.mozilla.rocket.msrp.domain.JoinMissionUseCase
 import org.mozilla.rocket.msrp.domain.QuitMissionUseCase
 import org.mozilla.rocket.msrp.domain.ReadMissionUseCase
 import org.mozilla.rocket.msrp.domain.RedeemUseCase
@@ -39,6 +39,8 @@ class MissionDetailViewModel(
     val isLoading = MutableLiveData<Boolean>()
 
     val requestFxLogin = SingleLiveEvent<String>()
+    val startMissionReminder = SingleLiveEvent<Mission>()
+    val stopMissionReminder = SingleLiveEvent<Mission>()
     val closePage = SingleLiveEvent<Unit>()
     val closeAllMissionPages = SingleLiveEvent<Unit>()
     val openCouponPage = SingleLiveEvent<Mission>()
@@ -64,6 +66,7 @@ class MissionDetailViewModel(
         isLoading.value = true
         val joinResult = joinMissionUseCase(mission)
         if (joinResult.isSuccess) {
+            startMissionReminder.value = mission
             refreshMissionsUseCase()
             if (isNeedJoinMissionOnboardingUseCase()) {
                 requestContentHubClickOnboardingUseCase()
@@ -84,6 +87,7 @@ class MissionDetailViewModel(
         isLoading.value = true
         val quitResult = quitMissionUseCase(mission)
         if (quitResult.isSuccess) {
+            stopMissionReminder.value = mission
             refreshMissionsUseCase()
             closePage.call()
         } else {

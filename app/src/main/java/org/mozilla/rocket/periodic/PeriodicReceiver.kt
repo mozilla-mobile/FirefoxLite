@@ -18,7 +18,7 @@ class PeriodicReceiver : BroadcastReceiver() {
         }
 
         when (intent?.action) {
-            FirstLaunchWorker.ACTION -> scheduleFirstLaunchWorker(context, WorkManager.getInstance())
+            FirstLaunchWorker.ACTION -> scheduleFirstLaunchWorker(context, WorkManager.getInstance(context))
         }
     }
 

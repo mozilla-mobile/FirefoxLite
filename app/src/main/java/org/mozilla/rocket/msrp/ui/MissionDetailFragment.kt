@@ -38,6 +38,7 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.extension.showToast
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.data.MissionProgress
+import org.mozilla.rocket.msrp.worker.DailyMissionReminderWorker
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -197,6 +198,12 @@ class MissionDetailFragment : Fragment(), NavigationResult {
     private fun observeActions() {
         missionDetailViewModel.showToast.observe(this, Observer {
             appContext().showToast(it)
+        })
+        missionDetailViewModel.startMissionReminder.observe(this, Observer { mission ->
+            DailyMissionReminderWorker.startMissionReminder(appContext(), mission)
+        })
+        missionDetailViewModel.stopMissionReminder.observe(this, Observer { mission ->
+            DailyMissionReminderWorker.stopMissionReminder(appContext(), mission)
         })
         missionDetailViewModel.closePage.observe(this, Observer {
             findNavController().popBackStack()
