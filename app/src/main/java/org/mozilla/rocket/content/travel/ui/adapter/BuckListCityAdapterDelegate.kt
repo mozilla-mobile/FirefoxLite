@@ -29,8 +29,6 @@ class BucketListCityViewHolder(
                 .load(bucketListCity.imageUrl)
                 .into(city_image)
 
-        city_favorite_btn.isSelected = bucketListCity.favorite
-
         itemView.setOnClickListener { travelBucketListViewModel.onBucketListCityClicked(bucketListCity) }
         city_favorite_btn.setOnClickListener { travelBucketListViewModel.removeCityFromBucket(bucketListCity) }
     }
@@ -39,6 +37,5 @@ class BucketListCityViewHolder(
 data class BucketListCityUiModel(
     val id: Int,
     val imageUrl: String,
-    val name: String,
-    val favorite: Boolean
+    val name: String
 ) : DelegateAdapter.UiModel()

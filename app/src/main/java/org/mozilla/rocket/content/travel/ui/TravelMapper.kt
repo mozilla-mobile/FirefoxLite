@@ -57,8 +57,7 @@ object TravelMapper {
             BucketListCityUiModel(
                 city.id,
                 city.imageUrl,
-                city.name,
-                true
+                city.name
             )
 
     fun toCitySearchResultUiModel(id: Int, name: CharSequence): CitySearchResultUiModel =
