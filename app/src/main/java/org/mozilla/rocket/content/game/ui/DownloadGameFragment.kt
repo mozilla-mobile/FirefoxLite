@@ -1,21 +1,27 @@
 package org.mozilla.rocket.content.game.ui
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.web.WebViewProvider
+import org.mozilla.permissionhandler.PermissionHandle
+import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
@@ -39,6 +45,80 @@ class DownloadGameFragment : Fragment() {
     private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var downloadGameViewModel: DownloadGameViewModel
     private lateinit var adapter: DelegateAdapter
+    private lateinit var permissionHandler: PermissionHandler
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        permissionHandler = PermissionHandler(object : PermissionHandle {
+            override fun doActionDirect(permission: String?, actionId: Int, params: Parcelable?) {
+                this@DownloadGameFragment.context?.also {
+                    val download = params as Download
+
+                    if (PackageManager.PERMISSION_GRANTED ==
+                        ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    ) {
+                        // We do have the permission to write to the external storage. Proceed with the download.
+                        queueDownload(download)
+                    }
+                }
+            }
+
+            fun actionDownloadGranted(parcelable: Parcelable?) {
+                val download = parcelable as Download
+                queueDownload(download)
+            }
+
+            override fun doActionGranted(permission: String?, actionId: Int, params: Parcelable?) {
+                actionDownloadGranted(params)
+            }
+
+            override fun doActionSetting(permission: String?, actionId: Int, params: Parcelable?) {
+                actionDownloadGranted(params)
+            }
+
+            override fun doActionNoPermission(
+                permission: String?,
+                actionId: Int,
+                params: Parcelable?
+            ) {
+            }
+
+            override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
+                activity?.also {
+                    return PermissionHandler.makeAskAgainSnackBar(
+                        this@DownloadGameFragment,
+                        it.findViewById(R.id.container),
+                        R.string.permission_toast_storage
+                    )
+                }
+                throw IllegalStateException("No activity to show SnackBar.")
+            }
+
+            override fun permissionDeniedToast(actionId: Int) {
+                Toast.makeText(getContext(), R.string.permission_toast_storage_deny, Toast.LENGTH_LONG).show()
+            }
+
+            override fun requestPermissions(actionId: Int) {
+                this@DownloadGameFragment.requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), actionId)
+            }
+
+            private fun queueDownload(download: Download?) {
+                activity?.let { activity ->
+                    download?.let {
+                        EnqueueDownloadTask(activity, it, download.url).execute()
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        permissionHandler.onRequestPermissionsResult(context, requestCode, permissions, grantResults)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -131,34 +211,26 @@ class DownloadGameFragment : Fragment() {
         })
     }
 
-    private fun queueDownload(download: Download?, url: String) {
-        val activity = activity
-        if (activity == null || download == null) {
-            return
-        }
-
-        EnqueueDownloadTask(activity, download, url).execute()
-    }
-
     private fun downloadGame(downloadURL: String) {
         context?.let {
-            if (PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // We do have the permission to write to the external storage. Proceed with the download.
-                val contentDisposition = ""
-                val mimeType = "application/vnd.android.package-archive"
-                val name = URLUtil.guessFileName(downloadURL, contentDisposition, mimeType)
-                val download = Download(
-                    downloadURL,
-                    name,
-                    WebViewProvider.getUserAgentString(it),
-                    contentDisposition,
-                    mimeType,
-                    0,
-                    false
-                )
-
-                queueDownload(download, downloadURL)
-            }
+            val contentDisposition = ""
+            val mimeType = "application/vnd.android.package-archive"
+            val name = URLUtil.guessFileName(downloadURL, contentDisposition, mimeType)
+            val download = Download(
+                downloadURL,
+                name,
+                WebViewProvider.getUserAgentString(it),
+                contentDisposition,
+                mimeType,
+                0,
+                false
+            )
+            permissionHandler.tryAction(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                ACTION_DOWNLOAD,
+                download
+            )
         }
     }
 
@@ -181,6 +253,8 @@ class DownloadGameFragment : Fragment() {
     }
 
     companion object {
+        private const val ACTION_DOWNLOAD = 0
+
         fun newInstance() = DownloadGameFragment()
     }
 }
