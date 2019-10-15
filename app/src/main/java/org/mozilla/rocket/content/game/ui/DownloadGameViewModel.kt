@@ -15,6 +15,7 @@ import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetMyGameListUseCase
 import org.mozilla.rocket.content.game.ui.model.Game
 import org.mozilla.rocket.content.game.ui.model.GameCategory
+import org.mozilla.rocket.content.game.ui.model.GameType
 import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.download.SingleLiveEvent
 
@@ -38,7 +39,10 @@ class DownloadGameViewModel(
     }
 
     fun onGameItemClicked(gameItem: Game) {
-        event.value = GameAction.Install(gameItem.linkUrl)
+        event.value = when (gameItem.gameType) {
+            is GameType.MyGame -> GameAction.Launch(gameItem.packageName)
+            else -> GameAction.Install(gameItem.linkUrl)
+        }
     }
 
     fun onGameItemLongClicked(gameItem: Game): Boolean {
@@ -121,6 +125,7 @@ class DownloadGameViewModel(
 
     sealed class GameAction {
         data class Install(val url: String) : GameAction()
+        data class Launch(val packageName: String) : GameAction()
         data class Share(val url: String) : GameAction()
     }
 
