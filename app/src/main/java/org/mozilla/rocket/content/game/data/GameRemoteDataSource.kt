@@ -72,6 +72,10 @@ class GameRemoteDataSource : GameDataSource {
         throw UnsupportedOperationException("Can't get recently played game from server")
     }
 
+    override suspend fun getMyGameList(downloadGameList: ApiEntity): Result<ApiEntity> {
+        throw UnsupportedOperationException("Can't get my game list from server")
+    }
+
     private fun getInstantGameApiEndpoint(): String {
         val instantGameApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_INSTANT_GAME_ENDPOINT)
         return if (instantGameApiEndpoint.isNotEmpty()) {

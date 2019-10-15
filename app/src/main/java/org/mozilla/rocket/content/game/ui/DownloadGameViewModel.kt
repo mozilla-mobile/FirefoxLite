@@ -10,32 +10,32 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.game.domain.GetDownloadGameListUseCase
+import org.mozilla.rocket.content.game.domain.GetMyGameListUseCase
 import org.mozilla.rocket.content.game.ui.model.Game
+import org.mozilla.rocket.content.game.ui.model.GameCategory
+import org.mozilla.rocket.content.isNotEmpty
 import org.mozilla.rocket.download.SingleLiveEvent
 
-class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameListUseCase) : ViewModel() {
+class DownloadGameViewModel(
+    private val getDownloadGameList: GetDownloadGameListUseCase,
+    private val getMyGameList: GetMyGameListUseCase
+) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _downloadGameItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val result = getDownloadGameList()
-                if (result is Result.Success) {
-                    value = GameDataMapper.toGameUiModel(result.data)
-                } else if (result is Result.Error) {
-                    throw (result.exception)
-                }
-            }
-        }
-    }
+    private val _downloadGameItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val downloadGameItems: LiveData<List<DelegateAdapter.UiModel>> = _downloadGameItems
 
     private lateinit var selectedGame: Game
 
     var event = SingleLiveEvent<GameAction>()
+
+    init {
+        getGameUiModelList()
+    }
 
     fun onGameItemClicked(gameItem: Game) {
         event.value = GameAction.Install(gameItem.linkUrl)
@@ -54,13 +54,41 @@ class DownloadGameViewModel(private val getDownloadGameList: GetDownloadGameList
     }
 
     fun onRetryButtonClicked() {
+        getGameUiModelList()
+    }
+
+    private fun getGameUiModelList() {
         launchDataLoad {
             val result = getDownloadGameList()
             if (result is Result.Success) {
-                _downloadGameItems.postValue(GameDataMapper.toGameUiModel(result.data))
+                val downloadGameList = GameDataMapper.toGameUiModel(result.data)
+                getMyGameCategoryUiModel()?.let {
+                    mergeMyGameToGameUiModelList(downloadGameList, it)
+                }
+                _downloadGameItems.postValue(downloadGameList)
             } else if (result is Result.Error) {
                 throw (result.exception)
             }
+        }
+    }
+
+    private suspend fun getMyGameCategoryUiModel(): DelegateAdapter.UiModel? {
+        val result = getMyGameList()
+        return if (result is Result.Success && result.isNotEmpty) {
+            GameDataMapper.toGameUiModel(result.data)[0]
+        } else {
+            null
+        }
+    }
+
+    private fun mergeMyGameToGameUiModelList(gameUiModelList: List<DelegateAdapter.UiModel>, myGameListCategory: DelegateAdapter.UiModel) {
+        val mergePosition = if (gameUiModelList.isNotEmpty() && gameUiModelList[0] is Runway) {
+            1
+        } else {
+            0
+        }
+        if (myGameListCategory is GameCategory && myGameListCategory.items.isNotEmpty()) {
+            (gameUiModelList as ArrayList).add(mergePosition, myGameListCategory)
         }
     }
 

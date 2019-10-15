@@ -7,6 +7,7 @@ import org.mozilla.rocket.content.common.data.ApiItem
 
 const val BANNER = "banner"
 const val RECENT = "_recent"
+const val MY_GAME = "_my_game"
 
 interface GameDataSource {
     suspend fun getInstantGameList(): Result<ApiEntity>
@@ -15,4 +16,5 @@ interface GameDataSource {
     suspend fun addRecentlyPlayedGame(game: ApiItem)
     suspend fun removeRecentlyPlayedGame(game: ApiItem)
     suspend fun getRecentlyPlayedGameList(): Result<ApiEntity>
+    suspend fun getMyGameList(downloadGameList: ApiEntity): Result<ApiEntity>
 }

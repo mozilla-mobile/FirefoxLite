@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.game.data
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -48,6 +49,23 @@ class GameLocalDataSource(private val appContext: Context) : GameDataSource {
         }
     }
 
+    override suspend fun getMyGameList(downloadGameList: ApiEntity): Result<ApiEntity> = withContext(Dispatchers.IO) {
+        val myGameList = ArrayList<ApiItem>()
+
+        for (subcategory in downloadGameList.subcategories) {
+            for (item in subcategory.items) {
+                if (isPackageInstalled(item.description)) {
+                    myGameList.add(item)
+                }
+            }
+        }
+
+        val apiCategory = ApiCategory(MY_GAME, appContext.getString(R.string.gaming_vertical_genre_3), -1, myGameList)
+        val apiEntity = ApiEntity(1, listOf(apiCategory))
+
+        return@withContext Result.Success(apiEntity)
+    }
+
     private suspend fun saveRecentlyPlayedGameList(gameToBeAdded: ApiItem?, gameToBeFiltered: ApiItem) {
         val result = getRecentlyPlayedGameList()
         val recentlyPlayedList = ArrayList<ApiItem>()
@@ -66,6 +84,16 @@ class GameLocalDataSource(private val appContext: Context) : GameDataSource {
         val apiEntity = ApiEntity(1, listOf(apiCategory))
 
         preference.edit().putString(KEY_RECENTLY_PLAYED, apiEntity.toJsonObject().toString()).apply()
+    }
+
+    private fun isPackageInstalled(packageName: String): Boolean {
+        var hasInstalled = true
+        try {
+            appContext.packageManager.getPackageInfo(packageName, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            hasInstalled = false
+        }
+        return hasInstalled
     }
 
     companion object {

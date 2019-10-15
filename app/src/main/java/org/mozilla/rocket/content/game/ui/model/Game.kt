@@ -15,4 +15,5 @@ data class Game(
 sealed class GameType {
     object Normal : GameType()
     object RecentlyPlayed : GameType()
+    object MyGame : GameType()
 }
