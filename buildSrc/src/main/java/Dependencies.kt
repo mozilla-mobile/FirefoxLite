@@ -17,7 +17,7 @@ object Versions {
     const val preference = "1.0.0"
     const val palette = "1.0.0"
     const val arch_core = "2.0.1"
-    const val arch_work = "2.0.1"
+    const val arch_work = "2.2.0"
     const val lifecycle = "2.0.0"
     const val viewmodel_ktx = "2.2.0-alpha02"
     const val room = "2.1.0"

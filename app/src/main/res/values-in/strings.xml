@@ -487,7 +487,8 @@
   <string name="msrp_completed_toast_day7">Anda telah memenangkan kupon belanja! Silakan buka halaman Reward untuk menebus hadiah.</string>
 
   <!--Notifications for last 3 days-->
-  <string name="msrp_notification_reminder">Ingin menangkan kupon belanja? Jangan lupa mencoba fitur baru hari ini!</string>
+<!--  TODO: require a parameter -->
+<!--  <string name="msrp_notification_reminder">Ingin menangkan kupon belanja? Jangan lupa mencoba fitur baru hari ini!</string>-->
 
   <!--No data-->
   <string name="msrp_reward_challenge_nodata">Semua tantangan selesai</string>
