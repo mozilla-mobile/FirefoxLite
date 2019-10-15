@@ -9,11 +9,6 @@ data class BucketListCityUiModel(
     val favorite: Boolean
 ) : DelegateAdapter.UiModel()
 
-data class CitySearchResultUiModel(
-    val id: Int,
-    val name: CharSequence
-)
-
 data class ExploreIgUiModel(
     val title: String,
     val linkUrl: String

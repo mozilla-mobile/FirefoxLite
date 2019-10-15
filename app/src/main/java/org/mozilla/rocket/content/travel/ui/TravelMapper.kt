@@ -9,6 +9,7 @@ import org.mozilla.rocket.content.travel.data.RunwayItem
 import org.mozilla.rocket.content.travel.data.Video
 import org.mozilla.rocket.content.travel.data.Wiki
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityUiModel
 
 object TravelMapper {

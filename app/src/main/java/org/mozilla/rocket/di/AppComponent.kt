@@ -48,6 +48,7 @@ import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.content.travel.ui.TravelCityActivity
 import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
 import org.mozilla.rocket.fxa.ProfileActivity
+import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
@@ -129,6 +130,7 @@ interface AppComponent {
     fun inject(travelActivity: TravelActivity)
     fun inject(travelCityActivity: TravelCityActivity)
     fun inject(travelExploreFragment: TravelExploreFragment)
+    fun inject(travelCitySearchActivity: TravelCitySearchActivity)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
