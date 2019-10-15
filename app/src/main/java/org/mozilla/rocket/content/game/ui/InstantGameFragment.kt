@@ -23,7 +23,6 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
-import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.game.ui.adapter.InstantGameCategoryAdapterDelegate
 import org.mozilla.rocket.content.game.ui.model.GameCategory
@@ -94,7 +93,7 @@ class InstantGameFragment : Fragment() {
     private fun observeGameAction() {
         runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+                startActivity(GameModeActivity.getStartIntent(it, linkUrl))
             }
         })
 
