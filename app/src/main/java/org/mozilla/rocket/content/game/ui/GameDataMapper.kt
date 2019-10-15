@@ -6,6 +6,7 @@ import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.content.game.data.BANNER
+import org.mozilla.rocket.content.game.data.MY_GAME
 import org.mozilla.rocket.content.game.data.RECENT
 import org.mozilla.rocket.content.game.ui.model.Game
 import org.mozilla.rocket.content.game.ui.model.GameCategory
@@ -27,10 +28,10 @@ object GameDataMapper {
                     subcategory.componentType,
                     subcategory.subcategoryName,
                     subcategory.items.map { gameItem ->
-                        if (subcategory.componentType == RECENT) {
-                            toGameItem(gameItem, GameType.RecentlyPlayed)
-                        } else {
-                            toGameItem(gameItem)
+                        when {
+                            subcategory.componentType == RECENT -> toGameItem(gameItem, GameType.RecentlyPlayed)
+                            subcategory.componentType == MY_GAME -> toGameItem(gameItem, GameType.MyGame)
+                            else -> toGameItem(gameItem)
                         }
                     }
                 )

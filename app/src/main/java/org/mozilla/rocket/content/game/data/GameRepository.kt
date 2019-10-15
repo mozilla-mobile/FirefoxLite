@@ -21,4 +21,13 @@ class GameRepository(
     suspend fun removeRecentlyPlayedGame(game: ApiItem) = localDataSource.removeRecentlyPlayedGame(game)
 
     suspend fun getRecentlyPlayedGames(): Result<ApiEntity> = localDataSource.getRecentlyPlayedGameList()
+
+    suspend fun getMyGames(): Result<ApiEntity> {
+        val result = remoteDataSource.getDownloadGameList()
+        return if (result is Result.Success) {
+            localDataSource.getMyGameList(result.data)
+        } else {
+            result
+        }
+    }
 }
