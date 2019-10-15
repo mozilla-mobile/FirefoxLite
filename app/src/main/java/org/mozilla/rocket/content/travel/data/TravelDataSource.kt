@@ -7,7 +7,6 @@ interface TravelDataSource {
     suspend fun getCityCategories(): Result<List<CityCategory>>
     suspend fun getBucketList(): Result<List<City>>
     suspend fun searchCity(keyword: String): Result<List<City>>
-    suspend fun getSectionHeaders(name: String): Result<List<SectionType>>
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
     suspend fun getCityIg(name: String): Result<Ig>
     suspend fun getCityWiki(name: String): Result<Wiki>
@@ -78,8 +77,3 @@ data class Hotel(
     val canPayAtProperty: Boolean,
     val linkUrl: String
 )
-
-sealed class SectionType {
-    data class Explore(val name: String) : SectionType()
-    data class TopHotels(val linkUrl: String) : SectionType()
-}
