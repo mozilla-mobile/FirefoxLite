@@ -7,18 +7,13 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.travel.data.SectionType.Explore
-import org.mozilla.rocket.content.travel.data.SectionType.TopHotels
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
-import org.mozilla.rocket.content.travel.domain.GetSectionHeadersUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 
 class TravelCityViewModel(
-    private val getSecionHeaders: GetSectionHeadersUseCase,
     private val getIg: GetCityIgUseCase,
     private val getWiki: GetCityWikiUseCase,
     private val getVideos: GetCityVideosUseCase,
@@ -36,24 +31,10 @@ class TravelCityViewModel(
     fun getLatestItems(name: String) {
         data.clear()
         launchDataLoad {
-            var exploreHeader: Explore? = null
-            var hotelHeader: TopHotels? = null
-            val sectionHeadersResult = getSecionHeaders(name)
-            if (sectionHeadersResult is Result.Success) {
-                for (header in sectionHeadersResult.data) {
-                    when (header) {
-                        is Explore -> exploreHeader = header
-                        is TopHotels -> hotelHeader = header
-                    }
-                }
-            }
-
             // TODO: add price items
 
             // add explore
-            exploreHeader?.let {
-                data.add(SectionHeaderUiModel(it))
-            }
+            data.add(SectionHeaderUiModel(SectionType.Explore(name)))
 
             // TODO: uncomment these while corresponding adapter delegates is added
             /*
@@ -79,9 +60,7 @@ class TravelCityViewModel(
             */
 
             // add hotel
-            hotelHeader?.let {
-                data.add(SectionHeaderUiModel(it))
-            }
+            data.add(SectionHeaderUiModel(SectionType.TopHotels))
 
             // TODO: uncomment these while corresponding adapter delegates is added
             /*
@@ -117,5 +96,10 @@ class TravelCityViewModel(
         object Idle : State()
         object Loading : State()
         class Error(val t: Throwable) : State()
+    }
+
+    sealed class SectionType {
+        data class Explore(val name: String) : SectionType()
+        object TopHotels : SectionType()
     }
 }
