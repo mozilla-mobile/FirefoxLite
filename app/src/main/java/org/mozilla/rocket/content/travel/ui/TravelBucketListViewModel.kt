@@ -32,11 +32,10 @@ class TravelBucketListViewModel(private val getBucketListUseCase: GetBucketListU
                 } else {
                     _isListEmtpy.value = true
                 }
-                // TODO: handle error
             }
         }
     }
-        val items: LiveData<List<DelegateAdapter.UiModel>> = _items
+    val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
     val openCity = SingleLiveEvent<String>()
 
