@@ -104,6 +104,12 @@ class DownloadGameFragment : Fragment() {
                     val install: DownloadGameViewModel.GameAction.Install = event
                     downloadGame(install.url)
                 }
+                is DownloadGameViewModel.GameAction.Launch -> {
+                    val launch: DownloadGameViewModel.GameAction.Launch = event
+                    context?.let {
+                        startActivity(it.packageManager.getLaunchIntentForPackage(launch.packageName))
+                    }
+                }
                 is DownloadGameViewModel.GameAction.Share -> {
                     val share: DownloadGameViewModel.GameAction.Share = event
                     context?.let {
