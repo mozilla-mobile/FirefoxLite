@@ -7,9 +7,9 @@
     <item android:id="@+id/gradient_background">
         <shape>
             <gradient
-                android:angle="270"
+                android:angle="315"
                 android:startColor="?themeGradientStart"
-                android:centerColor="?themeGradientEnd"
+                android:centerColor="?themeGradientCenter"
                 android:endColor="?themeGradientEnd" />
         </shape>
     </item>
