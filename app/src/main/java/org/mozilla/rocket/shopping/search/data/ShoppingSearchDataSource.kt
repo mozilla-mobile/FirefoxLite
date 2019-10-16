@@ -7,4 +7,12 @@ interface ShoppingSearchDataSource {
     fun getShoppingSites(): List<ShoppingSite>
 
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>)
+
+    fun shouldShowSearchInputOnboarding(): Boolean
+
+    fun setSearchInputOnboardingIsShown()
+
+    fun shouldShowSearchResultOnboarding(): Boolean
+
+    fun setSearchResultOnboardingIsShown()
 }
