@@ -12,10 +12,10 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.airbnb.lottie.LottieAnimationView
 import dagger.Lazy
 import org.mozilla.focus.R
@@ -85,7 +85,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     private fun monitorShortcutPromotion(context: Context, model: ShortcutViewModel) {
         model.eventPromoteShortcut.observe(viewLifecycleOwner, Observer { callback ->
             val data = CustomViewDialogData().apply {
-                this.drawable = ContextCompat.getDrawable(context, R.drawable.dialog_pbshortcut)
+                this.drawable = VectorDrawableCompat.create(resources, R.drawable.dialog_pbshortcut, null)
                 this.title = context.getString(R.string.private_browsing_dialog_add_shortcut_title_v2)
                 this.description = context.getString(R.string.private_browsing_dialog_add_shortcut_content_v2)
                 this.positiveText = context.getString(R.string.private_browsing_dialog_add_shortcut_yes_v2)
