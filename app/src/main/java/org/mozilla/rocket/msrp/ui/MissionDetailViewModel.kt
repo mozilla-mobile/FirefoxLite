@@ -80,6 +80,7 @@ class MissionDetailViewModel(
         } else {
             showToast.value = when (joinResult.error!!) {
                 JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                JoinMissionUseCase.Error.AccountDisabled,
                 JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
             }
         }
@@ -96,6 +97,7 @@ class MissionDetailViewModel(
         } else {
             showToast.value = when (quitResult.error!!) {
                 QuitMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                QuitMissionUseCase.Error.AccountDisabled,
                 QuitMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
             }
         }

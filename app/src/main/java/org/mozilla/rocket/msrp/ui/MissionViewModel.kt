@@ -67,6 +67,7 @@ class MissionViewModel(
             State.Loaded
         } else {
             when (refreshResult.error!!) {
+                is RefreshMissionsUseCase.Error.AccountDisabled -> State.Loaded
                 is RefreshMissionsUseCase.Error.NetworkError -> State.NoConnectionError
                 is RefreshMissionsUseCase.Error.UnknownError -> State.UnknownError
             }
