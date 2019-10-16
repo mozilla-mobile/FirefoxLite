@@ -38,6 +38,7 @@ class CheckInMissionUseCase(
             transformError = {
                 when (it) {
                     is RewardServiceError.NetworkError -> Error.NetworkError
+                    is RewardServiceError.AccountDisabled -> Error.AccountDisabled
                     is RewardServiceError.MsrpDisabled,
                     is RewardServiceError.Unauthorized,
                     is RewardServiceError.Unknown -> Error.UnknownError
@@ -55,6 +56,7 @@ class CheckInMissionUseCase(
     )
 
     sealed class Error {
+        object AccountDisabled : Error()
         object NetworkError : Error()
         object UnknownError : Error()
     }

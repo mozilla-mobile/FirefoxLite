@@ -35,6 +35,9 @@ open class MissionRepository(
             missionRemoteDataSource.getMissions(userToken).also {
                 if (it.isSuccess) {
                     missionsLiveData.postValue(it.data!!)
+                } else if (it.error is RewardServiceError.AccountDisabled) {
+                    // clear mission list once notified account got banned
+                    missionsLiveData.postValue(emptyList())
                 }
             }
 

@@ -60,6 +60,7 @@ class MissionRemoteDataSource {
     private fun parseMissionListResponse(response: Response): Result<List<Mission>, RewardServiceError> {
         return when (response.status) {
             400 -> Result.error(error = RewardServiceError.Unauthorized)
+            403 -> Result.error(error = RewardServiceError.AccountDisabled)
             200 -> {
                 val json = response.body.string()
                 log("response=$json")
@@ -448,6 +449,7 @@ sealed class RewardServiceError {
     object NetworkError : RewardServiceError()
     object MsrpDisabled : RewardServiceError()
     object Unauthorized : RewardServiceError()
+    object AccountDisabled : RewardServiceError()
     class Unknown(val msg: String) : RewardServiceError()
 }
 
