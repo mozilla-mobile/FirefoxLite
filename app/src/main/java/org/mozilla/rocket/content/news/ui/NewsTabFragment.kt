@@ -15,6 +15,8 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_news_tab.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.LIFESTYLE
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -107,6 +109,7 @@ class NewsTabFragment : Fragment() {
                 }
 
                 override fun onPageSelected(p0: Int) {
+                    TelemetryWrapper.openCategory(LIFESTYLE, newsSettings.second[p0].categoryId)
                 }
             })
         }
