@@ -1,13 +1,18 @@
 package org.mozilla.rocket.content.common.adapter
 
+import android.graphics.Bitmap
 import android.view.View
 import android.widget.FrameLayout
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import kotlinx.android.synthetic.main.item_runway.*
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.extension.obtainBackgroundColor
 import kotlin.math.min
 
 class RunwayItemAdapterDelegate(private val runwayViewModel: RunwayViewModel) : AdapterDelegate {
@@ -39,11 +44,23 @@ class RunwayItemViewHolder(
         runway_source.text = runwayItem.source
 
         GlideApp.with(itemView.context)
-            .asBitmap()
-            .placeholder(R.drawable.placeholder)
-            .fitCenter()
-            .load(runwayItem.imageUrl)
-            .into(runway_image)
+                .asBitmap()
+                .placeholder(R.drawable.placeholder)
+                .fitCenter()
+                .load(runwayItem.imageUrl)
+                .listener(object : RequestListener<Bitmap> {
+                    override fun onLoadFailed(e: GlideException?, model: Any, target: com.bumptech.glide.request.target.Target<Bitmap>, isFirstResource: Boolean): Boolean {
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Bitmap?, model: Any, target: com.bumptech.glide.request.target.Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                        if (resource != null) {
+                            runway_image.setBackgroundColor(resource.obtainBackgroundColor())
+                        }
+                        return false
+                    }
+                })
+                .into(runway_image)
     }
 }
 

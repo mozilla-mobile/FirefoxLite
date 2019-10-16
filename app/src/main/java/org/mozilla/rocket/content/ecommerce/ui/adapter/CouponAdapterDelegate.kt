@@ -2,7 +2,6 @@ package org.mozilla.rocket.content.ecommerce.ui.adapter
 
 import android.graphics.Bitmap
 import android.view.View
-import androidx.palette.graphics.Palette
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
@@ -13,6 +12,7 @@ import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.ecommerce.ui.CouponViewModel
+import org.mozilla.rocket.extension.obtainBackgroundColor
 
 class CouponAdapterDelegate(private val couponViewModel: CouponViewModel) : AdapterDelegate {
 
@@ -47,25 +47,12 @@ class CouponViewHolder(
 
                 override fun onResourceReady(resource: Bitmap?, model: Any, target: com.bumptech.glide.request.target.Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                     if (resource != null) {
-                        coupon_image.setBackgroundColor(obtainBackgroundColor(resource))
+                        coupon_image.setBackgroundColor(resource.obtainBackgroundColor())
                     }
                     return false
                 }
             })
             .into(coupon_image)
-    }
-
-    private fun obtainBackgroundColor(resource: Bitmap): Int {
-        val palette = Palette.from(resource).generate()
-        var maxPopulation = 0
-        var bodyColor = 0
-        for (swatch in palette.swatches) {
-            if (swatch.population > maxPopulation) {
-                maxPopulation = swatch.population
-                bodyColor = swatch.rgb
-            }
-        }
-        return bodyColor
     }
 }
 
