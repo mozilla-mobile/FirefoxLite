@@ -485,8 +485,10 @@
 
                     <Button
                         android:id="@+id/redeem_button"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/msrp_mission_detail_button_height"
                         android:layout_marginBottom="9dp"
                         android:layout_marginTop="24dp"
                         android:background="@drawable/bg_mission_detail_button"
@@ -500,7 +502,8 @@
                         android:id="@+id/redeem_later_button"
                         style="@android:style/Widget.Holo.Button.Borderless"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/msrp_mission_detail_button_height"
                         android:text="@string/msrp_challenge_button_5"
                         android:textAllCaps="false"
                         android:textColor="@color/paletteDarkGreyD100"
@@ -570,7 +573,8 @@
                     <Button
                         android:id="@+id/join_button"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/msrp_mission_detail_button_height"
                         android:layout_gravity="center"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/bg_mission_detail_button"
@@ -599,8 +603,10 @@
 
                     <Button
                         android:id="@+id/quit_button"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:layout_width="@dimen/match_parent"
-                        android:layout_height="@dimen/msrp_mission_detail_button_height"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/msrp_mission_detail_button_height"
                         android:layout_gravity="center"
                         android:background="@drawable/bg_mission_detail_button_quit"
                         android:text="@string/msrp_challenge_button_2"
