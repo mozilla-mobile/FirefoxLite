@@ -42,25 +42,25 @@
     </style>
 
     <!-- Default theme color -->
-    <color name="themeGradientStart">#65FF9F</color>
-    <color name="themeGradientCenter">#41C3CF</color>
-    <color name="themeGradientEnd">#15A4F7</color>
+    <color name="themeGradientStart">#36DFB4</color>
+    <color name="themeGradientCenter">#31CFCC</color>
+    <color name="themeGradientEnd">#009BD8</color>
 
     <color name="themeGradientStart01">#355570</color>
     <color name="themeGradientCenter01">#2B3D55</color>
     <color name="themeGradientEnd01">#2B354A</color>
 
-    <color name="themeGradientStart02">#FC65C6</color>
-    <color name="themeGradientCenter02">#BA33C7</color>
-    <color name="themeGradientEnd02">#8400DA</color>
+    <color name="themeGradientStart02">#20DFE8</color>
+    <color name="themeGradientCenter02">#2992E4</color>
+    <color name="themeGradientEnd02">#362BE6</color>
 
-    <color name="themeGradientStart03">#AC68FF</color>
-    <color name="themeGradientCenter03">#736DEA</color>
-    <color name="themeGradientEnd03">#6292F4</color>
+    <color name="themeGradientStart03">#FC65C6</color>
+    <color name="themeGradientCenter03">#BA33C7</color>
+    <color name="themeGradientEnd03">#8400DA</color>
 
-    <color name="themeGradientStart04">#1CEA8E</color>
-    <color name="themeGradientCenter04">#019E5A</color>
-    <color name="themeGradientEnd04">#008D68</color>
+    <color name="themeGradientStart04">#AC68FF</color>
+    <color name="themeGradientCenter04">#736DEA</color>
+    <color name="themeGradientEnd04">#6292F4</color>
 
     <color name="themeGradientStartNight">#103266</color>
     <color name="themeGradientCenterNight">#140B45</color>
