@@ -13,15 +13,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.download.SingleLiveEvent
-import org.mozilla.rocket.shopping.search.domain.CheckOnboardingFirstRunUseCase
-import org.mozilla.rocket.shopping.search.domain.CompleteOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
+import org.mozilla.rocket.shopping.search.domain.SetSearchInputOnboardingIsShownUseCase
+import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchInputOnboardingUseCase
 import java.util.Locale
 
 class ShoppingSearchKeywordInputViewModel(
     private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase,
-    checkOnboardingFirstRunUseCase: CheckOnboardingFirstRunUseCase,
-    private val completeOnboardingFirstRunUseCase: CompleteOnboardingFirstRunUseCase
+    shouldShowSearchInputOnboarding: ShouldShowSearchInputOnboardingUseCase,
+    private val setSearchInputOnboardingIsShown: SetSearchInputOnboardingIsShownUseCase
 ) : ViewModel() {
 
     private val _uiModel = MutableLiveData<ShoppingSearchKeywordInputUiModel>()
@@ -33,7 +33,7 @@ class ShoppingSearchKeywordInputViewModel(
     private var isFirstRun = false
 
     init {
-        isFirstRun = checkOnboardingFirstRunUseCase()
+        isFirstRun = shouldShowSearchInputOnboarding()
         emitUiModel(ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun))
     }
 
@@ -65,7 +65,7 @@ class ShoppingSearchKeywordInputViewModel(
         if (!TextUtils.isEmpty(keyword)) {
             navigateToResultTab.value = keyword
             if (isFirstRun) {
-                completeOnboardingFirstRunUseCase()
+                setSearchInputOnboardingIsShown()
                 isFirstRun = false
             }
         }

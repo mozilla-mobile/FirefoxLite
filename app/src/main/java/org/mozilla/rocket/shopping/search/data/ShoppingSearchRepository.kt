@@ -38,6 +38,14 @@ class ShoppingSearchRepository(
         shoppingSitesData.postValue(shoppingSites)
     }
 
+    fun shouldShowSearchInputOnboarding() = localDataSource.shouldShowSearchInputOnboarding()
+
+    fun setSearchInputOnboardingIsShown() = localDataSource.setSearchInputOnboardingIsShown()
+
+    fun shouldShowSearchResultOnboarding() = localDataSource.shouldShowSearchResultOnboarding()
+
+    fun setSearchResultOnboardingIsShown() = localDataSource.setSearchResultOnboardingIsShown()
+
     private fun shouldMergeShoppingSites(remoteShoppingSites: List<ShoppingSite>, localShoppingSites: List<ShoppingSite>): Boolean {
         if (remoteShoppingSites.size != localShoppingSites.size) {
             return true

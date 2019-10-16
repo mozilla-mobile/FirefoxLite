@@ -4,17 +4,16 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.shopping.search.data.KeywordSuggestionRepository
-import org.mozilla.rocket.shopping.search.data.OnboardingSharedPreferenceRepository
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchLocalDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
-import org.mozilla.rocket.shopping.search.domain.CheckContentSwitchOnboardingFirstRunUseCase
-import org.mozilla.rocket.shopping.search.domain.CheckOnboardingFirstRunUseCase
-import org.mozilla.rocket.shopping.search.domain.CompleteContentSwitchOnboardingFirstRunUseCase
-import org.mozilla.rocket.shopping.search.domain.CompleteOnboardingFirstRunUseCase
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
+import org.mozilla.rocket.shopping.search.domain.SetSearchInputOnboardingIsShownUseCase
+import org.mozilla.rocket.shopping.search.domain.SetSearchResultOnboardingIsShownUseCase
+import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchInputOnboardingUseCase
+import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchResultOnboardingUseCase
 import org.mozilla.rocket.shopping.search.domain.UpdateShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchBottomBarViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingViewModel
@@ -41,10 +40,10 @@ object ShoppingSearchModule {
     @Provides
     fun provideShoppingSearchKeywordInputViewModel(
         fetchKeywordUseCase: FetchKeywordSuggestionUseCase,
-        checkUseCase: CheckOnboardingFirstRunUseCase,
-        completeUseCase: CompleteOnboardingFirstRunUseCase
+        shouldShowSearchInputOnboardingUseCase: ShouldShowSearchInputOnboardingUseCase,
+        setSearchInputOnboardingIsShownUseCase: SetSearchInputOnboardingIsShownUseCase
     ): ShoppingSearchKeywordInputViewModel =
-        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase, checkUseCase, completeUseCase)
+        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase, shouldShowSearchInputOnboardingUseCase, setSearchInputOnboardingIsShownUseCase)
 
     @JvmStatic
     @Singleton
@@ -74,11 +73,11 @@ object ShoppingSearchModule {
     @JvmStatic
     @Provides
     fun provideShoppingSearchResultViewModel(
-        usecase: GetShoppingSearchSitesUseCase,
-        checkUseCase: CheckContentSwitchOnboardingFirstRunUseCase,
-        completeUseCase: CompleteContentSwitchOnboardingFirstRunUseCase
+        getShoppingSearchSitesUseCase: GetShoppingSearchSitesUseCase,
+        shouldShowSearchResultOnboardingUseCase: ShouldShowSearchResultOnboardingUseCase,
+        setSearchResultOnboardingIsShownUseCase: SetSearchResultOnboardingIsShownUseCase
     ): ShoppingSearchResultViewModel =
-        ShoppingSearchResultViewModel(usecase, checkUseCase, completeUseCase)
+        ShoppingSearchResultViewModel(getShoppingSearchSitesUseCase, shouldShowSearchResultOnboardingUseCase, setSearchResultOnboardingIsShownUseCase)
 
     @JvmStatic
     @Provides
@@ -103,13 +102,8 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideOnboardingSharedPreferenceRepository(appContext: Context): OnboardingSharedPreferenceRepository = OnboardingSharedPreferenceRepository(appContext)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideContentSwitchCheckOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CheckContentSwitchOnboardingFirstRunUseCase =
-        CheckContentSwitchOnboardingFirstRunUseCase(repo)
+    fun provideShouldShowSearchResultOnboardingUseCase(repo: ShoppingSearchRepository): ShouldShowSearchResultOnboardingUseCase =
+        ShouldShowSearchResultOnboardingUseCase(repo)
 
     @JvmStatic
     @Provides
@@ -119,18 +113,18 @@ object ShoppingSearchModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideContentSwitchCompleteOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CompleteContentSwitchOnboardingFirstRunUseCase =
-        CompleteContentSwitchOnboardingFirstRunUseCase(repo)
+    fun provideSetSearchResultOnboardingIsShownUseCase(repo: ShoppingSearchRepository): SetSearchResultOnboardingIsShownUseCase =
+        SetSearchResultOnboardingIsShownUseCase(repo)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideCheckOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CheckOnboardingFirstRunUseCase =
-        CheckOnboardingFirstRunUseCase(repo)
+    fun provideShouldShowSearchInputOnboardingUseCase(repo: ShoppingSearchRepository): ShouldShowSearchInputOnboardingUseCase =
+        ShouldShowSearchInputOnboardingUseCase(repo)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideCompleteOnboardingFirstRunUseCase(repo: OnboardingSharedPreferenceRepository): CompleteOnboardingFirstRunUseCase =
-        CompleteOnboardingFirstRunUseCase(repo)
+    fun provideSetSearchInputOnboardingIsShownUseCase(repo: ShoppingSearchRepository): SetSearchInputOnboardingIsShownUseCase =
+        SetSearchInputOnboardingIsShownUseCase(repo)
 }
