@@ -14,7 +14,7 @@ object FxToast {
     private var toastWeak: WeakReference<Toast?> = WeakReference(null)
     private var inflater: LayoutInflater? = null
 
-    fun show(appContext: Context, msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    fun show(appContext: Context, msg: String, duration: Int = Toast.LENGTH_LONG) {
         val lastToast = toastWeak.get()
         val newToast = if (lastToast != null) {
             createToast(appContext, duration, customView = lastToast.view.apply { text.text = msg })
@@ -33,7 +33,7 @@ object FxToast {
 
     private fun createToast(appContext: Context, duration: Int, customView: View) = Toast(appContext)
             .apply {
-                setGravity(Gravity.FILL_HORIZONTAL or Gravity.BOTTOM, 0, 0)
+                setGravity(Gravity.FILL_HORIZONTAL or Gravity.TOP, 0, 0)
                 view = customView
                 this.duration = duration
             }
