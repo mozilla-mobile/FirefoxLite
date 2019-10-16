@@ -15,7 +15,6 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_news_tab.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -89,7 +88,6 @@ class NewsTabFragment : Fragment() {
             putExtra(EXTRA_CONFIG_NEWS, "config")
             setClass(context!!, SettingsActivity::class.java)
         }
-        TelemetryWrapper.clickOnNewsSetting()
         startActivityForResult(intent, SETTING_REQUEST_CODE)
     }
 
@@ -109,9 +107,6 @@ class NewsTabFragment : Fragment() {
                 }
 
                 override fun onPageSelected(p0: Int) {
-                    if (newsSettings.second.size > p0) {
-                        TelemetryWrapper.openLifeFeedNews(newsSettings.second[p0].order.toString())
-                    }
                 }
             })
         }

@@ -7,7 +7,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.Lazy
 import org.mozilla.focus.R
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsLanguage
@@ -55,8 +54,6 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
     override fun onPause() {
         super.onPause()
         categoryPreference?.NewsCatSettingCatAdapter()
-        val catList = categoryPreference?.getCatList()
-        TelemetryWrapper.changeNewsSetting(categories = catList?.filter { item -> item.isSelected }?.map { lang -> lang.order.toString() })
     }
 
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {
@@ -83,7 +80,6 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
     }
 
     private fun setUserPreferLanguage(language: NewsLanguage) {
-        TelemetryWrapper.changeNewsSetting(language = language.key)
         newsSettingsViewModel.updateUserPreferenceLanguage(language)
     }
 
