@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
@@ -64,6 +65,8 @@ class MissionDetailViewModel(
 
     fun onJoinMissionButtonClicked() = viewModelScope.launch {
         isLoading.value = true
+        TelemetryWrapper.clickChallengePageJoin()
+
         val joinResult = joinMissionUseCase(mission)
         if (joinResult.isSuccess) {
             startMissionReminder.value = mission
@@ -105,6 +108,7 @@ class MissionDetailViewModel(
 
     private fun redeem(mission: Mission) = viewModelScope.launch {
         isLoading.value = true
+        TelemetryWrapper.clickChellengePageLogin()
         if (isFxAccountUseCase()) {
             val redeemResult = redeemUseCase(mission)
             if (redeemResult.isSuccess) {
@@ -125,6 +129,7 @@ class MissionDetailViewModel(
 
     fun onFxLoginCompleted(jwt: String?) = viewModelScope.launch {
         if (bindFxAccountUseCase(jwt).isSuccess) {
+            TelemetryWrapper.accountSignIn()
             redeem(mission)
         } else {
             showToast.value = ToastMessage(R.string.msrp_reward_challenge_nointernet)

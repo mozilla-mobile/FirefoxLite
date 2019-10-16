@@ -169,7 +169,7 @@ class HomeViewModel(
     fun onPinTopSiteClicked(site: Site, position: Int) {
         pinTopSiteUseCase(site)
         updateTopSitesData()
-        TelemetryWrapper.pinTopsite(site.url, position)
+        TelemetryWrapper.pinTopSite(site.url, position)
     }
 
     fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
@@ -191,8 +191,8 @@ class HomeViewModel(
             }
         )
         checkInResult.data?.let { (mission, hasMissionCompleted) ->
-            val message = when (val progress = mission.missionProgress) {
-                is MissionProgress.TypeDaily -> progress.message
+            val (message, currentDay) = when (val progress = mission.missionProgress) {
+                is MissionProgress.TypeDaily -> progress.message to progress.currentDay
                 null -> error("Unknown MissionProgress type")
             }
             if (message.isNotEmpty()) {
@@ -200,13 +200,16 @@ class HomeViewModel(
             }
             if (hasMissionCompleted) {
                 showMissionCompleteDialog.value = mission
+                TelemetryWrapper.showChallengeCompleteMessage()
             }
+            TelemetryWrapper.endMissionTask(currentDay, hasMissionCompleted)
         }
     }
 
     fun onLogoManShown() {
         // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
         logoManNotification.value?.animate = false
+        TelemetryWrapper.showLogoman(null, null)
     }
 
     fun onLogoManNotificationClicked() {
@@ -215,16 +218,19 @@ class HomeViewModel(
                 is GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage -> openMissionDetailPage.value = it.mission
             }
         }
+        TelemetryWrapper.clickLogoman(null, null)
     }
 
     fun onLogoManDismissed() {
-        logoManNotification.value?.let {
-            dismissLogoManNotificationUseCase(it.notification)
+        logoManNotification.value?.notification?.let {
+            dismissLogoManNotificationUseCase(it)
         }
         logoManNotification.value = null
+        TelemetryWrapper.swipeLogoman(null, null)
     }
 
     fun onRewardButtonClicked() {
+        TelemetryWrapper.clickRewardButton()
         openRewardPage.call()
     }
 
@@ -234,10 +240,23 @@ class HomeViewModel(
 
     fun onRedeemCompletedMissionButtonClicked(mission: Mission) {
         openMissionDetailPage.value = mission
+        TelemetryWrapper.clickChallengeCompleteMessage(TelemetryWrapper.Extra_Value.LOGIN)
     }
 
     fun onContentHubRequestClickHintDismissed() {
         completeJoinMissionOnboardingUseCase()
+    }
+
+    fun onShowClickContentHubOnboarding() {
+        TelemetryWrapper.showTaskContextualHint()
+    }
+
+    fun onRedeemCompletedLaterButtonClicked() {
+        TelemetryWrapper.clickChallengeCompleteMessage(TelemetryWrapper.Extra_Value.LATER)
+    }
+
+    fun onRedeemCompletedDialogClosed() {
+        TelemetryWrapper.clickChallengeCompleteMessage(TelemetryWrapper.Extra_Value.CLOSE)
     }
 
     data class ShowTopSiteMenuData(

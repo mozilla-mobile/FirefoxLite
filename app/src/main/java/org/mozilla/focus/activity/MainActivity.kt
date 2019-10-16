@@ -326,6 +326,7 @@ class MainActivity : BaseActivity(),
         contentResolver.registerContentObserver(DownloadContract.Download.CONTENT_URI, true, downloadObserver)
         downloadIndicatorViewModel.updateIndicator()
         chromeViewModel.checkIfPrivateBrowsingActive()
+        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.ALL)
     }
 
     override fun onPause() {
@@ -335,6 +336,7 @@ class MainActivity : BaseActivity(),
 
         TelemetryWrapper.stopSession()
         saveTabsToPersistence()
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.ALL)
     }
 
     override fun onStop() {

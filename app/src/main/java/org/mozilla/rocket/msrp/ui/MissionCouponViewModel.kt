@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.domain.GetCouponUseCase
@@ -30,6 +31,10 @@ class MissionCouponViewModel(
     val openShoppingPage = SingleLiveEvent<Unit>()
 
     private lateinit var mission: Mission
+
+    init {
+        TelemetryWrapper.showCouponPage()
+    }
 
     fun init(mission: Mission) {
         this.mission = mission
@@ -64,10 +69,12 @@ class MissionCouponViewModel(
     }
 
     fun onCopyButtonClicked(text: String) {
+        TelemetryWrapper.copyCodeOnCouponPage()
         copyToClipboard.value = text
     }
 
     fun onGoShoppingButtonClicked() {
+        TelemetryWrapper.clickGoUseOnCouponPage()
         openShoppingPage.call()
     }
 
