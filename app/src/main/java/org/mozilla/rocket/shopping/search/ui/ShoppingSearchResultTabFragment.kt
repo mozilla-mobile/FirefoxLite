@@ -114,6 +114,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     override fun onResume() {
         super.onResume()
         sessionManager.resume()
+        appbar.requestApplyInsets()
     }
 
     override fun onPause() {
