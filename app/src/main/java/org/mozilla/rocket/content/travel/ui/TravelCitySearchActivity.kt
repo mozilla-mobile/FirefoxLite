@@ -42,6 +42,9 @@ class TravelCitySearchActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
             }
         })
+        search_keyword_edit.post {
+            search_keyword_edit.requestFocus()
+        }
         clear.setOnClickListener {
             search_keyword_edit.setText("")
         }
