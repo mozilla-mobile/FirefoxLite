@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.msrp.data.Mission
@@ -75,11 +76,13 @@ class MissionViewModel(
     }
 
     fun onChallengeItemClicked(position: Int) {
+        TelemetryWrapper.clickItemContentHome(TelemetryWrapper.Extra_Value.REWARDS, TelemetryWrapper.Extra_Value.MISSION)
         val mission = challengeMissions[position]
         openMissionDetailPage.value = mission
     }
 
     fun onRedeemItemClicked(position: Int) {
+        TelemetryWrapper.clickItemContentHome(TelemetryWrapper.Extra_Value.REWARDS, TelemetryWrapper.Extra_Value.GIFT)
         val mission = redeemMissions[position]
         when (mission.status) {
             Mission.STATUS_REDEEMABLE -> {

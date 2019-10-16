@@ -477,12 +477,19 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 .onPositive {
                     homeViewModel.onRedeemCompletedMissionButtonClicked(mission)
                 }
+                .onNegative {
+                    homeViewModel.onRedeemCompletedLaterButtonClicked()
+                }
+                .onClose {
+                    homeViewModel.onRedeemCompletedDialogClosed()
+                }
                 .show()
     }
 
     private fun showRequestClickContentHubOnboarding() {
         activity?.let {
             content_hub.post {
+                homeViewModel.onShowClickContentHubOnboarding()
                 setOnboardingStatusBarColor()
                 DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub) {
                     restoreStatusBarColor()

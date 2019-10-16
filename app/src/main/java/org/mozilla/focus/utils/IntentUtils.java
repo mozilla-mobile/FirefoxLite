@@ -4,24 +4,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.focus.utils;
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+
 import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 
 import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
@@ -43,11 +40,19 @@ public class IntentUtils {
     public static final String EXTRA_OPEN_NEW_TAB = "open_new_tab";
     public static final String EXTRA_SHOW_RATE_DIALOG = "show_rate_dialog";
 
+    public static final String EXTRA_NOTIFICATION_MESSAGE_ID = "ex_no_message_id";
+    public static final String EXTRA_NOTIFICATION_LINK = "ex_no_link";
+    public static final String EXTRA_NOTIFICATION_OPEN_URL = "ex_no_open_url";
+    public static final String EXTRA_NOTIFICATION_COMMAND = "ex_no_command";
+    public static final String EXTRA_NOTIFICATION_DEEP_LINK = "ex_no_deep_link";
+
     public static final String EXTRA_NOTIFICATION_ACTION_RATE_STAR = "ex_no_action_rate_star";
     public static final String EXTRA_NOTIFICATION_ACTION_FEEDBACK = "ex_no_action_feedback";
     public static final String EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER = "ex_no_click_default_browser";
     public static final String EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX = "ex_no_click_love_firefox";
     public static final String EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE = "ex_no_click_privacy_policy_update";
+    public static final String EXTRA_NOTIFICATION_DELETE_FIREBASE_NOTIFICATION = "ex_no_delete_firebase_notification";
+    public static final String EXTRA_NOTIFICATION_CLICK_FIREBASE_NOTIFICATION = "ex_no_click_firebase_notification";
 
     public static final String ACTION_NOTIFICATION = "action_notification";
 
@@ -256,6 +261,34 @@ public class IntentUtils {
         privacyPolicyUpdate.setAction(IntentUtils.ACTION_NOTIFICATION);
         privacyPolicyUpdate.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE, true);
         return privacyPolicyUpdate;
+    }
+
+    public static Intent genDeleteFirebaseNotificationActionForBroadcastReceiver(Context context, String messageId, String link) {
+        final Intent deleteNotification = new Intent(context, NotificationActionBroadcastReceiver.class);
+        deleteNotification.setAction(IntentUtils.ACTION_NOTIFICATION);
+        deleteNotification.putExtra(IntentUtils.EXTRA_NOTIFICATION_DELETE_FIREBASE_NOTIFICATION, true);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_LINK, link);
+        return deleteNotification;
+    }
+
+    public static Intent genFirebaseNotificationClickForBroadcastReceiver(
+        Context context,
+        String messageId,
+        String openUrl,
+        String command,
+        String deepLink,
+        String link
+    ) {
+        final Intent clickFirebaseNotification = new Intent(context, NotificationActionBroadcastReceiver.class);
+        clickFirebaseNotification.setAction(IntentUtils.ACTION_NOTIFICATION);
+        clickFirebaseNotification.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_FIREBASE_NOTIFICATION, true);
+        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
+        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_OPEN_URL, openUrl);
+        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_COMMAND, command);
+        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_DEEP_LINK, deepLink);
+        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_LINK, link);
+        return clickFirebaseNotification;
     }
 
     @CheckResult

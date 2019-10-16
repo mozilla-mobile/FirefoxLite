@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
@@ -57,6 +58,7 @@ class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxL
 
     override fun onLoginSuccess(jwt: String, isDisabled: Boolean, times: Int) {
         CoroutineScope(Dispatchers.Main).launch {
+            TelemetryWrapper.accountSignIn()
             bindFxAccountUseCase(jwt)
             when {
                 isDisabled -> {

@@ -10,8 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.core.app.NotificationManagerCompat;
 import android.util.Log;
+
+import androidx.core.app.NotificationManagerCompat;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
@@ -41,7 +42,23 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
         }
         Intent nexStep = null;
 
-        if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {
+        if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_DELETE_FIREBASE_NOTIFICATION)) {
+            String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+            String link = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_LINK, "");
+            TelemetryWrapper.dismissNotification(link, messageId);
+
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_FIREBASE_NOTIFICATION)) {
+            nexStep = new Intent();
+            nexStep.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
+            nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_OPEN_URL, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_OPEN_URL));
+            nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_COMMAND, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_COMMAND));
+            nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_DEEP_LINK, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_DEEP_LINK));
+
+            String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+            String link = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_LINK, "");
+            TelemetryWrapper.openNotification(link, messageId);
+
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {
 
             IntentUtils.goToPlayStore(context);
 

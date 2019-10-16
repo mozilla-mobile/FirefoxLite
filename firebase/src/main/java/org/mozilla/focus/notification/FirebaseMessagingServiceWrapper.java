@@ -19,6 +19,7 @@ import com.google.firebase.messaging.RemoteMessage;
  */
 abstract public class FirebaseMessagingServiceWrapper extends FirebaseMessagingService {
 
+    public static final String MESSAGE_ID = "message_id";
     public static final String PUSH_OPEN_URL = "push_open_url";
     public static final String PUSH_COMMAND = "push_command";
     public static final String PUSH_DEEP_LINK = "push_deep_link";
@@ -34,6 +35,7 @@ abstract public class FirebaseMessagingServiceWrapper extends FirebaseMessagingS
             final Intent intent = new Intent();
             // check if message contains data payload
             if (remoteMessage.getData() != null) {
+                intent.putExtra(MESSAGE_ID, remoteMessage.getData().get(MESSAGE_ID));
                 intent.putExtra(PUSH_OPEN_URL, remoteMessage.getData().get(PUSH_OPEN_URL));
                 intent.putExtra(PUSH_COMMAND, remoteMessage.getData().get(PUSH_COMMAND));
                 intent.putExtra(PUSH_DEEP_LINK, remoteMessage.getData().get(PUSH_DEEP_LINK));

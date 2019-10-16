@@ -104,11 +104,13 @@ class PrivateModeActivity : BaseActivity(),
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
+        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.ALL)
     }
 
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.ALL)
     }
 
     override fun onDestroy() {
