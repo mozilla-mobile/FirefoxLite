@@ -190,7 +190,6 @@ class MissionRemoteDataSource {
                 request = Request(url = endpoint, headers = createHeader(token), method = Request.Method.PUT),
                 onSuccess = {
                     parseMissionListResponse(it)
-//                    parseCheckInMissionResponse(it)
                 },
                 onError = {
                     log("check-in mission failed, msg=$it")
@@ -198,40 +197,6 @@ class MissionRemoteDataSource {
                 }
         )
     }
-
-//    private fun parseCheckInMissionResponse(response: Response): Result<List<Mission>, RewardServiceError> {
-//        val body = response.body.string()
-//        val root = JSONObject(body)
-//
-//        log("check-in response, code=${response.status}, body=$body")
-//
-//        return when (response.status) {
-//            200 -> {
-//                val missionArray = root.optJSONArray("result")
-//                val missions = (0 until missionArray.length()).mapNotNull {
-//                    val missionJson = missionArray.getJSONObject(it)
-//                    val missionType = MissionType.valueOf(missionJson.optString("missionType"))
-//                            ?: return@mapNotNull null
-//
-//                    val progress = parseProgress(missionType, missionJson.optJSONObject("progress"))
-//                            ?: return@mapNotNull null
-//
-//                    CheckedInMission(
-//                        mid = missionJson.optString("mid"),
-//                        missionType = missionType,
-//                        progress = progress
-//                    )
-//                }
-//
-//                return Result.success(missions)
-//            }
-//
-//            else -> {
-//                val msg = root.optString("message")
-//                Result.error("check-in failed, code=${response.status}, msg=$msg", error = RewardServiceError.Unknown(msg))
-//            }
-//        }
-//    }
 
     suspend fun quitMission(mission: Mission, accessToken: String?): Result<QuitMissionResult, RewardServiceError> = withContext(Dispatchers.IO) {
         val token = accessToken
@@ -326,7 +291,6 @@ class MissionRemoteDataSource {
                     }
                     response.status == 200 -> {
                         val responseStr = response.body.string()
-                        Log.e(TAG, "Redeem responseStr: $responseStr")
                         val resJson = JSONObject(responseStr).getJSONObject("rewardCoupon")
                         val reward = RewardCouponDoc(
                             resJson.optString("rid"),
@@ -385,7 +349,7 @@ class MissionRemoteDataSource {
     }
 
     companion object {
-        private const val TAG = "MissionRepository"
+        private const val TAG = "MissionRemoteDataSource"
         private const val BOOL_RC_MSRP_ENABLED = "bool_msrp_enabled"
         private const val STR_RC_MISSION_LIST_ENDPOINT = "str_mission_list_endpoint"
         private const val STR_RC_MSRP_API_HOST = "str_msrp_api_host"
