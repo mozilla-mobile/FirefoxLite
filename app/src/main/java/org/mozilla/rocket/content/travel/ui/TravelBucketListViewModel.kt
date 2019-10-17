@@ -17,20 +17,14 @@ class TravelBucketListViewModel(private val getBucketListUseCase: GetBucketListU
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _isListEmtpy = MutableLiveData<Boolean>()
-    val isListEmpty: LiveData<Boolean> = _isListEmtpy
-
     private val _items by lazy {
         MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
             launchDataLoad {
                 val result = getBucketListUseCase()
                 if (result is Result.Success) {
-                    value = result.data.map {
-                        TravelMapper.toBucketListCityUiModel(it)
-                    }
-                    _isListEmtpy.value = this.value?.isEmpty()
-                } else {
-                    _isListEmtpy.value = true
+                    value = result.data.map { TravelMapper.toBucketListCityUiModel(it) }
+                } else if (result is Result.Error) {
+                    throw (result.exception)
                 }
             }
         }
@@ -38,9 +32,14 @@ class TravelBucketListViewModel(private val getBucketListUseCase: GetBucketListU
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
     val openCity = SingleLiveEvent<String>()
+    val goSearch = SingleLiveEvent<Unit>()
 
     fun onBucketListCityClicked(cityItem: BucketListCityUiModel) {
         openCity.value = cityItem.name
+    }
+
+    fun onExploreCityClicked() {
+        goSearch.call()
     }
 
     fun removeCityFromBucket(cityItem: BucketListCityUiModel) {
@@ -48,7 +47,6 @@ class TravelBucketListViewModel(private val getBucketListUseCase: GetBucketListU
         val newItems = _items.value as MutableList<DelegateAdapter.UiModel>?
         newItems?.remove(cityItem)
         _items.value = newItems
-        _isListEmtpy.value = _items.value?.isEmpty()
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
