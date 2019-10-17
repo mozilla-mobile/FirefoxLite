@@ -20,7 +20,6 @@ data class Mission(
 
     val joinEndDate: Long,
     val expiredDate: Long,
-    val redeemedDate: Long,
 
     val status: Int, // STATUS_NEW, STATUS_NEW, STATUS_REDEEMABLE, STATUS_REDEEMED
     val missionProgress: MissionProgress?
@@ -40,7 +39,6 @@ data class Mission(
         source.createStringArrayList()!!,
         1 == source.readInt(),
         source.readInt(),
-        source.readLong(),
         source.readLong(),
         source.readLong(),
         source.readInt(),
@@ -64,7 +62,6 @@ data class Mission(
         writeInt(minVersion)
         writeLong(joinEndDate)
         writeLong(expiredDate)
-        writeLong(redeemedDate)
         writeInt(status)
         writeParcelable(missionProgress, flags)
         writeInt(if (unread) 1 else 0)

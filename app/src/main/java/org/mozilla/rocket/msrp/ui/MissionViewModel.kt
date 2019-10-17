@@ -139,7 +139,7 @@ private fun Mission.toUiModel(): MissionUiModel = when (status) {
     }
     Mission.STATUS_REDEEMED -> MissionUiModel.RedeemedMission(
         title = title,
-        expirationTime = redeemedDate.toDateString()
+        expirationTime = expiredDate.toDateString()
     )
     else -> error("unexpected mission status: $status")
 }
