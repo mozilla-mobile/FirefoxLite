@@ -22,7 +22,6 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:background="@drawable/tooltip_pointer"
-        android:elevation="12dp"
         android:layout_marginEnd="76dp"
         android:layout_marginTop="4dp"/>
 
