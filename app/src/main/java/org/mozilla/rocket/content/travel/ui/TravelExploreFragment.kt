@@ -97,7 +97,9 @@ class TravelExploreFragment : Fragment() {
         })
 
         travelExploreViewModel.goSearch.observe(this, Observer {
-            // TODO go search activity
+            context?.let {
+                startActivity(TravelCitySearchActivity.getStartIntent(it))
+            }
         })
     }
 
