@@ -12,6 +12,7 @@ import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.SetSearchInputOnboardingIsShownUseCase
 import org.mozilla.rocket.shopping.search.domain.SetSearchResultOnboardingIsShownUseCase
+import org.mozilla.rocket.shopping.search.domain.ShouldEnableTurboModeUseCase
 import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchInputOnboardingUseCase
 import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchResultOnboardingUseCase
 import org.mozilla.rocket.shopping.search.domain.UpdateShoppingSitesUseCase
@@ -74,10 +75,16 @@ object ShoppingSearchModule {
     @Provides
     fun provideShoppingSearchResultViewModel(
         getShoppingSearchSitesUseCase: GetShoppingSearchSitesUseCase,
+        shouldEnableTurboModeUseCase: ShouldEnableTurboModeUseCase,
         shouldShowSearchResultOnboardingUseCase: ShouldShowSearchResultOnboardingUseCase,
         setSearchResultOnboardingIsShownUseCase: SetSearchResultOnboardingIsShownUseCase
     ): ShoppingSearchResultViewModel =
-        ShoppingSearchResultViewModel(getShoppingSearchSitesUseCase, shouldShowSearchResultOnboardingUseCase, setSearchResultOnboardingIsShownUseCase)
+        ShoppingSearchResultViewModel(
+            getShoppingSearchSitesUseCase,
+            shouldEnableTurboModeUseCase,
+            shouldShowSearchResultOnboardingUseCase,
+            setSearchResultOnboardingIsShownUseCase
+        )
 
     @JvmStatic
     @Provides
@@ -127,4 +134,10 @@ object ShoppingSearchModule {
     @Provides
     fun provideSetSearchInputOnboardingIsShownUseCase(repo: ShoppingSearchRepository): SetSearchInputOnboardingIsShownUseCase =
         SetSearchInputOnboardingIsShownUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldEnableTurboModeUseCase(repo: ShoppingSearchRepository): ShouldEnableTurboModeUseCase =
+        ShouldEnableTurboModeUseCase(repo)
 }

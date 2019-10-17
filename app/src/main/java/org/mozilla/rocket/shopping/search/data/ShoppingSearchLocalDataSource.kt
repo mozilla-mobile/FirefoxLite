@@ -2,6 +2,7 @@ package org.mozilla.rocket.shopping.search.data
 
 import android.content.Context
 import org.json.JSONArray
+import org.mozilla.focus.utils.Settings
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingSearchDataSource {
@@ -34,6 +35,9 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
             .forEach { siteJsonArray.put(it) }
         preference.edit().putString(KEY_SHOPPING_SEARCH_SITE, siteJsonArray.toString()).apply()
     }
+
+    override fun shouldEnableTurboMode(): Boolean =
+        Settings.getInstance(appContext).shouldUseTurboMode()
 
     override fun shouldShowSearchInputOnboarding() =
         preference.getBoolean(KEY_SEARCH_INPUT_ONBOARDING, true)

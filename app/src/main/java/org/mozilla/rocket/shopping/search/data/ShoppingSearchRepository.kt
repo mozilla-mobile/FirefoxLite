@@ -38,6 +38,8 @@ class ShoppingSearchRepository(
         shoppingSitesData.postValue(shoppingSites)
     }
 
+    fun shouldEnableTurboMode() = localDataSource.shouldEnableTurboMode()
+
     fun shouldShowSearchInputOnboarding() = localDataSource.shouldShowSearchInputOnboarding()
 
     fun setSearchInputOnboardingIsShown() = localDataSource.setSearchInputOnboardingIsShown()

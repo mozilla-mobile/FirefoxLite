@@ -20,6 +20,10 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
         throw UnsupportedOperationException("Can't set user preference sites setting to server")
     }
 
+    override fun shouldEnableTurboMode(): Boolean {
+        throw UnsupportedOperationException("Can't get turbo mode setting from server")
+    }
+
     override fun shouldShowSearchInputOnboarding(): Boolean {
         throw UnsupportedOperationException("Can't get search input onboarding status from server")
     }
