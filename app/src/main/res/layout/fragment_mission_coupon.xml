@@ -131,7 +131,8 @@
     <TextView
         android:id="@+id/coupon_go_shopping_btn"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/msrp_mission_detail_button_height"
         android:layout_marginStart="40dp"
         android:layout_marginTop="15.5dp"
         android:layout_marginEnd="40dp"
