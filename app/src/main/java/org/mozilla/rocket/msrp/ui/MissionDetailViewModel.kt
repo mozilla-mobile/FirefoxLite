@@ -84,6 +84,7 @@ class MissionDetailViewModel(
             } else {
                 showToast.value = when (joinResult.error!!) {
                     JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                    JoinMissionUseCase.Error.NoQuota -> ToastMessage(R.string.mission_no_quota)
                     JoinMissionUseCase.Error.AccountDisabled,
                     JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
                 }
