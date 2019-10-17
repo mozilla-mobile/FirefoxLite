@@ -378,7 +378,7 @@ public class DialogUtils {
         message.setText(activity.getString(R.string.travel_details_onboarding_message, cityName));
         container.findViewById(R.id.next).setOnClickListener(ok);
 
-        Dialog dialog = createShoppingSearchSpotlightDialog(
+        Dialog dialog = createTravelSpotlightDialog(
                 activity,
                 targetView,
                 container,
@@ -450,6 +450,28 @@ public class DialogUtils {
                 FocusViewType.ROUND_REC,
                 ContextCompat.getColor(activity, R.color.paletteBlack50),
                 cancelOnTouchOutside
+        );
+    }
+
+    @CheckResult
+    private static Dialog createTravelSpotlightDialog(
+            @NonNull final Activity activity,
+            @NonNull final View targetView,
+            final @NonNull ViewGroup container,
+            final @NonNull Integer radius,
+            final @NonNull Integer height,
+            final @NonNull Integer width) {
+        return createSpotlightDialog(
+                activity,
+                targetView,
+                container,
+                0,
+                radius,
+                height,
+                width,
+                FocusViewType.ROUND_REC,
+                ContextCompat.getColor(activity, R.color.paletteBlack50),
+                false
         );
     }
 
