@@ -769,15 +769,15 @@
     <string name="msrp_reward_challenge_expire">Expires %1$s</string>
 
     <!--Challenge-->
-    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"--> 
-    <string name="msrp_challenge_title">7-day challenge for %1$s %2$s voucher</string>                               
-    <string name="msrp_challenge_details_title_1">1. Join the 7-Day challenge</string>
+    <string name="msrp_challenge_title">7-day challenge for Rp 15,000 Shopee voucher</string>  
+    <string name="msrp_challenge_description">Rp 15,000 Shopee voucher</string>    
+    <string name="msrp_challenge_details_title_1">Join the 7-Day challenge</string>
     <!-- The %1$s here is a placeholder for "Firefox Lite"--> 
     <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on %1$s Home by simply clicking the buttons for seven days in a row.</string>
-    <string name="msrp_challenge_details_title_2">2. Use your Firefox account to redeem your reward</string>
+    <string name="msrp_challenge_details_title_2">Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
-    <!--"I'm In!" is a button where users can press to join the reward program--> 
-    <string name="msrp_challenge_button_1">I’m In!</string>
+    <!--"Use Firefox Account to join" is a button where users can press to join the reward program--> 
+    <string name="msrp_challenge_button_1">Use Firefox Account to join</string>
     <string name="msrp_challenge_tou">By clicking “I’m in” you are agreeing to our Terms of Use</string>
     <!--"Leave mission" is a button for users to exit the reward program-->     
     <string name="msrp_challenge_button_2">Leave mission</string>
@@ -803,24 +803,25 @@
     <string name="msrp_challenge_button_5">Redeem later</string>
     
     <!--Voucher-->
-    <!-- The %1$s here is a placeholder for "shopping site"-->
-    <string name="msrp_voucher_title">Your %1$s voucher is ready!</string>
+    <!-- The %1$s here is a placeholder for "reward title" ex. Amazon voucher-->
+    <string name="msrp_voucher_title">Your %1$s is ready!</string>
     <string name="msrp_voucher_body_1">Voucher is valid for a limited time only. We reserve the right to modify or cancel voucher at any time.</string>
     <string name="msrp_voucher_body_2">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
     <!-- The %1$s here is a placeholder for "date"--> 
     <string name="msrp_voucher_expire">Expires %1$s</string>
-    <string name="msrp_voucher_button_2">Voucher can only be applied through this URL below:</string>
+    <string name="msrp_voucher_button_2">Copy voucher and go shopping</string>
     <string name="msrp_voucher_button_1">Copy</string>
     <string name="msrp_voucher_toast">Voucher code copied</string>
+    <string name="msrp_voucher_nostock">The voucher is out of stock</string>
    
     <!--Coupon-->
-    <!-- The %1$s here is a placeholder for "shopping site"-->
-    <string name="msrp_coupon_title" translatable="false">Your %1$s voucher is ready!</string>
+    <!-- The %1$s here is a placeholder for "reward title" ex. Amazon voucher-->
+    <string name="msrp_coupon_title" translatable="false">Your %1$s is ready!</string>
     <string name="msrp_coupon_body_1" translatable="false">Voucher is valid for a limited time only. We reserve the right to modify or cancel voucher at any time.</string>
     <string name="msrp_coupon_body_2" translatable="false">We reserve the right, at its sole discretion, to change, modify, add or remove portions of these Terms of Use, at any time.</string>
     <!-- The %1$s here is a placeholder for "date"--> 
     <string name="msrp_coupon_expire" translatable="false">Expires %1$s</string>
-    <string name="msrp_coupon_button_2" translatable="false">Voucher can only be applied through this URL below:</string>
+    <string name="msrp_coupon_button_2" translatable="false">Copy voucher and go shopping</string>
     <string name="msrp_coupon_button_1" translatable="false">Copy</string>
     
     <!--Redeem-->
@@ -851,8 +852,8 @@
     <string name="msrp_completed_toast_day7">You’ve completed the challenge! Please go back to %1$s Home to redeem your voucher!</string>
     
     <!--Notifications for last 3 days-->
-    <!-- The %1$s here is a placeholder for "shopping site"-->  
-    <string name="msrp_notification_reminder">Want to win a %1$s voucher? Don’t forget to try Shopping, News, Game today!</string>    
+    <!-- The %1$s here is a placeholder for "reward title" ex. Amazon voucher-->  
+    <string name="msrp_notification_reminder">Want to win a %1$s? Don’t forget to try Shopping, News, Game today!</string>    
     <!--No data-->
     <string name="msrp_reward_challenge_nodata">All challenges completed</string>
     <string name="msrp_reward_redeem_nodata">All rewards collected</string>
