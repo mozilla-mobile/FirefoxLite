@@ -36,7 +36,7 @@ class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDat
             toCategoryList(jsonString).let {
                 supportCategories.addAll(
                     it.asSequence()
-                        .mapIndexedNotNull { index, categoryId -> NewsCategory(categoryId, 0, index, true) }
+                        .mapIndexedNotNull { index, categoryId -> NewsCategory(categoryId, getStringResourceId(categoryId), index, true) }
                         .toList()
                 )
             }
