@@ -19,6 +19,7 @@ class JoinMissionUseCase(
             transformError = {
                 when (it) {
                     is RewardServiceError.AccountDisabled -> Error.AccountDisabled
+                    is RewardServiceError.NoQuota -> Error.NoQuota
                     is RewardServiceError.NetworkError -> Error.NetworkError
                     is RewardServiceError.MsrpDisabled,
                     is RewardServiceError.Unauthorized,
@@ -30,6 +31,7 @@ class JoinMissionUseCase(
 
     sealed class Error {
         object AccountDisabled : Error()
+        object NoQuota : Error()
         object NetworkError : Error()
         object UnknownError : Error()
     }

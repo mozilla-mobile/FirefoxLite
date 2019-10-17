@@ -18,4 +18,5 @@
     <string name="msrp_congrats_subtitle" tools:ignore="MissingTranslation">You have been with us 7 days. Thank you for your fidelity. We have been enjoying this journey with you.</string>
     <string name="msrp_try_content_hubs" tools:ignore="MissingTranslation">Try new features to check in.</string>
     <string name="search_city_hint" translatable="false" tools:ignore="MissingTranslation">Enter a city</string>
+    <string name="mission_no_quota" translatable="false" tools:ignore="MissingTranslation">Voucher is out of stock</string>
 </resources>

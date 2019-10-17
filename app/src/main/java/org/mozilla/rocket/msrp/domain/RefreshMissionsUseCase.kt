@@ -21,6 +21,7 @@ class RefreshMissionsUseCase(
                     is RewardServiceError.AccountDisabled -> Error.AccountDisabled
                     is RewardServiceError.NetworkError -> Error.NetworkError
                     is RewardServiceError.MsrpDisabled,
+                    is RewardServiceError.NoQuota,
                     is RewardServiceError.Unauthorized,
                     is RewardServiceError.Unknown -> Error.UnknownError
                 }

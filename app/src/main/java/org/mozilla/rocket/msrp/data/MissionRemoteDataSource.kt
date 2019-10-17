@@ -166,7 +166,17 @@ class MissionRemoteDataSource {
 
                 Result.success(JoinMissionResult(mid, status))
             }
-
+            403 -> {
+                val errorBody = response.body.string()
+                if (errorBody.isEmpty()) {
+                    Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.AccountDisabled)
+                } else {
+                    when (val errorType = ErrorType.fromJson(response.body.string())) {
+                        is ErrorType.Unknown -> Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.Unknown(errorType.message))
+                        is ErrorType.NoQuota -> Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.NoQuota)
+                    }
+                }
+            }
             else -> {
                 val msg = root.optString("message")
                 Result.error("join failed, code=${response.status}, msg=$msg", error = RewardServiceError.Unknown(msg))
@@ -415,6 +425,7 @@ sealed class RewardServiceError {
     object MsrpDisabled : RewardServiceError()
     object Unauthorized : RewardServiceError()
     object AccountDisabled : RewardServiceError()
+    object NoQuota : RewardServiceError()
     class Unknown(val msg: String) : RewardServiceError()
 }
 
@@ -425,4 +436,36 @@ sealed class RedeemServiceError {
     class Failure(val message: String) : RedeemServiceError()
     class InvalidRewardType(val message: String) : RedeemServiceError()
     class NotLogin(val message: String) : RedeemServiceError()
+}
+
+private data class ErrorData(
+    val message: String,
+    val reason: Int
+) {
+    companion object {
+        fun fromJson(jsonStr: String): ErrorData {
+            val json = JSONObject(jsonStr)
+            return ErrorData(
+                message = json.optString("message"),
+                reason = json.optInt("type", 0)
+            )
+        }
+    }
+}
+
+sealed class ErrorType(val message: String) {
+    class Unknown(message: String) : ErrorType(message)
+    class NoQuota(message: String) : ErrorType(message)
+
+    companion object {
+        private const val ERROR_CODE_NO_QUOTA = 4
+
+        fun fromJson(jsonStr: String): ErrorType {
+            val errorData = ErrorData.fromJson(jsonStr)
+            return when (errorData.reason) {
+                ERROR_CODE_NO_QUOTA -> NoQuota(errorData.message)
+                else -> Unknown(errorData.message)
+            }
+        }
+    }
 }
