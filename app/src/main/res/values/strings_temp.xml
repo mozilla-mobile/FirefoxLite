@@ -27,10 +27,10 @@
     <string name="travel_details_onboarding_title" tools:ignore="MissingTranslation">Love %s?</string>
     <string name="travel_details_onboarding_message" tools:ignore="MissingTranslation">Tab here to save %s in your bucket list for quickly access latest travel guides and  prices and estimation.</string>
 
-    <string name="travel_hotel_free_wifi" tools:ignore="MissingTranslation">Free wifi</string>
-    <string name="travel_hotel_distance_to_landmark" tools:ignore="MissingTranslation">Distance to a landmark %.1fkm</string>
-    <string name="travel_hotel_rating_total" tools:ignore="MissingTranslation">%.1f/5</string>
-    <string name="travel_hotel_rating_from" tools:ignore="MissingTranslation">From</string>
-    <string name="travel_hotel_free_cancellation" tools:ignore="MissingTranslation">Free cancellation</string>
-    <string name="travel_hotel_pay_at_hotel" tools:ignore="MissingTranslation">Pay at hotel</string>
+    <string name="travel_hotel_free_wifi" translatable="false" tools:ignore="MissingTranslation">Free wifi</string>
+    <string name="travel_hotel_distance_to_landmark" translatable="false" tools:ignore="MissingTranslation">Distance to a landmark %.1fkm</string>
+    <string name="travel_hotel_rating_total" translatable="false" tools:ignore="MissingTranslation">%.1f/5</string>
+    <string name="travel_hotel_rating_from" translatable="false" tools:ignore="MissingTranslation">From</string>
+    <string name="travel_hotel_free_cancellation" translatable="false" tools:ignore="MissingTranslation">Free cancellation</string>
+    <string name="travel_hotel_pay_at_hotel" translatable="false" tools:ignore="MissingTranslation">Pay at hotel</string>
 </resources>
