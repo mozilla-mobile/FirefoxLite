@@ -20,7 +20,6 @@ object TestData {
         imageUrl = "",
         expiredDate = 12345,
         joinEndDate = 54321,
-        redeemedDate = 12345,
 
         missionProgress = null
     )
@@ -42,7 +41,6 @@ object TestData {
         imageUrl = "",
         expiredDate = 12345,
         joinEndDate = 54321,
-        redeemedDate = 12345,
 
         missionProgress = MissionProgress.TypeDaily(
             // progress, TODO: make it another class
