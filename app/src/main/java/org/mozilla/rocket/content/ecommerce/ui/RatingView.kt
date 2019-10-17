@@ -28,12 +28,12 @@ class RatingView : LinearLayout {
         ratingBlankStar = DrawableUtils.loadAndTintDrawable(context, R.drawable.ic_rating_blank, ContextCompat.getColor(context, R.color.paletteDarkBlueC100))
     }
 
-    fun updateRatingInfo(rating: Int, reviews: Int) {
+    fun updateRatingInfo(rating: Int, reviews: String) {
         rating_star_1.setImageDrawable(if (rating >= 1) ratingStar else ratingBlankStar)
         rating_star_2.setImageDrawable(if (rating >= 2) ratingStar else ratingBlankStar)
         rating_star_3.setImageDrawable(if (rating >= 3) ratingStar else ratingBlankStar)
         rating_star_4.setImageDrawable(if (rating >= 4) ratingStar else ratingBlankStar)
         rating_star_5.setImageDrawable(if (rating == 5) ratingStar else ratingBlankStar)
-        rating_reviews.text = reviews.toString()
+        rating_reviews.text = reviews
     }
 }

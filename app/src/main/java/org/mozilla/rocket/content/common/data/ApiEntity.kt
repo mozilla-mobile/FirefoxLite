@@ -96,7 +96,7 @@ data class ApiItem(
     val price: String = "",
     var discount: String = "",
     var score: Float = 0F,
-    var scoreReviews: Int = 0,
+    var scoreReviews: String = "",
     var description: String = ""
 ) {
 
@@ -137,7 +137,7 @@ data class ApiItem(
                 jsonObject.optString(KEY_PRICE),
                 jsonObject.optString(KEY_DISCOUNT),
                 jsonObject.optDouble(KEY_SCORE, 0.toDouble()).toFloat(),
-                jsonObject.optInt(KEY_SCORE_REVIEWS),
+                jsonObject.optString(KEY_SCORE_REVIEWS),
                 jsonObject.optString(KEY_DESCRIPTION)
             )
     }

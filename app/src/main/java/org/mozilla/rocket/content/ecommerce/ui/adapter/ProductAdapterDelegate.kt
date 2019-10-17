@@ -53,7 +53,7 @@ data class ProductItem(
     val price: String = "",
     var discount: String = "",
     var rating: Float = 0F,
-    var reviews: Int = 0
+    var reviews: String = ""
 ) : DelegateAdapter.UiModel() {
 
     val ratingCount: Int
