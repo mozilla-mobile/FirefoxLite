@@ -40,7 +40,7 @@ private fun Notification.toLogoManNotification() = GetLogoManNotificationUseCase
 
 private fun Mission.toLogoManNotification() = GetLogoManNotificationUseCase.Notification(
             uniqueId,
-            description,
+            title,
             null,
             GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage(mission = this)
         )
