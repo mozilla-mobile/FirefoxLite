@@ -206,9 +206,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun initTopSites() {
         topSitesAdapter = DelegateAdapter(
-                AdapterDelegatesManager().apply {
-                    add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel))
-                }
+            AdapterDelegatesManager().apply {
+                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel))
+            }
         )
         main_list.apply {
             adapter = this@HomeFragment.topSitesAdapter
