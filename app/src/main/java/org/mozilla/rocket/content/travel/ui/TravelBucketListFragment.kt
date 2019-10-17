@@ -47,9 +47,9 @@ class TravelBucketListFragment : Fragment() {
 
     private fun initBucketList() {
         bucketListAdapter = DelegateAdapter(
-                AdapterDelegatesManager().apply {
-                    add(BucketListCityUiModel::class, R.layout.item_bucket_list, BucketListCityAdapterDelegate(travelBucketListViewModel))
-                }
+            AdapterDelegatesManager().apply {
+                add(BucketListCityUiModel::class, R.layout.item_bucket_list, BucketListCityAdapterDelegate(travelBucketListViewModel))
+            }
         )
 
         bucket_list_recycler_view.apply {
@@ -60,51 +60,62 @@ class TravelBucketListFragment : Fragment() {
         }
 
         bucket_list_empty_explore.setOnClickListener {
-            // TODO hook to travel view model for go search action
+            travelBucketListViewModel.onExploreCityClicked()
         }
     }
 
     private fun bindBucketListData() {
-
         travelBucketListViewModel.items.observe(this, Observer {
             bucketListAdapter.setData(it)
-        })
 
-        travelBucketListViewModel.isListEmpty.observe(this, Observer { isEmpty ->
-            bucket_list_empty_view.isVisible = isEmpty
+            if(it.isEmpty()) {
+                showEmptyView()
+            } else {
+                showContentView()
+            }
         })
     }
 
     private fun bindLoadingState() {
         travelBucketListViewModel.isDataLoading.observe(this@TravelBucketListFragment, Observer { state ->
             when (state) {
-                is TravelBucketListViewModel.State.Idle -> showContentView()
+                is TravelBucketListViewModel.State.Idle -> showLoadedView()
                 is TravelBucketListViewModel.State.Loading -> showLoadingView()
-                is TravelBucketListViewModel.State.Error -> showErrorView()
+                is TravelBucketListViewModel.State.Error -> showEmptyView()
             }
         })
     }
 
     private fun observeBucketListActions() {
 
-        travelBucketListViewModel.openCity.observe(this, Observer {
-            // TODO go city detail activity
+        travelBucketListViewModel.openCity.observe(this, Observer { name ->
+            context?.let {
+                startActivity(TravelCityActivity.getStartIntent(it, name))
+            }
         })
 
-        // TODO observe go search event from travel view model
+        travelBucketListViewModel.goSearch.observe(this, Observer {
+            // TODO go search
+        })
     }
 
     private fun showLoadingView() {
         spinner.isVisible = true
-        bucket_list_recycler_view.isVisible = false
+        bucket_list_content_layout.isVisible = false
+    }
+
+    private fun showLoadedView() {
+        spinner.isVisible = false
+        bucket_list_content_layout.isVisible = true
     }
 
     private fun showContentView() {
-        spinner.isVisible = false
+        bucket_list_empty_view.isVisible = false
         bucket_list_recycler_view.isVisible = true
     }
 
-    private fun showErrorView() {
-        TODO("not implemented")
+    private fun showEmptyView() {
+        bucket_list_empty_view.isVisible = true
+        bucket_list_recycler_view.isVisible = false
     }
 }
