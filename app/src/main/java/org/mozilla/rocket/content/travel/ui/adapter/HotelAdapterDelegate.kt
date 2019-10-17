@@ -49,8 +49,8 @@ class HotelViewHolder(
 
         hotel_source.text = hotelUiModel.source
         hotel_name.text = hotelUiModel.name
-        hotel_distance.text = "${itemView.context.getString(R.string.travel_hotel_distance_to_landmark)} ${hotelUiModel.distance}${itemView.context.getString(R.string.travel_hotel_km)}"
-        hotel_rating.text = "${hotelUiModel.rating}${itemView.context.getString(R.string.travel_hotel_rating_total)}"
+        hotel_distance.text = itemView.context.getString(R.string.travel_hotel_distance_to_landmark, hotelUiModel.distance)
+        hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating_total, hotelUiModel.rating)
         hotel_currency.text = hotelUiModel.currency
 
         val dec = DecimalFormat("#,###.##")
