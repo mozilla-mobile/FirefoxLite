@@ -14,6 +14,7 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.util.Result
 import java.io.IOException
+import java.util.Locale
 import java.util.TimeZone
 
 class MissionRemoteDataSource {
@@ -327,7 +328,8 @@ class MissionRemoteDataSource {
     private fun createHeader(token: String) = MutableHeaders(
             "Accept" to "application/json",
             "tz" to TimeZone.getDefault().id,
-            "Authorization" to "Bearer $token"
+            "Authorization" to "Bearer $token",
+            "Accept-Language" to Locale.getDefault().toLanguageTag()
     )
 
     private fun <T> sendRequest(request: Request, onSuccess: (Response) -> T, onError: (Exception) -> T): T {
