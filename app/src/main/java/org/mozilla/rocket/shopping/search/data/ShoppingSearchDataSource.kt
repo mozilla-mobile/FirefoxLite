@@ -8,6 +8,8 @@ interface ShoppingSearchDataSource {
 
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>)
 
+    fun shouldEnableTurboMode(): Boolean
+
     fun shouldShowSearchInputOnboarding(): Boolean
 
     fun setSearchInputOnboardingIsShown()

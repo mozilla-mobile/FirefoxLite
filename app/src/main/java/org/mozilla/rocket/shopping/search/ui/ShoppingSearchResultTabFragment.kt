@@ -189,10 +189,10 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     }
 
     private fun initViewPager() {
-        shoppingSearchResultViewModel.shoppingSearchSites.observe(this, Observer { shoppingSearchSites ->
+        shoppingSearchResultViewModel.uiModel.observe(this, Observer { uiModel ->
             tabItems.clear()
-            tabItems.addAll(shoppingSearchSites.mapIndexed { index, site ->
-                TabItem(site.title, site.searchUrl, createTabSession(site.searchUrl, index == 0))
+            tabItems.addAll(uiModel.shoppingSearchSiteList.mapIndexed { index, site ->
+                TabItem(site.title, site.searchUrl, createTabSession(site.searchUrl, index == 0, uiModel.shouldEnableTurboMode))
             })
             val shoppingSearchTabsAdapter = ShoppingSearchTabsAdapter(childFragmentManager, tabItems)
             view_pager.adapter = shoppingSearchTabsAdapter
@@ -212,11 +212,11 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         })
     }
 
-    private fun createTabSession(url: String, focus: Boolean): Session {
+    private fun createTabSession(url: String, focus: Boolean, enableTurboMode: Boolean): Session {
         val tabId = sessionManager.addTab("https://", TabUtil.argument(null, false, focus))
         val tabSession = sessionManager.getTabs().find { it.id == tabId }!!
         tabSession.engineSession?.tabView?.apply {
-            setContentBlockingEnabled(true)
+            setContentBlockingEnabled(enableTurboMode)
             loadUrl(url)
         }
 
