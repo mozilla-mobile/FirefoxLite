@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.android.synthetic.main.activity_game.*
@@ -39,6 +40,11 @@ class GameActivity : FragmentActivity() {
 
     private fun initTabLayout() {
         games_tabs.setupWithViewPager(view_pager)
+        if (adapter.count > 1) {
+            games_tabs.visibility = View.VISIBLE
+        } else {
+            games_tabs.visibility = View.GONE
+        }
     }
 
     private fun initToolBar() {
