@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.Request
 import org.json.JSONArray
+import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -73,7 +74,7 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
         val items = JSONArray(jsonString)
         for (i in 0 until items.length()) {
             val categoryId = items.optString(i)
-            result.add(NewsCategory(categoryId, 0, i, true))
+            result.add(NewsCategory(categoryId, getStringResourceId(categoryId), i, true))
         }
         return result
     }
@@ -82,3 +83,16 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
         private const val DEFAULT_CATEGORY_LIST_URL = "https://rocket-dev01.appspot.com/api/v1/news/google/topics"
     }
 }
+
+fun getStringResourceId(key: String): Int =
+    when (key) {
+        "WORLD" -> R.string.news_category_option_world
+        "NATION" -> R.string.news_category_option_nation
+        "BUSINESS" -> R.string.news_category_option_business
+        "TECHNOLOGY" -> R.string.news_category_option_technology
+        "ENTERTAINMENT" -> R.string.news_category_option_entertainment
+        "SPORTS" -> R.string.news_category_option_sports
+        "SCIENCE" -> R.string.news_category_option_science
+        "HEALTH" -> R.string.news_category_option_health
+        else -> 0
+    }
