@@ -63,26 +63,34 @@ class MissionDetailViewModel(
         }
     }
 
-    fun onJoinMissionButtonClicked() = viewModelScope.launch {
-        isLoading.value = true
+    fun onJoinMissionButtonClicked() {
         TelemetryWrapper.clickChallengePageJoin()
+        join(mission)
+    }
 
-        val joinResult = joinMissionUseCase(mission)
-        if (joinResult.isSuccess) {
-            startMissionReminder.value = mission
-            refreshMissionsUseCase()
-            if (isNeedJoinMissionOnboardingUseCase()) {
-                requestContentHubClickOnboardingUseCase()
-                closeAllMissionPages.call()
+    private fun join(mission: Mission) = viewModelScope.launch {
+        isLoading.value = true
+        if (isFxAccountUseCase()) {
+            val joinResult = joinMissionUseCase(mission)
+            if (joinResult.isSuccess) {
+                startMissionReminder.value = mission
+                refreshMissionsUseCase()
+                if (isNeedJoinMissionOnboardingUseCase()) {
+                    requestContentHubClickOnboardingUseCase()
+                    closeAllMissionPages.call()
+                } else {
+                    closePage.call()
+                }
             } else {
-                closePage.call()
+                showToast.value = when (joinResult.error!!) {
+                    JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                    JoinMissionUseCase.Error.AccountDisabled,
+                    JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
+                }
             }
         } else {
-            showToast.value = when (joinResult.error!!) {
-                JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
-                JoinMissionUseCase.Error.AccountDisabled,
-                JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
-            }
+            val uid = getUserIdUseCase()
+            requestFxLogin.value = uid
         }
         isLoading.value = false
     }
@@ -105,26 +113,21 @@ class MissionDetailViewModel(
     }
 
     fun onRedeemButtonClicked() {
+        TelemetryWrapper.clickChellengePageLogin()
         redeem(mission)
     }
 
     private fun redeem(mission: Mission) = viewModelScope.launch {
         isLoading.value = true
-        TelemetryWrapper.clickChellengePageLogin()
-        if (isFxAccountUseCase()) {
-            val redeemResult = redeemUseCase(mission)
-            if (redeemResult.isSuccess) {
-                refreshMissionsUseCase()
-                openCouponPage.value = mission
-            } else {
-                showToast.value = when (redeemResult.error!!) {
-                    RedeemUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
-                    RedeemUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
-                }
-            }
+        val redeemResult = redeemUseCase(mission)
+        if (redeemResult.isSuccess) {
+            refreshMissionsUseCase()
+            openCouponPage.value = mission
         } else {
-            val uid = getUserIdUseCase()
-            requestFxLogin.value = uid
+            showToast.value = when (redeemResult.error!!) {
+                RedeemUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                RedeemUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
+            }
         }
         isLoading.value = false
     }
@@ -132,7 +135,7 @@ class MissionDetailViewModel(
     fun onFxLoginCompleted(jwt: String?) = viewModelScope.launch {
         if (bindFxAccountUseCase(jwt).isSuccess) {
             TelemetryWrapper.accountSignIn()
-            redeem(mission)
+            join(mission)
         } else {
             showToast.value = ToastMessage(R.string.msrp_reward_challenge_nointernet)
         }
