@@ -46,6 +46,7 @@ class InstantGameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         instantGamesViewModel = getActivityViewModel(instantGameViewModelCreator)
+        instantGamesViewModel.requestGameList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

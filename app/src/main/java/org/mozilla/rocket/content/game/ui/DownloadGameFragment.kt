@@ -125,6 +125,7 @@ class DownloadGameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         downloadGameViewModel = getActivityViewModel(downloadGameViewModelCreator)
+        downloadGameViewModel.requestGameList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -34,7 +34,7 @@ class DownloadGameViewModel(
 
     var event = SingleLiveEvent<GameAction>()
 
-    init {
+    fun requestGameList() {
         getGameUiModelList()
     }
 
