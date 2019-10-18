@@ -21,7 +21,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.Constants
-import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -179,15 +178,6 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
                     BottomBarItemAdapter.TYPE_BACK -> onBackPressed()
                     BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
-                    BottomBarItemAdapter.TYPE_OPEN_IN_NEW_TAB -> {
-                        startActivity(
-                            IntentUtils.createInternalOpenUrlIntent(
-                                this@ContentTabActivity,
-                                chromeViewModel.currentUrl.value,
-                                true
-                            )
-                        )
-                    }
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
                 }
             }

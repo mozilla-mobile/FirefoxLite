@@ -26,8 +26,7 @@ class ContentTabBottomBarViewModel : ViewModel() {
         val DEFAULT_CONTENT_TAB_BOTTOM_BAR_ITEMS = listOf(
             ItemData(BottomBarItemAdapter.TYPE_BACK),
             ItemData(BottomBarItemAdapter.TYPE_REFRESH),
-            ItemData(BottomBarItemAdapter.TYPE_SHARE),
-            ItemData(BottomBarItemAdapter.TYPE_OPEN_IN_NEW_TAB)
+            ItemData(BottomBarItemAdapter.TYPE_SHARE)
         )
     }
 }

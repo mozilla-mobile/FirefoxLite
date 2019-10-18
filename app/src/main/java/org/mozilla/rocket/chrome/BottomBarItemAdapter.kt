@@ -51,7 +51,6 @@ class BottomBarItemAdapter(
             TYPE_DELETE -> ImageItem(type, R.id.bottom_bar_delete, R.drawable.menu_delete, theme.buttonColorResId)
             TYPE_TRACKER -> TrackerItem(type, R.id.bottom_bar_tracker)
             TYPE_BACK -> ImageItem(type, R.id.bottom_bar_back, R.drawable.action_back, theme.buttonColorResId)
-            TYPE_OPEN_IN_NEW_TAB -> ImageItem(type, R.id.bottom_bar_open_in_new_tab, R.drawable.action_open_in_new_tab, theme.buttonColorResId)
             TYPE_SHOPPING_SEARCH -> ShoppingSearchItem(type, R.id.bottom_bar_shopping_search, theme)
             else -> error("Unexpected BottomBarItem ItemType: $type")
         }
@@ -302,8 +301,7 @@ class BottomBarItemAdapter(
         const val TYPE_DELETE = 11
         const val TYPE_TRACKER = 12
         const val TYPE_BACK = 13
-        const val TYPE_OPEN_IN_NEW_TAB = 14
-        const val TYPE_SHOPPING_SEARCH = 15
+        const val TYPE_SHOPPING_SEARCH = 14
 
         const val DOWNLOAD_STATE_DEFAULT = 0
         const val DOWNLOAD_STATE_DOWNLOADING = 1
