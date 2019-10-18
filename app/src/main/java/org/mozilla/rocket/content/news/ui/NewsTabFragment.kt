@@ -96,12 +96,12 @@ class NewsTabFragment : Fragment() {
     private fun setupViewPager(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
         newsSettings.apply {
             val pager = view.findViewById<ViewPager>(R.id.news_viewpager)
+            pager.clearOnPageChangeListeners()
             view.findViewById<TabLayout>(R.id.news_tab).run {
                 setupWithViewPager(pager)
                 tabMode = TabLayout.MODE_SCROLLABLE
             }
             pager.adapter = EcFragmentAdapter(childFragmentManager, this)
-            pager.clearOnPageChangeListeners()
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(p0: Int) {
                 }
