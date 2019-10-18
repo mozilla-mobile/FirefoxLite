@@ -86,15 +86,18 @@ class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 )
             }
 
-        item.imageUrl?.let {
-            if (image != null) {
+        if (item.imageUrl != null) {
+            image?.run {
+                visibility = View.VISIBLE
                 GlideApp.with(itemView.context)
-                    .asBitmap()
-                    .placeholder(R.drawable.placeholder)
-                    .centerCrop()
-                    .load(it)
-                    .into(image)
+                        .asBitmap()
+                        .placeholder(R.drawable.placeholder)
+                        .centerCrop()
+                        .load(item.imageUrl)
+                        .into(this)
             }
+        } else {
+            image?.visibility = View.GONE
         }
     }
 }

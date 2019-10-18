@@ -55,7 +55,13 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
             val jsonObject = items.getJSONObject(i)
             val title = jsonObject.optString("title")
             val link = jsonObject.optString("link")
-            val imageUrl = jsonObject.optString("image")
+            val imageUrl: String? = jsonObject.optString("image")?.let {
+                if (it == "null") {
+                    null
+                } else {
+                    it
+                }
+            }
             val source = jsonObject.optString("source")
             val publishDate = jsonObject.optString("pubDate")
             if (title == null || link == null || publishDate == null) {

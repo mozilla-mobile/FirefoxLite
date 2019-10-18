@@ -97,6 +97,9 @@
     <dimen name="card_padding">16dp</dimen>
     <dimen name="card_space_width">4dp</dimen>
 
+    <dimen name="item_news_inner_width">@dimen/item_news_inner_height</dimen>
+    <dimen name="item_news_inner_height">84dp</dimen>
+
     <!--  HomeFragment  -->
     <item name="home_firefox_logo_visibility" type="integer">@integer/visibility_gone</item>
     <item name="content_hub_title_visibility" type="integer">@integer/visibility_gone</item>
