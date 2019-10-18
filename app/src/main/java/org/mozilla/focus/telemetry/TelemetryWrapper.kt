@@ -246,6 +246,7 @@ object TelemetryWrapper {
         internal const val REWARD = "reward"
         internal const val ITEM = "item"
         internal const val LOGIN = "login"
+        internal const val CONTEXTMENU = "contextmenu"
     }
 
     internal object Extra {
@@ -324,6 +325,13 @@ object TelemetryWrapper {
         const val CLOSE = "close"
         const val MISSION = "mission"
         const val GIFT = "gift"
+        const val SHOPPING_DEAL = "shoppingDeal"
+        const val SHOPPING_COUPON = "shoppingDeal"
+        const val SHOPPING_VOUCHER = "shoppingVoucher"
+        const val INSTANT_GAME = "html5Game"
+        const val DOWNLOAD_GAME = "apkGame"
+        const val CREATE_GAME_SHORTCUT = "create_game_shortcut"
+        const val SHARE_GAME = "share_game"
     }
 
     enum class FIND_IN_PAGE {
@@ -2992,6 +3000,40 @@ object TelemetryWrapper {
             extras = [])
     fun clickChellengePageLogin() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CHALLENGE_PAGE, Value.LOGIN)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Long Press Content Home Item",
+            category = Category.ACTION,
+            method = Method.LONG_PRESS,
+            `object` = Object.CONTENT_HOME,
+            value = Value.ITEM,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.GAME}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.INSTANT_GAME}|${Extra_Value.DOWNLOAD_GAME}")
+            ])
+    fun openContentContextMenuEvent(vertical: String, category: String) {
+        EventBuilder(Category.ACTION, Method.LONG_PRESS, Object.CONTENT_HOME, Value.ITEM)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.CATEGORY, category)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Content Home Contextmenu",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.CONTENT_HOME,
+            value = Value.CONTEXTMENU,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.CREATE_GAME_SHORTCUT}|${Extra_Value.SHARE_GAME}"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.INSTANT_GAME}|${Extra_Value.DOWNLOAD_GAME}")
+            ])
+    fun clickContentContextMenuItem(action: String, category: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTENT_HOME, Value.CONTEXTMENU)
+                .extra(Extra.ACTION, action)
+                .extra(Extra.CATEGORY, category)
                 .queue()
     }
 

@@ -51,12 +51,11 @@ class ShoppingActivity : FragmentActivity() {
 
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
-                    ShoppingViewModel.ShoppingTabItem.TYPE_DEAL_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, tab.text.toString())
-                    ShoppingViewModel.ShoppingTabItem.TYPE_COUPON_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, tab.text.toString())
-                    ShoppingViewModel.ShoppingTabItem.TYPE_VOUCHER_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, tab.text.toString())
+                    ShoppingViewModel.ShoppingTabItem.TYPE_DEAL_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.SHOPPING_DEAL)
+                    ShoppingViewModel.ShoppingTabItem.TYPE_COUPON_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.SHOPPING_COUPON)
+                    ShoppingViewModel.ShoppingTabItem.TYPE_VOUCHER_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER)
                 }
             }
-
         })
     }
 

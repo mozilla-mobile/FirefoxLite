@@ -196,7 +196,7 @@ class DownloadGameFragment : Fragment() {
                     context?.let {
                         val sendIntent: Intent = Intent().apply {
                             action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.gaming_vertical_share_message, share.url))
+                            putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.gaming_vertical_share_message), share.url))
                             type = "text/plain"
                         }
                         startActivity(Intent.createChooser(sendIntent, null))
