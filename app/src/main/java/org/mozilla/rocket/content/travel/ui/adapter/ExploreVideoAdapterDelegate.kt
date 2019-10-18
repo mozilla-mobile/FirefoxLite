@@ -40,7 +40,6 @@ class ExploreVideoViewHolder(
 
         explore_video_length.text = SimpleDateFormat(lengthPattern, Locale.getDefault()).let {
             val millisecondsDate = Date(exploreVideo.length*1000L)
-            it.timeZone = TimeZone.getTimeZone("GMT")
             it.format(millisecondsDate)
         }
 
@@ -48,7 +47,11 @@ class ExploreVideoViewHolder(
         explore_video_title.typeface = if (exploreVideo.read) Typeface.DEFAULT else Typeface.DEFAULT_BOLD
 
         explore_video_author.text = exploreVideo.author
-        explore_video_views.text = itemView.resources.getQuantityString(R.plurals.travel_detail_video_view_count, exploreVideo.viewCount, exploreVideo.viewCount)
+
+        when (exploreVideo.viewCount) {
+            1 -> explore_video_views.text = itemView.resources.getString(R.string.travel_detail_video_view_count, exploreVideo.viewCount)
+            else -> explore_video_views.text = itemView.resources.getString(R.string.travel_detail_video_view_count_pural, exploreVideo.viewCount)
+        }
 
         try {
             val date = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).let {
