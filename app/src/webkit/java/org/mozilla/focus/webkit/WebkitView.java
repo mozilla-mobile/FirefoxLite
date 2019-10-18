@@ -213,18 +213,17 @@ public class WebkitView extends NestedWebView implements TabView {
     }
 
     @Override
-    public void setImageBlockingEnabled(boolean enable) {
+    public void setImageBlockingEnabled(boolean shouldBlockImages) {
         WebSettings settings = getSettings();
-        if (enable == settings.getBlockNetworkImage()
-                && enable == !settings.getLoadsImagesAutomatically()) {
+        if (shouldBlockImages == settings.getBlockNetworkImage()
+                && shouldBlockImages == !settings.getLoadsImagesAutomatically()) {
             return;
         }
 
-        WebViewProvider.applyAppSettings(getContext(), getSettings());
+        settings.setLoadsImagesAutomatically(!shouldBlockImages);
+        settings.setBlockNetworkImage(shouldBlockImages);
 
-        if (enable) {
-            reloadOnAttached();
-        }
+        reloadOnAttached();
     }
 
     @Override
