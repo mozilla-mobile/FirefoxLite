@@ -101,6 +101,7 @@ class NewsTabFragment : Fragment() {
                 tabMode = TabLayout.MODE_SCROLLABLE
             }
             pager.adapter = EcFragmentAdapter(childFragmentManager, this)
+            pager.clearOnPageChangeListeners()
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(p0: Int) {
                 }
@@ -109,7 +110,9 @@ class NewsTabFragment : Fragment() {
                 }
 
                 override fun onPageSelected(p0: Int) {
-                    TelemetryWrapper.openCategory(LIFESTYLE, newsSettings.second[p0].categoryId)
+                    if (newsSettings.second.size > p0) {
+                        TelemetryWrapper.openCategory(LIFESTYLE, newsSettings.second[p0].categoryId)
+                    }
                 }
             })
         }
