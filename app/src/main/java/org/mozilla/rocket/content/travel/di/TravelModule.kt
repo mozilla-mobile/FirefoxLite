@@ -7,8 +7,8 @@ import org.mozilla.rocket.content.travel.data.TravelLocalDataSource
 import org.mozilla.rocket.content.travel.data.TravelOnboardingRepository
 import org.mozilla.rocket.content.travel.data.TravelRemoteDataSource
 import org.mozilla.rocket.content.travel.data.TravelRepository
-import org.mozilla.rocket.content.travel.domain.CheckOnboardingUseCase
-import org.mozilla.rocket.content.travel.domain.CompleteOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.GetBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityCategoriesUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
@@ -107,9 +107,9 @@ object TravelModule {
         getCityWikiUseCase: GetCityWikiUseCase,
         getCityVideosUseCase: GetCityVideosUseCase,
         getCityHotelsUseCase: GetCityHotelsUseCase,
-        checkOnboardingUseCase: CheckOnboardingUseCase,
-        completeOnboardingUseCase: CompleteOnboardingUseCase
-    ): TravelCityViewModel = TravelCityViewModel(getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase, checkOnboardingUseCase, completeOnboardingUseCase)
+        shouldShowOnboardingUseCase: ShouldShowOnboardingUseCase,
+        setOnboardingHasShownUseCase: SetOnboardingHasShownUseCase
+    ): TravelCityViewModel = TravelCityViewModel(getCityIgUseCase, getCityWikiUseCase, getCityVideosUseCase, getCityHotelsUseCase, shouldShowOnboardingUseCase, setOnboardingHasShownUseCase)
 
     @JvmStatic
     @Provides
@@ -118,12 +118,12 @@ object TravelModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideCheckOnboardingUseCase(travelOnboardingRepository: TravelOnboardingRepository): CheckOnboardingUseCase = CheckOnboardingUseCase(travelOnboardingRepository)
+    fun provideShouldShowOnboardingUseCase(travelOnboardingRepository: TravelOnboardingRepository): ShouldShowOnboardingUseCase = ShouldShowOnboardingUseCase(travelOnboardingRepository)
 
     @JvmStatic
     @Singleton
     @Provides
-    fun provideCompleteOnboardingUseCase(travelOnboardingRepository: TravelOnboardingRepository): CompleteOnboardingUseCase = CompleteOnboardingUseCase(travelOnboardingRepository)
+    fun provideSetOnboardingHasShownUseCase(travelOnboardingRepository: TravelOnboardingRepository): SetOnboardingHasShownUseCase = SetOnboardingHasShownUseCase(travelOnboardingRepository)
 
     @JvmStatic
     @Singleton
