@@ -41,7 +41,7 @@ class InstantGameViewModel(
 
     var event = SingleLiveEvent<GameAction>()
 
-    init {
+    fun requestGameList() {
         getGameUiModelList()
     }
 
