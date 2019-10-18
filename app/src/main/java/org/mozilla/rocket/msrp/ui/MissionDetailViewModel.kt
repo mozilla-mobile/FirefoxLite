@@ -63,35 +63,27 @@ class MissionDetailViewModel(
         }
     }
 
-    fun onJoinMissionButtonClicked() {
-        TelemetryWrapper.clickChallengePageJoin()
-        join(mission)
-    }
-
-    private fun join(mission: Mission) = viewModelScope.launch {
+    fun onJoinMissionButtonClicked() = viewModelScope.launch {
         isLoading.value = true
-        if (isFxAccountUseCase()) {
-            val joinResult = joinMissionUseCase(mission)
-            if (joinResult.isSuccess) {
-                startMissionReminder.value = mission
-                refreshMissionsUseCase()
-                if (isNeedJoinMissionOnboardingUseCase()) {
-                    requestContentHubClickOnboardingUseCase()
-                    closeAllMissionPages.call()
-                } else {
-                    closePage.call()
-                }
+        TelemetryWrapper.clickChallengePageJoin()
+
+        val joinResult = joinMissionUseCase(mission)
+        if (joinResult.isSuccess) {
+            startMissionReminder.value = mission
+            refreshMissionsUseCase()
+            if (isNeedJoinMissionOnboardingUseCase()) {
+                requestContentHubClickOnboardingUseCase()
+                closeAllMissionPages.call()
             } else {
-                showToast.value = when (joinResult.error!!) {
-                    JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
-                    JoinMissionUseCase.Error.NoQuota -> ToastMessage(R.string.mission_no_quota)
-                    JoinMissionUseCase.Error.AccountDisabled,
-                    JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
-                }
+                closePage.call()
             }
         } else {
-            val uid = getUserIdUseCase()
-            requestFxLogin.value = uid
+            showToast.value = when (joinResult.error!!) {
+                JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                JoinMissionUseCase.Error.NoQuota -> ToastMessage(R.string.mission_no_quota)
+                JoinMissionUseCase.Error.AccountDisabled,
+                JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
+            }
         }
         isLoading.value = false
     }
@@ -120,15 +112,20 @@ class MissionDetailViewModel(
 
     private fun redeem(mission: Mission) = viewModelScope.launch {
         isLoading.value = true
-        val redeemResult = redeemUseCase(mission)
-        if (redeemResult.isSuccess) {
-            refreshMissionsUseCase()
-            openCouponPage.value = mission
-        } else {
-            showToast.value = when (redeemResult.error!!) {
-                RedeemUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
-                RedeemUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
+        if (isFxAccountUseCase()) {
+            val redeemResult = redeemUseCase(mission)
+            if (redeemResult.isSuccess) {
+                refreshMissionsUseCase()
+                openCouponPage.value = mission
+            } else {
+                showToast.value = when (redeemResult.error!!) {
+                    RedeemUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
+                    RedeemUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
+                }
             }
+        } else {
+            val uid = getUserIdUseCase()
+            requestFxLogin.value = uid
         }
         isLoading.value = false
     }
@@ -136,7 +133,7 @@ class MissionDetailViewModel(
     fun onFxLoginCompleted(jwt: String?) = viewModelScope.launch {
         if (bindFxAccountUseCase(jwt).isSuccess) {
             TelemetryWrapper.accountSignIn()
-            join(mission)
+            redeem(mission)
         } else {
             showToast.value = ToastMessage(R.string.msrp_reward_challenge_nointernet)
         }
