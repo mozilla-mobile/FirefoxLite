@@ -74,9 +74,9 @@ class ShoppingViewModel(
         }
 
         companion object {
-            const val TYPE_DEAL_TAB = 1
-            const val TYPE_COUPON_TAB = 2
-            const val TYPE_VOUCHER_TAB = 3
+            const val TYPE_DEAL_TAB = 0
+            const val TYPE_COUPON_TAB = 1
+            const val TYPE_VOUCHER_TAB = 2
         }
     }
 }
