@@ -126,16 +126,30 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
                 goForward()
             }
         })
+
+        val forceDisableImageBlocking =
+            arguments?.getBoolean(EXTRA_FORCE_DISABLE_IMAGE_BLOCKING) ?: false
+        if (forceDisableImageBlocking) {
+            chromeViewModel.isRefreshing.observe(this, Observer { isRefreshing ->
+                if (!isRefreshing) {
+                    tabSession?.engineSession?.tabView?.apply {
+                        setImageBlockingEnabled(false)
+                    }
+                }
+            })
+        }
     }
 
     companion object {
         const val EXTRA_URL = "url"
         private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
+        private const val EXTRA_FORCE_DISABLE_IMAGE_BLOCKING = "force_disable_image_blocking"
 
-        fun newInstance(url: String, enableTurboMode: Boolean = true): ContentTabFragment {
+        fun newInstance(url: String, enableTurboMode: Boolean = true, forceDisableImageBlocking: Boolean = false): ContentTabFragment {
             val args = Bundle().apply {
                 putString(EXTRA_URL, url)
                 putBoolean(EXTRA_ENABLE_TURBO_MODE, enableTurboMode)
+                putBoolean(EXTRA_FORCE_DISABLE_IMAGE_BLOCKING, forceDisableImageBlocking)
             }
             return ContentTabFragment().apply {
                 arguments = args

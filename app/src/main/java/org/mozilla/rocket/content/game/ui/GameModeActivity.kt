@@ -56,9 +56,8 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
 
         if (savedInstanceState == null) {
             val url = intent?.extras?.getString(EXTRA_URL) ?: ""
-            val enableTurboMode = intent?.extras?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, ContentTabFragment.newInstance(url, enableTurboMode))
+                .replace(R.id.fragment_container, ContentTabFragment.newInstance(url, enableTurboMode = false, forceDisableImageBlocking = true))
                 .commit()
         }
     }
@@ -103,12 +102,10 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
 
     companion object {
         private const val EXTRA_URL = "url"
-        private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
 
-        fun getStartIntent(context: Context, url: String, enableTurboMode: Boolean = false) =
+        fun getStartIntent(context: Context, url: String) =
             Intent(context, GameModeActivity::class.java).also {
                 it.putExtra(EXTRA_URL, url)
-                it.putExtra(EXTRA_ENABLE_TURBO_MODE, enableTurboMode)
             }
     }
 }
