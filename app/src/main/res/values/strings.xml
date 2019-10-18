@@ -752,12 +752,12 @@
     <!--MSRP Vertical-->
  
     <!--Logoman-->
-    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"-->   
-    <string name="msrp_logoman_message">Win %1$s %2$s voucher</string>
+    <!-- The %1$s here is a placeholder for the prize, ex: shopping voucher-->   
+    <string name="msrp_logoman_message">Win a %1$s</string>
  
     <!--Contextual hint-->
-    <!-- The %1$s here is a placeholder for "dollar amount", %2$s here is a placeholder for "shopping site"--> 
-    <string name="msrp_home_hint">Try Shopping, News, Game everyday to win %1$s %2$s voucher</string>
+    <!-- The %1$s here is a placeholder for the prize, ex: shopping voucher--> 
+    <string name="msrp_home_hint">Try Shopping, News, Game everyday to win %1$s</string>
 
     
     <!--Reward-->
@@ -776,9 +776,9 @@
     <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on %1$s Home by simply clicking the buttons for seven days in a row.</string>
     <string name="msrp_challenge_details_title_2">Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
-    <!--"Use Firefox Account to join" is a button where users can press to join the reward program--> 
-    <string name="msrp_challenge_button_1">Use Firefox Account to join</string>
-    <string name="msrp_challenge_tou">By clicking “I’m in” you are agreeing to our Terms of Use</string>
+    <!--"I'm In!" is a button where users can press to join the reward program--> 
+    <string name="msrp_challenge_button_1">I'm In!</string>
+    <string name="msrp_challenge_tou">By clicking “I’m In!” you are agreeing to our Terms of Use</string>
     <!--"Leave mission" is a button for users to exit the reward program-->     
     <string name="msrp_challenge_button_2">Leave mission</string>
     <!--"How to redeem" is the title for a section to let users know how to redeem the voucher--> 
@@ -792,13 +792,13 @@
     
     
     <!--Challenge  completed (popup)-->
-    <string name="msrp_completed_popup_title">Congtratulations!</string>
+    <string name="msrp_completed_popup_title">Congratulations!</string>
     <string name="msrp_completed_popup_body">Thanks for trying out some of our new features. We hope you’ve enjoyed using them!</string>
     <string name="msrp_completed_popup_button1">Use Firefox account to redeem</string>
     <string name="msrp_completed_popup_button2">Later</string>
     
     <!--Challenge completed (full screen)-->
-    <string name="msrp_challenge_completed_title">Congtratulations!</string>
+    <string name="msrp_challenge_completed_title">Congratulations!</string>
     <string name="msrp_challenge_completed_body">Thanks for trying out some of our new features. We hope you’ve enjoyed using them!</string>
     <string name="msrp_challenge_button_5">Redeem later</string>
     
