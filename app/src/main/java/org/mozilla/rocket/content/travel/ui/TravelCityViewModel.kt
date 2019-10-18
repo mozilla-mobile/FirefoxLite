@@ -8,8 +8,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.travel.domain.CheckOnboardingUseCase
-import org.mozilla.rocket.content.travel.domain.CompleteOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
@@ -25,8 +25,8 @@ class TravelCityViewModel(
     private val getWiki: GetCityWikiUseCase,
     private val getVideos: GetCityVideosUseCase,
     private val getHotels: GetCityHotelsUseCase,
-    private val checkOnboarding: CheckOnboardingUseCase,
-    private val completeOnboarding: CompleteOnboardingUseCase
+    private val shouldShowOnboarding: ShouldShowOnboardingUseCase,
+    private val setOnboardingHasShown: SetOnboardingHasShownUseCase
 ) : ViewModel() {
 
     private val data = ArrayList<DelegateAdapter.UiModel>()
@@ -55,9 +55,9 @@ class TravelCityViewModel(
     val showOnboardingSpotlight = SingleLiveEvent<Unit>()
 
     init {
-        if (checkOnboarding()) {
+        if (shouldShowOnboarding()) {
             showOnboardingSpotlight.call()
-            completeOnboarding()
+            setOnboardingHasShown()
         }
     }
 
