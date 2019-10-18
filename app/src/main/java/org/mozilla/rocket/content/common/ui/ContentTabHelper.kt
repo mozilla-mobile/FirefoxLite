@@ -22,7 +22,6 @@ import com.google.android.material.snackbar.Snackbar
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.menu.WebContextMenu
-import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
 import org.mozilla.permissionhandler.PermissionHandle
@@ -141,9 +140,8 @@ class ContentTabHelper(private val contentTabViewContract: ContentTabViewContrac
         }
 
         override fun handleExternalUrl(url: String?): Boolean {
-            return contentTabViewContract.getHostActivity()?.let {
-                IntentUtils.handleExternalUri(it, url)
-            } ?: false
+            // Block links to launch external apps
+            return true
         }
 
         override fun onShowFileChooser(
