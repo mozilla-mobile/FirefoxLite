@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_shopping.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ShoppingTabsAdapter
 import org.mozilla.rocket.content.getViewModel
@@ -42,6 +44,20 @@ class ShoppingActivity : FragmentActivity() {
 
     private fun initTabLayout() {
         shopping_tabs.setupWithViewPager(view_pager)
+        shopping_tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab) = Unit
+
+            override fun onTabUnselected(tab: TabLayout.Tab) = Unit
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    ShoppingViewModel.ShoppingTabItem.TYPE_DEAL_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, tab.text.toString())
+                    ShoppingViewModel.ShoppingTabItem.TYPE_COUPON_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, tab.text.toString())
+                    ShoppingViewModel.ShoppingTabItem.TYPE_VOUCHER_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, tab.text.toString())
+                }
+            }
+
+        })
     }
 
     private fun observeRefreshAction() {

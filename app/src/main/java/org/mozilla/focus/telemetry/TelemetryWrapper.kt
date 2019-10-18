@@ -73,6 +73,7 @@ object TelemetryWrapper {
     private val sRefCount = AtomicInteger(0)
 
     private var verticalProcessStartTime = ArrayMap<String, Long>()
+    private var verticalContentTabStartTime = ArrayMap<String, Long>()
 
     internal object Category {
         const val ACTION = "action"
@@ -2600,6 +2601,7 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_TAB,
             value = "",
             extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2607,8 +2609,10 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.ID, value = "component id"),
                 TelemetryExtra(name = Extra.VERSION, value = "version")
             ])
-    fun startContentTab(feed: String, source: String, category: String, subCategoryId: String, componentId: String, version: String) {
+    fun startContentTab(vertical: String, feed: String, source: String, category: String, subCategoryId: String, componentId: String, version: String) {
+        verticalContentTabStartTime[vertical] = TimeUtils.getTimestampNow()
         EventBuilder(Category.ACTION, Method.START, Object.CONTENT_TAB)
+                .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.FEED, feed)
                 .extra(Extra.SOURCE, source)
                 .extra(Extra.CATEGORY, category)
@@ -2625,6 +2629,7 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_TAB,
             value = "",
             extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2637,25 +2642,32 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.SHOW_KEYBOARD, value = "true|false")
             ])
     fun endContentTab(
+        vertical: String,
         feed: String,
         source: String,
         category: String,
         subCategoryId: String,
         componentId: String,
         version: String,
-        sessionTime: Long,
         urlCounts: Int,
         appLink: String?,
         showKeyboard: Boolean
     ) {
+        val startTime = verticalContentTabStartTime[vertical]
+        val loadTime = if (startTime != null) {
+            TimeUtils.getTimestampNow() - startTime
+        } else {
+            -1
+        }
         EventBuilder(Category.ACTION, Method.END, Object.CONTENT_TAB)
+                .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.FEED, feed)
                 .extra(Extra.SOURCE, source)
                 .extra(Extra.CATEGORY, category)
                 .extra(Extra.SUB_CATEGORY, subCategoryId)
                 .extra(Extra.ID, componentId)
                 .extra(Extra.VERSION, version)
-                .extra(Extra.SESSION_TIME, sessionTime.toString())
+                .extra(Extra.SESSION_TIME, loadTime.toString())
                 .extra(Extra.URL_COUNTS, urlCounts.toString())
                 .extra(Extra.APP_LINK, appLink ?: "null")
                 .extra(Extra.SHOW_KEYBOARD, showKeyboard.toString())
