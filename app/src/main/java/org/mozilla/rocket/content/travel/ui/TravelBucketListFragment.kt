@@ -68,7 +68,7 @@ class TravelBucketListFragment : Fragment() {
         travelBucketListViewModel.items.observe(this, Observer {
             bucketListAdapter.setData(it)
 
-            if(it.isEmpty()) {
+            if (it.isEmpty()) {
                 showEmptyView()
             } else {
                 showContentView()
@@ -95,7 +95,9 @@ class TravelBucketListFragment : Fragment() {
         })
 
         travelBucketListViewModel.goSearch.observe(this, Observer {
-            // TODO go search
+            context?.let {
+                startActivity(TravelCitySearchActivity.getStartIntent(it))
+            }
         })
     }
 
