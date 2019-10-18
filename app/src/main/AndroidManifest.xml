@@ -360,7 +360,8 @@
         <activity
             android:name="org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:taskAffinity=".content.travel" />
 
     </application>
 
