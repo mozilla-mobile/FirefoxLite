@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.adapter.Runway
@@ -52,6 +53,7 @@ class InstantGameViewModel(
 
     fun onGameItemLongClicked(gameItem: Game): Boolean {
         selectedGame = gameItem
+        TelemetryWrapper.openContentContextMenuEvent(TelemetryWrapper.Extra_Value.GAME, TelemetryWrapper.Extra_Value.INSTANT_GAME)
         return false
     }
 
@@ -120,12 +122,14 @@ class InstantGameViewModel(
         when (contextMenuAction) {
             is ContextMenuAction.Share -> {
                 event.value = GameAction.Share(selectedGame.linkUrl)
+                TelemetryWrapper.clickContentContextMenuItem(TelemetryWrapper.Extra_Value.SHARE_GAME, TelemetryWrapper.Extra_Value.INSTANT_GAME)
             }
             is ContextMenuAction.CreateShortcut -> {
                 viewModelScope.launch {
                     val bitmapResult = getBitmapFromImageLinkUseCase(selectedGame.imageUrl)
                     if (bitmapResult is Result.Success) {
                         event.postValue(GameAction.CreateShortcut(selectedGame.name, selectedGame.linkUrl, bitmapResult.data))
+                        TelemetryWrapper.clickContentContextMenuItem(TelemetryWrapper.Extra_Value.CREATE_GAME_SHORTCUT, TelemetryWrapper.Extra_Value.INSTANT_GAME)
                     }
                 }
             }

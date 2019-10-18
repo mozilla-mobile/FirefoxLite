@@ -37,8 +37,8 @@ class GameTabsAdapter(
         }
 
         companion object {
-            const val TYPE_INSTANT_GAME_TAB = 1
-            const val TYPE_DOWNLOAD_GAME_TAB = 2
+            const val TYPE_INSTANT_GAME_TAB = 0
+            const val TYPE_DOWNLOAD_GAME_TAB = 1
         }
     }
 
@@ -46,12 +46,12 @@ class GameTabsAdapter(
         private fun getDefaultTabs(): List<TabItem> = if (BuildConfig.DEBUG) {
             //  Still enable download game tab in debug build for upcoming implementation
             listOf(
-                    TabItem(TabItem.TYPE_INSTANT_GAME_TAB, R.string.gaming_vertical_category_1),
-                    TabItem(TabItem.TYPE_DOWNLOAD_GAME_TAB, R.string.gaming_vertical_category_2)
+                TabItem(TabItem.TYPE_INSTANT_GAME_TAB, R.string.gaming_vertical_category_1),
+                TabItem(TabItem.TYPE_DOWNLOAD_GAME_TAB, R.string.gaming_vertical_category_2)
             )
         } else {
             listOf(
-                    TabItem(TabItem.TYPE_INSTANT_GAME_TAB, R.string.gaming_vertical_category_1)
+                TabItem(TabItem.TYPE_INSTANT_GAME_TAB, R.string.gaming_vertical_category_1)
             )
         }
     }

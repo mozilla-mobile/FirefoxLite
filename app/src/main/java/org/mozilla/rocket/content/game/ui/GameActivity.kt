@@ -8,9 +8,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.game.ui.adapter.GameTabsAdapter
@@ -40,6 +42,18 @@ class GameActivity : FragmentActivity() {
 
     private fun initTabLayout() {
         games_tabs.setupWithViewPager(view_pager)
+        games_tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab) = Unit
+
+            override fun onTabUnselected(tab: TabLayout.Tab) = Unit
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    GameTabsAdapter.TabItem.TYPE_INSTANT_GAME_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.GAME, TelemetryWrapper.Extra_Value.INSTANT_GAME)
+                    GameTabsAdapter.TabItem.TYPE_DOWNLOAD_GAME_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.GAME, TelemetryWrapper.Extra_Value.DOWNLOAD_GAME)
+                }
+            }
+        })
         if (adapter.count > 1) {
             games_tabs.visibility = View.VISIBLE
         } else {

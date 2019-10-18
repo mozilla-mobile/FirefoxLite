@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.adapter.Runway
@@ -47,6 +48,7 @@ class DownloadGameViewModel(
 
     fun onGameItemLongClicked(gameItem: Game): Boolean {
         selectedGame = gameItem
+        TelemetryWrapper.openContentContextMenuEvent(TelemetryWrapper.Extra_Value.GAME, TelemetryWrapper.Extra_Value.DOWNLOAD_GAME)
         return false
     }
 
@@ -100,6 +102,7 @@ class DownloadGameViewModel(
         when (contextMenuAction) {
             is ContextMenuAction.Share -> {
                 event.value = GameAction.Share(selectedGame.linkUrl)
+                TelemetryWrapper.clickContentContextMenuItem(TelemetryWrapper.Extra_Value.SHARE_GAME, TelemetryWrapper.Extra_Value.DOWNLOAD_GAME)
             }
         }
         return false
