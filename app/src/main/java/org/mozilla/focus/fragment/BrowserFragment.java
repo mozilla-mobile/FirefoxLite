@@ -51,7 +51,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -490,6 +489,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 unit -> {
                     startActivity(ShoppingSearchActivity.Companion.getStartIntent(getContext()));
                     ScreenNavigator.get(getContext()).popToHomeScreen(false);
+
+                    String feed = shoppingSearchPromptMessageViewModel.getMatchedShoppingSiteTitle().getValue();
+                    if (feed != null) {
+                        TelemetryWrapper.clickTabSwipeDrawer(TelemetryWrapper.Extra_Value.SHOPPING, feed);
+                    }
                 });
 
         shoppingSearchPromptMessageViewModel.isUrlShoppingSite().observe(this, isShoppingSite -> {
