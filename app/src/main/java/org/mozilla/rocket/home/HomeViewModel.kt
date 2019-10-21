@@ -139,6 +139,7 @@ class HomeViewModel(
 
     fun onShoppingButtonClicked() {
         openShoppingSearch.call()
+        TelemetryWrapper.clickToolbarTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.HOME)
     }
 
     fun onPrivateModeButtonClicked() {
