@@ -124,6 +124,7 @@ object TelemetryWrapper {
         const val PRIVATE_SHORTCUT = "private_shortcut"
         const val PANEL = "panel"
         const val TOOLBAR = "toolbar"
+        const val DRAWER = "drawer"
         const val HOME = "home"
         const val CAPTURE = "capture"
         const val SEARCH_SUGGESTION = "search_suggestion"
@@ -2830,6 +2831,23 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.TAB_SWIPE)
                 .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.FROM, from)
+                .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Click Tab Swipe Drawer",
+        category = Category.ACTION,
+        method = Method.CLICK,
+        `object` = Object.DRAWER,
+        value = Value.TAB_SWIPE,
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+            TelemetryExtra(name = Extra.FEED, value = "feed")
+        ])
+    @JvmStatic
+    fun clickTabSwipeDrawer(vertical: String, feed: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.DRAWER, Value.TAB_SWIPE)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.FEED, feed)
                 .queue()
     }
 
