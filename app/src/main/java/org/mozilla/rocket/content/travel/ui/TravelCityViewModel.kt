@@ -93,8 +93,6 @@ class TravelCityViewModel(
             // add hotel
             data.add(SectionHeaderUiModel(SectionType.TopHotels))
 
-            // TODO: uncomment these while corresponding adapter delegates is added
-            /*
             val hotelResult = getHotels(name)
             if (hotelResult is Result.Success) {
                 data.addAll(
@@ -103,7 +101,6 @@ class TravelCityViewModel(
                         }
                 )
             }
-            */
 
             // TODO: handle error
 
