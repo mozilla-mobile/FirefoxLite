@@ -2866,6 +2866,20 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+        name = "Change Tab Swipe Settings",
+        category = Category.ACTION,
+        method = Method.CHANGE,
+        `object` = Object.SETTING,
+        value = Value.TAB_SWIPE,
+        extras = [TelemetryExtra(name = Extra.FEED, value = "feed")])
+    @JvmStatic
+    fun changeTabSwipeSettings(feed: String) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.TAB_SWIPE)
+                .extra(Extra.FEED, feed)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Pin Topsite",
             category = Category.ACTION,
             method = Method.PIN,
