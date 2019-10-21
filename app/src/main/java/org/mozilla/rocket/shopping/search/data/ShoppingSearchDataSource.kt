@@ -6,6 +6,8 @@ interface ShoppingSearchDataSource {
 
     fun getShoppingSites(): List<ShoppingSite>
 
+    fun getDefaultShoppingSites(): List<ShoppingSite>
+
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>)
 
     fun shouldEnableTurboMode(): Boolean
