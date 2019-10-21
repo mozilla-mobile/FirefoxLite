@@ -45,6 +45,11 @@ class TravelBucketListFragment : Fragment() {
         observeBucketListActions()
     }
 
+    override fun onResume() {
+        super.onResume()
+        travelBucketListViewModel.getBucketList()
+    }
+
     private fun initBucketList() {
         bucketListAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
@@ -88,9 +93,9 @@ class TravelBucketListFragment : Fragment() {
 
     private fun observeBucketListActions() {
 
-        travelBucketListViewModel.openCity.observe(this, Observer { name ->
+        travelBucketListViewModel.openCity.observe(this, Observer { city ->
             context?.let {
-                startActivity(TravelCityActivity.getStartIntent(it, name))
+                startActivity(TravelCityActivity.getStartIntent(it, city))
             }
         })
 

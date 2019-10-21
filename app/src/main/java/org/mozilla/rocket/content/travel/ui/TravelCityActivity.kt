@@ -26,6 +26,7 @@ import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.HotelAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.BucketList
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
 import javax.inject.Inject
@@ -36,9 +37,9 @@ class TravelCityActivity : BaseActivity() {
     lateinit var travelCityViewModelCreator: Lazy<TravelCityViewModel>
 
     private lateinit var travelCityViewModel: TravelCityViewModel
-    private lateinit var name: String
     private lateinit var detailAdapter: DelegateAdapter
     private lateinit var onboardingSpotlightDialog: Dialog
+    private lateinit var city: BaseCityData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -46,13 +47,15 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel = getViewModel(travelCityViewModelCreator)
         setContentView(R.layout.activity_travel_city)
 
-        name = intent?.extras?.getString(EXTRA_NAME) ?: ""
+        city = intent?.extras?.getParcelable(EXTRA_CITY) ?: BaseCityData("", "")
 
         initToolBar()
+        initSnackBar()
         initDetail()
-        bindListData()
+        bindCityData()
+        bindPageState()
         initExploreActions()
-        initOnboardingSpotlight(name)
+        initOnboardingSpotlight(city.name)
     }
 
     private fun initOnboardingSpotlight(name: String) {
@@ -76,6 +79,25 @@ class TravelCityActivity : BaseActivity() {
 
     override fun applyLocale() = Unit
 
+    private fun initToolBar() {
+        toolbar.title = city.name
+        toolbar.setNavigationOnClickListener {
+            onBackPressed()
+        }
+        favorite_button.setOnClickListener {
+            travelCityViewModel.onFavoriteToggled(city, it.isSelected)
+        }
+        refresh_button.setOnClickListener {
+            travelCityViewModel.getLatestItems(city.name)
+        }
+    }
+
+    private fun initSnackBar() {
+        travelCityViewModel.showSnackBar.observe(this, Observer {
+            showBucketListAddedSnackbar()
+        })
+    }
+
     private fun initDetail() {
         detailAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
@@ -92,26 +114,15 @@ class TravelCityActivity : BaseActivity() {
         }
     }
 
-    private fun bindListData() {
+    private fun bindCityData() {
+        travelCityViewModel.isInBucketList.observe(this, Observer {
+            favorite_button.isSelected = it
+        })
+        travelCityViewModel.checkIsInBucketList(city.id)
         travelCityViewModel.items.observe(this, Observer {
             detailAdapter.setData(it)
         })
-        travelCityViewModel.getLatestItems(name)
-    }
-
-    private fun initToolBar() {
-        toolbar.title = name
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
-        favorite_button.setOnClickListener {
-            // TODO: view model toggle favorite
-            it.isSelected = !it.isSelected
-            if (it.isSelected) showBucketListAddedSnackbar()
-        }
-        refresh_button.setOnClickListener {
-            travelCityViewModel.getLatestItems(name)
-        }
+        travelCityViewModel.getLatestItems(city.name)
     }
 
     private fun initExploreActions() {
@@ -124,7 +135,7 @@ class TravelCityActivity : BaseActivity() {
     private fun showBucketListAddedSnackbar() {
         Snackbar.make(container, R.string.travel_detail_bucket_list_saved, Snackbar.LENGTH_LONG).apply {
             setAction(R.string.travel_detail_bucket_list_saved_view) {
-                // TODO: show bucket list
+                startActivity(TravelActivity.getStartIntent(it.context, BucketList).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) })
             }
         }.show()
     }
@@ -156,11 +167,11 @@ class TravelCityActivity : BaseActivity() {
     }
 
     companion object {
-        private const val EXTRA_NAME = "name"
-        fun getStartIntent(context: Context, name: String) =
+        private const val EXTRA_CITY = "city"
+        fun getStartIntent(context: Context, city: BaseCityData) =
                 Intent(context, TravelCityActivity::class.java).also {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    it.putExtra(EXTRA_NAME, name)
+                    it.putExtra(EXTRA_CITY, city)
                 }
     }
 }

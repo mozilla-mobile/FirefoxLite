@@ -8,14 +8,17 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
-import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
+import org.mozilla.rocket.content.travel.domain.AddToBucketListUseCase
+import org.mozilla.rocket.content.travel.domain.CheckIsInBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
-import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
+import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -25,6 +28,9 @@ class TravelCityViewModel(
     private val getWiki: GetCityWikiUseCase,
     private val getVideos: GetCityVideosUseCase,
     private val getHotels: GetCityHotelsUseCase,
+    private val checkIsInBucketLis: CheckIsInBucketListUseCase,
+    private val addToBucketList: AddToBucketListUseCase,
+    private val removeFromBucketList: RemoveFromBucketListUseCase,
     private val shouldShowOnboarding: ShouldShowOnboardingUseCase,
     private val setOnboardingHasShown: SetOnboardingHasShownUseCase
 ) : ViewModel() {
@@ -34,30 +40,26 @@ class TravelCityViewModel(
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    val openLinkUrl = SingleLiveEvent<String>()
-
-    fun onIgClicked(igItem: IgUiModel) {
-        openLinkUrl.value = igItem.linkUrl
-    }
-
-    @Suppress("UNUSED_PARAMETER")
-    fun onVideoClicked(videoItem: VideoUiModel) {
-        // TODO handle video click
-    }
-
-    fun onWikiClicked(wikiItem: WikiUiModel) {
-        openLinkUrl.value = wikiItem.linkUrl
-    }
+    private val _isInBucketList = MutableLiveData<Boolean>()
+    val isInBucketList: LiveData<Boolean> = _isInBucketList
 
     private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
     val showOnboardingSpotlight = SingleLiveEvent<Unit>()
+    val showSnackBar = SingleLiveEvent<Unit>()
+    val openLinkUrl = SingleLiveEvent<String>()
 
     init {
         if (shouldShowOnboarding()) {
             showOnboardingSpotlight.call()
             setOnboardingHasShown()
+        }
+    }
+
+    fun checkIsInBucketList(id: String) {
+        launchDataLoad {
+            _isInBucketList.postValue(checkIsInBucketLis(id))
         }
     }
 
@@ -106,6 +108,32 @@ class TravelCityViewModel(
 
             _items.postValue(data)
         }
+    }
+
+    fun onFavoriteToggled(city: BaseCityData, isSelected: Boolean) {
+        viewModelScope.launch {
+            if (isSelected) {
+                removeFromBucketList(city.id)
+            } else {
+                addToBucketList(city.id, city.name)
+                showSnackBar.call()
+            }
+
+            _isInBucketList.postValue(!isSelected)
+        }
+    }
+
+    fun onIgClicked(igItem: IgUiModel) {
+        openLinkUrl.value = igItem.linkUrl
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun onVideoClicked(videoItem: VideoUiModel) {
+        // TODO handle video click
+    }
+
+    fun onWikiClicked(wikiItem: WikiUiModel) {
+        openLinkUrl.value = wikiItem.linkUrl
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

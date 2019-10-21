@@ -21,6 +21,6 @@ class CitySearchResultViewHolder(override val containerView: View, private val s
 }
 
 data class CitySearchResultUiModel(
-    val id: Int,
+    val id: String,
     val name: CharSequence
 ) : DelegateAdapter.UiModel()

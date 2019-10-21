@@ -11,6 +11,8 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter
+import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab
+import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.Explore
 import javax.inject.Inject
 
 class TravelActivity : FragmentActivity() {
@@ -23,6 +25,7 @@ class TravelActivity : FragmentActivity() {
     private lateinit var adapter: TravelTabsAdapter
     private lateinit var travelViewModel: TravelViewModel
     private lateinit var travelExploreViewModel: TravelExploreViewModel
+    private lateinit var tab: Tab
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -32,6 +35,8 @@ class TravelActivity : FragmentActivity() {
         travelExploreViewModel = getViewModel(travelExploreViewModelCreator)
 
         setContentView(R.layout.activity_travel)
+
+        tab = intent?.extras?.getParcelable(EXTRA_TAB) ?: Explore
 
         initViewPager()
         initTabLayout()
@@ -43,6 +48,7 @@ class TravelActivity : FragmentActivity() {
             adapter = TravelTabsAdapter(supportFragmentManager, this)
             view_pager.apply {
                 adapter = this@TravelActivity.adapter
+                setCurrentItem(tab.item)
             }
         })
 
@@ -60,7 +66,11 @@ class TravelActivity : FragmentActivity() {
     }
 
     companion object {
-        fun getStartIntent(context: Context) =
-                Intent(context, TravelActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+        private const val EXTRA_TAB = "tab"
+        fun getStartIntent(context: Context, tab: Tab = Explore) =
+                Intent(context, TravelActivity::class.java).also {
+                    it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    it.putExtra(EXTRA_TAB, tab)
+                }
     }
 }

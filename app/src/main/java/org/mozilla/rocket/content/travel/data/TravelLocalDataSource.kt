@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.travel.data
 
 import android.content.Context
+import android.text.TextUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -9,10 +10,20 @@ import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_ID
+import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_IMAGE_URL
+import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_NAME
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class TravelLocalDataSource(private val appContext: Context) : TravelDataSource {
+
+    private val preference = StrictModeViolation.tempGrant({ builder ->
+        builder.permitDiskReads()
+    }, {
+        appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    })
 
     override suspend fun getRunwayItems(): Result<List<RunwayItem>> {
         return withContext(Dispatchers.IO) {
@@ -26,9 +37,13 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
-    override suspend fun getBucketList(): Result<List<City>> {
+    override suspend fun getBucketList(): Result<List<BucketListCity>> {
         return withContext(Dispatchers.IO) {
-            Success(getMockCityCategories()?.first()?.cityList ?: emptyList())
+            try {
+                Success(getBucketListFromPreferences())
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
         }
     }
 
@@ -72,6 +87,33 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
+    override suspend fun isInBucketList(id: String): Boolean {
+        return withContext(Dispatchers.IO) {
+            getBucketListFromPreferences().find { it.id.equals(id) } != null
+        }
+    }
+
+    override suspend fun addToBucketList(city: BucketListCity) = withContext(Dispatchers.IO) {
+        val bucketList = getBucketListFromPreferences()
+        if (bucketList.find { it.id.equals(city.id) } == null) {
+            bucketList.add(city)
+            preference.edit().putString(KEY_JSON_STRING_BUCKET_LIST, bucketList.toJsonString()).apply()
+        }
+    }
+
+    override suspend fun removeFromBucketList(id: String) = withContext(Dispatchers.IO) {
+        preference.edit().putString(KEY_JSON_STRING_BUCKET_LIST, getBucketListFromPreferences().filterNot { it.id.equals(id) }.toJsonString()).apply()
+    }
+
+    private fun getBucketListFromPreferences(): MutableList<BucketListCity> {
+        val jsonString = preference.getString(KEY_JSON_STRING_BUCKET_LIST, "") ?: ""
+        val bucketList = ArrayList<BucketListCity>()
+        if (!TextUtils.isEmpty(jsonString)) {
+            bucketList.addAll(BucketListCity.fromJson(jsonString))
+        }
+        return bucketList
+    }
+
     // TODO: remove mock data
     private fun getMockRunwayItems(): List<RunwayItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.runway_mock_items)
@@ -104,6 +146,11 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
     private fun getMockHotels(): List<Hotel>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_hotels)
                     ?.jsonStringToHotels()
+
+    companion object {
+        private const val PREF_NAME = "travel"
+        private const val KEY_JSON_STRING_BUCKET_LIST = "bucket_list"
+    }
 }
 
 private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
@@ -157,7 +204,7 @@ private fun createCityItems(jsonArray: JSONArray): List<City> {
 
 private fun createCityItem(jsonObject: JSONObject): City =
         City(
-            jsonObject.optInt("id"),
+            jsonObject.optString("id"),
             jsonObject.optString("image_url"),
             jsonObject.optString("name")
         )
@@ -236,3 +283,19 @@ private fun createHotel(jsonObject: JSONObject): Hotel =
             jsonObject.optBoolean("can_pay_at_property"),
             jsonObject.optString("link_url")
         )
+
+private fun List<BucketListCity>.toJsonString(): String {
+    val jsonArray = JSONArray()
+    for (city in this) {
+        jsonArray.put(city.toJson())
+    }
+    return jsonArray.toString()
+}
+
+private fun BucketListCity.toJson(): JSONObject {
+    return JSONObject().let {
+        it.put(KEY_ID, this.id)
+        it.put(KEY_IMAGE_URL, this.imageUrl)
+        it.put(KEY_NAME, this.name)
+    }
+}

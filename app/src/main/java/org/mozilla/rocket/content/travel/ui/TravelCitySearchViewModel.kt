@@ -24,7 +24,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     val items: LiveData<List<CitySearchResultUiModel>> = _items
 
     private var searchCityJob: Job? = null
-    val openCity = SingleLiveEvent<CharSequence>()
+    val openCity = SingleLiveEvent<BaseCityData>()
     val changeClearBtnVisibility = SingleLiveEvent<Int>()
 
     fun search(keyword: String) {
@@ -73,6 +73,6 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     }
 
     fun onCityClicked(it: CitySearchResultUiModel) {
-        openCity.value = it.name
+        openCity.value = BaseCityData(it.id, it.name.toString())
     }
 }

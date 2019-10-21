@@ -1,9 +1,11 @@
 package org.mozilla.rocket.content.travel.ui.adapter
 
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import kotlinx.android.parcel.Parcelize
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
 import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
@@ -26,6 +28,11 @@ class TravelTabsAdapter(
         val fragment: Fragment,
         val titleResId: Int
     )
+
+    sealed class Tab(val item: Int) : Parcelable {
+        @Parcelize object Explore : Tab(0)
+        @Parcelize object BucketList : Tab(1)
+    }
 
     companion object {
         private fun getDefaultTabs(): List<TabItem> = listOf(

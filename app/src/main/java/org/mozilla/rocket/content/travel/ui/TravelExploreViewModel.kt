@@ -53,11 +53,11 @@ class TravelExploreViewModel(
         }
     }
 
-    val openCity = SingleLiveEvent<String>()
+    val openCity = SingleLiveEvent<BaseCityData>()
     val goSearch = SingleLiveEvent<Unit>()
 
     fun onCityItemClicked(cityItem: CityUiModel) {
-        openCity.value = cityItem.name
+        openCity.value = BaseCityData(cityItem.id, cityItem.name)
     }
 
     fun onSearchInputClicked() {
