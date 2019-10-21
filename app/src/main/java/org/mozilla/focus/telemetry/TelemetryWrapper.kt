@@ -2852,6 +2852,20 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+        name = "Add Tab Swipe Tab",
+        category = Category.ACTION,
+        method = Method.ADD,
+        `object` = Object.TAB,
+        value = Value.TAB_SWIPE,
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")])
+    @JvmStatic
+    fun addTabSwipeTab(vertical: String) {
+        EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TAB_SWIPE)
+                .extra(Extra.VERTICAL, vertical)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Pin Topsite",
             category = Category.ACTION,
             method = Method.PIN,
