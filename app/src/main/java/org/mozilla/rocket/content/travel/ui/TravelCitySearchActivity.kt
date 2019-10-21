@@ -64,8 +64,8 @@ class TravelCitySearchActivity : AppCompatActivity() {
                 adapter.setData(it)
             }
         })
-        searchViewModel.openCity.observe(this, Observer { name ->
-            startActivity(TravelCityActivity.getStartIntent(this@TravelCitySearchActivity, name.toString()))
+        searchViewModel.openCity.observe(this, Observer { city ->
+            startActivity(TravelCityActivity.getStartIntent(this@TravelCitySearchActivity, city))
         })
         searchViewModel.changeClearBtnVisibility.observe(this, Observer {
             if (it != null) {

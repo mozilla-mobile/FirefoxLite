@@ -35,7 +35,7 @@ class BucketListCityViewHolder(
 }
 
 data class BucketListCityUiModel(
-    val id: Int,
+    val id: String,
     val imageUrl: String,
     val name: String
 ) : DelegateAdapter.UiModel()

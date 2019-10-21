@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.travel.ui
 
 import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.travel.data.BucketListCity
 import org.mozilla.rocket.content.travel.data.City
 import org.mozilla.rocket.content.travel.data.CityCategory
 import org.mozilla.rocket.content.travel.data.Hotel
@@ -58,14 +59,14 @@ object TravelMapper {
                 city.name
             )
 
-    fun toBucketListCityUiModel(city: City): BucketListCityUiModel =
+    fun toBucketListCityUiModel(city: BucketListCity): BucketListCityUiModel =
             BucketListCityUiModel(
                 city.id,
                 city.imageUrl,
                 city.name
             )
 
-    fun toCitySearchResultUiModel(id: Int, name: CharSequence): CitySearchResultUiModel =
+    fun toCitySearchResultUiModel(id: String, name: CharSequence): CitySearchResultUiModel =
             CitySearchResultUiModel(
                 id,
                 name

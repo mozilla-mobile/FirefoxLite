@@ -12,7 +12,7 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun getBucketList(): Result<List<City>> {
+    override suspend fun getBucketList(): Result<List<BucketListCity>> {
         TODO("not implemented")
     }
 
@@ -37,6 +37,18 @@ class TravelRemoteDataSource : TravelDataSource {
     }
 
     override suspend fun getCityHotels(name: String): Result<List<Hotel>> {
+        TODO("not implemented")
+    }
+
+    override suspend fun isInBucketList(id: String): Boolean {
+        TODO("not implemented")
+    }
+
+    override suspend fun addToBucketList(city: BucketListCity) {
+        TODO("not implemented")
+    }
+
+    override suspend fun removeFromBucketList(id: String) {
         TODO("not implemented")
     }
 }

@@ -15,7 +15,7 @@ class TravelRepository(
         return localDataSource.getCityCategories()
     }
 
-    suspend fun getBucketList(): Result<List<City>> {
+    suspend fun getBucketList(): Result<List<BucketListCity>> {
         return localDataSource.getBucketList()
     }
 
@@ -41,5 +41,17 @@ class TravelRepository(
 
     suspend fun getCityHotels(name: String): Result<List<Hotel>> {
         return localDataSource.getCityHotels(name)
+    }
+
+    suspend fun isInBucketList(id: String): Boolean {
+        return localDataSource.isInBucketList(id)
+    }
+
+    suspend fun addToBucketList(city: BucketListCity) {
+        localDataSource.addToBucketList(city)
+    }
+
+    suspend fun removeFromBucketList(id: String) {
+        localDataSource.removeFromBucketList(id)
     }
 }
