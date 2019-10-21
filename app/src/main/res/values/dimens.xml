@@ -121,4 +121,10 @@
     <item name="msrp_mission_detail_day_text_size" type="dimen">12sp</item>
     <item name="msrp_mission_detail_day_text_margin_top" type="dimen">4dp</item>
 
+    <!-- Travel - Hotel -->
+    <item name="travel_hotel_card_text_horizontal_padding" type="dimen">12dp</item>
+    <item name="travel_hotel_card_title_text_size" type="dimen">14sp</item>
+    <item name="travel_hotel_card_info_text_size" type="dimen">12sp</item>
+    <item name="travel_hotel_card_small_icon_width" type="dimen">14dp</item>
+
 </resources>

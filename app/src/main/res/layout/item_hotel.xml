@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/hotel_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/paletteLightGreyA100"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp">
+
+        <ImageView
+            android:id="@+id/hotel_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/placeholder"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="H,328:164"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/hotel_source"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:maxLines="1"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:textSize="@dimen/travel_hotel_card_info_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotel_image" />
+
+        <TextView
+            android:id="@+id/hotel_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:ellipsize="end"
+            android:textColor="@color/paletteBlack100"
+            android:textSize="@dimen/travel_hotel_card_title_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotel_source" />
+
+        <TextView
+            android:id="@+id/hotel_distance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:fontFamily="sans-serif-light"
+            android:maxLines="1"
+            android:textColor="@color/contentHeaderTextColor"
+            android:textSize="@dimen/travel_hotel_card_title_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotel_name" />
+
+        <LinearLayout
+            android:id="@+id/hotel_rating_container"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_travel_card_info"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotel_distance">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="5dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_rating_blue" />
+
+            <TextView
+                android:id="@+id/hotel_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#007aff"
+                android:textSize="@dimen/travel_hotel_card_info_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hotel_free_wifi_container"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/bg_travel_card_info"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/hotel_rating_container"
+            app:layout_constraintTop_toTopOf="@id/hotel_rating_container">
+
+            <ImageView
+                android:layout_width="@dimen/travel_hotel_card_small_icon_width"
+                android:layout_height="@dimen/travel_hotel_card_small_icon_width"
+                android:layout_marginStart="5dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_free_wifi" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/travel_hotel_free_wifi"
+                android:textColor="#007aff"
+                android:textSize="@dimen/travel_hotel_card_info_text_size" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/hotel_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:textColor="@color/colorProductPrice"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/hotel_rating_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/hotel_rating_container" />
+
+        <TextView
+            android:id="@+id/hotel_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:textColor="@color/colorProductPrice"
+            android:textSize="@dimen/travel_hotel_card_info_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/hotel_price"
+            app:layout_constraintEnd_toStartOf="@id/hotel_price" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/travel_hotel_rating_from"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:textSize="@dimen/travel_hotel_card_info_text_size"
+            app:layout_constraintBottom_toTopOf="@id/hotel_price"
+            app:layout_constraintEnd_toEndOf="@id/hotel_price" />
+
+        <View
+            android:id="@+id/hotel_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:layout_marginTop="5.5dp"
+            android:layout_marginEnd="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:background="@color/paletteLightGreyA100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotel_rating_container" />
+
+        <LinearLayout
+            android:id="@+id/hotel_free_cancellation_container"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="@dimen/travel_hotel_card_text_horizontal_padding"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hotel_separator">
+
+            <ImageView
+                android:layout_width="@dimen/travel_hotel_card_small_icon_width"
+                android:layout_height="@dimen/travel_hotel_card_small_icon_width"
+                android:layout_marginStart="5dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_check" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/travel_hotel_free_cancellation"
+                android:textColor="#21b42f"
+                android:textSize="@dimen/travel_hotel_card_info_text_size" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/hotel_pay_at_hotel_container"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/hotel_free_cancellation_container"
+            app:layout_constraintTop_toBottomOf="@id/hotel_separator">
+
+            <ImageView
+                android:layout_width="@dimen/travel_hotel_card_small_icon_width"
+                android:layout_height="@dimen/travel_hotel_card_small_icon_width"
+                android:layout_marginStart="5dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_cash" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/travel_hotel_pay_at_hotel"
+                android:textColor="#21b42f"
+                android:textSize="@dimen/travel_hotel_card_info_text_size" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
