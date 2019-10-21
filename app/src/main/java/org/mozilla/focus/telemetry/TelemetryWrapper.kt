@@ -332,6 +332,8 @@ object TelemetryWrapper {
         const val DOWNLOAD_GAME = "apkGame"
         const val CREATE_GAME_SHORTCUT = "create_game_shortcut"
         const val SHARE_GAME = "share_game"
+        const val HOME = "home"
+        const val TAB_SWIPE = "tab_swipe"
     }
 
     enum class FIND_IN_PAGE {
@@ -2756,7 +2758,7 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Start Tab Swipe Process",
+            name = "End Tab Swipe Process",
             category = Category.ACTION,
             method = Method.END,
             `object` = Object.PROCESS,
@@ -2811,6 +2813,23 @@ object TelemetryWrapper {
                 .extra(Extra.SUB_CATEGORY, subCategoryId)
                 .extra(Extra.ID, componentId)
                 .extra(Extra.VERSION, version)
+                .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Click Toolbar - Tab Swipe",
+        category = Category.ACTION,
+        method = Method.CLICK,
+        `object` = Object.TOOLBAR,
+        value = Value.TAB_SWIPE,
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+            TelemetryExtra(name = Extra.FROM, value = "${Extra_Value.HOME},${Extra_Value.TAB_SWIPE}")
+        ])
+    @JvmStatic
+    fun clickToolbarTabSwipe(vertical: String, from: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.TAB_SWIPE)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.FROM, from)
                 .queue()
     }
 

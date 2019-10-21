@@ -19,6 +19,7 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -278,6 +279,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
         )
+        TelemetryWrapper.clickToolbarTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.TAB_SWIPE)
     }
 
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
