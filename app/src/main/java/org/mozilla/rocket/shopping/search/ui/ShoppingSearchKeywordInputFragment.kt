@@ -2,11 +2,12 @@ package org.mozilla.rocket.shopping.search.ui
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableStringBuilder
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -60,21 +61,21 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
                 s?.let { viewModel.fetchSuggestions(it.toString()) }
             }
         })
-        search_keyword_edit.setOnKeyListener { _, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                if (event.action == KeyEvent.ACTION_DOWN) {
-                    viewModel.onKeywordSent(search_keyword_edit.text.toString())
-                    return@setOnKeyListener true
+        search_keyword_edit.setOnEditorActionListener { editTextView, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    viewModel.onKeywordSent(editTextView.text.toString())
+                    true
                 }
+                else -> false
             }
-            return@setOnKeyListener false
         }
-        search_keyword_edit.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        search_keyword_edit.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             // Avoid showing keyboard again when returning to the previous page by back key.
             if (hasFocus) {
-                ViewUtils.showKeyboard(search_keyword_edit)
+                ViewUtils.showKeyboard(v)
             } else {
-                ViewUtils.hideKeyboard(search_keyword_edit)
+                ViewUtils.hideKeyboard(v)
             }
         }
 
@@ -89,7 +90,11 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.clear -> search_keyword_edit.text.clear()
-            R.id.suggestion_item -> viewModel.onKeywordSent((view as TextView).text.toString())
+            R.id.suggestion_item -> {
+                val searchTerm = (view as TextView).text
+                search_keyword_edit.text = SpannableStringBuilder(searchTerm)
+                viewModel.onKeywordSent(searchTerm.toString())
+            }
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
     }

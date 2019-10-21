@@ -36,7 +36,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="@string/shopping_search_placeholder"
-                android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+                android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
                 android:inputType="textUri"
                 android:lines="1"
                 android:requiresFadingEdge="horizontal"
