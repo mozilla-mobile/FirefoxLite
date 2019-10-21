@@ -8,8 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Lazy
-import kotlinx.android.synthetic.main.activity_shopping_search_preferences.recyclerView
-import kotlinx.android.synthetic.main.activity_shopping_search_preferences.toolbar
+import kotlinx.android.synthetic.main.activity_shopping_search_preferences.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -36,6 +35,11 @@ class ShoppingSearchPreferencesActivity : AppCompatActivity() {
         viewModel = getViewModel(viewModelCreator)
         initToolBar()
         initPreferenceList()
+    }
+
+    override fun onStop() {
+        viewModel.onExitSettings()
+        super.onStop()
     }
 
     private fun initToolBar() {
