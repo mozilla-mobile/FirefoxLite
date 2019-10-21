@@ -28,6 +28,8 @@ class ShoppingSearchRepository(
                 mergedShoppingSites.addAll(localShoppingSites)
             }
             shoppingSitesData.postValue(mergedShoppingSites)
+        } else {
+            shoppingSitesData.postValue(remoteDataSource.getDefaultShoppingSites())
         }
 
         return shoppingSitesData

@@ -4,6 +4,8 @@ import org.mozilla.focus.utils.FirebaseHelper
 
 class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
 
+    private val defaultShoppingSiteListJson = "[{\"title\":\"Amazon\",\"searchUrl\":\"https://www.amazon.com/s?k=\",\"displayUrl\":\"amazon.com\"},{\"title\":\"eBay\",\"searchUrl\":\"https://www.ebay.com/sch/i.html?_nkw=\",\"displayUrl\":\"ebay.com\"},{\"title\":\"Aliexpress\",\"searchUrl\":\"https://www.aliexpress.com/wholesale?SearchText=\",\"displayUrl\":\"aliexpress.com\"}]"
+
     override fun isShoppingSearchEnabled() =
         FirebaseHelper.getFirebase().getRcBoolean(RC_KEY_ENABLE_SHOPPING_SEARCH)
 
@@ -14,6 +16,10 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
         }
 
         return emptyList()
+    }
+
+    override fun getDefaultShoppingSites(): List<ShoppingSite> {
+        return defaultShoppingSiteListJson.toPreferenceSiteList()
     }
 
     override fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {

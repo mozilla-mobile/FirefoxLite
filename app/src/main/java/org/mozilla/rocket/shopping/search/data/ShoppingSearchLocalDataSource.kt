@@ -29,6 +29,10 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
         return emptyList()
     }
 
+    override fun getDefaultShoppingSites(): List<ShoppingSite> {
+        return emptyList()
+    }
+
     override fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
         val siteJsonArray = JSONArray()
         shoppingSites.map { it.toJson() }
