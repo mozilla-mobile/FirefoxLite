@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_keyword_input.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
@@ -125,5 +126,7 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
         findNavController().navigate(
             ShoppingSearchKeywordInputFragmentDirections.actionSearchKeywordToResult(keyword)
         )
+
+        TelemetryWrapper.addTabSwipeTab(TelemetryWrapper.Extra_Value.SHOPPING)
     }
 }
