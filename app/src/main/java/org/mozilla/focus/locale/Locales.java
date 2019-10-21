@@ -37,6 +37,11 @@ public class Locales {
      * @param context
      */
     public static void initializeLocale(Context context) {
+        //  For debugging purpose
+//        Resources resources = context.getResources();
+//        Configuration config = context.getResources().getConfiguration();
+//        config.mcc = 510;
+//        resources.updateConfiguration(config, null);
         StrictModeViolation.<Void>tempGrant(builder -> builder.permitDiskReads().permitDiskWrites(), () -> {
             final LocaleManager localeManager = LocaleManager.getInstance();
             localeManager.getAndApplyPersistedLocale(context);
