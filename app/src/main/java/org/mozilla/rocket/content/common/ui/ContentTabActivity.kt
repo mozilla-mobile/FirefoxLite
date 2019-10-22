@@ -26,6 +26,7 @@ import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
@@ -44,8 +45,12 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
     @Inject
     lateinit var bottomBarViewModelCreator: Lazy<ContentTabBottomBarViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<ContentTabTelemetryViewModel>
+
     private lateinit var permissionHandler: PermissionHandler
     private lateinit var chromeViewModel: ChromeViewModel
+    private lateinit var telemetryViewModel: ContentTabTelemetryViewModel
     private lateinit var tabViewProvider: TabViewProvider
     private lateinit var sessionManager: SessionManager
     private lateinit var contentTabHelper: ContentTabHelper
@@ -60,6 +65,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         setContentView(R.layout.activity_content_tab)
 
         chromeViewModel = getViewModel(chromeViewModelCreator)
+        telemetryViewModel = getViewModel(telemetryViewModelCreator)
         tabViewProvider = PrivateTabViewProvider(this)
         sessionManager = SessionManager(tabViewProvider)
 
@@ -83,6 +89,8 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         observeChromeAction()
         chromeViewModel.showUrlInput.value = chromeViewModel.currentUrl.value
 
+        telemetryViewModel.initialize(intent?.extras?.getParcelable(EXTRA_TELEMETRY_DATA))
+
         if (savedInstanceState == null) {
             val url = intent?.extras?.getString(EXTRA_URL) ?: ""
             val enableTurboMode = intent?.extras?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
@@ -90,6 +98,11 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
                 .replace(R.id.browser_container, ContentTabFragment.newInstance(url, enableTurboMode))
                 .commit()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        telemetryViewModel.onSessionStarted()
     }
 
     override fun onResume() {
@@ -105,6 +118,11 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         super.onPause()
         sessionManager.pause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        telemetryViewModel.onSessionEnded()
     }
 
     override fun onDestroy() {
@@ -217,6 +235,10 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
                 onShareClicked(url)
             }
         })
+
+        chromeViewModel.currentUrl.observe(this, Observer {
+            telemetryViewModel.onUrlOpened()
+        })
     }
 
     private fun onShareClicked(url: String) {
@@ -229,12 +251,19 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
     companion object {
         private const val LOG_TAG = "ContentTabActivity"
         private const val EXTRA_URL = "url"
+        private const val EXTRA_TELEMETRY_DATA = "telemetry_data"
         private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
 
-        fun getStartIntent(context: Context, url: String, enableTurboMode: Boolean = true) =
-            Intent(context, ContentTabActivity::class.java).also {
-                it.putExtra(EXTRA_URL, url)
-                it.putExtra(EXTRA_ENABLE_TURBO_MODE, enableTurboMode)
+        fun getStartIntent(
+            context: Context,
+            url: String,
+            telemetryData: ContentTabTelemetryData? = null,
+            enableTurboMode: Boolean = true
+        ) =
+            Intent(context, ContentTabActivity::class.java).also { intent ->
+                intent.putExtra(EXTRA_URL, url)
+                intent.putExtra(EXTRA_ENABLE_TURBO_MODE, enableTurboMode)
+                telemetryData?.let { intent.putExtra(EXTRA_TELEMETRY_DATA, it) }
             }
     }
 }

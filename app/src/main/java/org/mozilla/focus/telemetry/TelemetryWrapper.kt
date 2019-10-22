@@ -30,6 +30,7 @@ import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.util.TimeUtils
@@ -73,7 +74,6 @@ object TelemetryWrapper {
     private val sRefCount = AtomicInteger(0)
 
     private var verticalProcessStartTime = ArrayMap<String, Long>()
-    private var verticalContentTabStartTime = ArrayMap<String, Long>()
 
     internal object Category {
         const val ACTION = "action"
@@ -269,9 +269,10 @@ object TelemetryWrapper {
         const val MESSAGE_ID = "message_id"
         const val POSITION = "position"
         const val FEED = "feed"
-        const val SUB_CATEGORY = "subcategory"
+        const val SUB_CATEGORY_ID = "subcategory_id"
+        const val VERSION_ID = "version_id"
         const val MODE = "mode"
-        const val ID = "id"
+        const val COMPONENT_ID = "component_id"
         const val DURATION = "duration"
         const val FROM_BUILD = "from_build"
         const val TO_BUILD = "to_build"
@@ -2616,20 +2617,19 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
-                TelemetryExtra(name = Extra.SUB_CATEGORY, value = "subcategory id"),
-                TelemetryExtra(name = Extra.ID, value = "component id"),
-                TelemetryExtra(name = Extra.VERSION, value = "version")
+                TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
             ])
-    fun startContentTab(vertical: String, feed: String, source: String, category: String, subCategoryId: String, componentId: String, version: String) {
-        verticalContentTabStartTime[vertical] = TimeUtils.getTimestampNow()
+    fun startContentTab(contentTabTelemetryData: ContentTabTelemetryData) {
         EventBuilder(Category.ACTION, Method.START, Object.CONTENT_TAB)
-                .extra(Extra.VERTICAL, vertical)
-                .extra(Extra.FEED, feed)
-                .extra(Extra.SOURCE, source)
-                .extra(Extra.CATEGORY, category)
-                .extra(Extra.SUB_CATEGORY, subCategoryId)
-                .extra(Extra.ID, componentId)
-                .extra(Extra.VERSION, version)
+                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                .extra(Extra.FEED, contentTabTelemetryData.feed)
+                .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
                 .queue()
     }
 
@@ -2644,44 +2644,27 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
-                TelemetryExtra(name = Extra.SUB_CATEGORY, value = "subcategory id"),
-                TelemetryExtra(name = Extra.ID, value = "component id"),
-                TelemetryExtra(name = Extra.VERSION, value = "version"),
+                TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version"),
                 TelemetryExtra(name = Extra.SESSION_TIME, value = "time duration from entering component"),
                 TelemetryExtra(name = Extra.URL_COUNTS, value = "url counts duration from entering component"),
                 TelemetryExtra(name = Extra.APP_LINK, value = "${Extra_Value.OPEN}|${Extra_Value.INSTALL}|null"),
                 TelemetryExtra(name = Extra.SHOW_KEYBOARD, value = "true|false")
             ])
-    fun endContentTab(
-        vertical: String,
-        feed: String,
-        source: String,
-        category: String,
-        subCategoryId: String,
-        componentId: String,
-        version: String,
-        urlCounts: Int,
-        appLink: String?,
-        showKeyboard: Boolean
-    ) {
-        val startTime = verticalContentTabStartTime[vertical]
-        val loadTime = if (startTime != null) {
-            TimeUtils.getTimestampNow() - startTime
-        } else {
-            -1
-        }
+    fun endContentTab(contentTabTelemetryData: ContentTabTelemetryData) {
         EventBuilder(Category.ACTION, Method.END, Object.CONTENT_TAB)
-                .extra(Extra.VERTICAL, vertical)
-                .extra(Extra.FEED, feed)
-                .extra(Extra.SOURCE, source)
-                .extra(Extra.CATEGORY, category)
-                .extra(Extra.SUB_CATEGORY, subCategoryId)
-                .extra(Extra.ID, componentId)
-                .extra(Extra.VERSION, version)
-                .extra(Extra.SESSION_TIME, loadTime.toString())
-                .extra(Extra.URL_COUNTS, urlCounts.toString())
-                .extra(Extra.APP_LINK, appLink ?: "null")
-                .extra(Extra.SHOW_KEYBOARD, showKeyboard.toString())
+                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                .extra(Extra.FEED, contentTabTelemetryData.feed)
+                .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
+                .extra(Extra.SESSION_TIME, contentTabTelemetryData.sessionTime.toString())
+                .extra(Extra.URL_COUNTS, contentTabTelemetryData.urlCounts.toString())
+                .extra(Extra.APP_LINK, contentTabTelemetryData.appLink)
+                .extra(Extra.SHOW_KEYBOARD, contentTabTelemetryData.showKeyboard.toString())
                 .queue()
     }
 
@@ -2788,8 +2771,8 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
-                TelemetryExtra(name = Extra.SUB_CATEGORY, value = "subcategory id"),
-                TelemetryExtra(name = Extra.ID, value = "component id"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
                 TelemetryExtra(name = Extra.VERSION, value = "version")
             ])
     fun clickContentTabToolbar(
@@ -2811,8 +2794,8 @@ object TelemetryWrapper {
                 .extra(Extra.FEED, feed)
                 .extra(Extra.SOURCE, source)
                 .extra(Extra.CATEGORY, category)
-                .extra(Extra.SUB_CATEGORY, subCategoryId)
-                .extra(Extra.ID, componentId)
+                .extra(Extra.SUB_CATEGORY_ID, subCategoryId)
+                .extra(Extra.COMPONENT_ID, componentId)
                 .extra(Extra.VERSION, version)
                 .queue()
     }
