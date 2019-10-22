@@ -33,8 +33,8 @@ open class UserRepository {
             suspendCoroutine<Unit> { continuation ->
                 FirebaseHelper.signInWithCustomToken(
                     jwt,
-                    onSuccess = { fxUid, oldFbUid ->
-                        Log.d(LOG_TAG, "onLoginSuccess success oldFbUid [$oldFbUid] is now matches to Fx User [$fxUid]")
+                    onSuccess = { _, _ ->
+                        Log.d(LOG_TAG, "onLoginSuccess success")
                         isFxAccount.postValue(true)
                         continuation.resume(Unit)
                     },

@@ -147,14 +147,12 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
                 .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "====signInAnonymously==== ${firebaseAuth.uid}")
+                        Log.d(TAG, "====signInAnonymously====")
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.e(TAG, "====signInAnonymously failure==== ${task.exception}")
+                        Log.e(TAG, "====signInAnonymously failure====")
                     }
                 }
-        } else {
-            Log.d(TAG, "====already signed in==== ")
         }
     }
 
@@ -164,7 +162,6 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         // TODO: maybe wrap this logic in a MSRP client SDK
         firebaseAuth.currentUser?.getIdToken(false)?.addOnCompleteListener { task ->
             val token = if (task.isSuccessful) { task.result?.token } else { null }
-            Log.d(TAG, "jwt====$token")
 
             func(token)
         } ?: func(null)
@@ -173,21 +170,13 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
     override fun isAnonymous(): Boolean? = firebaseAuth.currentUser?.isAnonymous
 
     private fun fetchClaim(onClaimFetched: (String?, String?) -> Unit) {
-        Log.d(TAG, "current====${firebaseAuth.currentUser?.uid}")
 
         firebaseAuth.currentUser?.getIdToken(true)?.addOnSuccessListener { result ->
-            Log.d(TAG, "jwt2====${result.token}")
 
             val fxUid = result.claims["fxuid"]?.toString()
             val oldFbUid = result.claims["oldFbUid"]?.toString()
 
             onClaimFetched(fxUid, oldFbUid)
-            if (fxUid == null) {
-                Log.d(TAG, "===Not logged FxA===")
-            } else {
-                Log.d(TAG, "===fxuid====$fxUid====")
-                Log.d(TAG, "===oldFbUid====$oldFbUid====")
-            }
         }
     }
 
