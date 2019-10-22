@@ -65,10 +65,12 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
-    override suspend fun getCityWiki(name: String): Result<Wiki> {
-        return withContext(Dispatchers.Default) {
-            Success(getMockWiki())
-        }
+    override suspend fun getCityWikiImage(name: String): Result<String> {
+        TODO("not implemented")
+    }
+
+    override suspend fun getCityWikiExtract(name: String): Result<String> {
+        TODO("not implemented")
     }
 
     override suspend fun getCityVideos(name: String): Result<List<Video>> {
@@ -128,14 +130,6 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
     private fun getMockPriceItems(): List<PriceItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_price_items)
                     ?.jsonStringToPriceItems()
-
-    // TODO: remove mock data
-    private fun getMockWiki(): Wiki =
-            Wiki(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Tanah-Lot_Bali_Indonesia_Pura-Tanah-Lot-01.jpg/2560px-Tanah-Lot_Bali_Indonesia_Pura-Tanah-Lot-01.jpg",
-                "Bali is a province of Indonesia and the westernmost of the Lesser Sunda Islands. Located east of Java and west of Lombok, the province includes the island of Bali and a few smaller neighbouring islands, notably Nusa Penida, Nusa Lembongan, and Nusa Ceningan. The provincial capital, Denpasar, is the most populous city in the Lesser Sunda Islands and the second largest, after Makassar, in Eastern Indonesia. Bali is the only Hindu-majority province in Indonesia, with 83.5% of the population adhering to Balinese Hinduism.",
-                "https://en.wikipedia.org/wiki/Bali"
-            )
 
     // TODO: remove mock data
     private fun getMockVideos(): List<Video>? =

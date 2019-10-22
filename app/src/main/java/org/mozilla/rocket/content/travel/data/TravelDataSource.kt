@@ -10,7 +10,8 @@ interface TravelDataSource {
     suspend fun searchCity(keyword: String): Result<List<City>>
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
     suspend fun getCityIg(name: String): Result<Ig>
-    suspend fun getCityWiki(name: String): Result<Wiki>
+    suspend fun getCityWikiImage(name: String): Result<String>
+    suspend fun getCityWikiExtract(name: String): Result<String>
     suspend fun getCityVideos(name: String): Result<List<Video>>
     suspend fun getCityHotels(name: String): Result<List<Hotel>>
     suspend fun isInBucketList(id: String): Boolean
