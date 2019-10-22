@@ -97,7 +97,7 @@ class GameRemoteDataSource : GameDataSource {
     companion object {
         private const val STR_INSTANT_GAME_ENDPOINT = "str_instant_game_endpoint"
         private const val STR_DOWNLOAD_GAME_ENDPOINT = "str_apk_game_endpoint"
-        private const val DEFAULT_INSTANT_GAME_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=all&category=html5Game"
-        private const val DEFAULT_DOWNLOAD_GAME_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=all&category=apkGame"
+        private const val DEFAULT_INSTANT_GAME_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=all&category=html5Game"
+        private const val DEFAULT_DOWNLOAD_GAME_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=all&category=apkGame"
     }
 }

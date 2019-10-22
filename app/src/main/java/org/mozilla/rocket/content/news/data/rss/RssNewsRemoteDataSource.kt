@@ -80,6 +80,6 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
     }
 
     companion object {
-        private const val DEFAULT_URL = "https://rocket-dev01.appspot.com/api/v1/news/google/topic/%s?hl=%s&gl=%s&ceid=%s"
+        private const val DEFAULT_URL = "https://zerda-dcf76.appspot.com/api/v1/news/google/topic/%s?hl=%s&gl=%s&ceid=%s"
     }
 }
