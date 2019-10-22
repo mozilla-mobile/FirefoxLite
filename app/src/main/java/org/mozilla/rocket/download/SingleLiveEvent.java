@@ -15,6 +15,7 @@
  */
 package org.mozilla.rocket.download;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -51,6 +52,24 @@ public class SingleLiveEvent<T> extends MutableLiveData<T> {
 
         // Observe the internal MutableLiveData
         super.observe(owner, new Observer<T>() {
+            @Override
+            public void onChanged(@Nullable T t) {
+                if (mPending.compareAndSet(true, false)) {
+                    observer.onChanged(t);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void observeForever(@NonNull Observer<? super T> observer) {
+
+        if (hasActiveObservers()) {
+            Log.w(TAG, "Multiple observers registered but only one will be notified of changes.");
+        }
+
+        // Observe the internal MutableLiveData
+        super.observeForever(new Observer<T>() {
             @Override
             public void onChanged(@Nullable T t) {
                 if (mPending.compareAndSet(true, false)) {

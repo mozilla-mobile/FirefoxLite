@@ -80,6 +80,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
     lateinit var downloadIndicatorViewModelCreator: Lazy<DownloadIndicatorViewModel>
+    @Inject
+    lateinit var appContext: Context
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var chromeViewModel: ChromeViewModel
@@ -96,7 +98,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
     }
     private val toastObserver = Observer<ToastMessage> {
-        context?.run { showToast(it) }
+        appContext.showToast(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
