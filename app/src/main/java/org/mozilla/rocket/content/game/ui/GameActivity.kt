@@ -73,11 +73,13 @@ class GameActivity : FragmentActivity() {
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
+        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.GAME)
     }
 
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.GAME)
     }
 
     private fun initBroadcastReceivers() {
