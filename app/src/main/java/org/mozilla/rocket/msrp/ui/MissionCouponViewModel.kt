@@ -40,7 +40,7 @@ class MissionCouponViewModel(
         this.mission = mission
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
-                expirationTime.postValue(mission.expiredDate.toDateString())
+                expirationTime.postValue(mission.rewardExpiredDate.toDateString())
             }
         }
         missionImage.value = mission.imageUrl
