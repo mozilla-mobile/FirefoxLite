@@ -7,9 +7,13 @@ package org.mozilla.focus.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -31,7 +35,6 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
 
     @Nullable
     private View viewToHide;
-    private int marginBottom;
 
     public ResizableKeyboardLayout(Context context) {
         this(context, null);
@@ -55,45 +58,35 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
             styleAttributeArray.recycle();
         }
         this.setOnApplyWindowInsetsListener((v, insets) -> {
-            int difference = insets.getSystemWindowInsetBottom();
+            final int difference = insets.getSystemWindowInsetBottom();
+
+            final Point point = new Point();
+            final Display display = getDisplay();
+            if (display == null) {
+                return insets;
+            } else {
+                display.getSize(point);
+            }
+            final int paddingBottom = difference - (point.y - getBottom());
 
             if (difference != 0) {
-                // Keyboard showing -> Set difference has bottom padding.
-                if (getPaddingBottom() != difference) {
-                    setPadding(0, 0, 0, difference);
-                    // Zerda modification: We don't want extra margin in BrowserFragment for main
-                    // toolbar, so we truncate them.
-                    if (getLayoutParams() instanceof MarginLayoutParams) {
-                        ((MarginLayoutParams) getLayoutParams()).bottomMargin = 0;
-                    }
-
-                    if (viewToHide != null) {
-                        viewToHide.setVisibility(View.GONE);
-                    }
+                if (getPaddingBottom() != paddingBottom) {
+                    setPadding(0, 0, 0, paddingBottom);
+                }
+                if (viewToHide != null) {
+                    viewToHide.setVisibility(View.GONE);
                 }
             } else {
-                // Keyboard not showing -> Reset bottom padding.
                 if (getPaddingBottom() != 0) {
                     setPadding(0, 0, 0, 0);
-                    // Zerda modification: Restore previously canceled margin
-                    ((MarginLayoutParams) getLayoutParams()).bottomMargin = marginBottom;
-
-                    if (viewToHide != null) {
-                        viewToHide.setVisibility(View.VISIBLE);
-                    }
+                }
+                if (viewToHide != null) {
+                    viewToHide.setVisibility(View.VISIBLE);
                 }
             }
+
             return insets;
         });
-    }
-
-    // Zerda modification: Intercept bottomMargin
-    @Override
-    public void setLayoutParams(ViewGroup.LayoutParams params) {
-        super.setLayoutParams(params);
-        if (params instanceof MarginLayoutParams) {
-            marginBottom = (((MarginLayoutParams) params).bottomMargin);
-        }
     }
 
     @Override
