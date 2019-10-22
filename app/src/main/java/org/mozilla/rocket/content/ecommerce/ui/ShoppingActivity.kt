@@ -65,6 +65,16 @@ class ShoppingActivity : FragmentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.SHOPPING)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.SHOPPING)
+    }
+
     companion object {
         fun getStartIntent(context: Context) =
             Intent(context, ShoppingActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
