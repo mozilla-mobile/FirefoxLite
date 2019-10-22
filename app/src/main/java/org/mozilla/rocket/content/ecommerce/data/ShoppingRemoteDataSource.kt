@@ -87,8 +87,8 @@ class ShoppingRemoteDataSource : ShoppingDataSource {
         private const val STR_SHOPPING_DEAL_ENDPOINT = "str_shopping_deal_endpoint"
         private const val STR_SHOPPING_COUPON_ENDPOINT = "str_shopping_coupon_endpoint"
         private const val STR_E_COMMERCE_SHOPPING_LINKS = "str_e_commerce_shoppinglinks"
-        private const val DEFAULT_DEAL_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=en-IN&category=shoppingDeal"
-        private const val DEFAULT_COUPON_URL_ENDPOINT = "https://rocket-dev01.appspot.com/api/v1/content?locale=en-IN&category=shoppingCoupon"
+        private const val DEFAULT_DEAL_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=en-IN&category=shoppingDeal"
+        private const val DEFAULT_COUPON_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=en-IN&category=shoppingCoupon"
         private const val SHOPPING_TAB_ITEMS = "[{\"type\":0},{\"type\":1}]"
         private const val SHOPPING_TAB_ITEMS_WITH_VOUCHERS = "[{\"type\":0},{\"type\":1},{\"type\":2}]"
     }
