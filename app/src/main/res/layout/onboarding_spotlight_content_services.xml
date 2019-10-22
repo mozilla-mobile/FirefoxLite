@@ -21,15 +21,22 @@
             android:layout_height="160dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <View
-            android:id="@+id/mock_firefox_logo"
-            android:layout_width="525dp"
-            android:layout_height="92dp"
+        <FrameLayout
+            android:id="@+id/mock_firefox_logo_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/mock_arc_panel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.26"/>
+            app:layout_constraintVertical_bias="0.26"
+            android:minHeight="36dp">
+            <View
+                android:id="@+id/mock_firefox_logo"
+                android:layout_width="525dp"
+                android:layout_height="92dp"
+                android:visibility="@integer/home_firefox_logo_visibility" />
+        </FrameLayout>
 
         <View
             android:id="@+id/tooltip_pointer"
@@ -37,7 +44,7 @@
             android:layout_height="12dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/tooltip_pointer"
-            app:layout_constraintTop_toBottomOf="@id/mock_firefox_logo"
+            app:layout_constraintTop_toBottomOf="@id/mock_firefox_logo_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
