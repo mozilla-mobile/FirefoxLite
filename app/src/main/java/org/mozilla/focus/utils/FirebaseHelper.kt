@@ -112,7 +112,13 @@ object FirebaseHelper {
 
         enableAnalytics(context.applicationContext, enabled)
 
+        enableCrashlytics(context.applicationContext, enabled)
+
         Log.d(TAG, "Firebase Helper initialized")
+    }
+
+    private fun enableCrashlytics(applicationContext: Context, enabled: Boolean) {
+        firebaseContract.enableCrashlytics(applicationContext, enabled)
     }
 
     /**
