@@ -3,49 +3,49 @@
     "id": -1,
     "url": "https://www.okezone.com",
     "title": "Okezone",
-    "favicon": "ic_okezone.png",
+    "favicon": "ic_okezone.webp",
     "viewCount": 20
   },
   {
     "id": -2,
     "url": "http://m.tribunnews.com",
     "title": "Tribunnews",
-    "favicon": "ic_tribunnews.png",
+    "favicon": "ic_tribunnews.webp",
     "viewCount": 18
   },
   {
     "id": -3,
     "url": "https://m.youtube.com",
     "title": "Youtube",
-    "favicon": "ic_youtube.png",
+    "favicon": "ic_youtube.webp",
     "viewCount": 16
   },
   {
     "id": -4,
     "url": "https://detik.com",
     "title": "Detik",
-    "favicon": "ic_detik.png",
+    "favicon": "ic_detik.webp",
     "viewCount": 14
   },
   {
     "id": -5,
     "url": "https://www.sindonews.com",
     "title": "SINDOnews",
-    "favicon": "ic_sindonews.png",
+    "favicon": "ic_sindonews.webp",
     "viewCount": 12
   },
   {
     "id": -6,
     "url": "https://m.liputan6.com",
     "title": "Liputan6",
-    "favicon": "ic_liputan6.png",
+    "favicon": "ic_liputan6.webp",
     "viewCount": 10
   },
   {
     "id": -7,
     "url": "https://www.kompas.com",
     "title": "Kompas",
-    "favicon": "ic_kompas.png",
+    "favicon": "ic_kompas.webp",
     "viewCount": 8
   },
   {

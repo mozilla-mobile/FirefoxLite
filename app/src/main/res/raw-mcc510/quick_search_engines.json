@@ -3,7 +3,7 @@
     "name": "Tokopedia",
     "searchUrlPattern": "https://www.tokopedia.com/search?st=product&q=%s",
     "homeUrl": "https://www.tokopedia.com",
-    "icon": "ic_tokopedia.png"
+    "icon": "ic_tokopedia.webp"
   },
   {
     "name": "Buakalapak",
@@ -12,12 +12,12 @@
     "patternEncode": true,
     "urlSuffix": "%26{offer_id}%26ho_trx_id%3D{transaction_id}%26affiliate_id%3D{affiliate_id}%26utm_source%3Dhasoffers-{affiliate_id}%26utm_medium%3Daffiliate",
     "homeUrl": "https://www.bukalapak.com",
-    "icon": "ic_bukalapak.png"
+    "icon": "ic_bukalapak.webp"
   },
   {
     "name": "Shopee",
     "searchUrlPattern": "https://shopee.co.id/search?keyword=%s",
     "homeUrl": "https://shopee.co.id",
-    "icon": "ic_shopee.png"
+    "icon": "ic_shopee.webp"
   }
 ]

@@ -3,7 +3,7 @@
     "id": -1,
     "url": "https://m.youtube.com",
     "title": "Youtube",
-    "favicon": "ic_youtube.png",
+    "favicon": "ic_youtube.webp",
     "viewCount": 20
   },
   {
@@ -24,28 +24,28 @@
     "id": -4,
     "url": "https://www.reddit.com",
     "title": "Reddit",
-    "favicon": "ic_reddit.png",
+    "favicon": "ic_reddit.webp",
     "viewCount": 14
   },
   {
     "id": -5,
     "url": "https://www.instagram.com",
     "title": "Instagram",
-    "favicon": "ic_instagram.png",
+    "favicon": "ic_instagram.webp",
     "viewCount": 12
   },
   {
     "id": -6,
     "url": "https://mobile.twitter.com",
     "title": "Twitter",
-    "favicon": "ic_twitter.png",
+    "favicon": "ic_twitter.webp",
     "viewCount": 10
   },
   {
     "id": -7,
     "url": "https://www.ebay.com",
     "title": "eBay",
-    "favicon": "ic_ebay.png",
+    "favicon": "ic_ebay.webp",
     "viewCount": 8
   },
   {

@@ -3,12 +3,12 @@
     "name": "Flipkart",
     "searchUrlPattern": "https://www.flipkart.com/search?q=%s",
     "homeUrl": "https://www.flipkart.com",
-    "icon": "ic_flipkart.png"
+    "icon": "ic_flipkart.webp"
   },
   {
     "name": "Snapdeal",
     "searchUrlPattern": "https://www.snapdeal.com/search?keyword=%s",
     "homeUrl": "https://www.snapdeal.com",
-    "icon": "ic_snapdeal.png"
+    "icon": "ic_snapdeal.webp"
   }
 ]
