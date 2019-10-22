@@ -1,8 +1,10 @@
 package org.mozilla.rocket.content.travel.ui.adapter
 
+import android.graphics.Outline
 import android.graphics.Typeface
 import android.text.format.DateUtils
 import android.view.View
+import android.view.ViewOutlineProvider
 import kotlinx.android.synthetic.main.item_travel_detail_video.*
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
@@ -28,6 +30,15 @@ class ExploreVideoViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val exploreVideo = uiModel as VideoUiModel
+
+        val radius = itemView.context.resources.getDimensionPixelSize(R.dimen.travel_explore_item_radius)
+
+        explore_video_image.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                outline?.setRoundRect(0, 0, view!!.width + radius, view.height, radius.toFloat())
+            }
+        }
+        explore_video_image.clipToOutline = true
 
         GlideApp.with(itemView.context)
                 .asBitmap()
