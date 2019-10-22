@@ -32,7 +32,24 @@ class TravelRepository(
     }
 
     suspend fun getCityWiki(name: String): Result<Wiki> {
-        return localDataSource.getCityWiki(name)
+        val resultExtract = remoteDataSource.getCityWikiExtract(name)
+        val resultImage = remoteDataSource.getCityWikiImage(name)
+
+        val wiki = Wiki(
+            if (resultImage is Result.Success) {
+                resultImage.data
+            } else {
+                ""
+            },
+            if (resultExtract is Result.Success) {
+                resultExtract.data
+            } else {
+                ""
+            },
+            WIKI_URL + name
+        )
+
+        return Result.Success(wiki)
     }
 
     suspend fun getCityVideos(name: String): Result<List<Video>> {
@@ -53,5 +70,9 @@ class TravelRepository(
 
     suspend fun removeFromBucketList(id: String) {
         localDataSource.removeFromBucketList(id)
+    }
+
+    companion object {
+        private const val WIKI_URL = "https://en.wikipedia.org/wiki/"
     }
 }
