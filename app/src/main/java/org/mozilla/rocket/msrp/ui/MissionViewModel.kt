@@ -125,22 +125,31 @@ private fun Mission.toUiModel(): MissionUiModel = when (status) {
         }
     )
     Mission.STATUS_REDEEMABLE -> {
-        val expired = TimeUtils.getTimestampNow() > expiredDate
-        if (expired) {
-            MissionUiModel.ExpiredMission(
+        val expired = TimeUtils.getTimestampNow() > redeemEndDate
+        if (!expired) {
+            MissionUiModel.RedeemableMission(
                 title = title,
-                expirationTime = expiredDate.toDateString()
+                expirationTime = redeemEndDate.toDateString()
             )
         } else {
-            MissionUiModel.RedeemableMission(
+            MissionUiModel.ExpiredMission(
                 title = title
             )
         }
     }
-    Mission.STATUS_REDEEMED -> MissionUiModel.RedeemedMission(
-        title = title,
-        expirationTime = expiredDate.toDateString()
-    )
+    Mission.STATUS_REDEEMED -> {
+        val expired = TimeUtils.getTimestampNow() > rewardExpiredDate
+        if (!expired) {
+            MissionUiModel.RedeemedMission(
+                title = title,
+                expirationTime = rewardExpiredDate.toDateString()
+            )
+        } else {
+            MissionUiModel.ExpiredMission(
+                title = title
+            )
+        }
+    }
     else -> error("unexpected mission status: $status")
 }
 

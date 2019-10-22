@@ -17,8 +17,6 @@
     <string name="travel_detail_ig_title" translatable="false" tools:ignore="MissingTranslation">#%s on Instagram</string>
     <string name="travel_detail_video_view_count" translatable="false" tools:ignore="MissingTranslation">%d view</string>
     <string name="travel_detail_video_view_count_pural" translatable="false" tools:ignore="MissingTranslation">%d views</string>
-    <string name="msrp_reward_challenge_expired" tools:ignore="MissingTranslation">Expired on %s</string>
-    <string name="msrp_reward_challenge_used" tools:ignore="MissingTranslation">Used on %s</string>
     <string name="msrp_congrats_title" tools:ignore="MissingTranslation">Congratulations!</string>
     <string name="msrp_congrats_subtitle" tools:ignore="MissingTranslation">You have been with us 7 days. Thank you for your fidelity. We have been enjoying this journey with you.</string>
     <string name="msrp_try_content_hubs" tools:ignore="MissingTranslation">Try new features to check in.</string>

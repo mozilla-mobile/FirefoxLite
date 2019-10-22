@@ -23,7 +23,7 @@ class RedeemedMissionsViewHolder(
         uiModel as MissionUiModel.RedeemedMission
 
         title.text = uiModel.title
-        expiration_text.text = itemView.resources.getString(R.string.msrp_reward_challenge_used, uiModel.expirationTime)
+        expiration_text.text = itemView.resources.getString(R.string.msrp_voucher_expire, uiModel.expirationTime)
 
         itemView.setOnClickListener {
             missionViewModel.onRedeemItemClicked(adapterPosition)

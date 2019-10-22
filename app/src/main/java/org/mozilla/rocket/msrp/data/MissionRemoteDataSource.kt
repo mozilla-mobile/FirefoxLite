@@ -103,6 +103,8 @@ class MissionRemoteDataSource {
                 minVersion = missionJson.optInt("minVersion"),
                 joinEndDate = missionJson.optLong("joinEndDate"),
                 expiredDate = missionJson.optLong("expiredDate"),
+                redeemEndDate = missionJson.optLong("redeemEndDate"),
+                rewardExpiredDate = missionJson.optLong("rewardExpiredDate"),
                 status = missionJson.optInt("status"),
                 missionProgress = progress
             )

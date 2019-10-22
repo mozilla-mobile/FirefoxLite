@@ -18,7 +18,8 @@ sealed class MissionUiModel : DelegateAdapter.UiModel() {
     ) : MissionUiModel()
 
     data class RedeemableMission(
-        val title: String
+        val title: String,
+        val expirationTime: String
     ) : MissionUiModel()
 
     data class RedeemedMission(
@@ -27,7 +28,6 @@ sealed class MissionUiModel : DelegateAdapter.UiModel() {
     ) : MissionUiModel()
 
     data class ExpiredMission(
-        val title: String,
-        val expirationTime: String
+        val title: String
     ) : MissionUiModel()
 }
