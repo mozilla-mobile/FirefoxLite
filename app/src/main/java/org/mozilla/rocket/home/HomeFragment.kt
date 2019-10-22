@@ -89,7 +89,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private lateinit var themeManager: ThemeManager
     private lateinit var topSitesAdapter: DelegateAdapter
     private lateinit var contentServiceSpotlightDialog: Dialog
-    private lateinit var shoppingSearchSpotlightDialog: Dialog
     private var currentShoppingBtnVisibleState = false
 
     private val topSitesPageChangeCallback = object : OnPageChangeCallback() {
@@ -401,9 +400,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             content_hub.post {
                 setOnboardingStatusBarColor()
                 contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, {
+                    restoreStatusBarColor()
                 }) {
                     closeContentServiceSpotlight()
-                    showShoppingSearchSpotlight()
                 }
             }
         }
@@ -419,20 +418,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         activity?.let {
             shopping_button.post {
                 setOnboardingStatusBarColor()
-                shoppingSearchSpotlightDialog = DialogUtils.showShoppingSearchSpotlight(it, shopping_button, {
+                DialogUtils.showShoppingSearchSpotlight(it, shopping_button) {
                     restoreStatusBarColor()
                     shopping_button.isVisible = currentShoppingBtnVisibleState
                     private_mode_button.isVisible = !currentShoppingBtnVisibleState
-                }) {
-                    closeShoppingSearchSpotlight()
                 }
             }
-        }
-    }
-
-    private fun closeShoppingSearchSpotlight() {
-        if (::shoppingSearchSpotlightDialog.isInitialized) {
-            shoppingSearchSpotlightDialog.dismiss()
         }
     }
 
@@ -447,11 +438,14 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initOnboardingSpotlight() {
-        homeViewModel.showOnboardingSpotlight.observe(this, Observer {
+        homeViewModel.showContentServicesOnboardingSpotlight.observe(this, Observer {
+            showContentServiceSpotlight()
+        })
+        homeViewModel.showShoppingSearchOnboardingSpotlight.observe(this, Observer {
             currentShoppingBtnVisibleState = shopping_button.isVisible
             shopping_button.isVisible = true
             private_mode_button.isVisible = false
-            showContentServiceSpotlight()
+            showShoppingSearchSpotlight()
         })
     }
 

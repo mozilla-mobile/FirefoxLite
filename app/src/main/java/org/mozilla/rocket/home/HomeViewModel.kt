@@ -19,6 +19,8 @@ import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
+import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -54,7 +56,9 @@ class HomeViewModel(
     getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
     refreshMissionsUseCase: RefreshMissionsUseCase,
     hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
-    getIsFxAccountUseCase: GetIsFxAccountUseCase
+    getIsFxAccountUseCase: GetIsFxAccountUseCase,
+    shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
+    setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -74,13 +78,14 @@ class HomeViewModel(
     val openBrowser = SingleLiveEvent<Site>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
-    val showOnboardingSpotlight = SingleLiveEvent<Unit>()
+    val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showToast = SingleLiveEvent<ToastMessage>()
     val openRewardPage = SingleLiveEvent<Unit>()
     val openProfilePage = SingleLiveEvent<Unit>()
     val showMissionCompleteDialog = SingleLiveEvent<Mission>()
     val openMissionDetailPage = SingleLiveEvent<Mission>()
     val showContentHubClickOnboarding = getContentHubClickOnboardingEventUseCase()
+    val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
 
@@ -94,7 +99,10 @@ class HomeViewModel(
         }
         if (isNeedToShowHomeOnboardingUseCase()) {
             completeHomeOnboardingUseCase()
-            showOnboardingSpotlight.call()
+            showContentServicesOnboardingSpotlight.call()
+        } else if (shouldShowShoppingSearchOnboardingUseCase()) {
+            setShoppingSearchOnboardingIsShownUseCase()
+            showShoppingSearchOnboardingSpotlight.call()
         }
     }
 

@@ -301,20 +301,11 @@ public class DialogUtils {
     public static Dialog showShoppingSearchSpotlight(
             @NonNull final Activity activity,
             @NonNull final View targetView,
-            @NonNull final DialogInterface.OnDismissListener dismissListener,
-            View.OnClickListener ok) {
+            @NonNull final DialogInterface.OnDismissListener dismissListener) {
 
         final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_shopping_search, null);
 
-        container.findViewById(R.id.next).setOnClickListener(ok);
-
-        Dialog dialog = createShoppingSearchSpotlightDialog(
-                activity,
-                targetView,
-                container,
-                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_radius),
-                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_height),
-                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_width));
+        Dialog dialog = createShoppingSearchSpotlightDialog(activity, targetView, container);
 
         dialog.setOnDismissListener(dismissListener);
         dialog.show();
@@ -382,9 +373,9 @@ public class DialogUtils {
                 activity,
                 targetView,
                 container,
-                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_radius),
-                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_height),
-                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_width));
+                activity.getResources().getDimensionPixelSize(R.dimen.travel_focus_view_radius),
+                activity.getResources().getDimensionPixelSize(R.dimen.travel_focus_view_height),
+                activity.getResources().getDimensionPixelSize(R.dimen.travel_focus_view_width));
 
         dialog.setOnDismissListener(dismissListener);
         dialog.show();
@@ -412,21 +403,18 @@ public class DialogUtils {
     private static Dialog createShoppingSearchSpotlightDialog(
             @NonNull final Activity activity,
             @NonNull final View targetView,
-            final @NonNull ViewGroup container,
-            final @NonNull Integer radius,
-            final @NonNull Integer height,
-            final @NonNull Integer width) {
+            final @NonNull ViewGroup container) {
         return createSpotlightDialog(
                 activity,
                 targetView,
                 container,
                 0,
-                radius,
-                height,
-                width,
-                FocusViewType.ROUND_REC,
+                activity.getResources().getDimensionPixelSize(R.dimen.shopping_focus_view_radius),
+                0,
+                0,
+                FocusViewType.CIRCLE,
                 ContextCompat.getColor(activity, R.color.paletteBlack50),
-                false
+                true
         );
     }
 

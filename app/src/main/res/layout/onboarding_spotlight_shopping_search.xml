@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/spotlight_mock_menu"
@@ -11,95 +10,71 @@
 
     <View
         android:id="@+id/mock_button"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
         android:layout_width="48dp"
-        android:layout_height="48dp"/>
-
-    <View
-        android:layout_above="@id/mock_button"
+        android:layout_height="48dp"
         android:layout_alignParentStart="true"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:background="@drawable/onboarding_pointer"
-        android:elevation="12dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="2dp"/>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/mock_button"
-        android:layout_alignParentStart="true"
-        android:id="@+id/onboarding_dialog"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="14dp">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:minHeight="144dp"
-                android:layout_width="232dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/shopping_search_plateform_onboarding_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/onboarding_2_smart_shopping_search_title"
-                    android:textColor="@color/paletteLightBlack100"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"/>
-
-                <TextView
-                    android:id="@+id/shopping_search_plateform_onboarding_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/onboarding_2_smart_shopping_search_description"
-                    android:textColor="@color/paletteLightBlack100"
-                    android:textSize="14sp"
-                    android:textStyle="normal"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="4dp"/>
-
-                <Button
-                    android:id="@+id/next"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="16dp"
-                    android:textColor="@android:color/white"
-                    android:layout_width="96dp"
-                    android:layout_height="32dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="14sp"
-                    android:background="@drawable/bg_plateform_onboarding_button"
-                    android:text="@string/action_ok"
-                    android:layout_gravity="bottom|end"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </FrameLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/rocky"
-        android:layout_marginBottom="-26dp"
-        android:layout_marginEnd="10dp"
-        android:layout_above="@id/onboarding_dialog"
-        android:layout_alignEnd="@id/onboarding_dialog"/>
+        android:layout_alignBottom="@+id/onboarding_dialog"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="82dp"
+        android:src="@drawable/rocky" />
 
+    <View
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignBottom="@id/mock_button"
+        android:layout_marginStart="29dp"
+        android:layout_marginBottom="21dp"
+        android:layout_toEndOf="@id/mock_button"
+        android:background="@drawable/onboarding_left_pointer" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@id/onboarding_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/mock_button"
+        android:layout_marginStart="41dp"
+        android:layout_marginBottom="1dp"
+        android:layout_toEndOf="@id/mock_button">
+
+        <LinearLayout
+            android:layout_width="232dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/shopping_search_plateform_onboarding_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/onboarding_2_smart_shopping_search_title"
+                android:textColor="@color/paletteLightBlack100"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/shopping_search_plateform_onboarding_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/onboarding_2_smart_shopping_search_description"
+                android:textColor="@color/paletteLightBlack100"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
