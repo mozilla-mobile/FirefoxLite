@@ -3,6 +3,7 @@ package org.mozilla.rocket.content.di
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.common.ui.ContentTabBottomBarViewModel
+import org.mozilla.rocket.content.common.ui.ContentTabTelemetryViewModel
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.ecommerce.di.ShoppingModule
 import org.mozilla.rocket.content.game.di.GameModule
@@ -19,4 +20,8 @@ object ContentModule {
     @JvmStatic
     @Provides
     fun provideRunwayViewModel(): RunwayViewModel = RunwayViewModel()
+
+    @JvmStatic
+    @Provides
+    fun provideContentTabTelemetryViewModel(): ContentTabTelemetryViewModel = ContentTabTelemetryViewModel()
 }
