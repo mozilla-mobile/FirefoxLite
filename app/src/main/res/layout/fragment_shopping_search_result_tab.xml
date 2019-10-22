@@ -81,10 +81,9 @@
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@style/ShoppingSearchTabText"
-                app:tabTextColor="@color/paletteDarkGreyD100"
-                app:tabUnboundedRipple="true" />
-
+                app:tabTextColor="@color/paletteDarkGreyE100"
+                app:tabUnboundedRipple="true"
+                app:tabTextAppearance="@style/ShoppingSearchTabText"/>
 
             <ImageButton
                 android:id="@+id/preferenceButton"
