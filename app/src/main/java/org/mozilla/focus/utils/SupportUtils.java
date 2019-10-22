@@ -221,14 +221,13 @@ public class SupportUtils {
         final String supportURL = SupportUtils.getSumoURLForTopic(webView.getContext(), "rocket-help");
         final String rightURL = SupportUtils.getYourRightsURI();
         final String privacyURL = SupportUtils.getPrivacyURL();
-        final String feedURL = SupportUtils.getSumoURLForTopic(webView.getContext(), "firefox-lite-feed");
+        final String feedURL = "https://www.mozilla.org/about/legal/terms/firefox-lite/";
 
         final String linkLearnMore = resources.getString(R.string.about_link_learn_more);
         final String linkSupport = resources.getString(R.string.about_link_support);
         final String linkYourRights = resources.getString(R.string.about_link_your_rights);
         final String linkPrivacy = resources.getString(R.string.about_link_privacy);
-        final String lifeFeed = resources.getString(R.string.life_feed);
-        final String linkLifeFeed = resources.getString(R.string.about_link_life_feed, lifeFeed);
+        final String linkLifeFeed = resources.getString(R.string.about_link_terms_of_service);
 
         String aboutVersion = "";
         try {
