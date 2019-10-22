@@ -55,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:fontFamily="sans-serif"
-                android:text="@string/msrp_try_content_hubs"
                 android:textColor="@color/paletteDarkGreyD100"
                 android:textSize="14sp"
                 android:textStyle="normal" />

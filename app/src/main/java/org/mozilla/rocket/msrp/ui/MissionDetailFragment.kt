@@ -17,12 +17,14 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_mission_detail.congrats_title_layout
 import kotlinx.android.synthetic.main.fragment_mission_detail.date_layout_row_1
 import kotlinx.android.synthetic.main.fragment_mission_detail.date_layout_row_2
+import kotlinx.android.synthetic.main.fragment_mission_detail.how_to_redeem
 import kotlinx.android.synthetic.main.fragment_mission_detail.image
 import kotlinx.android.synthetic.main.fragment_mission_detail.join_button
 import kotlinx.android.synthetic.main.fragment_mission_detail.join_layout
 import kotlinx.android.synthetic.main.fragment_mission_detail.join_layout_separator
 import kotlinx.android.synthetic.main.fragment_mission_detail.join_terms
 import kotlinx.android.synthetic.main.fragment_mission_detail.loading_view
+import kotlinx.android.synthetic.main.fragment_mission_detail.mission_step_text_1
 import kotlinx.android.synthetic.main.fragment_mission_detail.quit_button
 import kotlinx.android.synthetic.main.fragment_mission_detail.quit_button_separator
 import kotlinx.android.synthetic.main.fragment_mission_detail.redeem_button
@@ -77,6 +79,7 @@ class MissionDetailFragment : Fragment(), NavigationResult {
     }
 
     private fun initViews() {
+        mission_step_text_1.text = getString(R.string.msrp_challenge_details_body_1, getString(R.string.app_name))
         join_button.setOnClickListener {
             if (missionDetailViewModel.isLoading.value != true) {
                 missionDetailViewModel.onJoinMissionButtonClicked()
@@ -125,6 +128,7 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         join_button.isVisible = true
         join_terms.isVisible = true
         join_layout_separator.isVisible = false
+        how_to_redeem.isVisible = false
 
         quit_button.isVisible = false
         quit_button_separator.isVisible = false
@@ -139,6 +143,7 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         join_button.isVisible = false
         join_terms.isVisible = false
         join_layout_separator.isVisible = true
+        how_to_redeem.isVisible = true
 
         quit_button.isVisible = true
         quit_button_separator.isVisible = true
@@ -157,6 +162,7 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         join_button.isVisible = false
         join_terms.isVisible = false
         join_layout_separator.isVisible = false
+        how_to_redeem.isVisible = false
 
         quit_button.isVisible = false
         quit_button_separator.isVisible = false

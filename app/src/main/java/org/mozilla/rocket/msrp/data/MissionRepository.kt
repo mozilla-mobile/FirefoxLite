@@ -25,7 +25,7 @@ open class MissionRepository(
 
     private val couponCache = LruCache<String, String>(COUPON_CACHE_SIZE) // mission unique id -> coupon code
     private val missionsLiveData = MutableLiveData<List<Mission>>()
-    private val showContentHubClickOnboarding = SingleLiveEvent<Unit>()
+    private val showContentHubClickOnboarding = SingleLiveEvent<String>()
 
     fun isMsrpAvailable(): Boolean = missionRemoteDataSource.isMsrpAvailable()
 
@@ -83,11 +83,11 @@ open class MissionRepository(
         missionLocalDataSource.setJoinedAnyMissionBefore()
     }
 
-    fun requestContentHubClickOnboarding() {
-        showContentHubClickOnboarding.call()
+    fun requestContentHubClickOnboarding(missionTitle: String) {
+        showContentHubClickOnboarding.value = missionTitle
     }
 
-    fun getContentHubClickOnboardingEvent(): SingleLiveEvent<Unit> = showContentHubClickOnboarding
+    fun getContentHubClickOnboardingEvent(): SingleLiveEvent<String> = showContentHubClickOnboarding
 
     fun getNotificationMission(): LiveData<Mission?> =
             missionsLiveData.map {

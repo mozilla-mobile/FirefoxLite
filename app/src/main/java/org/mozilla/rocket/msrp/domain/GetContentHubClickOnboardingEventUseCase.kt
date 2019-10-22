@@ -7,5 +7,5 @@ class GetContentHubClickOnboardingEventUseCase(
     private val missionRepository: MissionRepository
 ) {
 
-    operator fun invoke(): SingleLiveEvent<Unit> = missionRepository.getContentHubClickOnboardingEvent()
+    operator fun invoke(): SingleLiveEvent<String> = missionRepository.getContentHubClickOnboardingEvent()
 }

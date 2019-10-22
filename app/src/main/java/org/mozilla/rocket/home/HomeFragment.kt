@@ -463,13 +463,13 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.openMissionDetailPage.observe(this, Observer { mission ->
             openMissionDetailPage(mission)
         })
-        homeViewModel.showContentHubClickOnboarding.observe(this, Observer {
-            showRequestClickContentHubOnboarding()
+        homeViewModel.showContentHubClickOnboarding.observe(this, Observer { title ->
+            showRequestClickContentHubOnboarding(title)
         })
     }
 
     private fun showMissionCompleteDialog(mission: Mission) {
-        DialogUtils.createMissionCompleteDialog(requireContext())
+        DialogUtils.createMissionCompleteDialog(requireContext(), mission.imageUrl)
                 .onPositive {
                     homeViewModel.onRedeemCompletedMissionButtonClicked(mission)
                 }
@@ -482,12 +482,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 .show()
     }
 
-    private fun showRequestClickContentHubOnboarding() {
+    private fun showRequestClickContentHubOnboarding(missionTitle: String) {
         activity?.let {
             content_hub.post {
                 homeViewModel.onShowClickContentHubOnboarding()
                 setOnboardingStatusBarColor()
-                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub) {
+                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub, missionTitle) {
                     restoreStatusBarColor()
                     homeViewModel.onContentHubRequestClickHintDismissed()
                 }

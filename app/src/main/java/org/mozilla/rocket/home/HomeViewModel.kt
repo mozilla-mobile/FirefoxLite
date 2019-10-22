@@ -285,4 +285,7 @@ class HomeViewModel(
     }
 }
 
-private fun GetLogoManNotificationUseCase.Notification.toUiModel() = Notification(id, title, subtitle)
+private fun GetLogoManNotificationUseCase.Notification.toUiModel() = when (this) {
+    is GetLogoManNotificationUseCase.Notification.RemoteNotification -> Notification.RemoteNotification(id, title, subtitle, imageUrl)
+    is GetLogoManNotificationUseCase.Notification.MissionNotification -> Notification.MissionNotification(id, title, subtitle, imageUrl)
+}
