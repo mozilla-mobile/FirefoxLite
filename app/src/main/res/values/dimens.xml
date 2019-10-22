@@ -123,9 +123,11 @@
     <item name="travel_hotel_card_info_text_size" type="dimen">12sp</item>
     <item name="travel_hotel_card_small_icon_width" type="dimen">14dp</item>
 
+    <!-- Travel - Explore -->
+    <item name="travel_explore_item_radius" type="dimen">4dp</item>
+
     <!-- TravelCityActivity -->
     <dimen name="travel_focus_view_radius">20dp</dimen>
     <dimen name="travel_focus_view_height">48dp</dimen>
     <dimen name="travel_focus_view_width">48dp</dimen>
-
 </resources>

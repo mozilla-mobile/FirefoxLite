@@ -1,6 +1,8 @@
 package org.mozilla.rocket.content.travel.ui.adapter
 
+import android.graphics.Outline
 import android.view.View
+import android.view.ViewOutlineProvider
 import kotlinx.android.synthetic.main.item_travel_detail_wiki.*
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
@@ -21,6 +23,15 @@ class ExploreWikiViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val exploreWiki = uiModel as WikiUiModel
+
+        val radius = itemView.context.resources.getDimensionPixelSize(R.dimen.travel_explore_item_radius)
+
+        explore_wiki_image.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                outline?.setRoundRect(0, 0, view!!.width, view.height + radius, radius.toFloat())
+            }
+        }
+        explore_wiki_image.clipToOutline = true
 
         GlideApp.with(itemView.context)
                 .asBitmap()
