@@ -72,7 +72,7 @@ class MissionDetailViewModel(
             startMissionReminder.value = mission
             refreshMissionsUseCase()
             if (isNeedJoinMissionOnboardingUseCase()) {
-                requestContentHubClickOnboardingUseCase()
+                requestContentHubClickOnboardingUseCase(mission.title)
                 closeAllMissionPages.call()
             } else {
                 closePage.call()
@@ -80,7 +80,7 @@ class MissionDetailViewModel(
         } else {
             showToast.value = when (joinResult.error!!) {
                 JoinMissionUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
-                JoinMissionUseCase.Error.NoQuota -> ToastMessage(R.string.mission_no_quota)
+                JoinMissionUseCase.Error.NoQuota -> ToastMessage(R.string.msrp_voucher_nostock)
                 JoinMissionUseCase.Error.AccountDisabled,
                 JoinMissionUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
             }

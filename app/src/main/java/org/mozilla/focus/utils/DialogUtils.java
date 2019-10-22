@@ -11,10 +11,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +34,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
+
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.activity.SettingsActivity;
@@ -36,6 +51,8 @@ import org.mozilla.focus.widget.FocusView;
 import org.mozilla.focus.widget.RoundRecFocusView;
 import org.mozilla.rocket.widget.CustomViewDialogData;
 import org.mozilla.rocket.widget.PromotionDialog;
+
+import kotlin.Unit;
 
 public class DialogUtils {
 
@@ -339,9 +356,12 @@ public class DialogUtils {
     public static Dialog showContentServiceRequestClickSpotlight(
             @NonNull final FragmentActivity activity,
             @NonNull final View targetView,
+            @NonNull final String missionTitle,
             @NonNull final DialogInterface.OnDismissListener dismissListener) {
 
         final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_content_services_request_click, null);
+        TextView text = container.findViewById(R.id.content_services_plateform_onboarding_message);
+        text.setText(activity.getString(R.string.msrp_home_hint, missionTitle));
 
         Dialog dialog = createContentServiceSpotlightDialog(activity, targetView, container,
                 activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
@@ -520,17 +540,76 @@ public class DialogUtils {
         return dialog;
     }
 
-    public static PromotionDialog createMissionCompleteDialog(@NonNull final Context context) {
+    public static PromotionDialog createMissionCompleteDialog(@NonNull final Context context, String imageUrl) {
         CustomViewDialogData data = new CustomViewDialogData();
-        data.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_reward_ribbon));
+
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 228, context.getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, context.getResources().getDisplayMetrics());
+
+        // TODO: don't know why image rendered with weird size
+//        data.setDrawable(context.getDrawable(R.drawable.coupon));
+        // TODO: temporarily workaround
+        Bitmap resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap couponBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.coupon);
+        Canvas canvas = new Canvas(resultBitmap);
+        Paint paint = new Paint();
+        canvas.drawBitmap(couponBitmap, 0, 0, paint);
+        data.setDrawable(new BitmapDrawable(context.getResources(), resultBitmap));
+
+        data.setImgWidth(width);
+        data.setImgHeight(height);
         data.setTitle(context.getString(R.string.msrp_completed_popup_title));
         data.setDescription(context.getString(R.string.msrp_completed_popup_body));
         data.setPositiveText(context.getString(R.string.msrp_completed_popup_button1));
         data.setNegativeText(context.getString(R.string.msrp_completed_popup_button2));
         data.setShowCloseButton(true);
 
-        return new PromotionDialog(context, data)
+        PromotionDialog dialog = new PromotionDialog(context, data)
                 .setCancellable(false);
+        ImageView imageView = dialog.getView().findViewById(R.id.image);
+        Target target = Glide.with(context)
+                .asBitmap()
+                .load(imageUrl)
+                .apply(new RequestOptions().transform(new CircleCrop()))
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        imageView.setImageBitmap(getCouponImage(context, width, height, resource));
+                    }
+                });
+        dialog.addOnDismissListener(() -> {
+            Glide.with(context).clear(target);
+            return Unit.INSTANCE;
+        });
+
+
+        return dialog;
+    }
+
+    private static Bitmap getCouponImage(Context context, int width, int height, Bitmap imageBitmap) {
+        int imageSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, context.getResources().getDisplayMetrics());
+        int shiftX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -15, context.getResources().getDisplayMetrics());
+        int shiftY = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -1, context.getResources().getDisplayMetrics());
+
+        Bitmap resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Bitmap couponBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.coupon);
+        Canvas canvas = new Canvas(resultBitmap);
+        Paint paint = new Paint();
+        canvas.drawBitmap(couponBitmap, 0, 0, paint);
+        int centerX = width / 2 + shiftX;
+        int centerY = height / 2 + shiftY;
+        Rect src = new Rect(0, 0, imageBitmap.getWidth(), imageBitmap.getHeight());
+        Rect target = new Rect(
+            centerX - (imageSize / 2),
+            centerY - (imageSize / 2),
+            centerX + (imageSize / 2),
+            centerY + (imageSize / 2)
+        );
+        canvas.drawBitmap(imageBitmap, src, target, paint);
+
+        couponBitmap.recycle();
+
+        return resultBitmap;
     }
 
     private static View getFocusView(Context context, int centerX, int centerY, int offsetY, int radius, int height, int width, FocusViewType type, int backgroundDimColor) {

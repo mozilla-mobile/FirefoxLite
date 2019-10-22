@@ -19,28 +19,47 @@ class GetLogoManNotificationUseCase(
                         return@map mission?.toLogoManNotification() ?: notification?.toLogoManNotification()
                     }
 
-    data class Notification(
+    sealed class Notification(
         val id: String,
         val title: String,
         val subtitle: String?,
+        val imageUrl: String?,
         val action: LogoManAction?
-    )
+    ) {
+        class RemoteNotification(
+            id: String,
+            title: String,
+            subtitle: String?,
+            imageUrl: String?,
+            action: LogoManAction?
+        ) : Notification(id, title, subtitle, imageUrl, action)
+
+        class MissionNotification(
+            id: String,
+            title: String,
+            subtitle: String?,
+            imageUrl: String?,
+            action: LogoManAction?
+        ) : Notification(id, title, subtitle, imageUrl, action)
+    }
 
     sealed class LogoManAction {
         data class OpenMissionPage(val mission: Mission) : LogoManAction()
     }
 }
 
-private fun Notification.toLogoManNotification() = GetLogoManNotificationUseCase.Notification(
+private fun Notification.toLogoManNotification() = GetLogoManNotificationUseCase.Notification.RemoteNotification(
             serialNumber.toString(),
             title,
             subtitle,
+            imageUrl,
             null
         )
 
-private fun Mission.toLogoManNotification() = GetLogoManNotificationUseCase.Notification(
+private fun Mission.toLogoManNotification() = GetLogoManNotificationUseCase.Notification.MissionNotification(
             uniqueId,
             title,
             null,
+            imageUrl,
             GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage(mission = this)
         )

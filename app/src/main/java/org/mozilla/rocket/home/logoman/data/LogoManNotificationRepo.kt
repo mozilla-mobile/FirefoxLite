@@ -43,7 +43,8 @@ class LogoManNotificationRepo(appContext: Context) {
 data class Notification(
     val serialNumber: Long,
     val title: String,
-    val subtitle: String?
+    val subtitle: String?,
+    val imageUrl: String?
 )
 
 private fun String.jsonStringToNotification(): Notification? {
@@ -52,7 +53,8 @@ private fun String.jsonStringToNotification(): Notification? {
         Notification(
             jsonObject.getLong("serialNumber"),
             jsonObject.getString("title"),
-            jsonObject.optString("subtitle", null)
+            jsonObject.optString("subtitle", null),
+            jsonObject.optString("imageUrl", null)
         )
     } catch (e: JSONException) {
         e.printStackTrace()

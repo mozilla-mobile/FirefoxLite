@@ -22,6 +22,7 @@ class MissionCouponViewModel(
 ) : ViewModel() {
 
     val isLoading = MutableLiveData<Boolean>()
+    val title = MutableLiveData<String>()
     val expirationTime = MutableLiveData<String>()
     val couponCode = MutableLiveData<String>()
     val missionImage = MutableLiveData<String>()
@@ -43,6 +44,7 @@ class MissionCouponViewModel(
                 expirationTime.postValue(mission.rewardExpiredDate.toDateString())
             }
         }
+        title.value = mission.title
         missionImage.value = mission.imageUrl
         fetchCoupon(mission)
     }
@@ -68,13 +70,9 @@ class MissionCouponViewModel(
         isLoading.value = false
     }
 
-    fun onCopyButtonClicked(text: String) {
-        TelemetryWrapper.copyCodeOnCouponPage()
-        copyToClipboard.value = text
-    }
-
     fun onGoShoppingButtonClicked() {
         TelemetryWrapper.clickGoUseOnCouponPage()
+        copyToClipboard.value = couponCode.value
         openShoppingPage.call()
     }
 

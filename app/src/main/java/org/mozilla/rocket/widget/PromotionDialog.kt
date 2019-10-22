@@ -2,9 +2,16 @@
 package org.mozilla.rocket.widget
 
 import android.content.Context
-import androidx.appcompat.app.AlertDialog
 import android.view.View
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.*
+import androidx.appcompat.app.AlertDialog
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.button_divider1
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.button_divider2
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.close_button
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.description
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.image
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.negative_button
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.positive_button
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.title
 import org.mozilla.focus.R
 import org.mozilla.rocket.landing.DialogQueue
 
@@ -12,7 +19,7 @@ class PromotionDialog(
     private val context: Context,
     private val data: CustomViewDialogData
 ) {
-    private var view: View = View.inflate(context, R.layout.layout_promotion_dialog, null)
+    val view: View = View.inflate(context, R.layout.layout_promotion_dialog, null)
 
     private var onPositiveListener: (() -> Unit)? = null
     private var onNegativeListener: (() -> Unit)? = null
@@ -69,6 +76,14 @@ class PromotionDialog(
 
     private fun initView() {
         with(view.image) {
+            val width = data.imgWidth
+            val height = data.imgHeight
+            if (width != null && height != null) {
+                layoutParams.apply {
+                    this.width = width
+                    this.height = height
+                }
+            }
             data.drawable?.let { setImageDrawable(it) } ?: run { visibility = View.GONE }
         }
 

@@ -16,11 +16,11 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_code
-import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_copy_btn
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_expiration
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_go_shopping_btn
 import kotlinx.android.synthetic.main.fragment_mission_coupon.image
 import kotlinx.android.synthetic.main.fragment_mission_coupon.loading_view
+import kotlinx.android.synthetic.main.fragment_mission_coupon.title
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
@@ -56,15 +56,15 @@ class MissionCouponFragment : Fragment() {
     }
 
     private fun initViews() {
-        coupon_copy_btn.setOnClickListener {
-            viewModel.onCopyButtonClicked(coupon_code.text.toString())
-        }
         coupon_go_shopping_btn.setOnClickListener {
             viewModel.onGoShoppingButtonClicked()
         }
     }
 
     private fun bindData() {
+        viewModel.title.observe(this, Observer {
+            title.text = getString(R.string.msrp_voucher_title, it)
+        })
         viewModel.expirationTime.observe(this, Observer { timeText ->
             coupon_expiration.text = getString(R.string.msrp_reward_challenge_expire, timeText)
         })
