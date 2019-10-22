@@ -777,8 +777,8 @@
     <string name="msrp_challenge_details_title_2">Use your Firefox account to redeem your reward</string>
     <string name="msrp_challenge_details_body_2">Enter your email address to get started. Make sure you sign in to the account you want to use before you complete your redemption.</string>
     <!--"I'm In!" is a button where users can press to join the reward program--> 
-    <string name="msrp_challenge_button_1">I\'m In!</string>
-    <string name="msrp_challenge_tou">By clicking “I\’m In!” you are agreeing to our Terms of Use</string>
+    <string name="msrp_challenge_button_1">I’m In!</string>
+    <string name="msrp_challenge_tou">By clicking “I’m In!” you are agreeing to our Terms of Use</string>
     <!--"Leave mission" is a button for users to exit the reward program-->     
     <string name="msrp_challenge_button_2">Leave mission</string>
     <!--"How to redeem" is the title for a section to let users know how to redeem the voucher--> 
@@ -813,7 +813,7 @@
     <string name="msrp_voucher_button_1">Copy</string>
     <string name="msrp_voucher_toast">Voucher code copied</string>
     <string name="msrp_voucher_nostock">The voucher is out of stock</string>
-   
+    <string name="msrp_faq">Any questions? Contact us.</string>   
     <!--Coupon-->
     <!-- The %1$s here is a placeholder for "reward title" ex. Amazon voucher-->
     <string name="msrp_coupon_title" translatable="false">Your %1$s is ready!</string>
