@@ -86,4 +86,7 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit) {
     }
+
+    override fun enableCrashlytics(applicationContext: Context, enabled: Boolean) {
+    }
 }

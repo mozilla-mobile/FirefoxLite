@@ -11,12 +11,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.annotation.Size
 import androidx.annotation.WorkerThread
+import com.crashlytics.android.Crashlytics
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import io.fabric.sdk.android.Fabric
 import java.io.IOException
 import java.util.HashMap
 
@@ -199,6 +201,15 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
                 Log.d(TAG, "Firebase RemoteConfig Fetch Failed: ${task.exception}")
                 callback(false, task.exception)
             }
+        }
+    }
+
+    override fun enableCrashlytics(applicationContext: Context, enabled: Boolean) {
+        if (enabled) {
+            Fabric.with(applicationContext, Crashlytics())
+        } else {
+            Log.d(TAG, "Disabling Crashlytics will need to restart the app")
+            // see https://firebase.google.com/docs/crashlytics/customize-crash-reports?platform=android
         }
     }
 }

@@ -64,4 +64,6 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
     abstract fun isAnonymous(): Boolean?
 
     abstract fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit)
+
+    abstract fun enableCrashlytics(applicationContext: Context, enabled: Boolean)
 }
