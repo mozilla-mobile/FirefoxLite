@@ -14,6 +14,8 @@ import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
+import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
@@ -58,7 +60,9 @@ object HomeModule {
         getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
         refreshMissionsUseCase: RefreshMissionsUseCase,
         hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
-        getIsFxAccountUseCase: GetIsFxAccountUseCase
+        getIsFxAccountUseCase: GetIsFxAccountUseCase,
+        shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
+        setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -77,7 +81,9 @@ object HomeModule {
         getContentHubClickOnboardingEventUseCase,
         refreshMissionsUseCase,
         hasUnreadMissionsUseCase,
-        getIsFxAccountUseCase
+        getIsFxAccountUseCase,
+        shouldShowShoppingSearchOnboardingUseCase,
+        setShoppingSearchOnboardingIsShownUseCase
     )
 
     @JvmStatic
@@ -168,4 +174,16 @@ object HomeModule {
     @Provides
     fun provideCompleteLiteUpdateUseCase(newFeatureNotice: NewFeatureNotice): CompleteHomeOnboardingUseCase =
             CompleteHomeOnboardingUseCase(newFeatureNotice)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowShoppingSearchOnboardingUseCase(newFeatureNotice: NewFeatureNotice): ShouldShowShoppingSearchOnboardingUseCase =
+        ShouldShowShoppingSearchOnboardingUseCase(newFeatureNotice)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetShoppingSearchOnboardingIsShownUseCase(newFeatureNotice: NewFeatureNotice): SetShoppingSearchOnboardingIsShownUseCase =
+        SetShoppingSearchOnboardingIsShownUseCase(newFeatureNotice)
 }
