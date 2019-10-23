@@ -37,36 +37,37 @@ import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
 import org.mozilla.rocket.content.ecommerce.ui.DealFragment
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
-import org.mozilla.rocket.content.game.ui.InstantGameFragment
 import org.mozilla.rocket.content.game.ui.DownloadGameFragment
-import org.mozilla.rocket.content.game.ui.GameModeActivity
 import org.mozilla.rocket.content.game.ui.GameActivity
+import org.mozilla.rocket.content.game.ui.GameModeActivity
+import org.mozilla.rocket.content.game.ui.InstantGameFragment
+import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import org.mozilla.rocket.content.travel.ui.TravelActivity
-import org.mozilla.rocket.content.travel.ui.TravelCityActivity
 import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
+import org.mozilla.rocket.content.travel.ui.TravelCityActivity
+import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
 import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
 import org.mozilla.rocket.fxa.ProfileActivity
-import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.msrp.di.MissionModule
-import org.mozilla.rocket.msrp.ui.MissionDetailFragment
 import org.mozilla.rocket.msrp.ui.ChallengeListFragment
 import org.mozilla.rocket.msrp.ui.MissionCouponFragment
+import org.mozilla.rocket.msrp.ui.MissionDetailFragment
 import org.mozilla.rocket.msrp.ui.RedeemListFragment
 import org.mozilla.rocket.msrp.ui.RewardActivity
 import org.mozilla.rocket.msrp.ui.RewardFragment
 import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingDialogFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchPreferencesActivity
-import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingDialogFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment
 import javax.inject.Singleton
 
@@ -113,6 +114,7 @@ interface AppComponent {
     fun inject(downloadGameFragment: DownloadGameFragment)
     fun inject(contentTabActivity: ContentTabActivity)
     fun inject(contentTabFragment: ContentTabFragment)
+    fun inject(newsActivity: NewsActivity)
     fun inject(shoppingSearchKeywordInputFragment: ShoppingSearchKeywordInputFragment)
     fun inject(shoppingSearchResultTabFragment: ShoppingSearchResultTabFragment)
     fun inject(shoppingActivity: ShoppingActivity)

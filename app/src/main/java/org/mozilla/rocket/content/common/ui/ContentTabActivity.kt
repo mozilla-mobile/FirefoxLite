@@ -100,11 +100,6 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        telemetryViewModel.onSessionStarted()
-    }
-
     override fun onResume() {
         super.onResume()
         sessionManager.resume()
@@ -112,16 +107,13 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
+        telemetryViewModel.onSessionStarted()
     }
 
     override fun onPause() {
         super.onPause()
         sessionManager.pause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
-    }
-
-    override fun onStop() {
-        super.onStop()
         telemetryViewModel.onSessionEnded()
     }
 
