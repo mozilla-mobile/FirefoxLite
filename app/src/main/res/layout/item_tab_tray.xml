@@ -60,10 +60,11 @@
         android:layout_height="48dp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true">
-        <View
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+        <org.mozilla.rocket.nightmode.themed.ThemedView
+            android:id="@+id/close_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
-            android:background="@drawable/action_close_tab" />
+            android:background="@drawable/ic_close_tab_tray_states" />
     </FrameLayout>
 </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
