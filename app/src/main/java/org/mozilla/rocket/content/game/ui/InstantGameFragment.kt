@@ -1,13 +1,9 @@
 package org.mozilla.rocket.content.game.ui
 
-import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.content.pm.ShortcutInfo
-import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
-import android.graphics.drawable.Icon
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,10 +13,10 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
@@ -120,7 +116,7 @@ class InstantGameFragment : Fragment() {
                 is InstantGameViewModel.GameAction.CreateShortcut -> {
                     val shortcut: InstantGameViewModel.GameAction.CreateShortcut = event
                     context?.let {
-                        createShortcut(shortcut.name, shortcut.url, shortcut.bitmap)
+                        createShortcut(it, shortcut.name, shortcut.url, shortcut.bitmap)
                     }
                 }
             }
@@ -133,43 +129,13 @@ class InstantGameFragment : Fragment() {
         })
     }
 
-    private fun createShortcut(gameName: String, gameURL: String, gameIcon: Bitmap) {
-        val intent = Intent(appContext(), GameModeActivity::class.java)
+    private fun createShortcut(context: Context, gameName: String, gameURL: String, gameIcon: Bitmap) {
+        val intent = Intent(context, GameModeActivity::class.java)
         intent.action = Intent.ACTION_MAIN
         intent.data = Uri.parse(gameURL)
         intent.putExtra(GAME_URL, gameURL)
 
-        if (Build.VERSION.SDK_INT < 26) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            val installer = Intent()
-            installer.putExtra("android.intent.extra.shortcut.INTENT", intent)
-            installer.putExtra("android.intent.extra.shortcut.NAME", gameName)
-            installer.action = "com.android.launcher.action.INSTALL_SHORTCUT"
-            installer.putExtra("duplicate", false)
-            installer.putExtra("android.intent.extra.shortcut.ICON", gameIcon)
-            appContext().sendBroadcast(installer)
-        } else {
-            val shortcutManager = activity?.getSystemService(ShortcutManager::class.java)
-            if (shortcutManager?.isRequestPinShortcutSupported == true) {
-                val shortcut = ShortcutInfo.Builder(context, gameName)
-                    .setShortLabel(gameName)
-                    .setIcon(Icon.createWithAdaptiveBitmap(gameIcon))
-                    .setIntent(intent).build()
-
-                shortcutManager.dynamicShortcuts = listOf(shortcut)
-                if (shortcutManager.isRequestPinShortcutSupported) {
-                    val pinnedShortcutCallbackIntent = shortcutManager.createShortcutResultIntent(shortcut)
-                    val successCallback = PendingIntent.getBroadcast(
-                        activity,
-                        0,
-                        pinnedShortcutCallbackIntent,
-                        0
-                    )
-                    shortcutManager.requestPinShortcut(shortcut, successCallback.intentSender)
-                }
-            }
-        }
+        ShortcutUtils.requestPinShortcut(context, intent, gameName, gameURL, gameIcon)
     }
 
     private fun showLoadingView() {
