@@ -23,10 +23,9 @@ import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.NoResultView
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsItem
-import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 import javax.inject.Inject
 
-class NewsFragment : Fragment(), NewsListingEventListener {
+class NewsFragment : Fragment() {
 
     @Inject
     lateinit var applicationContext: Context
@@ -84,7 +83,7 @@ class NewsFragment : Fragment(), NewsListingEventListener {
             isLoading = false
         })
 
-        newsAdapter = NewsAdapter(this)
+        newsAdapter = NewsAdapter(getCategory(), newsViewModel)
         recyclerView?.adapter = newsAdapter
         newsListLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         recyclerView?.layoutManager = newsListLayoutManager
@@ -101,15 +100,19 @@ class NewsFragment : Fragment(), NewsListingEventListener {
                 }
             })
         }
+
+        newsViewModel.event.observe(this, Observer { event ->
+            when (event) {
+                is NewsViewModel.NewsAction.OpenLink -> {
+                    context?.let {
+                        startActivity(ContentTabActivity.getStartIntent(it, event.url, event.telemetryData, enableTurboMode = false))
+                    }
+                }
+            }
+        })
     }
 
-    override fun onItemClicked(url: String) {
-        context?.let {
-            startActivity(ContentTabActivity.getStartIntent(it, url, enableTurboMode = false))
-        }
-    }
-
-    override fun onStatus(items: List<NewsItem>?) {
+    fun onStatus(items: List<NewsItem>?) {
         when {
             items == null -> {
                 stateLoading()

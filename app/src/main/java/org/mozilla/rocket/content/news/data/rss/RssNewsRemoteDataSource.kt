@@ -10,6 +10,7 @@ import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
+import org.mozilla.rocket.util.sha256
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -74,7 +75,7 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
                 Long.MIN_VALUE
             }
 
-            newsList.add(NewsItem(title, link, imageUrl, source, publishTime))
+            newsList.add(NewsItem(title, link, imageUrl, source, publishTime, link.sha256()))
         }
         return newsList
     }

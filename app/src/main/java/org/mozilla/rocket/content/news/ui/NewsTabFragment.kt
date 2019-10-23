@@ -20,7 +20,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.LIFESTYLE
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
-import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import javax.inject.Inject
 
@@ -127,11 +126,6 @@ class NewsTabFragment : Fragment() {
         fun newInstance(): NewsTabFragment {
             return NewsTabFragment()
         }
-    }
-
-    interface NewsListingEventListener {
-        fun onItemClicked(url: String)
-        fun onStatus(items: List<NewsItem>?)
     }
 
     /**
