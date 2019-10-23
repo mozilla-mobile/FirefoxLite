@@ -32,7 +32,7 @@ class RewardActivity : AppCompatActivity(), NavHostActivity, FxLoginFragment.OnL
         return true
     }
 
-    override fun onLoginSuccess(jwt: String, isDisabled: Boolean, times: Int) {
+    override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, times: Int) {
         when {
             isDisabled -> {
                 DialogUtils.showAccountDisabledDialog(this) {
@@ -44,6 +44,7 @@ class RewardActivity : AppCompatActivity(), NavHostActivity, FxLoginFragment.OnL
         }
         navigateBackWithResult(
             Bundle().apply {
+                putInt(MissionDetailFragment.RESULT_INT_REQUEST_CODE, requestCode)
                 putString(MissionDetailFragment.RESULT_STR_JWT, jwt)
             }
         )

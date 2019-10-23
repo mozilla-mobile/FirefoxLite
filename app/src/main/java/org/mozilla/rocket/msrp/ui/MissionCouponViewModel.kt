@@ -30,6 +30,7 @@ class MissionCouponViewModel(
     val showToast = SingleLiveEvent<ToastMessage>()
     val copyToClipboard = SingleLiveEvent<String>()
     val openShoppingPage = SingleLiveEvent<Unit>()
+    val openFaqPage = SingleLiveEvent<Unit>()
 
     private lateinit var mission: Mission
 
@@ -74,6 +75,10 @@ class MissionCouponViewModel(
         TelemetryWrapper.clickGoUseOnCouponPage()
         copyToClipboard.value = couponCode.value
         openShoppingPage.call()
+    }
+
+    fun onFaqButtonClick() {
+        openFaqPage.call()
     }
 
     private fun Long.toDateString(): String =

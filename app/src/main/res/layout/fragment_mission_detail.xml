@@ -499,6 +499,7 @@
 
                     <Button
                         android:id="@+id/redeem_later_button"
+                        style="@android:style/Widget.Holo.Button.Borderless"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/msrp_mission_detail_button_height"
@@ -569,13 +570,14 @@
                         android:textSize="@dimen/msrp_mission_detail_button_text_size" />
 
                     <TextView
+                        android:id="@+id/sign_in_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="@string/msrp_challenge_details_body_2"
                         android:textColor="@color/paletteDarkGreyD100"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="@string/msrp_challenge_details_body_2" />
 
                     <Button
                         android:id="@+id/join_button"
@@ -596,9 +598,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="@string/msrp_challenge_tou"
                         android:textColor="@color/paletteDarkGreyD100"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="@string/msrp_challenge_tou"/>
 
                     <View
                         android:id="@+id/quit_button_separator"
@@ -621,6 +623,16 @@
                         android:textSize="@dimen/msrp_mission_detail_button_text_size" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/faq_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/paletteDarkGreyD100"
+                    android:textSize="12sp"
+                    tools:text="@string/msrp_faq"/>
 
             </LinearLayout>
 

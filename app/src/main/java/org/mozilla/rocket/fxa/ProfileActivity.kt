@@ -53,10 +53,10 @@ class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxL
 
     private fun navigateToFxLoginPage(uid: String) {
         findNavController(R.id.nav_host_fragment)
-                .navigate(FxAccountFragmentDirections.actionFxAccountDestToFxLogin2Dest(uid))
+                .navigate(FxAccountFragmentDirections.actionFxAccountDestToFxLogin2Dest(0, uid))
     }
 
-    override fun onLoginSuccess(jwt: String, isDisabled: Boolean, times: Int) {
+    override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, times: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             TelemetryWrapper.accountSignIn()
             bindFxAccountUseCase(jwt)
