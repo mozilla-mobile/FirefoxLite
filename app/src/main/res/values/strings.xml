@@ -728,6 +728,7 @@
     <string name="onboarding_2_content_services_news_shopping_games">Tap to read the trendy news, find good deals or play the hottest free games to have fun!</string>
     <string name="onboarding_2_content_services_news_games">Tap to read the trendy news or play the hottest free games to have fun!</string>
     <string name="onboarding_2_content_services_games">Tap to play the hottest free games to have fun!</string>
+    <string name="onboarding_2_content_services_message" translatable="false">@string/onboarding_2_content_services_news_games</string>
     <!-- Introduce Smart Shopping Search -->
     <string name="onboarding_2_smart_shopping_search_title">Smart Shopping Search</string>
     <string name="onboarding_2_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
