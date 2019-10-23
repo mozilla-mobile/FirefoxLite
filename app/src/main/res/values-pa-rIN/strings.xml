@@ -269,6 +269,7 @@
   <string name="news_category_option_astrology">ਭਵਿੱਖਬਾਣੀ</string>
   <string name="news_category_option_science">ਵਿਗਿਆਨ</string>
   <string name="news_category_option_jokes">ਚੁਟਕਲੇ</string>
+  <string name="news_category_option_nation">ਕੌਮੀ</string>
   <string name="logo_text">ਸੇਵਾ ਦਿੱਤੀ ਜਾ ਰਹੀ ਹੈ</string>
   <string name="private_tab">ਪ੍ਰਾਈਵੇਟ ਟੈਬ</string>
   <string name="private_browsing_title">ਪ੍ਰਾਈਵੇਟ ਬਰਾਊਜ਼ਿੰਗ</string>
@@ -290,4 +291,27 @@
   <string name="http_auth_dialog_user_name">ਵਰਤੋਂਕਾਰ ਨਾਂ</string>
   <string name="http_auth_dialog_password">ਪਾਸਵਰਡ</string>
   <string name="low_priority_notification_channel">ਸੂਚਨਾਵਾਂ ਲੁਕਾਓ</string>
+  <string name="about_link_terms_of_service">ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ</string>
+  <string name="shopping_search_onboarding_title">ਸਭ ਤੋਂ ਵਧੀਆ ਭਾਅ ਲੱਭੋ</string>
+  <string name="shopping_search_prompt_message_button">ਖੋਜੋ</string>
+  <string name="shopping_switch_ui_onboarding_button">ਠੀਕ ਹੈ</string>
+  <string name="shopping_switch_ui_preferences_title">ਖਰੀਦਦਾਰੀ ਖੋਜ ਸੈਟਿੰਗਾਂ</string>
+  <string name="shopping_switch_ui_preferences_subtitle">ਟਾਕਰਾ ਕਰਨ ਲਈ ਸਾਈਟਾਂ</string>
+  <string name="shopping_switch_ui_tabtray_title_no_keyword">ਖ਼ਰੀਦਦਾਰੀ ਖੋਜ</string>
+  <string name="shopping_closing_dialog_close">ਸਾਰੇ ਬੰਦ ਕਰੋ</string>
+  <string name="shopping_closing_dialog_cancel">ਰੱਦ ਕਰੋ</string>
+  <string name="shopping_vertical_category_1">ਡੀਲ</string>
+  <string name="shopping_vertical_category_2">ਕੂਪਨ</string>
+  <string name="shopping_vertical_category_3">ਵਾਊਚਰ</string>
+  <string name="shopping_deal_subcategory_1">ਚੋਟੀ ਦੇ ਦਰਜੇ ਵਾਲੇ</string>
+  <string name="shopping_deal_subcategory_2">ਸਭ ਤੋਂ ਵਿਕਣ ਵਾਲੇ</string>
+  <string name="shopping_coupon_expire_zero">ਮਿਆਦ ਪੁੱਗੀ</string>
+  <string name="shopping_coupon_expire_one">1 ਦਿਨ ਬਾਕੀ</string>
+  <string name="shopping_coupon_expire_other">%1$d ਦਿਨ ਬਾਕੀ</string>
+  <string name="gaming_vertical_title">ਖੇਡ</string>
+  <string name="gaming_vertical_category_1">ਤੁਰੰਤ ਖੇਡੋ</string>
+  <string name="gaming_vertical_category_2">ਖੇਡਣ ਲਈ ਡਾਊਨਲੋਡ ਕਰੋ</string>
+  <string name="gaming_vertical_new">ਨਵਾਂ</string>
+  <string name="gaming_vertical_hint_button">ਠੀਕ ਹੈ</string>
+  <string name="msrp_challenge_completed_title">ਵਧਾਈਆਂ!</string>
 </resources>

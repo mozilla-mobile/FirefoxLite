@@ -224,6 +224,8 @@
   <string name="edit_bookmark">I-Edit</string>
   <string name="label_menu_news">Balita</string>
   <string name="news_update_btn">Bagong pag-update</string>
+  <string name="title_news_preferences">Mga kagustuhan sa balita</string>
+  <string name="news_language_dialog_title">Wika ng balita</string>
   <string name="news_language_dialog_option_english">Ingles</string>
   <string name="news_language_dialog_option_hindi">Hindi</string>
   <string name="news_language_dialog_option_marathi">Marathi</string>
@@ -244,6 +246,7 @@
   <string name="news_category_option_technology">Teknolohiya</string>
   <string name="news_category_option_education">Edukasyon</string>
   <string name="news_category_option_politics">Pulitika</string>
+  <string name="news_category_option_career">Karera</string>
   <string name="news_category_option_cricket">Cricket</string>
   <string name="news_category_option_sports">Sports</string>
   <string name="news_category_option_entertainment">Aliwan</string>
@@ -279,4 +282,5 @@
   <string name="my_shot_on_boarding_category_message">Para mapabuti ang produktong ito, kami ay maaaring mangolekta ng impormasyon tungkol sa iyong screen.</string>
   <string name="http_auth_dialog_user_name">Username</string>
   <string name="http_auth_dialog_password">Password</string>
+  <string name="low_priority_notification_channel">Nakatagong notipikasyon</string>
 </resources>

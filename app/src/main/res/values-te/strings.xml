@@ -272,9 +272,11 @@
   <string name="private_browsing_erase_done">మీ అంతరంగిక విహరణ\nచరిత్ర తొలగించబడింది.</string>
   <string name="private_browsing_tracker_blocked">ట్రాకర్లు నిరోధించబడ్డాయి</string>
   <string name="private_browsing_tracker_blocked_description">అధిక సంరక్షణతో విహరణను ఆనందించండి.</string>
+  <string name="private_browsing_dialog_add_shortcut_no">వద్దు, ఫరవాలేదు</string>
   <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
   <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
   <string name="http_auth_dialog_title">అథీకరణ అవసరం</string>
   <string name="http_auth_dialog_user_name">వాడుకరి పేరు</string>
   <string name="http_auth_dialog_password">సంకేతపదం</string>
+  <string name="low_priority_notification_channel">దాచిన గమనింపులు</string>
 </resources>
