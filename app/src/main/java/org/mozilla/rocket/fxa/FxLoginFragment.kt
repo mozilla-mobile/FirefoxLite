@@ -27,6 +27,7 @@ import java.net.URL
 open class FxLoginFragment : Fragment() {
 
     private val safeArgs: FxLoginFragmentArgs by navArgs()
+    private val requestCode by lazy { safeArgs.requestCode }
     private val uid by lazy { safeArgs.uid }
     private var mWebView: WebView? = null
     private var listener: OnLoginCompleteListener? = null
@@ -49,6 +50,7 @@ open class FxLoginFragment : Fragment() {
 
                     if (map.size > 1 && map["login_success"]?.toBoolean() == true) {
                         listener?.onLoginSuccess(
+                            requestCode,
                             map["jwt"] ?: error("missing required field`jwt`"),
                             map["disabled"]?.toBoolean() ?: error("missing required field`disabled`"),
                             map["times"]?.toInt() ?: error("missing required field`times`")
@@ -104,7 +106,7 @@ open class FxLoginFragment : Fragment() {
     }
 
     interface OnLoginCompleteListener {
-        fun onLoginSuccess(jwt: String, isDisabled: Boolean, times: Int)
+        fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, times: Int)
         fun onLoginFailure()
     }
 

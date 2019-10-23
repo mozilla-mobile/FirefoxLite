@@ -51,6 +51,9 @@
         android:label="FxLogin"
         tools:layout="@layout/fragment_fx_login">
         <argument
+            android:name="requestCode"
+            app:argType="integer" />
+        <argument
             android:name="uid"
             app:argType="string" />
     </fragment>

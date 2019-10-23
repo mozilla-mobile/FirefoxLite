@@ -3,6 +3,10 @@ package org.mozilla.rocket.msrp.ui
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +22,14 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_code
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_expiration
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_go_shopping_btn
+import kotlinx.android.synthetic.main.fragment_mission_coupon.faq_text
 import kotlinx.android.synthetic.main.fragment_mission_coupon.image
 import kotlinx.android.synthetic.main.fragment_mission_coupon.loading_view
 import kotlinx.android.synthetic.main.fragment_mission_coupon.title
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.extension.showToast
@@ -56,8 +62,26 @@ class MissionCouponFragment : Fragment() {
     }
 
     private fun initViews() {
+        initFaqText()
         coupon_go_shopping_btn.setOnClickListener {
             viewModel.onGoShoppingButtonClicked()
+        }
+    }
+
+    private fun initFaqText() {
+        val contextUsStr = getString(R.string.msrp_contact_us)
+        val faqStr = getString(R.string.msrp_faq, contextUsStr)
+        val contextUsIndex = faqStr.indexOf(contextUsStr)
+        val str = SpannableString(faqStr).apply {
+            setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    viewModel.onFaqButtonClick()
+                }
+            }, contextUsIndex, contextUsIndex + contextUsStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        faq_text.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = str
         }
     }
 
@@ -92,6 +116,9 @@ class MissionCouponFragment : Fragment() {
         viewModel.openShoppingPage.observe(this, Observer {
             openShoppingPage()
         })
+        viewModel.openFaqPage.observe(this, Observer {
+            openFaqPage()
+        })
     }
 
     private fun copyToClipboard(label: String, text: String) {
@@ -104,7 +131,13 @@ class MissionCouponFragment : Fragment() {
         startActivity(ShoppingActivity.getStartIntent(requireContext()))
     }
 
+    private fun openFaqPage() {
+        val intent = ContentTabActivity.getStartIntent(requireContext(), FAQ_PAGE_URL, enableTurboMode = false)
+        startActivity(intent)
+    }
+
     companion object {
         private const val COUPON_COPY_LABEL = "coupon"
+        private const val FAQ_PAGE_URL = "https://qsurvey.mozilla.com/s3/Firefox-Lite-Reward-Help"
     }
 }

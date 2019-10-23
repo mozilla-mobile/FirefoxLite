@@ -2,6 +2,10 @@ package org.mozilla.rocket.msrp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +21,7 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_mission_detail.congrats_title_layout
 import kotlinx.android.synthetic.main.fragment_mission_detail.date_layout_row_1
 import kotlinx.android.synthetic.main.fragment_mission_detail.date_layout_row_2
+import kotlinx.android.synthetic.main.fragment_mission_detail.faq_text
 import kotlinx.android.synthetic.main.fragment_mission_detail.how_to_redeem
 import kotlinx.android.synthetic.main.fragment_mission_detail.image
 import kotlinx.android.synthetic.main.fragment_mission_detail.join_button
@@ -30,11 +35,13 @@ import kotlinx.android.synthetic.main.fragment_mission_detail.quit_button_separa
 import kotlinx.android.synthetic.main.fragment_mission_detail.redeem_button
 import kotlinx.android.synthetic.main.fragment_mission_detail.redeem_later_button
 import kotlinx.android.synthetic.main.fragment_mission_detail.redeem_layout
+import kotlinx.android.synthetic.main.fragment_mission_detail.sign_in_text
 import kotlinx.android.synthetic.main.fragment_mission_detail.title
 import kotlinx.android.synthetic.main.fragment_mission_detail.view.day_text
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.extension.showToast
@@ -80,6 +87,9 @@ class MissionDetailFragment : Fragment(), NavigationResult {
 
     private fun initViews() {
         mission_step_text_1.text = getString(R.string.msrp_challenge_details_body_1, getString(R.string.app_name))
+        initFaqText()
+        initJoinTermsText()
+        initSignInText()
         join_button.setOnClickListener {
             if (missionDetailViewModel.isLoading.value != true) {
                 missionDetailViewModel.onJoinMissionButtonClicked()
@@ -97,6 +107,57 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         }
         redeem_later_button.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+    private fun initFaqText() {
+        val contextUsStr = getString(R.string.msrp_contact_us)
+        val faqStr = getString(R.string.msrp_faq, contextUsStr)
+        val contextUsIndex = faqStr.indexOf(contextUsStr)
+        val str = SpannableString(faqStr).apply {
+            setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    missionDetailViewModel.onFaqButtonClick()
+                }
+            }, contextUsIndex, contextUsIndex + contextUsStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        faq_text.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = str
+        }
+    }
+
+    private fun initJoinTermsText() {
+        val termsOfUseStr = getString(R.string.msrp_challenge_tou_terms_of_use)
+        val joinTermsStr = getString(R.string.msrp_challenge_tou, termsOfUseStr)
+        val termsOfUseIndex = joinTermsStr.indexOf(termsOfUseStr)
+        val str = SpannableString(joinTermsStr).apply {
+            setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    missionDetailViewModel.onTermsOfUseButtonClick()
+                }
+            }, termsOfUseIndex, termsOfUseIndex + termsOfUseStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        join_terms.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = str
+        }
+    }
+
+    private fun initSignInText() {
+        val signInStr = getString(R.string.msrp_challenge_details_sign_in_to_start)
+        val signInDescriptionStr = getString(R.string.msrp_challenge_details_body_2, signInStr)
+        val signInIndex = signInDescriptionStr.indexOf(signInStr)
+        val str = SpannableString(signInDescriptionStr).apply {
+            setSpan(object : ClickableSpan() {
+                override fun onClick(widget: View) {
+                    missionDetailViewModel.onLoginButtonClicked()
+                }
+            }, signInIndex, signInIndex + signInStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        sign_in_text.apply {
+            movementMethod = LinkMovementMethod.getInstance()
+            text = str
         }
     }
 
@@ -135,6 +196,8 @@ class MissionDetailFragment : Fragment(), NavigationResult {
 
         redeem_layout.isVisible = false
         congrats_title_layout.isVisible = false
+
+        faq_text.isVisible = false
     }
 
     private fun showJoinedMission(mission: Mission) {
@@ -152,6 +215,8 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         redeem_later_button.isVisible = false
         redeem_button.isEnabled = false
         congrats_title_layout.isVisible = false
+
+        faq_text.isVisible = false
 
         initDateLayout(requireNotNull(mission.missionProgress))
     }
@@ -171,6 +236,8 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         redeem_later_button.isVisible = true
         redeem_button.isEnabled = true
         congrats_title_layout.isVisible = true
+
+        faq_text.isVisible = true
 
         initDateLayout(requireNotNull(mission.missionProgress))
     }
@@ -217,25 +284,42 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         missionDetailViewModel.closeAllMissionPages.observe(this, Observer {
             requireActivity().finish()
         })
-        missionDetailViewModel.requestFxLogin.observe(this, Observer { uid ->
-            openFxLoginPage(uid)
+        missionDetailViewModel.requestFxLogin.observe(this, Observer { action ->
+            openFxLoginPage(action.actionId, action.uid)
         })
         missionDetailViewModel.openCouponPage.observe(this, Observer { mission ->
             openCouponPage(mission)
         })
+        missionDetailViewModel.openFaqPage.observe(this, Observer {
+            openFaqPage()
+        })
+        missionDetailViewModel.openTermsOfUsePage.observe(this, Observer {
+            openTermsOfUsePage()
+        })
     }
 
     override fun onNavigationResult(result: Bundle) {
+        val requestCode = result.getInt(RESULT_INT_REQUEST_CODE, 0)
         val jwt = result.getString(RESULT_STR_JWT)
-        missionDetailViewModel.onFxLoginCompleted(jwt)
+        missionDetailViewModel.onFxLoginToCompleted(requestCode, jwt)
     }
 
-    private fun openFxLoginPage(uid: String) {
-        findNavController().navigate(MissionDetailFragmentDirections.actionMissionDetailDestToFxLoginDest(uid))
+    private fun openFxLoginPage(requestCode: Int, uid: String) {
+        findNavController().navigate(MissionDetailFragmentDirections.actionMissionDetailDestToFxLoginDest(requestCode, uid))
     }
 
     private fun openCouponPage(mission: Mission) {
         findNavController().navigate(MissionDetailFragmentDirections.actionMissionDetailDestToMissionCouponDest(mission))
+    }
+
+    private fun openFaqPage() {
+        val intent = ContentTabActivity.getStartIntent(requireContext(), FAQ_PAGE_URL, enableTurboMode = false)
+        startActivity(intent)
+    }
+
+    private fun openTermsOfUsePage() {
+        val intent = ContentTabActivity.getStartIntent(requireContext(), TERMS_OF_USE_PAGE_URL, enableTurboMode = false)
+        startActivity(intent)
     }
 
     data class DateUiModel(
@@ -244,7 +328,10 @@ class MissionDetailFragment : Fragment(), NavigationResult {
     )
 
     companion object {
+        const val RESULT_INT_REQUEST_CODE = "result_int_request_code"
         const val RESULT_STR_JWT = "result_str_jwt"
+        private const val FAQ_PAGE_URL = "https://qsurvey.mozilla.com/s3/Firefox-Lite-Reward-Help"
+        private const val TERMS_OF_USE_PAGE_URL = "https://www.mozilla.org/about/legal/terms/firefox-lite/reward/"
     }
 }
 

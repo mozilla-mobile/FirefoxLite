@@ -137,4 +137,14 @@
         android:textColor="@color/paletteDarkGreyE100"
         android:textSize="14sp" />
 
+    <TextView
+        android:id="@+id/faq_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/paletteDarkGreyD100"
+        android:textSize="12sp"
+        tools:text="@string/msrp_faq"/>
+
 </LinearLayout>
