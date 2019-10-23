@@ -215,6 +215,15 @@
   <string name="edit_bookmark">Boli\'a</string>
   <string name="label_menu_news">Habari</string>
   <string name="news_update_btn">Mopobohu poli</string>
+  <string name="news_language_dialog_option_english">Enggeleti</string>
+  <string name="news_language_dialog_option_hindi">Hindi</string>
+  <string name="news_language_dialog_option_marathi">Marathi</string>
+  <string name="news_language_dialog_option_gujarati">Gujarat</string>
+  <string name="news_language_dialog_option_malayalam">Malalayam</string>
+  <string name="news_language_dialog_option_tamil">Tamil</string>
+  <string name="news_language_dialog_option_telugu">Telugu</string>
+  <string name="news_language_dialog_option_urdu">Urdu</string>
+  <string name="news_language_dialog_option_nepali">Nepal</string>
   <string name="private_tab">Tab privat</string>
   <string name="private_browsing_title">Monguli\'ato Pribadi</string>
   <string name="private_browsing_erase_message">Luluta riwayati monguli\'ato pribadi</string>
