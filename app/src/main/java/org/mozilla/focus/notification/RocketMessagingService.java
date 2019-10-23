@@ -52,7 +52,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
         addDeleteTelemetry(getApplicationContext(), builder, messageId, link);
 
         NotificationUtil.sendNotification(this, NotificationId.FIREBASE_AD_HOC, builder);
-        TelemetryWrapper.showNotification(messageId, link);
+        TelemetryWrapper.showNotification(link, messageId);
     }
 
     private String parseMessageId(Intent intent) {

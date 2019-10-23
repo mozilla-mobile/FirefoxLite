@@ -13,7 +13,6 @@ package org.mozilla.focus.telemetry
 import android.content.Context
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.preference.PreferenceManager
-import android.util.ArrayMap
 import android.util.Log
 import android.webkit.PermissionRequest
 import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
@@ -33,7 +32,6 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.theme.ThemeManager
-import org.mozilla.rocket.util.TimeUtils
 import org.mozilla.strictmodeviolator.StrictModeViolation
 import org.mozilla.telemetry.Telemetry
 import org.mozilla.telemetry.TelemetryHolder
@@ -66,14 +64,8 @@ object TelemetryWrapper {
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
 
-    // List of site title which are the partners of affiliate program.
-    // Please use the exact title name from pin_sites.json
-    private val AFFILIATE_SITES = listOf("Bukalapak", "Tokopedia")
-
     @JvmStatic
     private val sRefCount = AtomicInteger(0)
-
-    private var verticalProcessStartTime = ArrayMap<String, Long>()
 
     internal object Category {
         const val ACTION = "action"
@@ -1285,7 +1277,7 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.VERSION, value = OPEN_HOME_LINK_VERSION)
             ])
     @JvmStatic
-    fun clickTopSiteOn(index: Int, source: String) {
+    fun clickTopSiteOn(index: Int, source: String, isAffiliate: Boolean) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, Integer.toString(index))
                 .extra(Extra.SOURCE, source)
@@ -1296,7 +1288,7 @@ object TelemetryWrapper {
                 .queue()
 
         // Record a separate click count from those affiliate program partners.
-        if (AFFILIATE_SITES.contains(source)) {
+        if (isAffiliate) {
             AdjustHelper.trackEvent(EVENT_CLICK_AFFILIATE_LINK)
         }
     }
@@ -2631,6 +2623,7 @@ object TelemetryWrapper {
                 .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
                 .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
                 .queue()
+        AdjustHelper.trackEvent(EVENT_START_CONTENT_TAB)
     }
 
     @TelemetryDoc(
@@ -2697,10 +2690,10 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
             ])
     fun startVerticalProcess(vertical: String) {
-        verticalProcessStartTime[vertical] = TimeUtils.getTimestampNow()
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.VERTICAL)
                 .extra(Extra.VERTICAL, vertical)
                 .queue()
+        AdjustHelper.trackEvent(EVENT_START_VERTICAL_PROCESS)
     }
 
     @TelemetryDoc(
@@ -2713,13 +2706,7 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.LOADTIME, value = "[0-9]+")
             ])
-    fun endVerticalProcess(vertical: String) {
-        val startTime = verticalProcessStartTime[vertical]
-        val loadTime = if (startTime != null) {
-            TimeUtils.getTimestampNow() - startTime
-        } else {
-            -1
-        }
+    fun endVerticalProcess(vertical: String, loadTime: Long) {
         EventBuilder(Category.ACTION, Method.END, Object.PROCESS, Value.VERTICAL)
                 .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.LOADTIME, loadTime.toString())
@@ -2739,6 +2726,7 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.TAB_SWIPE)
                 .extra(Extra.TYPE, vertical)
                 .queue()
+        AdjustHelper.trackEvent(EVENT_START_TAB_SWIPE_PROCESS)
     }
 
     @TelemetryDoc(
@@ -3215,6 +3203,8 @@ object TelemetryWrapper {
             addCustomPing(configuration, ThemeToyMeasurement(context))
             addCustomPing(configuration, CaptureCountMeasurement(context))
             addCustomPing(configuration, InstallReferrerMeasurement(context))
+            addCustomPing(configuration, ExperimentBucketMeasurement(context))
+            addCustomPing(configuration, ExperimentNameMeasurement())
         }
 
         internal fun addCustomPing(
@@ -3289,6 +3279,46 @@ object TelemetryWrapper {
 
         companion object {
             private const val MEASUREMENT_INSTALL_REFERRER = "install_referrer"
+        }
+    }
+
+    private class ExperimentBucketMeasurement internal constructor(internal var context: Context) : TelemetryMeasurement(MEASUREMENT_EXPERIMENT_BUCKET) {
+
+        override fun flush(): Any {
+            return getExperimentBucket(context)
+        }
+
+        private fun getExperimentBucket(context: Context): Int {
+            val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
+            val prefKey = context.getString(R.string.pref_key_experiment_bucket)
+
+            var userGroup = sharedPref.getInt(prefKey, -1)
+            if (userGroup < 0) {
+                userGroup = NUMBER_RANGE.random()
+                sharedPref.edit().putInt(prefKey, userGroup).apply()
+            }
+
+            return userGroup
+        }
+
+        companion object {
+            private const val MEASUREMENT_EXPERIMENT_BUCKET = "experiment_bucket"
+            private val NUMBER_RANGE = (1..20)
+        }
+    }
+
+    private class ExperimentNameMeasurement internal constructor() : TelemetryMeasurement(MEASUREMENT_EXPERIMENT_NAME) {
+
+        override fun flush(): Any {
+            return getExperimentName()
+        }
+
+        private fun getExperimentName(): String {
+            return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_EXPERIMENT_NAME)
+        }
+
+        companion object {
+            private const val MEASUREMENT_EXPERIMENT_NAME = "experiment_name"
         }
     }
 }

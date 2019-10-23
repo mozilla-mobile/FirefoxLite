@@ -11,14 +11,14 @@ import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.firstrun.UpgradeFirstrunPagerAdapter
@@ -37,11 +37,19 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
     private var isTelemetryValid = true
     private var telemetryStartTimestamp: Long = 0
+    private var pageStartTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (isNewUser()) {
+            TelemetryWrapper.showFirstRunOnBoarding()
+        } else {
+            TelemetryWrapper.showWhatsnewOnBoarding()
+        }
         initDrawables()
     }
+
+    private fun isNewUser(): Boolean = NewFeatureNotice.getInstance(requireContext()).lastShownFeatureVersion == 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -54,6 +62,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
         // listener won't fire for the initial page we are showing. So we are going to firing here.
         isTelemetryValid = true
         telemetryStartTimestamp = System.currentTimeMillis()
+        pageStartTime = System.currentTimeMillis()
     }
 
     override fun onCreateView(
@@ -122,7 +131,16 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.next -> viewPager.currentItem = viewPager.currentItem + 1
+            R.id.next -> {
+                val timeSpent = System.currentTimeMillis() - pageStartTime
+                pageStartTime = System.currentTimeMillis()
+                if (isNewUser()) {
+                    TelemetryWrapper.clickFirstRunOnBoarding(timeSpent, viewPager.currentItem, false)
+                } else {
+                    TelemetryWrapper.clickWhatsnewOnBoarding(timeSpent, viewPager.currentItem, false)
+                }
+                viewPager.currentItem = viewPager.currentItem + 1
+            }
 
             R.id.skip -> finishFirstrun()
 
@@ -132,6 +150,12 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
                 if (isTelemetryValid) {
                     val mode = NewFeatureNotice.getInstance(context).lastShownFeatureVersion
                     TelemetryWrapper.finishFirstRunEvent(System.currentTimeMillis() - telemetryStartTimestamp, mode)
+                    val timeSpent = System.currentTimeMillis() - pageStartTime
+                    if (isNewUser()) {
+                        TelemetryWrapper.clickFirstRunOnBoarding(timeSpent, viewPager.currentItem, true)
+                    } else {
+                        TelemetryWrapper.clickWhatsnewOnBoarding(timeSpent, viewPager.currentItem, true)
+                    }
                 }
                 // reset the pref
                 finishFirstrun()

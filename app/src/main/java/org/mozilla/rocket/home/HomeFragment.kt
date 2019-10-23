@@ -402,7 +402,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, {
                     restoreStatusBarColor()
                 }) {
-                    closeContentServiceSpotlight()
+                    homeViewModel.onContentServiceOnboardingButtonClicked()
                 }
             }
         }
@@ -440,6 +440,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun initOnboardingSpotlight() {
         homeViewModel.showContentServicesOnboardingSpotlight.observe(this, Observer {
             showContentServiceSpotlight()
+        })
+        homeViewModel.dismissContentServiceOnboardingDialog.observe(this, Observer {
+            closeContentServiceSpotlight()
         })
         homeViewModel.showShoppingSearchOnboardingSpotlight.observe(this, Observer {
             currentShoppingBtnVisibleState = shopping_button.isVisible

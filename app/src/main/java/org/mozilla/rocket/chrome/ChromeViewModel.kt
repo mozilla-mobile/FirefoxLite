@@ -83,6 +83,9 @@ class ChromeViewModel(
     val showAdjustBrightness = SingleLiveEvent<Unit>()
     val showNightModeOnBoarding = SingleLiveEvent<Unit>()
 
+    private var lastUrlLoadStart = 0L
+    private var lastUrlLoadTime = 0L
+
     init {
         isPrivateBrowsingActive.value = privateMode.hasPrivateSession()
         isRefreshing.value = false
@@ -156,12 +159,14 @@ class ChromeViewModel(
     }
 
     fun onPageLoadingStarted() {
+        lastUrlLoadStart = System.currentTimeMillis()
         if (isRefreshing.value != true) {
             isRefreshing.value = true
         }
     }
 
     fun onPageLoadingStopped() {
+        lastUrlLoadTime = System.currentTimeMillis() - lastUrlLoadStart
         if (isRefreshing.value == true) {
             isRefreshing.value = false
         }
@@ -295,6 +300,15 @@ class ChromeViewModel(
         if (count == threshold && !browsers.isDefaultBrowser) {
             driveDefaultBrowser.call()
         }
+    }
+
+    fun onSessionStarted() {
+        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.ALL)
+    }
+
+    fun onSessionEnded() {
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.ALL, lastUrlLoadTime)
+        lastUrlLoadTime = 0
     }
 
     data class NightModeSettings(
