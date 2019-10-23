@@ -79,7 +79,8 @@ class GameActivity : FragmentActivity() {
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
-        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.GAME)
+        // TODO: fix loadTime
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.GAME, 0)
     }
 
     private fun initBroadcastReceivers() {

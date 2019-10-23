@@ -19,6 +19,7 @@ import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
@@ -58,7 +59,8 @@ class HomeViewModel(
     hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
     getIsFxAccountUseCase: GetIsFxAccountUseCase,
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
-    setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase
+    setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
+    private val isNewUserUseCase: IsNewUserUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -86,8 +88,10 @@ class HomeViewModel(
     val openMissionDetailPage = SingleLiveEvent<Mission>()
     val showContentHubClickOnboarding = getContentHubClickOnboardingEventUseCase()
     val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
+    val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
+    private var contentServicesOnboardingTimeSpent = 0L
 
     init {
         initLogoManData()
@@ -99,6 +103,12 @@ class HomeViewModel(
         }
         if (isNeedToShowHomeOnboardingUseCase()) {
             completeHomeOnboardingUseCase()
+            contentServicesOnboardingTimeSpent = System.currentTimeMillis()
+            if (isNewUserUseCase()) {
+                TelemetryWrapper.showFirstRunContextualHint("onboarding_2_content_services_news_shopping_games")
+            } else {
+                TelemetryWrapper.showWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games")
+            }
             showContentServicesOnboardingSpotlight.call()
         } else if (shouldShowShoppingSearchOnboardingUseCase()) {
             setShoppingSearchOnboardingIsShownUseCase()
@@ -162,7 +172,10 @@ class HomeViewModel(
             is Site.RemovableSite -> site.isDefault
         }
         val title = if (allowToLogTitle) site.title else ""
-        TelemetryWrapper.clickTopSiteOn(position, title)
+        val pageIndex = requireNotNull(topSitesPageIndex.value)
+        val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+        val isAffiliate = site is Site.FixedSite
+        TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
     }
 
     fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
@@ -178,7 +191,9 @@ class HomeViewModel(
     fun onPinTopSiteClicked(site: Site, position: Int) {
         pinTopSiteUseCase(site)
         updateTopSitesData()
-        TelemetryWrapper.pinTopSite(site.url, position)
+        val pageIndex = requireNotNull(topSitesPageIndex.value)
+        val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+        TelemetryWrapper.pinTopSite(site.title, topSitePosition)
     }
 
     fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
@@ -218,7 +233,7 @@ class HomeViewModel(
     fun onLogoManShown() {
         // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
         logoManNotification.value?.animate = false
-        TelemetryWrapper.showLogoman(null, null)
+        TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
     fun onLogoManNotificationClicked() {
@@ -227,7 +242,7 @@ class HomeViewModel(
                 is GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage -> openMissionDetailPage.value = it.mission
             }
         }
-        TelemetryWrapper.clickLogoman(null, null)
+        TelemetryWrapper.clickLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
     fun onLogoManDismissed() {
@@ -235,7 +250,7 @@ class HomeViewModel(
             dismissLogoManNotificationUseCase(it)
         }
         logoManNotification.value = null
-        TelemetryWrapper.swipeLogoman(null, null)
+        TelemetryWrapper.swipeLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
     fun onRewardButtonClicked() {
@@ -266,6 +281,16 @@ class HomeViewModel(
 
     fun onRedeemCompletedDialogClosed() {
         TelemetryWrapper.clickChallengeCompleteMessage(TelemetryWrapper.Extra_Value.CLOSE)
+    }
+
+    fun onContentServiceOnboardingButtonClicked() {
+        val timeSpent = System.currentTimeMillis() - contentServicesOnboardingTimeSpent
+        if (isNewUserUseCase()) {
+            TelemetryWrapper.clickFirstRunContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
+        } else {
+            TelemetryWrapper.clickWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
+        }
+        dismissContentServiceOnboardingDialog.call()
     }
 
     data class ShowTopSiteMenuData(

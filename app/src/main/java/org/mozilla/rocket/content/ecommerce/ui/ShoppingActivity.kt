@@ -72,7 +72,8 @@ class ShoppingActivity : FragmentActivity() {
 
     override fun onPause() {
         super.onPause()
-        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.SHOPPING)
+        // TODO: fix loadTime
+        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.SHOPPING, 0)
     }
 
     companion object {
