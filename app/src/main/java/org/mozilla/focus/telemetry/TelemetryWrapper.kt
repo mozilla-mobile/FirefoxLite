@@ -2747,7 +2747,7 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Toolbar",
+            name = "Click Toolbar - Share/Reload/Back",
             category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
@@ -2759,32 +2759,21 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
-                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
                 TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
-                TelemetryExtra(name = Extra.VERSION, value = "version")
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
             ])
-    fun clickContentTabToolbar(
-        value: String,
-        mode: String,
-        position: Int,
-        vertical: String,
-        feed: String,
-        source: String,
-        category: String,
-        subCategoryId: String,
-        componentId: String,
-        version: String
-    ) {
+    fun clickContentTabToolbar(value: String, position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, value)
-                .extra(Extra.MODE, mode)
+                .extra(Extra.MODE, Extra_Value.WEBVIEW)
                 .extra(Extra.POSITION, position.toString())
-                .extra(Extra.VERTICAL, vertical)
-                .extra(Extra.FEED, feed)
-                .extra(Extra.SOURCE, source)
-                .extra(Extra.CATEGORY, category)
-                .extra(Extra.SUB_CATEGORY_ID, subCategoryId)
-                .extra(Extra.COMPONENT_ID, componentId)
-                .extra(Extra.VERSION, version)
+                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                .extra(Extra.FEED, contentTabTelemetryData.feed)
+                .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
                 .queue()
     }
 
