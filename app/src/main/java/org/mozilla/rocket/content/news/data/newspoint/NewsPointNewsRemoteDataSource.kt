@@ -46,7 +46,7 @@ class NewsPointNewsRemoteDataSource(private val newsProvider: NewsProvider?) : N
             val id = jsonObject.optString("id")
             val title = jsonObject.optString("hl")
             val link = jsonObject.optString("mwu")
-            val imageUrl = jsonObject.optJSONArray("images")?.getString(0)
+            val imageUrl = jsonObject.optJSONArray("images")?.getString(0) ?: ""
             val source = jsonObject.optString("pn")
             val publishDate = jsonObject.optString("dl")
             if (id == null || title == null || link == null || publishDate == null) {
