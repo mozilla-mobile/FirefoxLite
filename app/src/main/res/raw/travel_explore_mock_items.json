@@ -1,0 +1,131 @@
+{
+    "version": 1,
+    "subcategories": [
+        {
+            "componentType": "banner",
+            "subcategoryName": "banner",
+            "subcategoryId": 4,
+            "items": [
+                {
+                    "source_name": "Flipkart",
+                    "image": "https://rukminim1.flixcart.com/flap/1440/640/image/c17480802f3886a9.jpg?q=90",
+                    "destination": "https://www.flipkart.com/fashion-bbd19-sneak-peak-store?param=1",
+                    "title": "",
+                    "component_id": "b649cd4aedc352577f336dc2906ad06dfa5b8f77ff93ba572af1c2d3ecba1bae"
+                },
+                {
+                    "source_name": "Flipkart",
+                    "image": "https://rukminim1.flixcart.com/flap/1440/640/image/69ec96c8387c70a1.jpg?q=90",
+                    "destination": "https://www.flipkart.com/big-billion-days-specials-store?param=198912388213",
+                    "title": "",
+                    "component_id": "2d8fde88942ced9feb0aedcb2d5cfdfcc0eac4abeec53ddf36dd94dfafd150b3"
+                },
+                {
+                    "source_name": "Flipkart",
+                    "image": "https://rukminim1.flixcart.com/flap/1440/640/image/4ca2f501323d9f50.jpg?q=90",
+                    "destination": "https://www.flipkart.com/redmi-8a-matte-blue-32-gb/p/itmfhz4cztznu8kk?pid=MOBFKF98FFAAY8EB&pageUID=1569399524856",
+                    "title": "",
+                    "component_id": "a7348c33a51d07b9426ffd86f6830e72fc8c727992634ebed94916cca9d4c3b2"
+                },
+                {
+                    "source_name": "Amazon.in",
+                    "image": "https://images-eu.ssl-images-amazon.com/images/G/31/img17/AmazonDevices/2019/jupiter/bunk/mob._CB452464492_SY367_.jpg",
+                    "destination": "https://www.amazon.in/b?_encoding=UTF8&ie=UTF8&node=18039422031&pf_rd_i=mobile&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_p=499583d5-02db-46a9-aead-733aa186d7b4&pf_rd_r=JVNNAFTYH3FVB63ZEYRS&pf_rd_s=mobile-hero-slide-7&pf_rd_t=36701&ref_=Oct_Arh_mobile-hero-slide-7_01e923b6-b9f4-4bc8-8f87-7130ee4cd094",
+                    "title": "",
+                    "component_id": "64a5b385f82caaeb05565356d143a9b737bc29bb8342e30005ae2f3b50ad3b84"
+                },
+                {
+                    "source_name": "Amazon.in",
+                    "image": "https://images-eu.ssl-images-amazon.com/images/G/31/img19/Events/Wave-1/GW/Countdown/Unrec/1242x550_w1_4_FST._CB452479475_SY367_.jpg",
+                    "destination": "https://www.amazon.in/b?_encoding=UTF8&node=3419926031&pf_rd_i=mobile&pf_rd_m=A1VBAL9TL5WCBF&pf_rd_p=b1d337eb-94e4-4ee8-a434-76c487b85c4f&pf_rd_r=Z8JPH0ZMGEE184X7B3E1&pf_rd_s=mobile-hero-slide-1&pf_rd_t=36701&ref_=Oct_Arh_mobile-hero-slide-1_15a7bd8a-9ea7-49fa-bb2c-fc65aaf343c8",
+                    "title": "",
+                    "component_id": "d0214f7cadc8f288ab624d968cae12bb802893ad25f4cb9b9bdbc230a37911b8"
+                }
+            ]
+        },
+        {
+            "componentType": "Mcard",
+            "subcategoryName": "Best City To Visit",
+            "subcategoryId": 2,
+            "items": [
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://r-cf.bstatic.com/xdata/images/city/400x300/687854.webp?k=4affab018e14310f42906453172e7f446921ec248228f4f77ae276ec6df05c45&o=",
+                    "destination": "",
+                    "title": "Kenting",
+                    "component_id": "4d7ae3d3edd563f61f3037ccd278bd22938a5597f6ce6fa9ebab2e21a165b4e4"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://q-cf.bstatic.com/xdata/images/city/square250/687892.webp?k=0f5cc456997c9fa5b99510dc453534730620c0867d94630639c74b4c18641c71&o=",
+                    "destination": "",
+                    "title": "Taichung",
+                    "component_id": "6db0bdfd0061932f46092f48242b83d7b553294761252baca12b79552348a89e"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://r-cf.bstatic.com/xdata/images/city/square250/667363.webp?k=ada36b8a686fc6650e4d62b9625ef7af2aa7571e8f6efc358b2719bf52bcdf26&o=",
+                    "destination": "",
+                    "title": "Taoyuan",
+                    "component_id": "4010134a5c3c3619a5b6b90b4dbd3ee148f5226e19215c8766946d4f0a1e7208"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://q-cf.bstatic.com/xdata/images/city/square250/619763.webp?k=3bfc62a779df5b92694287e9fc0b82d795f93700ddf8887d66f3191ee745dcc5&o=",
+                    "destination": "",
+                    "title": "Tokyo",
+                    "component_id": "68b5f58738d62b205fa94043793816334450b39baad7f13924ca21b0c32222a3"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://q-cf.bstatic.com/xdata/images/city/square250/687919.webp?k=eccf1ef09bcc42899712d36fc3972d2c1973cb7fa1d961affd01d4f8e613ff23&o=",
+                    "destination": "",
+                    "title": "Taipei",
+                    "component_id": "53aa8262cd7ebae019e32e36058dfae35c9aace1407f0786a0c0465aa5ec181a"
+                }
+            ]
+        },
+        {
+            "componentType": "Mcard",
+            "subcategoryName": "Travel on budget",
+            "subcategoryId": 3,
+            "items": [
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://r-cf.bstatic.com/xdata/images/city/400x300/687854.webp?k=4affab018e14310f42906453172e7f446921ec248228f4f77ae276ec6df05c45&o=",
+                    "destination": "",
+                    "title": "Kenting",
+                    "component_id": "4d7ae3d3edd563f61f3037ccd278bd22938a5597f6ce6fa9ebab2e21a165b4e4"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://q-cf.bstatic.com/xdata/images/city/square250/687892.webp?k=0f5cc456997c9fa5b99510dc453534730620c0867d94630639c74b4c18641c71&o=",
+                    "destination": "",
+                    "title": "Taichung",
+                    "component_id": "6db0bdfd0061932f46092f48242b83d7b553294761252baca12b79552348a89e"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://r-cf.bstatic.com/xdata/images/city/square250/667363.webp?k=ada36b8a686fc6650e4d62b9625ef7af2aa7571e8f6efc358b2719bf52bcdf26&o=",
+                    "destination": "",
+                    "title": "Taoyuan",
+                    "component_id": "4010134a5c3c3619a5b6b90b4dbd3ee148f5226e19215c8766946d4f0a1e7208"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://q-cf.bstatic.com/xdata/images/city/square250/619763.webp?k=3bfc62a779df5b92694287e9fc0b82d795f93700ddf8887d66f3191ee745dcc5&o=",
+                    "destination": "",
+                    "title": "Tokyo",
+                    "component_id": "68b5f58738d62b205fa94043793816334450b39baad7f13924ca21b0c32222a3"
+                },
+                {
+                    "source_name": "Booking.com",
+                    "image": "https://q-cf.bstatic.com/xdata/images/city/square250/687919.webp?k=eccf1ef09bcc42899712d36fc3972d2c1973cb7fa1d961affd01d4f8e613ff23&o=",
+                    "destination": "",
+                    "title": "Taipei",
+                    "component_id": "53aa8262cd7ebae019e32e36058dfae35c9aace1407f0786a0c0465aa5ec181a"
+                }
+            ]
+        }
+    ]
+}

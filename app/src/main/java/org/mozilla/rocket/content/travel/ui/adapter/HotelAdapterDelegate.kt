@@ -12,7 +12,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.travel.ui.HotelUiModel
 import org.mozilla.rocket.extension.obtainBackgroundColor
 import java.text.DecimalFormat
 
@@ -63,3 +62,17 @@ class HotelViewHolder(
         hotel_separator.isVisible = hotelUiModel.hasFreeCancellation || hotelUiModel.canPayAtProperty
     }
 }
+
+data class HotelUiModel(
+    val imageUrl: String,
+    val source: String,
+    val name: String,
+    val distance: Float,
+    val rating: Float,
+    val hasFreeWifi: Boolean,
+    val price: Float,
+    val currency: String,
+    val hasFreeCancellation: Boolean,
+    val canPayAtProperty: Boolean,
+    val linkUrl: String
+) : DelegateAdapter.UiModel()

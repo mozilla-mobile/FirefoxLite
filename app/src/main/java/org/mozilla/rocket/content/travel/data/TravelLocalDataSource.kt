@@ -10,6 +10,8 @@ import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
+import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_ID
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_IMAGE_URL
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_NAME
@@ -27,26 +29,20 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         })
     }
 
-    override suspend fun getRunwayItems(): Result<List<RunwayItem>> {
-        return withContext(Dispatchers.IO) {
-            Success(getMockRunwayItems() ?: emptyList())
-        }
-    }
-
-    override suspend fun getCityCategories(): Result<List<CityCategory>> {
-        return withContext(Dispatchers.IO) {
-            Success(getMockCityCategories() ?: emptyList())
-        }
+    override suspend fun getExploreList(): Result<ApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext Success(
+                ApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_mock_items))
+        )
     }
 
     override suspend fun getBucketList(): Result<List<BucketListCity>> = withContext(Dispatchers.IO) {
         return@withContext Success(getBucketListFromPreferences())
     }
 
-    override suspend fun searchCity(keyword: String): Result<List<City>> {
-        return withContext(Dispatchers.IO) {
-            Success(getMockCityCategories()?.first()?.cityList ?: emptyList())
-        }
+    override suspend fun searchCity(keyword: String): Result<List<ApiItem>> = withContext(Dispatchers.IO) {
+        return@withContext Success(
+            ApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_mock_items)).subcategories.get(1).items
+        )
     }
 
     override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
@@ -117,16 +113,6 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
     }
 
     // TODO: remove mock data
-    private fun getMockRunwayItems(): List<RunwayItem>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.runway_mock_items)
-                    ?.jsonStringToRunwayItems()
-
-    // TODO: remove mock data
-    private fun getMockCityCategories(): List<CityCategory>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_categories_items)
-                    ?.jsonStringToCityCategories()
-
-    // TODO: remove mock data
     private fun getMockPriceItems(): List<PriceItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_price_items)
                     ?.jsonStringToPriceItems()
@@ -146,62 +132,6 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         private const val KEY_JSON_STRING_BUCKET_LIST = "bucket_list"
     }
 }
-
-private fun String.jsonStringToRunwayItems(): List<RunwayItem>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createRunwayItem(jsonObject) }
-                .shuffled()
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
-        RunwayItem(
-            jsonObject.optInt("id"),
-            jsonObject.optString("image_url"),
-            jsonObject.optString("link_url"),
-            jsonObject.optString("source"),
-            jsonObject.optString("category_name"),
-            jsonObject.optString("subcategory_id")
-        )
-
-private fun String.jsonStringToCityCategories(): List<CityCategory>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createCityCategory(jsonObject) }
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createCityCategory(jsonObject: JSONObject): CityCategory =
-        CityCategory(
-            jsonObject.optInt("id"),
-            jsonObject.optString("title"),
-            createCityItems(jsonObject.optJSONArray("city_list"))
-        )
-
-private fun createCityItems(jsonArray: JSONArray): List<City> {
-    return (0 until jsonArray.length())
-            .map { index -> jsonArray.getJSONObject(index) }
-            .map { jsonObject -> createCityItem(jsonObject) }
-            .shuffled()
-}
-
-private fun createCityItem(jsonObject: JSONObject): City =
-        City(
-            jsonObject.optString("id"),
-            jsonObject.optString("image_url"),
-            jsonObject.optString("name")
-        )
 
 private fun String.jsonStringToPriceItems(): List<PriceItem>? {
     return try {

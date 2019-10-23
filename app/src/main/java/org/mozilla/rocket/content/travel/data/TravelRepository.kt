@@ -1,26 +1,23 @@
 package org.mozilla.rocket.content.travel.data
 
 import org.mozilla.rocket.content.Result
-import java.lang.Exception
+import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 
 class TravelRepository(
     private val remoteDataSource: TravelRemoteDataSource,
     private val localDataSource: TravelLocalDataSource
 ) {
 
-    suspend fun getRunwayItems(): Result<List<RunwayItem>> {
-        return localDataSource.getRunwayItems()
-    }
-
-    suspend fun getCityCategories(): Result<List<CityCategory>> {
-        return localDataSource.getCityCategories()
+    suspend fun getExploreList(): Result<ApiEntity> {
+        return localDataSource.getExploreList()
     }
 
     suspend fun getBucketList(): Result<List<BucketListCity>> {
         return localDataSource.getBucketList()
     }
 
-    suspend fun searchCity(keyword: String): Result<List<City>> {
+    suspend fun searchCity(keyword: String): Result<List<ApiItem>> {
         return localDataSource.searchCity(keyword)
     }
 

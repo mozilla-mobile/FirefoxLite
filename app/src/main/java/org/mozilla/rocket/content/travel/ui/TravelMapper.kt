@@ -1,18 +1,20 @@
 package org.mozilla.rocket.content.travel.ui
 
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.content.travel.data.BucketListCity
-import org.mozilla.rocket.content.travel.data.City
-import org.mozilla.rocket.content.travel.data.CityCategory
 import org.mozilla.rocket.content.travel.data.Hotel
 import org.mozilla.rocket.content.travel.data.Ig
-import org.mozilla.rocket.content.travel.data.RunwayItem
 import org.mozilla.rocket.content.travel.data.Video
 import org.mozilla.rocket.content.travel.data.Wiki
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
@@ -22,41 +24,42 @@ object TravelMapper {
     private const val BANNER = "banner"
     private const val SOURCE_WIKI = "Wikipedia"
 
-    fun toRunway(items: List<RunwayItem>): Runway =
-            Runway(
-                BANNER,
-                BANNER,
-                0,
-                items.map {
-                    toRunwayItemUiModel(it)
-                }
-            )
+    fun toExploreList(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
+        return apiEntity.subcategories.map { subcategory ->
+            if (subcategory.componentType == BANNER) {
+                Runway(
+                        subcategory.componentType,
+                        subcategory.subcategoryName,
+                        subcategory.subcategoryId,
+                        subcategory.items.map { item -> toRunwayItem(item) }
+                )
+            } else {
+                CityCategoryUiModel(
+                        subcategory.componentType,
+                        subcategory.subcategoryName,
+                        subcategory.subcategoryId,
+                        subcategory.items.map { item -> toCityUiModel(item) }
+                )
+            }
+        }
+    }
 
-    private fun toRunwayItemUiModel(item: RunwayItem): org.mozilla.rocket.content.common.adapter.RunwayItem =
-            org.mozilla.rocket.content.common.adapter.RunwayItem(
-                item.source,
-                item.category,
+    private fun toRunwayItem(item: ApiItem): RunwayItem =
+            RunwayItem(
+                item.sourceName,
+                item.categoryName,
                 item.subCategoryId,
-                item.imageUrl,
-                item.linkUrl,
-                "",
-                item.id.toString()
+                item.image,
+                item.destination,
+                item.title,
+                item.componentId
             )
 
-    fun toCityCategoryUiModel(category: CityCategory): CityCategoryUiModel =
-            CityCategoryUiModel(
-                category.id,
-                category.title,
-                category.cityList.map {
-                    toCityUiModel(it)
-                }
-            )
-
-    private fun toCityUiModel(city: City): CityUiModel =
+    private fun toCityUiModel(item: ApiItem): CityUiModel =
             CityUiModel(
-                city.id,
-                city.imageUrl,
-                city.name
+                item.componentId,
+                item.image,
+                item.title
             )
 
     fun toBucketListCityUiModel(city: BucketListCity): BucketListCityUiModel =
