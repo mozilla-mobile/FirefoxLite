@@ -28,7 +28,11 @@ class NewsTabFragment : Fragment() {
     @Inject
     lateinit var newsTabViewModelCreator: Lazy<NewsTabViewModel>
 
+    @Inject
+    lateinit var newsViewModelCreator: Lazy<NewsViewModel>
+
     private lateinit var newsTabViewModel: NewsTabViewModel
+    private lateinit var newsViewModel: NewsViewModel
 
     private var newsSettings: Pair<NewsLanguage, List<NewsCategory>>? = null
 
@@ -50,6 +54,7 @@ class NewsTabFragment : Fragment() {
 
         if (savedInstanceState == null) {
             newsTabViewModel = getActivityViewModel(newsTabViewModelCreator)
+            newsViewModel = getActivityViewModel(newsViewModelCreator)
 
             newsTabViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
@@ -71,6 +76,7 @@ class NewsTabFragment : Fragment() {
 
         news_refresh_button.setOnClickListener {
             newsSettings?.let {
+                newsViewModel.clear()
                 newsTabViewModel.refresh()
             }
         }

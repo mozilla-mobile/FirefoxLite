@@ -47,6 +47,10 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
         categoryParameterMap.clear()
     }
 
+    fun retry(category: String, language: String) {
+        initialize(category, language)
+    }
+
     fun onNewsItemClicked(category: String, newsItem: NewsItem) {
         val telemetryData = ContentTabTelemetryData(
             TelemetryWrapper.Extra_Value.LIFESTYLE,
