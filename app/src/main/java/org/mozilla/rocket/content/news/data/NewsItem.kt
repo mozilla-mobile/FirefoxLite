@@ -5,5 +5,8 @@ data class NewsItem(
     val link: String,
     val imageUrl: String?,
     val source: String,
-    val publishTime: Long
+    val publishTime: Long,
+    val componentId: String,
+    val subCategoryId: String = "99",
+    val feed: String = ""
 )

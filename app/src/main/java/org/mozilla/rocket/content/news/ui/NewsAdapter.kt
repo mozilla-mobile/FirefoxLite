@@ -9,15 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.content.news.data.NewsItem
-import org.mozilla.rocket.content.news.ui.NewsTabFragment.NewsListingEventListener
 
-class NewsAdapter(private val listener: NewsListingEventListener) :
+class NewsAdapter(private val category: String, private val newsViewModel: NewsViewModel) :
     ListAdapter<NewsItem, NewsViewHolder>(
         COMPARATOR
     ) {
@@ -41,18 +37,12 @@ class NewsAdapter(private val listener: NewsListingEventListener) :
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val item = getItem(position) ?: return
         holder.bind(item, View.OnClickListener {
-            // TODO: Refine news click telemetry
-            listener.onItemClicked(item.link)
+            newsViewModel.onNewsItemClicked(category, item)
         })
     }
 }
 
 class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    companion object {
-        var requestOptions =
-            RequestOptions().apply { transforms(CenterCrop(), RoundedCorners(16)) }
-    }
 
     var view: View? = null
     var headline: TextView? = null
