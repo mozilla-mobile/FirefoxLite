@@ -119,7 +119,7 @@ class MissionDetailViewModel(
             val redeemResult = redeemUseCase(mission)
             if (redeemResult.isSuccess) {
                 refreshMissionsUseCase()
-                openCouponPage.value = mission
+                openCouponPage.value = mission.copy(rewardExpiredDate = redeemResult.data?.expire_date ?: 0)
             } else {
                 showToast.value = when (redeemResult.error!!) {
                     RedeemUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
