@@ -207,7 +207,15 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         }
 
         chromeViewModel.isRefreshing.switchFrom(bottomBarViewModel.items)
-            .observe(this, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
+            .observe(this, Observer {
+                bottomBarItemAdapter.setRefreshing(it == true)
+
+                if (it == true) {
+                    telemetryViewModel.onPageLoadingStarted()
+                } else {
+                    telemetryViewModel.onPageLoadingStopped()
+                }
+            })
         chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
             .observe(this, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
     }

@@ -8,6 +8,8 @@ class ContentTabTelemetryViewModel : ViewModel() {
 
     private var telemetryDataModel: ContentTabTelemetryData? = null
     private var sessionTime: Long = 0L
+    private var lastUrlLoadStart = 0L
+    private var lastUrlLoadTime = 0L
 
     fun initialize(telemetryData: ContentTabTelemetryData?) {
         telemetryDataModel = telemetryData
@@ -26,7 +28,16 @@ class ContentTabTelemetryViewModel : ViewModel() {
 
         telemetryDataModel?.let {
             TelemetryWrapper.endContentTab(it)
+            TelemetryWrapper.endVerticalProcess(it.vertical, lastUrlLoadTime)
         }
+    }
+
+    fun onPageLoadingStarted() {
+        lastUrlLoadStart = System.currentTimeMillis()
+    }
+
+    fun onPageLoadingStopped() {
+        lastUrlLoadTime = System.currentTimeMillis() - lastUrlLoadStart
     }
 
     fun onUrlOpened() {
