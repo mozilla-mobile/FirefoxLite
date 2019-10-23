@@ -37,6 +37,7 @@ import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.icon.FavIconUtils;
+import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.rocket.tabs.Session;
 
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String title = TextUtils.isEmpty(keyword) ? resources.getString(R.string.shopping_switch_ui_tabtray_title_no_keyword) :
                         resources.getString(R.string.shopping_switch_ui_tabtray_title, keyword);
                 ssHolder.title.setText(title);
+                ssHolder.closeIcon.setNightMode(isNight);
                 break;
             }
             case VIEW_TYPE_TAB: {
@@ -124,6 +126,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 tabHolder.rootView.setNightMode(isNight);
                 tabHolder.websiteTitle.setNightMode(isNight);
                 tabHolder.websiteSubtitle.setNightMode(isNight);
+                tabHolder.closeIcon.setNightMode(isNight);
                 break;
             }
         }
@@ -274,11 +277,13 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     static class ShoppingSearchViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         View closeButton;
+        ThemedView closeIcon;
 
         ShoppingSearchViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title);
             closeButton = itemView.findViewById(R.id.close_button);
+            closeIcon = itemView.findViewById(R.id.close_icon);
         }
     }
 
@@ -288,6 +293,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ThemedTextView websiteSubtitle;
         View closeButton;
         ImageView websiteIcon;
+        ThemedView closeIcon;
 
         TabViewHolder(View itemView) {
             super(itemView);
@@ -296,6 +302,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             websiteSubtitle = itemView.findViewById(R.id.website_subtitle);
             closeButton = itemView.findViewById(R.id.close_button);
             websiteIcon = itemView.findViewById(R.id.website_icon);
+            closeIcon = itemView.findViewById(R.id.close_icon);
         }
 
         public int getOriginPosition() {
