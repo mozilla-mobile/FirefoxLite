@@ -130,7 +130,9 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         SessionManager sessionManager = TabsSessionProvider.getOrThrow(getActivity());
         presenter = new TabTrayPresenter(this, new TabsSessionModel(sessionManager));
 
-        itemDecoration = new ShoppingSearchItemDecoration(ContextCompat.getDrawable(getContext(), R.drawable.tab_tray_item_divider));
+        itemDecoration = new ShoppingSearchItemDecoration(
+            ContextCompat.getDrawable(getContext(), R.drawable.tab_tray_item_divider),
+            ContextCompat.getDrawable(getContext(), R.drawable.tab_tray_item_divider_night));
     }
 
     @Override
@@ -771,15 +773,20 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     }
 
     private static class ShoppingSearchItemDecoration extends RecyclerView.ItemDecoration {
-        private Drawable divider;
+        private Drawable divierDefault;
+        private Drawable divierNight;
         private final Rect bounds = new Rect();
+        private boolean isNight = false;
 
-        ShoppingSearchItemDecoration(Drawable divider) {
-            this.divider = divider;
+        ShoppingSearchItemDecoration(Drawable dividerDefault, Drawable dividerNight) {
+            this.divierDefault = dividerDefault;
+            this.divierNight = dividerNight;
         }
 
         @Override
         public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            Drawable divider = isNight ? divierNight : divierDefault;
+
             if (parent.getLayoutManager() == null || divider == null) {
                 return;
             }
@@ -818,6 +825,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 outRect.top = view.getResources().getDimensionPixelOffset(R.dimen.tab_tray_padding);
             }
         }
+
+        public void setNightMode(boolean enable) {
+            isNight = enable;
+        }
     }
 
     private void setNightModeEnabled(boolean enable) {
@@ -825,6 +836,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         imgPrivateBrowsing.setNightMode(enable);
         imgNewTab.setNightMode(enable);
         bottomDivider.setNightMode(enable);
+        itemDecoration.setNightMode(enable);
         recyclerView.setNightMode(enable);
 
         ViewUtils.updateStatusBarStyle(!enable, getDialog().getWindow());
