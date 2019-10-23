@@ -67,7 +67,7 @@ class NewsFragment : Fragment() {
         newsEmptyView?.setButtonOnClickListener(View.OnClickListener {
             // call onStatus() again with null to display the loading indicator
             onStatus(null)
-            loadMore()
+            newsViewModel.retry(getCategory(), getLanguage())
         })
     }
 
