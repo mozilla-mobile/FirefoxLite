@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_2_content_services_message" translatable="false">@string/onboarding_2_content_services_news_shopping_games</string>
+</resources>
