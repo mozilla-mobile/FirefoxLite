@@ -429,9 +429,11 @@
   <string name="msrp_challenge_details_title_1">1. Ikuti tantangan selama 7 hari</string>
   <string name="msrp_challenge_details_body_1">Coba fitur-fitur Firefox Lite terbaru dengan mengetuk tombolnya setiap hari selama 7 hari penuh.</string>
   <string name="msrp_challenge_details_title_2">2. Gunakan akun Firefox untuk menebus hadiah anda</string>
-  <string name="msrp_challenge_details_body_2">Masukkan alamat email anda. Pastikan akun yang ingin anda pakai sudah benar sebelum menebus hadiah.</string>
+  <string name="msrp_challenge_details_body_2">%1$s Pastikan akun yang ingin anda pakai sudah benar sebelum menebus hadiah.</string>
+  <string name="msrp_challenge_details_sign_in_to_start">Masukkan alamat email anda.</string>
   <string name="msrp_challenge_button_1">Ikuti Tantangan!</string>
-  <string name="msrp_challenge_tou">Dengan mengetuk “Ikuti Tantangan”, anda bersiap mengikuti Syarat dan Ketentuan yang berlaku</string>
+  <string name="msrp_challenge_tou">Dengan mengetuk “Ikuti Tantangan”, anda bersiap mengikuti %1$s</string>
+  <string name="msrp_challenge_tou_terms_of_use">Syarat dan Ketentuan yang berlaku</string>
   <string name="msrp_challenge_button_2">Tinggalkan Tantangan</string>
   <string name="msrp_challenge_separator">Cara menebus hadiah</string>
   <string name="msrp_challenge_button_4">Gunakan akun Firefox untuk menebus</string>
