@@ -71,7 +71,6 @@ class TravelCityViewModel(
             // add explore
             data.add(SectionHeaderUiModel(SectionType.Explore(name)))
 
-            // TODO: uncomment these while corresponding adapter delegates is added
             val igResult = getIg(name)
             if (igResult is Result.Success) {
                 data.add(TravelMapper.toExploreIgUiModel(igResult.data))

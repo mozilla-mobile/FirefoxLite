@@ -10,12 +10,11 @@ import org.mozilla.rocket.content.travel.data.TravelRepository
 import org.mozilla.rocket.content.travel.domain.AddToBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.CheckIsInBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.GetBucketListUseCase
-import org.mozilla.rocket.content.travel.domain.GetCityCategoriesUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
-import org.mozilla.rocket.content.travel.domain.GetRunwayItemsUseCase
+import org.mozilla.rocket.content.travel.domain.GetExploreListUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
@@ -51,12 +50,7 @@ object TravelModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGetRunwayItemsUseCase(travelRepository: TravelRepository): GetRunwayItemsUseCase = GetRunwayItemsUseCase(travelRepository)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGetCityCategoriesUseCase(travelRepository: TravelRepository): GetCityCategoriesUseCase = GetCityCategoriesUseCase(travelRepository)
+    fun provideGetExploreListUseCase(travelRepository: TravelRepository): GetExploreListUseCase = GetExploreListUseCase(travelRepository)
 
     @JvmStatic
     @Singleton
@@ -105,10 +99,7 @@ object TravelModule {
 
     @JvmStatic
     @Provides
-    fun provideTravelExploreViewModel(
-        getRunwayItemsUseCase: GetRunwayItemsUseCase,
-        getCityCategoriesUseCase: GetCityCategoriesUseCase
-    ): TravelExploreViewModel = TravelExploreViewModel(getRunwayItemsUseCase, getCityCategoriesUseCase)
+    fun provideTravelExploreViewModel(getExploreListUseCase: GetExploreListUseCase): TravelExploreViewModel = TravelExploreViewModel(getExploreListUseCase)
 
     @JvmStatic
     @Provides

@@ -24,6 +24,7 @@ import org.mozilla.rocket.content.travel.ui.adapter.ExploreVideoAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreWikiAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.HotelAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.BucketList

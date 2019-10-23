@@ -35,13 +35,14 @@ class CityCategoryViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val cityCategory = uiModel as CityCategoryUiModel
-        category_title.text = cityCategory.title
+        category_title.text = cityCategory.subcategoryName
         adapter.setData(cityCategory.cityList)
     }
 }
 
 data class CityCategoryUiModel(
-    val id: Int,
-    val title: String,
+    val componentType: String,
+    val subcategoryName: String,
+    val subcategoryId: Int,
     val cityList: List<CityUiModel>
 ) : DelegateAdapter.UiModel()

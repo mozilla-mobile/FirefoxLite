@@ -2,12 +2,13 @@ package org.mozilla.rocket.content.travel.data
 
 import org.json.JSONArray
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 
 interface TravelDataSource {
-    suspend fun getRunwayItems(): Result<List<RunwayItem>>
-    suspend fun getCityCategories(): Result<List<CityCategory>>
+    suspend fun getExploreList(): Result<ApiEntity>
     suspend fun getBucketList(): Result<List<BucketListCity>>
-    suspend fun searchCity(keyword: String): Result<List<City>>
+    suspend fun searchCity(keyword: String): Result<List<ApiItem>>
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
     suspend fun getCityIg(name: String): Result<Ig>
     suspend fun getCityWikiImage(name: String): Result<String>
@@ -18,27 +19,6 @@ interface TravelDataSource {
     suspend fun addToBucketList(city: BucketListCity)
     suspend fun removeFromBucketList(id: String)
 }
-
-data class RunwayItem(
-    val id: Int,
-    val imageUrl: String,
-    val linkUrl: String,
-    val source: String,
-    val category: String,
-    val subCategoryId: String
-)
-
-data class City(
-    val id: String,
-    val imageUrl: String,
-    val name: String
-)
-
-data class CityCategory(
-    val id: Int,
-    val title: String,
-    val cityList: List<City>
-)
 
 data class BucketListCity(
     val id: String,

@@ -4,17 +4,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.Request
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.toJsonObject
 
 class TravelRemoteDataSource : TravelDataSource {
 
-    override suspend fun getRunwayItems(): Result<List<RunwayItem>> {
-        TODO("not implemented")
-    }
-
-    override suspend fun getCityCategories(): Result<List<CityCategory>> {
+    override suspend fun getExploreList(): Result<ApiEntity> {
         TODO("not implemented")
     }
 
@@ -22,7 +20,7 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun searchCity(keyword: String): Result<List<City>> {
+    override suspend fun searchCity(keyword: String): Result<List<ApiItem>> {
         TODO("not implemented")
     }
 

@@ -43,7 +43,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success) {
                     list = result.data.map {
-                        TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name))
+                        TravelMapper.toCitySearchResultUiModel(it.componentId, applyStyle(keyword, it.title))
                     }
                 }
 
