@@ -60,7 +60,7 @@ class LogoManNotification : FrameLayout {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(RemoteNotification::class, R.layout.home_notification_board, RemoteNotificationAdapterDelegate { actionListener?.onNotificationClick() })
-                add(MissionNotification::class, R.layout.home_notification_board, MissionNotificationAdapterDelegate { actionListener?.onNotificationClick() })
+                add(MissionNotification::class, R.layout.home_notification_board_mission, MissionNotificationAdapterDelegate { actionListener?.onNotificationClick() })
             }
         )
         notification_board.apply {
