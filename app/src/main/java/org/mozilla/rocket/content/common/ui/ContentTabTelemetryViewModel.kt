@@ -51,4 +51,22 @@ class ContentTabTelemetryViewModel : ViewModel() {
             it.showKeyboard = true
         }
     }
+
+    fun onBackButtonClicked() {
+        telemetryDataModel?.let {
+            TelemetryWrapper.clickContentTabToolbar(TelemetryWrapper.Value.BACK, 0, it)
+        }
+    }
+
+    fun onReloadButtonClicked() {
+        telemetryDataModel?.let {
+            TelemetryWrapper.clickContentTabToolbar(TelemetryWrapper.Value.RELOAD, 1, it)
+        }
+    }
+
+    fun onShareButtonClicked() {
+        telemetryDataModel?.let {
+            TelemetryWrapper.clickContentTabToolbar(TelemetryWrapper.Value.SHARE, 2, it)
+        }
+    }
 }

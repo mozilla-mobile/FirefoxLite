@@ -67,6 +67,7 @@ class ChromeViewModel(
     // TODO: separate to startRefresh / stopLoading
     val refreshOrStop = SingleLiveEvent<Unit>()
     val share = SingleLiveEvent<Unit>()
+    val goBack = SingleLiveEvent<Unit>()
     val goNext = SingleLiveEvent<Unit>()
     val showDownloadPanel = SingleLiveEvent<Unit>()
     val togglePrivateMode = SingleLiveEvent<Unit>()
