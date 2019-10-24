@@ -371,9 +371,7 @@
   <string name="msrp_challenge_details_title_1">1. 加入七日挑战赛</string>
   <string name="msrp_challenge_details_body_1">连续七天点击 %1$s 主页中的购物、新闻、游戏功能。</string>
   <string name="msrp_challenge_details_title_2">2. 使用 Firefox 账户兑换奖励</string>
-  <string name="msrp_challenge_details_body_2">输入您的电子邮件地址即可开始挑战。完成兑换之前，请务必保持登录到要使用的账户。</string>
   <string name="msrp_challenge_button_1">我要參加！</string>
-  <string name="msrp_challenge_tou">点击“我要参加！”即代表您同意我们的使用条款</string>
   <string name="msrp_challenge_button_2">离开任务</string>
   <string name="msrp_challenge_separator">如何兑换</string>
   <string name="msrp_challenge_button_4">使用 Firefox 账户兑换</string>

@@ -370,9 +370,7 @@
   <string name="msrp_challenge_details_title_1">1. Присоединитесь к 7-дневному испытанию</string>
   <string name="msrp_challenge_details_body_1">Используйте Шоппинг, Новости, Игры на домашнем экране %1$s, просто нажимая на кнопки 7 дней подряд.</string>
   <string name="msrp_challenge_details_title_2">2. Используйте Аккаунт Firefox для получения своей награды</string>
-  <string name="msrp_challenge_details_body_2">Чтобы начать введите свой адрес электронной почты. Убедитесь, что вы вошли в аккаунт, который хотите использовать, до получения вознаграждения.</string>
   <string name="msrp_challenge_button_1">Я участвую!</string>
-  <string name="msrp_challenge_tou">Нажимая «Я участвую», вы соглашаетесь с нашими Условиями использования.</string>
   <string name="msrp_challenge_button_2">Покинуть миссию</string>
   <string name="msrp_challenge_separator">Как выкупить</string>
   <string name="msrp_challenge_button_4">Использовать Аккаунт Firefox для выкупа</string>

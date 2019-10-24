@@ -371,9 +371,7 @@
   <string name="msrp_challenge_details_title_1">1. Tham gia thử thách 7 ngày</string>
   <string name="msrp_challenge_details_body_1">Hãy thử mua sắm, tin tức, trò chơi trên trang chủ %1$s bằng cách nhấp vào các nút trong bảy ngày liên tiếp.</string>
   <string name="msrp_challenge_details_title_2">2. Sử dụng tài khoản Firefox của bạn để đổi phần thưởng của bạn</string>
-  <string name="msrp_challenge_details_body_2">Nhập địa chỉ email của bạn để bắt đầu. Đảm bảo bạn đăng nhập vào tài khoản bạn muốn sử dụng trước khi hoàn tất việc đổi quà.</string>
   <string name="msrp_challenge_button_1">Tôi đã sẵn sàng!</string>
-  <string name="msrp_challenge_tou">Bằng cách nhấp vào “Tôi đã sẵn sàng” bạn đã đồng ý với điều khoản sử dụng của chúng tôi</string>
   <string name="msrp_challenge_button_2">Rời nhiệm vụ</string>
   <string name="msrp_challenge_separator">Làm thế nào để đổi quà</string>
   <string name="msrp_challenge_button_4">Sử dụng tài khoản Firefox để đổi quà</string>

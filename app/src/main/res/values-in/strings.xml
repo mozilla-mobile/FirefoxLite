@@ -370,9 +370,7 @@
   <string name="msrp_challenge_details_title_1">1. Ikuti tantangan dalam 7 hari</string>
   <string name="msrp_challenge_details_body_1">Coba fitur Belanja, Berita dan Game di beranda %1$s dengan mengklik menu tersebut selama tujuh hari berturut-turut.</string>
   <string name="msrp_challenge_details_title_2">2. Gunakan akun Firefox untuk menukarkan hadiah Anda</string>
-  <string name="msrp_challenge_details_body_2">Masukkan alamat surel Anda untuk memulai. Pastikan Anda telah masuk menggunakan akun yang ingin Anda gunakan sebelum menukarkan hadiah Anda.</string>
   <string name="msrp_challenge_button_1">Ikuti tantangan!</string>
-  <string name="msrp_challenge_tou">Dengan mengklik “Saya ikut” berarti Anda menyetujui Ketentuan Penggunaan kami</string>
   <string name="msrp_challenge_separator">Cara penukaran</string>
   <string name="msrp_challenge_button_4">Gunakan akun Firefox untuk menukar kupon</string>
   <string name="msrp_challenge_leaving_body">Semua hasil anda akan dihapus. Yakin ingin meninggalkan tantangan ini?</string>
