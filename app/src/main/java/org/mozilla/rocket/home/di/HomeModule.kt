@@ -181,8 +181,11 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideShouldShowShoppingSearchOnboardingUseCase(newFeatureNotice: NewFeatureNotice): ShouldShowShoppingSearchOnboardingUseCase =
-            ShouldShowShoppingSearchOnboardingUseCase(newFeatureNotice)
+    fun provideShouldShowShoppingSearchOnboardingUseCase(
+        shoppingSearchRepository: ShoppingSearchRepository,
+        newFeatureNotice: NewFeatureNotice
+    ): ShouldShowShoppingSearchOnboardingUseCase =
+            ShouldShowShoppingSearchOnboardingUseCase(shoppingSearchRepository, newFeatureNotice)
 
     @JvmStatic
     @Singleton
