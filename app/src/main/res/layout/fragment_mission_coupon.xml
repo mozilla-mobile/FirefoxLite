@@ -1,150 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+    android:background="@color/paletteWhite100">
 
-    <FrameLayout
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginTop="12dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/oval_shadow"
-        android:padding="4.5dp">
-
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="21dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center_horizontal"
-        android:textColor="@color/contentHeaderTextColor"
-        android:textSize="20sp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textStyle="normal" />
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="2sp"
-        android:text="@string/msrp_voucher_body_1"
-        android:textColor="@color/paletteDarkGreyD100"
-        android:textSize="14sp" />
+        <FrameLayout
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/oval_shadow"
+            android:padding="4.5dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp">
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="h,280:104"
-            android:src="@drawable/coupon_with_code"
-            android:scaleType="fitXY"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+        </FrameLayout>
 
         <TextView
-            android:id="@+id/coupon_code"
-            android:layout_width="200dp"
+            android:id="@+id/title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="24dp"
-            android:fontFamily="sans-serif"
-            android:gravity="center"
+            android:layout_marginTop="21dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
             android:textColor="@color/contentHeaderTextColor"
-            android:textSize="24dp"
-            android:textStyle="bold"
-            android:ellipsize="middle"
-            android:singleLine="true"
-            app:layout_constraintHorizontal_bias="0.38"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="W5KPX3" />
+            android:textSize="20sp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textStyle="normal" />
 
-        <ProgressBar
-            android:id="@+id/loading_view"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:indeterminate="true"
-            app:layout_constraintTop_toTopOf="@id/coupon_code"
-            app:layout_constraintBottom_toBottomOf="@id/coupon_code"
-            app:layout_constraintStart_toStartOf="@id/coupon_code"
-            app:layout_constraintEnd_toEndOf="@id/coupon_code"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="2sp"
+            android:text="@string/msrp_voucher_body_1"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:textSize="14sp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp">
 
-    <TextView
-        android:id="@+id/coupon_expiration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/paletteDarkGreyD100"
-        android:textSize="14sp"
-        android:textStyle="normal"
-        android:layout_marginTop="8dp"
-        tools:text="Expires 03/09/2021" />
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="h,280:104"
+                android:src="@drawable/coupon_with_code"
+                android:scaleType="fitXY"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/coupon_go_shopping_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/msrp_mission_detail_button_height"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
-        android:background="@drawable/bg_shopping_coupon_go_shopping"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:text="@string/msrp_voucher_button_2"
-        android:textColor="@android:color/white"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/coupon_code"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:minHeight="24dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:textColor="@color/contentHeaderTextColor"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                app:layout_constraintHorizontal_bias="0.38"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="W5KPX3" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="2sp"
-        android:text="@string/msrp_voucher_body_2"
-        android:textColor="@color/paletteDarkGreyE100"
-        android:textSize="14sp" />
+            <ProgressBar
+                android:id="@+id/loading_view"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:indeterminate="true"
+                app:layout_constraintTop_toTopOf="@id/coupon_code"
+                app:layout_constraintBottom_toBottomOf="@id/coupon_code"
+                app:layout_constraintStart_toStartOf="@id/coupon_code"
+                app:layout_constraintEnd_toEndOf="@id/coupon_code"/>
 
-    <TextView
-        android:id="@+id/faq_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:gravity="center_horizontal"
-        android:textColor="@color/paletteDarkGreyD100"
-        android:textSize="12sp"
-        tools:text="@string/msrp_faq"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/coupon_expiration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:layout_marginTop="8dp"
+            tools:text="Expires 03/09/2021" />
+
+        <TextView
+            android:id="@+id/coupon_go_shopping_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/msrp_mission_detail_button_height"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/bg_shopping_coupon_go_shopping"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:text="@string/msrp_voucher_button_2"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="2sp"
+            android:text="@string/msrp_voucher_body_2"
+            android:textColor="@color/paletteDarkGreyE100"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/faq_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:textSize="12sp"
+            tools:text="@string/msrp_faq"/>
+
+    </LinearLayout>
+
+</ScrollView>
