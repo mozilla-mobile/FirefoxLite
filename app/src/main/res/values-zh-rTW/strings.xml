@@ -371,9 +371,7 @@
   <string name="msrp_challenge_details_title_1">1. 加入七天挑戰賽</string>
   <string name="msrp_challenge_details_body_1">連續七天點擊 %1$s 首頁當中的購物、新聞、遊戲功能。</string>
   <string name="msrp_challenge_details_title_2">2. 使用 Firefox 帳號兌換獎項</string>
-  <string name="msrp_challenge_details_body_2">輸入您的電子郵件信箱即可加入，請務必於完成兌換前，登入想要使用的帳號。</string>
   <string name="msrp_challenge_button_1">我要參加！</string>
-  <string name="msrp_challenge_tou">點擊「我要參加！」就代表您同意我們的使用條款</string>
   <string name="msrp_challenge_button_2">離開任務</string>
   <string name="msrp_challenge_separator">如何兌換</string>
   <string name="msrp_challenge_button_4">使用 Firefox 帳號兌換</string>
