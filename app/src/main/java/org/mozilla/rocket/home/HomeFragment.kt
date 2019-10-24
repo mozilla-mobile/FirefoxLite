@@ -379,6 +379,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 showLogoManNotification(notification, animate)
             }
         })
+        homeViewModel.hideLogoManNotification.observe(this, Observer {
+            hideLogoManNotification()
+        })
         logo_man_notification.setNotificationActionListener(object : LogoManNotification.NotificationActionListener {
             override fun onNotificationClick() {
                 homeViewModel.onLogoManNotificationClicked()
@@ -393,6 +396,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun showLogoManNotification(notification: LogoManNotification.Notification, animate: Boolean) {
         logo_man_notification.showNotification(notification, animate)
         homeViewModel.onLogoManShown()
+    }
+
+    private fun hideLogoManNotification() {
+        logo_man_notification.isVisible = false
     }
 
     private fun showContentServiceSpotlight() {

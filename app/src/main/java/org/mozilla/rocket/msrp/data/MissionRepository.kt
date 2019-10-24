@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.map
+import org.mozilla.rocket.preference.stringLiveData
 import org.mozilla.rocket.util.Result
 import org.mozilla.rocket.util.isSuccess
 import org.mozilla.rocket.util.map
@@ -97,6 +98,9 @@ open class MissionRepository(
 
     private fun getLastReadNotificationId(): String? =
             preference.getString(SHARED_PREF_KEY_READ_NOTIFICATION_ID, null)
+
+    fun getLastReadNotificationIdLiveData(): LiveData<String> =
+            preference.stringLiveData(SHARED_PREF_KEY_READ_NOTIFICATION_ID, "")
 
     fun saveLastReadNotificationId(readId: String) {
         preference.edit().putString(SHARED_PREF_KEY_READ_NOTIFICATION_ID, readId).apply()

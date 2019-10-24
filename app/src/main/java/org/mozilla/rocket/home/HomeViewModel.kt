@@ -16,6 +16,7 @@ import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
+import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
@@ -47,6 +48,7 @@ class HomeViewModel(
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
     private val getContentHubItemsUseCase: GetContentHubItemsUseCase,
     private val getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
+    private val lastReadMissionIdUseCase: LastReadMissionIdUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
     private val isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
@@ -89,6 +91,7 @@ class HomeViewModel(
     val showContentHubClickOnboarding = getContentHubClickOnboardingEventUseCase()
     val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
     val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
+    val hideLogoManNotification = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var contentServicesOnboardingTimeSpent = 0L
@@ -118,13 +121,20 @@ class HomeViewModel(
 
     private fun initLogoManData() {
         logoManNotification.addSource(
-                getLogoManNotificationUseCase().first()
-                        .map {
-                            logoManClickAction = it?.action
-                            it?.run { StateNotification(it.toUiModel(), true) }
-                        }
+            getLogoManNotificationUseCase().first()
+                    .map {
+                        logoManClickAction = it?.action
+                        it?.run { StateNotification(it.toUiModel(), true) }
+                    }
         ) {
             logoManNotification.value = it
+        }
+        logoManNotification.addSource(lastReadMissionIdUseCase()) { lastReadMissionId ->
+            val showingNotification = logoManNotification.value
+            if (showingNotification != null && showingNotification.notification.id == lastReadMissionId) {
+                hideLogoManNotification.call()
+                logoManNotification.value = null
+            }
         }
     }
 
@@ -247,9 +257,9 @@ class HomeViewModel(
 
     fun onLogoManDismissed() {
         logoManNotification.value?.notification?.let {
+            logoManNotification.value = null
             dismissLogoManNotificationUseCase(it)
         }
-        logoManNotification.value = null
         TelemetryWrapper.swipeLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
