@@ -10,9 +10,11 @@ class ShoppingSearchRepository(
 
     private val shoppingSitesData: MutableLiveData<List<ShoppingSite>> = MutableLiveData()
 
-    fun isShoppingSearchEnabled() = remoteDataSource.isShoppingSearchEnabled()
+    init {
+        initShoppingSites()
+    }
 
-    fun getShoppingSitesData(): LiveData<List<ShoppingSite>> {
+    private fun initShoppingSites() {
         val remoteShoppingSites = remoteDataSource.getShoppingSites()
         val localShoppingSites = localDataSource.getShoppingSites()
 
@@ -31,9 +33,11 @@ class ShoppingSearchRepository(
         } else {
             shoppingSitesData.postValue(remoteDataSource.getDefaultShoppingSites())
         }
-
-        return shoppingSitesData
     }
+
+    fun isShoppingSearchEnabled() = remoteDataSource.isShoppingSearchEnabled()
+
+    fun getShoppingSitesData(): LiveData<List<ShoppingSite>> = shoppingSitesData
 
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
         localDataSource.updateShoppingSites(shoppingSites)
