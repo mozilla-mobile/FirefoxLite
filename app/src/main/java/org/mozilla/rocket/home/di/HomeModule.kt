@@ -12,6 +12,7 @@ import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
+import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
@@ -51,6 +52,7 @@ object HomeModule {
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
+        lastReadMissionIdUseCase: LastReadMissionIdUseCase,
         dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
         isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
@@ -73,6 +75,7 @@ object HomeModule {
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
         getLogoManNotificationUseCase,
+        lastReadMissionIdUseCase,
         dismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase,
         isShoppingButtonEnabledUseCase,
@@ -145,6 +148,13 @@ object HomeModule {
         logoManNotificationRepo: LogoManNotificationRepo,
         missionRepo: MissionRepository
     ): GetLogoManNotificationUseCase = GetLogoManNotificationUseCase(logoManNotificationRepo, missionRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideLastReadMissionIdUseCase(
+        missionRepo: MissionRepository
+    ): LastReadMissionIdUseCase = LastReadMissionIdUseCase(missionRepo)
 
     @JvmStatic
     @Singleton
