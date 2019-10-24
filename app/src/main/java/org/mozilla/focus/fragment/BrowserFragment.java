@@ -432,7 +432,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         }
 
         urlView.setText(UrlUtils.stripUserInfo(url));
-        shoppingSearchPromptMessageViewModel.checkIsShoppingSite(url);
     }
 
     @Override
@@ -496,26 +495,28 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                     }
                 });
 
-        shoppingSearchPromptMessageViewModel.isUrlShoppingSite().observe(this, isShoppingSite -> {
-            int sheetState = BottomSheetBehavior.STATE_COLLAPSED;
-
-            if (isShoppingSite != null && isShoppingSite) {
-                if (shoppingSearchViewStub.getParent() != null) {
-                    setupShoppingSearchPrompt(shoppingSearchViewStub.inflate());
-                }
-
-                sheetState = BottomSheetBehavior.STATE_EXPANDED;
+        shoppingSearchPromptMessageViewModel.getPromptVisibilityState().observe(this, visibilityState -> {
+            if (shoppingSearchViewStub.getParent() != null) {
+                setupShoppingSearchPrompt(shoppingSearchViewStub.inflate());
             }
 
-            changeShoppingSearchPromptMessageState(sheetState);
+            if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Hidden) {
+                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_HIDDEN);
+            } else if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Collapsed) {
+                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_COLLAPSED);
+            } else if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Expanded) {
+                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_EXPANDED);
+            }
         });
 
         shoppingSearchPromptMessageViewModel.getShoppingSiteList().observe(this, unit -> {
-            shoppingSearchPromptMessageViewModel.checkIsShoppingSite(getUrl());
+            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(getUrl(), getHistorySiteUrl(false), getHistorySiteUrl(true));
         });
     }
     private void setupShoppingSearchPrompt(View view) {
         shoppingSearchPromptMessageBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet));
+
+        shoppingSearchPromptMessageBehavior.setHideable(true);
 
         shoppingSearchBottomSheetSearchBtn = view.findViewById(R.id.bottom_sheet_search);
         shoppingSearchBottomSheetSearchBtn.setOnClickListener(v -> shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().call());
@@ -550,11 +551,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             ScreenNavigator.NavigationState state = chromeViewModel.getNavigationState().getValue();
             if (state != null & state.isBrowser()) {
                 showFindInPage();
-            }
-        });
-        chromeViewModel.getCanGoBack().observe(this, unit -> {
-            if (canGoBack()) {
-                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }
@@ -1139,6 +1135,30 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 && sessionManager.getFocusSession().getCanGoBack();
     }
 
+    private String getHistorySiteUrl(boolean isPrevious) {
+        final Session currentTab = sessionManager.getFocusSession();
+        if (currentTab == null) {
+            return null;
+        } else {
+            final TabView current = currentTab.getEngineSession().getTabView();
+            if (current == null) {
+                return null;
+            } else if (isPrevious && !current.canGoBack()) {
+                return null;
+            } else if (!isPrevious && !current.canGoForward()) {
+                return null;
+            }
+
+            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
+            WebHistoryItem item = webBackForwardList.getItemAtIndex(isPrevious ? webBackForwardList.getCurrentIndex() - 1 : webBackForwardList.getCurrentIndex() + 1);
+            if (item != null) {
+                return item.getUrl();
+            } else {
+                return null;
+            }
+        }
+    }
+
     public void goBack() {
         final Session currentTab = sessionManager.getFocusSession();
         if (currentTab != null) {
@@ -1332,6 +1352,8 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 return;
             }
             updateURL(url);
+
+            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(url, getHistorySiteUrl(false), getHistorySiteUrl(true));
         }
 
         @Override
@@ -1640,6 +1662,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             dismissGeoDialog();
 
             updateURL(tab.getUrl());
+            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(tab.getUrl(), getHistorySiteUrl(false), getHistorySiteUrl(true));
             progressView.setProgress(0);
 
             int identity = (tab.getSecurityInfo().getSecure()) ? SITE_LOCK : SITE_GLOBE;
