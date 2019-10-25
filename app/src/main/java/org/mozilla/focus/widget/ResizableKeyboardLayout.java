@@ -7,10 +7,9 @@ package org.mozilla.focus.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Point;
 import android.util.AttributeSet;
-import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -33,6 +32,7 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
 
     @Nullable
     private View viewToHide;
+    private int marginBottom;
 
     private OnKeyboardVisibilityChangedListener keyboardVisibilityChangedListener;
 
@@ -58,44 +58,53 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
             styleAttributeArray.recycle();
         }
         this.setOnApplyWindowInsetsListener((v, insets) -> {
-            final int insetBottom = insets.getSystemWindowInsetBottom();
-            final int insetTop = insets.getSystemWindowInsetTop();
+            int difference = insets.getSystemWindowInsetBottom();
 
-            final Point point = new Point();
-            final Display display = getDisplay();
-            if (display == null) {
-                return insets;
-            } else {
-                display.getSize(point);
-            }
-            final int paddingBottom = insetBottom - (point.y - getBottom()) - insetTop;
+            if (difference != 0) {
+                // Keyboard showing -> Set difference has bottom padding.
+                if (getPaddingBottom() != difference) {
+                    setPadding(0, 0, 0, difference);
+                    // Zerda modification: We don't want extra margin in BrowserFragment for main
+                    // toolbar, so we truncate them.
+                    if (getLayoutParams() instanceof MarginLayoutParams) {
+                        ((MarginLayoutParams) getLayoutParams()).bottomMargin = 0;
+                    }
 
-            if (insetBottom != 0) {
-                if (getPaddingBottom() != paddingBottom) {
-                    setPadding(0, 0, 0, paddingBottom);
-                }
-                if (viewToHide != null) {
-                    viewToHide.setVisibility(View.GONE);
-                }
+                    if (viewToHide != null) {
+                        viewToHide.setVisibility(View.GONE);
+                    }
 
-                if (keyboardVisibilityChangedListener != null) {
-                    keyboardVisibilityChangedListener.onKeyboardVisibilityChanged(true);
+                    if (keyboardVisibilityChangedListener != null) {
+                        keyboardVisibilityChangedListener.onKeyboardVisibilityChanged(true);
+                    }
                 }
             } else {
+                // Keyboard not showing -> Reset bottom padding.
                 if (getPaddingBottom() != 0) {
                     setPadding(0, 0, 0, 0);
-                }
-                if (viewToHide != null) {
-                    viewToHide.setVisibility(View.VISIBLE);
-                }
+                    // Zerda modification: Restore previously canceled margin
+                    ((MarginLayoutParams) getLayoutParams()).bottomMargin = marginBottom;
 
-                if (keyboardVisibilityChangedListener != null) {
-                    keyboardVisibilityChangedListener.onKeyboardVisibilityChanged(false);
+                    if (viewToHide != null) {
+                        viewToHide.setVisibility(View.VISIBLE);
+                    }
+
+                    if (keyboardVisibilityChangedListener != null) {
+                        keyboardVisibilityChangedListener.onKeyboardVisibilityChanged(false);
+                    }
                 }
             }
-
             return insets;
         });
+    }
+
+    // Zerda modification: Intercept bottomMargin
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
+        if (params instanceof MarginLayoutParams) {
+            marginBottom = (((MarginLayoutParams) params).bottomMargin);
+        }
     }
 
     @Override
