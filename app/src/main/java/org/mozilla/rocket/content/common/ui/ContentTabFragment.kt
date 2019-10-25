@@ -120,6 +120,10 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         }
     }
 
+    fun setOnKeyboardVisibilityChangedListener(listener: ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener?) {
+        contentLayout.setOnKeyboardVisibilityChangedListener(listener)
+    }
+
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
 
     private fun goForward() = sessionManager.focusSession?.engineSession?.goForward()
