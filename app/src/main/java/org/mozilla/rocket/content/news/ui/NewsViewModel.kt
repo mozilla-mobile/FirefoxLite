@@ -20,7 +20,7 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
 
     private val categoryNewsMap = HashMap<String, MutableLiveData<NewsUiModel>>()
     private val categoryParameterMap = HashMap<String, LoadNewsParameter>()
-    private val versionId: Long = System.currentTimeMillis()
+    val versionId: Long = System.currentTimeMillis()
 
     val event = SingleLiveEvent<NewsAction>()
 

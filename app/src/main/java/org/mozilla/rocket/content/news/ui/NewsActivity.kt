@@ -39,7 +39,7 @@ class NewsActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        telemetryViewModel.onSessionEnded(TelemetryWrapper.Extra_Value.LIFESTYLE)
+        telemetryViewModel.onSessionEnded()
     }
 
     companion object {

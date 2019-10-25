@@ -2668,13 +2668,13 @@ object TelemetryWrapper {
             `object` = Object.CATEGORY,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "version"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version id"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
                 TelemetryExtra(name = Extra.IMPRESSION, value = "{subcategory id1: max index, subcategory id2: max index...}")
             ])
     fun categoryImpression(version: String, category: String, impression: String) {
         EventBuilder(Category.ACTION, Method.IMPRESSION, Object.CATEGORY)
-                .extra(Extra.VERSION, version)
+                .extra(Extra.VERSION_ID, version)
                 .extra(Extra.CATEGORY, category)
                 .extra(Extra.IMPRESSION, impression)
                 .queue()
