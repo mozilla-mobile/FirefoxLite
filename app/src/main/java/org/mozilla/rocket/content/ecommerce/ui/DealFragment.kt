@@ -38,6 +38,7 @@ class DealFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         dealViewModel = getActivityViewModel(dealViewModelCreator)
+        dealViewModel.requestDeals()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -30,6 +30,7 @@ class VoucherFragment : Fragment() {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         voucherViewModel = getActivityViewModel(voucherViewModelCreator)
+        voucherViewModel.requestVouchers()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

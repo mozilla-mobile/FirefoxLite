@@ -19,19 +19,7 @@ class CouponViewModel(
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _couponItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val result = getCoupons()
-                if (result is Result.Success) {
-                    value = ShoppingMapper.toCoupons(result.data)
-                } else if (result is Result.Error) {
-                    throw (result.exception)
-                }
-            }
-        }
-    }
-
+    private val _couponItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val couponItems: LiveData<List<DelegateAdapter.UiModel>> = _couponItems
 
     val openCoupon = SingleLiveEvent<String>()
@@ -40,7 +28,15 @@ class CouponViewModel(
         openCoupon.value = couponItem.linkUrl
     }
 
+    fun requestCoupons() {
+        getCouponUiModelList()
+    }
+
     fun onRetryButtonClicked() {
+        getCouponUiModelList()
+    }
+
+    fun getCouponUiModelList() {
         launchDataLoad {
             val result = getCoupons()
             if (result is Result.Success) {
