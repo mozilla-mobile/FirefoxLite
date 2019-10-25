@@ -84,8 +84,8 @@ open class MissionRepository(
         missionLocalDataSource.setJoinedAnyMissionBefore()
     }
 
-    fun requestContentHubClickOnboarding(missionTitle: String) {
-        showContentHubClickOnboarding.value = missionTitle
+    fun requestContentHubClickOnboarding(couponName: String) {
+        showContentHubClickOnboarding.value = couponName
     }
 
     fun getContentHubClickOnboardingEvent(): SingleLiveEvent<String> = showContentHubClickOnboarding

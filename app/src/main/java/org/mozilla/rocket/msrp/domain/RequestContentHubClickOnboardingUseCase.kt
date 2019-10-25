@@ -6,7 +6,7 @@ class RequestContentHubClickOnboardingUseCase(
     private val missionRepository: MissionRepository
 ) {
 
-    operator fun invoke(missionTitle: String) {
-        missionRepository.requestContentHubClickOnboarding(missionTitle)
+    operator fun invoke(couponName: String) {
+        missionRepository.requestContentHubClickOnboarding(couponName)
     }
 }
