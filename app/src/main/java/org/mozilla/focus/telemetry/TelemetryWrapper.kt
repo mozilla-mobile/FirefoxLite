@@ -2720,11 +2720,11 @@ object TelemetryWrapper {
             `object` = Object.PROCESS,
             value = Value.TAB_SWIPE,
             extras = [
-                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
             ])
     fun startTabSwipeProcess(vertical: String) {
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.TAB_SWIPE)
-                .extra(Extra.TYPE, vertical)
+                .extra(Extra.VERTICAL, vertical)
                 .queue()
         AdjustHelper.trackEvent(EVENT_START_TAB_SWIPE_PROCESS)
     }
@@ -2736,12 +2736,12 @@ object TelemetryWrapper {
             `object` = Object.PROCESS,
             value = Value.TAB_SWIPE,
             extras = [
-                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.LOADTIME, value = "[0-9]+")
             ])
     fun endTabSwipeProcess(vertical: String, loadTime: Long) {
         EventBuilder(Category.ACTION, Method.END, Object.PROCESS, Value.TAB_SWIPE)
-                .extra(Extra.TYPE, vertical)
+                .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.LOADTIME, loadTime.toString())
                 .queue()
     }
