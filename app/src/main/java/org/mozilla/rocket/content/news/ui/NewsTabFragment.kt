@@ -15,9 +15,8 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_news_tab.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.SettingsActivity
-import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.LIFESTYLE
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
@@ -31,8 +30,12 @@ class NewsTabFragment : Fragment() {
     @Inject
     lateinit var newsViewModelCreator: Lazy<NewsViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var newsTabViewModel: NewsTabViewModel
     private lateinit var newsViewModel: NewsViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
 
     private var newsSettings: Pair<NewsLanguage, List<NewsCategory>>? = null
 
@@ -55,6 +58,7 @@ class NewsTabFragment : Fragment() {
         if (savedInstanceState == null) {
             newsTabViewModel = getActivityViewModel(newsTabViewModelCreator)
             newsViewModel = getActivityViewModel(newsViewModelCreator)
+            telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
 
             newsTabViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
                 settings?.let {
@@ -78,6 +82,7 @@ class NewsTabFragment : Fragment() {
             newsSettings?.let {
                 newsViewModel.clear()
                 newsTabViewModel.refresh()
+                telemetryViewModel.onRefreshClicked()
             }
         }
     }
@@ -116,10 +121,15 @@ class NewsTabFragment : Fragment() {
 
                 override fun onPageSelected(p0: Int) {
                     if (newsSettings.second.size > p0) {
-                        TelemetryWrapper.openCategory(LIFESTYLE, newsSettings.second[p0].categoryId)
+                        telemetryViewModel.onCategorySelected(newsSettings.second[p0].categoryId, newsViewModel.versionId)
                     }
                 }
             })
+
+            // The first category should be selected by default
+            if (newsSettings.second.isNotEmpty()) {
+                telemetryViewModel.onCategorySelected(newsSettings.second[0].categoryId, newsViewModel.versionId)
+            }
         }
     }
 

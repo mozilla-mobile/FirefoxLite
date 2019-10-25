@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.news.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,9 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.NoResultView
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
+import org.mozilla.rocket.content.common.ui.updateImpression
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsItem
 import javax.inject.Inject
@@ -33,7 +37,11 @@ class NewsFragment : Fragment() {
     @Inject
     lateinit var newsViewModelCreator: Lazy<NewsViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var newsViewModel: NewsViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private var recyclerView: RecyclerView? = null
     private var newsEmptyView: NoResultView? = null
     private var newsProgressCenter: ProgressBar? = null
@@ -75,12 +83,18 @@ class NewsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         newsViewModel = getActivityViewModel(newsViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
 
         val newsLiveData: LiveData<NewsViewModel.NewsUiModel>? =
             newsViewModel.startToObserveNews(getCategory(), getLanguage())
         newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
             updateNews(items.newsList)
             isLoading = false
+
+            Looper.myQueue().addIdleHandler {
+                recyclerView?.updateImpression(telemetryViewModel, NewsItem.DEFAULT_SUB_CATEGORY_ID)
+                false
+            }
         })
 
         newsAdapter = NewsAdapter(getCategory(), newsViewModel)
@@ -99,6 +113,7 @@ class NewsFragment : Fragment() {
                     }
                 }
             })
+            recyclerView?.monitorScrollImpression(telemetryViewModel, NewsItem.DEFAULT_SUB_CATEGORY_ID)
         }
 
         newsViewModel.event.observe(this, Observer { event ->
