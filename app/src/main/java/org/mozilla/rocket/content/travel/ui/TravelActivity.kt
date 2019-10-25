@@ -36,7 +36,7 @@ class TravelActivity : FragmentActivity() {
 
         setContentView(R.layout.activity_travel)
 
-        tab = intent?.extras?.getParcelable(EXTRA_TAB) ?: Explore
+        tab = intent?.extras?.getParcelable(EXTRA_DEFAULT_TAB) ?: Explore
 
         initViewPager()
         initTabLayout()
@@ -66,11 +66,11 @@ class TravelActivity : FragmentActivity() {
     }
 
     companion object {
-        private const val EXTRA_TAB = "tab"
+        private const val EXTRA_DEFAULT_TAB = "default_tab"
         fun getStartIntent(context: Context, tab: Tab = Explore) =
                 Intent(context, TravelActivity::class.java).also {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    it.putExtra(EXTRA_TAB, tab)
+                    it.putExtra(EXTRA_DEFAULT_TAB, tab)
                 }
     }
 }

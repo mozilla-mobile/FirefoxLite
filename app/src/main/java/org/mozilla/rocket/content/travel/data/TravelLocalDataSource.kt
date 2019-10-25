@@ -19,11 +19,13 @@ import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class TravelLocalDataSource(private val appContext: Context) : TravelDataSource {
 
-    private val preference = StrictModeViolation.tempGrant({ builder ->
-        builder.permitDiskReads()
-    }, {
-        appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-    })
+    private val preference by lazy {
+        StrictModeViolation.tempGrant({ builder ->
+            builder.permitDiskReads()
+        }, {
+            appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        })
+    }
 
     override suspend fun getRunwayItems(): Result<List<RunwayItem>> {
         return withContext(Dispatchers.IO) {
@@ -37,14 +39,8 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
-    override suspend fun getBucketList(): Result<List<BucketListCity>> {
-        return withContext(Dispatchers.IO) {
-            try {
-                Success(getBucketListFromPreferences())
-            } catch (e: Exception) {
-                Result.Error(e)
-            }
-        }
+    override suspend fun getBucketList(): Result<List<BucketListCity>> = withContext(Dispatchers.IO) {
+        return@withContext Success(getBucketListFromPreferences())
     }
 
     override suspend fun searchCity(keyword: String): Result<List<City>> {
@@ -106,12 +102,16 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
     }
 
     private fun getBucketListFromPreferences(): MutableList<BucketListCity> {
-        val jsonString = preference.getString(KEY_JSON_STRING_BUCKET_LIST, "") ?: ""
-        val bucketList = ArrayList<BucketListCity>()
-        if (!TextUtils.isEmpty(jsonString)) {
-            bucketList.addAll(BucketListCity.fromJson(jsonString))
+        return try {
+            val jsonString = preference.getString(KEY_JSON_STRING_BUCKET_LIST, "") ?: ""
+            if (TextUtils.isEmpty(jsonString)) {
+                arrayListOf()
+            } else {
+                ArrayList<BucketListCity>().apply { addAll(BucketListCity.fromJson(jsonString)) }
+            }
+        } catch (e: Exception) {
+            arrayListOf()
         }
-        return bucketList
     }
 
     // TODO: remove mock data
