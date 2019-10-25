@@ -29,12 +29,7 @@ class TravelBucketListViewModel(
 
     fun getBucketList() {
         launchDataLoad {
-            val result = getBucketListUseCase()
-            if (result is Result.Success) {
-                _items.postValue(result.data.map { TravelMapper.toBucketListCityUiModel(it) })
-            } else if (result is Result.Error) {
-                throw (result.exception)
-            }
+            loadBucketList()
         }
     }
 
@@ -49,9 +44,16 @@ class TravelBucketListViewModel(
     fun removeCityFromBucket(cityItem: BucketListCityUiModel) {
         launchDataLoad {
             removeFromBucketListUseCase(cityItem.id)
-            val newItems = _items.value as MutableList<DelegateAdapter.UiModel>?
-            newItems?.remove(cityItem)
-            _items.postValue(newItems)
+            loadBucketList()
+        }
+    }
+
+    private suspend fun loadBucketList() {
+        val result = getBucketListUseCase()
+        if (result is Result.Success) {
+            _items.postValue(result.data.map { TravelMapper.toBucketListCityUiModel(it) })
+        } else if (result is Result.Error) {
+            throw (result.exception)
         }
     }
 
