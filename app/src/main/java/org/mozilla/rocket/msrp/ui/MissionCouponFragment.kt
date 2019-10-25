@@ -89,7 +89,7 @@ class MissionCouponFragment : Fragment() {
     }
 
     private fun bindData() {
-        viewModel.title.observe(this, Observer {
+        viewModel.couponName.observe(this, Observer {
             title.text = getString(R.string.msrp_voucher_title, it)
         })
         viewModel.expirationTime.observe(this, Observer { timeText ->
