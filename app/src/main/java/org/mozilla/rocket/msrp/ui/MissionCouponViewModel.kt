@@ -29,10 +29,11 @@ class MissionCouponViewModel(
 
     val showToast = SingleLiveEvent<ToastMessage>()
     val copyToClipboard = SingleLiveEvent<String>()
-    val openShoppingPage = SingleLiveEvent<Unit>()
+    val openShoppingPage = SingleLiveEvent<String>()
     val openFaqPage = SingleLiveEvent<Unit>()
 
     private lateinit var mission: Mission
+    private var couponWebsiteUrl: String? = null
 
     init {
         TelemetryWrapper.showCouponPage()
@@ -59,7 +60,7 @@ class MissionCouponViewModel(
             isLoading.value = false
             return@launch
         }
-        val couponCode = getCouponUseCase(mission).getNotNull {
+        val coupon = getCouponUseCase(mission).getNotNull {
             showToast.value = when (it) {
                 GetCouponUseCase.Error.NetworkError -> ToastMessage(R.string.msrp_reward_challenge_nointernet)
                 GetCouponUseCase.Error.UnknownError -> ToastMessage(R.string.msrp_reward_challenge_error)
@@ -67,14 +68,22 @@ class MissionCouponViewModel(
             isLoading.value = false
             return@launch
         }
-        this@MissionCouponViewModel.couponCode.value = couponCode
+        couponCode.value = coupon.couponCode
+        couponWebsiteUrl = coupon.websiteUrl
         isLoading.value = false
+    }
+
+    fun onCopyCouponButtonClicked() {
+        TelemetryWrapper.copyCodeOnCouponPage()
+        copyToClipboard.value = couponCode.value
+        showToast.value = ToastMessage(R.string.msrp_voucher_toast)
     }
 
     fun onGoShoppingButtonClicked() {
         TelemetryWrapper.clickGoUseOnCouponPage()
         copyToClipboard.value = couponCode.value
-        openShoppingPage.call()
+        showToast.value = ToastMessage(R.string.msrp_voucher_toast)
+        openShoppingPage.value = couponWebsiteUrl
     }
 
     fun onFaqButtonClick() {

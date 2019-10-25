@@ -1,6 +1,7 @@
 package org.mozilla.rocket.msrp.domain
 
 import org.mozilla.rocket.msrp.data.Mission
+import org.mozilla.rocket.msrp.data.MissionCoupon
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.data.RedeemServiceError
 import org.mozilla.rocket.msrp.data.UserRepository
@@ -12,7 +13,7 @@ class GetCouponUseCase(
     private val userRepository: UserRepository
 ) {
 
-    suspend operator fun invoke(mission: Mission): Result<String, Error> {
+    suspend operator fun invoke(mission: Mission): Result<MissionCoupon, Error> {
         val userToken = userRepository.getUserToken()
         return missionRepository.getCoupon(userToken, mission.mid, requireNotNull(mission.redeem)).map(
             transformResult = { it },

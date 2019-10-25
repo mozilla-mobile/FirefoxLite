@@ -2964,6 +2964,18 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Copy Code on Redeem Page",
+            category = Category.ACTION,
+            method = Method.COPY,
+            `object` = Object.REDEEM_PAGE,
+            value = Value.CODE,
+            extras = [])
+    fun copyCodeOnCouponPage() {
+        EventBuilder(Category.ACTION, Method.COPY, Object.REDEEM_PAGE, Value.CODE)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Click Redeem on Redeem Page",
             category = Category.ACTION,
             method = Method.CLICK,

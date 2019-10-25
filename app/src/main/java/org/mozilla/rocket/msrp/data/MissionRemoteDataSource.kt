@@ -313,7 +313,8 @@ class MissionRemoteDataSource {
                             resJson.optString("content"),
                             resJson.optLong("expire_date"),
                             resJson.optLong("created_timestamp"),
-                            resJson.optLong("updated_timestamp")
+                            resJson.optLong("updated_timestamp"),
+                            resJson.optString("open_link")
                         )
 
                         Result.success(reward) // return failure with message
@@ -409,16 +410,17 @@ class JoinMissionResult(val mid: String, val status: MissionJoinStatus)
 class QuitMissionResult(val mid: String, val status: MissionJoinStatus)
 
 class RewardCouponDoc(
-    var rid: String? = null,
-    var uid: String? = null,
-    var mid: String? = null,
-    var code: String? = null,
-    var campaign: String? = null,
-    var title: String? = null,
-    var content: String? = null,
-    var expire_date: Long? = null,
-    var created_timestamp: Long? = null,
-    var updated_timestamp: Long? = null
+    var rid: String,
+    var uid: String,
+    var mid: String,
+    var code: String,
+    var campaign: String,
+    var title: String,
+    var content: String,
+    var expire_date: Long,
+    var created_timestamp: Long,
+    var updated_timestamp: Long,
+    var open_link: String
 )
 
 sealed class RewardServiceError {

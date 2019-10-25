@@ -20,6 +20,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_code
+import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_copy_btn
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_expiration
 import kotlinx.android.synthetic.main.fragment_mission_coupon.coupon_go_shopping_btn
 import kotlinx.android.synthetic.main.fragment_mission_coupon.faq_text
@@ -30,7 +31,6 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.extension.showToast
 import javax.inject.Inject
@@ -63,6 +63,9 @@ class MissionCouponFragment : Fragment() {
 
     private fun initViews() {
         initFaqText()
+        coupon_copy_btn.setOnClickListener {
+            viewModel.onCopyCouponButtonClicked()
+        }
         coupon_go_shopping_btn.setOnClickListener {
             viewModel.onGoShoppingButtonClicked()
         }
@@ -113,8 +116,10 @@ class MissionCouponFragment : Fragment() {
         viewModel.copyToClipboard.observe(this, Observer { text ->
             copyToClipboard(COUPON_COPY_LABEL, text)
         })
-        viewModel.openShoppingPage.observe(this, Observer {
-            openShoppingPage()
+        viewModel.openShoppingPage.observe(this, Observer { url ->
+            if (url != null) {
+                openContentTab(url)
+            }
         })
         viewModel.openFaqPage.observe(this, Observer {
             openFaqPage()
@@ -127,8 +132,9 @@ class MissionCouponFragment : Fragment() {
         }
     }
 
-    private fun openShoppingPage() {
-        startActivity(ShoppingActivity.getStartIntent(requireContext()))
+    private fun openContentTab(url: String) {
+        val intent = ContentTabActivity.getStartIntent(requireContext(), url, enableTurboMode = true)
+        startActivity(intent)
     }
 
     private fun openFaqPage() {
