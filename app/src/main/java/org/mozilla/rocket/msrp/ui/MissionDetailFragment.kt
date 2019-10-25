@@ -89,7 +89,6 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         mission_step_text_1.text = getString(R.string.msrp_challenge_details_body_1, getString(R.string.app_name))
         initFaqText()
         initJoinTermsText()
-        initSignInText()
         join_button.setOnClickListener {
             if (missionDetailViewModel.isLoading.value != true) {
                 missionDetailViewModel.onJoinMissionButtonClicked()
@@ -144,20 +143,24 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         }
     }
 
-    private fun initSignInText() {
+    private fun initSignInText(needSignInLink: Boolean) {
         val signInStr = getString(R.string.msrp_challenge_details_sign_in_to_start)
         val signInDescriptionStr = getString(R.string.msrp_challenge_details_body_2, signInStr)
-        val signInIndex = signInDescriptionStr.indexOf(signInStr)
-        val str = SpannableString(signInDescriptionStr).apply {
-            setSpan(object : ClickableSpan() {
-                override fun onClick(widget: View) {
-                    missionDetailViewModel.onLoginButtonClicked()
-                }
-            }, signInIndex, signInIndex + signInStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-        sign_in_text.apply {
-            movementMethod = LinkMovementMethod.getInstance()
-            text = str
+        if (needSignInLink) {
+            val signInIndex = signInDescriptionStr.indexOf(signInStr)
+            val str = SpannableString(signInDescriptionStr).apply {
+                setSpan(object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        missionDetailViewModel.onLoginButtonClicked()
+                    }
+                }, signInIndex, signInIndex + signInStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            sign_in_text.apply {
+                movementMethod = LinkMovementMethod.getInstance()
+                text = str
+            }
+        } else {
+            sign_in_text.text = signInDescriptionStr
         }
     }
 
@@ -180,6 +183,9 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         })
         missionDetailViewModel.isLoading.observe(this, Observer {
             loading_view.isVisible = it
+        })
+        missionDetailViewModel.isFxAccount.observe(this, Observer { isFxAccount ->
+            initSignInText(needSignInLink = !isFxAccount)
         })
     }
 

@@ -1,5 +1,6 @@
 package org.mozilla.rocket.msrp.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.GetUserIdUseCase
 import org.mozilla.rocket.msrp.domain.IsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.IsNeedJoinMissionOnboardingUseCase
@@ -32,13 +34,15 @@ class MissionDetailViewModel(
     private val getUserIdUseCase: GetUserIdUseCase,
     private val bindFxAccountUseCase: BindFxAccountUseCase,
     private val isNeedJoinMissionOnboardingUseCase: IsNeedJoinMissionOnboardingUseCase,
-    private val requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase
+    private val requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase,
+    getIsFxAccountUseCase: GetIsFxAccountUseCase
 ) : ViewModel() {
 
     val missionStatus = MutableLiveData<Int>()
     val title = MutableLiveData<String>()
     val missionImage = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
+    val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
 
     val requestFxLogin = SingleLiveEvent<LoginAction>()
     val startMissionReminder = SingleLiveEvent<Mission>()
