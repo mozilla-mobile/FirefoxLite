@@ -5,7 +5,11 @@
 package org.mozilla.rocket.privately.home
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.airbnb.lottie.LottieAnimationView
 import dagger.Lazy
+import kotlinx.android.synthetic.main.fragment_private_homescreen.pm_home_brand_description
 import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -50,10 +55,14 @@ class PrivateHomeFragment : LocaleAwareFragment(),
     }
 
     @Override
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_private_homescreen, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_private_homescreen, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         logoMan = view.findViewById(R.id.pm_home_logo)
         fakeInput = view.findViewById(R.id.pm_home_fake_input)
+        initDescription()
 
         fakeInput.setOnClickListener { chromeViewModel.showUrlInput.call() }
         chromeViewModel.isHomePageUrlInputShowing.observe(this, Observer { isShowing ->
@@ -65,12 +74,20 @@ class PrivateHomeFragment : LocaleAwareFragment(),
             TelemetryWrapper.togglePrivateMode(false)
         }
         observeViewModel()
-
-        return view
     }
 
     override fun getFragment(): Fragment {
         return this
+    }
+
+    private fun initDescription() {
+        val highlightStr = getString(R.string.private_home_description_2)
+        val descriptionStr = getString(R.string.private_home_description_1, highlightStr)
+        val str = SpannableString(descriptionStr).apply {
+            val highlightIndex = descriptionStr.indexOf(highlightStr)
+            setSpan(ForegroundColorSpan(Color.WHITE), highlightIndex, highlightIndex + highlightStr.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        pm_home_brand_description.text = str
     }
 
     private fun observeViewModel() {

@@ -27,4 +27,8 @@
     <string name="travel_hotel_rating_from" translatable="false" tools:ignore="MissingTranslation">From</string>
     <string name="travel_hotel_free_cancellation" translatable="false" tools:ignore="MissingTranslation">Free cancellation</string>
     <string name="travel_hotel_pay_at_hotel" translatable="false" tools:ignore="MissingTranslation">Pay at hotel</string>
+
+    <!-- The %1$s here is a placeholder for "prevent you from being tracked"-->
+    <string name="private_home_description_1" translatable="false" tools:ignore="MissingTranslation">Now you can browse privately, no history, no passwords recorded and other people who use this device won’t see your activity.\n\nOur Advanced Private Browsing can even %1$s by advertisers and websites, which most private modes cannot.</string>
+    <string name="private_home_description_2" translatable="false" tools:ignore="MissingTranslation">prevent you from being tracked</string>
 </resources>
