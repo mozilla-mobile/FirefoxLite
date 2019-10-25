@@ -25,13 +25,9 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
-    @Inject
-    lateinit var telemetryViewModelCreator: Lazy<ContentTabTelemetryViewModel>
-
     private lateinit var sessionManager: SessionManager
     private var tabSession: Session? = null
     private lateinit var chromeViewModel: ChromeViewModel
-    private lateinit var telemetryViewModel: ContentTabTelemetryViewModel
     private lateinit var tabViewSlot: ViewGroup
     private lateinit var contentLayout: ResizableKeyboardLayout
 
@@ -39,7 +35,6 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
-        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,14 +45,7 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         super.onViewCreated(view, savedState)
 
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
-
         contentLayout = view.findViewById(R.id.main_content)
-        contentLayout.setOnKeyboardVisibilityChangedListener { visible ->
-            if (visible) {
-                contentLayout.setOnKeyboardVisibilityChangedListener(null)
-                telemetryViewModel.onKeyboardShown()
-            }
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

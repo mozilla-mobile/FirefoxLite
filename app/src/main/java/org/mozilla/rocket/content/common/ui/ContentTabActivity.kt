@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
 import android.os.Bundle
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -22,6 +23,7 @@ import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.widget.BackKeyHandleable
+import org.mozilla.focus.widget.ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener
 import org.mozilla.permissionhandler.PermissionHandler
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
@@ -94,9 +96,20 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         if (savedInstanceState == null) {
             val url = intent?.extras?.getString(EXTRA_URL) ?: ""
             val enableTurboMode = intent?.extras?.getBoolean(EXTRA_ENABLE_TURBO_MODE) ?: true
+            val contentTabFragment = ContentTabFragment.newInstance(url, enableTurboMode)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.browser_container, ContentTabFragment.newInstance(url, enableTurboMode))
+                .replace(R.id.browser_container, contentTabFragment)
                 .commit()
+
+            Looper.myQueue().addIdleHandler {
+                contentTabFragment.setOnKeyboardVisibilityChangedListener(OnKeyboardVisibilityChangedListener { visible ->
+                    if (visible) {
+                        contentTabFragment.setOnKeyboardVisibilityChangedListener(null)
+                        telemetryViewModel.onKeyboardShown()
+                    }
+                })
+                false
+            }
         }
     }
 
