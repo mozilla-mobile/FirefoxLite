@@ -13,14 +13,16 @@ class GetShoppingSearchSitesUseCase(val repository: ShoppingSearchRepository) {
                 it.filter { site -> site.isEnabled }
                     .map { site ->
                         ShoppingSearchSite(
-                            title = site.title,
-                            searchUrl = site.searchUrl + URLEncoder.encode(searchKeyword, "UTF-8")
+                            site.title,
+                            site.searchUrl + URLEncoder.encode(searchKeyword, "UTF-8"),
+                            site.displayUrl
                         )
                     }
             }
 
     data class ShoppingSearchSite(
         val title: String,
-        val searchUrl: String
+        val searchUrl: String,
+        val displayUrl: String
     )
 }

@@ -30,6 +30,7 @@ import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
+import org.mozilla.rocket.content.common.data.TabSwipeTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.strictmodeviolator.StrictModeViolation
@@ -151,6 +152,7 @@ object TelemetryWrapper {
         const val CONTENT_HUB = "content_hub"
         const val CONTENT_HOME = "content_home"
         const val CONTENT_TAB = "content_tab"
+        const val TAB_SWIPE = "tab_swipe"
         const val LOGOMAN = "logoman"
         const val NOTIFICATION = "notification"
         const val MESSAGE = "message"
@@ -2743,6 +2745,52 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.END, Object.PROCESS, Value.TAB_SWIPE)
                 .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.LOADTIME, loadTime.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Start Tab Swipe",
+            category = Category.ACTION,
+            method = Method.START,
+            `object` = Object.TAB_SWIPE,
+            value = "",
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.FEED, value = "feed"),
+                TelemetryExtra(name = Extra.SOURCE, value = "source")
+            ])
+    fun startTabSwipe(telemetryData: TabSwipeTelemetryData) {
+        EventBuilder(Category.ACTION, Method.START, Object.TAB_SWIPE)
+                .extra(Extra.VERTICAL, telemetryData.vertical)
+                .extra(Extra.FEED, telemetryData.feed)
+                .extra(Extra.SOURCE, telemetryData.source)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "End Tab Swipe",
+            category = Category.ACTION,
+            method = Method.END,
+            `object` = Object.TAB_SWIPE,
+            value = "",
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.FEED, value = "feed"),
+                TelemetryExtra(name = Extra.SOURCE, value = "source"),
+                TelemetryExtra(name = Extra.SESSION_TIME, value = "time duration from entering component"),
+                TelemetryExtra(name = Extra.URL_COUNTS, value = "url counts duration from entering component"),
+                TelemetryExtra(name = Extra.APP_LINK, value = "${Extra_Value.OPEN}|${Extra_Value.INSTALL}|null"),
+                TelemetryExtra(name = Extra.SHOW_KEYBOARD, value = "true|false")
+            ])
+    fun endTabSwipe(telemetryData: TabSwipeTelemetryData) {
+        EventBuilder(Category.ACTION, Method.END, Object.TAB_SWIPE)
+                .extra(Extra.VERTICAL, telemetryData.vertical)
+                .extra(Extra.FEED, telemetryData.feed)
+                .extra(Extra.SOURCE, telemetryData.source)
+                .extra(Extra.SESSION_TIME, telemetryData.sessionTime.toString())
+                .extra(Extra.URL_COUNTS, telemetryData.urlCounts.toString())
+                .extra(Extra.APP_LINK, telemetryData.appLink)
+                .extra(Extra.SHOW_KEYBOARD, telemetryData.showKeyboard.toString())
                 .queue()
     }
 
