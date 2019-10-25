@@ -216,7 +216,8 @@ object MissionModule {
         getUserIdUseCase: GetUserIdUseCase,
         bindFxAccountUseCase: BindFxAccountUseCase,
         isNeedJoinMissionOnboardingUseCase: IsNeedJoinMissionOnboardingUseCase,
-        requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase
+        requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase,
+        getIsFxAccountUseCase: GetIsFxAccountUseCase
     ): MissionDetailViewModel = MissionDetailViewModel(
         readMissionUseCase,
         joinMissionUseCase,
@@ -227,7 +228,8 @@ object MissionModule {
         getUserIdUseCase,
         bindFxAccountUseCase,
         isNeedJoinMissionOnboardingUseCase,
-        requestContentHubClickOnboardingUseCase
+        requestContentHubClickOnboardingUseCase,
+        getIsFxAccountUseCase
     )
 
     @JvmStatic
