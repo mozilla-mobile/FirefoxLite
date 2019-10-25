@@ -169,11 +169,10 @@ class MissionRemoteDataSource {
                 Result.success(JoinMissionResult(mid, status))
             }
             403 -> {
-                val errorBody = response.body.string()
-                if (errorBody.isEmpty()) {
+                if (body.isEmpty()) {
                     Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.AccountDisabled)
                 } else {
-                    when (val errorType = ErrorType.fromJson(response.body.string())) {
+                    when (val errorType = ErrorType.fromJson(body)) {
                         is ErrorType.Unknown -> Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.Unknown(errorType.message))
                         is ErrorType.NoQuota -> Result.error<JoinMissionResult, RewardServiceError>(error = RewardServiceError.NoQuota)
                     }
