@@ -21,7 +21,6 @@ class ShoppingSearchRepositoryTest {
     fun setUp() {
         remoteDataSource = Mockito.mock(ShoppingSearchDataSource::class.java)
         localDataSource = Mockito.mock(ShoppingSearchDataSource::class.java)
-        shoppingSearchRepository = ShoppingSearchRepository(remoteDataSource, localDataSource)
     }
 
     @Test
@@ -32,6 +31,8 @@ class ShoppingSearchRepositoryTest {
             ))
         Mockito.`when`(localDataSource.getShoppingSites())
             .thenReturn(emptyList())
+
+        shoppingSearchRepository = ShoppingSearchRepository(remoteDataSource, localDataSource)
 
         Assert.assertEquals(
             listOf(
@@ -53,6 +54,8 @@ class ShoppingSearchRepositoryTest {
                 ShoppingSite("Lazada", "https://www.lazada.co.id/catalog/?q=", "lazada.co.id", isEnabled = true),
                 ShoppingSite("Bukalapak", "https://www.bukalapak.com/products?utf8=✓&search%5Bkeywords%5D=", "bukalapak.com", isEnabled = false)
             ))
+
+        shoppingSearchRepository = ShoppingSearchRepository(remoteDataSource, localDataSource)
 
         Assert.assertEquals(
             listOf(
@@ -76,6 +79,8 @@ class ShoppingSearchRepositoryTest {
                 ShoppingSite("Lazada", "https://www.lazada.co.id/catalog/?q=", "lazada.co.id", isEnabled = false),
                 ShoppingSite("Tokopedia", "https://www.tokopedia.com/search?st=product&q=", "tokopedia.com", isEnabled = true)
             ))
+
+        shoppingSearchRepository = ShoppingSearchRepository(remoteDataSource, localDataSource)
 
         Assert.assertEquals(
             listOf(
