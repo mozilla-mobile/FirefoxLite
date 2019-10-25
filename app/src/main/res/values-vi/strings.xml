@@ -361,7 +361,6 @@
   <string name="private_home_title">Duyệt web riêng tư nâng cao</string>
   <string name="private_home_description"><![CDATA["Bây giờ bạn có thể duyệt riêng tư, không có lịch sử, không có mật khẩu được ghi lại và những người khác sử dụng thiết bị này sẽ không thấy hoạt động của bạn.\n\nDuyệt web riêng tư nâng cao của chúng tôi thậm chí có thể "<font xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" color="white">ng&#259;n b&#7841;n kh&#7887;i b&#7883; theo d&#245;i</font>" bởi các nhà quảng cáo và trang web, điều mà hầu hết các chế độ riêng tư không thể."]]></string>
   <string name="msrp_logoman_message">Giành phiếu mua hàng %1$s %2$s</string>
-  <string name="msrp_home_hint">Hãy thử mua sắm, tin tức, trò chơi hàng ngày để giành được phiếu giảm giá %1$s %2$s</string>
   <string name="msrp_reward_title">Phần thưởng</string>
   <string name="msrp_reward_category_1">Nhiệm vụ</string>
   <string name="msrp_reward_category_2">Quà tặng</string>

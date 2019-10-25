@@ -356,12 +356,12 @@ public class DialogUtils {
     public static Dialog showContentServiceRequestClickSpotlight(
             @NonNull final FragmentActivity activity,
             @NonNull final View targetView,
-            @NonNull final String missionTitle,
+            @NonNull final String couponName,
             @NonNull final DialogInterface.OnDismissListener dismissListener) {
 
         final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_content_services_request_click, null);
         TextView text = container.findViewById(R.id.content_services_plateform_onboarding_message);
-        text.setText(activity.getString(R.string.msrp_home_hint, missionTitle));
+        text.setText(activity.getString(R.string.msrp_home_hint, couponName));
 
         Dialog dialog = createContentServiceSpotlightDialog(activity, targetView, container,
                 activity.getResources().getDimensionPixelSize(R.dimen.content_service_focus_view_radius),

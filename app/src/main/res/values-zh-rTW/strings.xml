@@ -361,7 +361,6 @@
   <string name="private_home_title">進階隱私瀏覽模式</string>
   <string name="private_home_description"><![CDATA[現在起，您上網可以保持私密，不會留下上網紀錄、登入密碼，其他使用這台裝置的人也不會知道您曾經開過哪些網站。\n\n我們的進階隱私瀏覽功能，甚至可以<font xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" color="white">&#20445;&#35703;&#24744;&#19981;&#34987;&#24291;&#21578;&#21830;&#25110;&#32178;&#31449;&#36861;&#36452;</font>，這是其他大部分隱私模式做不到的。]]></string>
   <string name="msrp_logoman_message">贏得 %1$s %2$s 兌換券</string>
-  <string name="msrp_home_hint">每天使用購物、新聞、遊戲功能，即可獲得 %1$s %2$s 兌換券</string>
   <string name="msrp_reward_title">獎勵</string>
   <string name="msrp_reward_category_1">任務</string>
   <string name="msrp_reward_category_2">禮物</string>

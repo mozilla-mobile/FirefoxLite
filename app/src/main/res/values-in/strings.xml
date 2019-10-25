@@ -360,7 +360,7 @@
   <string name="content_home_error_message">Ups!\nTerjadi kesalahan</string>
   <string name="private_home_title">Penjelajahan Pribadi Tingkat Lanjut</string>
   <string name="msrp_logoman_message">Menangkan voucher %2$s sebesar %1$s</string>
-  <string name="msrp_home_hint">Coba Belanja, Berita, Gim setiap hari untuk memenangkan voucher %2$s sebesar %1$s</string>
+  <string name="msrp_home_hint">Coba Belanja, Berita, Gim setiap hari untuk memenangkan %1$s</string>
   <string name="msrp_reward_title">Hadiah</string>
   <string name="msrp_reward_category_1">Misi</string>
   <string name="msrp_reward_category_2">Hadiah</string>

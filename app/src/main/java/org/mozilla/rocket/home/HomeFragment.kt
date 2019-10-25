@@ -473,8 +473,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.openMissionDetailPage.observe(this, Observer { mission ->
             openMissionDetailPage(mission)
         })
-        homeViewModel.showContentHubClickOnboarding.observe(this, Observer { title ->
-            showRequestClickContentHubOnboarding(title)
+        homeViewModel.showContentHubClickOnboarding.observe(this, Observer { couponName ->
+            showRequestClickContentHubOnboarding(couponName)
         })
     }
 
@@ -492,12 +492,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 .show()
     }
 
-    private fun showRequestClickContentHubOnboarding(missionTitle: String) {
+    private fun showRequestClickContentHubOnboarding(couponName: String) {
         activity?.let {
             content_hub.post {
                 homeViewModel.onShowClickContentHubOnboarding()
                 setOnboardingStatusBarColor()
-                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub, missionTitle) {
+                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub, couponName) {
                     restoreStatusBarColor()
                     homeViewModel.onContentHubRequestClickHintDismissed()
                 }
