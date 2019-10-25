@@ -27,6 +27,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.common.ui.ContentTabHelper
 import org.mozilla.rocket.content.common.ui.ContentTabViewContract
+import org.mozilla.rocket.content.common.ui.TabSwipeTelemetryViewModel
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.view.BottomBar
@@ -51,8 +52,12 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     @Inject
     lateinit var bottomBarViewModelCreator: Lazy<ShoppingSearchBottomBarViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<TabSwipeTelemetryViewModel>
+
     private lateinit var shoppingSearchResultViewModel: ShoppingSearchResultViewModel
     private lateinit var chromeViewModel: ChromeViewModel
+    private lateinit var telemetryViewModel: TabSwipeTelemetryViewModel
     private lateinit var sessionManager: SessionManager
     private lateinit var contentTabHelper: ContentTabHelper
     private lateinit var contentTabObserver: ContentTabHelper.Observer
@@ -67,6 +72,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         super.onCreate(savedInstanceState)
         shoppingSearchResultViewModel = getViewModel(viewModelCreator)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -193,7 +199,15 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         }
 
         chromeViewModel.isRefreshing.switchFrom(bottomBarViewModel.items)
-            .observe(this, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
+            .observe(this, Observer {
+                bottomBarItemAdapter.setRefreshing(it == true)
+
+                if (it == true) {
+                    telemetryViewModel.onPageLoadingStarted()
+                } else {
+                    telemetryViewModel.onPageLoadingStopped()
+                }
+            })
         chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
             .observe(this, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
     }

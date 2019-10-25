@@ -5,6 +5,7 @@ import dagger.Provides
 import org.mozilla.rocket.content.common.ui.ContentTabBottomBarViewModel
 import org.mozilla.rocket.content.common.ui.ContentTabTelemetryViewModel
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.common.ui.TabSwipeTelemetryViewModel
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.di.ShoppingModule
 import org.mozilla.rocket.content.game.di.GameModule
@@ -29,4 +30,8 @@ object ContentModule {
     @JvmStatic
     @Provides
     fun provideContentTabTelemetryViewModel(): ContentTabTelemetryViewModel = ContentTabTelemetryViewModel()
+
+    @JvmStatic
+    @Provides
+    fun provideTabSwipeTelemetryViewModel(): TabSwipeTelemetryViewModel = TabSwipeTelemetryViewModel()
 }
