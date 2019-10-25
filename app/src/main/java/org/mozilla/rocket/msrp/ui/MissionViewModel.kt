@@ -14,7 +14,6 @@ import org.mozilla.rocket.msrp.domain.GetChallengeMissionsUseCase
 import org.mozilla.rocket.msrp.domain.GetRedeemMissionsUseCase
 import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
 import org.mozilla.rocket.msrp.ui.adapter.MissionUiModel
-import org.mozilla.rocket.util.TimeUtils
 import org.mozilla.rocket.util.isSuccess
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -87,13 +86,16 @@ class MissionViewModel(
         val mission = redeemMissions[position]
         when (mission.status) {
             Mission.STATUS_REDEEMABLE -> {
-                val expired = TimeUtils.getTimestampNow() > mission.expiredDate
+                val expired = System.currentTimeMillis() > mission.redeemEndDate
                 if (!expired) {
                     openMissionDetailPage.value = mission
                 }
             }
             Mission.STATUS_REDEEMED -> {
-                openRedeemPage.value = mission
+                val expired = System.currentTimeMillis() > mission.rewardExpiredDate
+                if (!expired) {
+                    openRedeemPage.value = mission
+                }
             }
         }
     }
@@ -125,7 +127,7 @@ private fun Mission.toUiModel(): MissionUiModel = when (status) {
         }
     )
     Mission.STATUS_REDEEMABLE -> {
-        val expired = TimeUtils.getTimestampNow() > redeemEndDate
+        val expired = System.currentTimeMillis() > redeemEndDate
         if (!expired) {
             MissionUiModel.RedeemableMission(
                 title = title,
@@ -138,7 +140,7 @@ private fun Mission.toUiModel(): MissionUiModel = when (status) {
         }
     }
     Mission.STATUS_REDEEMED -> {
-        val expired = TimeUtils.getTimestampNow() > rewardExpiredDate
+        val expired = System.currentTimeMillis() > rewardExpiredDate
         if (!expired) {
             MissionUiModel.RedeemedMission(
                 title = title,
