@@ -24,7 +24,7 @@ open class MissionRepository(
         appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     })
 
-    private val couponCache = LruCache<String, String>(COUPON_CACHE_SIZE) // mission unique id -> coupon code
+    private val couponCache = LruCache<String, MissionCoupon>(COUPON_CACHE_SIZE) // mission unique id -> coupon
     private val missionsLiveData = MutableLiveData<List<Mission>>()
     private val showContentHubClickOnboarding = SingleLiveEvent<String>()
 
@@ -60,20 +60,20 @@ open class MissionRepository(
 
     suspend fun redeem(userToken: String?, missionId: String, redeemEndPoint: String): Result<RewardCouponDoc, RedeemServiceError> =
             missionRemoteDataSource.redeem(userToken, redeemEndPoint).also { result ->
-                result.data?.code?.let { couponCode ->
-                    couponCache.put(missionId, couponCode)
+                result.data?.let {
+                    couponCache.put(missionId, MissionCoupon(it.code, it.open_link))
                 }
             }
 
-    suspend fun getCoupon(userToken: String?, missionId: String, redeemUrl: String): Result<String, RedeemServiceError> {
+    suspend fun getCoupon(userToken: String?, missionId: String, redeemUrl: String): Result<MissionCoupon, RedeemServiceError> {
         val cachedCouponCode = couponCache[missionId]
         return if (cachedCouponCode != null) {
             Result.success(cachedCouponCode)
         } else {
             missionRemoteDataSource.redeem(userToken, redeemUrl).map {
-                val couponCode = it.code ?: return Result.error(error = RedeemServiceError.Failure("Coupon code is null"))
-                couponCache.put(missionId, couponCode)
-                couponCode
+                MissionCoupon(it.code, it.open_link).also { coupon ->
+                    couponCache.put(missionId, coupon)
+                }
             }
         }
     }
@@ -113,3 +113,8 @@ open class MissionRepository(
         private const val COUPON_CACHE_SIZE = 10
     }
 }
+
+data class MissionCoupon(
+    val couponCode: String,
+    val websiteUrl: String
+)
