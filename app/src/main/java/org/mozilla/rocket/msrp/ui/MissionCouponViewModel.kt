@@ -22,7 +22,7 @@ class MissionCouponViewModel(
 ) : ViewModel() {
 
     val isLoading = MutableLiveData<Boolean>()
-    val title = MutableLiveData<String>()
+    val couponName = MutableLiveData<String>()
     val expirationTime = MutableLiveData<String>()
     val couponCode = MutableLiveData<String>()
     val missionImage = MutableLiveData<String>()
@@ -46,7 +46,7 @@ class MissionCouponViewModel(
                 expirationTime.postValue(mission.rewardExpiredDate.toDateString())
             }
         }
-        title.value = mission.title
+        couponName.value = mission.description
         missionImage.value = mission.imageUrl
         fetchCoupon(mission)
     }
