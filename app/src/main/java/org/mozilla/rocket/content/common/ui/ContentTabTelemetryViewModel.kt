@@ -7,8 +7,9 @@ import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 class ContentTabTelemetryViewModel : ViewModel() {
 
     private var telemetryDataModel: ContentTabTelemetryData? = null
-    private var sessionTime: Long = 0L
+    private var sessionTimeStart: Long = 0L
     private var lastUrlLoadStart = 0L
+    private var lastUrlLoadEnd = 0L
     private var lastUrlLoadTime = 0L
 
     fun initialize(telemetryData: ContentTabTelemetryData?) {
@@ -16,7 +17,7 @@ class ContentTabTelemetryViewModel : ViewModel() {
     }
 
     fun onSessionStarted() {
-        sessionTime = System.currentTimeMillis()
+        sessionTimeStart = System.currentTimeMillis()
 
         telemetryDataModel?.let {
             TelemetryWrapper.startContentTab(it)
@@ -24,10 +25,16 @@ class ContentTabTelemetryViewModel : ViewModel() {
     }
 
     fun onSessionEnded() {
-        telemetryDataModel?.sessionTime = (System.currentTimeMillis() - sessionTime)
+        telemetryDataModel?.sessionTime = (System.currentTimeMillis() - sessionTimeStart)
 
         telemetryDataModel?.let {
             TelemetryWrapper.endContentTab(it)
+
+            lastUrlLoadTime = if (lastUrlLoadEnd > lastUrlLoadStart) {
+                lastUrlLoadEnd - lastUrlLoadStart
+            } else {
+                0L
+            }
             TelemetryWrapper.endVerticalProcess(it.vertical, lastUrlLoadTime)
         }
     }
@@ -37,7 +44,9 @@ class ContentTabTelemetryViewModel : ViewModel() {
     }
 
     fun onPageLoadingStopped() {
-        lastUrlLoadTime = System.currentTimeMillis() - lastUrlLoadStart
+        if (lastUrlLoadStart > 0L) {
+            lastUrlLoadEnd = System.currentTimeMillis()
+        }
     }
 
     fun onUrlOpened() {
