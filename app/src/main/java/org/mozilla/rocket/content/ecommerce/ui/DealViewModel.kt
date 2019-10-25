@@ -19,18 +19,7 @@ class DealViewModel(
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _dealItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val result = getDeals()
-                if (result is Result.Success) {
-                    value = ShoppingMapper.toDeals(result.data)
-                } else if (result is Result.Error) {
-                    throw (result.exception)
-                }
-            }
-        }
-    }
+    private val _dealItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val dealItems: LiveData<List<DelegateAdapter.UiModel>> = _dealItems
 
     val openProduct = SingleLiveEvent<String>()
@@ -39,7 +28,15 @@ class DealViewModel(
         openProduct.value = productItem.linkUrl
     }
 
+    fun requestDeals() {
+        getDealsUiModelList()
+    }
+
     fun onRetryButtonClicked() {
+        getDealsUiModelList()
+    }
+
+    fun getDealsUiModelList() {
         launchDataLoad {
             val result = getDeals()
             if (result is Result.Success) {

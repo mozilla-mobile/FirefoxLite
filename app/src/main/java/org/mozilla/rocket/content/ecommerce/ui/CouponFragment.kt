@@ -30,6 +30,7 @@ class CouponFragment : Fragment() {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         couponViewModel = getActivityViewModel(couponViewModelCreator)
+        couponViewModel.requestCoupons()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

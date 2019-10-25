@@ -23,22 +23,22 @@ class VoucherViewModel(
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
-    private val _voucherItems by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val result = getVouchers()
-                if (result is Result.Success) {
-                    value = result.data.jsonStringToVoucherItems()
-                }
-            }
-        }
-    }
+    private val _voucherItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
 
     val openVoucher = SingleLiveEvent<String>()
 
     fun onVoucherItemClicked(voucherItem: Voucher) {
         openVoucher.value = voucherItem.url
+    }
+
+    fun requestVouchers() {
+        launchDataLoad {
+            val result = getVouchers()
+            if (result is Result.Success) {
+                _voucherItems.postValue(result.data.jsonStringToVoucherItems())
+            }
+        }
     }
 
     private fun String.jsonStringToVoucherItems(): List<Voucher>? {
