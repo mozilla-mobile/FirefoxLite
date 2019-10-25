@@ -9,13 +9,13 @@
     "name": "YouTube",
     "searchUrlPattern": "https://www.youtube.com/results?search_query=%s",
     "homeUrl": "https://www.youtube.com",
-    "icon": "ic_youtube.webp"
+    "icon": "ic_youtube.png"
   },
   {
     "name": "Instagram",
     "searchUrlPattern": "https://www.instagram.com/explore/tags/%s/",
     "homeUrl": "https://www.instagram.com",
-    "icon": "ic_instagram.webp",
+    "icon": "ic_instagram.png",
     "permitSpace": false
   }
 ]

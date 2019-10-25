@@ -3,7 +3,7 @@
     "id": -1,
     "url": "https://m.youtube.com",
     "title": "Youtube",
-    "favicon": "ic_youtube.webp",
+    "favicon": "ic_youtube.png",
     "viewCount": 20
   },
   {
@@ -24,7 +24,7 @@
     "id": -4,
     "url": "https://www.indiatimes.com",
     "title": "Indiatimes",
-    "favicon": "ic_indiatimes.webp",
+    "favicon": "ic_indiatimes.png",
     "viewCount": 14
   },
   {
@@ -38,21 +38,21 @@
     "id": -6,
     "url": "https://www.hotstar.com",
     "title": "Hotstar",
-    "favicon": "ic_hotstar.webp",
+    "favicon": "ic_hotstar.png",
     "viewCount": 10
   },
   {
     "id": -7,
     "url": "mobile.twitter.com",
     "title": "Twitter",
-    "favicon": "ic_twitter.webp",
+    "favicon": "ic_twitter.png",
     "viewCount": 8
   },
   {
     "id": -8,
     "url": "https://www.linkedin.com",
     "title": "Linkedin",
-    "favicon": "ic_linkedin.webp",
+    "favicon": "ic_linkedin.png",
     "viewCount": 6
   },
   {
@@ -66,14 +66,14 @@
     "id": -10,
     "url": "https://www.reddit.com",
     "title": "Reddit",
-    "favicon": "ic_reddit.webp",
+    "favicon": "ic_reddit.png",
     "viewCount": 4
   },
   {
     "id": -11,
     "url": "https://www.instagram.com",
     "title": "Instagram",
-    "favicon": "ic_instagram.webp",
+    "favicon": "ic_instagram.png",
     "viewCount": 3
   },
   {
