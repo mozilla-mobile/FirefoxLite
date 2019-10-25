@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -79,7 +78,16 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         setupBottomBar(view)
 
         appbar.setOnApplyWindowInsetsListener { v, insets ->
-            (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
+            (v.layoutParams as ViewGroup.MarginLayoutParams).topMargin = insets.systemWindowInsetTop
+            insets
+        }
+        view_pager.setOnApplyWindowInsetsListener { v, insets ->
+            if (insets.systemWindowInsetBottom == 0) {
+                //  TODO: move this offset to resource, not hard-codeed *2 here
+                v.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.fixed_menu_height) * 2)
+            } else {
+                v.setPadding(0, 0, 0, 0)
+            }
             insets
         }
     }
