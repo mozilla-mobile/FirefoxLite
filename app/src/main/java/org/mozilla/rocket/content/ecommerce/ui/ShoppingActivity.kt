@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_shopping.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ShoppingTabsAdapter
 import org.mozilla.rocket.content.getViewModel
 import javax.inject.Inject
@@ -20,13 +21,18 @@ class ShoppingActivity : FragmentActivity() {
     @Inject
     lateinit var shoppingViewModelCreator: Lazy<ShoppingViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var shoppingViewModel: ShoppingViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var adapter: ShoppingTabsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         shoppingViewModel = getViewModel(shoppingViewModelCreator)
+        telemetryViewModel = getViewModel(telemetryViewModelCreator)
         setContentView(R.layout.activity_shopping)
         initViewPager()
         initTabLayout()
@@ -67,13 +73,12 @@ class ShoppingActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.SHOPPING)
+        telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.SHOPPING)
     }
 
     override fun onPause() {
         super.onPause()
-        // TODO: fix loadTime
-        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.SHOPPING, 0)
+        telemetryViewModel.onSessionEnded()
     }
 
     companion object {
