@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.ecommerce.domain.GetCouponsUseCase
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -22,10 +24,21 @@ class CouponViewModel(
     private val _couponItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val couponItems: LiveData<List<DelegateAdapter.UiModel>> = _couponItems
 
-    val openCoupon = SingleLiveEvent<String>()
+    val openCoupon = SingleLiveEvent<OpenLinkAction>()
+
+    var versionId = 0L
 
     fun onCouponItemClicked(couponItem: Coupon) {
-        openCoupon.value = couponItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.SHOPPING,
+            "",
+            couponItem.source,
+            couponItem.category,
+            couponItem.componentId,
+            couponItem.subCategoryId,
+            versionId
+        )
+        openCoupon.value = OpenLinkAction(couponItem.linkUrl, telemetryData)
     }
 
     fun requestCoupons() {
@@ -41,6 +54,7 @@ class CouponViewModel(
             val result = getCoupons()
             if (result is Result.Success) {
                 _couponItems.postValue(ShoppingMapper.toCoupons(result.data))
+                versionId = result.data.version
             } else if (result is Result.Error) {
                 throw (result.exception)
             }
@@ -58,6 +72,8 @@ class CouponViewModel(
             }
         }
     }
+
+    data class OpenLinkAction(val url: String, val telemetryData: ContentTabTelemetryData)
 
     sealed class State {
         object Idle : State()
