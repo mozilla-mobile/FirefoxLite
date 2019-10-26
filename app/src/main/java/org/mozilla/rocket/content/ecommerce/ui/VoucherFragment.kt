@@ -62,9 +62,9 @@ class VoucherFragment : Fragment() {
     }
 
     private fun observeAction() {
-        voucherViewModel.openVoucher.observe(this, Observer { linkUrl ->
+        voucherViewModel.openVoucher.observe(this, Observer { action ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+                startActivity(ContentTabActivity.getStartIntent(it, action.url, action.telemetryData))
             }
         })
     }

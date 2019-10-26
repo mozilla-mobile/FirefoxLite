@@ -8,12 +8,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONException
 import org.json.JSONObject
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.ecommerce.domain.GetVouchersUseCase
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.util.sha256
 import org.mozilla.rocket.util.toJsonArray
 
 class VoucherViewModel(
@@ -26,10 +29,21 @@ class VoucherViewModel(
     private val _voucherItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val voucherItems: LiveData<List<DelegateAdapter.UiModel>> = _voucherItems
 
-    val openVoucher = SingleLiveEvent<String>()
+    val openVoucher = SingleLiveEvent<OpenLinkAction>()
+
+    val versionId = System.currentTimeMillis()
 
     fun onVoucherItemClicked(voucherItem: Voucher) {
-        openVoucher.value = voucherItem.url
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.SHOPPING,
+            "",
+            voucherItem.source,
+            "Vouchers",
+            voucherItem.url.sha256(),
+            "",
+            versionId
+        )
+        openVoucher.value = OpenLinkAction(voucherItem.url, telemetryData)
     }
 
     fun requestVouchers() {
@@ -72,6 +86,8 @@ class VoucherViewModel(
             }
         }
     }
+
+    data class OpenLinkAction(val url: String, val telemetryData: ContentTabTelemetryData)
 
     sealed class State {
         object Idle : State()
