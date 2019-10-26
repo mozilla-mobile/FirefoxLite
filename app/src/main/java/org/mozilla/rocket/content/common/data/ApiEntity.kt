@@ -89,6 +89,8 @@ data class ApiCategory(
 
 data class ApiItem(
     val sourceName: String,
+    val categoryName: String,
+    val subCategoryId: String,
     val image: String,
     val destination: String,
     val title: String,
@@ -104,6 +106,8 @@ data class ApiItem(
     fun toJsonObject(): JSONObject {
         val jsonObject = JSONObject()
         jsonObject.put(KEY_SOURCE_NAME, sourceName)
+        jsonObject.put(KEY_CATEGORY_NAME, categoryName)
+        jsonObject.put(KEY_SUB_CATEGORY_ID, subCategoryId)
         jsonObject.put(KEY_IMAGE, image)
         jsonObject.put(KEY_DESTINATION, destination)
         jsonObject.put(KEY_TITLE, title)
@@ -119,10 +123,12 @@ data class ApiItem(
 
     companion object {
         private const val KEY_SOURCE_NAME = "source_name"
+        private const val KEY_CATEGORY_NAME = "category_name"
+        private const val KEY_SUB_CATEGORY_ID = "subcategory_id"
         private const val KEY_IMAGE = "image"
         private const val KEY_DESTINATION = "destination"
         private const val KEY_TITLE = "title"
-        private const val KEY_COMPONENT_ID = "componentId"
+        private const val KEY_COMPONENT_ID = "component_id"
         private const val KEY_PRICE = "price"
         private const val KEY_DISCOUNT = "discount"
         private const val KEY_SCORE = "score"
@@ -133,6 +139,8 @@ data class ApiItem(
         fun fromJson(jsonObject: JSONObject): ApiItem =
             ApiItem(
                 jsonObject.optString(KEY_SOURCE_NAME),
+                jsonObject.optString(KEY_CATEGORY_NAME),
+                jsonObject.optString(KEY_SUB_CATEGORY_ID),
                 jsonObject.optString(KEY_IMAGE),
                 jsonObject.optString(KEY_DESTINATION),
                 jsonObject.optString(KEY_TITLE),

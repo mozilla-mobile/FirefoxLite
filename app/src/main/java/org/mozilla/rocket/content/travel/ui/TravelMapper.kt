@@ -34,6 +34,8 @@ object TravelMapper {
     private fun toRunwayItemUiModel(item: RunwayItem): org.mozilla.rocket.content.common.adapter.RunwayItem =
             org.mozilla.rocket.content.common.adapter.RunwayItem(
                 item.source,
+                item.category,
+                item.subCategoryId,
                 item.imageUrl,
                 item.linkUrl,
                 "",

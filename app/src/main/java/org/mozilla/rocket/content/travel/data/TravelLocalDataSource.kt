@@ -124,7 +124,9 @@ private fun createRunwayItem(jsonObject: JSONObject): RunwayItem =
             jsonObject.optInt("id"),
             jsonObject.optString("image_url"),
             jsonObject.optString("link_url"),
-            jsonObject.optString("source")
+            jsonObject.optString("source"),
+            jsonObject.optString("category_name"),
+            jsonObject.optString("subcategory_id")
         )
 
 private fun String.jsonStringToCityCategories(): List<CityCategory>? {

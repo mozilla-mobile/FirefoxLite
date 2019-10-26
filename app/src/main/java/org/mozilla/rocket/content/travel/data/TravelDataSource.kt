@@ -18,7 +18,9 @@ data class RunwayItem(
     val id: Int,
     val imageUrl: String,
     val linkUrl: String,
-    val source: String
+    val source: String,
+    val category: String,
+    val subCategoryId: String
 )
 
 data class City(
