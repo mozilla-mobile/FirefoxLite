@@ -8,6 +8,8 @@ import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
+import java.util.concurrent.TimeUnit
+import kotlin.math.ceil
 
 object ShoppingMapper {
 
@@ -64,8 +66,17 @@ object ShoppingMapper {
                     item.destination,
                     item.title,
                     item.componentId,
-                    3L
+                    item.endDate.toRemainingDays()
                 )
             }
+    }
+
+    private fun Long.toRemainingDays(): Long {
+        val currentTime = System.currentTimeMillis()
+        return when {
+            this == 0L -> Long.MIN_VALUE
+            this < currentTime -> 0L
+            else -> ceil((this - currentTime).toDouble() / TimeUnit.DAYS.toMillis(1)).toLong()
+        }
     }
 }

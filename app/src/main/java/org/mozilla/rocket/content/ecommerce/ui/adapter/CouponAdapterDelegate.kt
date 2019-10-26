@@ -32,8 +32,12 @@ class CouponViewHolder(
 
         coupon_brand.text = couponItem.source
         coupon_title.text = couponItem.title
-        val remainFormat = itemView.context.getString(R.string.shopping_coupon_expire_other)
-        coupon_remain.text = String.format(remainFormat, couponItem.endDate)
+        coupon_remain.text = when (couponItem.remainingDays) {
+            Long.MIN_VALUE -> ""
+            0L -> itemView.context.getString(R.string.shopping_coupon_expire_zero)
+            1L -> itemView.context.getString(R.string.shopping_coupon_expire_one)
+            else -> itemView.context.getString(R.string.shopping_coupon_expire_other, couponItem.remainingDays)
+        }
 
         GlideApp.with(itemView.context)
             .asBitmap()
@@ -62,5 +66,5 @@ data class Coupon(
     val linkUrl: String,
     val title: String,
     val componentId: String,
-    val endDate: Long
+    val remainingDays: Long
 ) : DelegateAdapter.UiModel()
