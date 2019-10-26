@@ -42,6 +42,8 @@ object GameDataMapper {
     private fun toRunwayItem(item: ApiItem): RunwayItem =
         RunwayItem(
             item.sourceName,
+            item.categoryName,
+            item.subCategoryId,
             item.image,
             item.destination,
             item.title,
@@ -51,6 +53,8 @@ object GameDataMapper {
     private fun toGameItem(item: ApiItem, gameType: GameType = GameType.Normal): Game =
         Game(
             item.sourceName,
+            item.categoryName,
+            item.subCategoryId,
             item.image,
             item.destination,
             item.title,
@@ -62,6 +66,8 @@ object GameDataMapper {
     fun toApiItem(game: Game): ApiItem =
         ApiItem(
             game.brand,
+            game.category,
+            game.subCategoryId,
             game.imageUrl,
             game.linkUrl,
             game.name,

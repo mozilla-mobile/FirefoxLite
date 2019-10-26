@@ -4,6 +4,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 
 data class Game(
     val brand: String,
+    val category: String,
+    val subCategoryId: String,
     val imageUrl: String,
     val linkUrl: String,
     val name: String,

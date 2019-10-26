@@ -62,6 +62,8 @@ class CouponViewHolder(
 
 data class Coupon(
     val source: String,
+    val category: String,
+    val subCategoryId: String,
     val imageUrl: String,
     val linkUrl: String,
     val title: String,
