@@ -72,9 +72,9 @@ class CouponFragment : Fragment() {
     }
 
     private fun observeAction() {
-        couponViewModel.openCoupon.observe(this, Observer { linkUrl ->
+        couponViewModel.openCoupon.observe(this, Observer { action ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+                startActivity(ContentTabActivity.getStartIntent(it, action.url, action.telemetryData))
             }
         })
     }
