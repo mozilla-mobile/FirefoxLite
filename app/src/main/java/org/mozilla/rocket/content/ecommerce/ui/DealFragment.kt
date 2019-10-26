@@ -89,9 +89,9 @@ class DealFragment : Fragment() {
             }
         })
 
-        dealViewModel.openProduct.observe(this, Observer { linkUrl ->
+        dealViewModel.openProduct.observe(this, Observer { action ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+                startActivity(ContentTabActivity.getStartIntent(it, action.url, action.telemetryData))
             }
         })
     }
