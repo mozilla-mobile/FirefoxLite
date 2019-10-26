@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.ecommerce.domain.GetDealsUseCase
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductItem
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -22,10 +24,21 @@ class DealViewModel(
     private val _dealItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val dealItems: LiveData<List<DelegateAdapter.UiModel>> = _dealItems
 
-    val openProduct = SingleLiveEvent<String>()
+    val openProduct = SingleLiveEvent<OpenLinkAction>()
+
+    var versionId = 0L
 
     fun onProductItemClicked(productItem: ProductItem) {
-        openProduct.value = productItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.SHOPPING,
+            "",
+            productItem.source,
+            productItem.category,
+            productItem.componentId,
+            productItem.subCategoryId,
+            versionId
+        )
+        openProduct.value = OpenLinkAction(productItem.linkUrl, telemetryData)
     }
 
     fun requestDeals() {
@@ -41,6 +54,7 @@ class DealViewModel(
             val result = getDeals()
             if (result is Result.Success) {
                 _dealItems.postValue(ShoppingMapper.toDeals(result.data))
+                versionId = result.data.version
             } else if (result is Result.Error) {
                 throw (result.exception)
             }
@@ -58,6 +72,8 @@ class DealViewModel(
             }
         }
     }
+
+    data class OpenLinkAction(val url: String, val telemetryData: ContentTabTelemetryData)
 
     sealed class State {
         object Idle : State()
