@@ -16,6 +16,7 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategoryAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -29,8 +30,12 @@ class DealFragment : Fragment() {
     @Inject
     lateinit var dealViewModelCreator: Lazy<DealViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var dealViewModel: DealViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var dealAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +43,7 @@ class DealFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         dealViewModel = getActivityViewModel(dealViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
         dealViewModel.requestDeals()
     }
 
@@ -69,6 +75,7 @@ class DealFragment : Fragment() {
     private fun bindListData() {
         dealViewModel.dealItems.observe(this@DealFragment, Observer {
             dealAdapter.setData(it)
+            telemetryViewModel.updateVersionId(dealViewModel.versionId)
         })
     }
 

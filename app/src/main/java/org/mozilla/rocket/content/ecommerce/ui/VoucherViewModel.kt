@@ -31,7 +31,7 @@ class VoucherViewModel(
 
     val openVoucher = SingleLiveEvent<OpenLinkAction>()
 
-    val versionId = System.currentTimeMillis()
+    var versionId = 0L
 
     fun onVoucherItemClicked(voucherItem: Voucher) {
         val telemetryData = ContentTabTelemetryData(
@@ -50,6 +50,7 @@ class VoucherViewModel(
         launchDataLoad {
             val result = getVouchers()
             if (result is Result.Success) {
+                versionId = System.currentTimeMillis()
                 _voucherItems.postValue(result.data.jsonStringToVoucherItems())
             }
         }

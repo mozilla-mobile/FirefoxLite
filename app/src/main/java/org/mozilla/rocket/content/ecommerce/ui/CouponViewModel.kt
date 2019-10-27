@@ -53,8 +53,8 @@ class CouponViewModel(
         launchDataLoad {
             val result = getCoupons()
             if (result is Result.Success) {
-                _couponItems.postValue(ShoppingMapper.toCoupons(result.data))
                 versionId = result.data.version
+                _couponItems.postValue(ShoppingMapper.toCoupons(result.data))
             } else if (result is Result.Error) {
                 throw (result.exception)
             }

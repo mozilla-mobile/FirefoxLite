@@ -121,14 +121,14 @@ class NewsTabFragment : Fragment() {
 
                 override fun onPageSelected(p0: Int) {
                     if (newsSettings.second.size > p0) {
-                        telemetryViewModel.onCategorySelected(newsSettings.second[p0].categoryId, newsViewModel.versionId)
+                        telemetryViewModel.onCategorySelected(newsSettings.second[p0].categoryId)
                     }
                 }
             })
 
             // The first category should be selected by default
             if (newsSettings.second.isNotEmpty()) {
-                telemetryViewModel.onCategorySelected(newsSettings.second[0].categoryId, newsViewModel.versionId)
+                telemetryViewModel.onCategorySelected(newsSettings.second[0].categoryId)
             }
         }
     }

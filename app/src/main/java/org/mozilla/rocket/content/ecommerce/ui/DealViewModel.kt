@@ -53,8 +53,8 @@ class DealViewModel(
         launchDataLoad {
             val result = getDeals()
             if (result is Result.Success) {
-                _dealItems.postValue(ShoppingMapper.toDeals(result.data))
                 versionId = result.data.version
+                _dealItems.postValue(ShoppingMapper.toDeals(result.data))
             } else if (result is Result.Error) {
                 throw (result.exception)
             }

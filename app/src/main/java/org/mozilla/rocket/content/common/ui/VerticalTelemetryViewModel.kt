@@ -24,11 +24,11 @@ class VerticalTelemetryViewModel : ViewModel() {
         triggerCategoryImpressionTelemetryEvent()
     }
 
-    fun onCategorySelected(newCategory: String, newVersionId: Long) {
+    fun onCategorySelected(newCategory: String) {
         triggerCategoryImpressionTelemetryEvent()
-        if (category != newCategory || versionId != newVersionId) {
+        if (category != newCategory) {
             category = newCategory
-            versionId = newVersionId
+            versionId = 0L
             impression.clear()
         }
 
@@ -39,6 +39,10 @@ class VerticalTelemetryViewModel : ViewModel() {
         triggerCategoryImpressionTelemetryEvent()
         category = ""
         versionId = 0L
+    }
+
+    fun updateVersionId(version: Long) {
+        versionId = version
     }
 
     fun updateImpression(subCategoryId: String, maxIndex: Int) {

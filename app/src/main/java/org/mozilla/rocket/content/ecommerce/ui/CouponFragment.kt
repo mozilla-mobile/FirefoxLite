@@ -13,6 +13,7 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -23,13 +24,18 @@ class CouponFragment : Fragment() {
     @Inject
     lateinit var couponViewModelCreator: Lazy<CouponViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var couponViewModel: CouponViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var couponAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         couponViewModel = getActivityViewModel(couponViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
         couponViewModel.requestCoupons()
     }
 
@@ -58,6 +64,7 @@ class CouponFragment : Fragment() {
     private fun bindListData() {
         couponViewModel.couponItems.observe(this@CouponFragment, Observer {
             couponAdapter.setData(it)
+            telemetryViewModel.updateVersionId(couponViewModel.versionId)
         })
     }
 
