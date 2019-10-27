@@ -89,6 +89,7 @@ class NewsFragment : Fragment() {
             newsViewModel.startToObserveNews(getCategory(), getLanguage())
         newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
             updateNews(items.newsList)
+            telemetryViewModel.updateVersionId(newsViewModel.versionId)
             isLoading = false
 
             Looper.myQueue().addIdleHandler {

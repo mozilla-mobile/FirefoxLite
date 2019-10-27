@@ -13,6 +13,7 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -23,13 +24,18 @@ class VoucherFragment : Fragment() {
     @Inject
     lateinit var voucherViewModelCreator: Lazy<VoucherViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var voucherViewModel: VoucherViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var voucherAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         voucherViewModel = getActivityViewModel(voucherViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
         voucherViewModel.requestVouchers()
     }
 
@@ -58,6 +64,7 @@ class VoucherFragment : Fragment() {
     private fun bindListData() {
         voucherViewModel.voucherItems.observe(this@VoucherFragment, Observer {
             voucherAdapter.setData(it)
+            telemetryViewModel.updateVersionId(voucherViewModel.versionId)
         })
     }
 

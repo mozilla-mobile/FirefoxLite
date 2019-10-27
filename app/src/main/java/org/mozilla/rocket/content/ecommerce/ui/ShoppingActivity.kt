@@ -56,11 +56,13 @@ class ShoppingActivity : FragmentActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab) = Unit
 
             override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    ShoppingViewModel.ShoppingTabItem.TYPE_DEAL_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.SHOPPING_DEAL)
-                    ShoppingViewModel.ShoppingTabItem.TYPE_COUPON_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.SHOPPING_COUPON)
-                    ShoppingViewModel.ShoppingTabItem.TYPE_VOUCHER_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER)
+                val category = when (tab.position) {
+                    ShoppingViewModel.ShoppingTabItem.TYPE_DEAL_TAB -> TelemetryWrapper.Extra_Value.SHOPPING_DEAL
+                    ShoppingViewModel.ShoppingTabItem.TYPE_COUPON_TAB -> TelemetryWrapper.Extra_Value.SHOPPING_COUPON
+                    ShoppingViewModel.ShoppingTabItem.TYPE_VOUCHER_TAB -> TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER
+                    else -> ""
                 }
+                telemetryViewModel.onCategorySelected(category)
             }
         })
     }
