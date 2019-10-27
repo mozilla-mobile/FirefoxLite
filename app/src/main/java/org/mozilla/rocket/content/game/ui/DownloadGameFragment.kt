@@ -171,9 +171,9 @@ class DownloadGameFragment : Fragment() {
     }
 
     private fun observeGameAction() {
-        runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
+        runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(GameModeActivity.getStartIntent(it, linkUrl))
+                startActivity(GameModeActivity.getStartIntent(it, action.url))
             }
         })
 

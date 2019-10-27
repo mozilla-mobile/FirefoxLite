@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_deal.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
@@ -90,9 +91,13 @@ class DealFragment : Fragment() {
     }
 
     private fun observeAction() {
-        runwayViewModel.openRunway.observe(this, Observer { linkUrl ->
+        runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(it, linkUrl))
+                startActivity(ContentTabActivity.getStartIntent(
+                    it,
+                    action.url,
+                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.SHOPPING, versionId = dealViewModel.versionId)
+                ))
             }
         })
 
