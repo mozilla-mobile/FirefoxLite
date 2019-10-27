@@ -2,13 +2,25 @@ package org.mozilla.rocket.content.common.ui
 
 import androidx.lifecycle.ViewModel
 import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class RunwayViewModel : ViewModel() {
 
-    val openRunway = SingleLiveEvent<String>()
+    val openRunway = SingleLiveEvent<OpenLinkAction>()
 
     fun onRunwayItemClicked(runwayItem: RunwayItem) {
-        openRunway.value = runwayItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            "",
+            "",
+            runwayItem.source,
+            runwayItem.category,
+            runwayItem.componentId,
+            runwayItem.subCategoryId,
+            0L
+        )
+        openRunway.value = OpenLinkAction(runwayItem.linkUrl, telemetryData)
     }
+
+    data class OpenLinkAction(val url: String, val telemetryData: ContentTabTelemetryData)
 }
