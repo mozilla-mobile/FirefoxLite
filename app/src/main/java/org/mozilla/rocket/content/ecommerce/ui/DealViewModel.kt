@@ -31,7 +31,7 @@ class DealViewModel(
     fun onProductItemClicked(productItem: ProductItem) {
         val telemetryData = ContentTabTelemetryData(
             TelemetryWrapper.Extra_Value.SHOPPING,
-            "",
+            productItem.source,
             productItem.source,
             productItem.category,
             productItem.componentId,

@@ -36,7 +36,7 @@ class VoucherViewModel(
     fun onVoucherItemClicked(voucherItem: Voucher) {
         val telemetryData = ContentTabTelemetryData(
             TelemetryWrapper.Extra_Value.SHOPPING,
-            "",
+            voucherItem.source,
             voucherItem.source,
             "Vouchers",
             voucherItem.url.sha256(),
