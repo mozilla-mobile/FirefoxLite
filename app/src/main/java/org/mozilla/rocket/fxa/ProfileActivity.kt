@@ -3,6 +3,7 @@ package org.mozilla.rocket.fxa
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +20,6 @@ import org.mozilla.rocket.privately.PrivateTabViewProvider
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
-import org.mozilla.rocket.widget.FxToast
 import javax.inject.Inject
 
 class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxLoginFragment.OnLoginCompleteListener {
@@ -75,7 +75,7 @@ class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxL
     }
 
     override fun onLoginFailure() {
-        FxToast.show(applicationContext, getString(R.string.msrp_reward_challenge_error))
+        Toast.makeText(applicationContext, R.string.msrp_reward_challenge_error, Toast.LENGTH_LONG).show()
     }
 
     private fun navigateToFxAccountPage() {
