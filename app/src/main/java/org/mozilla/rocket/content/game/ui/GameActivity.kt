@@ -9,15 +9,24 @@ import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.tabs.TabLayout
+import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.GameTabsAdapter
+import org.mozilla.rocket.content.getViewModel
+import javax.inject.Inject
 
 class GameActivity : FragmentActivity() {
+
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
 
     private lateinit var adapter: GameTabsAdapter
     private lateinit var uiMessageReceiver: BroadcastReceiver
@@ -25,6 +34,7 @@ class GameActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        telemetryViewModel = getViewModel(telemetryViewModelCreator)
         setContentView(R.layout.activity_game)
         initViewPager()
         initTabLayout()
@@ -73,14 +83,13 @@ class GameActivity : FragmentActivity() {
         uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
         uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
         LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
-        TelemetryWrapper.startVerticalProcess(TelemetryWrapper.Extra_Value.GAME)
+        telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.GAME)
     }
 
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
-        // TODO: fix loadTime
-        TelemetryWrapper.endVerticalProcess(TelemetryWrapper.Extra_Value.GAME, 0)
+        telemetryViewModel.onSessionEnded()
     }
 
     private fun initBroadcastReceivers() {
