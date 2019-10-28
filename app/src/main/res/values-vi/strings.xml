@@ -360,17 +360,23 @@
   <string name="content_home_error_message">Oops!\nCó gì đó không ổn</string>
   <string name="private_home_title">Duyệt web riêng tư nâng cao</string>
   <string name="private_home_description"><![CDATA["Bây giờ bạn có thể duyệt riêng tư, không có lịch sử, không có mật khẩu được ghi lại và những người khác sử dụng thiết bị này sẽ không thấy hoạt động của bạn.\n\nDuyệt web riêng tư nâng cao của chúng tôi thậm chí có thể "<font xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" color="white">ng&#259;n b&#7841;n kh&#7887;i b&#7883; theo d&#245;i</font>" bởi các nhà quảng cáo và trang web, điều mà hầu hết các chế độ riêng tư không thể."]]></string>
-  <string name="msrp_logoman_message">Giành phiếu mua hàng %1$s %2$s</string>
+  <string name="msrp_logoman_message">Giành phiếu mua hàng %1$s</string>
+  <string name="msrp_home_hint">Hãy thử mua sắm, tin tức, trò chơi hàng ngày để giành được phiếu giảm giá %1$s</string>
   <string name="msrp_reward_title">Phần thưởng</string>
   <string name="msrp_reward_category_1">Nhiệm vụ</string>
   <string name="msrp_reward_category_2">Quà tặng</string>
   <string name="msrp_reward_challenge_title">Hãy thử mua sắm, tin tức, trò chơi trong 7 ngày liên tiếp!</string>
   <string name="msrp_reward_challenge_expire">Hết hạn vào %1$s</string>
-  <string name="msrp_challenge_title">Thử thách 7 ngày đối với phiếu mua hàng %1$s %2$s</string>
-  <string name="msrp_challenge_details_title_1">1. Tham gia thử thách 7 ngày</string>
+  <string name="msrp_challenge_title">Thử thách 7 ngày đối với phiếu mua hàng Rp 15,000 Shopee</string>
+  <string name="msrp_challenge_description">Phiếu mua hàng Rp 15,000 Shopee</string>
+  <string name="msrp_challenge_details_title_1">Tham gia thử thách 7 ngày</string>
   <string name="msrp_challenge_details_body_1">Hãy thử mua sắm, tin tức, trò chơi trên trang chủ %1$s bằng cách nhấp vào các nút trong bảy ngày liên tiếp.</string>
-  <string name="msrp_challenge_details_title_2">2. Sử dụng tài khoản Firefox của bạn để đổi phần thưởng của bạn</string>
+  <string name="msrp_challenge_details_title_2">Sử dụng tài khoản Firefox của bạn để đổi phần thưởng của bạn</string>
+  <string name="msrp_challenge_details_body_2">%1$s Đảm bảo bạn đăng nhập vào tài khoản bạn muốn sử dụng trước khi hoàn tất việc đổi quà.</string>
+  <string name="msrp_challenge_details_sign_in_to_start">Nhập địa chỉ email của bạn để bắt đầu.</string>
   <string name="msrp_challenge_button_1">Tôi đã sẵn sàng!</string>
+  <string name="msrp_challenge_tou">Bằng cách nhấp vào “Tôi đã sẵn sàng” bạn đã đồng ý với %1$s của chúng tôi</string>
+  <string name="msrp_challenge_tou_terms_of_use">Điều khoản sử dụng</string>
   <string name="msrp_challenge_button_2">Rời nhiệm vụ</string>
   <string name="msrp_challenge_separator">Làm thế nào để đổi quà</string>
   <string name="msrp_challenge_button_4">Sử dụng tài khoản Firefox để đổi quà</string>
@@ -391,6 +397,9 @@
   <string name="msrp_voucher_button_2">Phiếu mua hàng chỉ có thể được áp dụng thông qua URL này dưới đây:</string>
   <string name="msrp_voucher_button_1">Sao chép</string>
   <string name="msrp_voucher_toast">Đã sao chép mã phiếu mua hàng</string>
+  <string name="msrp_voucher_nostock">Đã hết phiếu giảm giá</string>
+  <string name="msrp_faq">Bạn có câu hỏi? %1$s.</string>
+  <string name="msrp_contact_us">Liên hệ với chúng tôi</string>
   <string name="msrp_reward_redeem_redeem">Đổi quà</string>
   <string name="msrp_reward_redeem_voucher">Phiếu mua hàng</string>
   <string name="msrp_disqualification_title_1">Cảnh báo: đã phát hiện nhiều tài khoản Firefox</string>

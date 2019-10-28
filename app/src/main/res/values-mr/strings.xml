@@ -346,4 +346,15 @@
   <string name="gaming_vertical_genre_11">खेळ आणि रेसिंग</string>
   <string name="gaming_vertical_genre_12">मुली</string>
   <string name="onboarding_2_introduction_title">अगदी नवीन %1$s</string>
+  <string name="home_search_bar_text">शोधा…</string>
+  <string name="home_content_services">सामग्री आणि सेवा</string>
+  <string name="home_discovery">शोध</string>
+  <string name="content_home_context_menu_add_to_home_screen">मुख्य पटलावर जोडा</string>
+  <string name="content_home_context_menu_share_link">दुवा शेअर करा</string>
+  <string name="content_home_error_message">अरेरे!\nकाहीतरी चूक झाली</string>
+  <string name="private_home_title">प्रगत खाजगी ब्राउझिंग</string>
+  <string name="msrp_reward_category_1">उद्देश्य</string>
+  <string name="msrp_reward_category_2">भेट</string>
+  <string name="msrp_reward_challenge_title">सलग 7 दिवस शॉपिंग, न्यूज, गेम वापरुन पहा!</string>
+  <string name="msrp_reward_challenge_expire">काल्बाह्यता %1$s</string>
 </resources>
