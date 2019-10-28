@@ -12,7 +12,7 @@ class RunwayViewModel : ViewModel() {
     fun onRunwayItemClicked(runwayItem: RunwayItem) {
         val telemetryData = ContentTabTelemetryData(
             "",
-            "",
+            runwayItem.source,
             runwayItem.source,
             runwayItem.category,
             runwayItem.componentId,

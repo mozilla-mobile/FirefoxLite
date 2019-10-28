@@ -35,6 +35,8 @@ class DownloadGameViewModel(
 
     var event = SingleLiveEvent<GameAction>()
 
+    var versionId = 0L
+
     fun requestGameList() {
         getGameUiModelList()
     }
@@ -67,6 +69,7 @@ class DownloadGameViewModel(
         launchDataLoad {
             val result = getDownloadGameList()
             if (result is Result.Success) {
+                versionId = result.data.version
                 val downloadGameList = GameDataMapper.toGameUiModel(result.data)
                 getMyGameCategoryUiModel()?.let {
                     mergeMyGameToGameUiModelList(downloadGameList, it)
