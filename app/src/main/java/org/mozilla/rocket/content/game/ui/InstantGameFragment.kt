@@ -17,6 +17,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
@@ -145,6 +146,7 @@ class InstantGameFragment : Fragment() {
         intent.action = Intent.ACTION_MAIN
         intent.data = Uri.parse(gameURL)
         intent.putExtra(GAME_URL, gameURL)
+        intent.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_GAME_SHORTCUT.value, true)
 
         ShortcutUtils.requestPinShortcut(context, intent, gameName, gameURL, gameIcon)
     }

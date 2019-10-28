@@ -15,8 +15,10 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_game_mode.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.widget.ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
@@ -83,6 +85,10 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
                 })
                 false
             }
+
+            if (isIntentFromGameShortcut(intent)) {
+                TelemetryWrapper.launchByGameShortcut()
+            }
         }
     }
 
@@ -138,6 +144,13 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
         chromeViewModel.currentUrl.observe(this, Observer {
             telemetryViewModel.onUrlOpened()
         })
+    }
+
+    private fun isIntentFromGameShortcut(intent: Intent): Boolean {
+        return intent.getBooleanExtra(
+            LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_GAME_SHORTCUT.value,
+            false
+        )
     }
 
     companion object {
