@@ -450,7 +450,7 @@ private data class ErrorData(
             val json = JSONObject(jsonStr)
             return ErrorData(
                 message = json.optString("message"),
-                reason = json.optInt("type", 0)
+                reason = json.optInt("reason", 0)
             )
         }
     }
