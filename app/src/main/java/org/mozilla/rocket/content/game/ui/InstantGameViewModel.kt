@@ -13,6 +13,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.adapter.Runway
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.game.domain.AddRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
@@ -42,12 +43,23 @@ class InstantGameViewModel(
 
     var event = SingleLiveEvent<GameAction>()
 
+    var versionId = 0L
+
     fun requestGameList() {
         getGameUiModelList()
     }
 
     fun onGameItemClicked(gameItem: Game) {
-        event.value = GameAction.Play(gameItem.linkUrl)
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.GAME,
+            gameItem.brand,
+            gameItem.brand,
+            gameItem.category,
+            gameItem.componentId,
+            gameItem.subCategoryId,
+            versionId
+        )
+        event.value = GameAction.Play(gameItem.linkUrl, telemetryData)
         addToRecentlyPlayedGameList(gameItem)
     }
 
@@ -80,6 +92,7 @@ class InstantGameViewModel(
         launchDataLoad {
             val result = getInstantGameList()
             if (result is Result.Success) {
+                versionId = result.data.version
                 val instantGameList = GameDataMapper.toGameUiModel(result.data)
                 getRecentlyPlayedCategoryUiModel()?.let {
                     mergeRecentlyPlayedToGameUiModelList(instantGameList, it)
@@ -113,7 +126,7 @@ class InstantGameViewModel(
 
     private fun addToRecentlyPlayedGameList(gameItem: Game) {
         viewModelScope.launch {
-            addRecentlyPlayedGame(GameDataMapper.toApiItem(gameItem))
+            addRecentlyPlayedGame(GameDataMapper.toApiItem(gameItem.copy(subCategoryId = Game.RECENTLY_PLAYED_SUB_CATEGORY_ID)))
             getGameUiModelList()
         }
     }
@@ -162,7 +175,7 @@ class InstantGameViewModel(
     }
 
     sealed class GameAction {
-        data class Play(val url: String) : GameAction()
+        data class Play(val url: String, val telemetryData: ContentTabTelemetryData) : GameAction()
         data class Share(val url: String) : GameAction()
         data class CreateShortcut(val name: String, val url: String, val bitmap: Bitmap) : GameAction()
     }

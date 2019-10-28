@@ -19,6 +19,7 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.download.EnqueueDownloadTask
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.permissionhandler.PermissionHandle
 import org.mozilla.permissionhandler.PermissionHandler
@@ -173,7 +174,10 @@ class DownloadGameFragment : Fragment() {
     private fun observeGameAction() {
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(GameModeActivity.getStartIntent(it, action.url))
+                startActivity(GameModeActivity.getStartIntent(
+                    it,
+                    action.url,
+                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = downloadGameViewModel.versionId)))
             }
         })
 

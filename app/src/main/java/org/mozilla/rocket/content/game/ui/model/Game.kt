@@ -12,7 +12,11 @@ data class Game(
     val packageName: String,
     val componentId: String,
     val gameType: GameType
-) : DelegateAdapter.UiModel()
+) : DelegateAdapter.UiModel() {
+    companion object {
+        const val RECENTLY_PLAYED_SUB_CATEGORY_ID = "24"
+    }
+}
 
 sealed class GameType {
     object Normal : GameType()

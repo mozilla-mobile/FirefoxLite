@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -90,7 +91,10 @@ class InstantGameFragment : Fragment() {
     private fun observeGameAction() {
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(GameModeActivity.getStartIntent(it, action.url))
+                startActivity(GameModeActivity.getStartIntent(
+                    it,
+                    action.url,
+                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = instantGamesViewModel.versionId)))
             }
         })
 
@@ -99,7 +103,7 @@ class InstantGameFragment : Fragment() {
                 is InstantGameViewModel.GameAction.Play -> {
                     val play: InstantGameViewModel.GameAction.Play = event
                     context?.let {
-                        startActivity(GameModeActivity.getStartIntent(it, play.url))
+                        startActivity(GameModeActivity.getStartIntent(it, play.url, play.telemetryData))
                     }
                 }
                 is InstantGameViewModel.GameAction.Share -> {
