@@ -33,7 +33,7 @@ class CouponViewModel(
             TelemetryWrapper.Extra_Value.SHOPPING,
             couponItem.source,
             couponItem.source,
-            couponItem.category,
+            TelemetryWrapper.Extra_Value.SHOPPING_COUPON,
             couponItem.componentId,
             couponItem.subCategoryId,
             versionId

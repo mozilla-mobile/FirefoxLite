@@ -33,7 +33,7 @@ class DealViewModel(
             TelemetryWrapper.Extra_Value.SHOPPING,
             productItem.source,
             productItem.source,
-            productItem.category,
+            TelemetryWrapper.Extra_Value.SHOPPING_DEAL,
             productItem.componentId,
             productItem.subCategoryId,
             versionId

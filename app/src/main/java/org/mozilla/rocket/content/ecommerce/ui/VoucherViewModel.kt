@@ -38,9 +38,9 @@ class VoucherViewModel(
             TelemetryWrapper.Extra_Value.SHOPPING,
             voucherItem.source,
             voucherItem.source,
-            "Vouchers",
+            TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER,
             voucherItem.url.sha256(),
-            "",
+            voucherItem.subCategoryId,
             versionId
         )
         openVoucher.value = OpenLinkAction(voucherItem.url, telemetryData)
