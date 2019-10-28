@@ -222,7 +222,7 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         redeem_button.isEnabled = false
         congrats_title_layout.isVisible = false
 
-        faq_text.isVisible = false
+        faq_text.isVisible = true
 
         initDateLayout(requireNotNull(mission.missionProgress))
     }
