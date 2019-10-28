@@ -16,7 +16,6 @@ import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
-import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
@@ -37,6 +36,7 @@ import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
 import org.mozilla.rocket.util.ToastMessage
 
@@ -95,6 +95,7 @@ class HomeViewModel(
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var contentServicesOnboardingTimeSpent = 0L
+    private var hasLoggedShowLogoman = false
 
     init {
         initLogoManData()
@@ -138,13 +139,26 @@ class HomeViewModel(
         }
     }
 
-    fun updateTopSitesData() = viewModelScope.launch {
+    private fun updateTopSitesData() = viewModelScope.launch {
         sitePages.value = getTopSitesUseCase().toSitePages()
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
             .filterIndexed { index, _ -> index < TOP_SITES_MAX_PAGE_SIZE }
             .map { SitePage(it) }
+
+    fun onPageForeground() {
+        if (!hasLoggedShowLogoman && logoManNotification.value != null) {
+            hasLoggedShowLogoman = true
+            TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+        }
+        TelemetryWrapper.showHome()
+        updateTopSitesData()
+    }
+
+    fun onPageBackground() {
+        hasLoggedShowLogoman = false
+    }
 
     fun onTopSitesPagePositionChanged(position: Int) {
         topSitesPageIndex.value = position
@@ -243,7 +257,10 @@ class HomeViewModel(
     fun onLogoManShown() {
         // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
         logoManNotification.value?.animate = false
-        TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+        if (!hasLoggedShowLogoman) {
+            hasLoggedShowLogoman = true
+            TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+        }
     }
 
     fun onLogoManNotificationClicked() {

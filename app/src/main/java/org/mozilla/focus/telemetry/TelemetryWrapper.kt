@@ -285,6 +285,7 @@ object TelemetryWrapper {
         const val AUDIENCE_NAME = "audience_name"
         const val TASK = "task"
         const val FINISHED = "finished"
+        const val ITEM_NAME = "item_name"
     }
 
     object Extra_Value {
@@ -3054,13 +3055,13 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_HOME,
             value = Value.ITEM,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.GAME}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
-                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.MISSION}|${Extra_Value.GIFT}")
+                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.MISSION}|${Extra_Value.GIFT}"),
+                TelemetryExtra(name = Extra.ITEM_NAME, value = "item name")
             ])
-    fun clickItemContentHome(vertical: String, category: String) {
+    fun clickItemContentHome(category: String, itemName: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CONTENT_HOME, Value.ITEM)
-                .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.ITEM_NAME, itemName)
                 .queue()
     }
 
