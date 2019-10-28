@@ -62,7 +62,7 @@ class HomeViewModel(
     getIsFxAccountUseCase: GetIsFxAccountUseCase,
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
-    private val isNewUserUseCase: IsNewUserUseCase
+    isNewUserUseCase: IsNewUserUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -96,6 +96,7 @@ class HomeViewModel(
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var contentServicesOnboardingTimeSpent = 0L
     private var hasLoggedShowLogoman = false
+    private var isFirstRun = isNewUserUseCase()
 
     init {
         initLogoManData()
@@ -108,7 +109,7 @@ class HomeViewModel(
         if (isNeedToShowHomeOnboardingUseCase()) {
             completeHomeOnboardingUseCase()
             contentServicesOnboardingTimeSpent = System.currentTimeMillis()
-            if (isNewUserUseCase()) {
+            if (isFirstRun) {
                 TelemetryWrapper.showFirstRunContextualHint("onboarding_2_content_services_news_shopping_games")
             } else {
                 TelemetryWrapper.showWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games")
@@ -312,7 +313,7 @@ class HomeViewModel(
 
     fun onContentServiceOnboardingButtonClicked() {
         val timeSpent = System.currentTimeMillis() - contentServicesOnboardingTimeSpent
-        if (isNewUserUseCase()) {
+        if (isFirstRun) {
             TelemetryWrapper.clickFirstRunContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
         } else {
             TelemetryWrapper.clickWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
