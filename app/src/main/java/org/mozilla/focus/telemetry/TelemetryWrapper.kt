@@ -213,6 +213,7 @@ object TelemetryWrapper {
         internal const val LAUNCHER = "launcher"
         internal const val EXTERNAL_APP = "external_app"
         internal const val SHORTCUT = "shortcut"
+        internal const val GAME_SHORTCUT = "game_shortcut"
         internal const val PRIVATE_MODE = "private_mode"
 
         internal const val PREVIOUS = "previous"
@@ -3108,6 +3109,18 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CONTENT_HOME, Value.CONTEXTMENU)
                 .extra(Extra.ACTION, action)
                 .extra(Extra.CATEGORY, category)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "App is launched by Game Shortcut",
+            category = Category.ACTION,
+            method = Method.LAUNCH,
+            `object` = Object.APP,
+            value = Value.GAME_SHORTCUT,
+            extras = [])
+    fun launchByGameShortcut() {
+        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.GAME_SHORTCUT)
                 .queue()
     }
 
