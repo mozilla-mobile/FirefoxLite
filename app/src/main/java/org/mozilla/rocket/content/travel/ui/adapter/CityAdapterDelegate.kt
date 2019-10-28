@@ -21,9 +21,13 @@ class CityViewHolder(
         val cityItem = uiModel as CityUiModel
         city_name.text = cityItem.name
 
+        val placeholderArray = itemView.resources.obtainTypedArray(R.array.travel_placeholders)
+        val placeholder = placeholderArray.getResourceId((0..(placeholderArray.length() - 1)).random(), R.drawable.travel_card1)
+        placeholderArray.recycle()
+
         GlideApp.with(itemView.context)
             .asBitmap()
-            .placeholder(R.drawable.placeholder)
+            .placeholder(placeholder)
             .fitCenter()
             .load(cityItem.imageUrl)
             .into(city_image)
