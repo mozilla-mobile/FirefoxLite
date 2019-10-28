@@ -53,7 +53,7 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
-import org.mozilla.rocket.extension.showToast
+import org.mozilla.rocket.extension.showFxToast
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification
@@ -97,7 +97,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
     }
     private val toastObserver = Observer<ToastMessage> {
-        appContext.showToast(it)
+        appContext.showFxToast(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

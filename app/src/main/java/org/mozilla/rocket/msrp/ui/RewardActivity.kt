@@ -3,6 +3,7 @@ package org.mozilla.rocket.msrp.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.findNavController
@@ -10,7 +11,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.fxa.FxLoginFragment
 import org.mozilla.rocket.msrp.data.Mission
-import org.mozilla.rocket.widget.FxToast
 import kotlin.properties.Delegates
 
 class RewardActivity : AppCompatActivity(), NavHostActivity, FxLoginFragment.OnLoginCompleteListener {
@@ -51,7 +51,7 @@ class RewardActivity : AppCompatActivity(), NavHostActivity, FxLoginFragment.OnL
     }
 
     override fun onLoginFailure() {
-        FxToast.show(applicationContext, getString(R.string.msrp_reward_challenge_error))
+        Toast.makeText(applicationContext, R.string.msrp_reward_challenge_error, Toast.LENGTH_LONG).show()
     }
 
     override fun navigateBackWithResult(result: Bundle) {
