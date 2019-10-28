@@ -29,6 +29,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.DownloadGameCategoryAdapterDelegate
 import org.mozilla.rocket.content.game.ui.model.GameCategory
 import org.mozilla.rocket.content.getActivityViewModel
@@ -43,8 +44,12 @@ class DownloadGameFragment : Fragment() {
     @Inject
     lateinit var downloadGameViewModelCreator: Lazy<DownloadGameViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var downloadGameViewModel: DownloadGameViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var adapter: DelegateAdapter
     private lateinit var permissionHandler: PermissionHandler
 
@@ -126,6 +131,7 @@ class DownloadGameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         downloadGameViewModel = getActivityViewModel(downloadGameViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
         downloadGameViewModel.requestGameList()
     }
 
@@ -145,8 +151,8 @@ class DownloadGameFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
-                add(GameCategory::class, R.layout.item_game_category, DownloadGameCategoryAdapterDelegate(downloadGameViewModel))
+                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel, TelemetryWrapper.Extra_Value.DOWNLOAD_GAME, telemetryViewModel))
+                add(GameCategory::class, R.layout.item_game_category, DownloadGameCategoryAdapterDelegate(downloadGameViewModel, telemetryViewModel))
             }
         )
         recycler_view.apply {
@@ -158,6 +164,7 @@ class DownloadGameFragment : Fragment() {
     private fun bindListData() {
         downloadGameViewModel.downloadGameItems.observe(this@DownloadGameFragment, Observer {
             adapter.setData(it)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.DOWNLOAD_GAME, downloadGameViewModel.versionId)
         })
     }
 
