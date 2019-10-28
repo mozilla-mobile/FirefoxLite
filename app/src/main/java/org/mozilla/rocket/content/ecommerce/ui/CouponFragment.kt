@@ -9,11 +9,14 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_coupon.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.firstImpression
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Coupon
 import org.mozilla.rocket.content.ecommerce.ui.adapter.CouponAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -59,12 +62,21 @@ class CouponFragment : Fragment() {
             }
         )
         coupon_list.adapter = couponAdapter
+        coupon_list.monitorScrollImpression(telemetryViewModel)
     }
 
     private fun bindListData() {
         couponViewModel.couponItems.observe(this@CouponFragment, Observer {
             couponAdapter.setData(it)
-            telemetryViewModel.updateVersionId(couponViewModel.versionId)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.SHOPPING_COUPON, couponViewModel.versionId)
+
+            if (!it.isNullOrEmpty() && it[0] is Coupon) {
+                coupon_list.firstImpression(
+                    telemetryViewModel,
+                    TelemetryWrapper.Extra_Value.SHOPPING_COUPON,
+                    (it[0] as Coupon).subCategoryId
+                )
+            }
         })
     }
 
