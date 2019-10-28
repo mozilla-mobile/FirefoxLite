@@ -44,5 +44,10 @@ data class Voucher(
     val url: String,
     val name: String,
     val image: String,
-    val source: String
-) : DelegateAdapter.UiModel()
+    val source: String,
+    val subCategoryId: String = DEFAULT_SUB_CATEGORY_ID
+) : DelegateAdapter.UiModel() {
+    companion object {
+        private const val DEFAULT_SUB_CATEGORY_ID = "23"
+    }
+}
