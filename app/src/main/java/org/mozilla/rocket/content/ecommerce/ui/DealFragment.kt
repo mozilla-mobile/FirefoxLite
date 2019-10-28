@@ -64,8 +64,8 @@ class DealFragment : Fragment() {
     private fun initDeals() {
         dealAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
-                add(ProductCategory::class, R.layout.item_product_category, ProductCategoryAdapterDelegate(dealViewModel))
+                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel, TelemetryWrapper.Extra_Value.SHOPPING_DEAL, telemetryViewModel))
+                add(ProductCategory::class, R.layout.item_product_category, ProductCategoryAdapterDelegate(dealViewModel, telemetryViewModel))
             }
         )
         content_deals.apply {
@@ -76,7 +76,7 @@ class DealFragment : Fragment() {
     private fun bindListData() {
         dealViewModel.dealItems.observe(this@DealFragment, Observer {
             dealAdapter.setData(it)
-            telemetryViewModel.updateVersionId(dealViewModel.versionId)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.SHOPPING_DEAL, dealViewModel.versionId)
         })
     }
 

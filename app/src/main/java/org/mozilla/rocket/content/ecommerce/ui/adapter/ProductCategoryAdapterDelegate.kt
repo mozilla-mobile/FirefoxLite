@@ -3,21 +3,29 @@ package org.mozilla.rocket.content.ecommerce.ui.adapter
 import android.view.View
 import kotlinx.android.synthetic.main.item_product_category.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.firstImpression
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.ecommerce.StartSnapHelper
 import org.mozilla.rocket.content.ecommerce.ui.DealViewModel
 import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
 
-class ProductCategoryAdapterDelegate(private val dealViewModel: DealViewModel) : AdapterDelegate {
+class ProductCategoryAdapterDelegate(
+    private val dealViewModel: DealViewModel,
+    private val telemetryViewModel: VerticalTelemetryViewModel
+) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-        ProductCategoryViewHolder(view, dealViewModel)
+        ProductCategoryViewHolder(view, dealViewModel, telemetryViewModel)
 }
 
 class ProductCategoryViewHolder(
     override val containerView: View,
-    private val dealViewModel: DealViewModel
+    private val dealViewModel: DealViewModel,
+    private val telemetryViewModel: VerticalTelemetryViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
@@ -31,12 +39,21 @@ class ProductCategoryViewHolder(
         product_list.adapter = this@ProductCategoryViewHolder.adapter
         val snapHelper = StartSnapHelper()
         snapHelper.attachToRecyclerView(product_list)
+        product_list.monitorScrollImpression(telemetryViewModel)
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val productCategory = uiModel as ProductCategory
         category_title.text = productCategory.subcategoryName
         adapter.setData(productCategory.items)
+
+        if (!productCategory.items.isNullOrEmpty()) {
+            product_list.firstImpression(
+                telemetryViewModel,
+                TelemetryWrapper.Extra_Value.SHOPPING_DEAL,
+                productCategory.items[0].subCategoryId
+            )
+        }
     }
 }
 

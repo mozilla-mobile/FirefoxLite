@@ -8,16 +8,25 @@ import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.firstImpression
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
 
-class RunwayAdapterDelegate(private val runwayViewModel: RunwayViewModel) : AdapterDelegate {
+class RunwayAdapterDelegate(
+    private val runwayViewModel: RunwayViewModel,
+    private val category: String = "",
+    private val telemetryViewModel: VerticalTelemetryViewModel? = null
+) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            RunwayViewHolder(view, runwayViewModel)
+        RunwayViewHolder(view, runwayViewModel, category, telemetryViewModel)
 }
 
 class RunwayViewHolder(
     override val containerView: View,
-    private val runwayViewModel: RunwayViewModel
+    private val runwayViewModel: RunwayViewModel,
+    private val category: String = "",
+    private val telemetryViewModel: VerticalTelemetryViewModel? = null
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     private var adapter = DelegateAdapter(
@@ -32,11 +41,22 @@ class RunwayViewHolder(
         runway_list.adapter = this@RunwayViewHolder.adapter
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(runway_list)
+        telemetryViewModel?.let {
+            runway_list.monitorScrollImpression(it)
+        }
     }
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val runway = uiModel as Runway
         adapter.setData(runway.items)
+
+        if (category.isNotEmpty() && telemetryViewModel != null && !runway.items.isNullOrEmpty()) {
+            runway_list.firstImpression(
+                telemetryViewModel,
+                category,
+                runway.items[0].subCategoryId
+            )
+        }
     }
 }
 

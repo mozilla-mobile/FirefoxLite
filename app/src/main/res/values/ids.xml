@@ -19,6 +19,8 @@
     <item name="empty_view_container" type="id"/>
     <item name="empty_view_text" type="id"/>
     <item name="empty_view_image" type="id"/>
+    <item name="telemetry_category_name" type="id"/>
+    <item name="telemetry_subcategory_id" type="id"/>
 
     <!-- Menu Items -->
     <item name="menu_bookmark" type="id"/>

@@ -9,11 +9,14 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_voucher.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.firstImpression
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherAdapterDelegate
 import org.mozilla.rocket.content.getActivityViewModel
@@ -59,12 +62,21 @@ class VoucherFragment : Fragment() {
             }
         )
         content_voucher_list.adapter = voucherAdapter
+        content_voucher_list.monitorScrollImpression(telemetryViewModel)
     }
 
     private fun bindListData() {
         voucherViewModel.voucherItems.observe(this@VoucherFragment, Observer {
             voucherAdapter.setData(it)
-            telemetryViewModel.updateVersionId(voucherViewModel.versionId)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER, voucherViewModel.versionId)
+
+            if (!it.isNullOrEmpty() && it[0] is Voucher) {
+                content_voucher_list.firstImpression(
+                    telemetryViewModel,
+                    TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER,
+                    (it[0] as Voucher).subCategoryId
+                )
+            }
         })
     }
 
