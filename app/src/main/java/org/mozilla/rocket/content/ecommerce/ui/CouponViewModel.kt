@@ -31,7 +31,7 @@ class CouponViewModel(
     fun onCouponItemClicked(couponItem: Coupon) {
         val telemetryData = ContentTabTelemetryData(
             TelemetryWrapper.Extra_Value.SHOPPING,
-            "",
+            couponItem.source,
             couponItem.source,
             couponItem.category,
             couponItem.componentId,
