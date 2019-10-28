@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -48,6 +49,11 @@ class GameActivity : FragmentActivity() {
         view_pager.apply {
             adapter = this@GameActivity.adapter
         }
+
+        Looper.myQueue().addIdleHandler {
+            telemetryViewModel.onCategorySelected(TelemetryWrapper.Extra_Value.INSTANT_GAME)
+            false
+        }
     }
 
     private fun initTabLayout() {
@@ -58,10 +64,12 @@ class GameActivity : FragmentActivity() {
             override fun onTabUnselected(tab: TabLayout.Tab) = Unit
 
             override fun onTabSelected(tab: TabLayout.Tab) {
-                when (tab.position) {
-                    GameTabsAdapter.TabItem.TYPE_INSTANT_GAME_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.GAME, TelemetryWrapper.Extra_Value.INSTANT_GAME)
-                    GameTabsAdapter.TabItem.TYPE_DOWNLOAD_GAME_TAB -> TelemetryWrapper.openCategory(TelemetryWrapper.Extra_Value.GAME, TelemetryWrapper.Extra_Value.DOWNLOAD_GAME)
+                val category = when (tab.position) {
+                    GameTabsAdapter.TabItem.TYPE_INSTANT_GAME_TAB -> TelemetryWrapper.Extra_Value.INSTANT_GAME
+                    else -> TelemetryWrapper.Extra_Value.DOWNLOAD_GAME
                 }
+
+                telemetryViewModel.onCategorySelected(category)
             }
         })
         if (adapter.count > 1) {
@@ -74,6 +82,7 @@ class GameActivity : FragmentActivity() {
     private fun initToolBar() {
         refresh_button.setOnClickListener {
             initViewPager()
+            telemetryViewModel.onRefreshClicked()
         }
     }
 

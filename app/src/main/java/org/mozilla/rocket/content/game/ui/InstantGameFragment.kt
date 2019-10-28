@@ -21,6 +21,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.InstantGameCategoryAdapterDelegate
 import org.mozilla.rocket.content.game.ui.model.GameCategory
 import org.mozilla.rocket.content.getActivityViewModel
@@ -34,8 +35,12 @@ class InstantGameFragment : Fragment() {
     @Inject
     lateinit var instantGameViewModelCreator: Lazy<InstantGameViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var instantGamesViewModel: InstantGameViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var adapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +48,7 @@ class InstantGameFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         instantGamesViewModel = getActivityViewModel(instantGameViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
         instantGamesViewModel.requestGameList()
     }
 
@@ -62,8 +68,8 @@ class InstantGameFragment : Fragment() {
     private fun initRecyclerView() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
-                add(GameCategory::class, R.layout.item_game_category, InstantGameCategoryAdapterDelegate(instantGamesViewModel))
+                add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel, TelemetryWrapper.Extra_Value.INSTANT_GAME, telemetryViewModel))
+                add(GameCategory::class, R.layout.item_game_category, InstantGameCategoryAdapterDelegate(instantGamesViewModel, telemetryViewModel))
             }
         )
         recycler_view.apply {
@@ -75,6 +81,7 @@ class InstantGameFragment : Fragment() {
     private fun bindListData() {
         instantGamesViewModel.instantGameItems.observe(this@InstantGameFragment, Observer {
             adapter.setData(it)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.INSTANT_GAME, instantGamesViewModel.versionId)
         })
     }
 
