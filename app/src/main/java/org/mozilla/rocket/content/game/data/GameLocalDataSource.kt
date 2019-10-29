@@ -80,7 +80,7 @@ class GameLocalDataSource(private val appContext: Context) : GameDataSource {
             )
         }
 
-        val apiCategory = ApiCategory(RECENT, appContext.getString(R.string.gaming_vertical_genre_1), -1, recentlyPlayedList)
+        val apiCategory = ApiCategory(RECENT, RECENTLY_PLAYED_SUB_CATEGORY_NAME, RECENTLY_PLAYED_SUB_CATEGORY_ID, recentlyPlayedList)
         val apiEntity = ApiEntity(1, listOf(apiCategory))
 
         preference.edit().putString(KEY_RECENTLY_PLAYED, apiEntity.toJsonObject().toString()).apply()
@@ -99,5 +99,8 @@ class GameLocalDataSource(private val appContext: Context) : GameDataSource {
     companion object {
         private const val PREF_NAME = "game"
         private const val KEY_RECENTLY_PLAYED = "recently_played"
+
+        const val RECENTLY_PLAYED_SUB_CATEGORY_NAME = "Recently Played"
+        const val RECENTLY_PLAYED_SUB_CATEGORY_ID = 24
     }
 }
