@@ -748,7 +748,9 @@
     <!-- Title of Private mode -->
     <string name="private_home_title">Advanced Private Browsing</string>
     <!-- Description of Private mode -->
-    <string name="private_home_description">Now you can browse privately, no history, no passwords recorded and other people who use this device won’t see your activity.\n\nOur Advanced Private Browsing can even <font color='white'>prevent you from being tracked</font> by advertisers and websites, which most private modes cannot.</string>
+    <!-- The %1$s here is a placeholder for "prevent you from being tracked"-->
+    <string name="private_home_description_1">Now you can browse privately, no history, no passwords recorded and other people who use this device won’t see your activity.\n\nOur Advanced Private Browsing can even %1$s by advertisers and websites, which most private modes cannot.</string>
+    <string name="private_home_description_2">prevent you from being tracked</string>
 
     <!--MSRP Vertical-->
  
