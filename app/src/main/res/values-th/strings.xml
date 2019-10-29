@@ -339,7 +339,7 @@
   <string name="msrp_reward_challenge_error_button">ลองอีกครั้ง</string>
   <string name="msrp_reward_challenge_error">อุปส์! มีบางอย่างผิดพลาด</string>
   <string name="news_category_option_nation">ข่าวท้องถิ่น</string>
-  <string name="shopping_search_onboarding_title">อุปส์! มีบางอย่างผิดพลาด</string>
+  <string name="shopping_search_onboarding_title">ค้นหาของราคาดี</string>
   <string name="shopping_search_onboarding_body">เปรียบเทียบราคากับร้านค้าออนไลน์ต่างๆ ด้วยการค้นหาแบบสมาร์ตชอปปิง</string>
   <string name="shopping_search_placeholder">พิมพ์สินค้าที่ต้องหาค้นหา</string>
   <string name="shopping_search_prompt_message_body">เปรียบเทียบราคากับร้านค้าออนไลน์ต่างๆ ด้วยการค้นหาแบบสมาร์ตชอปปิง</string>
