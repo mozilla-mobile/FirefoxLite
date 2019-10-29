@@ -94,6 +94,14 @@ class GameRemoteDataSource : GameDataSource {
         }
     }
 
+    override fun shouldShowRecentPlayedSpotlight(): Boolean {
+        TODO("not implemented")
+    }
+
+    override fun setRecentPlayedSpotlightHasShown() {
+        TODO("not implemented")
+    }
+
     companion object {
         private const val STR_INSTANT_GAME_ENDPOINT = "str_instant_game_endpoint"
         private const val STR_DOWNLOAD_GAME_ENDPOINT = "str_apk_game_endpoint"

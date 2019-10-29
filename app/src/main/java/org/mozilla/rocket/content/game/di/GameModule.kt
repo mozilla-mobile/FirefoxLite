@@ -13,6 +13,8 @@ import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetMyGameListUseCase
 import org.mozilla.rocket.content.game.domain.GetRecentlyPlayedGameListUseCase
 import org.mozilla.rocket.content.game.domain.RemoveRecentlyPlayedGameUseCase
+import org.mozilla.rocket.content.game.domain.SetRecentPlayedSpotlightIsShownUseCase
+import org.mozilla.rocket.content.game.domain.ShouldShowRecentPlayedSpotlightUseCase
 import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
 import org.mozilla.rocket.content.game.ui.InstantGameViewModel
 import javax.inject.Singleton
@@ -81,20 +83,36 @@ object GameModule {
         GetMyGameListUseCase(repo)
 
     @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowRecentPlayedOnboardingUseCase(repo: GameRepository): ShouldShowRecentPlayedSpotlightUseCase =
+            ShouldShowRecentPlayedSpotlightUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetRecentPlayedOnboardingIsShownUseCase(repo: GameRepository): SetRecentPlayedSpotlightIsShownUseCase =
+            SetRecentPlayedSpotlightIsShownUseCase(repo)
+
+    @JvmStatic
     @Provides
     fun provideInstantGameViewModel(
         getInstantGameListUseCase: GetInstantGameListUseCase,
         addRecentlyPlayedGame: AddRecentlyPlayedGameUseCase,
         removeRecentlyPlayedGame: RemoveRecentlyPlayedGameUseCase,
         getRecentlyPlayedGameList: GetRecentlyPlayedGameListUseCase,
-        getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase
+        getBitmapFromImageLinkUseCase: GetBitmapFromImageLinkUseCase,
+        shouldShowRecentPlayedSpotlightUseCase: ShouldShowRecentPlayedSpotlightUseCase,
+        setRecentPlayedSpotlightIsShownUseCase: SetRecentPlayedSpotlightIsShownUseCase
     ): InstantGameViewModel =
         InstantGameViewModel(
             getInstantGameListUseCase,
             addRecentlyPlayedGame,
             removeRecentlyPlayedGame,
             getRecentlyPlayedGameList,
-            getBitmapFromImageLinkUseCase
+            getBitmapFromImageLinkUseCase,
+            shouldShowRecentPlayedSpotlightUseCase,
+            setRecentPlayedSpotlightIsShownUseCase
         )
 
     @JvmStatic

@@ -96,10 +96,19 @@ class GameLocalDataSource(private val appContext: Context) : GameDataSource {
         return hasInstalled
     }
 
+    override fun shouldShowRecentPlayedSpotlight(): Boolean {
+        val jsonString = preference.getString(KEY_RECENTLY_PLAYED, "")
+        return preference.getBoolean(KEY_SPOTLIGHT, true) && !jsonString.isNullOrEmpty()
+    }
+
+    override fun setRecentPlayedSpotlightHasShown() {
+        preference.edit().putBoolean(KEY_SPOTLIGHT, false).apply()
+    }
+
     companion object {
         private const val PREF_NAME = "game"
         private const val KEY_RECENTLY_PLAYED = "recently_played"
-
+        private const val KEY_SPOTLIGHT = "recently_played_spotlight"
         const val RECENTLY_PLAYED_SUB_CATEGORY_NAME = "Recently Played"
         const val RECENTLY_PLAYED_SUB_CATEGORY_ID = 24
     }
