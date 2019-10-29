@@ -40,7 +40,10 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
     }
 
     private fun emitUiModel(newsSettings: NewsSettings) {
-        _uiModel.value = NewsTabUiModel(Pair(newsSettings.newsLanguage, newsSettings.newsCategories), newsSettings.shouldEnableNewsSettings)
+        _uiModel.value = NewsTabUiModel(
+            Pair(newsSettings.newsLanguage, newsSettings.newsCategories.filter { it.isSelected }),
+            newsSettings.shouldEnableNewsSettings
+        )
     }
 }
 
