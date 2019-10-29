@@ -44,7 +44,12 @@ class ProductCategoryViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val productCategory = uiModel as ProductCategory
-        category_title.text = productCategory.subcategoryName
+        category_title.text = if (productCategory.stringResourceId != 0) {
+            category_title.context.getString(productCategory.stringResourceId)
+        } else {
+            productCategory.subcategoryName
+        }
+
         adapter.setData(productCategory.items)
 
         if (!productCategory.items.isNullOrEmpty()) {
@@ -60,6 +65,7 @@ class ProductCategoryViewHolder(
 data class ProductCategory(
     val componentType: String,
     val subcategoryName: String,
+    val stringResourceId: Int,
     val subcategoryId: Int,
     val items: List<ProductItem>
 ) : DelegateAdapter.UiModel()
