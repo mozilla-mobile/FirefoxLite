@@ -220,7 +220,6 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 TabItem(
                     site.title,
                     site.searchUrl,
-                    site.displayUrl,
                     createTabSession(site.searchUrl, index == 0, uiModel.shouldEnableTurboMode)
                 )
             })
@@ -239,7 +238,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                     getCurrentSession()?.register(contentTabObserver)
 
                     if (tabItems.size > position) {
-                        telemetryViewModel.onTabSelected(tabItems[position].displayUrl, tabItems[position].displayUrl)
+                        telemetryViewModel.onTabSelected(tabItems[position].title, tabItems[position].title)
                     }
 
                     contentFragment.setOnKeyboardVisibilityChangedListener(OnKeyboardVisibilityChangedListener { visible ->
@@ -253,7 +252,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
             view_pager.setSwipeable(false)
 
             if (tabItems.isNotEmpty()) {
-                telemetryViewModel.onTabSelected(tabItems[0].displayUrl, tabItems[0].displayUrl)
+                telemetryViewModel.onTabSelected(tabItems[0].title, tabItems[0].title)
             }
         })
     }

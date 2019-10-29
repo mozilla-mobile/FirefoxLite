@@ -41,7 +41,6 @@ class ShoppingSearchTabsAdapter(
     data class TabItem(
         val title: String,
         val searchUrl: String,
-        val displayUrl: String,
         val session: Session
     )
 }
