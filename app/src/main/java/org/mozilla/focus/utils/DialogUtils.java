@@ -404,6 +404,30 @@ public class DialogUtils {
 
     }
 
+    public static Dialog showGameSpotlight(
+            @NonNull final Activity activity,
+            @NonNull final View targetView,
+            @NonNull final DialogInterface.OnDismissListener dismissListener,
+            View.OnClickListener ok) {
+
+        final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_game_recent_played, null);
+        container.findViewById(R.id.next).setOnClickListener(ok);
+
+        Dialog dialog = createGameSpotlightDialog(
+                activity,
+                targetView,
+                container,
+                activity.getResources().getDimensionPixelSize(R.dimen.game_focus_view_radius),
+                activity.getResources().getDimensionPixelSize(R.dimen.game_focus_view_height),
+                activity.getResources().getDimensionPixelSize(R.dimen.game_focus_view_width));
+
+        dialog.setOnDismissListener(dismissListener);
+        dialog.show();
+
+        return dialog;
+
+    }
+
     @CheckResult
     private static Dialog createSpotlightDialog(@NonNull final Activity activity, @NonNull final View targetView, final @NonNull ViewGroup container) {
         return createSpotlightDialog(
@@ -463,6 +487,28 @@ public class DialogUtils {
 
     @CheckResult
     private static Dialog createTravelSpotlightDialog(
+            @NonNull final Activity activity,
+            @NonNull final View targetView,
+            final @NonNull ViewGroup container,
+            final @NonNull Integer radius,
+            final @NonNull Integer height,
+            final @NonNull Integer width) {
+        return createSpotlightDialog(
+                activity,
+                targetView,
+                container,
+                0,
+                radius,
+                height,
+                width,
+                FocusViewType.ROUND_REC,
+                ContextCompat.getColor(activity, R.color.paletteBlack50),
+                false
+        );
+    }
+
+    @CheckResult
+    private static Dialog createGameSpotlightDialog(
             @NonNull final Activity activity,
             @NonNull final View targetView,
             final @NonNull ViewGroup container,

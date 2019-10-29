@@ -17,4 +17,6 @@ interface GameDataSource {
     suspend fun removeRecentlyPlayedGame(game: ApiItem)
     suspend fun getRecentlyPlayedGameList(): Result<ApiEntity>
     suspend fun getMyGameList(downloadGameList: ApiEntity): Result<ApiEntity>
+    fun shouldShowRecentPlayedSpotlight(): Boolean
+    fun setRecentPlayedSpotlightHasShown()
 }

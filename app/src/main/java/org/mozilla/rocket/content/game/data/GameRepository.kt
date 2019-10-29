@@ -30,4 +30,8 @@ class GameRepository(
             result
         }
     }
+
+    fun shouldShowRecentPlayedSpotlight(): Boolean = localDataSource.shouldShowRecentPlayedSpotlight()
+
+    fun setRecentPlayedSpotlightHasShown() = localDataSource.setRecentPlayedSpotlightHasShown()
 }

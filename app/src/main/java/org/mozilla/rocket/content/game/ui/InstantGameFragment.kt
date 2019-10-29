@@ -1,19 +1,24 @@
 package org.mozilla.rocket.content.game.ui
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -43,6 +48,7 @@ class InstantGameFragment : Fragment() {
     private lateinit var instantGamesViewModel: InstantGameViewModel
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var adapter: DelegateAdapter
+    private lateinit var recentPlayedSpotlightDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -63,6 +69,7 @@ class InstantGameFragment : Fragment() {
         bindListData()
         bindPageState()
         observeGameAction()
+        observeRecentPlayedSpotlight()
         initNoResultView()
     }
 
@@ -82,6 +89,7 @@ class InstantGameFragment : Fragment() {
     private fun bindListData() {
         instantGamesViewModel.instantGameItems.observe(this@InstantGameFragment, Observer {
             adapter.setData(it)
+            instantGamesViewModel.checkRecentPlayedSpotlight()
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.INSTANT_GAME, instantGamesViewModel.versionId)
         })
     }
@@ -135,6 +143,15 @@ class InstantGameFragment : Fragment() {
         })
     }
 
+    private fun observeRecentPlayedSpotlight() {
+        instantGamesViewModel.showRecentPlayedSpotlight.observe(this, Observer {
+            showRecentPlayedSpotlight()
+        })
+        instantGamesViewModel.dismissRecentPlayedSpotlight.observe(this, Observer {
+            closeRecentPlayedSpotlight()
+        })
+    }
+
     private fun initNoResultView() {
         no_result_view.setButtonOnClickListener(View.OnClickListener {
             instantGamesViewModel.onRetryButtonClicked()
@@ -167,6 +184,40 @@ class InstantGameFragment : Fragment() {
         spinner.visibility = View.GONE
         recycler_view.visibility = View.GONE
         no_result_view.visibility = View.VISIBLE
+    }
+
+    private fun showRecentPlayedSpotlight() {
+        activity?.let {
+            recycler_view.post {
+                recycler_view.scrollToPosition(0)
+                val gameCategoryView = recycler_view.layoutManager?.findViewByPosition(1)
+                val gameListView = gameCategoryView?.findViewById<RecyclerView>(R.id.game_list)
+                val gameItemView = gameListView?.layoutManager?.findViewByPosition(0)
+
+                setSpotlightStatusBarColor()
+                recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(it, gameItemView!!, {
+                    restoreStatusBarColor()
+                }) {
+                    instantGamesViewModel.onRecentPlayedSpotlightButtonClicked()
+                }
+            }
+        }
+    }
+
+    private fun closeRecentPlayedSpotlight() {
+        if (::recentPlayedSpotlightDialog.isInitialized) {
+            recentPlayedSpotlightDialog.dismiss()
+        }
+    }
+
+    private fun restoreStatusBarColor() {
+        activity?.window?.statusBarColor = Color.TRANSPARENT
+    }
+
+    private fun setSpotlightStatusBarColor() {
+        activity?.let {
+            it.window.statusBarColor = ContextCompat.getColor(it, R.color.paletteBlack50)
+        }
     }
 
     companion object {
