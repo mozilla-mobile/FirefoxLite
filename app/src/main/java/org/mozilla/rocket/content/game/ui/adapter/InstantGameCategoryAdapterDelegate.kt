@@ -46,7 +46,11 @@ class InstantGameCategoryViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val gameCategoryItem = uiModel as GameCategory
-        category_title.text = gameCategoryItem.name
+        category_title.text = if (gameCategoryItem.stringResourceId != 0) {
+            category_title.context.getString(gameCategoryItem.stringResourceId)
+        } else {
+            gameCategoryItem.name
+        }
         adapter.setData(gameCategoryItem.items)
 
         if (!gameCategoryItem.items.isNullOrEmpty() && gameCategoryItem.items[0] is Game) {

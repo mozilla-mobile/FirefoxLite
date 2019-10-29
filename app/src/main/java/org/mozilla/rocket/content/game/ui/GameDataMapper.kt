@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.game.ui
 
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
@@ -27,6 +28,7 @@ object GameDataMapper {
                 GameCategory(
                     subcategory.componentType,
                     subcategory.subcategoryName,
+                    getStringResourceId(subcategory.subcategoryId),
                     subcategory.items.map { gameItem ->
                         when {
                             subcategory.componentType == RECENT -> toGameItem(gameItem, GameType.RecentlyPlayed)
@@ -74,4 +76,19 @@ object GameDataMapper {
             game.componentId,
             description = game.packageName
         )
+
+    private fun getStringResourceId(subCategoryId: Int): Int =
+        when (subCategoryId) {
+            5, 15 -> R.string.gaming_vertical_genre_4
+            6, 16 -> R.string.gaming_vertical_genre_10
+            7, 17 -> R.string.gaming_vertical_genre_8
+            8, 18 -> R.string.gaming_vertical_genre_6
+            9, 19 -> R.string.gaming_vertical_genre_9
+            10, 20 -> R.string.gaming_vertical_genre_11
+            11, 21 -> R.string.gaming_vertical_genre_7
+            12 -> R.string.gaming_vertical_genre_5
+            13 -> R.string.gaming_vertical_genre_12
+            24 -> R.string.gaming_vertical_genre_1
+            else -> 0
+        }
 }
