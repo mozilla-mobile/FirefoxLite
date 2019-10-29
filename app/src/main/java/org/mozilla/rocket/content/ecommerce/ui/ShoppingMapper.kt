@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.ecommerce.ui
 
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
@@ -28,6 +29,7 @@ object ShoppingMapper {
                 ProductCategory(
                     subcategory.componentType,
                     subcategory.subcategoryName,
+                    getStringResourceId(subcategory.subcategoryId),
                     subcategory.subcategoryId,
                     subcategory.items.map { dealItem -> toProductItem(dealItem) }
                 )
@@ -76,6 +78,13 @@ object ShoppingMapper {
                 )
             }
     }
+
+    private fun getStringResourceId(subCategoryId: Int): Int =
+        when (subCategoryId) {
+            1 -> R.string.shopping_deal_subcategory_1
+            2 -> R.string.shopping_deal_subcategory_2
+            else -> 0
+        }
 
     private fun Long.toRemainingDays(): Long {
         val currentTime = System.currentTimeMillis()
