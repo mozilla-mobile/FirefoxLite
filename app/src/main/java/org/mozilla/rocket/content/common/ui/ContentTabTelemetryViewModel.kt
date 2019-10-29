@@ -20,6 +20,7 @@ class ContentTabTelemetryViewModel : ViewModel() {
         sessionTimeStart = System.currentTimeMillis()
 
         telemetryDataModel?.let {
+            TelemetryWrapper.startVerticalProcess(it.vertical)
             TelemetryWrapper.startContentTab(it)
         }
     }
