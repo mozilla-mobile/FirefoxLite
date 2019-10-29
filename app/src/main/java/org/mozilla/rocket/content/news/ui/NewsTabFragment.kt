@@ -111,7 +111,7 @@ class NewsTabFragment : Fragment() {
                 setupWithViewPager(pager)
                 tabMode = TabLayout.MODE_SCROLLABLE
             }
-            pager.adapter = EcFragmentAdapter(childFragmentManager, this)
+            pager.adapter = NewsTabFragmentAdapter(childFragmentManager, this)
             pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(p0: Int) {
                 }
@@ -148,11 +148,11 @@ class NewsTabFragment : Fragment() {
      * Adapter that builds a page for each news category.
      */
     @Suppress("DEPRECATION")
-    inner class EcFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) :
+    inner class NewsTabFragmentAdapter(fm: FragmentManager, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) :
         FragmentPagerAdapter(fm) {
 
         private val language = newsSettings.first.apiId
-        private val displayCategories = newsSettings.second.filter { it.isSelected }
+        private val displayCategories = newsSettings.second
 
         override fun getCount() = displayCategories.size
 
