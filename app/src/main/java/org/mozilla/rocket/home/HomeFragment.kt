@@ -41,6 +41,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
@@ -251,7 +252,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 } else {
                     View.VISIBLE
                 }
-                content_hub.setItems(it)
+                // TODO: Remove filter when travel is ready for release
+                if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild() && !AppConstants.isNightlyBuild()) {
+                    content_hub.setItems(it.filter { item -> item !is ContentHub.Item.Travel })
+                } else {
+                    content_hub.setItems(it)
+                }
             })
             openContentPage.observe(this@HomeFragment, Observer {
                 val context = requireContext()
