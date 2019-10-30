@@ -4,7 +4,7 @@ import org.mozilla.focus.utils.FirebaseHelper
 
 class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
 
-    private val defaultShoppingSiteListJson = "[{\"title\":\"Amazon\",\"searchUrl\":\"https://www.amazon.com/s?k=\",\"displayUrl\":\"amazon.com\"},{\"title\":\"eBay\",\"searchUrl\":\"https://www.ebay.com/sch/i.html?_nkw=\",\"displayUrl\":\"ebay.com\"},{\"title\":\"Aliexpress\",\"searchUrl\":\"https://www.aliexpress.com/wholesale?SearchText=\",\"displayUrl\":\"aliexpress.com\"}]"
+    private val defaultShoppingSiteListJson = "[{\"title\":\"Google\",\"searchUrl\":\"https://www.google.com/search?q=\",\"displayUrl\":\"google.com\",\"showPrompt\":false},{\"title\":\"Amazon\",\"searchUrl\":\"https://www.amazon.com/s?k=\",\"displayUrl\":\"amazon.com\"},{\"title\":\"eBay\",\"searchUrl\":\"https://www.ebay.com/sch/i.html?_nkw=\",\"displayUrl\":\"ebay.com\"},{\"title\":\"Aliexpress\",\"searchUrl\":\"https://www.aliexpress.com/wholesale?SearchText=\",\"displayUrl\":\"aliexpress.com\"}]"
 
     override fun isShoppingSearchEnabled() =
         FirebaseHelper.getFirebase().getRcBoolean(RC_KEY_ENABLE_SHOPPING_SEARCH)
