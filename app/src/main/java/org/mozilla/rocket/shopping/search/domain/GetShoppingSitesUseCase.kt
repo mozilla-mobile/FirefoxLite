@@ -32,5 +32,6 @@ private fun ShoppingSite.toShoppingSiteItem(): ShoppingSiteItem =
         title,
         searchUrl,
         displayUrl,
+        showPrompt,
         isChecked = isEnabled
     )
