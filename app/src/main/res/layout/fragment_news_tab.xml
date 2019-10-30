@@ -9,48 +9,29 @@
     android:orientation="vertical"
     tools:context="org.mozilla.rocket.content.news.ui.NewsTabFragment">
 
-    <RelativeLayout
-        android:id="@+id/news_tab_title"
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_height="?android:attr/actionBarSize"
+        app:title="@string/label_menu_news">
 
-        <TextView
-            android:id="@+id/news_text"
-            style="@style/Headline1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/label_menu_news"
-            android:textColor="@color/contentHeaderTextColor" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/news_setting"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_gravity="end"
+            android:src="@drawable/news_setting"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/news_refresh_button"
+            android:layout_width="?android:attr/actionBarSize"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_gravity="end"
+            android:src="@drawable/action_refresh"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
 
-            <ImageButton
-                android:id="@+id/news_refresh_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@null"
-                android:padding="4dp"
-                android:src="@drawable/action_refresh" />
-
-            <ImageButton
-                android:id="@+id/news_setting"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="16dp"
-                android:background="@null"
-                android:padding="4dp"
-                android:src="@drawable/news_setting"
-                android:visibility="gone" />
-        </LinearLayout>
-    </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/news_tab"
@@ -58,12 +39,13 @@
         android:layout_height="@dimen/common_margin_m7"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/paletteDarkGreyC100"
+        app:tabTextColor="@color/paletteDarkGreyC30"
         app:tabIndicatorColor="@color/paletteDarkGreyC100"
         app:tabIndicatorFullWidth="false"
-        app:tabSelectedTextColor="@color/paletteDarkGreyC100"
-        app:tabTextAppearance="@style/NewsTabText"
-        app:tabTextColor="@color/paletteDarkGreyC30"
-        app:tabUnboundedRipple="true" />
+        app:tabUnboundedRipple="true"
+        app:tabTextAppearance="@style/EcTabText" />
 
     <ImageView
         android:layout_width="match_parent"
