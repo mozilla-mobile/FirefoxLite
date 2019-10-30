@@ -3182,6 +3182,21 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    @TelemetryDoc(
+            name = "Show Game Shortcut Contextual Hint",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.GAME_SHORTCUT,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = Value.POSITIVE)
+            ])
+    fun clickGameShortcutContextualHint() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.GAME_SHORTCUT)
+                .extra(Extra.ACTION, Value.POSITIVE)
+                .queue()
+    }
+
     internal class EventBuilder @JvmOverloads constructor(
         category: String,
         method: String,
