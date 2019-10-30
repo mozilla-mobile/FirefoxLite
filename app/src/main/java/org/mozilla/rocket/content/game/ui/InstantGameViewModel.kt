@@ -98,6 +98,7 @@ class InstantGameViewModel(
     fun onRecentPlayedSpotlightButtonClicked() {
         setRecentPlayedSpotlightIsShownUseCase()
         dismissRecentPlayedSpotlight.call()
+        TelemetryWrapper.clickGameShortcutContextualHint()
     }
 
     private fun getGameUiModelList() {
