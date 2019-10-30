@@ -57,6 +57,7 @@ data class ShoppingSiteItem(
     val title: String,
     val searchUrl: String,
     val displayUrl: String,
+    var showPrompt: Boolean,
     var isChecked: Boolean
 ) : DelegateAdapter.UiModel() {
     var isEnabled: Boolean = true

@@ -7,12 +7,14 @@ data class ShoppingSite(
     val title: String,
     val searchUrl: String,
     val displayUrl: String,
+    var showPrompt: Boolean,
     var isEnabled: Boolean
 ) {
     constructor(obj: JSONObject) : this(
         obj.optString("title"),
         obj.optString("searchUrl"),
         obj.optString("displayUrl"),
+        obj.optBoolean("showPrompt", true),
         obj.optBoolean("isEnabled", true)
     )
 
@@ -20,6 +22,7 @@ data class ShoppingSite(
         put("title", title)
         put("searchUrl", searchUrl)
         put("displayUrl", displayUrl)
+        put("showPrompt", showPrompt)
         put("isEnabled", isEnabled)
     }
 

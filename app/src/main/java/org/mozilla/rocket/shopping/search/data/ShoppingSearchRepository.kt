@@ -29,6 +29,7 @@ class ShoppingSearchRepository(
             } else {
                 mergedShoppingSites.addAll(localShoppingSites)
             }
+            syncRemoteSettingsToLocalSites(remoteShoppingSites, localShoppingSites)
             shoppingSitesData.postValue(mergedShoppingSites)
         } else {
             shoppingSitesData.postValue(remoteDataSource.getDefaultShoppingSites())
@@ -105,5 +106,15 @@ class ShoppingSearchRepository(
         mergedSites.addAll(sitesToAdd)
 
         return mergedSites
+    }
+
+    private fun syncRemoteSettingsToLocalSites(remoteShoppingSites: List<ShoppingSite>, localShoppingSites: List<ShoppingSite>) {
+        for (remoteSite in remoteShoppingSites) {
+            for (localSite in localShoppingSites) {
+                if (localSite.contentEquals(remoteSite)) {
+                    localSite.showPrompt = remoteSite.showPrompt
+                }
+            }
+        }
     }
 }

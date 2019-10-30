@@ -19,5 +19,6 @@ private fun ShoppingSiteItem.toShoppingSite(): ShoppingSite =
             title,
             searchUrl,
             displayUrl,
+            showPrompt,
             isChecked
         )
