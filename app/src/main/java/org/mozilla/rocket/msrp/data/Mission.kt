@@ -26,7 +26,7 @@ data class Mission(
     val status: Int, // STATUS_NEW, STATUS_NEW, STATUS_REDEEMABLE, STATUS_REDEEMED
     val missionProgress: MissionProgress?
 ) : Parcelable {
-    var unread = false
+    var unread = true
     val uniqueId: String
         get() = "$missionType$mid"
 
