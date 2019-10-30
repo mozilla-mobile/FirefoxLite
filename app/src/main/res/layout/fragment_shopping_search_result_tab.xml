@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_gravity="bottom"
-                    android:background="@color/privateBackground"
+                    android:background="@color/url_bar_divider_default"
                     tools:background="#FF0000" />
 
                 <!-- divider between appbar and web-vew, will be covered by progress bar -->
