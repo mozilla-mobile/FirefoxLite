@@ -8,6 +8,9 @@ import org.mozilla.focus.BuildConfig.FXA_EMAIL_VERIFY_URL
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
+import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_COMMAND
+import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_DEEP_LINK
+import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_OPEN_URL
 import org.mozilla.focus.notification.RocketMessagingService
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
@@ -43,6 +46,9 @@ class LaunchIntentDispatcher {
         fun dispatch(context: Context, intent: Intent): Action? {
             // External URL from other apps (e.g. GMail) will go to InfoActivity
             val inComingUrl = intent.data?.toString()
+
+            sendOpenNotificationEvent(intent)
+
             if (inComingUrl?.contains(FXA_EMAIL_VERIFY_URL) == true) {
                 val newIntent = InfoActivity.getIntentFor(context, inComingUrl, "Firefox Account verified")
                 context.startActivity(newIntent)
@@ -140,6 +146,27 @@ class LaunchIntentDispatcher {
             }
 
             return Action.NORMAL
+        }
+
+        private fun sendOpenNotificationEvent(intent: Intent) {
+            val pushMessageId = intent.extras?.getString("message_id", null)
+            val isFromPush = pushMessageId != null
+            if (isFromPush) {
+                val link = parseLink(intent)
+                TelemetryWrapper.openNotification(link, pushMessageId)
+            }
+        }
+
+        private fun parseLink(intent: Intent): String? {
+            var link: String? = intent.getStringExtra(PUSH_OPEN_URL)
+            if (link == null) {
+                link = intent.getStringExtra(PUSH_COMMAND)
+            }
+            if (link == null) {
+                link = intent.getStringExtra(PUSH_DEEP_LINK)
+            }
+
+            return link
         }
     }
 }
