@@ -106,7 +106,7 @@ open class FxLoginFragment : Fragment() {
     }
 
     interface OnLoginCompleteListener {
-        fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, times: Int)
+        fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, statusCode: Int)
         fun onLoginFailure()
     }
 
@@ -132,5 +132,9 @@ open class FxLoginFragment : Fragment() {
         const val AUTH_END_UID_PLACEHOLDER = "[auth_end_uid_placeholder]"
         const val AUTH_END = "$FXA_API_URL?client_id=$FXA_CLIENT_ID&state=$AUTH_END_UID_PLACEHOLDER&scope=profile"
         const val REDIRECT_URL = "?jwt="
+
+        const val STATUS_CODE_NONE = 0
+        const val STATUS_CODE_WARNING = 1
+        const val STATUS_CODE_FINAL_WARNING = 2
     }
 }
