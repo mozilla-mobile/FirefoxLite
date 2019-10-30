@@ -10,6 +10,8 @@ import androidx.navigation.findNavController
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.fxa.FxLoginFragment
+import org.mozilla.rocket.fxa.FxLoginFragment.Companion.STATUS_CODE_FINAL_WARNING
+import org.mozilla.rocket.fxa.FxLoginFragment.Companion.STATUS_CODE_WARNING
 import org.mozilla.rocket.msrp.data.Mission
 import kotlin.properties.Delegates
 
@@ -32,15 +34,15 @@ class RewardActivity : AppCompatActivity(), NavHostActivity, FxLoginFragment.OnL
         return true
     }
 
-    override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, times: Int) {
+    override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, statusCode: Int) {
         when {
             isDisabled -> {
                 DialogUtils.showAccountDisabledDialog(this) {
                     finish()
                 }
             }
-            times == 1 -> DialogUtils.showLoginMultipleTimesWarningDialog(this)
-            times == 2 -> DialogUtils.showLoginMultipleTimesFinalWarningDialog(this)
+            statusCode == STATUS_CODE_WARNING -> DialogUtils.showLoginMultipleTimesWarningDialog(this)
+            statusCode == STATUS_CODE_FINAL_WARNING -> DialogUtils.showLoginMultipleTimesFinalWarningDialog(this)
         }
         navigateBackWithResult(
             Bundle().apply {

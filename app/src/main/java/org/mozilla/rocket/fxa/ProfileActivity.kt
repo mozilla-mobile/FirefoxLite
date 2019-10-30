@@ -13,6 +13,8 @@ import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.fxa.FxLoginFragment.Companion.STATUS_CODE_FINAL_WARNING
+import org.mozilla.rocket.fxa.FxLoginFragment.Companion.STATUS_CODE_WARNING
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.GetUserIdUseCase
 import org.mozilla.rocket.msrp.domain.IsFxAccountUseCase
@@ -56,7 +58,7 @@ class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxL
                 .navigate(FxAccountFragmentDirections.actionFxAccountDestToFxLogin2Dest(0, uid))
     }
 
-    override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, times: Int) {
+    override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, statusCode: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             TelemetryWrapper.accountSignIn()
             bindFxAccountUseCase(jwt)
@@ -67,8 +69,8 @@ class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxL
                     }
                     return@launch
                 }
-                times == 1 -> DialogUtils.showLoginMultipleTimesWarningDialog(this@ProfileActivity)
-                times == 2 -> DialogUtils.showLoginMultipleTimesFinalWarningDialog(this@ProfileActivity)
+                statusCode == STATUS_CODE_WARNING -> DialogUtils.showLoginMultipleTimesWarningDialog(this@ProfileActivity)
+                statusCode == STATUS_CODE_FINAL_WARNING -> DialogUtils.showLoginMultipleTimesFinalWarningDialog(this@ProfileActivity)
             }
             navigateToFxAccountPage()
         }
