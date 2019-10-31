@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.travel.data
 
 import org.mozilla.rocket.content.Result
+import java.lang.Exception
 
 class TravelRepository(
     private val remoteDataSource: TravelRemoteDataSource,
@@ -35,19 +36,11 @@ class TravelRepository(
         val resultExtract = remoteDataSource.getCityWikiExtract(name)
         val resultImage = remoteDataSource.getCityWikiImage(name)
 
-        val wiki = Wiki(
-            if (resultImage is Result.Success) {
-                resultImage.data
-            } else {
-                ""
-            },
-            if (resultExtract is Result.Success) {
-                resultExtract.data
-            } else {
-                ""
-            },
-            WIKI_URL + name
-        )
+        if (resultImage !is Result.Success || resultExtract !is Result.Success) {
+            return Result.Error(Exception())
+        }
+
+        val wiki = Wiki(resultImage.data, resultExtract.data, WIKI_URL + name)
 
         return Result.Success(wiki)
     }
