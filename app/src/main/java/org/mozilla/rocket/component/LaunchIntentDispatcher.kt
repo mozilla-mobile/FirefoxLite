@@ -153,7 +153,7 @@ class LaunchIntentDispatcher {
             val isFromPush = pushMessageId != null
             if (isFromPush) {
                 val link = parseLink(intent)
-                TelemetryWrapper.openNotification(link, pushMessageId)
+                TelemetryWrapper.openNotification(link, pushMessageId, true)
             }
         }
 

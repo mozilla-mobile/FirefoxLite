@@ -56,7 +56,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
 
             String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
             String link = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_LINK, "");
-            TelemetryWrapper.openNotification(link, messageId);
+            TelemetryWrapper.openNotification(link, messageId, false);
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {
 
