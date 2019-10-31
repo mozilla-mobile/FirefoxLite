@@ -45,7 +45,7 @@
         app:tabIndicatorColor="@color/paletteDarkGreyC100"
         app:tabIndicatorFullWidth="false"
         app:tabUnboundedRipple="true"
-        app:tabTextAppearance="@style/EcTabText" />
+        app:tabTextAppearance="@style/ContentTabText" />
 
     <ImageView
         android:layout_width="match_parent"
