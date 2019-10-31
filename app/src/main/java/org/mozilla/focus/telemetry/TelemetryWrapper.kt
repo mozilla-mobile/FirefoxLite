@@ -287,6 +287,7 @@ object TelemetryWrapper {
         const val TASK = "task"
         const val FINISHED = "finished"
         const val ITEM_NAME = "item_name"
+        const val BACKGROUND = "background"
     }
 
     object Extra_Value {
@@ -2501,13 +2502,15 @@ object TelemetryWrapper {
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "messageId")
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "messageId"),
+                TelemetryExtra(name = Extra.BACKGROUND, value = "true|false")
             ])
     @JvmStatic
-    fun openNotification(link: String?, messageId: String?) {
+    fun openNotification(link: String?, messageId: String?, background: Boolean) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.NOTIFICATION)
                 .extra(Extra.LINK, link ?: "null")
                 .extra(Extra.MESSAGE_ID, messageId ?: "null")
+                .extra(Extra.BACKGROUND, background.toString())
                 .queue()
     }
 
