@@ -88,30 +88,22 @@ class TravelRemoteDataSource : TravelDataSource {
 
     private fun getWikiExtractApiEndpoint(name: String): String = WIKI_EXTRACT_API + name
 
-    private fun getWikiExtractFromJson(jsonString: String?): String {
-        return if (jsonString != null) {
-            val jsonObject = jsonString.toJsonObject()
-            val pages = jsonObject.optJSONObject(WIKI_JSON_KEY_QUERY).optJSONObject(WIKI_JSON_KEY_PAGES)
-            val keyIterator = pages.keys()
-            val pageContent = pages.optJSONObject(keyIterator.next())
-            pageContent.optString(WIKI_JSON_KEY_EXTRACT)
-        } else {
-            ""
-        }
+    private fun getWikiExtractFromJson(jsonString: String): String {
+        val jsonObject = jsonString.toJsonObject()
+        val pages = jsonObject.optJSONObject(WIKI_JSON_KEY_QUERY).optJSONObject(WIKI_JSON_KEY_PAGES)
+        val keyIterator = pages.keys()
+        val pageContent = pages.optJSONObject(keyIterator.next())
+        return pageContent.optString(WIKI_JSON_KEY_EXTRACT)
     }
 
     private fun getWikiImageApiEndpoint(name: String): String = WIKI_IMAGE_API + name
 
-    private fun getWikiImageFromJson(jsonString: String?): String {
-        return if (jsonString != null) {
-            val jsonObject = jsonString.toJsonObject()
-            val pages = jsonObject.optJSONObject(WIKI_JSON_KEY_QUERY).optJSONObject(WIKI_JSON_KEY_PAGES)
-            val keyIterator = pages.keys()
-            val pageContent = pages.optJSONObject(keyIterator.next())
-            pageContent.optJSONObject(WIKI_JSON_KEY_ORIGINAL).optString(WIKI_JSON_KEY_SOURCE)
-        } else {
-            ""
-        }
+    private fun getWikiImageFromJson(jsonString: String): String {
+        val jsonObject = jsonString.toJsonObject()
+        val pages = jsonObject.optJSONObject(WIKI_JSON_KEY_QUERY).optJSONObject(WIKI_JSON_KEY_PAGES)
+        val keyIterator = pages.keys()
+        val pageContent = pages.optJSONObject(keyIterator.next())
+        return pageContent.optJSONObject(WIKI_JSON_KEY_ORIGINAL).optString(WIKI_JSON_KEY_SOURCE)
     }
 
     companion object {
