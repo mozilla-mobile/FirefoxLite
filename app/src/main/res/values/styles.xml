@@ -346,7 +346,7 @@
         <item name="android:colorControlActivated">@color/paletteDarkBlueC100</item>
     </style>
 
-    <style name="EcTabText" parent="TextAppearance.Design.Tab">
+    <style name="ContentTabText" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
@@ -369,27 +369,6 @@
     <style name="ShoppingSearchTabText" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="GameTabText" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <style name="NewsTabText" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-    </style>
-
-    <style name="TravelTabText" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="FullScreenDialog" parent="@style/AppTheme">

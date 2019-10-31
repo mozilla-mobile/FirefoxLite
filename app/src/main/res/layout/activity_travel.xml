@@ -23,19 +23,17 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/travel_tabs"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/common_margin_m7"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        app:tabGravity="center"
-        app:tabIndicatorColor="@color/paletteBlack100"
-        app:tabIndicatorFullWidth="false"
-        app:tabIndicatorHeight="2dp"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/paletteDarkGreyC100"
-        app:tabTextAppearance="@style/TravelTabText"
         app:tabTextColor="@color/paletteDarkGreyC30"
-        app:tabUnboundedRipple="true" />
+        app:tabIndicatorColor="@color/paletteDarkGreyC100"
+        app:tabIndicatorFullWidth="false"
+        app:tabUnboundedRipple="true"
+        app:tabTextAppearance="@style/ContentTabText" />
 
     <ImageView
         android:layout_width="match_parent"
