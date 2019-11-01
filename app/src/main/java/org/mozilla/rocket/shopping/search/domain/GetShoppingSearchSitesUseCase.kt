@@ -7,8 +7,9 @@ import java.net.URLEncoder
 
 class GetShoppingSearchSitesUseCase(val repository: ShoppingSearchRepository) {
 
-    operator fun invoke(searchKeyword: String): LiveData<List<ShoppingSearchSite>> =
-        repository.getShoppingSitesData()
+    operator fun invoke(searchKeyword: String): LiveData<List<ShoppingSearchSite>> {
+        repository.refreshShoppingSites()
+        return repository.getShoppingSitesData()
             .map {
                 it.filter { site -> site.isEnabled }
                     .map { site ->
@@ -19,6 +20,7 @@ class GetShoppingSearchSitesUseCase(val repository: ShoppingSearchRepository) {
                         )
                     }
             }
+    }
 
     data class ShoppingSearchSite(
         val title: String,
