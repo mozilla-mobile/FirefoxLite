@@ -40,6 +40,10 @@ class ShoppingSearchRepository(
 
     fun getShoppingSitesData(): LiveData<List<ShoppingSite>> = shoppingSitesData
 
+    fun refreshShoppingSites() {
+        initShoppingSites()
+    }
+
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
         localDataSource.updateShoppingSites(shoppingSites)
         shoppingSitesData.postValue(shoppingSites)
