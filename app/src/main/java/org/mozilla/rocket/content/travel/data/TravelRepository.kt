@@ -2,7 +2,6 @@ package org.mozilla.rocket.content.travel.data
 
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
-import org.mozilla.rocket.content.common.data.ApiItem
 
 class TravelRepository(
     private val remoteDataSource: TravelRemoteDataSource,
@@ -17,7 +16,7 @@ class TravelRepository(
         return localDataSource.getBucketList()
     }
 
-    suspend fun searchCity(keyword: String): Result<List<ApiItem>> {
+    suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity> {
         return localDataSource.searchCity(keyword)
     }
 

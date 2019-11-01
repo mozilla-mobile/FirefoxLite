@@ -11,7 +11,6 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.common.data.ApiEntity
-import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_ID
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_IMAGE_URL
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_NAME
@@ -31,7 +30,7 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
 
     override suspend fun getExploreList(): Result<ApiEntity> = withContext(Dispatchers.IO) {
         return@withContext Success(
-                ApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_mock_items))
+                ApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_explore_mock_items))
         )
     }
 
@@ -39,9 +38,9 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         return@withContext Success(getBucketListFromPreferences())
     }
 
-    override suspend fun searchCity(keyword: String): Result<List<ApiItem>> = withContext(Dispatchers.IO) {
+    override suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity> = withContext(Dispatchers.IO) {
         return@withContext Success(
-            ApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_mock_items)).subcategories.get(1).items
+                BcAutocompleteApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_search_mock_items))
         )
     }
 
