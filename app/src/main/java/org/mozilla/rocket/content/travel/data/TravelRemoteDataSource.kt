@@ -5,7 +5,6 @@ import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.Request
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
-import org.mozilla.rocket.content.common.data.ApiItem
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.toJsonObject
@@ -20,7 +19,7 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun searchCity(keyword: String): Result<List<ApiItem>> {
+    override suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity> {
         TODO("not implemented")
     }
 

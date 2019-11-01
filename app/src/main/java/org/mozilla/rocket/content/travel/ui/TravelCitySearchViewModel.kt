@@ -34,7 +34,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
 
         searchCityJob = viewModelScope.launch {
             val btnVisibility: Int
-            var list: List<CitySearchResultUiModel> = emptyList()
+            val list = ArrayList<CitySearchResultUiModel>()
 
             if (keyword.isEmpty()) {
                 btnVisibility = View.GONE
@@ -42,9 +42,9 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
                 btnVisibility = View.VISIBLE
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success) {
-                    list = result.data.map {
-                        TravelMapper.toCitySearchResultUiModel(it.componentId, applyStyle(keyword, it.title))
-                    }
+                    list.addAll(result.data.result.map {
+                        TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name))
+                    })
                 }
 
                 // TODO: handle error

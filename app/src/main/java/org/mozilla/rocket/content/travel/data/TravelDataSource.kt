@@ -3,12 +3,11 @@ package org.mozilla.rocket.content.travel.data
 import org.json.JSONArray
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
-import org.mozilla.rocket.content.common.data.ApiItem
 
 interface TravelDataSource {
     suspend fun getExploreList(): Result<ApiEntity>
     suspend fun getBucketList(): Result<List<BucketListCity>>
-    suspend fun searchCity(keyword: String): Result<List<ApiItem>>
+    suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity>
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
     suspend fun getCityIg(name: String): Result<Ig>
     suspend fun getCityWikiImage(name: String): Result<String>
