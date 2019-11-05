@@ -1,6 +1,5 @@
 package org.mozilla.rocket.content.travel.data
 
-import android.util.Log
 import org.json.JSONObject
 import org.mozilla.rocket.util.toJsonObject
 
@@ -25,7 +24,6 @@ data class BcAutocompleteApiEntity(val result: List<BcAutocompleteApiItem>) : Bc
                                 .map { index -> jsonArray.getJSONObject(index) }
                                 .filter { jObj -> KEY_TYPE_CITY.equals(jObj.optString(KEY_TYPE)) }
                                 .map { jObj -> BcAutocompleteApiItem.fromJson(jObj) }
-                Log.d("xx", "Result: $result")
                 BcAutocompleteApiEntity(result)
             } else {
                 BcAutocompleteApiEntity(emptyList())
