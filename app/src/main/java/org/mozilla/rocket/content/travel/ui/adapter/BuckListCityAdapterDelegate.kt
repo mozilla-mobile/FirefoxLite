@@ -23,7 +23,7 @@ class BucketListCityViewHolder(
         city_name.text = bucketListCity.name
 
         val placeholderArray = itemView.resources.obtainTypedArray(R.array.travel_placeholders)
-        val placeholder = placeholderArray.getResourceId((0..(placeholderArray.length() - 1)).random(), R.drawable.travel_card1)
+        val placeholder = placeholderArray.getResourceId((0 until placeholderArray.length()).random(), R.drawable.travel_card1)
         placeholderArray.recycle()
 
         GlideApp.with(itemView.context)
