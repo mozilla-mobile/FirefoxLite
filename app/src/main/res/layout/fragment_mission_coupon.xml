@@ -104,7 +104,7 @@
 
         <TextView
             android:id="@+id/coupon_copy_btn"
-            style="@android:style/Widget.Holo.Button.Borderless"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -130,6 +130,7 @@
 
         <TextView
             android:id="@+id/coupon_go_shopping_btn"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/msrp_mission_detail_button_height"
