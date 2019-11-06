@@ -53,6 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:textColor="@color/contentHeaderTextColor"
                     android:textSize="20sp"
@@ -68,6 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:text="@string/msrp_challenge_completed_title"
                         android:textColor="@color/contentHeaderTextColor"
@@ -485,6 +487,7 @@
 
                     <Button
                         android:id="@+id/redeem_button"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/msrp_mission_detail_button_height"
@@ -499,7 +502,7 @@
 
                     <Button
                         android:id="@+id/redeem_later_button"
-                        style="@android:style/Widget.Holo.Button.Borderless"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/msrp_mission_detail_button_height"
@@ -583,6 +586,7 @@
 
                     <Button
                         android:id="@+id/join_button"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/msrp_mission_detail_button_height"
@@ -614,6 +618,7 @@
 
                     <Button
                         android:id="@+id/quit_button"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="@dimen/match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="@dimen/msrp_mission_detail_button_height"

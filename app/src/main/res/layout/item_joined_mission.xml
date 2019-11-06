@@ -32,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:letterSpacing="0.11"
+        android:letterSpacing="0.01"
         android:maxLines="2"
         android:textColor="@color/contentHeaderTextColor87"
         app:layout_constraintEnd_toEndOf="parent"
