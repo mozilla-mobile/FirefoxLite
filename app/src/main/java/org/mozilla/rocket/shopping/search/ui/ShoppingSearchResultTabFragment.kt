@@ -232,27 +232,30 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
 
                 override fun onPageSelected(position: Int) {
-                    getCurrentSession()?.unregisterObservers()
-                    val contentFragment = (shoppingSearchTabsAdapter.getRegisteredFragment(position) as ContentTabFragment)
-                    contentFragment.switchToFocusTab()
-                    getCurrentSession()?.register(contentTabObserver)
-
-                    if (tabItems.size > position) {
-                        telemetryViewModel.onTabSelected(tabItems[position].title, tabItems[position].title)
-                    }
-
-                    contentFragment.setOnKeyboardVisibilityChangedListener(OnKeyboardVisibilityChangedListener { visible ->
-                        if (visible) {
-                            contentFragment.setOnKeyboardVisibilityChangedListener(null)
-                            telemetryViewModel.onKeyboardShown()
-                        }
-                    })
+                    selectContentFragment(shoppingSearchTabsAdapter, position)
                 }
             })
             view_pager.setSwipeable(false)
-
             if (tabItems.isNotEmpty()) {
-                telemetryViewModel.onTabSelected(tabItems[0].title, tabItems[0].title)
+                selectContentFragment(shoppingSearchTabsAdapter, 0)
+            }
+        })
+    }
+
+    private fun selectContentFragment(adapter: ShoppingSearchTabsAdapter, position: Int) {
+        getCurrentSession()?.unregisterObservers()
+        val contentFragment = (adapter.getRegisteredFragment(position) as ContentTabFragment)
+        contentFragment.switchToFocusTab()
+        getCurrentSession()?.register(contentTabObserver)
+
+        if (tabItems.size > position) {
+            telemetryViewModel.onTabSelected(tabItems[position].title, tabItems[position].title)
+        }
+
+        contentFragment.setOnKeyboardVisibilityChangedListener(OnKeyboardVisibilityChangedListener { visible ->
+            if (visible) {
+                contentFragment.setOnKeyboardVisibilityChangedListener(null)
+                telemetryViewModel.onKeyboardShown()
             }
         })
     }
