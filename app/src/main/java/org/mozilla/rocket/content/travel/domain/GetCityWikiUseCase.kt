@@ -6,6 +6,33 @@ import org.mozilla.rocket.content.travel.data.Wiki
 
 class GetCityWikiUseCase(private val travelRepository: TravelRepository) {
 
-    suspend operator fun invoke(name: String): Result<Wiki> =
-            travelRepository.getCityWiki(name)
+    suspend operator fun invoke(name: String): Result<Wiki> {
+
+        val result = travelRepository.getCityWiki(name)
+
+        if (result !is Result.Success) {
+            return result
+        }
+
+        val revisedWiki = Wiki(result.data.imageUrl, result.data.introduction.trimContentWithinParentheses(), result.data.linkUrl)
+        return Result.Success(revisedWiki)
+    }
+
+    fun String.trimContentWithinParentheses(): String {
+        var parenthesesCounter = 0
+
+        val trimmed = this.filter {
+
+            if (it.equals('(')) {
+                parenthesesCounter += 1
+            }
+
+            val drop = parenthesesCounter == 0
+            if (it.equals(')') && parenthesesCounter > 0) {
+                parenthesesCounter -= 1
+            }
+            drop
+        }
+        return trimmed
+    }
 }
