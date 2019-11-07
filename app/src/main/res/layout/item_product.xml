@@ -20,7 +20,7 @@
             android:id="@+id/product_image"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@drawable/placeholder"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
