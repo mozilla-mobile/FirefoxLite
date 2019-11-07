@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.ecommerce.ui.adapter
 
 import android.view.View
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.item_product.*
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
@@ -33,6 +34,7 @@ class ProductViewHolder(
             }
         }
 
+        product_image.scaleType = ImageView.ScaleType.FIT_CENTER
         GlideApp.with(itemView.context)
             .asBitmap()
             .placeholder(R.drawable.placeholder)
