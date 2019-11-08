@@ -5,11 +5,12 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.content.common.data.ApiItem
+import org.mozilla.rocket.content.travel.data.BcHotelApiItem
 import org.mozilla.rocket.content.travel.data.BucketListCity
-import org.mozilla.rocket.content.travel.data.Hotel
 import org.mozilla.rocket.content.travel.data.Ig
 import org.mozilla.rocket.content.travel.data.Video
 import org.mozilla.rocket.content.travel.data.Wiki
+import org.mozilla.rocket.content.travel.ui.TravelCityViewModel.Companion.UNAVAILABLE_LANDMARK_DISTANCE
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
@@ -23,6 +24,7 @@ object TravelMapper {
 
     private const val BANNER = "banner"
     private const val SOURCE_WIKI = "Wikipedia"
+    private const val SOURCE_BC = "Hotels.com"
 
     fun toExploreList(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
         return apiEntity.subcategories.map { subcategory ->
@@ -102,18 +104,21 @@ object TravelMapper {
                 video.linkUrl
             )
 
-    fun toHotelUiModel(hotel: Hotel): HotelUiModel =
-            HotelUiModel(
+    fun toHotelUiModel(hotel: BcHotelApiItem): HotelUiModel {
+
+        return HotelUiModel(
                 hotel.imageUrl,
-                hotel.source,
+                SOURCE_BC,
                 hotel.name,
-                hotel.distance,
+                UNAVAILABLE_LANDMARK_DISTANCE,
                 hotel.rating,
+                10,
                 hotel.hasFreeWifi,
                 hotel.price,
                 hotel.currency,
-                hotel.hasFreeCancellation,
+                false,
                 hotel.canPayAtProperty,
                 hotel.linkUrl
-            )
+        )
+    }
 }

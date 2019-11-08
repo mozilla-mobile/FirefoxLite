@@ -74,10 +74,11 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
-    override suspend fun getCityHotels(name: String): Result<List<Hotel>> {
-        return withContext(Dispatchers.IO) {
-            Success(getMockHotels() ?: emptyList())
-        }
+    // TODO: remove mock data
+    override suspend fun getCityHotels(name: String): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext Success(
+                BcHotelApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_hotels))
+        )
     }
 
     override suspend fun isInBucketList(id: String): Boolean {
@@ -120,11 +121,6 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
     private fun getMockVideos(): List<Video>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_videos)
                     ?.jsonStringToVideos()
-
-    // TODO: remove mock data
-    private fun getMockHotels(): List<Hotel>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_hotels)
-                    ?.jsonStringToHotels()
 
     companion object {
         private const val PREF_NAME = "travel"
@@ -176,35 +172,6 @@ private fun createVideo(jsonObject: JSONObject): Video =
             jsonObject.optInt("view_count"),
             jsonObject.optString("date"),
             String.format("https://www.youtube.com/watch?v=%s", jsonObject.optString("id"))
-        )
-
-private fun String.jsonStringToHotels(): List<Hotel>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createHotel(jsonObject) }
-                .shuffled()
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createHotel(jsonObject: JSONObject): Hotel =
-        Hotel(
-            jsonObject.optInt("id"),
-            jsonObject.optString("image_url"),
-            jsonObject.optString("source"),
-            jsonObject.optString("name"),
-            jsonObject.optDouble("distance", 0.toDouble()).toFloat(),
-            jsonObject.optDouble("rating", 0.toDouble()).toFloat(),
-            jsonObject.optBoolean("has_free_wifi"),
-            jsonObject.optDouble("price", 0.toDouble()).toFloat(),
-            jsonObject.optString("currency"),
-            jsonObject.optBoolean("has_free_cancellation"),
-            jsonObject.optBoolean("can_pay_at_property"),
-            jsonObject.optString("link_url")
         )
 
 private fun List<BucketListCity>.toJsonString(): String {

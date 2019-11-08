@@ -12,6 +12,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.travel.ui.TravelCityViewModel.Companion.UNAVAILABLE_LANDMARK_DISTANCE
 import org.mozilla.rocket.extension.obtainBackgroundColor
 import java.text.DecimalFormat
 
@@ -48,18 +49,29 @@ class HotelViewHolder(
 
         hotel_source.text = hotelUiModel.source
         hotel_name.text = hotelUiModel.name
-        hotel_distance.text = itemView.context.getString(R.string.travel_hotel_distance_to_landmark, hotelUiModel.distance)
-        hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating_total, hotelUiModel.rating)
+
+        if (hotelUiModel.distance != UNAVAILABLE_LANDMARK_DISTANCE) {
+            hotel_distance.text = itemView.context.getString(R.string.travel_hotel_distance_to_landmark, hotelUiModel.distance)
+        } else {
+            hotel_distance.isVisible = false
+        }
+
+        hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating_total, hotelUiModel.rating, hotelUiModel.fullScore)
         hotel_currency.text = hotelUiModel.currency
 
         val dec = DecimalFormat("#,###.##")
         hotel_price.text = dec.format(hotelUiModel.price)
 
         hotel_free_wifi.isVisible = hotelUiModel.hasFreeWifi
-        hotel_free_cancellation.isVisible = hotelUiModel.hasFreeCancellation
-        hotel_pay_at_hotel.isVisible = hotelUiModel.canPayAtProperty
 
-        hotel_separator.isVisible = hotelUiModel.hasFreeCancellation || hotelUiModel.canPayAtProperty
+        var showBottomInfo = false
+        if (hotelUiModel.hasFreeCancellation && hotelUiModel.canPayAtProperty) {
+            showBottomInfo = true
+        }
+
+        hotel_separator.isVisible = showBottomInfo
+        hotel_free_cancellation.isVisible = showBottomInfo
+        hotel_pay_at_hotel.isVisible = showBottomInfo
     }
 }
 
@@ -69,6 +81,7 @@ data class HotelUiModel(
     val name: String,
     val distance: Float,
     val rating: Float,
+    val fullScore: Int,
     val hasFreeWifi: Boolean,
     val price: Float,
     val currency: String,
