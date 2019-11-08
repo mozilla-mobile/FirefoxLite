@@ -45,7 +45,7 @@ class TravelRepository(
         return localDataSource.getCityVideos(name)
     }
 
-    suspend fun getCityHotels(name: String): Result<List<Hotel>> {
+    suspend fun getCityHotels(name: String): Result<BcHotelApiEntity> {
         return localDataSource.getCityHotels(name)
     }
 

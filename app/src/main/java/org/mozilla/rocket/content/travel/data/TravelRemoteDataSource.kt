@@ -67,7 +67,7 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun getCityHotels(name: String): Result<List<Hotel>> {
+    override suspend fun getCityHotels(name: String): Result<BcHotelApiEntity> {
         TODO("not implemented")
     }
 

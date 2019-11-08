@@ -97,12 +97,11 @@ class TravelCityViewModel(
             val hotelResult = getHotels(name)
             if (hotelResult is Result.Success) {
                 data.addAll(
-                        hotelResult.data.map {
+                        hotelResult.data.result.map {
                             TravelMapper.toHotelUiModel(it)
                         }
                 )
             }
-
             // TODO: handle error
 
             _items.postValue(data)
@@ -156,5 +155,9 @@ class TravelCityViewModel(
     sealed class SectionType {
         data class Explore(val name: String) : SectionType()
         object TopHotels : SectionType()
+    }
+
+    companion object {
+        const val UNAVAILABLE_LANDMARK_DISTANCE = -1f
     }
 }

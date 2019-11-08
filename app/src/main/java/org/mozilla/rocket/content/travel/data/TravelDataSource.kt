@@ -13,7 +13,7 @@ interface TravelDataSource {
     suspend fun getCityWikiImage(name: String): Result<String>
     suspend fun getCityWikiExtract(name: String): Result<String>
     suspend fun getCityVideos(name: String): Result<List<Video>>
-    suspend fun getCityHotels(name: String): Result<List<Hotel>>
+    suspend fun getCityHotels(name: String): Result<BcHotelApiEntity>
     suspend fun isInBucketList(id: String): Boolean
     suspend fun addToBucketList(city: BucketListCity)
     suspend fun removeFromBucketList(id: String)
@@ -71,20 +71,5 @@ data class Video(
     val author: String,
     val viewCount: Int,
     val date: String,
-    val linkUrl: String
-)
-
-data class Hotel(
-    val id: Int,
-    val imageUrl: String,
-    val source: String,
-    val name: String,
-    val distance: Float,
-    val rating: Float,
-    val hasFreeWifi: Boolean,
-    val price: Float,
-    val currency: String,
-    val hasFreeCancellation: Boolean,
-    val canPayAtProperty: Boolean,
     val linkUrl: String
 )
