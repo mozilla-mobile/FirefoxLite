@@ -19,6 +19,7 @@ import androidx.test.espresso.action.GeneralClickAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Tap;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.rule.ActivityTestRule;
 
 import org.jetbrains.annotations.NotNull;
@@ -133,7 +134,9 @@ public final class AndroidTestUtils {
     }
 
     public static void tapSettingButton() {
-        onView(allOf(withId(R.id.menu_preferences), isDisplayed())).perform(click());
+        onView(withId(R.id.menu_preferences))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
     }
 
     public static void tapHomeSearchField() {

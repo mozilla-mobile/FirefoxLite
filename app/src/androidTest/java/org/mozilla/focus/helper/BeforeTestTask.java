@@ -6,6 +6,8 @@
 package org.mozilla.focus.helper;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import androidx.test.InstrumentationRegistry;
 
@@ -42,6 +44,9 @@ public class BeforeTestTask {
         }
 
         ((FocusApplication) context.getApplicationContext()).resetAppComponent();
+        SharedPreferences defaultSharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        defaultSharedPref.edit().clear().commit();
+
         if (this.skipFirstRun) {
             NewFeatureNotice.getInstance(context).setLiteUpdateDidShow();
         } else {

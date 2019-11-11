@@ -8,22 +8,19 @@ package org.mozilla.focus.activity
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
-import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.R
 import org.mozilla.focus.autobot.session
 import org.mozilla.focus.helper.BeforeTestTask
-import org.mozilla.focus.utils.Settings
 
 @RunWith(AndroidJUnit4::class)
 class ScreenshotOnBoardingTest {
@@ -52,11 +49,6 @@ class ScreenshotOnBoardingTest {
 
     companion object {
         private val TARGET_URL_SITE = "file:///android_asset/gpl.html"
-    }
-
-    @After
-    fun tearDown() {
-        Settings.getInstance(context).eventHistory.clear()
     }
 
     /**
@@ -141,7 +133,6 @@ class ScreenshotOnBoardingTest {
      * 8. Check no screenshot on-boarding
      * */
     @Test
-    @Ignore
     fun closeScreenshotOnboarding_WhenOpenMyShotsFromMenu() {
 
         session {
@@ -169,7 +160,6 @@ class ScreenshotOnBoardingTest {
      * 4. Check no screenshot on-boarding
      * */
     @Test
-    @Ignore
     fun closeScreenshotOnboarding_WhenOpenMyshotsFromHistory() {
 
         session {

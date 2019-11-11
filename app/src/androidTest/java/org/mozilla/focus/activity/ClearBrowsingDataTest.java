@@ -52,7 +52,6 @@ public class ClearBrowsingDataTest {
      * 7. Check toast message "browsing data cleared" displayed
      */
     @Test
-    @Ignore
     public void clearBrowsingData() {
 
         //Tap menu -> settings

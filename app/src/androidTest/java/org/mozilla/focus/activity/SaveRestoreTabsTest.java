@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +15,6 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.autobot.BottomBarRobot;
 import org.mozilla.focus.persistence.TabEntity;
 import org.mozilla.focus.persistence.TabsDatabase;
-import org.mozilla.focus.persistence.di.TabsModule;
 import org.mozilla.focus.utils.AndroidTestUtils;
 import org.mozilla.focus.utils.RecyclerViewTestUtils;
 import org.mozilla.rocket.content.ExtentionKt;
@@ -34,6 +31,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.mozilla.focus.utils.AndroidTestExtensionKt.visibleWithId;
 
 @RunWith(AndroidJUnit4.class)
 public class SaveRestoreTabsTest {
@@ -62,7 +60,6 @@ public class SaveRestoreTabsTest {
      * 2. tab number is zero
      */
     @Test
-    @Ignore("fix this after home tab counter implemented")
     public void restoreEmptyTab() {
         activityRule.launchActivity(new Intent());
         checkHomeTabCounterText("0");
@@ -79,7 +76,6 @@ public class SaveRestoreTabsTest {
      * 6. open tab tray to check url, icon, website title, website subtitle, close button displayed
      */
     @Test
-    @Ignore("fix this after top sites implemented")
     public void restoreEmptyTab_addNewTabThenRelaunch() {
         activityRule.launchActivity(new Intent());
         checkBrowserTabCounterText("0");
@@ -87,7 +83,7 @@ public class SaveRestoreTabsTest {
         // Some intermittent issues happens when performing a single click event, we add a rollback action in case of a long click action
         // is triggered unexpectedly here. i.e. pressBack() can dismiss the popup menu.
 
-        onView(withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click(pressBack())));
 
         relaunchActivity();
@@ -117,7 +113,6 @@ public class SaveRestoreTabsTest {
      * 5. check tab number is 3
      */
     @Test
-    @Ignore("fix this after top sites implemented")
     public void restorePreviousTabs_addNewTabThenRelaunch() throws InterruptedException {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
         AndroidTestUtils.setFocusTabId(TAB.getId());
@@ -133,7 +128,7 @@ public class SaveRestoreTabsTest {
         onView(withId(R.id.new_tab_button)).perform(click());
 
         //open first top site
-        onView(ViewMatchers.withId(R.id.main_list))
+        onView(visibleWithId(R.id.page_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         relaunchActivity();
 

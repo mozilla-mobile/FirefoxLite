@@ -8,12 +8,11 @@ package org.mozilla.focus.activity
 import android.Manifest
 import android.content.Intent
 import androidx.annotation.Keep
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import junit.framework.TestCase.assertTrue
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -73,7 +72,6 @@ class ExitAppTest {
      * 3. Check activity finishing or destroyed
      */
     @Test
-    @Ignore
     fun exitAppWhenInHomePage() {
 
         session {
