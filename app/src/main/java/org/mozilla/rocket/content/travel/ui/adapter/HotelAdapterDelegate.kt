@@ -64,14 +64,10 @@ class HotelViewHolder(
 
         hotel_free_wifi.isVisible = hotelUiModel.hasFreeWifi
 
-        var showBottomInfo = false
-        if (hotelUiModel.hasFreeCancellation && hotelUiModel.canPayAtProperty) {
-            showBottomInfo = true
-        }
+        hotel_free_cancellation.isVisible = hotelUiModel.hasFreeCancellation
+        hotel_pay_at_hotel.isVisible = hotelUiModel.canPayAtProperty
 
-        hotel_separator.isVisible = showBottomInfo
-        hotel_free_cancellation.isVisible = showBottomInfo
-        hotel_pay_at_hotel.isVisible = showBottomInfo
+        hotel_separator.isVisible = hotelUiModel.hasFreeCancellation || hotelUiModel.canPayAtProperty
     }
 }
 
