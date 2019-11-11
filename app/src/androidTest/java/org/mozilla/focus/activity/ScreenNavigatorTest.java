@@ -6,12 +6,13 @@
 package org.mozilla.focus.activity;
 
 import android.content.Intent;
+
 import androidx.annotation.Keep;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.NoActivityResumedException;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import junit.framework.Assert;
 

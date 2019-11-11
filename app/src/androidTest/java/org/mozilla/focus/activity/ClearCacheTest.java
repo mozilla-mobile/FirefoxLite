@@ -52,7 +52,6 @@ public class ClearCacheTest {
      * 4. Check toast message "cache cleared"
      */
     @Test
-    @Ignore
     public void clearCache() {
 
         // Tap menu

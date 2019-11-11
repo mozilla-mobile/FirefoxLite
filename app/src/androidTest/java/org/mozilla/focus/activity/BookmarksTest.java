@@ -112,7 +112,6 @@ public class BookmarksTest {
      * 4. Show "No Bookmarks" in bookmarks panel
      */
     @Test
-    @Ignore
     public void openBookmarksPanel_showEmptyBookmarksView() {
         // Tap menu
         AndroidTestUtils.tapHomeMenuButton();
@@ -197,6 +196,7 @@ public class BookmarksTest {
         // Click the remove button
         onView(withText(R.string.remove_from_list))
                 .inRoot(RootMatchers.isPlatformPopup())
+                .check(matches(isDisplayed()))
                 .perform(click());
 
         // Check if bookmark list is empty
@@ -222,6 +222,7 @@ public class BookmarksTest {
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
                 .inRoot(RootMatchers.isPlatformPopup())
+                .check(matches(isDisplayed()))
                 .perform(click());
 
         // Type some text in name field
@@ -258,6 +259,7 @@ public class BookmarksTest {
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
                 .inRoot(RootMatchers.isPlatformPopup())
+                .check(matches(isDisplayed()))
                 .perform(click());
 
         // Without changing bookmark content, check if save button is disabled
@@ -281,6 +283,7 @@ public class BookmarksTest {
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
                 .inRoot(RootMatchers.isPlatformPopup())
+                .check(matches(isDisplayed()))
                 .perform(click());
 
         // Clear the content of location field
@@ -345,6 +348,7 @@ public class BookmarksTest {
         // Click the edit button
         onView(withText(R.string.edit_bookmark))
                 .inRoot(RootMatchers.isPlatformPopup())
+                .check(matches(isDisplayed()))
                 .perform(click());
 
         // Type some text in name field
@@ -398,7 +402,8 @@ public class BookmarksTest {
                 .check(matches(atPosition(0, hasDescendant(withText(containsString(targetUrl))))));
 
         // Open target bookmark item's action menu
-        onView(withId(R.id.recyclerview)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.history_item_btn_more)));
+        onView(withId(R.id.recyclerview))
+                .check(matches(isDisplayed()))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.history_item_btn_more)));
     }
 }
