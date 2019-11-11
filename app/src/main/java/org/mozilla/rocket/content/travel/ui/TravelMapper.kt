@@ -24,7 +24,7 @@ object TravelMapper {
 
     private const val BANNER = "banner"
     private const val SOURCE_WIKI = "Wikipedia"
-    private const val SOURCE_BC = "Hotels.com"
+    private const val SOURCE_BC = "Booking.com"
 
     fun toExploreList(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
         return apiEntity.subcategories.map { subcategory ->
