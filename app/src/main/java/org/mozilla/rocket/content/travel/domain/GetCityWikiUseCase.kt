@@ -17,22 +17,22 @@ class GetCityWikiUseCase(private val travelRepository: TravelRepository) {
         val revisedWiki = Wiki(result.data.imageUrl, result.data.introduction.trimContentWithinParentheses(), result.data.linkUrl)
         return Result.Success(revisedWiki)
     }
+}
 
-    fun String.trimContentWithinParentheses(): String {
-        var parenthesesCounter = 0
+fun String.trimContentWithinParentheses(): String {
+    var parenthesesCounter = 0
 
-        val trimmed = this.filter {
+    val trimmed = this.filter {
 
-            if (it.equals('(')) {
-                parenthesesCounter += 1
-            }
-
-            val drop = parenthesesCounter == 0
-            if (it.equals(')') && parenthesesCounter > 0) {
-                parenthesesCounter -= 1
-            }
-            drop
+        if (it.equals('(')) {
+            parenthesesCounter += 1
         }
-        return trimmed
+
+        val keep = parenthesesCounter == 0
+        if (it.equals(')') && parenthesesCounter > 0) {
+            parenthesesCounter -= 1
+        }
+        keep
     }
+    return trimmed
 }
