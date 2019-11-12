@@ -9,6 +9,7 @@ import android.content.Intent;
 import androidx.annotation.Keep;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -97,7 +98,10 @@ public class OnBoardingTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Check if turbo mode is on
-        onView(withId(R.id.menu_turbomode)).check(matches(isDisplayed())).check(matches(isSelected()));
+        onView(withId(R.id.menu_turbomode))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+                .check(matches(isSelected()));
 
         // Close menu
         Espresso.pressBack();

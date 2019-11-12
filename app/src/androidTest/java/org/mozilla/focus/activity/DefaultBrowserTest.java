@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.preference.Preference;
 import androidx.annotation.NonNull;
 import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -88,7 +89,9 @@ public class DefaultBrowserTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Click on Settings
-        onView(withId(R.id.menu_preferences)).perform(click());
+        onView(withId(R.id.menu_preferences))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
 
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
@@ -168,7 +171,9 @@ public class DefaultBrowserTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Click on Settings
-        onView(withId(R.id.menu_preferences)).perform(click());
+        onView(withId(R.id.menu_preferences))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
 
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);

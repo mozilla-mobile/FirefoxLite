@@ -2,6 +2,7 @@ package org.mozilla.focus.activity;
 
 import android.content.Intent;
 import androidx.annotation.Keep;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -58,7 +59,9 @@ public class ClearCacheTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Tap clear cache
-        onView(withId(R.id.menu_delete)).perform(click());
+        onView(withId(R.id.menu_delete))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
 
         // Check toast message "cache cleared"
         String msgClearCacheWoFormatter = AndroidTestUtils.removeStrFormatter(activityRule.getActivity().getResources().getString(R.string.message_cleared_cached));

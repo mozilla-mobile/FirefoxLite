@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.preference.Preference;
 import androidx.annotation.NonNull;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.UiDevice;
@@ -84,7 +85,9 @@ public class ChangeLanguageTest {
 
         // Tap menu -> settings
         AndroidTestUtils.tapHomeMenuButton();
-        onView(withId(R.id.menu_preferences)).perform(click());
+        onView(withId(R.id.menu_preferences))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
 
         // Tap language
         Resources resources = activity.getResources();
