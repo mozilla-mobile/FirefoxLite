@@ -31,7 +31,7 @@ class DailyMissionReminderWorker(
 
     private val appContext: Context = context.applicationContext
     private val missionId: String? = params.inputData.getString(DATA_KEY_MISSION_ID)
-    private val couponName: String? = params.inputData.getString(DATA_KEY_MISSION_ID)
+    private val couponName: String? = params.inputData.getString(DATA_KEY_COUPON_NAME)
     private val expireTime: Long = params.inputData.getLong(DATA_KEY_EXPIRE_TIME, Long.MIN_VALUE)
 
     override fun doWork(): Result {
