@@ -8,6 +8,7 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 
 import androidx.annotation.Keep;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
@@ -57,7 +58,9 @@ public class MenuTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // check downloads,
-        onView(withId(R.id.menu_download)).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_download))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()));
 
         // check bookmarks
         onView(withId(R.id.menu_bookmark)).check(matches(isDisplayed()));

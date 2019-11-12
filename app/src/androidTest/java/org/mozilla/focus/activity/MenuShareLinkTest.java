@@ -12,6 +12,7 @@ import android.content.Intent;
 
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.GrantPermissionRule;
 
@@ -146,7 +147,9 @@ public class MenuShareLinkTest {
         AndroidTestUtils.tapHomeMenuButton();
 
         // Check share btn disabled
-        onView(new BottomBarRobot().menuBottomBarItemView(R.id.bottom_bar_share)).check(matches(not(isEnabled())));
+        onView(new BottomBarRobot().menuBottomBarItemView(R.id.bottom_bar_share))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(not(isEnabled())));
     }
 
 

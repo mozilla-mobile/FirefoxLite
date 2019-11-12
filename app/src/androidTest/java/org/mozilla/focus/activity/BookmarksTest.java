@@ -116,7 +116,9 @@ public class BookmarksTest {
         // Tap menu
         AndroidTestUtils.tapHomeMenuButton();
         // Tap Bookmark button
-        onView(withId(R.id.menu_bookmark)).perform(click());
+        onView(withId(R.id.menu_bookmark))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
         // Show "No Bookmarks" in bookmarks panel
         onView(withId(R.id.empty_view_container)).check(matches(isDisplayed()));
     }
