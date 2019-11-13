@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.common.ui
 
+import android.os.SystemClock
 import androidx.lifecycle.ViewModel
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.common.data.TabSwipeTelemetryData
@@ -36,12 +37,12 @@ class TabSwipeTelemetryViewModel : ViewModel() {
     }
 
     fun onPageLoadingStarted() {
-        lastUrlLoadStart = System.currentTimeMillis()
+        lastUrlLoadStart = SystemClock.elapsedRealtime()
     }
 
     fun onPageLoadingStopped() {
         if (lastUrlLoadStart > 0L) {
-            lastUrlLoadEnd = System.currentTimeMillis()
+            lastUrlLoadEnd = SystemClock.elapsedRealtime()
         }
     }
 
@@ -52,7 +53,7 @@ class TabSwipeTelemetryViewModel : ViewModel() {
 
     private fun onTabSessionStarted(feed: String, source: String) {
         telemetryDataModel = TabSwipeTelemetryData(vertical, feed, source)
-        tabSessionStart = System.currentTimeMillis()
+        tabSessionStart = SystemClock.elapsedRealtime()
 
         telemetryDataModel?.let {
             TelemetryWrapper.startTabSwipe(it)
@@ -61,7 +62,7 @@ class TabSwipeTelemetryViewModel : ViewModel() {
 
     private fun onTabSessionEnded() {
         telemetryDataModel?.let {
-            it.sessionTime = (System.currentTimeMillis() - tabSessionStart)
+            it.sessionTime = (SystemClock.elapsedRealtime() - tabSessionStart)
             TelemetryWrapper.endTabSwipe(it)
         }
     }

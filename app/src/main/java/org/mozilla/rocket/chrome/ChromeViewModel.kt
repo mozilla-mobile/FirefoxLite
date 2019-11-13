@@ -2,6 +2,7 @@ package org.mozilla.rocket.chrome
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.os.SystemClock
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -160,14 +161,14 @@ class ChromeViewModel(
     }
 
     fun onPageLoadingStarted() {
-        lastUrlLoadStart = System.currentTimeMillis()
+        lastUrlLoadStart = SystemClock.elapsedRealtime()
         if (isRefreshing.value != true) {
             isRefreshing.value = true
         }
     }
 
     fun onPageLoadingStopped() {
-        lastUrlLoadTime = System.currentTimeMillis() - lastUrlLoadStart
+        lastUrlLoadTime = SystemClock.elapsedRealtime() - lastUrlLoadStart
         if (isRefreshing.value == true) {
             isRefreshing.value = false
         }
