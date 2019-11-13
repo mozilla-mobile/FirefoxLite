@@ -156,8 +156,4 @@ class TravelCityViewModel(
         data class Explore(val name: String) : SectionType()
         object TopHotels : SectionType()
     }
-
-    companion object {
-        const val UNAVAILABLE_LANDMARK_DISTANCE = -1f
-    }
 }

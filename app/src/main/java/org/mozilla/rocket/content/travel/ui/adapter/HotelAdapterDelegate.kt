@@ -12,7 +12,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.content.travel.ui.TravelCityViewModel.Companion.UNAVAILABLE_LANDMARK_DISTANCE
 import org.mozilla.rocket.extension.obtainBackgroundColor
 import java.text.DecimalFormat
 
@@ -49,12 +48,7 @@ class HotelViewHolder(
 
         hotel_source.text = hotelUiModel.source
         hotel_name.text = hotelUiModel.name
-
-        if (hotelUiModel.distance != UNAVAILABLE_LANDMARK_DISTANCE) {
-            hotel_distance.text = itemView.context.getString(R.string.travel_hotel_distance_to_landmark, hotelUiModel.distance)
-        } else {
-            hotel_distance.isVisible = false
-        }
+        hotel_description.text = hotelUiModel.description
 
         hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating_total, hotelUiModel.rating, hotelUiModel.fullScore)
         hotel_currency.text = hotelUiModel.currency
@@ -75,7 +69,7 @@ data class HotelUiModel(
     val imageUrl: String,
     val source: String,
     val name: String,
-    val distance: Float,
+    val description: String,
     val rating: Float,
     val fullScore: Int,
     val hasFreeWifi: Boolean,

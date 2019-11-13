@@ -10,7 +10,6 @@ import org.mozilla.rocket.content.travel.data.BucketListCity
 import org.mozilla.rocket.content.travel.data.Ig
 import org.mozilla.rocket.content.travel.data.Video
 import org.mozilla.rocket.content.travel.data.Wiki
-import org.mozilla.rocket.content.travel.ui.TravelCityViewModel.Companion.UNAVAILABLE_LANDMARK_DISTANCE
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
@@ -104,13 +103,12 @@ object TravelMapper {
                 video.linkUrl
             )
 
-    fun toHotelUiModel(hotel: BcHotelApiItem): HotelUiModel {
-
-        return HotelUiModel(
+    fun toHotelUiModel(hotel: BcHotelApiItem): HotelUiModel =
+            HotelUiModel(
                 hotel.imageUrl,
                 SOURCE_BC,
                 hotel.name,
-                UNAVAILABLE_LANDMARK_DISTANCE,
+                hotel.description,
                 hotel.rating,
                 10,
                 hotel.hasFreeWifi,
@@ -119,6 +117,5 @@ object TravelMapper {
                 false,
                 hotel.canPayAtProperty,
                 hotel.linkUrl
-        )
-    }
+            )
 }
