@@ -232,11 +232,6 @@
     <string name="first_run_upgrade_page_text2">2. Access your favorite sites quickly by %s</string>
     <string name="first_run_upgrade_page_text2_highlight">adding them to the home screen!</string>
 
-    <!--Update tour for pin sites to home page-->
-    <string name="second_run_upgrade_page_title">Pin your favorite sites</string>
-    <string name="second_run_upgrade_page_text">You can now pin any top site so it does not get moved. To get you started, we have pinned some top sites for you to try.</string>
-    
-   
     <string name="firstrun_close_button">OK, got it!</string>
     <string name="firstrun_skip_button">Skip</string>
     <string name="firstrun_next_button">Next</string>

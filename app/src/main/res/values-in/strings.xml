@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">multi-tab</string>
   <string name="first_run_upgrade_page_text2">2. Akses situs favorit Anda secara cepat dengan %s</string>
   <string name="first_run_upgrade_page_text2_highlight">menambahkan ke beranda!</string>
-  <string name="second_run_upgrade_page_title">Sematkan situs favorit Anda</string>
-  <string name="second_run_upgrade_page_text">Sekarang Anda dapat menyematkan situs teratas apa saja agar tidak dapat berpindah. Untuk memulai, kami telah menyematkan beberapa situs teratas untuk Anda coba.</string>
   <string name="firstrun_close_button">Oke, paham</string>
   <string name="firstrun_skip_button">Lewati</string>
   <string name="firstrun_next_button">Lanjut</string>

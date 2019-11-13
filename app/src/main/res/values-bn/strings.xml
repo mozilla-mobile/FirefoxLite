@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">একাধিক ট্যাব</string>
   <string name="first_run_upgrade_page_text2">2. %s দ্বারা আপনার প্রিয় সাইটগুলিকে দ্রুত অ্যাক্সেস করুন</string>
   <string name="first_run_upgrade_page_text2_highlight">হোম স্ক্রিনে তাদের যোগ করুন!</string>
-  <string name="second_run_upgrade_page_title">আপনার পছন্দসই সাইটগুলো পিন করুন</string>
-  <string name="second_run_upgrade_page_text">আপনি এখন যে কোনও শীর্ষ সাইট পিন করতে পারেন যাতে এটি সরানো না হয়। শুরুতে, আপনাকে চেষ্টা করার জন্য আমরা কয়েকটি শীর্ষ সাইট পিন করেছি।</string>
   <string name="firstrun_close_button">ঠিক আছে, বুঝেছি!</string>
   <string name="firstrun_skip_button">উপেক্ষা করুন</string>
   <string name="firstrun_next_button">পরবর্তী</string>

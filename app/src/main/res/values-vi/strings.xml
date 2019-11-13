@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">nhiều thẻ</string>
   <string name="first_run_upgrade_page_text2">2. Truy cập các trang web yêu thích của bạn một cách nhanh chóng theo %s</string>
   <string name="first_run_upgrade_page_text2_highlight">thêm chúng vào màn hình chính!</string>
-  <string name="second_run_upgrade_page_title">Ghim các trang web yêu thích của bạn</string>
-  <string name="second_run_upgrade_page_text">Bây giờ bạn có thể ghim bất kỳ trang web hàng đầu nào để nó không bị di chuyển. Để giúp bạn bắt đầu, chúng tôi đã ghim một số trang web hàng đầu để bạn thử.</string>
   <string name="firstrun_close_button">Đã hiểu!</string>
   <string name="firstrun_skip_button">Bỏ qua</string>
   <string name="firstrun_next_button">Tiếp</string>

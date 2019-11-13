@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">多個分頁標籤</string>
   <string name="first_run_upgrade_page_text2">2. %s，快速開啟最愛的網站！</string>
   <string name="first_run_upgrade_page_text2_highlight">把它們加到主畫面</string>
-  <string name="second_run_upgrade_page_title">釘選最愛網站</string>
-  <string name="second_run_upgrade_page_text">您可以釘選任何熱門網站，快速開啟。為了讓您快速使用，我們已釘選了一些熱門網站讓您試試。</string>
   <string name="firstrun_close_button">好，知道了！</string>
   <string name="firstrun_skip_button">略過</string>
   <string name="firstrun_next_button">下一個</string>

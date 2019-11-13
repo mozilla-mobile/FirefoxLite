@@ -207,7 +207,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     // FirstRun fragment is not used often, so we create drawables programmatically, instead of add
     // lots of drawable resources
     private fun initDrawables() {
-        // TODO: needs to remove bg_homescreen_color
         bgDrawables = arrayOf(resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme), resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme), resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme), resources.getDrawable(R.drawable.bg_platform_onboarding_color, context?.theme))
 
         bgTransitionDrawable = TransitionDrawable(bgDrawables)

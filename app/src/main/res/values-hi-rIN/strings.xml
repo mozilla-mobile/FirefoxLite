@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">विभिन्न टैब</string>
   <string name="first_run_upgrade_page_text2">2. %s द्वारा जल्दी से अपने पसंदीदा साइटों का चलायें</string>
   <string name="first_run_upgrade_page_text2_highlight">उन्हें होम स्क्रीन पर लाया जा रहा है!</string>
-  <string name="second_run_upgrade_page_title">अपने पसंदीदा साइटों को पिन करें</string>
-  <string name="second_run_upgrade_page_text">अब आप किसी भी शीर्ष साइट को पिन कर सकते हैं ताकि यह स्थानांतरित ना हो। ऐसा करने में आपके मदद के लिए, हमने आपके आज़माने लिए कुछ शीर्ष साइटों को पिन किया है।</string>
   <string name="firstrun_close_button">अच्छा, समझ गया!</string>
   <string name="firstrun_skip_button">छोड़ें</string>
   <string name="firstrun_next_button">अगला</string>

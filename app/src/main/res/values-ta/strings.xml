@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">பல கீற்றுகள்</string>
   <string name="first_run_upgrade_page_text2">2. உங்களுக்கு பிடித்த தளங்களை விரைவாக %s வழி அணுகுங்கள்</string>
   <string name="first_run_upgrade_page_text2_highlight">அவைகளை முகப்பு திரைக்கு சேர்க்கிறது!</string>
-  <string name="second_run_upgrade_page_title">விருப்பமான தளங்களைச் செருகு</string>
-  <string name="second_run_upgrade_page_text">இப்போது நீங்கள் சிறந்த தளங்களைச் செருகலாம், அவை பின்னால் நகராது. தொடக்கத்தில், நீங்கள் முயற்சிப்பதற்காக சில சிறந்த தளங்களை நாங்கள் செருகுயுள்ளோம்.</string>
   <string name="firstrun_close_button">சரி, புரிந்தது!</string>
   <string name="firstrun_skip_button">தவிர்</string>
   <string name="firstrun_next_button">அடுத்து</string>
