@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.common.ui
 
+import android.os.SystemClock
 import androidx.lifecycle.ViewModel
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
@@ -17,7 +18,7 @@ class ContentTabTelemetryViewModel : ViewModel() {
     }
 
     fun onSessionStarted() {
-        sessionTimeStart = System.currentTimeMillis()
+        sessionTimeStart = SystemClock.elapsedRealtime()
 
         telemetryDataModel?.let {
             TelemetryWrapper.startVerticalProcess(it.vertical)
@@ -26,7 +27,7 @@ class ContentTabTelemetryViewModel : ViewModel() {
     }
 
     fun onSessionEnded() {
-        telemetryDataModel?.sessionTime = (System.currentTimeMillis() - sessionTimeStart)
+        telemetryDataModel?.sessionTime = (SystemClock.elapsedRealtime() - sessionTimeStart)
 
         telemetryDataModel?.let {
             TelemetryWrapper.endContentTab(it)
@@ -41,12 +42,12 @@ class ContentTabTelemetryViewModel : ViewModel() {
     }
 
     fun onPageLoadingStarted() {
-        lastUrlLoadStart = System.currentTimeMillis()
+        lastUrlLoadStart = SystemClock.elapsedRealtime()
     }
 
     fun onPageLoadingStopped() {
         if (lastUrlLoadStart > 0L) {
-            lastUrlLoadEnd = System.currentTimeMillis()
+            lastUrlLoadEnd = SystemClock.elapsedRealtime()
         }
     }
 
