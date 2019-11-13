@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">एकाधिक टॅब</string>
   <string name="first_run_upgrade_page_text2">2. %s द्वारे आपल्या आवडीच्या साइट मध्ये लवकर प्रवेश करा</string>
   <string name="first_run_upgrade_page_text2_highlight">त्यांना मुख्य पडद्यावर जोडूया!</string>
-  <string name="second_run_upgrade_page_title">आपल्या आवडत्या साइट पिन करा</string>
-  <string name="second_run_upgrade_page_text">आता आपण कुठलीही टॉप साइट पिन करू शकता जेणेकरून ती हलणार नाही. आपल्याला सुरूवात करून देण्यासाठी, आम्ही आपल्या वापरासाठी काही टॉप साइट पिन करून ठेवल्या आहेत.</string>
   <string name="firstrun_close_button">ठीक आहे, समजले!</string>
   <string name="firstrun_skip_button">वगळा</string>
   <string name="firstrun_next_button">पुढचे</string>

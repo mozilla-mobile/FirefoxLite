@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">множество вкладок</string>
   <string name="first_run_upgrade_page_text2">2. Мгновенно получите доступ к любимым сайтам %s</string>
   <string name="first_run_upgrade_page_text2_highlight">добавив их на домашний экран!</string>
-  <string name="second_run_upgrade_page_title">Закрепите свои любимые сайты</string>
-  <string name="second_run_upgrade_page_text">Теперь вы можете закрепить любой хороший сайт и он не будет перемещаться. Для начала, мы закрепили несколько популярных сайтов за вас.</string>
   <string name="firstrun_close_button">Ок, понятно!</string>
   <string name="firstrun_skip_button">Пропустить</string>
   <string name="firstrun_next_button">Далее</string>

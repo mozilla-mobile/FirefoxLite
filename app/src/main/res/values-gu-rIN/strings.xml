@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">બહુવિધ ટૅબ્સ</string>
   <string name="first_run_upgrade_page_text2">2. તમારા મનપસંદ સાઇટ્સને ઝડપથી %s દ્વારા ઍક્સેસ કરો</string>
   <string name="first_run_upgrade_page_text2_highlight">તેમને હોમ સ્ક્રીન પર ઉમેરી રહ્યાં છે!</string>
-  <string name="second_run_upgrade_page_title">તમારી મનપસંદ સાઇટ્સને પિન કરો</string>
-  <string name="second_run_upgrade_page_text">હવે તમે કોઈ ટોચની સાઇટને પિન કરી શકો છો જેથી તે ખસેડવામાં નહીં આવે. તેને પ્રારંભ કરવા માટે, અમે તમારા માટે પ્રયાસ કરવા કેટલીક ટોચની સાઇટ્સને પિન કરી છે.</string>
   <string name="firstrun_close_button">OK, સમજાઇ ગયું!</string>
   <string name="firstrun_skip_button">છોડો</string>
   <string name="firstrun_next_button">આગળ</string>

@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">ഒന്നിലധികം ടാബുകൾ</string>
   <string name="first_run_upgrade_page_text2">2. താങ്കളുടെ പ്രിയപ്പെട്ട സൈറ്റുകൾ %s വേഗം സന്ദർശിക്കൂ</string>
   <string name="first_run_upgrade_page_text2_highlight">പൂമുഖത്തിലേക്ക് ചേർക്കുന്നതിലൂടെ</string>
-  <string name="second_run_upgrade_page_title">നിങ്ങളുടെ ഇഷ്ടപ്പെട്ട സൈറ്റുകള്‍ പിൻ ചെയ്ത് വെക്കൂ</string>
-  <string name="second_run_upgrade_page_text">ഇപ്പോൾ നിങ്ങൾക്ക് ഏതെങ്കിലും മികച്ച സൈറ്റിനെ പിൻ ചെയ്യാൻ കഴിയും, അതിനാൽ അത് നീക്കം ചെയ്യില്ല. തുടക്കത്തില്‍, നിങ്ങൾക്കായി ചില മികച്ച സൈറ്റുകൾ ഞങ്ങൾ പിൻ ചെയ്തിരിക്കുന്നു.</string>
   <string name="firstrun_close_button">മനസ്സിലായി!</string>
   <string name="firstrun_skip_button">ഒഴിവാക്കു</string>
   <string name="firstrun_next_button">അടുത്തത്</string>

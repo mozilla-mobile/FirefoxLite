@@ -17,15 +17,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.utils.TopSitesUtils
 
-/**
- * TODO: The current implementation of SharedPreferenceSiteDelegate only relies on persistent data,
- * so its instance can be created whenever it's needed. However, I'm considering make it a single
- * instance, so we can preserve some states and reduce IO frequency
- */
-fun getPinSiteManager(context: Context): PinSiteManager {
-    return PinSiteManager(SharedPreferencePinSiteDelegate(context))
-}
-
 class PinSiteManager(
     private val pinSiteDelegate: PinSiteDelegate
 ) : PinSiteDelegate by pinSiteDelegate
@@ -36,7 +27,6 @@ interface PinSiteDelegate {
     fun pin(site: Site)
     fun unpinned(site: Site)
     fun getPinSites(): List<Site>
-    fun isFirstTimeEnable(): Boolean
 }
 
 class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDelegate {
@@ -121,10 +111,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     override fun getPinSites(): List<Site> {
         load(sites)
         return sites
-    }
-
-    override fun isFirstTimeEnable(): Boolean {
-        return isFirstInit()
     }
 
     private fun getViewCountForPinSiteAt(index: Int): Long {

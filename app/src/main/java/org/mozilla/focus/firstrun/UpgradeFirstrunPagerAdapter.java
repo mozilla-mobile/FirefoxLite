@@ -18,15 +18,5 @@ public class UpgradeFirstrunPagerAdapter extends FirstrunPagerAdapter {
                     context.getString(R.string.onboarding_2_introduction_description),
                     R.drawable.ic_onboarding_first_use));
         }
-
-        // TODO: To be removed, force to disable pin site tutorial
-//        PinSiteManager pinSiteManager = PinSiteManagerKt.getPinSiteManager(context);
-//        if (pinSiteManager.isEnabled() && pinSiteManager.isFirstTimeEnable()) {
-//            this.pages.add(new FirstrunPage(
-//                    context.getString(R.string.second_run_upgrade_page_title),
-//                    context.getString(R.string.second_run_upgrade_page_text),
-//                    R.drawable.ic_onboarding_pinsites
-//            ));
-//        }
     }
 }

@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">หลายแท็บ</string>
   <string name="first_run_upgrade_page_text2">2. เข้าถึงเว็บไซต์โปรดของคุณอย่างรวดเร็วโดย %s</string>
   <string name="first_run_upgrade_page_text2_highlight">เพิ่มเว็บไซต์ไปยังหน้าจอหลัก!</string>
-  <string name="second_run_upgrade_page_title">ปักหมุดไซต์โปรดของคุณ</string>
-  <string name="second_run_upgrade_page_text">ตอนนี้คุณสามารถปักหมุดไซต์เด่นใด ๆ เพื่อไม่ให้ไซต์ถูกย้าย เพื่อให้คุณเริ่มต้นใช้งาน เราได้ปักหมุดไซต์เด่นบางส่วนให้คุณลอง</string>
   <string name="firstrun_close_button">ตกลง เข้าใจแล้ว!</string>
   <string name="firstrun_skip_button">ข้าม</string>
   <string name="firstrun_next_button">ถัดไป</string>

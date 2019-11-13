@@ -88,8 +88,6 @@
   <string name="first_run_upgrade_page_text1_highlight">ಹೆಚ್ಚಿನ ಟ್ಯಾಬ್‍ಗಳು</string>
   <string name="first_run_upgrade_page_text2">2. ನಿಮ್ಮ ಮೆಚ್ಚಿನ ತಾಣಗಳನ್ನು %s ವೀಕ್ಷಿಸಿ</string>
   <string name="first_run_upgrade_page_text2_highlight">ಇವುಗಳನ್ನು ಮುಖ ಪರದೆಗೆ ಸೇರಿಸಲಾಗುತ್ತಿದೆ!</string>
-  <string name="second_run_upgrade_page_title">ನಿಮ್ಮ ಮೆಚ್ಚಿನ ತಾಣಗಳನ್ನು ಪಿನ್ ಮಾಡಿ</string>
-  <string name="second_run_upgrade_page_text">ನೀವು ಇದೀಗ ಯಾವುದೇ ಉನ್ನತ ತಾಣವನ್ನು ಅನ್ನು ಪಿನ್ ಮಾಡಬಹುದಾಗಿದ್ದು ಅದು ಸರಿಯುವುದಿಲ್ಲ. ನಿಮ್ಮನ್ನು ಇದಕ್ಕೆ ಸಿದ್ಧಪಡಿಸಲು , ನಾವು ಕೆಲವು ಉನ್ನತ ತಾಣಳನ್ನು ಪಿನ್ ಮಾಡಿದ್ದು ನೀವೂ ಪ್ರಯತ್ನಿಸಬಹುದಾಗಿದೆ.</string>
   <string name="firstrun_close_button">ಸರಿ, ಗೊತ್ತಾಯಿತು!</string>
   <string name="firstrun_skip_button">ಸ್ಕಿಪ್</string>
   <string name="firstrun_next_button">ಮುಂದೆ</string>
