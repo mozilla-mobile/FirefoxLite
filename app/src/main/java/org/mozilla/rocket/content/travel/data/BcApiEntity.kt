@@ -75,6 +75,7 @@ data class BcHotelApiItem(
     val imageUrl: String,
     val name: String,
     val rating: Float,
+    val description: String,
     val hasFreeWifi: Boolean,
     val price: Float,
     val currency: String,
@@ -86,6 +87,7 @@ data class BcHotelApiItem(
         private const val KEY_HOTEL_DATA = "hotel_data"
         private const val KEY_DATA_REVIEW_SCORE = "review_score"
         private const val KEY_DATA_NAME = "name"
+        private const val KEY_DATA_HOTEL_DESCRIPTION = "hotel_description"
         private const val KEY_DATA_HOTEL_PHOTOS = "hotel_photos"
         private const val KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL = "url_original"
         private const val KEY_DATA_HOTEL_FACILITIES = "hotel_facilities"
@@ -109,12 +111,12 @@ data class BcHotelApiItem(
                 val hotelPhotoItem = hotelPhotos.getJSONObject(0)
                 val hotelFacilities = hotelData.optJSONArray(KEY_DATA_HOTEL_FACILITIES)
 
-                var wifi_support = false
+                var hasFreeWifi = false
                 for (i in 0 until hotelFacilities.length()) {
                     val facilityItem = hotelFacilities.getJSONObject(i)
                     val facilityName = facilityItem.optString(KEY_DATA_HOTEL_FACILITIES_NAME)
-                    wifi_support = facilityName.equals(FACILITY_FREE_WIFI)
-                    if (wifi_support) break
+                    hasFreeWifi = facilityName == FACILITY_FREE_WIFI
+                    if (hasFreeWifi) break
                 }
 
                 val roomData = jsonObject.optJSONArray(KEY_ROOM)
@@ -138,10 +140,11 @@ data class BcHotelApiItem(
                         hotelPhotoItem.optString(KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL),
                         hotelData.optString(KEY_DATA_NAME),
                         hotelData.optDouble(KEY_DATA_REVIEW_SCORE).toFloat(),
-                        wifi_support,
+                        hotelData.optString(KEY_DATA_HOTEL_DESCRIPTION),
+                        hasFreeWifi,
                         minPrice,
                         hotelData.optString(KEY_DATA_CURRENCY),
-                        hotelPayAtProperty.equals(PAY_AT_PROPERTY),
+                        hotelPayAtProperty == PAY_AT_PROPERTY,
                         hotelData.optString(KEY_DATA_URL)
                 )
             } catch (e: Exception) {

@@ -91,16 +91,16 @@
             app:layout_constraintTop_toBottomOf="@id/hotel_source" />
 
         <TextView
-            android:id="@+id/hotel_distance"
+            android:id="@+id/hotel_description"
             style="@style/Body2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_margin_m3"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="@dimen/common_margin_m3"
+            android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/contentHeaderTextColor"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/hotel_price_from"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hotel_name" />
 
@@ -121,7 +121,7 @@
             android:textColor="#007aff"
             android:textSize="@dimen/travel_hotel_card_info_text_size"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hotel_distance" />
+            app:layout_constraintTop_toBottomOf="@id/hotel_description" />
 
         <TextView
             android:id="@+id/hotel_free_wifi"
@@ -166,6 +166,7 @@
             app:layout_constraintEnd_toStartOf="@id/hotel_price" />
 
         <TextView
+            android:id="@+id/hotel_price_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/travel_hotel_rating_from"
