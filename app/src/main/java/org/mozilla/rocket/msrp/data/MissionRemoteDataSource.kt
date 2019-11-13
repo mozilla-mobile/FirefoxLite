@@ -90,6 +90,8 @@ class MissionRemoteDataSource {
             val progress = parseProgress(missionType, missionJson.optJSONObject("progress"))
                     ?: return@mapNotNull null
 
+            val parameters = missionJson.optJSONObject("parameters")
+
             Mission(
                 mid = missionJson.optString("mid"),
                 missionType = missionJson.optString("missionType"),
@@ -106,7 +108,8 @@ class MissionRemoteDataSource {
                 redeemEndDate = missionJson.optLong("redeemEndDate"),
                 rewardExpiredDate = missionJson.optLong("rewardExpiredDate"),
                 status = missionJson.optInt("status"),
-                missionProgress = progress
+                missionProgress = progress,
+                totalDays = parameters?.optInt("totalDays") ?: 0
             )
         }
     }

@@ -24,7 +24,9 @@ data class Mission(
     val rewardExpiredDate: Long,
 
     val status: Int, // STATUS_NEW, STATUS_NEW, STATUS_REDEEMABLE, STATUS_REDEEMED
-    val missionProgress: MissionProgress?
+    val missionProgress: MissionProgress?,
+
+    val totalDays: Int
 ) : Parcelable {
     var unread = true
     val uniqueId: String
@@ -46,7 +48,8 @@ data class Mission(
         source.readLong(),
         source.readLong(),
         source.readInt(),
-        source.readParcelable<MissionProgress.TypeDaily>(MissionProgress.TypeDaily::class.java.classLoader)
+        source.readParcelable<MissionProgress.TypeDaily>(MissionProgress.TypeDaily::class.java.classLoader),
+        source.readInt()
     ) {
         unread = 1 == source.readInt()
     }
@@ -70,6 +73,7 @@ data class Mission(
         writeLong(rewardExpiredDate)
         writeInt(status)
         writeParcelable(missionProgress, flags)
+        writeInt(totalDays)
         writeInt(if (unread) 1 else 0)
     }
 

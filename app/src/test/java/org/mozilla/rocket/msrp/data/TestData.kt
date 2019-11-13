@@ -23,7 +23,8 @@ object TestData {
         redeemEndDate = 54321,
         rewardExpiredDate = 54321,
 
-        missionProgress = null
+        missionProgress = null,
+        totalDays = 7
     )
 
     val mission02 = Mission(
@@ -52,7 +53,8 @@ object TestData {
             currentDay = 1,
             totalDays = 10,
             message = ""
-        )
+        ),
+        totalDays = 7
     )
 
     val missions = listOf(

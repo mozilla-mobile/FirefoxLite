@@ -12,11 +12,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_debug.debug_locale_layout
 import kotlinx.android.synthetic.main.activity_debug.debug_locale_text
+import kotlinx.android.synthetic.main.activity_debug.debug_mission_reminder
 import kotlinx.android.synthetic.main.activity_debug.toolbar
 import org.json.JSONArray
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.preference.stringLiveData
+import java.util.concurrent.TimeUnit
 
 class DebugActivity : AppCompatActivity() {
 
@@ -30,6 +32,7 @@ class DebugActivity : AppCompatActivity() {
 
         preference = getSharedPreferences(PREF_NAME_DEBUG, Context.MODE_PRIVATE)
         initDebugLocale()
+        initDebugMissionReminderNotification()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -80,12 +83,22 @@ class DebugActivity : AppCompatActivity() {
         }
     }
 
+    private fun initDebugMissionReminderNotification() {
+        debug_mission_reminder.setOnClickListener {
+            isMissionReminderDebugEnabled = true
+            Toast.makeText(this, "Repeat interval has been set to 15 minutes", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     companion object {
         private const val STR_RC_DEBUG_LOCALES = "str_debug_locales"
 
         private const val PREF_NAME_DEBUG = "debug_pref"
         private const val SHARED_PREF_KEY_DEBUG_LOCALE = "shared_pref_key_debug_locale"
         private const val DEBUG_DEFAULT_LOCALE = "Default"
+
+        var isMissionReminderDebugEnabled = false
+        val MISSION_REMINDER_DEBUG_REPEAT_INTERVAL = TimeUnit.MINUTES to 15L
 
         fun getStartIntent(context: Context) = Intent(context, DebugActivity::class.java)
     }

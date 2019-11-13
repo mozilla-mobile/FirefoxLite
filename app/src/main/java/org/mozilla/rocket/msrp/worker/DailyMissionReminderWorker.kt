@@ -19,8 +19,8 @@ import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.notification.NotificationId
 import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.focus.utils.DrawableUtils
+import org.mozilla.rocket.debugging.DebugActivity
 import org.mozilla.rocket.msrp.data.Mission
-import org.mozilla.rocket.msrp.data.MissionProgress
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -100,30 +100,54 @@ class DailyMissionReminderWorker(
         fun startMissionReminder(appContext: Context, mission: Mission) {
             val missionId = mission.uniqueId
             val couponName = mission.description
-            val totalDays = (mission.missionProgress as MissionProgress.TypeDaily).totalDays
+            val totalDays = mission.totalDays
             val uniqueWorkName = getUniqueWorkName(missionId)
 
-            val expiredDate = Calendar.getInstance().apply {
-                set(Calendar.DATE, get(Calendar.DATE) + totalDays)
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-            }.timeInMillis
+            val isDebugEnabled = DebugActivity.isMissionReminderDebugEnabled
+
+            val expiredDate = if (!isDebugEnabled) {
+                Calendar.getInstance().apply {
+                    add(Calendar.DATE, totalDays)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                }.timeInMillis
+            } else {
+                // Debug enabled
+                Calendar.getInstance().timeInMillis + totalDays * DebugActivity.MISSION_REMINDER_DEBUG_REPEAT_INTERVAL.second * 60 * 1000L
+            }
             val expireTime = if (mission.expiredDate < expiredDate) {
                 mission.expiredDate
             } else {
                 expiredDate
             }
 
-            val initDelayMilli = timeLeftHour(REMINDER_AIMED_HOUR, allowCurrentDay = false)
+            val initDelayMilli = if (!isDebugEnabled) {
+                timeLeftHour(REMINDER_AIMED_HOUR, allowCurrentDay = false)
+            } else {
+                // Debug enabled
+                DebugActivity.MISSION_REMINDER_DEBUG_REPEAT_INTERVAL.second * 60 * 1000L
+            }
 
+            val repeatIntervalTimeUnit = if (!isDebugEnabled) {
+                REPEAT_INTERVAL.first
+            } else {
+                // Debug enabled
+                DebugActivity.MISSION_REMINDER_DEBUG_REPEAT_INTERVAL.first
+            }
+            val repeatInterval = if (!isDebugEnabled) {
+                REPEAT_INTERVAL.second
+            } else {
+                // Debug enabled
+                DebugActivity.MISSION_REMINDER_DEBUG_REPEAT_INTERVAL.second
+            }
             val reminderPeriodicWorkRequest = createMissionReminder(
                 missionId,
                 couponName,
                 expireTime,
                 initDelayMilli,
-                REPEAT_INTERVAL.second,
-                REPEAT_INTERVAL.first
+                repeatInterval,
+                repeatIntervalTimeUnit
             )
             WorkManager.getInstance(appContext)
                     .enqueueUniquePeriodicWork(uniqueWorkName, ExistingPeriodicWorkPolicy.REPLACE, reminderPeriodicWorkRequest)
