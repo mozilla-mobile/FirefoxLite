@@ -110,6 +110,6 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val WIKI_JSON_KEY_ORIGINAL = "original"
         private const val WIKI_JSON_KEY_SOURCE = "source"
         private const val WIKI_IMAGE_API = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles="
-        private const val WIKI_EXTRACT_API = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exlimit=1&exsectionformat=plain&exchars=160&explaintext=1&titles="
+        private const val WIKI_EXTRACT_API = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exlimit=1&exsectionformat=plain&exchars=320&explaintext=1&titles="
     }
 }
