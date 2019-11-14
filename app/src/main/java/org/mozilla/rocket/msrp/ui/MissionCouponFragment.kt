@@ -133,7 +133,7 @@ class MissionCouponFragment : Fragment() {
     }
 
     private fun openContentTab(url: String) {
-        val intent = ContentTabActivity.getStartIntent(requireContext(), url, enableTurboMode = true)
+        val intent = ContentTabActivity.getStartIntent(requireContext(), url, enableTurboMode = true, enableExternalAppLink = true)
         startActivity(intent)
     }
 
