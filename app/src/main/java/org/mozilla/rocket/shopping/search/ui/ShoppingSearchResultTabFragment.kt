@@ -163,6 +163,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
     override fun getFullScreenContainerView(): ViewGroup = video_container
 
+    override fun shouldEnableExternalAppLink() = false
+
     override fun onBackPressed(): Boolean {
         val tabItem =
             if (tabItems.size > view_pager.currentItem) {

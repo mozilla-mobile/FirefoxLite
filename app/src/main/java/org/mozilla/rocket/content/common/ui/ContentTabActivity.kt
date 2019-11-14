@@ -194,6 +194,9 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
 
     override fun getFullScreenContainerView(): ViewGroup = video_container
 
+    override fun shouldEnableExternalAppLink() =
+        intent?.extras?.getBoolean(EXTRA_ENABLE_EXTERNAL_APP_LINK) ?: false
+
     private fun setupBottomBar(bottomBar: BottomBar) {
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
@@ -276,16 +279,19 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         private const val EXTRA_URL = "url"
         private const val EXTRA_TELEMETRY_DATA = "telemetry_data"
         private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"
+        private const val EXTRA_ENABLE_EXTERNAL_APP_LINK = "enable_external_app_link"
 
         fun getStartIntent(
             context: Context,
             url: String,
             telemetryData: ContentTabTelemetryData? = null,
-            enableTurboMode: Boolean = true
+            enableTurboMode: Boolean = true,
+            enableExternalAppLink: Boolean = false
         ) =
             Intent(context, ContentTabActivity::class.java).also { intent ->
                 intent.putExtra(EXTRA_URL, url)
                 intent.putExtra(EXTRA_ENABLE_TURBO_MODE, enableTurboMode)
+                intent.putExtra(EXTRA_ENABLE_EXTERNAL_APP_LINK, enableExternalAppLink)
                 telemetryData?.let { intent.putExtra(EXTRA_TELEMETRY_DATA, it) }
             }
     }

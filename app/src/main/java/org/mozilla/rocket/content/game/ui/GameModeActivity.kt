@@ -132,6 +132,8 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
 
     override fun getFullScreenContainerView(): ViewGroup = video_container
 
+    override fun shouldEnableExternalAppLink() = false
+
     private fun observeChromeAction() {
         chromeViewModel.isRefreshing.observe(this, Observer {
             if (it == true) {
