@@ -2,9 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="waiting_for_redemption" translatable="false" tools:ignore="MissingTranslation">Waiting for redemption</string>
 
-    <string name="travel_vertical_title" translatable="false" tools:ignore="MissingTranslation">Travel</string>
-    <string name="travel_vertical_category_1" translatable="false" tools:ignore="MissingTranslation">Explore</string>
-    <string name="travel_vertical_category_2" translatable="false" tools:ignore="MissingTranslation">Bucket list</string>
     <string name="travel_vertical_search_title" translatable="false" tools:ignore="MissingTranslation">Which city would you like to visit?</string>
     <string name="travel_vertical_search_hint" translatable="false" tools:ignore="MissingTranslation">Try “Bali”</string>
     <string name="travel_detail_section_explore_title" translatable="false" tools:ignore="MissingTranslation">Explore %s</string>
