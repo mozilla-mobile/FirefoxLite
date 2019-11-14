@@ -232,6 +232,11 @@
     <string name="first_run_upgrade_page_text2">2. Access your favorite sites quickly by %s</string>
     <string name="first_run_upgrade_page_text2_highlight">adding them to the home screen!</string>
 
+    <!--Update tour for pin sites to home page-->
+    <string name="second_run_upgrade_page_title">Pin your favorite sites</string>
+    <string name="second_run_upgrade_page_text">You can now pin any top site so it does not get moved. To get you started, we have pinned some top sites for you to try.</string>
+    
+   
     <string name="firstrun_close_button">OK, got it!</string>
     <string name="firstrun_skip_button">Skip</string>
     <string name="firstrun_next_button">Next</string>
@@ -432,7 +437,7 @@
     <!--In-app Promotion, Share app.-->
     <!-- The title of the Message to prompt users to share Rocket with friends, %1$s is the App name i.e. Rocket. -->
     <string name="share_app_dialog_text_title">Share %1$s with friends!</string>
-    <string name="share_app_dialog_text_content">- Fast and lightweight\n- Data saving\n- Powerful screenshots</string>
+    <string name="share_app_dialog_text_content">- Fast and lightweight\n- Smart Shopping Search\n- Free Games, trending news</string>
     <string name="share_app_dialog_btn_share">Share</string>
     <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
     <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url, and %3$s is "Mozilla"-->
@@ -717,11 +722,11 @@
     <!-- Home 2.0 -->
     <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0. %1$s will be replaced with the name of the app (e.g. Firefox Lite) -->
     <string name="onboarding_2_introduction_title">Brand-new %1$s</string>
-    <string name="onboarding_2_introduction_description">Remain Fast and Lightweight. We added smart shopping search and content to make internet browsing more fun and enjoyable!</string>
+    <string name="onboarding_2_introduction_description">A fast and lightweight browser, now with cool features! We have added smart shopping search and content to make browsing more fun!</string>
     <!-- Onboarding for new users to introduce Firefox Lite 2.0 -->
     <!-- Introduce Content & Services -->
-    <string name="onboarding_2_content_services_news_shopping_games">Tap to read the trendy news, find good deals or play the hottest free games to have fun!</string>
-    <string name="onboarding_2_content_services_news_games">Tap to read the trendy news or play the hottest free games to have fun!</string>
+    <string name="onboarding_2_content_services_news_shopping_games">Tap to read trending news, find good deals, or have fun playing the hottest free games!</string>
+    <string name="onboarding_2_content_services_news_games">Tap to read trending news or have fun playing the hottest free games!</string>
     <string name="onboarding_2_content_services_games">Tap to play the hottest free games to have fun!</string>
     <string name="onboarding_2_content_services_message" translatable="false">@string/onboarding_2_content_services_news_games</string>
     <!-- Introduce Smart Shopping Search -->
@@ -870,5 +875,53 @@
     <!--Activity killed-->
     <string name="msrp_activitykilled_snackbar_button">REDEEM</string>
     <string name="msrp_activitykilled_snackbar_body">You’ve won a shopping voucher!</string>
-    
+   
+    <!--Travel Vertical--> 
+    <!--Artboard Name: 2.1 See bucket list-->
+    <!--travel home-->
+    <string name="travel_vertical_title">Travel</string>
+    <string name="travel_vertical_category_1">Explore</string>
+    <string name="travel_vertical_category_2">Bucket List</string>
+    <!--featured destinations-->
+    <string name="travel_destination_subcategory_1">Travel on a budget</string>
+    <string name="travel_destination_subcategory_2">Best cities for winter holiday</string>
+    <!--Finding destinations-->
+    <string name="travel_find_destination_title">Where do you want to go?</string>
+    <string name="travel_find_destination_placeholder_1">Try “Bali”…</string>
+
+    <!--Subcategories in detail page -->
+    <!--The %1$s here is a placeholder for destination name like Bali-->
+    <string name="travel_detail_page_subcategory_content">Explore %1$s</string>
+    <string name="travel_detail_page_subcategory_hotel">Popular hotels</string>
+
+    <!--IG content. the %1$s here is the destination name-->
+    <string name="travel_content_ig_link">#%1$s on IG</string>
+    <!--YT content. the %1$s here is how many times of video viewing-->
+    <string name="travel_content_yt_view_count">%1$s views</string>
+    <!--Wiki content-->
+    <string name="travel_content_wiki_source_name">Wikipedia</string>
+    <!--detail information for the hotel room-->
+    <string name="travel_hotel_detail_1">Free Wi-Fi</string>
+    <string name="travel_hotel_detail_2">Free cancellation</string>
+    <string name="travel_hotel_detail_3">Pay upon check in</string>
+    <!--text in the empty state -->
+    <string name="travel_empty_state_text">“I haven’t been everywhere, but it’s on my list.”</string>
+    <!--CTA button for the empty state-->
+    <string name="travel_empty_state_button">Explore a city</string>
+
+    <!--Artboard Name: 2.2 Save to a bucket list-->
+    <!--Snackbar message after saving a destination-->
+    <string name="travel_snack_bar_saved_message">Saved in your bucket list.</string>
+    <string name="travel_snack_bar_button">VIEW</string>
+
+    <!--Artboard Name: 3.1 Onboarding-->
+    <!--onboarding message for the save function. the %1$s here is the destination name -->
+    <string name="travel_onboarding_save_title">Love %1$s?</string>
+    <string name="travel_onboarding_save_description">Save %1$s in your Bucket List to get quick access to travel guides and the best prices.</string>
+    <!--onboarding button-->
+    <string name="travel_onboarding_save_button">OK</string>
+
+    <!--Artboard Name: 1.2 Search for a city 1-->
+    <!--Introduce what can be type in the field-->
+    <string name="travel_find_destination_placeholder_2">Find a destination in page</string>   
 </resources>
