@@ -3,6 +3,7 @@
 
 Getting Involved
 ----------------
+Mango was a working repository for [Firefox Lite](https://github.com/mozilla-tw/FirefoxLite). All the development work and issues are now back to [Firefox Lite](https://github.com/mozilla-tw/FirefoxLite). For any issues or pull requests, please file it to [Firefox Lite](https://github.com/mozilla-tw/FirefoxLite)
 
 We encourage you to participate in this open source project. We love Pull Requests, Bug Reports, ideas, (security) code reviews or any kind of positive contribution. Please read the [Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/).
 
