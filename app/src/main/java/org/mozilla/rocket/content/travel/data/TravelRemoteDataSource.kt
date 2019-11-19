@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.travel.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.content.Result
@@ -9,6 +10,7 @@ import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.toJsonObject
+import java.util.Locale
 
 class TravelRemoteDataSource : TravelDataSource {
 
@@ -80,8 +82,20 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun getCityHotels(name: String): Result<BcHotelApiEntity> {
-        TODO("not implemented")
+    override suspend fun getCityHotels(cityId: String): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+                call = {
+                    sendHttpRequest(request = Request(url = getHotelsApiEndpoint(cityId), method = Request.Method.GET, headers = createHeaders()),
+                            onSuccess = {
+                                Result.Success(BcHotelApiEntity.fromJson(it.body.string()))
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get hotels result"
+        )
     }
 
     override suspend fun isInBucketList(id: String): Boolean {
@@ -102,6 +116,29 @@ class TravelRemoteDataSource : TravelDataSource {
             dealApiEndpoint
         } else {
             DEFAULT_EXPLORE_URL_ENDPOINT
+        }
+    }
+
+    private fun getBaseApiEndpoint(): String {
+        val bookingComEndpoint = FirebaseHelper.getFirebase().getRcString(STR_BOOKING_COM_ENDPOINT)
+
+        return if (bookingComEndpoint.isNotEmpty()) {
+            bookingComEndpoint
+        } else {
+            DEFAULT_BOOKING_COM_ENDPOINT
+        }
+    }
+
+    private fun getHotelsApiEndpoint(cityIds: String): String {
+        val baseApiEndpoint = getBaseApiEndpoint()
+        val lang = Locale.getDefault().toLanguageTag()
+        return "$baseApiEndpoint/$BOOKING_COM_PATH_HOTELS?$BOOKING_COM_QUERY_PARAM_CITY_IDS=$cityIds&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang&$BOOKING_COM_QUERY_PARAM_EXTRAS=$BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL&$BOOKING_COM_QUERY_PARAM_ROWS=$BOOKING_COM_QUERY_PARAM_ROWS_HOTEL&$BOOKING_COM_QUERY_PARAM_OFFSET=0"
+    }
+
+    private fun createHeaders() = MutableHeaders().apply {
+        val authorization = FirebaseHelper.getFirebase().getRcString(STR_BOOKING_COM_AUTHORIZATION)
+        if (authorization.isNotEmpty()) {
+            set("Authorization", authorization)
         }
     }
 
@@ -128,6 +165,19 @@ class TravelRemoteDataSource : TravelDataSource {
     companion object {
         private const val STR_TRAVEL_EXPLORE_ENDPOINT = "str_travel_explore_endpoint"
         private const val DEFAULT_EXPLORE_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=id-ID&category=travelExplore"
+        private const val STR_BOOKING_COM_ENDPOINT = "str_booking_com_endpoint"
+        private const val STR_BOOKING_COM_AUTHORIZATION = "str_booking_com_authorization"
+        private const val DEFAULT_BOOKING_COM_ENDPOINT = "https://distribution-xml.booking.com/2.5/json"
+
+        private const val BOOKING_COM_PATH_HOTELS = "hotels"
+        private const val BOOKING_COM_QUERY_PARAM_CITY_IDS = "city_ids"
+        private const val BOOKING_COM_QUERY_PARAM_LANGUAGE = "language"
+        private const val BOOKING_COM_QUERY_PARAM_EXTRAS = "extras"
+        private const val BOOKING_COM_QUERY_PARAM_ROWS = "rows"
+        private const val BOOKING_COM_QUERY_PARAM_ROWS_HOTEL = "100"
+        private const val BOOKING_COM_QUERY_PARAM_OFFSET = "offset"
+        private const val BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL = "room_info, payment_details, hotel_info, hotel_photos, hotel_facilities, hotel_description"
+
         private const val WIKI_JSON_KEY_QUERY = "query"
         private const val WIKI_JSON_KEY_PAGES = "pages"
         private const val WIKI_JSON_KEY_EXTRACT = "extract"
