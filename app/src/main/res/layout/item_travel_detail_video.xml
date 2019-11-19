@@ -87,9 +87,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="74dp"
         android:fontFamily="sans-serif"
+        android:maxLines="1"
         android:textColor="@color/paletteDarkGreyD100"
         android:textSize="12sp"
         android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/explore_video_date"
         app:layout_constraintStart_toStartOf="@id/explore_video_title"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="1K views" />
