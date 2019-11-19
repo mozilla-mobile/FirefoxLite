@@ -13,7 +13,6 @@
     <string name="travel_bucket_list_no_bookmark_explore" translatable="false" tools:ignore="MissingTranslation">Explore a city</string>
     <string name="travel_detail_ig_title" translatable="false" tools:ignore="MissingTranslation">#%s on Instagram</string>
     <string name="travel_detail_video_view_count" translatable="false" tools:ignore="MissingTranslation">%d view</string>
-    <string name="travel_detail_video_view_count_pural" translatable="false" tools:ignore="MissingTranslation">%d views</string>
     <string name="search_city_hint" translatable="false" tools:ignore="MissingTranslation">Enter a city</string>
     <string name="travel_details_onboarding_title" tools:ignore="MissingTranslation">Love %s?</string>
     <string name="travel_details_onboarding_message" tools:ignore="MissingTranslation">Tab here to save %s in your bucket list for quickly access latest travel guides and  prices and estimation.</string>
