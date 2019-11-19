@@ -2,6 +2,8 @@ package org.mozilla.rocket.content.travel.ui.adapter
 
 import android.graphics.Outline
 import android.graphics.Typeface
+import android.icu.text.CompactDecimalFormat
+import android.os.Build
 import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewOutlineProvider
@@ -11,6 +13,7 @@ import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
+import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -50,7 +53,7 @@ class ExploreVideoViewHolder(
         val lengthPattern = if (exploreVideo.length / 60 > 59) "HH:mm:ss" else ("mm:ss")
 
         explore_video_length.text = SimpleDateFormat(lengthPattern, Locale.getDefault()).let {
-            val millisecondsDate = Date(exploreVideo.length*1000L)
+            val millisecondsDate = Date(exploreVideo.length * 1000L)
             it.format(millisecondsDate)
         }
 
@@ -61,7 +64,15 @@ class ExploreVideoViewHolder(
 
         when (exploreVideo.viewCount) {
             1 -> explore_video_views.text = itemView.resources.getString(R.string.travel_detail_video_view_count, exploreVideo.viewCount)
-            else -> explore_video_views.text = itemView.resources.getString(R.string.travel_detail_video_view_count_pural, exploreVideo.viewCount)
+            else -> {
+                val numberFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    CompactDecimalFormat.getInstance(Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT)
+                } else {
+                    NumberFormat.getInstance().also { it.isGroupingUsed = true }
+                }
+
+                explore_video_views.text = itemView.resources.getString(R.string.travel_content_yt_view_count, numberFormat.format(exploreVideo.viewCount))
+            }
         }
 
         try {
