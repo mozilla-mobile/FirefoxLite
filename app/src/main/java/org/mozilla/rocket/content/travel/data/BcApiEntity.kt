@@ -42,8 +42,8 @@ data class BcAutocompleteApiItem(
 
         fun fromJson(jsonObject: JSONObject): BcAutocompleteApiItem =
                 BcAutocompleteApiItem(
-                    jsonObject.optString(KEY_ID),
-                    jsonObject.optString(KEY_NAME)
+                        jsonObject.optString(KEY_ID),
+                        jsonObject.optString(KEY_NAME)
                 )
     }
 }
@@ -89,9 +89,10 @@ data class BcHotelApiItem(
         private const val KEY_DATA_NAME = "name"
         private const val KEY_DATA_HOTEL_DESCRIPTION = "hotel_description"
         private const val KEY_DATA_HOTEL_PHOTOS = "hotel_photos"
+        private const val KEY_DATA_HOTEL_PHOTOS_MAIN = "main_photo"
         private const val KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL = "url_original"
         private const val KEY_DATA_HOTEL_FACILITIES = "hotel_facilities"
-        private const val KEY_DATA_HOTEL_FACILITIES_NAME = "name"
+        private const val KEY_DATA_HOTEL_FACILITIES_TYPE_ID = "hotel_facility_type_id"
         private const val KEY_DATA_URL = "url"
         private const val KEY_DATA_CURRENCY = "currency"
         private const val KEY_DATA_PAYMENT_OPTIONS = "payment_options"
@@ -100,22 +101,30 @@ data class BcHotelApiItem(
         private const val KEY_ROOM_INFO = "room_info"
         private const val KEY_ROOM_INFO_MIN_PRICE = "min_price"
 
-        private const val FACILITY_FREE_WIFI = "free_wifi_internet_access_included"
-        private const val PAY_AT_PROPERTY = "1"
+        private const val FACILITY_ID_FREE_WIFI = "107"
 
         fun fromJson(jsonObject: JSONObject): BcHotelApiItem? {
 
             try {
                 val hotelData = jsonObject.optJSONObject(KEY_HOTEL_DATA)
                 val hotelPhotos = hotelData.optJSONArray(KEY_DATA_HOTEL_PHOTOS)
-                val hotelPhotoItem = hotelPhotos.getJSONObject(0)
                 val hotelFacilities = hotelData.optJSONArray(KEY_DATA_HOTEL_FACILITIES)
+
+                var hotelPhotoItem: JSONObject? = null
+                for (i in 0 until hotelPhotos.length()) {
+                    val photoItem = hotelPhotos.getJSONObject(i)
+                    if (photoItem.optBoolean(KEY_DATA_HOTEL_PHOTOS_MAIN, false)) {
+                        hotelPhotoItem = photoItem
+                        break
+                    }
+                }
+                hotelPhotoItem = hotelPhotoItem ?: hotelPhotos.getJSONObject(0)
 
                 var hasFreeWifi = false
                 for (i in 0 until hotelFacilities.length()) {
                     val facilityItem = hotelFacilities.getJSONObject(i)
-                    val facilityName = facilityItem.optString(KEY_DATA_HOTEL_FACILITIES_NAME)
-                    hasFreeWifi = facilityName == FACILITY_FREE_WIFI
+                    val facilityTypeId = facilityItem.optString(KEY_DATA_HOTEL_FACILITIES_TYPE_ID)
+                    hasFreeWifi = facilityTypeId == FACILITY_ID_FREE_WIFI
                     if (hasFreeWifi) break
                 }
 
@@ -127,24 +136,24 @@ data class BcHotelApiItem(
                     val info = room.optJSONObject(KEY_ROOM_INFO)
                     val roomMinPrice = info.optDouble(KEY_ROOM_INFO_MIN_PRICE).toFloat()
 
-                    if (minPrice > roomMinPrice) {
+                    if (minPrice > roomMinPrice && roomMinPrice > 0) {
                         minPrice = roomMinPrice
                     }
                 }
 
                 val hotelPayment = hotelData.optJSONObject(KEY_DATA_PAYMENT_OPTIONS)
-                val hotelPayAtProperty = hotelPayment.optString(KEY_DATA_PAYMENT_OPTIONS_PAY_AT_PROPERTY)
+                val hotelPayAtProperty = hotelPayment.optBoolean(KEY_DATA_PAYMENT_OPTIONS_PAY_AT_PROPERTY, false)
 
                 return BcHotelApiItem(
                         jsonObject.optInt(KEY_HOTEL_ID),
-                        hotelPhotoItem.optString(KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL),
+                        hotelPhotoItem!!.optString(KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL),
                         hotelData.optString(KEY_DATA_NAME),
                         hotelData.optDouble(KEY_DATA_REVIEW_SCORE).toFloat(),
                         hotelData.optString(KEY_DATA_HOTEL_DESCRIPTION),
                         hasFreeWifi,
                         minPrice,
                         hotelData.optString(KEY_DATA_CURRENCY),
-                        hotelPayAtProperty == PAY_AT_PROPERTY,
+                        hotelPayAtProperty,
                         hotelData.optString(KEY_DATA_URL)
                 )
             } catch (e: Exception) {
