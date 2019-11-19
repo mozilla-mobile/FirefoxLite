@@ -53,8 +53,8 @@ class TravelCityActivity : BaseActivity() {
         initToolBar()
         initSnackBar()
         initDetail()
-        bindCityData()
         bindPageState()
+        bindCityData()
         initExploreActions()
         initOnboardingSpotlight(city.name)
     }
@@ -89,7 +89,7 @@ class TravelCityActivity : BaseActivity() {
             travelCityViewModel.onFavoriteToggled(city, it.isSelected)
         }
         refresh_button.setOnClickListener {
-            travelCityViewModel.getLatestItems(city.name)
+            travelCityViewModel.getLatestItems(city.name, city.id)
         }
     }
 
@@ -101,14 +101,14 @@ class TravelCityActivity : BaseActivity() {
 
     private fun initDetail() {
         detailAdapter = DelegateAdapter(
-            AdapterDelegatesManager().apply {
-                // TODO: add adapter delegates
-                add(SectionHeaderUiModel::class, R.layout.item_section_header, SectionHeaderAdapterDelegate(travelCityViewModel))
-                add(IgUiModel::class, R.layout.item_travel_detail_ig, ExploreIgAdapterDelegate(travelCityViewModel))
-                add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
-                add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
-                add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate())
-            }
+                AdapterDelegatesManager().apply {
+                    // TODO: add adapter delegates
+                    add(SectionHeaderUiModel::class, R.layout.item_section_header, SectionHeaderAdapterDelegate(travelCityViewModel))
+                    add(IgUiModel::class, R.layout.item_travel_detail_ig, ExploreIgAdapterDelegate(travelCityViewModel))
+                    add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
+                    add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
+                    add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate())
+                }
         )
         city_details.apply {
             adapter = detailAdapter
@@ -123,7 +123,7 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel.items.observe(this, Observer {
             detailAdapter.setData(it)
         })
-        travelCityViewModel.getLatestItems(city.name)
+        travelCityViewModel.getLatestItems(city.name, city.id)
     }
 
     private fun initExploreActions() {

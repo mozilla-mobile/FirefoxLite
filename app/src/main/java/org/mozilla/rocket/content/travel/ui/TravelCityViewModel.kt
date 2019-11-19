@@ -39,6 +39,7 @@ class TravelCityViewModel(
 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
+    private var dataLoadingCount = 0
 
     private val _isInBucketList = MutableLiveData<Boolean>()
     val isInBucketList: LiveData<Boolean> = _isInBucketList
@@ -63,7 +64,7 @@ class TravelCityViewModel(
         }
     }
 
-    fun getLatestItems(name: String) {
+    fun getLatestItems(name: String, id: String) {
         data.clear()
         launchDataLoad {
             // TODO: add price items
@@ -94,7 +95,7 @@ class TravelCityViewModel(
             // add hotel
             data.add(SectionHeaderUiModel(SectionType.TopHotels))
 
-            val hotelResult = getHotels(name)
+            val hotelResult = getHotels(id)
             if (hotelResult is Result.Success) {
                 data.addAll(
                         hotelResult.data.result.map {
@@ -137,12 +138,31 @@ class TravelCityViewModel(
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
-                _isDataLoading.value = State.Loading
+                setDataLoadingState(State.Loading)
                 block()
-                _isDataLoading.value = State.Idle
+                setDataLoadingState(State.Idle)
             } catch (t: Throwable) {
                 _isDataLoading.value = State.Error(t)
             }
+        }
+    }
+
+    private fun setDataLoadingState(state: State) {
+        when (state) {
+            is State.Idle -> {
+                if (dataLoadingCount > 0) {
+                    dataLoadingCount --
+                }
+            }
+            is State.Loading -> {
+                dataLoadingCount ++
+            }
+        }
+
+        if (dataLoadingCount == 0) {
+            _isDataLoading.value = State.Idle
+        } else {
+            _isDataLoading.value = State.Loading
         }
     }
 
