@@ -45,8 +45,8 @@ class TravelRepository(
         return localDataSource.getCityVideos(name)
     }
 
-    suspend fun getCityHotels(cityId: String): Result<BcHotelApiEntity> {
-        return remoteDataSource.getCityHotels(cityId)
+    suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> {
+        return remoteDataSource.getCityHotels(cityId, offset)
     }
 
     suspend fun isInBucketList(id: String): Boolean {

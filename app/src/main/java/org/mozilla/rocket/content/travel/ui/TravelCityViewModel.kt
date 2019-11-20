@@ -40,6 +40,7 @@ class TravelCityViewModel(
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
     private var dataLoadingCount = 0
+    private var isHotelLoading = false
 
     private val _isInBucketList = MutableLiveData<Boolean>()
     val isInBucketList: LiveData<Boolean> = _isInBucketList
@@ -50,6 +51,9 @@ class TravelCityViewModel(
     val showOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showSnackBar = SingleLiveEvent<Unit>()
     val openLinkUrl = SingleLiveEvent<String>()
+
+    var hotelsCount = 0
+    lateinit var cityId: String
 
     init {
         if (shouldShowOnboarding()) {
@@ -66,6 +70,8 @@ class TravelCityViewModel(
 
     fun getLatestItems(name: String, id: String) {
         data.clear()
+        hotelsCount = 0
+        cityId = id
         launchDataLoad {
             // TODO: add price items
 
@@ -95,17 +101,41 @@ class TravelCityViewModel(
             // add hotel
             data.add(SectionHeaderUiModel(SectionType.TopHotels))
 
-            val hotelResult = getHotels(id)
+            val hotelResult = getHotels(id, hotelsCount)
             if (hotelResult is Result.Success) {
                 data.addAll(
                         hotelResult.data.result.map {
                             TravelMapper.toHotelUiModel(it)
                         }
                 )
+                hotelsCount = hotelResult.data.result.size
             }
             // TODO: handle error
 
             _items.postValue(data)
+        }
+    }
+
+    private fun loadMoreHotels() {
+
+        if (!isHotelLoading) {
+
+            isHotelLoading = true
+            backgroundHotelLoad {
+                // add more hotels
+                val hotelResult = getHotels(cityId, hotelsCount)
+                if (hotelResult is Result.Success) {
+                    data.addAll(
+                            hotelResult.data.result.map {
+                                TravelMapper.toHotelUiModel(it)
+                            }
+                    )
+                    hotelsCount += hotelResult.data.result.size
+                    _items.postValue(data)
+                }
+
+                isHotelLoading = false
+            }
         }
     }
 
@@ -135,12 +165,28 @@ class TravelCityViewModel(
         openLinkUrl.value = wikiItem.linkUrl
     }
 
+    fun onDetailItemScrolled(firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int, isScrollDown: Boolean) {
+        if (isScrollDown && firstVisibleItem + visibleItemCount + LOAD_MORE_HOTELS_THRESHOLD >= totalItemCount) {
+            loadMoreHotels()
+        }
+    }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
                 setDataLoadingState(State.Loading)
                 block()
                 setDataLoadingState(State.Idle)
+            } catch (t: Throwable) {
+                _isDataLoading.value = State.Error(t)
+            }
+        }
+    }
+
+    private fun backgroundHotelLoad(block: suspend () -> Unit): Job {
+        return viewModelScope.launch {
+            try {
+                block()
             } catch (t: Throwable) {
                 _isDataLoading.value = State.Error(t)
             }
@@ -175,5 +221,9 @@ class TravelCityViewModel(
     sealed class SectionType {
         data class Explore(val name: String) : SectionType()
         object TopHotels : SectionType()
+    }
+
+    companion object {
+        private const val LOAD_MORE_HOTELS_THRESHOLD = 15
     }
 }

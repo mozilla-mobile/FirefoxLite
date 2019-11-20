@@ -42,8 +42,8 @@ data class BcAutocompleteApiItem(
 
         fun fromJson(jsonObject: JSONObject): BcAutocompleteApiItem =
                 BcAutocompleteApiItem(
-                        jsonObject.optString(KEY_ID),
-                        jsonObject.optString(KEY_NAME)
+                    jsonObject.optString(KEY_ID),
+                    jsonObject.optString(KEY_NAME)
                 )
     }
 }

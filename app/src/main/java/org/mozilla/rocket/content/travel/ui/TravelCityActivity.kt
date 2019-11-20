@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_travel_city.*
@@ -101,17 +103,29 @@ class TravelCityActivity : BaseActivity() {
 
     private fun initDetail() {
         detailAdapter = DelegateAdapter(
-                AdapterDelegatesManager().apply {
-                    // TODO: add adapter delegates
-                    add(SectionHeaderUiModel::class, R.layout.item_section_header, SectionHeaderAdapterDelegate(travelCityViewModel))
-                    add(IgUiModel::class, R.layout.item_travel_detail_ig, ExploreIgAdapterDelegate(travelCityViewModel))
-                    add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
-                    add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
-                    add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate())
-                }
+            AdapterDelegatesManager().apply {
+                // TODO: add adapter delegates
+                add(SectionHeaderUiModel::class, R.layout.item_section_header, SectionHeaderAdapterDelegate(travelCityViewModel))
+                add(IgUiModel::class, R.layout.item_travel_detail_ig, ExploreIgAdapterDelegate(travelCityViewModel))
+                add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
+                add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
+                add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate())
+            }
         )
         city_details.apply {
             adapter = detailAdapter
+        }
+
+        (city_details.layoutManager as LinearLayoutManager).let {
+            city_details.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val totalItemCount = it.itemCount
+                    val visibleItemCount = it.childCount
+                    val firstVisibleItem = it.findFirstVisibleItemPosition()
+                    travelCityViewModel.onDetailItemScrolled(firstVisibleItem, visibleItemCount, totalItemCount, dy > 0)
+                }
+            })
         }
     }
 
