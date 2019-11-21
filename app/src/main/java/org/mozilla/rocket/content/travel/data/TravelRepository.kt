@@ -42,7 +42,7 @@ class TravelRepository(
     }
 
     suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> {
-        return localDataSource.getCityVideos(name)
+        return remoteDataSource.getCityVideos(name)
     }
 
     suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> {

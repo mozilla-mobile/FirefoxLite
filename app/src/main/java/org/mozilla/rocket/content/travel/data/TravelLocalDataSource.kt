@@ -66,11 +66,8 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         TODO("not implemented")
     }
 
-    // TODO: remove mock data
-    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> = withContext(Dispatchers.IO) {
-        return@withContext Success(
-            YoutubeApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_videos))
-        )
+    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> {
+        TODO("not implemented")
     }
 
     override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> {
