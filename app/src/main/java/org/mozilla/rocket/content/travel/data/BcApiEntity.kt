@@ -110,15 +110,20 @@ data class BcHotelApiItem(
                 val hotelPhotos = hotelData.optJSONArray(KEY_DATA_HOTEL_PHOTOS)
                 val hotelFacilities = hotelData.optJSONArray(KEY_DATA_HOTEL_FACILITIES)
 
-                var hotelPhotoItem: JSONObject? = null
-                for (i in 0 until hotelPhotos.length()) {
-                    val photoItem = hotelPhotos.getJSONObject(i)
-                    if (photoItem.optBoolean(KEY_DATA_HOTEL_PHOTOS_MAIN, false)) {
-                        hotelPhotoItem = photoItem
-                        break
+                val imageUrl = if (hotelPhotos.length() > 0) {
+                    var hotelMainPhotoItem: JSONObject? = null
+                    for (i in 0 until hotelPhotos.length()) {
+                        val photoItem = hotelPhotos.getJSONObject(i)
+                        if (photoItem.optBoolean(KEY_DATA_HOTEL_PHOTOS_MAIN, false)) {
+                            hotelMainPhotoItem = photoItem
+                            break
+                        }
                     }
+                    val hotelPhotoItem = hotelMainPhotoItem ?: hotelPhotos.getJSONObject(0)
+                    hotelPhotoItem.optString(KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL)
+                } else {
+                    ""
                 }
-                hotelPhotoItem = hotelPhotoItem ?: hotelPhotos.getJSONObject(0)
 
                 var hasFreeWifi = false
                 for (i in 0 until hotelFacilities.length()) {
@@ -146,7 +151,7 @@ data class BcHotelApiItem(
 
                 return BcHotelApiItem(
                         jsonObject.optInt(KEY_HOTEL_ID),
-                        hotelPhotoItem!!.optString(KEY_DATA_HOTEL_PHOTOS_URL_ORIGINAL),
+                        imageUrl,
                         hotelData.optString(KEY_DATA_NAME),
                         hotelData.optDouble(KEY_DATA_REVIEW_SCORE).toFloat(),
                         hotelData.optString(KEY_DATA_HOTEL_DESCRIPTION),
