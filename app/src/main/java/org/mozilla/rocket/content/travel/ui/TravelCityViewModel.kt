@@ -52,8 +52,8 @@ class TravelCityViewModel(
     val showSnackBar = SingleLiveEvent<Unit>()
     val openLinkUrl = SingleLiveEvent<String>()
 
-    var hotelsCount = 0
-    lateinit var cityId: String
+    private var hotelsCount = 0
+    private lateinit var cityId: String
 
     init {
         if (shouldShowOnboarding()) {
@@ -117,7 +117,6 @@ class TravelCityViewModel(
     }
 
     private fun loadMoreHotels() {
-
         if (!isHotelLoading) {
 
             isHotelLoading = true
@@ -197,11 +196,11 @@ class TravelCityViewModel(
         when (state) {
             is State.Idle -> {
                 if (dataLoadingCount > 0) {
-                    dataLoadingCount --
+                    dataLoadingCount--
                 }
             }
             is State.Loading -> {
-                dataLoadingCount ++
+                dataLoadingCount++
             }
         }
 

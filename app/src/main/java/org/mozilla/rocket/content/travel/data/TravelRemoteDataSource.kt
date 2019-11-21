@@ -85,9 +85,7 @@ class TravelRemoteDataSource : TravelDataSource {
     override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
                 call = {
-                    if (offset % BOOKING_COM_HOTELS_OFFSET_BASE != 0) {
-                        throw IllegalArgumentException("Offset is not multiple of 100, which means end is reached")
-                    }
+                    require(offset % BOOKING_COM_HOTELS_OFFSET_BASE == 0) { "Offset is not multiple of 100, which means end is reached" }
 
                     sendHttpRequest(request = Request(url = getHotelsApiEndpoint(cityId, offset), method = Request.Method.GET, headers = createHeaders()),
                             onSuccess = {
