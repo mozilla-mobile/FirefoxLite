@@ -1,29 +1,57 @@
 [
     {
-        "id": "TkE_IGEEHXE",
-        "image_url": "https://i.ytimg.com/vi/TkE_IGEEHXE/hqdefault.jpg",
-        "length": 720,
-        "title": "Music Travel Love - Bless the Broken Road - Bali (Official Video)",
-        "author": "Music Travel Love",
-        "view_count": 1,
-        "date": "2018-12-19T20:26:17.000Z"
+        "title": "Bali Adventure - Mikevisuals",
+        "channelTitle": "Mikevisuals",
+        "publishedAt": "2016-09-19T20:03:12.000Z",
+        "thumbnail": "https://i.ytimg.com/vi/ibuUmMhD2Pg/default.jpg",
+        "duration": "PT3M8S",
+        "link": "https://www.youtube.com/watch?v=ibuUmMhD2Pg",
+        "viewCount": "4237687",
+        "componentId": "8947678845a160d7eeb6f091539459704531a2482c377ff7df8785be1c5a7b73",
+        "source": "youtube"
     },
     {
-        "id": "8PNTZEv-e54",
-        "image_url": "https://i.ytimg.com/vi/8PNTZEv-e54/hqdefault.jpg",
-        "length": 213,
         "title": "BALI - Doyoutravel X Gypsea Lust",
-        "author": "Jack Morris",
-        "view_count": 0,
-        "date": "2019-10-13T17:25:54.000Z"
+        "channelTitle": "Jack Morris",
+        "publishedAt": "2018-06-11T17:25:54.000Z",
+        "thumbnail": "https://i.ytimg.com/vi/8PNTZEv-e54/default.jpg",
+        "duration": "PT3M34S",
+        "link": "https://www.youtube.com/watch?v=8PNTZEv-e54",
+        "viewCount": "4070608",
+        "componentId": "9d466f78077f5ef6f3531ef4477a05d8fd2a983047abf7cda0b13381c9c7d03a",
+        "source": "youtube"
     },
     {
-        "id": "i9E_Blai8vk",
-        "image_url": "https://i.ytimg.com/vi/i9E_Blai8vk/hqdefault.jpg",
-        "length": 571,
         "title": "Welcome to Bali | Travel Vlog | Priscilla Lee",
-        "author": "Priscilla Lee",
-        "view_count": 3533233,
-        "date": "2016-12-13T03:27:13.000Z"
+        "channelTitle": "Priscilla Lee",
+        "publishedAt": "2016-12-13T03:27:13.000Z",
+        "thumbnail": "https://i.ytimg.com/vi/i9E_Blai8vk/default.jpg",
+        "duration": "PT9M32S",
+        "link": "https://www.youtube.com/watch?v=i9E_Blai8vk",
+        "viewCount": "3631396",
+        "componentId": "0045927521e1bcc51b302e63a824cfa9577b8b7900f6b68789a4002597fcbfe1",
+        "source": "youtube"
+    },
+    {
+        "title": "TOP 10 BALI (TRAVELLERS PARADISE)",
+        "channelTitle": "Lost LeBlanc",
+        "publishedAt": "2017-06-16T23:03:36.000Z",
+        "thumbnail": "https://i.ytimg.com/vi/0UFCRBIg3Y0/default.jpg",
+        "duration": "PT11M49S",
+        "link": "https://www.youtube.com/watch?v=0UFCRBIg3Y0",
+        "viewCount": "3271871",
+        "componentId": "0d77a72e11a12d6e1f16e15b8856230593dc2c965d7067ddd716e12156a38e7d",
+        "source": "youtube"
+    },
+    {
+        "title": "TRAVELING TO BALI! - First day in Bali",
+        "channelTitle": "Exploring With Cody",
+        "publishedAt": "2016-11-04T22:22:29.000Z",
+        "thumbnail": "https://i.ytimg.com/vi/3AduUi1kDDY/default.jpg",
+        "duration": "PT10M23S",
+        "link": "https://www.youtube.com/watch?v=3AduUi1kDDY",
+        "viewCount": "2426654",
+        "componentId": "98cd1c480635738357eb4e9e12f3b09a0e772dc0784caec2907e97853795c3d4",
+        "source": "youtube"
     }
 ]
