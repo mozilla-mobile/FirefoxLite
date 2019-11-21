@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.travel.ui.adapter
 
 import android.graphics.Bitmap
 import android.view.View
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -51,6 +52,8 @@ class HotelViewHolder(
         hotel_description.text = hotelUiModel.description
 
         hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating_total, hotelUiModel.rating, hotelUiModel.fullScore)
+        hotel_rating.isInvisible = hotelUiModel.rating.isNaN()
+
         hotel_currency.text = hotelUiModel.currency
 
         val dec = DecimalFormat("#,###.##")

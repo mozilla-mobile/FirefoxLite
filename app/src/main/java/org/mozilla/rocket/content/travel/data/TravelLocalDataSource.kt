@@ -72,11 +72,8 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
-    // TODO: remove mock data
-    override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
-        return@withContext Success(
-                BcHotelApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_hotels))
-        )
+    override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> {
+        TODO("not implemented")
     }
 
     override suspend fun isInBucketList(id: String): Boolean {

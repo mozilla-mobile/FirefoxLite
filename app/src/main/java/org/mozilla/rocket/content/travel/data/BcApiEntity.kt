@@ -135,13 +135,13 @@ data class BcHotelApiItem(
 
                 val roomData = jsonObject.optJSONArray(KEY_ROOM)
 
-                var minPrice = Float.MAX_VALUE
+                var minPrice = 0f
                 for (i in 0 until roomData.length()) {
                     val room = roomData.getJSONObject(i)
                     val info = room.optJSONObject(KEY_ROOM_INFO)
                     val roomMinPrice = info.optDouble(KEY_ROOM_INFO_MIN_PRICE).toFloat()
 
-                    if (minPrice > roomMinPrice && roomMinPrice > 0) {
+                    if ((minPrice == 0f || minPrice > roomMinPrice) && roomMinPrice > 0) {
                         minPrice = roomMinPrice
                     }
                 }
