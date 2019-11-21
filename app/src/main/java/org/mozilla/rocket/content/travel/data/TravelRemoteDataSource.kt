@@ -78,8 +78,20 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
-    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> {
-        TODO("not implemented")
+    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+            call = {
+                sendHttpRequest(request = Request(url = getVideosApiEndpoint(name), method = Request.Method.GET, headers = createVideoHeaders()),
+                    onSuccess = {
+                        Result.Success(YoutubeApiEntity.fromJson(it.body.string()))
+                    },
+                    onError = {
+                        Result.Error(it)
+                    }
+                )
+            },
+            errorMessage = "Unable to get video result"
+        )
     }
 
     override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
@@ -144,6 +156,25 @@ class TravelRemoteDataSource : TravelDataSource {
         }
     }
 
+    private fun getVideosApiEndpoint(name: String): String {
+        val videoEndPointFormat = FirebaseHelper.getFirebase().getRcString(STR_VIDEO_ENDPOINT)
+        val lang = Locale.getDefault().toLanguageTag()
+
+        val endPointFormat = if (videoEndPointFormat.isNotEmpty())
+            videoEndPointFormat
+        else
+            DEFAULT_VIDEO_ENDPOINT_FORMAT
+
+        return String.format(endPointFormat, String.format(VIDEO_QUERY_PARAM, name), lang)
+    }
+
+    private fun createVideoHeaders() = MutableHeaders().apply {
+        val apiKey = FirebaseHelper.getFirebase().getRcString(STR_VERTICAL_CLIENT_API_KEY)
+        if (apiKey.isNotEmpty()) {
+            set("X-API-Key", apiKey)
+        }
+    }
+
     private fun getWikiExtractApiEndpoint(name: String): String = WIKI_EXTRACT_API + name
 
     private fun getWikiExtractFromJson(jsonString: String): String {
@@ -170,6 +201,10 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val STR_BOOKING_COM_ENDPOINT = "str_booking_com_endpoint"
         private const val STR_BOOKING_COM_AUTHORIZATION = "str_booking_com_authorization"
         private const val DEFAULT_BOOKING_COM_ENDPOINT = "https://distribution-xml.booking.com/2.5/json"
+        private const val STR_VIDEO_ENDPOINT = "str_travel_video_endpoint"
+        private const val STR_VERTICAL_CLIENT_API_KEY = "str_vertical_client_api_key"
+        private const val VIDEO_QUERY_PARAM = "%s+Travel"
+        private const val DEFAULT_VIDEO_ENDPOINT_FORMAT = "https://zerda-dcf76.appspot.com/api/v1/video?query=%s&locale=%s&limit=5"
 
         private const val BOOKING_COM_PATH_HOTELS = "hotels"
         private const val BOOKING_COM_QUERY_PARAM_CITY_IDS = "city_ids"
