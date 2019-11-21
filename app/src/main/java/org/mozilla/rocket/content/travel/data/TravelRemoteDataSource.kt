@@ -78,7 +78,7 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
-    override suspend fun getCityVideos(name: String): Result<List<Video>> {
+    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> {
         TODO("not implemented")
     }
 

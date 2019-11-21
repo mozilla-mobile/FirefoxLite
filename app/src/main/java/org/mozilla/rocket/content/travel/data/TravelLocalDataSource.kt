@@ -66,10 +66,11 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         TODO("not implemented")
     }
 
-    override suspend fun getCityVideos(name: String): Result<List<Video>> {
-        return withContext(Dispatchers.IO) {
-            Success(getMockVideos() ?: emptyList())
-        }
+    // TODO: remove mock data
+    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext Success(
+            YoutubeApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_videos))
+        )
     }
 
     override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> {
@@ -112,11 +113,6 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_price_items)
                     ?.jsonStringToPriceItems()
 
-    // TODO: remove mock data
-    private fun getMockVideos(): List<Video>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.city_videos)
-                    ?.jsonStringToVideos()
-
     companion object {
         private const val PREF_NAME = "travel"
         private const val KEY_JSON_STRING_BUCKET_LIST = "bucket_list"
@@ -142,31 +138,6 @@ private fun createPriceItem(jsonObject: JSONObject): PriceItem =
             jsonObject.optDouble("price", 0.toDouble()).toFloat(),
             jsonObject.optString("currency"),
             jsonObject.optString("link_url")
-        )
-
-private fun String.jsonStringToVideos(): List<Video>? {
-    return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createVideo(jsonObject) }
-                .shuffled()
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-private fun createVideo(jsonObject: JSONObject): Video =
-        Video(
-            jsonObject.optString("id"),
-            jsonObject.optString("image_url"),
-            jsonObject.optInt("length"),
-            jsonObject.optString("title"),
-            jsonObject.optString("author"),
-            jsonObject.optInt("view_count"),
-            jsonObject.optString("date"),
-            String.format("https://www.youtube.com/watch?v=%s", jsonObject.optString("id"))
         )
 
 private fun List<BucketListCity>.toJsonString(): String {

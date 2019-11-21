@@ -86,7 +86,7 @@ class TravelCityViewModel(
             val videoResult = getVideos(name)
             if (videoResult is Result.Success) {
                 data.addAll(
-                        videoResult.data.map {
+                        videoResult.data.videos.map {
                             // TODO: handle real read stats
                             TravelMapper.toVideoUiModel(it, false)
                         }
