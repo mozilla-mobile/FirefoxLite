@@ -3,6 +3,7 @@ package org.mozilla.rocket.content.travel.data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.Request
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
 import org.mozilla.rocket.util.safeApiCall
@@ -11,8 +12,20 @@ import org.mozilla.rocket.util.toJsonObject
 
 class TravelRemoteDataSource : TravelDataSource {
 
-    override suspend fun getExploreList(): Result<ApiEntity> {
-        TODO("not implemented")
+    override suspend fun getExploreList(): Result<ApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+            call = {
+                sendHttpRequest(request = Request(url = getExploreApiEndpoint(), method = Request.Method.GET),
+                    onSuccess = {
+                        Result.Success(ApiEntity.fromJson(it.body.string()))
+                    },
+                    onError = {
+                        Result.Error(it)
+                    }
+                )
+            },
+            errorMessage = "Unable to get remote travel explore data"
+        )
     }
 
     override suspend fun getBucketList(): Result<List<BucketListCity>> {
@@ -83,6 +96,15 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
+    private fun getExploreApiEndpoint(): String {
+        val dealApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_TRAVEL_EXPLORE_ENDPOINT)
+        return if (dealApiEndpoint.isNotEmpty()) {
+            dealApiEndpoint
+        } else {
+            DEFAULT_EXPLORE_URL_ENDPOINT
+        }
+    }
+
     private fun getWikiExtractApiEndpoint(name: String): String = WIKI_EXTRACT_API + name
 
     private fun getWikiExtractFromJson(jsonString: String): String {
@@ -104,6 +126,8 @@ class TravelRemoteDataSource : TravelDataSource {
     }
 
     companion object {
+        private const val STR_TRAVEL_EXPLORE_ENDPOINT = "str_travel_explore_endpoint"
+        private const val DEFAULT_EXPLORE_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=id-ID&category=travelExplore"
         private const val WIKI_JSON_KEY_QUERY = "query"
         private const val WIKI_JSON_KEY_PAGES = "pages"
         private const val WIKI_JSON_KEY_EXTRACT = "extract"

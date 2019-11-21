@@ -28,11 +28,8 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         })
     }
 
-    // TODO: remove mock data
-    override suspend fun getExploreList(): Result<ApiEntity> = withContext(Dispatchers.IO) {
-        return@withContext Success(
-                ApiEntity.fromJson(AssetsUtils.loadStringFromRawResource(appContext, R.raw.travel_explore_mock_items))
-        )
+    override suspend fun getExploreList(): Result<ApiEntity> {
+        TODO("not implemented")
     }
 
     override suspend fun getBucketList(): Result<List<BucketListCity>> = withContext(Dispatchers.IO) {

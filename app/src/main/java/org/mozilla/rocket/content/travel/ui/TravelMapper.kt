@@ -58,7 +58,7 @@ object TravelMapper {
 
     private fun toCityUiModel(item: ApiItem): CityUiModel =
             CityUiModel(
-                item.componentId,
+                item.description,
                 item.image,
                 item.title
             )

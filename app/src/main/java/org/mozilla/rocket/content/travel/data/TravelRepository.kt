@@ -9,7 +9,7 @@ class TravelRepository(
 ) {
 
     suspend fun getExploreList(): Result<ApiEntity> {
-        return localDataSource.getExploreList()
+        return remoteDataSource.getExploreList()
     }
 
     suspend fun getBucketList(): Result<List<BucketListCity>> {
