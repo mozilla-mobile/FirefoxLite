@@ -691,6 +691,7 @@
     <string name="gaming_vertical_hint_title">Fast access to your favourite games</string>
     <string name="gaming_vertical_hint_body">Press to create a shortcut to your home screen.</string>
     <string name="gaming_vertical_hint_button">OK</string>
+    <string name=“gaming_vertical_shortcut_message”>shortcut created.</string>
     
     <!--Gaming Longpress Menu-->
     <string name="gaming_vertical_menu_option_1">Share game</string>
@@ -872,51 +873,68 @@
     <string name="msrp_activitykilled_snackbar_body">You’ve won a shopping voucher!</string>
    
     <!--Travel Vertical--> 
-    <!--Artboard Name: 2.1 See bucket list-->
     <!--travel home-->
     <string name="travel_vertical_title">Travel</string>
+    <!--explore is a verb which means the action for finding new destinations-->
     <string name="travel_vertical_category_1">Explore</string>
+    <!--bucket list is a noun which means the place for collecting all favorite items like destinations-->
     <string name="travel_vertical_category_2">Bucket List</string>
+
     <!--featured destinations-->
     <string name="travel_destination_subcategory_1">Travel on a budget</string>
     <string name="travel_destination_subcategory_2">Best cities for winter holiday</string>
-    <!--Finding destinations-->
+
+    <!--this is a title of the search bar for finding destinations-->
     <string name="travel_find_destination_title">Where do you want to go?</string>
+    <!--this is a placeholder in the search bar which contains a destination as an example-->
     <string name="travel_find_destination_placeholder_1">Try “Bali”…</string>
 
-    <!--Subcategories in detail page -->
-    <!--The %1$s here is a placeholder for destination name like Bali-->
-    <string name="travel_detail_page_subcategory_content">Explore %1$s</string>
-    <string name="travel_detail_page_subcategory_hotel">Popular hotels</string>
 
-    <!--IG content. the %1$s here is the destination name-->
+    <!--detail page -->
+    <!--this is a subcategory title. The %1$s here is a placeholder for destination name like Bali-->
+    <string name="travel_detail_page_subcategory_content">Explore %1$s</string>
+    <!--this is a subcategory title-->
+    <string name="travel_detail_page_subcategory_hotel">Popular hotels</string>
+    <!--this is the button for seeing more deals on the booking website-->
+    <string name="travel_more ">More</string>
+
+    <!--Instagram content. the %1$s here is the destination name-->
     <string name="travel_content_ig_link">#%1$s on IG</string>
-    <!--YT content. the %1$s here is how many times of video viewing-->
+    <!--Youtube content. the %1$s here is how many times of video viewing-->
     <string name="travel_content_yt_view_count">%1$s views</string>
+    <string name="travel_content_yt_view_count_single_view">%1$s view</string>
     <!--Wiki content-->
     <string name="travel_content_wiki_source_name">Wikipedia</string>
+
     <!--detail information for the hotel room-->
     <string name="travel_hotel_detail_1">Free Wi-Fi</string>
     <string name="travel_hotel_detail_2">Free cancellation</string>
     <string name="travel_hotel_detail_3">Pay upon check in</string>
+
+    <!--bucket list -->
     <!--text in the empty state -->
     <string name="travel_empty_state_text">“I haven’t been everywhere, but it’s on my list.”</string>
-    <!--CTA button for the empty state-->
+    <!--button for entering the search page-->
     <string name="travel_empty_state_button">Explore a city</string>
 
-    <!--Artboard Name: 2.2 Save to a bucket list-->
-    <!--Snackbar message after saving a destination-->
+    <!--snackbar message after saving a destination-->
     <string name="travel_snack_bar_saved_message">Saved in your bucket list.</string>
+    <!--view is a verb. and this is a button which will lead users to see the bucket list page-->
     <string name="travel_snack_bar_button">VIEW</string>
 
-    <!--Artboard Name: 3.1 Onboarding-->
     <!--onboarding message for the save function. the %1$s here is the destination name -->
     <string name="travel_onboarding_save_title">Love %1$s?</string>
+    <!--the %1$s here is the destination name -->
     <string name="travel_onboarding_save_description">Save %1$s in your Bucket List to get quick access to travel guides and the best prices.</string>
     <!--onboarding button-->
     <string name="travel_onboarding_save_button">OK</string>
 
-    <!--Artboard Name: 1.2 Search for a city 1-->
-    <!--Introduce what can be type in the field-->
-    <string name="travel_find_destination_placeholder_2">Find a destination in page</string>   
+
+    <!--search page -->
+    <!--introduce what can be type in the field-->
+    <string name="travel_find_destination_placeholder_2">Enter a destination</string>
+    <!--this is a title indicates that users will see search results from google after tapping on the following option. the %1$s here is google. -->
+    <string name="travel_search_engine_1">Search with %1$s</string>
+    <!--this is a title indicates that users will see search results summerized by firefox lite travel after tapping on the following options. the %1$s here is firefox lite. -->
+    <string name="travel_search_engine_2">Search with %1$s Travel</string>
 </resources>
