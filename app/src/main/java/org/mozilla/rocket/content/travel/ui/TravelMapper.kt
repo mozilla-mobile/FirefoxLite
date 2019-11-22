@@ -9,7 +9,7 @@ import org.mozilla.rocket.content.travel.data.BcHotelApiItem
 import org.mozilla.rocket.content.travel.data.BucketListCity
 import org.mozilla.rocket.content.travel.data.Ig
 import org.mozilla.rocket.content.travel.data.Wiki
-import org.mozilla.rocket.content.travel.data.YoutubeApiItem
+import org.mozilla.rocket.content.travel.data.VideoApiItem
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
@@ -90,7 +90,7 @@ object TravelMapper {
                 wiki.linkUrl
             )
 
-    fun toVideoUiModel(video: YoutubeApiItem, read: Boolean): VideoUiModel =
+    fun toVideoUiModel(video: VideoApiItem, read: Boolean): VideoUiModel =
             VideoUiModel(
                 video.componentId,
                 video.thumbnail,

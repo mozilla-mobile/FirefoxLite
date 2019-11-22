@@ -78,12 +78,12 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
-    override suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> = withContext(Dispatchers.IO) {
+    override suspend fun getCityVideos(name: String): Result<VideoApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
             call = {
                 sendHttpRequest(request = Request(url = getVideosApiEndpoint(name), method = Request.Method.GET, headers = createVideoHeaders()),
                     onSuccess = {
-                        Result.Success(YoutubeApiEntity.fromJson(it.body.string()))
+                        Result.Success(VideoApiEntity.fromJson(it.body.string()))
                     },
                     onError = {
                         Result.Error(it)

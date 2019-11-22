@@ -3,30 +3,30 @@ package org.mozilla.rocket.content.travel.data
 import org.json.JSONObject
 import org.mozilla.rocket.util.toJsonArray
 
-data class YoutubeApiEntity(val videos: List<YoutubeApiItem>) {
+data class VideoApiEntity(val videos: List<VideoApiItem>) {
     companion object {
-        fun fromJson(jsonString: String?): YoutubeApiEntity {
+        fun fromJson(jsonString: String?): VideoApiEntity {
             return if (jsonString != null) {
                 val jsonArray = jsonString.toJsonArray()
                 val videos =
                     (0 until jsonArray.length())
                         .map { index -> jsonArray.getJSONObject(index) }
-                        .map { jObj -> YoutubeApiItem.fromJson(jObj) }
+                        .map { jObj -> VideoApiItem.fromJson(jObj) }
 
-                YoutubeApiEntity(videos)
+                VideoApiEntity(videos)
             } else {
-                YoutubeApiEntity(emptyList())
+                VideoApiEntity(emptyList())
             }
         }
     }
 }
 
-data class YoutubeApiItem(
+data class VideoApiItem(
     val title: String,
     val channelTitle: String,
     val publishedAt: String,
     val thumbnail: String,
-    val duration: Int,
+    val duration: String,
     val link: String,
     val viewCount: Int,
     val componentId: String,
@@ -43,23 +43,17 @@ data class YoutubeApiItem(
         private const val KEY_COMPONENT_ID = "componentId"
         private const val KEY_SOURCE = "source"
 
-        fun fromJson(jsonObject: JSONObject): YoutubeApiItem =
-            YoutubeApiItem(
+        fun fromJson(jsonObject: JSONObject): VideoApiItem =
+            VideoApiItem(
                 jsonObject.optString(KEY_TITLE),
                 jsonObject.optString(KEY_CHANNEL_TITLE),
                 jsonObject.optString(KEY_PUBLISHED_AT),
                 jsonObject.optString(KEY_THUMBNAIL),
-                jsonObject.optString(KEY_DURATION).toIntDuration(),
+                jsonObject.optString(KEY_DURATION),
                 jsonObject.optString(KEY_LINK),
                 jsonObject.optString(KEY_VIEW_COUNT).toInt(),
                 jsonObject.optString(KEY_COMPONENT_ID),
                 jsonObject.optString(KEY_SOURCE)
             )
     }
-}
-
-private fun String.toIntDuration(): Int {
-    val regex = """^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$""".toRegex()
-    val (hours, minutes, seconds) = regex.find(this)!!.destructured
-    return 60 * (60 * (hours.toIntOrNull() ?: 0) + (minutes.toIntOrNull() ?: 0)) + (seconds.toIntOrNull() ?: 0)
 }

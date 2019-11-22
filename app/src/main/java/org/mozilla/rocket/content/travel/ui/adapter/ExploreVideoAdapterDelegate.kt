@@ -16,7 +16,6 @@ import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
@@ -50,13 +49,7 @@ class ExploreVideoViewHolder(
                 .load(exploreVideo.imageUrl)
                 .into(explore_video_image)
 
-        val lengthPattern = if (exploreVideo.length / 60 > 59) "HH:mm:ss" else ("mm:ss")
-
-        explore_video_length.text = SimpleDateFormat(lengthPattern, Locale.getDefault()).let {
-            val millisecondsDate = Date(exploreVideo.length * 1000L)
-            it.format(millisecondsDate)
-        }
-
+        explore_video_length.text = exploreVideo.duration
         explore_video_title.text = exploreVideo.title
         explore_video_title.typeface = if (exploreVideo.read) Typeface.DEFAULT else Typeface.DEFAULT_BOLD
 
@@ -96,7 +89,7 @@ class ExploreVideoViewHolder(
 data class VideoUiModel(
     val id: String,
     val imageUrl: String,
-    val length: Int,
+    val duration: String,
     val title: String,
     val author: String,
     val viewCount: Int,
