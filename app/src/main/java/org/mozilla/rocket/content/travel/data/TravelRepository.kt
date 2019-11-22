@@ -41,7 +41,7 @@ class TravelRepository(
         return Result.Success(wiki)
     }
 
-    suspend fun getCityVideos(name: String): Result<YoutubeApiEntity> {
+    suspend fun getCityVideos(name: String): Result<VideoApiEntity> {
         return remoteDataSource.getCityVideos(name)
     }
 
