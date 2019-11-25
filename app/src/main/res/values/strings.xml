@@ -896,7 +896,7 @@
     <!--this is a subcategory title-->
     <string name="travel_detail_page_subcategory_hotel">Popular hotels</string>
     <!--this is the button for seeing more deals on the booking website-->
-    <string name="travel_more ">More</string>
+    <string name="travel_more">More</string>
 
     <!--Instagram content. the %1$s here is the destination name-->
     <string name="travel_content_ig_link">#%1$s on IG</string>
