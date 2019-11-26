@@ -16,8 +16,8 @@
     android:background="?android:attr/selectableItemBackground"
     android:focusable="true"
     android:clickable="true"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:paddingStart="48dp"
+    android:paddingEnd="48dp">
 
     <TextView
         android:layout_gravity="center"

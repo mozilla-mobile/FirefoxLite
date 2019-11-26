@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +15,13 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.content.travel.ui.adapter.CitySearchGoogleAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.CitySearchGoogleUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultCategoryAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
 import javax.inject.Inject
 
@@ -45,10 +51,27 @@ class TravelCitySearchActivity : AppCompatActivity() {
         search_keyword_edit.post {
             search_keyword_edit.requestFocus()
         }
+        search_keyword_edit.setOnEditorActionListener { editTextView, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    searchViewModel.onGoogleSearchClicked(this, editTextView.text.toString())
+                    true
+                }
+                else -> false
+            }
+        }
+
         clear.setOnClickListener {
             search_keyword_edit.setText("")
         }
         initCityList()
+        initGoogleSearchAction()
+    }
+
+    private fun initGoogleSearchAction() {
+        searchViewModel.openGoogleSearch.observe(this, Observer { linkUrl ->
+            startActivity(ContentTabActivity.getStartIntent(this@TravelCitySearchActivity, linkUrl))
+        })
     }
 
     private fun initCityList() {
@@ -56,6 +79,8 @@ class TravelCitySearchActivity : AppCompatActivity() {
             it.layoutManager = LinearLayoutManager(this@TravelCitySearchActivity)
             adapter = DelegateAdapter(AdapterDelegatesManager().apply {
                 add(CitySearchResultUiModel::class, R.layout.item_city_search_result, CitySearchResultAdapterDelegate(searchViewModel))
+                add(CitySearchResultCategoryUiModel::class, R.layout.item_city_search_result_category, CitySearchResultCategoryAdapterDelegate())
+                add(CitySearchGoogleUiModel::class, R.layout.item_city_search_google, CitySearchGoogleAdapterDelegate(searchViewModel))
             })
             it.adapter = adapter
         }
