@@ -17,7 +17,7 @@ class TravelRepository(
     }
 
     suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity> {
-        return localDataSource.searchCity(keyword)
+        return remoteDataSource.searchCity(keyword)
     }
 
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
