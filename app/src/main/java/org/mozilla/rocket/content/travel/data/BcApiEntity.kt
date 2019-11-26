@@ -13,7 +13,8 @@ abstract class BcApiEntity {
 data class BcAutocompleteApiEntity(val result: List<BcAutocompleteApiItem>) : BcApiEntity() {
     companion object {
         private const val KEY_TYPE = "type"
-        private const val KEY_TYPE_CITY = "city"
+        internal const val TYPE_CITY = "city"
+        internal const val TYPE_REGION = "region"
 
         fun fromJson(jsonString: String?): BcAutocompleteApiEntity {
             return if (jsonString != null) {
@@ -22,7 +23,7 @@ data class BcAutocompleteApiEntity(val result: List<BcAutocompleteApiItem>) : Bc
                 val result =
                         (0 until jsonArray.length())
                                 .map { index -> jsonArray.getJSONObject(index) }
-                                .filter { jObj -> KEY_TYPE_CITY.equals(jObj.optString(KEY_TYPE)) }
+                                .filter { jObj -> TYPE_CITY.equals(jObj.optString(KEY_TYPE)) || TYPE_REGION.equals(jObj.optString(KEY_TYPE)) }
                                 .map { jObj -> BcAutocompleteApiItem.fromJson(jObj) }
                 BcAutocompleteApiEntity(result)
             } else {
@@ -34,16 +35,22 @@ data class BcAutocompleteApiEntity(val result: List<BcAutocompleteApiItem>) : Bc
 
 data class BcAutocompleteApiItem(
     val id: String,
-    val name: String
+    val name: String,
+    val country: String,
+    val type: String
 ) {
     companion object {
         private const val KEY_ID = "id"
         private const val KEY_NAME = "name"
+        private const val KEY_COUNTRY_NAME = "country_name"
+        private const val KEY_TYPE = "type"
 
         fun fromJson(jsonObject: JSONObject): BcAutocompleteApiItem =
                 BcAutocompleteApiItem(
                     jsonObject.optString(KEY_ID),
-                    jsonObject.optString(KEY_NAME)
+                    jsonObject.optString(KEY_NAME),
+                    jsonObject.optString(KEY_COUNTRY_NAME),
+                    jsonObject.optString(KEY_TYPE)
                 )
     }
 }

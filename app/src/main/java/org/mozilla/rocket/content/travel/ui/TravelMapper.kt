@@ -60,20 +60,24 @@ object TravelMapper {
             CityUiModel(
                 item.description,
                 item.image,
-                item.title
+                item.title,
+                "city"
             )
 
     fun toBucketListCityUiModel(city: BucketListCity): BucketListCityUiModel =
             BucketListCityUiModel(
                 city.id,
                 city.imageUrl,
-                city.name
+                city.name,
+                city.type
             )
 
-    fun toCitySearchResultUiModel(id: String, name: CharSequence): CitySearchResultUiModel =
+    fun toCitySearchResultUiModel(id: String, name: CharSequence, country: String, type: String): CitySearchResultUiModel =
             CitySearchResultUiModel(
                 id,
-                name
+                name,
+                country,
+                type
             )
 
     fun toExploreIgUiModel(ig: Ig): IgUiModel =

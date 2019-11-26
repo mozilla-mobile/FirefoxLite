@@ -22,12 +22,14 @@ interface TravelDataSource {
 data class BucketListCity(
     val id: String,
     val imageUrl: String,
-    val name: String
+    val name: String,
+    val type: String
 ) {
     companion object {
         internal const val KEY_ID = "id"
         internal const val KEY_IMAGE_URL = "imageUrl"
         internal const val KEY_NAME = "name"
+        internal const val KEY_TYPE = "type"
 
         fun fromJson(jsonString: String): List<BucketListCity> {
             val items = JSONArray(jsonString)
@@ -37,7 +39,8 @@ data class BucketListCity(
                         BucketListCity(
                             item.optString(KEY_ID),
                             item.optString(KEY_IMAGE_URL),
-                            item.optString(KEY_NAME)
+                            item.optString(KEY_NAME),
+                            item.optString(KEY_TYPE)
                         )
                     }
         }

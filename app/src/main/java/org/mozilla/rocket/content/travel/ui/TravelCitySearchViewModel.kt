@@ -43,7 +43,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success) {
                     list.addAll(result.data.result.map {
-                        TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name))
+                        TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.type)
                     })
                 }
 
@@ -73,6 +73,6 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     }
 
     fun onCityClicked(it: CitySearchResultUiModel) {
-        openCity.value = BaseCityData(it.id, it.name.toString())
+        openCity.value = BaseCityData(it.id, it.name.toString(), it.type)
     }
 }

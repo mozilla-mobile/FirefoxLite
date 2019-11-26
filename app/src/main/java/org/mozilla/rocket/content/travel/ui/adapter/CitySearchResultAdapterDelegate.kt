@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.ui.adapter
 
+import android.text.TextUtils
 import android.view.View
 import kotlinx.android.synthetic.main.item_city_search_result.*
 import org.mozilla.rocket.adapter.AdapterDelegate
@@ -13,7 +14,11 @@ class CitySearchResultAdapterDelegate(private val searchViewModel: TravelCitySea
 class CitySearchResultViewHolder(override val containerView: View, private val searchViewModel: TravelCitySearchViewModel) : DelegateAdapter.ViewHolder(containerView) {
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         uiModel as CitySearchResultUiModel
-        title.text = uiModel.name
+        if (uiModel.country.isEmpty()) {
+            title.text = uiModel.name
+        } else {
+            title.text = TextUtils.concat(uiModel.name, ", ", uiModel.country)
+        }
         containerView.setOnClickListener {
             searchViewModel.onCityClicked(uiModel)
         }
@@ -22,5 +27,7 @@ class CitySearchResultViewHolder(override val containerView: View, private val s
 
 data class CitySearchResultUiModel(
     val id: String,
-    val name: CharSequence
+    val name: CharSequence,
+    val country: String,
+    val type: String
 ) : DelegateAdapter.UiModel()
