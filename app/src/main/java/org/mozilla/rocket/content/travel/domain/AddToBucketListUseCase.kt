@@ -6,8 +6,8 @@ import org.mozilla.rocket.content.travel.data.TravelRepository
 
 class AddToBucketListUseCase(private val travelRepository: TravelRepository) {
 
-    suspend operator fun invoke(id: String, name: String) {
-        travelRepository.addToBucketList(BucketListCity(id, getImageUrl(id), name))
+    suspend operator fun invoke(id: String, name: String, type: String) {
+        travelRepository.addToBucketList(BucketListCity(id, getImageUrl(id), name, type))
     }
 
     private suspend fun getImageUrl(id: String): String {

@@ -34,7 +34,7 @@ class TravelBucketListViewModel(
     }
 
     fun onBucketListCityClicked(cityItem: BucketListCityUiModel) {
-        openCity.value = BaseCityData(cityItem.id, cityItem.name)
+        openCity.value = BaseCityData(cityItem.id, cityItem.name, cityItem.type)
     }
 
     fun onExploreCityClicked() {

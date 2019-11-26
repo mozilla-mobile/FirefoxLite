@@ -50,7 +50,7 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel = getViewModel(travelCityViewModelCreator)
         setContentView(R.layout.activity_travel_city)
 
-        city = intent?.extras?.getParcelable(EXTRA_CITY) ?: BaseCityData("", "")
+        city = intent?.extras?.getParcelable(EXTRA_CITY) ?: BaseCityData("", "", "")
 
         initToolBar()
         initSnackBar()

@@ -39,5 +39,6 @@ class CityViewHolder(
 data class CityUiModel(
     val id: String,
     val imageUrl: String,
-    val name: String
+    val name: String,
+    val type: String
 ) : DelegateAdapter.UiModel()
