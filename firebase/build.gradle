@@ -58,7 +58,9 @@ dependencies {
     api "com.google.firebase:firebase-messaging:${Versions.fcm}"
     implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
     implementation "com.google.firebase:firebase-auth:${Versions.firebase_auth}"
-    implementation 'com.google.firebase:firebase-inappmessaging-display:19.0.2'
+    implementation("com.google.firebase:firebase-inappmessaging-display:19.0.2", {
+        exclude group: 'com.google.code.gson', module: 'gson'
+    })
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
 
 }
