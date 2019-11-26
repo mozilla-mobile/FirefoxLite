@@ -31,7 +31,7 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="sans-serif"
                 android:hint="@string/search_city_hint"
-                android:imeOptions="actionGo|flagNoExtractUi|flagNoFullscreen"
+                android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
                 android:inputType="textUri"
                 android:lines="1"
                 android:paddingStart="16dp"

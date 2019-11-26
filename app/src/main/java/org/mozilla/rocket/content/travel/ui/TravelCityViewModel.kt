@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.ui
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -85,7 +86,7 @@ class TravelCityViewModel(
                 data.add(TravelMapper.toExploreIgUiModel(igResult.data))
             }
 
-            val videoResult = getVideos(name)
+            val videoResult = getVideos(Uri.encode(name))
             if (videoResult is Result.Success) {
                 data.addAll(
                         videoResult.data.videos.map {
@@ -95,7 +96,7 @@ class TravelCityViewModel(
                 )
             }
 
-            val wikiResult = getWiki(name)
+            val wikiResult = getWiki(Uri.encode(name))
             if (wikiResult is Result.Success) {
                 data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data))
             }
