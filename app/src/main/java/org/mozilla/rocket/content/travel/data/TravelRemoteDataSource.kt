@@ -16,17 +16,17 @@ class TravelRemoteDataSource : TravelDataSource {
 
     override suspend fun getExploreList(): Result<ApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
-            call = {
-                sendHttpRequest(request = Request(url = getExploreApiEndpoint(), method = Request.Method.GET),
-                    onSuccess = {
-                        Result.Success(ApiEntity.fromJson(it.body.string()))
-                    },
-                    onError = {
-                        Result.Error(it)
-                    }
-                )
-            },
-            errorMessage = "Unable to get remote travel explore data"
+                call = {
+                    sendHttpRequest(request = Request(url = getExploreApiEndpoint(), method = Request.Method.GET),
+                            onSuccess = {
+                                Result.Success(ApiEntity.fromJson(it.body.string()))
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get remote travel explore data"
         )
     }
 
@@ -34,8 +34,20 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
-    override suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity> {
-        TODO("not implemented")
+    override suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+                call = {
+                    sendHttpRequest(request = Request(url = getSearchCityApiEndpoint(keyword), method = Request.Method.GET, headers = createHeaders()),
+                            onSuccess = {
+                                Result.Success(BcAutocompleteApiEntity.fromJson(it.body.string()))
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get search city result"
+        )
     }
 
     override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
@@ -80,17 +92,17 @@ class TravelRemoteDataSource : TravelDataSource {
 
     override suspend fun getCityVideos(name: String): Result<VideoApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
-            call = {
-                sendHttpRequest(request = Request(url = getVideosApiEndpoint(name), method = Request.Method.GET, headers = createVideoHeaders()),
-                    onSuccess = {
-                        Result.Success(VideoApiEntity.fromJson(it.body.string()))
-                    },
-                    onError = {
-                        Result.Error(it)
-                    }
-                )
-            },
-            errorMessage = "Unable to get video result"
+                call = {
+                    sendHttpRequest(request = Request(url = getVideosApiEndpoint(name), method = Request.Method.GET, headers = createVideoHeaders()),
+                            onSuccess = {
+                                Result.Success(VideoApiEntity.fromJson(it.body.string()))
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get video result"
         )
     }
 
@@ -135,12 +147,17 @@ class TravelRemoteDataSource : TravelDataSource {
 
     private fun getBaseApiEndpoint(): String {
         val bookingComEndpoint = FirebaseHelper.getFirebase().getRcString(STR_BOOKING_COM_ENDPOINT)
-
         return if (bookingComEndpoint.isNotEmpty()) {
             bookingComEndpoint
         } else {
             DEFAULT_BOOKING_COM_ENDPOINT
         }
+    }
+
+    private fun getSearchCityApiEndpoint(text: String): String {
+        val baseApiEndpoint = getBaseApiEndpoint()
+        val lang = Locale.getDefault().toLanguageTag()
+        return "$baseApiEndpoint/$BOOKING_COM_PATH_AUTOCOMPLETE?$BOOKING_COM_QUERY_PARAM_TEXT=$text&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang"
     }
 
     private fun getHotelsApiEndpoint(cityIds: String, offset: Int): String {
@@ -206,6 +223,8 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val VIDEO_QUERY_PARAM = "%s+Travel"
         private const val DEFAULT_VIDEO_ENDPOINT_FORMAT = "https://zerda-dcf76.appspot.com/api/v1/video?query=%s&locale=%s&limit=5"
 
+        private const val BOOKING_COM_PATH_AUTOCOMPLETE = "autocomplete"
+        private const val BOOKING_COM_QUERY_PARAM_TEXT = "text"
         private const val BOOKING_COM_PATH_HOTELS = "hotels"
         private const val BOOKING_COM_QUERY_PARAM_CITY_IDS = "city_ids"
         private const val BOOKING_COM_QUERY_PARAM_LANGUAGE = "language"
