@@ -11,6 +11,7 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
+import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;
 
@@ -26,19 +27,19 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
         String messageId = parseMessageId(intent);
         String link = parseLink(intent);
         TelemetryWrapper.getNotification(link, messageId);
-        if (!TelemetryWrapper.isTelemetryEnabled(this)) {
+        if (!TelemetryWrapper.isTelemetryEnabled(FocusApplication.getGlobalContext())) {
             return;
         }
 
         PendingIntent pendingIntent = getClickPendingIntent(
-            getApplicationContext(),
-            messageId,
-            parseOpenUrl(intent),
-            parseCommand(intent),
-            parseDeepLink(intent),
-            parseLink(intent)
+                FocusApplication.getGlobalContext(),
+                messageId,
+                parseOpenUrl(intent),
+                parseCommand(intent),
+                parseDeepLink(intent),
+                parseLink(intent)
         );
-        final NotificationCompat.Builder builder = NotificationUtil.importantBuilder(this)
+        final NotificationCompat.Builder builder = NotificationUtil.importantBuilder(FocusApplication.getGlobalContext())
                 .setContentIntent(pendingIntent);
 
         if (title != null) {
@@ -49,9 +50,9 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
             builder.setContentText(body);
         }
 
-        addDeleteTelemetry(getApplicationContext(), builder, messageId, link);
+        addDeleteTelemetry(FocusApplication.getGlobalContext(), builder, messageId, link);
 
-        NotificationUtil.sendNotification(this, NotificationId.FIREBASE_AD_HOC, builder);
+        NotificationUtil.sendNotification(FocusApplication.getGlobalContext(), NotificationId.FIREBASE_AD_HOC, builder);
         TelemetryWrapper.showNotification(link, messageId);
     }
 
@@ -93,7 +94,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
                 deepLink,
                 link
         );
-        return PendingIntent.getBroadcast(this, REQUEST_CODE_CLICK_NOTIFICATION, clickIntent, PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getBroadcast(FocusApplication.getGlobalContext(), REQUEST_CODE_CLICK_NOTIFICATION, clickIntent, PendingIntent.FLAG_ONE_SHOT);
     }
 
     private void addDeleteTelemetry(Context appContext, NotificationCompat.Builder builder, String messageId, String link) {

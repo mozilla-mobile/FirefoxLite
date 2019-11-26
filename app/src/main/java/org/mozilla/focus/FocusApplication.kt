@@ -6,6 +6,7 @@
 package org.mozilla.focus
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
 import android.preference.PreferenceManager
@@ -77,6 +78,8 @@ open class FocusApplication : LocaleAwareApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
+        context = this
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
@@ -158,5 +161,13 @@ open class FocusApplication : LocaleAwareApplication() {
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
         StrictMode.setVmPolicy(vmPolicyBuilder.build())
+    }
+
+    companion object {
+
+        private var context: Context? = null
+
+        @JvmStatic
+        fun getGlobalContext() = context
     }
 }
