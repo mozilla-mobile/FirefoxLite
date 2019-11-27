@@ -214,18 +214,23 @@ public class IntentUtils {
     }
 
     public static void goToPlayStore(Context context, String appPackageName) {
+        goToPlayStore(context, appPackageName, () -> {
+            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        });
+    }
+
+    public static void goToPlayStore(Context context, String appPackageName, OpenGooglePlayFallback fallback) {
         try {
             final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_INTENT_URI_PACKAGE_PREFIX + appPackageName));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } catch (android.content.ActivityNotFoundException ex) {
             //No google play install
-            final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            fallback.OnOpenFailed();
         }
     }
-
 
     public static Intent genDefaultBrowserSettingIntentForBroadcastReceiver(Context context) {
 
@@ -313,5 +318,9 @@ public class IntentUtils {
     public static PendingIntent getLauncherHomePendingIntent(Context context) {
         return PendingIntent.getActivity(context, 0, getLauncherHomeIntent(),
                 PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public interface OpenGooglePlayFallback {
+        void OnOpenFailed();
     }
 }

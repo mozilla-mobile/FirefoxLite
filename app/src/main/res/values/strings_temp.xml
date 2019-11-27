@@ -22,4 +22,7 @@
     <string name="travel_hotel_rating_from" translatable="false" tools:ignore="MissingTranslation">From</string>
     <string name="travel_hotel_free_cancellation" translatable="false" tools:ignore="MissingTranslation">Free cancellation</string>
     <string name="travel_hotel_pay_at_hotel" translatable="false" tools:ignore="MissingTranslation">Pay at hotel</string>
+
+    <string name="msrp_force_update_dialog_positive_btn" translatable="false" tools:ignore="MissingTranslation">UPDATE NOW!</string>
+    <string name="msrp_force_update_dialog_negative_btn" translatable="false" tools:ignore="MissingTranslation">LATER</string>
 </resources>

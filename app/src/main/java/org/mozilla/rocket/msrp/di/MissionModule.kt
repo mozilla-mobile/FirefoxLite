@@ -3,6 +3,7 @@ package org.mozilla.rocket.msrp.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.msrp.data.MissionLocalDataSource
 import org.mozilla.rocket.msrp.data.MissionRemoteDataSource
 import org.mozilla.rocket.msrp.data.MissionRepository
@@ -10,6 +11,7 @@ import org.mozilla.rocket.msrp.data.UserRepository
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
 import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
+import org.mozilla.rocket.msrp.domain.GetApkDownloadLinkUseCase
 import org.mozilla.rocket.msrp.domain.GetChallengeMissionsUseCase
 import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetCouponUseCase
@@ -217,7 +219,8 @@ object MissionModule {
         bindFxAccountUseCase: BindFxAccountUseCase,
         isNeedJoinMissionOnboardingUseCase: IsNeedJoinMissionOnboardingUseCase,
         requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase,
-        getIsFxAccountUseCase: GetIsFxAccountUseCase
+        getIsFxAccountUseCase: GetIsFxAccountUseCase,
+        getApkDownloadLinkUseCase: GetApkDownloadLinkUseCase
     ): MissionDetailViewModel = MissionDetailViewModel(
         readMissionUseCase,
         joinMissionUseCase,
@@ -229,7 +232,8 @@ object MissionModule {
         bindFxAccountUseCase,
         isNeedJoinMissionOnboardingUseCase,
         requestContentHubClickOnboardingUseCase,
-        getIsFxAccountUseCase
+        getIsFxAccountUseCase,
+        getApkDownloadLinkUseCase
     )
 
     @JvmStatic
@@ -239,4 +243,9 @@ object MissionModule {
     ): MissionCouponViewModel = MissionCouponViewModel(
         getCouponUseCase
     )
+
+    @JvmStatic
+    @Provides
+    fun provideGetApkDownloadLinkUseCase(): GetApkDownloadLinkUseCase =
+            GetApkDownloadLinkUseCase(FirebaseHelper.getFirebase())
 }

@@ -39,6 +39,8 @@ import kotlinx.android.synthetic.main.fragment_mission_detail.sign_in_text
 import kotlinx.android.synthetic.main.fragment_mission_detail.title
 import kotlinx.android.synthetic.main.fragment_mission_detail.view.day_text
 import org.mozilla.focus.R
+import org.mozilla.focus.utils.DialogUtils
+import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
@@ -300,7 +302,16 @@ class MissionDetailFragment : Fragment(), NavigationResult {
             openFaqPage()
         })
         missionDetailViewModel.openTermsOfUsePage.observe(this, Observer {
-            openTermsOfUsePage()
+            openUrlInCustomTab(TERMS_OF_USE_PAGE_URL)
+        })
+        missionDetailViewModel.showForceUpdateDialog.observe(this, Observer { info ->
+            showForceUpdateDialog(info.title, info.description, info.imageUrl)
+        })
+        missionDetailViewModel.openAppOnGooglePlay.observe(this, Observer {
+            openAppOnGooglePlay()
+        })
+        missionDetailViewModel.openApkDownloadLink.observe(this, Observer { apkDownloadUrl ->
+            openUrlInCustomTab(apkDownloadUrl)
         })
     }
 
@@ -323,9 +334,24 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         startActivity(intent)
     }
 
-    private fun openTermsOfUsePage() {
-        val intent = ContentTabActivity.getStartIntent(requireContext(), TERMS_OF_USE_PAGE_URL, enableTurboMode = false)
+    private fun openUrlInCustomTab(url: String) {
+        val intent = ContentTabActivity.getStartIntent(requireContext(), url, enableTurboMode = false)
         startActivity(intent)
+    }
+
+    private fun showForceUpdateDialog(title: String?, description: String?, imageUrl: String?) {
+        DialogUtils.createMissionForceUpdateDialog(requireContext(), title, description, imageUrl)
+                .onPositive {
+                    missionDetailViewModel.onUpdateAppButtonClicked()
+                }
+                .show()
+    }
+
+    private fun openAppOnGooglePlay() {
+        IntentUtils.goToPlayStore(requireContext(), requireContext().packageName) {
+            // no google play
+            missionDetailViewModel.onOpenAppOnGooglePlayFailed()
+        }
     }
 
     data class DateUiModel(

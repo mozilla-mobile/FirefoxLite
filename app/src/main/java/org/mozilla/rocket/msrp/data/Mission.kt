@@ -17,6 +17,9 @@ data class Mission(
     val events: List<String>,
     val important: Boolean,
     val minVersion: Int,
+    val minVerDialogTitle: String,
+    val minVerDialogMessage: String,
+    val minVerDialogImage: String,
 
     val joinEndDate: Long,
     val expiredDate: Long,
@@ -43,6 +46,9 @@ data class Mission(
         source.createStringArrayList()!!,
         1 == source.readInt(),
         source.readInt(),
+        source.readString()!!,
+        source.readString()!!,
+        source.readString()!!,
         source.readLong(),
         source.readLong(),
         source.readLong(),
@@ -67,6 +73,9 @@ data class Mission(
         writeStringList(events)
         writeInt((if (important) 1 else 0))
         writeInt(minVersion)
+        writeString(minVerDialogTitle)
+        writeString(minVerDialogMessage)
+        writeString(minVerDialogImage)
         writeLong(joinEndDate)
         writeLong(expiredDate)
         writeLong(redeemEndDate)

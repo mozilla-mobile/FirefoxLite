@@ -16,6 +16,9 @@ object TestData {
         redeem = "/v1/redeem/asdsa-esadsa=das-dased-sadas",
 
         minVersion = 1234,
+        minVerDialogTitle = "test update title",
+        minVerDialogMessage = "test update message",
+        minVerDialogImage = "",
         missionType = "mission_daily",
         imageUrl = "",
         expiredDate = 12345,
@@ -40,6 +43,9 @@ object TestData {
         redeem = "/v1/redeem/asdsa-esadsa=das-dased-sadas",
 
         minVersion = 4321,
+        minVerDialogTitle = "test update title",
+        minVerDialogMessage = "test update message",
+        minVerDialogImage = "",
         missionType = "mission_daily",
         imageUrl = "",
         expiredDate = 12345,
