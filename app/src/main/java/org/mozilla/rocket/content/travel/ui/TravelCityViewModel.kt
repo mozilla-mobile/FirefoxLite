@@ -53,7 +53,8 @@ class TravelCityViewModel(
     val openLinkUrl = SingleLiveEvent<String>()
 
     private var hotelsCount = 0
-    private lateinit var cityId: String
+    private lateinit var id: String
+    private lateinit var type: String
 
     init {
         if (shouldShowOnboarding()) {
@@ -68,10 +69,11 @@ class TravelCityViewModel(
         }
     }
 
-    fun getLatestItems(name: String, id: String) {
+    fun getLatestItems(name: String, id: String, type: String) {
         data.clear()
         hotelsCount = 0
-        cityId = id
+        this.id = id
+        this.type = type
         launchDataLoad {
             // TODO: add price items
 
@@ -101,7 +103,7 @@ class TravelCityViewModel(
             // add hotel
             data.add(SectionHeaderUiModel(SectionType.TopHotels))
 
-            val hotelResult = getHotels(id, hotelsCount)
+            val hotelResult = getHotels(id, type, hotelsCount)
             if (hotelResult is Result.Success) {
                 data.addAll(
                         hotelResult.data.result.map {
@@ -122,7 +124,7 @@ class TravelCityViewModel(
             isHotelLoading = true
             backgroundHotelLoad {
                 // add more hotels
-                val hotelResult = getHotels(cityId, hotelsCount)
+                val hotelResult = getHotels(id, type, hotelsCount)
                 if (hotelResult is Result.Success) {
                     data.addAll(
                             hotelResult.data.result.map {

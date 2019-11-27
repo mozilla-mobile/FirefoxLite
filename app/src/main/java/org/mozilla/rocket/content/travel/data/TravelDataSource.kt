@@ -13,7 +13,7 @@ interface TravelDataSource {
     suspend fun getCityWikiImage(name: String): Result<String>
     suspend fun getCityWikiExtract(name: String): Result<String>
     suspend fun getCityVideos(name: String): Result<VideoApiEntity>
-    suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity>
+    suspend fun getCityHotels(id: String, type: String, offset: Int): Result<BcHotelApiEntity>
     suspend fun isInBucketList(id: String): Boolean
     suspend fun addToBucketList(city: BucketListCity)
     suspend fun removeFromBucketList(id: String)
