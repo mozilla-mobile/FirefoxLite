@@ -199,7 +199,10 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
             override fun onItemClick(type: Int, position: Int) {
                 when (type) {
                     BottomBarItemAdapter.TYPE_BACK -> chromeViewModel.goBack.call()
-                    BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
+                    BottomBarItemAdapter.TYPE_REFRESH -> {
+                        chromeViewModel.refreshOrStop.call()
+                        telemetryViewModel.onReloadButtonClicked()
+                    }
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
                 }
@@ -246,10 +249,6 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         chromeViewModel.goBack.observe(this, Observer {
             onBackPressed()
             telemetryViewModel.onBackButtonClicked()
-        })
-
-        chromeViewModel.refreshOrStop.observe(this, Observer {
-            telemetryViewModel.onReloadButtonClicked()
         })
 
         chromeViewModel.share.observe(this, Observer {
