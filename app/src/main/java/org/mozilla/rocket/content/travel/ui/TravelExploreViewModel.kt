@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.GetExploreListUseCase
@@ -50,6 +51,7 @@ class TravelExploreViewModel(private val getExploreList: GetExploreListUseCase) 
 
     fun onSearchInputClicked() {
         goSearch.call()
+        TelemetryWrapper.showContentHomeSearchBar(TelemetryWrapper.Extra_Value.TRAVEL)
     }
 
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
