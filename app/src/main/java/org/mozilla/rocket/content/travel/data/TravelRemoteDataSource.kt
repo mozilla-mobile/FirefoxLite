@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.data
 
+import android.net.Uri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.MutableHeaders
@@ -106,12 +107,13 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
-    override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
+    override suspend fun getCityHotels(id: String, type: String, offset: Int): Result<BcHotelApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
                 call = {
                     require(offset % BOOKING_COM_HOTELS_OFFSET_BASE == 0) { "Offset is not multiple of 100, which means end is reached" }
+                    require(type == BcAutocompleteApiEntity.TYPE_CITY || type == BcAutocompleteApiEntity.TYPE_REGION) { "Type not supported" }
 
-                    sendHttpRequest(request = Request(url = getHotelsApiEndpoint(cityId, offset), method = Request.Method.GET, headers = createHeaders()),
+                    sendHttpRequest(request = Request(url = getHotelsApiEndpoint(id, type, offset), method = Request.Method.GET, headers = createHeaders()),
                             onSuccess = {
                                 Result.Success(BcHotelApiEntity.fromJson(it.body.string()))
                             },
@@ -154,16 +156,18 @@ class TravelRemoteDataSource : TravelDataSource {
         }
     }
 
-    private fun getSearchCityApiEndpoint(text: String): String {
+    private fun getSearchCityApiEndpoint(keyword: String): String {
         val baseApiEndpoint = getBaseApiEndpoint()
         val lang = Locale.getDefault().toLanguageTag()
+        val text = Uri.encode(keyword)
         return "$baseApiEndpoint/$BOOKING_COM_PATH_AUTOCOMPLETE?$BOOKING_COM_QUERY_PARAM_TEXT=$text&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang"
     }
 
-    private fun getHotelsApiEndpoint(cityIds: String, offset: Int): String {
+    private fun getHotelsApiEndpoint(id: String, type: String, offset: Int): String {
         val baseApiEndpoint = getBaseApiEndpoint()
         val lang = Locale.getDefault().toLanguageTag()
-        return "$baseApiEndpoint/$BOOKING_COM_PATH_HOTELS?$BOOKING_COM_QUERY_PARAM_CITY_IDS=$cityIds&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang&$BOOKING_COM_QUERY_PARAM_EXTRAS=$BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL&$BOOKING_COM_QUERY_PARAM_ROWS=$BOOKING_COM_QUERY_PARAM_ROWS_HOTEL&$BOOKING_COM_QUERY_PARAM_OFFSET=$offset"
+        val queryParamId = if (type == BcAutocompleteApiEntity.TYPE_CITY) { BOOKING_COM_QUERY_PARAM_CITY_IDS } else { BOOKING_COM_QUERY_PARAM_REGION_IDS }
+        return "$baseApiEndpoint/$BOOKING_COM_PATH_HOTELS?$queryParamId=$id&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang&$BOOKING_COM_QUERY_PARAM_EXTRAS=$BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL&$BOOKING_COM_QUERY_PARAM_ROWS=$BOOKING_COM_QUERY_PARAM_ROWS_HOTEL&$BOOKING_COM_QUERY_PARAM_OFFSET=$offset"
     }
 
     private fun createHeaders() = MutableHeaders().apply {
@@ -227,12 +231,13 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val BOOKING_COM_QUERY_PARAM_TEXT = "text"
         private const val BOOKING_COM_PATH_HOTELS = "hotels"
         private const val BOOKING_COM_QUERY_PARAM_CITY_IDS = "city_ids"
+        private const val BOOKING_COM_QUERY_PARAM_REGION_IDS = "region_ids"
         private const val BOOKING_COM_QUERY_PARAM_LANGUAGE = "language"
         private const val BOOKING_COM_QUERY_PARAM_EXTRAS = "extras"
         private const val BOOKING_COM_QUERY_PARAM_ROWS = "rows"
         private const val BOOKING_COM_QUERY_PARAM_ROWS_HOTEL = "100"
         private const val BOOKING_COM_QUERY_PARAM_OFFSET = "offset"
-        private const val BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL = "room_info, payment_details, hotel_info, hotel_photos, hotel_facilities, hotel_description"
+        private const val BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL = "room_info,%20payment_details,%20hotel_info,%20hotel_photos,%20hotel_facilities,%20hotel_description"
         private const val BOOKING_COM_HOTELS_OFFSET_BASE = 100
 
         private const val WIKI_JSON_KEY_QUERY = "query"

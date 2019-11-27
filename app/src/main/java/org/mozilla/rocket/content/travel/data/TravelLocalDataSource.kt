@@ -70,7 +70,7 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         TODO("not implemented")
     }
 
-    override suspend fun getCityHotels(cityId: String, offset: Int): Result<BcHotelApiEntity> {
+    override suspend fun getCityHotels(id: String, type: String, offset: Int): Result<BcHotelApiEntity> {
         TODO("not implemented")
     }
 
