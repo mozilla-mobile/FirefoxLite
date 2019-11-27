@@ -243,6 +243,7 @@ object TelemetryWrapper {
         internal const val ITEM = "item"
         internal const val LOGIN = "login"
         internal const val CONTEXTMENU = "contextmenu"
+        internal const val CONTENT_HOME = "content_home"
     }
 
     internal object Extra {
@@ -2585,6 +2586,22 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.RELOAD, Object.CONTENT_HOME)
                 .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.CATEGORY, category)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Content Home Search Bar",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.SEARCH_BAR,
+            value = Value.CONTENT_HOME,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
+            ])
+    @JvmStatic
+    fun showContentHomeSearchBar(vertical: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.CONTENT_HOME)
+                .extra(Extra.VERTICAL, vertical)
                 .queue()
     }
 
