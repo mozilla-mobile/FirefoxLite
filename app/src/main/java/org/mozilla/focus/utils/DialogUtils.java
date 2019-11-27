@@ -624,6 +624,42 @@ public class DialogUtils {
         }
     }
 
+    public static PromotionDialog createMissionForceUpdateDialog(@NonNull final Context context, String title, String description, String imageUrl) {
+        CustomViewDialogData data = new CustomViewDialogData();
+
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, context.getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134, context.getResources().getDisplayMetrics());
+        data.setImgWidth(width);
+        data.setImgHeight(height);
+        data.setTitle(title);
+        data.setDescription(description);
+        data.setPositiveText(context.getString(R.string.msrp_force_update_dialog_positive_btn));
+        data.setNegativeText(context.getString(R.string.msrp_force_update_dialog_negative_btn));
+        data.setShowCloseButton(true);
+
+        PromotionDialog dialog = new PromotionDialog(context, data)
+                .setCancellable(true);
+        if (imageUrl != null) {
+            ImageView imageView = dialog.getView().findViewById(R.id.image);
+            imageView.setVisibility(View.VISIBLE);
+            Target target = Glide.with(context)
+                    .asBitmap()
+                    .load(imageUrl)
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                            imageView.setImageBitmap(resource);
+                        }
+                    });
+            dialog.addOnDismissListener(() -> {
+                Glide.with(context).clear(target);
+                return Unit.INSTANCE;
+            });
+        }
+
+        return dialog;
+    }
+
     enum FocusViewType {
         CIRCLE,
         ROUND_REC,

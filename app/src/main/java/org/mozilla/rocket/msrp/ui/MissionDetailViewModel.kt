@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.domain.BindFxAccountUseCase
+import org.mozilla.rocket.msrp.domain.GetApkDownloadLinkUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.GetUserIdUseCase
 import org.mozilla.rocket.msrp.domain.IsFxAccountUseCase
@@ -35,7 +37,8 @@ class MissionDetailViewModel(
     private val bindFxAccountUseCase: BindFxAccountUseCase,
     private val isNeedJoinMissionOnboardingUseCase: IsNeedJoinMissionOnboardingUseCase,
     private val requestContentHubClickOnboardingUseCase: RequestContentHubClickOnboardingUseCase,
-    getIsFxAccountUseCase: GetIsFxAccountUseCase
+    getIsFxAccountUseCase: GetIsFxAccountUseCase,
+    private val getApkDownloadLinkUseCase: GetApkDownloadLinkUseCase
 ) : ViewModel() {
 
     val missionStatus = MutableLiveData<Int>()
@@ -53,6 +56,9 @@ class MissionDetailViewModel(
     val showToast = SingleLiveEvent<ToastMessage>()
     val openFaqPage = SingleLiveEvent<Unit>()
     val openTermsOfUsePage = SingleLiveEvent<Unit>()
+    val showForceUpdateDialog = SingleLiveEvent<ForceUpdateInfo>()
+    val openAppOnGooglePlay = SingleLiveEvent<Unit>()
+    val openApkDownloadLink = SingleLiveEvent<String>()
 
     private lateinit var mission: Mission
 
@@ -74,6 +80,12 @@ class MissionDetailViewModel(
         isLoading.value = true
         TelemetryWrapper.clickChallengePageJoin()
 
+        if (!isVersionValid()) {
+            isLoading.value = false
+            showForceUpdateDialog()
+            return@launch
+        }
+
         val joinResult = joinMissionUseCase(mission)
         if (joinResult.isSuccess) {
             startMissionReminder.value = mission
@@ -93,6 +105,16 @@ class MissionDetailViewModel(
             }
         }
         isLoading.value = false
+    }
+
+    private fun isVersionValid() = BuildConfig.VERSION_CODE >= mission.minVersion
+
+    private fun showForceUpdateDialog() {
+        showForceUpdateDialog.value = ForceUpdateInfo(
+            title = mission.minVerDialogTitle.takeIf { it.isNotEmpty() },
+            description = mission.minVerDialogMessage.takeIf { it.isNotEmpty() },
+            imageUrl = mission.minVerDialogImage.takeIf { it.isNotEmpty() }
+        )
     }
 
     fun onQuitMissionButtonClicked() = viewModelScope.launch {
@@ -164,6 +186,14 @@ class MissionDetailViewModel(
         requestFxLogin.value = LoginAction.PureLoginAction(uid)
     }
 
+    fun onUpdateAppButtonClicked() {
+        openAppOnGooglePlay.call()
+    }
+
+    fun onOpenAppOnGooglePlayFailed() {
+        openApkDownloadLink.value = getApkDownloadLinkUseCase()
+    }
+
     sealed class LoginAction(val actionId: Int, val uid: String) {
         class PureLoginAction(uid: String) : LoginAction(PURE_LOGIN, uid)
         class RedeemLoginAction(uid: String) : LoginAction(REDEEM_LOGIN, uid)
@@ -173,4 +203,10 @@ class MissionDetailViewModel(
             const val REDEEM_LOGIN = 1
         }
     }
+
+    data class ForceUpdateInfo(
+        val title: String?,
+        val description: String?,
+        val imageUrl: String?
+    )
 }
