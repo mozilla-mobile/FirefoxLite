@@ -6,6 +6,7 @@ import android.os.Parcelable
 data class Mission(
     val mid: String,
     val missionType: String,
+    val missionName: String,
 
     val title: String,
     val description: String,
@@ -42,6 +43,7 @@ data class Mission(
         source.readString()!!,
         source.readString()!!,
         source.readString()!!,
+        source.readString()!!,
         source.readString(),
         source.createStringArrayList()!!,
         1 == source.readInt(),
@@ -66,6 +68,7 @@ data class Mission(
         writeString(mid)
         writeString(missionType)
         writeString(title)
+        writeString(missionName)
         writeString(description)
         writeString(imageUrl)
         writeString(endpoint)

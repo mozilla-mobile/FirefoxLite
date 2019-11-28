@@ -186,8 +186,25 @@ class MissionDetailViewModel(
         requestFxLogin.value = LoginAction.PureLoginAction(uid)
     }
 
+    fun onForceUpdateDialogShown() {
+        TelemetryWrapper.showUpdateMessage(mission.missionName)
+    }
+
     fun onUpdateAppButtonClicked() {
+        TelemetryWrapper.clickUpdateMessage(mission.missionName, TelemetryWrapper.Extra_Value.UPDATE)
         openAppOnGooglePlay.call()
+    }
+
+    fun onForceUpdateLaterButtonClicked() {
+        TelemetryWrapper.clickUpdateMessage(mission.missionName, TelemetryWrapper.Extra_Value.LATER)
+    }
+
+    fun onForceUpdateCloseButtonClicked() {
+        TelemetryWrapper.clickUpdateMessage(mission.missionName, TelemetryWrapper.Extra_Value.CLOSE)
+    }
+
+    fun onForceUpdateDialogCanceled() {
+        TelemetryWrapper.clickUpdateMessage(mission.missionName, TelemetryWrapper.Extra_Value.DISMISS)
     }
 
     fun onOpenAppOnGooglePlayFailed() {

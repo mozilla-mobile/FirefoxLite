@@ -341,9 +341,11 @@ class MissionDetailFragment : Fragment(), NavigationResult {
 
     private fun showForceUpdateDialog(title: String?, description: String?, imageUrl: String?) {
         DialogUtils.createMissionForceUpdateDialog(requireContext(), title, description, imageUrl)
-                .onPositive {
-                    missionDetailViewModel.onUpdateAppButtonClicked()
-                }
+                .onPositive { missionDetailViewModel.onUpdateAppButtonClicked() }
+                .onNegative { missionDetailViewModel.onForceUpdateLaterButtonClicked() }
+                .addOnShowListener { missionDetailViewModel.onForceUpdateDialogShown() }
+                .onClose { missionDetailViewModel.onForceUpdateCloseButtonClicked() }
+                .onCancel { missionDetailViewModel.onForceUpdateDialogCanceled() }
                 .show()
     }
 
