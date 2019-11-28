@@ -34,7 +34,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     val changeClearBtnVisibility = SingleLiveEvent<Int>()
     val openGoogleSearch = SingleLiveEvent<String>()
 
-    fun search(keyword: String) {
+    fun search(context: Context, keyword: String) {
         if (searchCityJob?.isCompleted == false) {
             searchCityJob?.cancel()
         }
@@ -49,9 +49,9 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
                 btnVisibility = View.VISIBLE
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success && !result.data.result.isEmpty()) {
-                    list.add(CitySearchResultCategoryUiModel(R.drawable.ic_google, R.string.travel_city_search_google))
+                    list.add(CitySearchResultCategoryUiModel(R.drawable.ic_google, context.resources.getString(R.string.travel_search_engine_1, context.resources.getString(R.string.search_engine_name_google))))
                     list.add(CitySearchGoogleUiModel(keyword))
-                    list.add(CitySearchResultCategoryUiModel(R.drawable.ic_search_black, R.string.travel_city_search_firefox_light))
+                    list.add(CitySearchResultCategoryUiModel(R.drawable.ic_search_black, context.resources.getString(R.string.travel_search_engine_1)))
                     list.addAll(result.data.result.map {
                         TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.type)
                     })

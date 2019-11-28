@@ -39,7 +39,7 @@ class TravelCitySearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search_city)
         search_keyword_edit.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchViewModel.search(s.toString())
+                searchViewModel.search(this@TravelCitySearchActivity, s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

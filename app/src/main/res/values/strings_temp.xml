@@ -22,7 +22,4 @@
     <string name="travel_hotel_rating_from" translatable="false" tools:ignore="MissingTranslation">From</string>
     <string name="travel_hotel_free_cancellation" translatable="false" tools:ignore="MissingTranslation">Free cancellation</string>
     <string name="travel_hotel_pay_at_hotel" translatable="false" tools:ignore="MissingTranslation">Pay at hotel</string>
-
-    <string name="travel_city_search_google" translatable="false" tools:ignore="MissingTranslation">Search with google</string>
-    <string name="travel_city_search_firefox_light" translatable="false" tools:ignore="MissingTranslation">Search with Firefox Lite Travel</string>
 </resources>

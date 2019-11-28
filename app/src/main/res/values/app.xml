@@ -8,4 +8,6 @@
 
     <!-- This String is used in the User Agent -->
     <string name="useragent_appname" translatable="false">Rocket</string>
+    
+    <string name="search_engine_name_google" translatable="false">Google</string>
 </resources>
