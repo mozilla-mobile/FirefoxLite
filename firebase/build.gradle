@@ -61,6 +61,7 @@ dependencies {
     implementation("com.google.firebase:firebase-inappmessaging-display:19.0.2", {
         exclude group: 'com.google.code.gson', module: 'gson'
         exclude group: 'com.google.guava', module: 'guava'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
 
 }
