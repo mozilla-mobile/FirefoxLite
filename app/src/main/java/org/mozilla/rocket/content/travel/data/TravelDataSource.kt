@@ -23,13 +23,17 @@ data class BucketListCity(
     val id: String,
     val imageUrl: String,
     val name: String,
-    val type: String
+    val type: String,
+    val nameInEnglish: String,
+    val countryCode: String
 ) {
     companion object {
         internal const val KEY_ID = "id"
         internal const val KEY_IMAGE_URL = "imageUrl"
         internal const val KEY_NAME = "name"
         internal const val KEY_TYPE = "type"
+        internal const val KEY_NAME_IN_ENGLISH = "nameInEnglish"
+        internal const val KEY_COUNTRY_CODE = "countryCode"
 
         fun fromJson(jsonString: String): List<BucketListCity> {
             val items = JSONArray(jsonString)
@@ -40,7 +44,9 @@ data class BucketListCity(
                             item.optString(KEY_ID),
                             item.optString(KEY_IMAGE_URL),
                             item.optString(KEY_NAME),
-                            item.optString(KEY_TYPE)
+                            item.optString(KEY_TYPE),
+                            item.optString(KEY_NAME_IN_ENGLISH),
+                            item.optString(KEY_COUNTRY_CODE)
                         )
                     }
         }

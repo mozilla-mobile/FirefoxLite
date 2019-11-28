@@ -11,9 +11,11 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_COUNTRY_CODE
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_ID
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_IMAGE_URL
 import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_NAME
+import org.mozilla.rocket.content.travel.data.BucketListCity.Companion.KEY_NAME_IN_ENGLISH
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
 import org.mozilla.strictmodeviolator.StrictModeViolation
@@ -150,5 +152,7 @@ private fun BucketListCity.toJson(): JSONObject {
         it.put(KEY_ID, this.id)
         it.put(KEY_IMAGE_URL, this.imageUrl)
         it.put(KEY_NAME, this.name)
+        it.put(KEY_NAME_IN_ENGLISH, this.nameInEnglish)
+        it.put(KEY_COUNTRY_CODE, this.countryCode)
     }
 }

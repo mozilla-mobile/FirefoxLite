@@ -77,13 +77,13 @@ class MissionViewModel(
 
     fun onChallengeItemClicked(position: Int) {
         val mission = challengeMissions[position]
-        TelemetryWrapper.clickItemContentHome(TelemetryWrapper.Extra_Value.MISSION, mission.title)
+        TelemetryWrapper.clickContentHomeItem(TelemetryWrapper.Extra_Value.REWARDS, TelemetryWrapper.Extra_Value.MISSION, mission.uniqueId, mission.title)
         openMissionDetailPage.value = mission
     }
 
     fun onRedeemItemClicked(position: Int) {
         val mission = redeemMissions[position]
-        TelemetryWrapper.clickItemContentHome(TelemetryWrapper.Extra_Value.GIFT, mission.title)
+        TelemetryWrapper.clickContentHomeItem(TelemetryWrapper.Extra_Value.REWARDS, TelemetryWrapper.Extra_Value.GIFT, mission.uniqueId, mission.title)
         when (mission.status) {
             Mission.STATUS_REDEEMABLE -> {
                 val expired = System.currentTimeMillis() > mission.redeemEndDate

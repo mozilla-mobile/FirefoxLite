@@ -42,5 +42,9 @@ data class BucketListCityUiModel(
     val id: String,
     val imageUrl: String,
     val name: String,
-    val type: String
-) : DelegateAdapter.UiModel()
+    val type: String,
+    val nameInEnglish: String,
+    val countryCode: String
+) : DelegateAdapter.UiModel() {
+    fun getTelemetryItemName() = String.format("%s-%s", countryCode, nameInEnglish)
+}
