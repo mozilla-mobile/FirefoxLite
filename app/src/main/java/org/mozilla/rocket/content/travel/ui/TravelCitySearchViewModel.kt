@@ -73,6 +73,6 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     }
 
     fun onCityClicked(it: CitySearchResultUiModel) {
-        openCity.value = BaseCityData(it.id, it.name.toString(), it.type)
+        openCity.value = BaseCityData(it.id, it.name.toString(), it.type, "", "")
     }
 }

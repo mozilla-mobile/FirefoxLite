@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.GetBucketListUseCase
@@ -34,7 +35,8 @@ class TravelBucketListViewModel(
     }
 
     fun onBucketListCityClicked(cityItem: BucketListCityUiModel) {
-        openCity.value = BaseCityData(cityItem.id, cityItem.name, cityItem.type)
+        openCity.value = BaseCityData(cityItem.id, cityItem.name, cityItem.type, cityItem.nameInEnglish, cityItem.countryCode)
+        TelemetryWrapper.clickContentHomeItem(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.BUCKET_LIST, cityItem.id, cityItem.getTelemetryItemName())
     }
 
     fun onExploreCityClicked() {

@@ -145,7 +145,7 @@ class TravelCityViewModel(
             if (isSelected) {
                 removeFromBucketList(city.id)
             } else {
-                addToBucketList(city.id, city.name, city.type)
+                addToBucketList(city.id, city.name, city.type, city.nameInEnglish, city.countryCode)
                 showSnackBar.call()
             }
 

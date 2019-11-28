@@ -46,7 +46,8 @@ class TravelExploreViewModel(private val getExploreList: GetExploreListUseCase) 
     val goSearch = SingleLiveEvent<Unit>()
 
     fun onCityItemClicked(cityItem: CityUiModel) {
-        openCity.value = BaseCityData(cityItem.id, cityItem.name, cityItem.type)
+        openCity.value = BaseCityData(cityItem.id, cityItem.name, cityItem.type, cityItem.nameInEnglish, cityItem.countryCode)
+        TelemetryWrapper.clickContentHomeItem(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.EXPLORE, cityItem.id, cityItem.getTelemetryItemName())
     }
 
     fun onSearchInputClicked() {

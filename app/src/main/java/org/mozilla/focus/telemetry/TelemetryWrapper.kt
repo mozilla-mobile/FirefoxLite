@@ -287,6 +287,7 @@ object TelemetryWrapper {
         const val AUDIENCE_NAME = "audience_name"
         const val TASK = "task"
         const val FINISHED = "finished"
+        const val ITEM_ID = "item_id"
         const val ITEM_NAME = "item_name"
         const val BACKGROUND = "background"
     }
@@ -334,6 +335,8 @@ object TelemetryWrapper {
         const val SHARE_GAME = "share_game"
         const val HOME = "home"
         const val TAB_SWIPE = "tab_swipe"
+        const val EXPLORE = "explore"
+        const val BUCKET_LIST = "bucket_list"
     }
 
     enum class FIND_IN_PAGE {
@@ -3076,12 +3079,15 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_HOME,
             value = Value.ITEM,
             extras = [
-                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.MISSION}|${Extra_Value.GIFT}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.GAME}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.MISSION}|${Extra_Value.GIFT}|${Extra_Value.EXPLORE}|${Extra_Value.BUCKET_LIST}"),
                 TelemetryExtra(name = Extra.ITEM_NAME, value = "item name")
             ])
-    fun clickItemContentHome(category: String, itemName: String) {
+    fun clickContentHomeItem(vertical: String, category: String, itemId: String, itemName: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CONTENT_HOME, Value.ITEM)
+                .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.CATEGORY, category)
+                .extra(Extra.ITEM_ID, itemId)
                 .extra(Extra.ITEM_NAME, itemName)
                 .queue()
     }
