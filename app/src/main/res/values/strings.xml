@@ -902,6 +902,7 @@
     <string name="travel_content_ig_link">#%1$s on IG</string>
     <!--Youtube content. the %1$s here is how many times of video viewing-->
     <string name="travel_content_yt_view_count">%1$s views</string>
+    <!--Youtube content. the %1$s here is single time of video viewing-->
     <string name="travel_content_yt_view_count_single_view">%1$s view</string>
     <!--Wiki content-->
     <string name="travel_content_wiki_source_name">Wikipedia</string>
