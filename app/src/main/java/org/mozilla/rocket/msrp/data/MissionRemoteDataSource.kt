@@ -96,6 +96,7 @@ class MissionRemoteDataSource {
                 mid = missionJson.optString("mid"),
                 missionType = missionJson.optString("missionType"),
                 title = missionJson.optString("title"),
+                missionName = missionJson.optString("missionName"),
                 description = missionJson.optString("description"),
                 imageUrl = missionJson.optString("imageUrl"),
                 endpoint = missionJson.optString("joinEndpoint"),

@@ -244,6 +244,7 @@ object TelemetryWrapper {
         internal const val LOGIN = "login"
         internal const val CONTEXTMENU = "contextmenu"
         internal const val CONTENT_HOME = "content_home"
+        internal const val UPDATE = "update"
     }
 
     internal object Extra {
@@ -290,6 +291,7 @@ object TelemetryWrapper {
         const val ITEM_ID = "item_id"
         const val ITEM_NAME = "item_name"
         const val BACKGROUND = "background"
+        const val CHALLENGE_NAME = "challenge_name"
     }
 
     object Extra_Value {
@@ -337,6 +339,7 @@ object TelemetryWrapper {
         const val TAB_SWIPE = "tab_swipe"
         const val EXPLORE = "explore"
         const val BUCKET_LIST = "bucket_list"
+        const val UPDATE = "update"
     }
 
     enum class FIND_IN_PAGE {
@@ -3147,6 +3150,38 @@ object TelemetryWrapper {
             extras = [])
     fun launchByGameShortcut() {
         EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.GAME_SHORTCUT)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Update Message",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.MESSAGE,
+            value = Value.UPDATE,
+            extras = [
+                TelemetryExtra(name = Extra.CHALLENGE_NAME, value = "from backend MissionName")
+            ])
+    fun showUpdateMessage(missionName: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.UPDATE)
+                .extra(Extra.CHALLENGE_NAME, missionName)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Update Message",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MESSAGE,
+            value = Value.UPDATE,
+            extras = [
+                TelemetryExtra(name = Extra.CHALLENGE_NAME, value = "from backend MissionName"),
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS}|${Extra_Value.LATER}|${Extra_Value.UPDATE}|${Extra_Value.CLOSE}")
+            ])
+    fun clickUpdateMessage(missionName: String, action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.UPDATE)
+                .extra(Extra.CHALLENGE_NAME, missionName)
+                .extra(Extra.ACTION, action)
                 .queue()
     }
 
