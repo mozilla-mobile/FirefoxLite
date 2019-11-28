@@ -15,7 +15,6 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.game.data.GameLocalDataSource.Companion.RECENTLY_PLAYED_SUB_CATEGORY_ID
-import org.mozilla.rocket.content.game.data.GameLocalDataSource.Companion.RECENTLY_PLAYED_SUB_CATEGORY_NAME
 import org.mozilla.rocket.content.game.domain.AddRecentlyPlayedGameUseCase
 import org.mozilla.rocket.content.game.domain.GetBitmapFromImageLinkUseCase
 import org.mozilla.rocket.content.game.domain.GetInstantGameListUseCase
@@ -129,7 +128,6 @@ class InstantGameViewModel(
     private fun addToRecentlyPlayedGameList(gameItem: Game) {
         viewModelScope.launch {
             addRecentlyPlayedGame(GameDataMapper.toApiItem(gameItem.copy(
-                category = RECENTLY_PLAYED_SUB_CATEGORY_NAME,
                 subCategoryId = RECENTLY_PLAYED_SUB_CATEGORY_ID.toString()
             )))
             getGameUiModelList()
