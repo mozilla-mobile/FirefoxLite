@@ -936,6 +936,6 @@
     <!--this is a title indicates that users will see search results from google after tapping on the following option. the %1$s here is google. -->
     <string name="travel_search_engine_1">See results in %1$s</string>
     <!--this is a title indicates that users will see search results summerized by smart travel search after tapping on the following options. -->
-    <string name="travel_search_engine_2">See results in smart travel search</string>                                     
+    <string name="travel_search_engine_2">See results in smart travel search</string>                                      
   
 </resources>
