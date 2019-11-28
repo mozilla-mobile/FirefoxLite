@@ -13,11 +13,11 @@ class CitySearchResultCategoryViewHolder(override val containerView: View) : Del
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         uiModel as CitySearchResultCategoryUiModel
         icon.setImageResource(uiModel.imgResId)
-        title.setText(uiModel.titleResId)
+        title.text = uiModel.title
     }
 }
 
 data class CitySearchResultCategoryUiModel(
     val imgResId: Int,
-    val titleResId: Int
+    val title: String
 ) : DelegateAdapter.UiModel()
