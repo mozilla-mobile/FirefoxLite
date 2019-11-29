@@ -6,6 +6,6 @@ import org.mozilla.rocket.content.travel.data.VideoApiEntity
 
 class GetCityVideosUseCase(private val travelRepository: TravelRepository) {
 
-    suspend operator fun invoke(name: String): Result<VideoApiEntity> =
-            travelRepository.getCityVideos(name)
+    suspend operator fun invoke(keyword: String): Result<VideoApiEntity> =
+            travelRepository.getCityVideos(keyword)
 }

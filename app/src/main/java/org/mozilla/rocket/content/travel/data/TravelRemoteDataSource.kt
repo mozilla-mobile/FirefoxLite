@@ -91,10 +91,10 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
-    override suspend fun getCityVideos(name: String): Result<VideoApiEntity> = withContext(Dispatchers.IO) {
+    override suspend fun getCityVideos(keyword: String): Result<VideoApiEntity> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
                 call = {
-                    sendHttpRequest(request = Request(url = getVideosApiEndpoint(name), method = Request.Method.GET, headers = createVideoHeaders()),
+                    sendHttpRequest(request = Request(url = getVideosApiEndpoint(keyword), method = Request.Method.GET, headers = createVideoHeaders()),
                             onSuccess = {
                                 Result.Success(VideoApiEntity.fromJson(it.body.string()))
                             },
@@ -181,7 +181,7 @@ class TravelRemoteDataSource : TravelDataSource {
         }
     }
 
-    private fun getVideosApiEndpoint(name: String): String {
+    private fun getVideosApiEndpoint(keyword: String): String {
         val videoEndPointFormat = FirebaseHelper.getFirebase().getRcString(STR_VIDEO_ENDPOINT)
         val lang = Locale.getDefault().toLanguageTag()
 
@@ -190,7 +190,7 @@ class TravelRemoteDataSource : TravelDataSource {
         else
             DEFAULT_VIDEO_ENDPOINT_FORMAT
 
-        return String.format(endPointFormat, String.format(VIDEO_QUERY_PARAM, name), lang)
+        return String.format(endPointFormat, keyword, lang)
     }
 
     private fun createVideoHeaders() = MutableHeaders().apply {
