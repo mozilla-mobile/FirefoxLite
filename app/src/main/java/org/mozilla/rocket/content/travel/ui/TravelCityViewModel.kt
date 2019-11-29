@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.ui
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.AddToBucketListUseCase
@@ -70,7 +72,7 @@ class TravelCityViewModel(
         }
     }
 
-    fun getLatestItems(name: String, id: String, type: String) {
+    fun getLatestItems(context: Context, name: String, id: String, type: String) {
         data.clear()
         hotelsCount = 0
         this.id = id
@@ -86,7 +88,7 @@ class TravelCityViewModel(
                 data.add(TravelMapper.toExploreIgUiModel(igResult.data))
             }
 
-            val videoResult = getVideos(Uri.encode(name))
+            val videoResult = getVideos(String.format(VIDEO_QUERY_PARAM, Uri.encode(name), context.resources.getString(R.string.travel_vertical_title)))
             if (videoResult is Result.Success) {
                 data.addAll(
                         videoResult.data.videos.map {
@@ -158,9 +160,8 @@ class TravelCityViewModel(
         openLinkUrl.value = igItem.linkUrl
     }
 
-    @Suppress("UNUSED_PARAMETER")
     fun onVideoClicked(videoItem: VideoUiModel) {
-        // TODO handle video click
+        openLinkUrl.value = videoItem.linkUrl
     }
 
     fun onWikiClicked(wikiItem: WikiUiModel) {
@@ -227,5 +228,6 @@ class TravelCityViewModel(
 
     companion object {
         private const val LOAD_MORE_HOTELS_THRESHOLD = 15
+        private const val VIDEO_QUERY_PARAM = "%s+%s"
     }
 }

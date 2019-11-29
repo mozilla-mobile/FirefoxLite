@@ -91,7 +91,7 @@ class TravelCityActivity : BaseActivity() {
             travelCityViewModel.onFavoriteToggled(city, it.isSelected)
         }
         refresh_button.setOnClickListener {
-            travelCityViewModel.getLatestItems(city.name, city.id, city.type)
+            travelCityViewModel.getLatestItems(this@TravelCityActivity, city.name, city.id, city.type)
         }
     }
 
@@ -137,7 +137,7 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel.items.observe(this, Observer {
             detailAdapter.setData(it)
         })
-        travelCityViewModel.getLatestItems(city.name, city.id, city.type)
+        travelCityViewModel.getLatestItems(this@TravelCityActivity, city.name, city.id, city.type)
     }
 
     private fun initExploreActions() {

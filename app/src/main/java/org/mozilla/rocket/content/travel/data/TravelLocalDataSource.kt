@@ -69,7 +69,7 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         TODO("not implemented")
     }
 
-    override suspend fun getCityVideos(name: String): Result<VideoApiEntity> {
+    override suspend fun getCityVideos(keyword: String): Result<VideoApiEntity> {
         TODO("not implemented")
     }
 
