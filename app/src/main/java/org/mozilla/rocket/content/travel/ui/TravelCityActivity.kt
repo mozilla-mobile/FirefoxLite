@@ -109,7 +109,7 @@ class TravelCityActivity : BaseActivity() {
                 add(IgUiModel::class, R.layout.item_travel_detail_ig, ExploreIgAdapterDelegate(travelCityViewModel))
                 add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
                 add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
-                add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate())
+                add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate(travelCityViewModel))
             }
         )
         city_details.apply {

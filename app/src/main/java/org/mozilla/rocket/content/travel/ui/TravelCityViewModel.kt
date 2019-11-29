@@ -21,6 +21,7 @@ import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
@@ -166,6 +167,10 @@ class TravelCityViewModel(
 
     fun onWikiClicked(wikiItem: WikiUiModel) {
         openLinkUrl.value = wikiItem.linkUrl
+    }
+
+    fun onHotelClicked(hotelItem: HotelUiModel) {
+        openLinkUrl.value = hotelItem.linkUrl
     }
 
     fun onDetailItemScrolled(firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int, isScrollDown: Boolean) {
