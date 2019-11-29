@@ -13,16 +13,18 @@ import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import org.mozilla.rocket.extension.obtainBackgroundColor
 import java.text.DecimalFormat
 
-class HotelAdapterDelegate : AdapterDelegate {
+class HotelAdapterDelegate(private val travelCityViewModel: TravelCityViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            HotelViewHolder(view)
+            HotelViewHolder(view, travelCityViewModel)
 }
 
 class HotelViewHolder(
-    override val containerView: View
+    override val containerView: View,
+    private val travelCityViewModel: TravelCityViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
@@ -65,6 +67,8 @@ class HotelViewHolder(
         hotel_pay_at_hotel.isVisible = hotelUiModel.canPayAtProperty
 
         hotel_separator.isVisible = hotelUiModel.hasFreeCancellation || hotelUiModel.canPayAtProperty
+
+        itemView.setOnClickListener { travelCityViewModel.onHotelClicked(hotelUiModel) }
     }
 }
 
