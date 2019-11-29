@@ -23,6 +23,7 @@ import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.LoadingUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
@@ -71,7 +72,7 @@ class TravelCityViewModel(
     }
 
     fun checkIsInBucketList(id: String) {
-        launchDataLoad {
+        backgroundTask {
             _isInBucketList.postValue(checkIsInBucketLis(id))
         }
     }
@@ -81,75 +82,78 @@ class TravelCityViewModel(
         hotelsCount = 0
         this.id = id
         this.type = type
-        launchDataLoad {
-            // TODO: add price items
 
-            // add explore
-            data.add(SectionHeaderUiModel(SectionType.Explore(name)))
+        launchDataLoad(
+            {
+                // TODO: add price items
 
-            val englishNameResult = getEnglishName(id, type)
-            if (englishNameResult is Result.Success) {
-                englishName = englishNameResult.data
-            } else {
-                englishName = name
+                // add explore
+                data.add(SectionHeaderUiModel(SectionType.Explore(name)))
+
+                val englishNameResult = getEnglishName(id, type)
+                if (englishNameResult is Result.Success) {
+                    englishName = englishNameResult.data
+                } else {
+                    englishName = name
+                }
+
+                val igResult = getIg(englishName)
+                if (igResult is Result.Success) {
+                    data.add(TravelMapper.toExploreIgUiModel(igResult.data))
+                }
+
+                val videoResult = getVideos(String.format(VIDEO_QUERY_PATTERN, Uri.encode(name), context.resources.getString(R.string.travel_vertical_title)))
+                if (videoResult is Result.Success) {
+                    data.addAll(
+                            videoResult.data.videos.map {
+                                // TODO: handle real read stats
+                                TravelMapper.toVideoUiModel(it, false)
+                            }
+                    )
+                }
+
+                val wikiResult = getWiki(Uri.encode(englishName))
+                if (wikiResult is Result.Success) {
+                    data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data, context.resources.getString(R.string.travel_content_wiki_source_name)))
+                }
+
+                // add hotel section header
+                data.add(SectionHeaderUiModel(SectionType.TopHotels))
+
+                _items.postValue(data)
+            }, {
+                // add hotels
+                loadHotels()
             }
+        )
+    }
 
-            val igResult = getIg(englishName)
-            if (igResult is Result.Success) {
-                data.add(TravelMapper.toExploreIgUiModel(igResult.data))
-            }
+    private suspend fun loadHotels() {
+        data.add(LoadingUiModel())
+        _items.postValue(data)
 
-            val videoResult = getVideos(String.format(VIDEO_QUERY_PATTERN, Uri.encode(name), context.resources.getString(R.string.travel_vertical_title)))
-            if (videoResult is Result.Success) {
-                data.addAll(
-                        videoResult.data.videos.map {
-                            // TODO: handle real read stats
-                            TravelMapper.toVideoUiModel(it, false)
-                        }
-                )
-            }
+        isHotelLoading = true
+        val hotelResult = getHotels(id, type, hotelsCount)
 
-            val wikiResult = getWiki(Uri.encode(englishName))
-            if (wikiResult is Result.Success) {
-                data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data, context.resources.getString(R.string.travel_content_wiki_source_name)))
-            }
-
-            // add hotel
-            data.add(SectionHeaderUiModel(SectionType.TopHotels))
-
-            val hotelResult = getHotels(id, type, hotelsCount)
-            if (hotelResult is Result.Success) {
-                data.addAll(
-                        hotelResult.data.result.map {
-                            TravelMapper.toHotelUiModel(it)
-                        }
-                )
-                hotelsCount = hotelResult.data.result.size
-            }
-            // TODO: handle error
-
-            _items.postValue(data)
+        data.removeAt(data.size - 1)
+        if (hotelResult is Result.Success) {
+            data.addAll(
+                hotelResult.data.result.map {
+                    TravelMapper.toHotelUiModel(it)
+                }
+            )
+            hotelsCount += hotelResult.data.result.size
         }
+
+        _items.postValue(data)
+        isHotelLoading = false
     }
 
     private fun loadMoreHotels() {
         if (!isHotelLoading) {
 
-            isHotelLoading = true
-            backgroundHotelLoad {
-                // add more hotels
-                val hotelResult = getHotels(id, type, hotelsCount)
-                if (hotelResult is Result.Success) {
-                    data.addAll(
-                            hotelResult.data.result.map {
-                                TravelMapper.toHotelUiModel(it)
-                            }
-                    )
-                    hotelsCount += hotelResult.data.result.size
-                    _items.postValue(data)
-                }
-
-                isHotelLoading = false
+            backgroundTask {
+                loadHotels()
             }
         }
     }
@@ -189,19 +193,20 @@ class TravelCityViewModel(
         }
     }
 
-    private fun launchDataLoad(block: suspend () -> Unit): Job {
+    private fun launchDataLoad(block1: suspend () -> Unit, block2: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
                 setDataLoadingState(State.Loading)
-                block()
+                block1()
                 setDataLoadingState(State.Idle)
+                block2()
             } catch (t: Throwable) {
                 _isDataLoading.value = State.Error(t)
             }
         }
     }
 
-    private fun backgroundHotelLoad(block: suspend () -> Unit): Job {
+    private fun backgroundTask(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
                 block()

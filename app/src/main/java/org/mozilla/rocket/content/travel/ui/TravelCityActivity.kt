@@ -22,11 +22,13 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreIgAdapterDelegate
+import org.mozilla.rocket.content.travel.ui.adapter.ExploreLoadingAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreVideoAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreWikiAdapterDelegate
-import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.HotelAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.LoadingUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.BucketList
@@ -110,6 +112,7 @@ class TravelCityActivity : BaseActivity() {
                 add(VideoUiModel::class, R.layout.item_travel_detail_video, ExploreVideoAdapterDelegate(travelCityViewModel))
                 add(WikiUiModel::class, R.layout.item_travel_detail_wiki, ExploreWikiAdapterDelegate(travelCityViewModel))
                 add(HotelUiModel::class, R.layout.item_hotel, HotelAdapterDelegate(travelCityViewModel))
+                add(LoadingUiModel::class, R.layout.item_loading, ExploreLoadingAdapterDelegate())
             }
         )
         city_details.apply {
