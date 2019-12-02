@@ -9,6 +9,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -98,6 +99,8 @@ open class FocusApplication : LocaleAwareApplication() {
         partnerActivator.launch()
 
         monitorPrivateProcess()
+
+        registerCustomInAppMessagingListener()
     }
 
     /**
@@ -137,6 +140,19 @@ open class FocusApplication : LocaleAwareApplication() {
                 }
             }
         })
+    }
+
+    private fun registerCustomInAppMessagingListener() {
+        FirebaseInAppMessaging.getInstance().addImpressionListener { inAppMessage ->
+            val campaignName = inAppMessage.campaignMetadata?.campaignName
+            TelemetryWrapper.showInAppMessage(campaignName)
+        }
+        FirebaseInAppMessaging.getInstance().addClickListener { inAppMessage, action ->
+            val campaignName = inAppMessage.campaignMetadata?.campaignName
+            val buttonText = action.button?.text?.text
+            val actionUrl = action.actionUrl
+            TelemetryWrapper.clickInAppMessage(campaignName, buttonText, actionUrl)
+        }
     }
 
     private fun enableStrictMode() {
