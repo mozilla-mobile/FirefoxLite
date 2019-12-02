@@ -4,6 +4,7 @@ object TestData {
 
     val mission01 = Mission(
         mid = "000001",
+        missionName = "mission1",
         title = "TypeDaily Mission 1",
         description = "Click vertical everyday",
 
@@ -32,6 +33,7 @@ object TestData {
 
     val mission02 = Mission(
         mid = "000002",
+        missionName = "mission2",
         title = "TypeDaily Mission 1",
         description = "Click vertical everyday",
 
