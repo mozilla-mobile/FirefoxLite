@@ -23,7 +23,6 @@ import java.util.regex.Pattern
 object TravelMapper {
 
     private const val BANNER = "banner"
-    private const val SOURCE_WIKI = "Wikipedia"
     private const val SOURCE_BC = "Booking.com"
 
     fun toExploreList(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
@@ -108,10 +107,10 @@ object TravelMapper {
                 ig.linkUrl
             )
 
-    fun toExploreWikiUiModel(wiki: Wiki): WikiUiModel =
+    fun toExploreWikiUiModel(wiki: Wiki, source: String): WikiUiModel =
             WikiUiModel(
                 wiki.imageUrl,
-                SOURCE_WIKI,
+                source,
                 wiki.introduction,
                 wiki.linkUrl
             )

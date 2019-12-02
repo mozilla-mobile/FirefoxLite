@@ -25,7 +25,7 @@ class ExploreIgViewHolder(
             travelCityViewModel.onIgClicked(exploreIg)
         }
 
-        explore_ig_tag.text = itemView.resources.getString(R.string.travel_detail_ig_title, exploreIg.title)
+        explore_ig_tag.text = itemView.resources.getString(R.string.travel_content_ig_link, exploreIg.title)
     }
 }
 

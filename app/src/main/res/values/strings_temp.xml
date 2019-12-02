@@ -2,26 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="waiting_for_redemption" translatable="false" tools:ignore="MissingTranslation">Waiting for redemption</string>
 
-    <string name="travel_vertical_search_title" translatable="false" tools:ignore="MissingTranslation">Which city would you like to visit?</string>
-    <string name="travel_vertical_search_hint" translatable="false" tools:ignore="MissingTranslation">Try “Bali”</string>
-    <string name="travel_detail_section_explore_title" translatable="false" tools:ignore="MissingTranslation">Explore %s</string>
-    <string name="travel_detail_section_hotel_title" translatable="false" tools:ignore="MissingTranslation">Top Hotels</string>
-    <string name="travel_detail_bucket_list_saved" translatable="false" tools:ignore="MissingTranslation">Saved in your bucket list</string>
-    <string name="travel_detail_bucket_list_saved_view" translatable="false" tools:ignore="MissingTranslation">VIEW</string>
-    <string name="travel_bucket_list_no_bookmark" translatable="false" tools:ignore="MissingTranslation">“I haven’t been everywhere, but it’s on my list.”</string>
     <string name="travel_bucket_list_no_bookmark_name" translatable="false" tools:ignore="MissingTranslation">- Susn Sontag</string>
-    <string name="travel_bucket_list_no_bookmark_explore" translatable="false" tools:ignore="MissingTranslation">Explore a city</string>
-    <string name="travel_detail_ig_title" translatable="false" tools:ignore="MissingTranslation">#%s on Instagram</string>
-    <string name="travel_detail_video_view_count" translatable="false" tools:ignore="MissingTranslation">%d view</string>
-    <string name="search_city_hint" translatable="false" tools:ignore="MissingTranslation">Enter a city</string>
-    <string name="travel_details_onboarding_title" tools:ignore="MissingTranslation">Love %s?</string>
-    <string name="travel_details_onboarding_message" tools:ignore="MissingTranslation">Tab here to save %s in your bucket list for quickly access latest travel guides and  prices and estimation.</string>
-
-    <string name="travel_hotel_free_wifi" translatable="false" tools:ignore="MissingTranslation">Free wifi</string>
-    <string name="travel_hotel_rating_total" translatable="false" tools:ignore="MissingTranslation">%.1f/%d</string>
     <string name="travel_hotel_rating_from" translatable="false" tools:ignore="MissingTranslation">From</string>
     <string name="travel_hotel_free_cancellation" translatable="false" tools:ignore="MissingTranslation">Free cancellation</string>
-    <string name="travel_hotel_pay_at_hotel" translatable="false" tools:ignore="MissingTranslation">Pay at hotel</string>
 
     <string name="msrp_force_update_dialog_positive_btn" translatable="false" tools:ignore="MissingTranslation">UPDATE NOW!</string>
     <string name="msrp_force_update_dialog_negative_btn" translatable="false" tools:ignore="MissingTranslation">LATER</string>

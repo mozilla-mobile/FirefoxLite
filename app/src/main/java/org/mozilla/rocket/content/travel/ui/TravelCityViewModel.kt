@@ -101,7 +101,7 @@ class TravelCityViewModel(
 
             val wikiResult = getWiki(Uri.encode(name))
             if (wikiResult is Result.Success) {
-                data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data))
+                data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data, context.resources.getString(R.string.travel_content_wiki_source_name)))
             }
 
             // add hotel

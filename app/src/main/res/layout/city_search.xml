@@ -15,7 +15,7 @@
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif"
         android:letterSpacing="0.01"
-        android:text="@string/travel_vertical_search_title"
+        android:text="@string/travel_find_destination_title"
         android:textColor="@color/contentHeaderTextColor87"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -47,7 +47,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="sans-serif"
             android:gravity="center_vertical"
-            android:text="@string/travel_vertical_search_hint"
+            android:text="@string/travel_find_destination_placeholder_1"
             android:textColor="@color/paletteLightBlack30"
             android:textSize="16sp" />
 

@@ -148,8 +148,8 @@ class TravelCityActivity : BaseActivity() {
     }
 
     private fun showBucketListAddedSnackbar() {
-        Snackbar.make(container, R.string.travel_detail_bucket_list_saved, Snackbar.LENGTH_LONG).apply {
-            setAction(R.string.travel_detail_bucket_list_saved_view) {
+        Snackbar.make(container, R.string.travel_snack_bar_saved_message, Snackbar.LENGTH_LONG).apply {
+            setAction(R.string.travel_snack_bar_button) {
                 startActivity(TravelActivity.getStartIntent(it.context, BucketList).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) })
             }
         }.show()

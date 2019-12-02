@@ -24,8 +24,8 @@ class SectionHeaderViewHolder(
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val header = uiModel as SectionHeaderUiModel
         when (header.type) {
-            is Explore -> header_title.text = containerView.context.getString(R.string.travel_detail_section_explore_title, header.type.name)
-            is TopHotels -> header_title.text = containerView.context.getString(R.string.travel_detail_section_hotel_title)
+            is Explore -> header_title.text = containerView.context.getString(R.string.travel_detail_page_subcategory_content, header.type.name)
+            is TopHotels -> header_title.text = containerView.context.getString(R.string.travel_detail_page_subcategory_hotel)
         }
     }
 }
