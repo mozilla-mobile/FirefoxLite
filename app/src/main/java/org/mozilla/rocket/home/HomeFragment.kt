@@ -414,6 +414,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 setOnboardingStatusBarColor()
                 contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, {
                     restoreStatusBarColor()
+                    homeViewModel.onContentServicesOnboardingSpotlightDismiss()
                 }) {
                     homeViewModel.onContentServiceOnboardingButtonClicked()
                 }
@@ -435,6 +436,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     restoreStatusBarColor()
                     shopping_button.isVisible = currentShoppingBtnVisibleState
                     private_mode_button.isVisible = !currentShoppingBtnVisibleState
+                    homeViewModel.onShoppingSearchOnboardingSpotlightDismiss()
                 }
             }
         }
