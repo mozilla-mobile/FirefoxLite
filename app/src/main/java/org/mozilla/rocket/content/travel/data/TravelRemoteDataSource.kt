@@ -139,9 +139,13 @@ class TravelRemoteDataSource : TravelDataSource {
     }
 
     private fun getExploreApiEndpoint(): String {
-        val dealApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_TRAVEL_EXPLORE_ENDPOINT)
-        return if (dealApiEndpoint.isNotEmpty()) {
-            dealApiEndpoint
+        val exploreApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_TRAVEL_EXPLORE_ENDPOINT)
+        return if (exploreApiEndpoint.isNotEmpty()) {
+            if (exploreApiEndpoint.contains("locale=%s")) {
+                String.format(exploreApiEndpoint, Locale.getDefault().toLanguageTag())
+            } else {
+                exploreApiEndpoint
+            }
         } else {
             DEFAULT_EXPLORE_URL_ENDPOINT
         }
@@ -218,7 +222,7 @@ class TravelRemoteDataSource : TravelDataSource {
 
     companion object {
         private const val STR_TRAVEL_EXPLORE_ENDPOINT = "str_travel_explore_endpoint"
-        private const val DEFAULT_EXPLORE_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=all&category=travelExplore"
+        private const val DEFAULT_EXPLORE_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=en-US&category=travelExplore&tag=global_default"
         private const val STR_BOOKING_COM_ENDPOINT = "str_booking_com_endpoint"
         private const val STR_BOOKING_COM_AUTHORIZATION = "str_booking_com_authorization"
         private const val DEFAULT_BOOKING_COM_ENDPOINT = "https://distribution-xml.booking.com/2.5/json"
