@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
@@ -77,9 +78,11 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
 
     fun onCityClicked(it: CitySearchResultUiModel) {
         openCity.value = BaseCityData(it.id, it.name.toString(), it.type, "", "")
+        TelemetryWrapper.selectQueryContentHome(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.BOOKING_COM)
     }
 
     fun onGoogleSearchClicked(context: Context, keyword: String) {
         openGoogleSearch.value = SearchUtils.createSearchUrl(context, keyword)
+        TelemetryWrapper.selectQueryContentHome(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.GOOGLE)
     }
 }
