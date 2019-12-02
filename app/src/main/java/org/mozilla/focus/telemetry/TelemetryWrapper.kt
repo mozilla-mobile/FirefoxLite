@@ -292,6 +292,7 @@ object TelemetryWrapper {
         const val ITEM_NAME = "item_name"
         const val BACKGROUND = "background"
         const val CHALLENGE_NAME = "challenge_name"
+        const val BUTTON_TEXT = "button_text"
     }
 
     object Extra_Value {
@@ -2528,13 +2529,11 @@ object TelemetryWrapper {
             `object` = Object.MESSAGE,
             value = Value.IN_APP_MESSAGE,
             extras = [
-                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "messageId")
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "campaign name")
             ])
-    fun showInAppMessage(link: String?, messageId: String?) {
+    fun showInAppMessage(campaignName: String?) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.IN_APP_MESSAGE)
-                .extra(Extra.LINK, link ?: "null")
-                .extra(Extra.MESSAGE_ID, messageId ?: "null")
+                .extra(Extra.MESSAGE_ID, campaignName ?: "null")
                 .queue()
     }
 
@@ -2545,15 +2544,13 @@ object TelemetryWrapper {
             `object` = Object.MESSAGE,
             value = Value.IN_APP_MESSAGE,
             extras = [
-                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "messageId"),
-                TelemetryExtra(name = Extra.PRIMARY, value = "true,false")
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "campaign name")
             ])
-    fun clickInAppMessage(link: String?, messageId: String?, isPrimary: Boolean) {
+    fun clickInAppMessage(campaignName: String?, buttonText: String?, link: String?) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.IN_APP_MESSAGE)
+                .extra(Extra.MESSAGE_ID, campaignName ?: "null")
+                .extra(Extra.BUTTON_TEXT, buttonText ?: "null")
                 .extra(Extra.LINK, link ?: "null")
-                .extra(Extra.MESSAGE_ID, messageId ?: "null")
-                .extra(Extra.PRIMARY, isPrimary.toString())
                 .queue()
     }
 
