@@ -215,7 +215,6 @@ dependencies {
     implementation "androidx.core:core-ktx:${Versions.ktx}"
 
     // Architecture components
-    implementation "androidx.work:work-runtime:${Versions.arch_work}"
     implementation "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewmodel_ktx}"
@@ -223,6 +222,18 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     implementation "androidx.room:room-runtime:${Versions.room}"
     kapt "androidx.room:room-compiler:${Versions.room}"
+
+
+    implementation ("androidx.work:work-runtime:${Versions.arch_work}") {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    // TODO: need to check if it can be moved to firebase module after this or worker manager libraries upgraded
+    // has conflicts with worker manager library, so needs to be move here instead of in firebase module
+    implementation ("com.google.firebase:firebase-inappmessaging-display:${Versions.firebase_iam}") {
+        // has conflicts with existing library
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
+
 
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.
