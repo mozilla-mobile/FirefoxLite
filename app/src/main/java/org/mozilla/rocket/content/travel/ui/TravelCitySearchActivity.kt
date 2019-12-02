@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_search_city.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchGoogleAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchGoogleUiModel
@@ -29,13 +31,19 @@ class TravelCitySearchActivity : AppCompatActivity() {
 
     @Inject
     lateinit var searchViewModelCreator: Lazy<TravelCitySearchViewModel>
+
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var searchViewModel: TravelCitySearchViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var adapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         searchViewModel = getViewModel(searchViewModelCreator)
+        telemetryViewModel = getViewModel(telemetryViewModelCreator)
         setContentView(R.layout.activity_search_city)
         search_keyword_edit.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -66,6 +74,16 @@ class TravelCitySearchActivity : AppCompatActivity() {
         }
         initCityList()
         initGoogleSearchAction()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.TRAVEL)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        telemetryViewModel.onSessionEnded()
     }
 
     private fun initGoogleSearchAction() {

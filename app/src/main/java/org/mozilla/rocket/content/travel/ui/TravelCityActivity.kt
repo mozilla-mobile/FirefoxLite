@@ -15,11 +15,13 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_travel_city.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreIgAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreLoadingAdapterDelegate
@@ -41,7 +43,11 @@ class TravelCityActivity : BaseActivity() {
     @Inject
     lateinit var travelCityViewModelCreator: Lazy<TravelCityViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var travelCityViewModel: TravelCityViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var detailAdapter: DelegateAdapter
     private lateinit var onboardingSpotlightDialog: Dialog
     private lateinit var city: BaseCityData
@@ -50,6 +56,7 @@ class TravelCityActivity : BaseActivity() {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         travelCityViewModel = getViewModel(travelCityViewModelCreator)
+        telemetryViewModel = getViewModel(telemetryViewModelCreator)
         setContentView(R.layout.activity_travel_city)
 
         city = intent?.extras?.getParcelable(EXTRA_CITY) ?: BaseCityData("", "", "", "", "")
@@ -61,6 +68,16 @@ class TravelCityActivity : BaseActivity() {
         bindCityData()
         initExploreActions()
         initOnboardingSpotlight(city.name)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.TRAVEL)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        telemetryViewModel.onSessionEnded()
     }
 
     private fun initOnboardingSpotlight(name: String) {
