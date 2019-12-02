@@ -53,7 +53,7 @@ class HotelViewHolder(
         hotel_name.text = hotelUiModel.name
         hotel_description.text = hotelUiModel.description
 
-        hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating_total, hotelUiModel.rating, hotelUiModel.fullScore)
+        hotel_rating.text = itemView.context.getString(R.string.travel_hotel_rating, hotelUiModel.rating, hotelUiModel.fullScore)
         hotel_rating.isInvisible = hotelUiModel.rating.isNaN()
 
         hotel_currency.text = hotelUiModel.currency

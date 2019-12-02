@@ -80,7 +80,7 @@
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/bg_plateform_onboarding_button"
                     android:fontFamily="sans-serif-medium"
-                    android:text="@string/action_ok"
+                    android:text="@string/travel_onboarding_save_button"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
 

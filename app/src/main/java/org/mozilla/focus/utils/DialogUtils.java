@@ -385,8 +385,8 @@ public class DialogUtils {
         final ViewGroup container = (ViewGroup) LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_travel, null);
         TextView title = container.findViewById(R.id.travel_details_onboarding_title);
         TextView message = container.findViewById(R.id.travel_details_onboarding_message);
-        title.setText(activity.getString(R.string.travel_details_onboarding_title, cityName));
-        message.setText(activity.getString(R.string.travel_details_onboarding_message, cityName));
+        title.setText(activity.getString(R.string.travel_onboarding_save_title, cityName));
+        message.setText(activity.getString(R.string.travel_onboarding_save_description, cityName));
         container.findViewById(R.id.next).setOnClickListener(ok);
 
         Dialog dialog = createTravelSpotlightDialog(

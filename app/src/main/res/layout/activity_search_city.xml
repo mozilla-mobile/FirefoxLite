@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="sans-serif"
-                android:hint="@string/search_city_hint"
+                android:hint="@string/travel_find_destination_placeholder_2"
                 android:imeOptions="actionSearch|flagNoExtractUi|flagNoFullscreen"
                 android:inputType="textUri"
                 android:lines="1"

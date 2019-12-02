@@ -10,4 +10,5 @@
     <string name="useragent_appname" translatable="false">Rocket</string>
     
     <string name="search_engine_name_google" translatable="false">Google</string>
+    <string name="travel_hotel_rating" translatable="false">%.1f/%d</string>
 </resources>

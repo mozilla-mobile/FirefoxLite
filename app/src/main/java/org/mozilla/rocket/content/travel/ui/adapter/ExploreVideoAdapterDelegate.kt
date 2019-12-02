@@ -56,7 +56,7 @@ class ExploreVideoViewHolder(
         explore_video_author.text = exploreVideo.author
 
         when (exploreVideo.viewCount) {
-            1 -> explore_video_views.text = itemView.resources.getString(R.string.travel_detail_video_view_count, exploreVideo.viewCount)
+            1 -> explore_video_views.text = itemView.resources.getString(R.string.travel_content_yt_view_count_single_view)
             else -> {
                 val numberFormat = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     CompactDecimalFormat.getInstance(Locale.getDefault(), CompactDecimalFormat.CompactStyle.SHORT)
