@@ -340,6 +340,8 @@ object TelemetryWrapper {
         const val TAB_SWIPE = "tab_swipe"
         const val EXPLORE = "explore"
         const val BUCKET_LIST = "bucket_list"
+        const val GOOGLE = "google"
+        const val BOOKING_COM = "booking.com"
         const val UPDATE = "update"
     }
 
@@ -2605,6 +2607,24 @@ object TelemetryWrapper {
     fun showContentHomeSearchBar(vertical: String) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.CONTENT_HOME)
                 .extra(Extra.VERTICAL, vertical)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Select Query Content Home",
+            category = Category.ACTION,
+            method = Method.TYPE_SELECT_QUERY,
+            `object` = Object.SEARCH_BAR,
+            value = Value.CONTENT_HOME,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.SOURCE, value = "${Extra_Value.GOOGLE},${Extra_Value.BOOKING_COM}")
+            ])
+    @JvmStatic
+    fun selectQueryContentHome(vertical: String, source: String) {
+        EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR, Value.CONTENT_HOME)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.SOURCE, source)
                 .queue()
     }
 
