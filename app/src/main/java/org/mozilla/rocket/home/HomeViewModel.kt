@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
@@ -115,10 +116,22 @@ class HomeViewModel(
                 TelemetryWrapper.showWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games")
             }
             showContentServicesOnboardingSpotlight.call()
+            // To prevent showing in app message when onboarding
+            FirebaseInAppMessaging.getInstance().setMessagesSuppressed(true)
         } else if (shouldShowShoppingSearchOnboardingUseCase()) {
             setShoppingSearchOnboardingIsShownUseCase()
             showShoppingSearchOnboardingSpotlight.call()
+            // To prevent showing in app message when onboarding
+            FirebaseInAppMessaging.getInstance().setMessagesSuppressed(true)
         }
+    }
+
+    fun onContentServicesOnboardingSpotlightDismiss() {
+        FirebaseInAppMessaging.getInstance().setMessagesSuppressed(false)
+    }
+
+    fun onShoppingSearchOnboardingSpotlightDismiss() {
+        FirebaseInAppMessaging.getInstance().setMessagesSuppressed(false)
     }
 
     private fun initLogoManData() {
