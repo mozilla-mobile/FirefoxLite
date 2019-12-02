@@ -3,8 +3,10 @@ package org.mozilla.rocket.content.travel.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Looper
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
+import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_travel.*
 import org.mozilla.focus.R
@@ -13,6 +15,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter
+import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Companion.TYPE_EXPLORE
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.Explore
 import javax.inject.Inject
@@ -66,15 +69,32 @@ class TravelActivity : FragmentActivity() {
             adapter = TravelTabsAdapter(supportFragmentManager, this)
             view_pager.apply {
                 adapter = this@TravelActivity.adapter
-                setCurrentItem(tab.item)
+                currentItem = tab.item
             }
         })
 
-        travelViewModel.initTabs()
+        Looper.myQueue().addIdleHandler {
+            travelViewModel.initTabs()
+            false
+        }
     }
 
     private fun initTabLayout() {
         travel_tabs.setupWithViewPager(view_pager)
+        travel_tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab) = Unit
+
+            override fun onTabUnselected(tab: TabLayout.Tab) = Unit
+
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                val category = when (tab.position) {
+                    TYPE_EXPLORE -> TelemetryWrapper.Extra_Value.EXPLORE
+                    else -> TelemetryWrapper.Extra_Value.BUCKET_LIST
+                }
+
+                telemetryViewModel.onCategorySelected(category)
+            }
+        })
     }
 
     private fun initToolBar() {

@@ -18,26 +18,37 @@ class TravelTabsAdapter(
 
     private val resource = activity.resources
 
-    override fun getItem(position: Int): Fragment = items[position].fragment
+    override fun getItem(position: Int): Fragment = items[position].createFragment()
 
     override fun getCount(): Int = items.size
 
     override fun getPageTitle(position: Int): CharSequence? = resource.getString(items[position].titleResId)
 
     data class TabItem(
-        val fragment: Fragment,
+        val type: Int,
         val titleResId: Int
-    )
+    ) {
+        fun createFragment(): Fragment {
+            return when (type) {
+                TYPE_EXPLORE -> TravelExploreFragment()
+                TYPE_BUCKET_LIST -> TravelBucketListFragment()
+                else -> error("Unsupported travel tab item type $type")
+            }
+        }
+    }
 
     sealed class Tab(val item: Int) : Parcelable {
-        @Parcelize object Explore : Tab(0)
-        @Parcelize object BucketList : Tab(1)
+        @Parcelize object Explore : Tab(TYPE_EXPLORE)
+        @Parcelize object BucketList : Tab(TYPE_BUCKET_LIST)
     }
 
     companion object {
+        const val TYPE_EXPLORE = 0
+        const val TYPE_BUCKET_LIST = 1
+
         private fun getDefaultTabs(): List<TabItem> = listOf(
-            TabItem(TravelExploreFragment(), R.string.travel_vertical_category_1),
-            TabItem(TravelBucketListFragment(), R.string.travel_vertical_category_2)
+            TabItem(TYPE_EXPLORE, R.string.travel_vertical_category_1),
+            TabItem(TYPE_BUCKET_LIST, R.string.travel_vertical_category_2)
         )
     }
 }
