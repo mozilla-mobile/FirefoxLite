@@ -16,6 +16,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.widget.DefaultBrowserPreference
+import org.mozilla.rocket.deeplink.DeepLinkConstants
 import org.mozilla.rocket.deeplink.DeepLinkType
 
 class LaunchIntentDispatcher {
@@ -121,6 +122,16 @@ class LaunchIntentDispatcher {
              * if we have this extra, we want to enable the deep link
              */
             intent.getStringExtra(RocketMessagingService.PUSH_DEEP_LINK)?.let {
+                val deepLinkType = DeepLinkType.parse(it)
+                return if (deepLinkType != DeepLinkType.NOT_SUPPORT) {
+                    deepLinkType.execute(context)
+                    Action.HANDLED
+                } else {
+                    Action.NORMAL
+                }
+            }
+
+            intent.dataString?.let {
                 val deepLinkType = DeepLinkType.parse(it)
                 return if (deepLinkType != DeepLinkType.NOT_SUPPORT) {
                     deepLinkType.execute(context)
