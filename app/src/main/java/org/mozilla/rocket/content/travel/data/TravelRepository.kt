@@ -61,6 +61,10 @@ class TravelRepository(
         localDataSource.removeFromBucketList(id)
     }
 
+    suspend fun getEnglishName(id: String, type: String): Result<String> {
+        return remoteDataSource.getEnglishName(id, type)
+    }
+
     companion object {
         private const val WIKI_URL = "https://en.wikipedia.org/wiki/"
     }

@@ -52,7 +52,7 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
 
     override suspend fun getCityIg(name: String): Result<Ig> {
         return withContext(Dispatchers.Default) {
-            val normalizedName = name.replace("\\s".toRegex(), "").toLowerCase()
+            val normalizedName = String.format("%stravel", name.replace("\\s".toRegex(), "").toLowerCase())
             Success(Ig(
                     normalizedName,
                     String.format("https://www.instagram.com/explore/tags/%s/", normalizedName)
@@ -92,6 +92,10 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
 
     override suspend fun removeFromBucketList(id: String) = withContext(Dispatchers.IO) {
         preference.edit().putString(KEY_JSON_STRING_BUCKET_LIST, getBucketListFromPreferences().filterNot { it.id.equals(id) }.toJsonString()).apply()
+    }
+
+    override suspend fun getEnglishName(id: String, type: String): Result<String> {
+        TODO("not implemented")
     }
 
     private fun getBucketListFromPreferences(): MutableList<BucketListCity> {

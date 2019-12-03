@@ -174,3 +174,29 @@ data class BcHotelApiItem(
         }
     }
 }
+
+data class BcTranslationApiEntity(val result: BcTranslationApiItem) : BcApiEntity() {
+    companion object {
+
+        fun fromJson(jsonString: String): BcTranslationApiEntity {
+            val jsonObject = jsonString.toJsonObject()
+            val jsonArray = jsonObject.optJSONArray(KEY_RESULT)
+            val result = BcTranslationApiItem.fromJson(jsonArray[0] as JSONObject)
+
+            return BcTranslationApiEntity(result)
+        }
+    }
+}
+
+data class BcTranslationApiItem(val name: String) {
+    companion object {
+        private const val KEY_TRANSLATIONS = "translations"
+        private const val KEY_NAME = "name"
+
+        fun fromJson(jsonObject: JSONObject): BcTranslationApiItem {
+            val translations = jsonObject.optJSONArray(KEY_TRANSLATIONS)
+            val name = (translations[0] as JSONObject).optString(KEY_NAME)
+            return BcTranslationApiItem(name)
+        }
+    }
+}
