@@ -63,10 +63,9 @@ class HotelViewHolder(
 
         hotel_free_wifi.isVisible = hotelUiModel.hasFreeWifi
 
-        hotel_free_cancellation.isVisible = hotelUiModel.hasFreeCancellation
+        hotel_no_creditcard_required.isVisible = !hotelUiModel.creditCardRequired
         hotel_pay_at_hotel.isVisible = hotelUiModel.canPayAtProperty
-
-        hotel_separator.isVisible = hotelUiModel.hasFreeCancellation || hotelUiModel.canPayAtProperty
+        hotel_extras.isVisible = hotelUiModel.creditCardRequired || hotelUiModel.canPayAtProperty
 
         itemView.setOnClickListener { travelCityViewModel.onHotelClicked(hotelUiModel) }
     }
@@ -78,11 +77,11 @@ data class HotelUiModel(
     val name: String,
     val description: String,
     val rating: Float,
+    val creditCardRequired: Boolean,
     val fullScore: Int,
     val hasFreeWifi: Boolean,
     val price: Float,
     val currency: String,
-    val hasFreeCancellation: Boolean,
     val canPayAtProperty: Boolean,
     val linkUrl: String
 ) : DelegateAdapter.UiModel()

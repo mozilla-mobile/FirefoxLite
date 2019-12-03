@@ -139,11 +139,11 @@ object TravelMapper {
                 hotel.name,
                 hotel.description,
                 hotel.rating,
+                hotel.creditCardRequired,
                 10,
                 hotel.hasFreeWifi,
                 hotel.price,
                 hotel.currency,
-                false,
                 hotel.canPayAtProperty,
                 hotel.linkUrl
             )
