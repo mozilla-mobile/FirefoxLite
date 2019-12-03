@@ -72,6 +72,7 @@ enum class DeepLinkType {
         for (task in taskList) {
             task.execute(context)
         }
+        taskList.clear()
     }
 
     companion object {
