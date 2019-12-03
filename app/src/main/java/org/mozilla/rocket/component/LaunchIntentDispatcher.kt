@@ -16,7 +16,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.widget.DefaultBrowserPreference
-import org.mozilla.rocket.deeplink.DeepLinkConstants
 import org.mozilla.rocket.deeplink.DeepLinkType
 
 class LaunchIntentDispatcher {

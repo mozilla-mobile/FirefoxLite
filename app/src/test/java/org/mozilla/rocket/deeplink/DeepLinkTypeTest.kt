@@ -8,6 +8,7 @@ import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
+import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
@@ -35,6 +36,14 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.SHOPPING_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartShoppingActivityTask)
+    }
+
+    @Test
+    fun `When travel home uri is matched, launch travel activity`() {
+        val deepLinkType = DeepLinkType.parse("rocket://content/travel")
+
+        assertEquals(DeepLinkType.TRAVEL_HOME, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is StartTravelActivityTask)
     }
 
     @Test
