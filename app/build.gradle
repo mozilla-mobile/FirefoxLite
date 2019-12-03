@@ -232,6 +232,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-inappmessaging-display:${Versions.firebase_iam}") {
         // has conflicts with existing library
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
+        exclude group: 'com.google.code.gson', module: 'gson'
     }
 
 
