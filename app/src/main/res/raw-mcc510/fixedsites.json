@@ -1,30 +1,30 @@
 [
   {
     "id": -100,
+    "url": "https://tokopedia.link/YJ36X6FLVP?utm_source=mozilla&utm_medium=WddmUAVW&utm_campaign=mp_aon_gpaf_speeddial_aw-pgmp-aallal-0000-brws-alwayson00",
+    "title": "Tokopedia",
+    "favicon": "ic_tokopedia.png",
+    "viewCount": 0
+  },
+  {
+    "id": -101,
     "url": "https://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&aff_sub=topsite",
     "title": "Bukalapak",
     "favicon": "ic_bukalapak.png",
     "viewCount": 0
   },
   {
-    "id": -101,
+    "id": -102,
     "url": "http://wapshop.gameloft.com/buyfull/tdc.php?mozilla=true&adid=434816",
     "title": "Gameloft",
     "favicon": "ic_gameloft.webp",
     "viewCount": 0
   },
   {
-    "id": -102,
+    "id": -103,
     "url": "https://www.booking.com/index.html?aid=1873270;label=mozilla_mainlinkout",
     "title": "Booking.com",
     "favicon": "ic_booking.webp",
-    "viewCount": 0
-  },
-  {
-    "id": -103,
-    "url": "https://www.kkday.com/?cid=9135",
-    "title": "KKday",
-    "favicon": "ic_kkday.webp",
     "viewCount": 0
   }
 ]
