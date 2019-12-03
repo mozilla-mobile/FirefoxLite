@@ -80,6 +80,7 @@ data class BcHotelApiItem(
     val imageUrl: String,
     val name: String,
     val rating: Float,
+    val creditCardRequired: Boolean,
     val description: String,
     val hasFreeWifi: Boolean,
     val price: Float,
@@ -91,6 +92,7 @@ data class BcHotelApiItem(
         private const val KEY_HOTEL_ID = "hotel_id"
         private const val KEY_HOTEL_DATA = "hotel_data"
         private const val KEY_DATA_REVIEW_SCORE = "review_score"
+        private const val KEY_DATA_CREDITCARD_REQUIRED = "creditcard_required"
         private const val KEY_DATA_NAME = "name"
         private const val KEY_DATA_HOTEL_DESCRIPTION = "hotel_description"
         private const val KEY_DATA_HOTEL_PHOTOS = "hotel_photos"
@@ -159,6 +161,7 @@ data class BcHotelApiItem(
                         imageUrl,
                         hotelData.optString(KEY_DATA_NAME),
                         hotelData.optDouble(KEY_DATA_REVIEW_SCORE).toFloat(),
+                        hotelData.optBoolean(KEY_DATA_CREDITCARD_REQUIRED),
                         hotelData.optString(KEY_DATA_HOTEL_DESCRIPTION),
                         hasFreeWifi,
                         minPrice,
