@@ -7,6 +7,7 @@ import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
+import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.Task
 
 enum class DeepLinkType {
@@ -35,6 +36,15 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: Uri) {
             addTask(StartShoppingActivityTask())
+        }
+    },
+
+    TRAVEL_HOME {
+        override fun match(uri: Uri) =
+            isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL == uri.path && uri.query.isNullOrEmpty()
+
+        override fun addTasks(uri: Uri) {
+            addTask(StartTravelActivityTask())
         }
     },
 
