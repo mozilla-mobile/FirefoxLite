@@ -17,6 +17,7 @@ interface TravelDataSource {
     suspend fun isInBucketList(id: String): Boolean
     suspend fun addToBucketList(city: BucketListCity)
     suspend fun removeFromBucketList(id: String)
+    suspend fun getEnglishName(id: String, type: String): Result<String>
 }
 
 data class BucketListCity(

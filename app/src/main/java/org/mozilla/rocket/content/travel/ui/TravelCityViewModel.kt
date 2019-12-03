@@ -17,6 +17,7 @@ import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
+import org.mozilla.rocket.content.travel.domain.GetEnglishNameUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
@@ -35,6 +36,7 @@ class TravelCityViewModel(
     private val checkIsInBucketLis: CheckIsInBucketListUseCase,
     private val addToBucketList: AddToBucketListUseCase,
     private val removeFromBucketList: RemoveFromBucketListUseCase,
+    private val getEnglishName: GetEnglishNameUseCase,
     private val shouldShowOnboarding: ShouldShowOnboardingUseCase,
     private val setOnboardingHasShown: SetOnboardingHasShownUseCase
 ) : ViewModel() {
@@ -59,6 +61,7 @@ class TravelCityViewModel(
     private var hotelsCount = 0
     private lateinit var id: String
     private lateinit var type: String
+    private lateinit var englishName: String
 
     init {
         if (shouldShowOnboarding()) {
@@ -84,7 +87,14 @@ class TravelCityViewModel(
             // add explore
             data.add(SectionHeaderUiModel(SectionType.Explore(name)))
 
-            val igResult = getIg(name)
+            val englishNameResult = getEnglishName(id, type)
+            if (englishNameResult is Result.Success) {
+                englishName = englishNameResult.data
+            } else {
+                englishName = name
+            }
+
+            val igResult = getIg(englishName)
             if (igResult is Result.Success) {
                 data.add(TravelMapper.toExploreIgUiModel(igResult.data))
             }

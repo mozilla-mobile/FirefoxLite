@@ -138,6 +138,22 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
+    override suspend fun getEnglishName(id: String, type: String): Result<String> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+                call = {
+                    sendHttpRequest(request = Request(url = getTranslationApiEndpoint(id, type), method = Request.Method.GET, headers = createHeaders()),
+                            onSuccess = {
+                                Result.Success(BcTranslationApiEntity.fromJson(it.body.string()).result.name)
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get English name"
+        )
+    }
+
     private fun getExploreApiEndpoint(): String {
         val exploreApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_TRAVEL_EXPLORE_ENDPOINT)
         return if (exploreApiEndpoint.isNotEmpty()) {
@@ -220,6 +236,13 @@ class TravelRemoteDataSource : TravelDataSource {
         return pageContent.optJSONObject(WIKI_JSON_KEY_ORIGINAL).optString(WIKI_JSON_KEY_SOURCE)
     }
 
+    private fun getTranslationApiEndpoint(id: String, type: String): String {
+        val baseApiEndpoint = getBaseApiEndpoint()
+        val path = if (type == BcAutocompleteApiEntity.TYPE_CITY) { BOOKING_COM_PATH_CITIES } else { BOOKING_COM_PATH_REGIONS }
+        val queryParamId = if (type == BcAutocompleteApiEntity.TYPE_CITY) { BOOKING_COM_QUERY_PARAM_CITY_IDS } else { BOOKING_COM_QUERY_PARAM_REGION_IDS }
+        return "$baseApiEndpoint/$path?$queryParamId=$id&languages=en"
+    }
+
     companion object {
         private const val STR_TRAVEL_EXPLORE_ENDPOINT = "str_travel_explore_endpoint"
         private const val DEFAULT_EXPLORE_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=en-US&category=travelExplore&tag=global_default"
@@ -242,6 +265,8 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val BOOKING_COM_QUERY_PARAM_OFFSET = "offset"
         private const val BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL = "room_info,%20payment_details,%20hotel_info,%20hotel_photos,%20hotel_facilities,%20hotel_description"
         private const val BOOKING_COM_HOTELS_OFFSET_BASE = 100
+        private const val BOOKING_COM_PATH_CITIES = "cities"
+        private const val BOOKING_COM_PATH_REGIONS = "regions"
 
         private const val WIKI_JSON_KEY_QUERY = "query"
         private const val WIKI_JSON_KEY_PAGES = "pages"
