@@ -357,8 +357,6 @@
   <string name="content_home_context_menu_share_link">Chia sẻ liên kết</string>
   <string name="content_home_error_message">Oops!\nCó gì đó không ổn</string>
   <string name="private_home_title">Duyệt web riêng tư nâng cao</string>
-  <string name="private_home_description_1">Bây giờ bạn có thể duyệt riêng tư, không có lịch sử, không có mật khẩu được ghi lại và những người khác sử dụng thiết bị này sẽ không thấy hoạt động của bạn.\n\nDuyệt web riêng tư nâng cao của chúng tôi thậm chí có thể %1$s bởi các nhà quảng cáo và trang web, điều mà hầu hết các chế độ riêng tư không thể.</string>
-  <string name="private_home_description_2">ngăn bạn khỏi bị theo dõi</string>
   <string name="msrp_logoman_message">Giành phiếu mua hàng %1$s</string>
   <string name="msrp_home_hint">Hãy thử mua sắm, tin tức, trò chơi hàng ngày để giành được phiếu giảm giá %1$s</string>
   <string name="msrp_reward_title">Phần thưởng</string>

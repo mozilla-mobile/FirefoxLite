@@ -230,7 +230,7 @@
   <string name="label_menu_latest_top_trending_news">Haba barô &amp; trending</string>
   <string name="news_update_btn">Haba barô</string>
   <string name="title_news_preferences">Atô haba</string>
-  <string name="news_language_dialog_title">Basa haba</string>
+  <string name="news_language_dialog_title">Basa</string>
   <string name="news_language_dialog_option_english">Inggréh</string>
   <string name="news_language_dialog_option_hindi">India</string>
   <string name="news_language_dialog_option_marathi">Marathi</string>
@@ -271,6 +271,7 @@
   <string name="news_category_option_astrology">Éleumèe nujum</string>
   <string name="news_category_option_science">Sains</string>
   <string name="news_category_option_jokes">Cagok</string>
+  <string name="news_category_option_nation">Haba Nanggroe</string>
   <string name="logo_text">Layanan jipeuna lé</string>
   <string name="private_tab">Tab rahsia</string>
   <string name="private_browsing_title">Peuhah Wèb Rahsia</string>

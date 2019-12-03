@@ -357,8 +357,6 @@
   <string name="content_home_context_menu_share_link">分享鏈結</string>
   <string name="content_home_error_message">喔喔，有些東西不對勁！</string>
   <string name="private_home_title">進階隱私瀏覽模式</string>
-  <string name="private_home_description_1">現在起，您上網可以保持私密，不會留下上網紀錄、登入密碼，其他使用這台裝置的人也不會知道您曾經開過哪些網站。\n\n我們的進階隱私瀏覽功能，甚至可以%1$s，這是其他大部分隱私模式做不到的。</string>
-  <string name="private_home_description_2">保護您不被廣告商或網站追蹤</string>
   <string name="msrp_logoman_message">贏得 %1$s</string>
   <string name="msrp_home_hint">每天使用購物、新聞、遊戲功能，即可獲得 %1$s</string>
   <string name="msrp_reward_title">獎勵</string>
