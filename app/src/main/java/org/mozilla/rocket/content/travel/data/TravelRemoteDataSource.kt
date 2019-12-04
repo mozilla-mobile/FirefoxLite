@@ -228,7 +228,6 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val DEFAULT_BOOKING_COM_ENDPOINT = "https://distribution-xml.booking.com/2.5/json"
         private const val STR_VIDEO_ENDPOINT = "str_travel_video_endpoint"
         private const val STR_VERTICAL_CLIENT_API_KEY = "str_vertical_client_api_key"
-        private const val VIDEO_QUERY_PARAM = "%s+Travel"
         private const val DEFAULT_VIDEO_ENDPOINT_FORMAT = "https://zerda-dcf76.appspot.com/api/v1/video?query=%s&locale=%s&limit=5"
 
         private const val BOOKING_COM_PATH_AUTOCOMPLETE = "autocomplete"

@@ -89,7 +89,7 @@ class TravelCityViewModel(
                 data.add(TravelMapper.toExploreIgUiModel(igResult.data))
             }
 
-            val videoResult = getVideos(String.format(VIDEO_QUERY_PARAM, Uri.encode(name), context.resources.getString(R.string.travel_vertical_title)))
+            val videoResult = getVideos(String.format(VIDEO_QUERY_PATTERN, Uri.encode(name), context.resources.getString(R.string.travel_vertical_title)))
             if (videoResult is Result.Success) {
                 data.addAll(
                         videoResult.data.videos.map {
@@ -233,6 +233,6 @@ class TravelCityViewModel(
 
     companion object {
         private const val LOAD_MORE_HOTELS_THRESHOLD = 15
-        private const val VIDEO_QUERY_PARAM = "%s+%s"
+        private const val VIDEO_QUERY_PATTERN = "%s+%s"
     }
 }

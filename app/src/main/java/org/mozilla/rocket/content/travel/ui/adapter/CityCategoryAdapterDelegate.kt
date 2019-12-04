@@ -36,12 +36,11 @@ class CityCategoryViewHolder(
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val cityCategory = uiModel as CityCategoryUiModel
 
-        category_title.text =
-            when (cityCategory.subcategoryName) {
-                "Travel on a budget" -> itemView.context.getString(R.string.travel_destination_subcategory_1)
-                "Best cities for winter holiday" -> itemView.context.getString(R.string.travel_destination_subcategory_2)
-                else -> cityCategory.subcategoryName
-            }
+        category_title.text = if (cityCategory.stringResourceId != 0) {
+            category_title.context.getString(cityCategory.stringResourceId)
+        } else {
+            cityCategory.subcategoryName
+        }
 
         adapter.setData(cityCategory.cityList)
     }
@@ -50,6 +49,7 @@ class CityCategoryViewHolder(
 data class CityCategoryUiModel(
     val componentType: String,
     val subcategoryName: String,
+    val stringResourceId: Int,
     val subcategoryId: Int,
     val cityList: List<CityUiModel>
 ) : DelegateAdapter.UiModel()

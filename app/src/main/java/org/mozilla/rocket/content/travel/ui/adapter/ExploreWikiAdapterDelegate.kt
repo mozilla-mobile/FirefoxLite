@@ -41,7 +41,7 @@ class ExploreWikiViewHolder(
                 .into(explore_wiki_image)
 
         explore_wiki_content.text = exploreWiki.introduction
-        explore_wiki_source.text = exploreWiki.source
+        explore_wiki_source.text = exploreWiki.sourceName
 
         itemView.setOnClickListener { travelCityViewModel.onWikiClicked(exploreWiki) }
     }
@@ -50,6 +50,7 @@ class ExploreWikiViewHolder(
 data class WikiUiModel(
     val imageUrl: String,
     val source: String,
+    val sourceName: String,
     val introduction: String,
     val linkUrl: String
 ) : DelegateAdapter.UiModel()
