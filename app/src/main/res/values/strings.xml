@@ -439,8 +439,8 @@
     <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string> 
     
     <!-- In-app message to update Firefox Lite -->
-    <string name=“update_app_dialog_btn_update_now”>UPDATE NOW!</string>
-    <string name=“update_app_dialog_btn_later”>LATER</string>
+    <string name="update_app_dialog_btn_update_now">UPDATE NOW!</string>
+    <string name="update_app_dialog_btn_later">LATER</string>
    
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
