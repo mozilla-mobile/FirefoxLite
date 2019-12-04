@@ -106,7 +106,7 @@ class TravelCityViewModel(
                 )
             }
 
-            val wikiResult = getWiki(Uri.encode(name))
+            val wikiResult = getWiki(Uri.encode(englishName))
             if (wikiResult is Result.Success) {
                 data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data))
             }
