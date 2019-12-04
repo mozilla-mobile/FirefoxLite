@@ -47,7 +47,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:letterSpacing="0.11"
         android:maxLines="2"
         android:textColor="@color/contentHeaderTextColor87"
         app:layout_constraintTop_toTopOf="parent"
