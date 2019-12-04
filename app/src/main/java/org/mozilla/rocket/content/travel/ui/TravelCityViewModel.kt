@@ -137,12 +137,12 @@ class TravelCityViewModel(
 
         data.removeAt(data.size - 1)
         if (hotelResult is Result.Success) {
+            hotelsCount += hotelResult.data.result.size
             data.addAll(
-                hotelResult.data.result.map {
+                hotelResult.data.result.filterNotNull().map {
                     TravelMapper.toHotelUiModel(it)
                 }
             )
-            hotelsCount += hotelResult.data.result.size
         }
 
         _items.postValue(data)
@@ -151,7 +151,6 @@ class TravelCityViewModel(
 
     private fun loadMoreHotels() {
         if (!isHotelLoading) {
-
             backgroundTask {
                 loadHotels()
             }
