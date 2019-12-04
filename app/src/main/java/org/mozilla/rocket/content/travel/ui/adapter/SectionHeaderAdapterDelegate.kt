@@ -1,6 +1,8 @@
 package org.mozilla.rocket.content.travel.ui.adapter
 
 import android.view.View
+import android.webkit.URLUtil
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.item_section_header.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
@@ -27,9 +29,12 @@ class SectionHeaderViewHolder(
             is Explore -> header_title.text = containerView.context.getString(R.string.travel_detail_page_subcategory_content, header.type.name)
             is TopHotels -> header_title.text = containerView.context.getString(R.string.travel_detail_page_subcategory_hotel)
         }
+        more.isVisible = URLUtil.isValidUrl(header.linkUrl)
+        more.setOnClickListener { travelCityViewModel.onMoreClicked(header) }
     }
 }
 
 data class SectionHeaderUiModel(
-    val type: SectionType
+    val type: SectionType,
+    val linkUrl: String = ""
 ) : DelegateAdapter.UiModel()

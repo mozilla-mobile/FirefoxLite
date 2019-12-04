@@ -65,6 +65,10 @@ class TravelRepository(
         return remoteDataSource.getEnglishName(id, type)
     }
 
+    suspend fun getMoreHotelsUrl(name: String, id: String, type: String): Result<String> {
+        return remoteDataSource.getMoreHotelsUrl(name, id, type)
+    }
+
     companion object {
         private const val WIKI_URL = "https://en.wikipedia.org/wiki/"
     }

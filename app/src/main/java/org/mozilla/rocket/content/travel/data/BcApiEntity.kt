@@ -37,20 +37,23 @@ data class BcAutocompleteApiItem(
     val id: String,
     val name: String,
     val country: String,
-    val type: String
+    val type: String,
+    val url: String
 ) {
     companion object {
         private const val KEY_ID = "id"
         private const val KEY_NAME = "name"
         private const val KEY_COUNTRY_NAME = "country_name"
         private const val KEY_TYPE = "type"
+        private const val KEY_URL = "url"
 
         fun fromJson(jsonObject: JSONObject): BcAutocompleteApiItem =
                 BcAutocompleteApiItem(
                     jsonObject.optString(KEY_ID),
                     jsonObject.optString(KEY_NAME),
                     jsonObject.optString(KEY_COUNTRY_NAME),
-                    jsonObject.optString(KEY_TYPE)
+                    jsonObject.optString(KEY_TYPE),
+                    jsonObject.optString(KEY_URL)
                 )
     }
 }
