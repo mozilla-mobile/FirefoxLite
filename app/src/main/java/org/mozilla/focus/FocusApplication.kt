@@ -143,6 +143,8 @@ open class FocusApplication : LocaleAwareApplication() {
     }
 
     private fun registerCustomInAppMessagingListener() {
+        if (!AppConstants.isBuiltWithFirebase()) return
+
         FirebaseInAppMessaging.getInstance().addImpressionListener { inAppMessage ->
             val campaignName = inAppMessage.campaignMetadata?.campaignName
             TelemetryWrapper.showInAppMessage(campaignName)
