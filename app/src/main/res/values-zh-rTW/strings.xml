@@ -197,7 +197,7 @@
   <string name="rate_app_dialog_btn_feedback">留下意見回饋</string>
   <string name="rate_app_notification_action_feedback">意見回饋</string>
   <string name="share_app_dialog_text_title">分享 %1$s 給朋友！</string>
-  <string name="share_app_dialog_text_content">- 輕量光速快\n- 節省流量\n- 強大的擷圖功能</string>
+  <string name="share_app_dialog_text_content">- 輕量光速快\n- 智慧購物搜尋\n- 免費遊戲、熱門新聞</string>
   <string name="share_app_dialog_btn_share">分享</string>
   <string name="share_app_promotion_text">嘿！看看這套由 %3$s 所打造，光速快的瀏覽器 %1$s。%2$s</string>
   <string name="your_rights_content1">%1$s 是由 %2$s 及其貢獻者所打造，自由且開放原始碼的軟體。</string>
@@ -327,6 +327,7 @@
   <string name="gaming_vertical_hint_title">快速開啟您最愛的遊戲</string>
   <string name="gaming_vertical_hint_body">點擊此處，即可在裝置主畫面加入捷徑。</string>
   <string name="gaming_vertical_hint_button">確定</string>
+  <string name="gaming_vertical_shortcut_message">已建立捷徑。</string>
   <string name="gaming_vertical_menu_option_1">分享遊戲</string>
   <string name="gaming_vertical_menu_option_2">在裝置主畫面加入捷徑</string>
   <string name="gaming_vertical_menu_option_3">從清單移除</string>
@@ -344,7 +345,7 @@
   <string name="gaming_vertical_genre_11">體育與賽車</string>
   <string name="gaming_vertical_genre_12">女性</string>
   <string name="onboarding_2_introduction_title">全新 %1$s</string>
-  <string name="onboarding_2_introduction_description">一如往常的快速而輕量。我們加入了智慧購物搜尋功能與內容，讓上網變得更好玩有趣！</string>
+  <string name="onboarding_2_introduction_description">快速而輕量的瀏覽器，加入更多熱門功能。我們加入了智慧購物搜尋功能與內容，讓上網變得更好玩有趣！</string>
   <string name="onboarding_2_content_services_news_shopping_games">點擊即可閱讀熱門新聞、尋找優惠折扣，或者玩最熱門的免費遊戲！</string>
   <string name="onboarding_2_content_services_news_games">點擊即可閱讀熱門新聞，或玩最熱門的免費遊戲！</string>
   <string name="onboarding_2_content_services_games">點擊此處即可玩最熱門的免費遊戲！</string>
@@ -357,6 +358,8 @@
   <string name="content_home_context_menu_share_link">分享鏈結</string>
   <string name="content_home_error_message">喔喔，有些東西不對勁！</string>
   <string name="private_home_title">進階隱私瀏覽模式</string>
+  <string name="private_home_description_1">現在起，您上網可以保持私密，不會留下上網紀錄、登入密碼，其他使用這台裝置的人也不會知道您曾經開過哪些網站。\n\n我們的進階隱私瀏覽功能，甚至可以保護您不被廣告商或網站%1$s，這是其他大部分隱私模式做不到的。</string>
+  <string name="private_home_description_2">追蹤</string>
   <string name="msrp_logoman_message">贏得 %1$s</string>
   <string name="msrp_home_hint">每天使用購物、新聞、遊戲功能，即可獲得 %1$s</string>
   <string name="msrp_reward_title">獎勵</string>
@@ -421,4 +424,31 @@
   <string name="msrp_reward_challenge_error">喔喔，有些東西不對勁！</string>
   <string name="msrp_activitykilled_snackbar_button">兌換</string>
   <string name="msrp_activitykilled_snackbar_body">您已獲得購物兌換券！</string>
+  <string name="travel_vertical_title">旅遊</string>
+  <string name="travel_vertical_category_1">探索</string>
+  <string name="travel_vertical_category_2">目的地清單</string>
+  <string name="travel_destination_subcategory_1">輕省小旅行</string>
+  <string name="travel_destination_subcategory_2">寒假的最佳城市</string>
+  <string name="travel_find_destination_title">想要去哪裡？</string>
+  <string name="travel_find_destination_placeholder_1">試試「峇里島」…</string>
+  <string name="travel_detail_page_subcategory_content">探索 %1$s</string>
+  <string name="travel_detail_page_subcategory_hotel">熱門飯店</string>
+  <string name="travel_more">更多</string>
+  <string name="travel_content_ig_link">IG 上的 #%1$s</string>
+  <string name="travel_content_yt_view_count">%1$s 次檢視</string>
+  <string name="travel_content_yt_view_count_single_view">%1$s 次檢視</string>
+  <string name="travel_content_wiki_source_name">維基百科</string>
+  <string name="travel_hotel_detail_1">免費 Wi-Fi</string>
+  <string name="travel_hotel_detail_2">免費取消</string>
+  <string name="travel_hotel_detail_3">入住時付款</string>
+  <string name="travel_empty_state_text">「我沒去過任何地方，但這些地方在我的清單上。」</string>
+  <string name="travel_empty_state_button">探索城市</string>
+  <string name="travel_snack_bar_saved_message">已儲存到您的目的地清單。</string>
+  <string name="travel_snack_bar_button">檢視</string>
+  <string name="travel_onboarding_save_title">喜歡 %1$s 嗎？</string>
+  <string name="travel_onboarding_save_description">將 %1$s 儲存到目的地清單，讓您快速獲得旅遊指南與最佳價格。</string>
+  <string name="travel_onboarding_save_button">確定</string>
+  <string name="travel_find_destination_placeholder_2">輸入目的地</string>
+  <string name="travel_search_engine_1">用 %1$s 檢視結果</string>
+  <string name="travel_search_engine_2">在智慧旅遊搜尋功能中檢視搜尋結果</string>
 </resources>

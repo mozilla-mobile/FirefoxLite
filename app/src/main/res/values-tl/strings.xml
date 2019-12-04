@@ -363,6 +363,7 @@
   <string name="msrp_reward_redeem_redeem">Pagtubos</string>
   <string name="msrp_reward_redeem_voucher">Voucher</string>
   <string name="msrp_disqualification_button_1">Naiintindihan ko</string>
+  <string name="msrp_disqualification_button_3">Isara</string>
   <string name="msrp_reward_challenge_nointernet">Siguraduhing ikaw ay naka-connect sa Internet</string>
   <string name="msrp_reward_challenge_error_button">SUBUKAN MULI</string>
 </resources>
