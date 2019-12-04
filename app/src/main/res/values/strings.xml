@@ -436,7 +436,11 @@
     <string name="share_app_dialog_btn_share">Share</string>
     <string name="share_app_google_play_url" translatable="false">https://mzl.la/2kScptw</string>
     <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url, and %3$s is "Mozilla"-->
-    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string>    
+    <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string> 
+    
+    <!-- In-app message to update Firefox Lite -->
+    <string name=“update_app_dialog_btn_update_now”>UPDATE NOW!</string>
+    <string name=“update_app_dialog_btn_later”>LATER</string>
    
     <!-- Text shown in the "Your rights" screen.
     %1$s will be replaced with the name of the app (e.g. Firefox Rocket)
@@ -902,19 +906,23 @@
     <string name="travel_content_ig_link">#%1$s on IG</string>
     <!--Youtube content. the %1$s here is how many times of video viewing-->
     <string name="travel_content_yt_view_count">%1$s views</string>
-    <!--Youtube content. the %1$s here is single time of video viewing-->
-    <string name="travel_content_yt_view_count_single_view">%1$s view</string>
+    <!--Youtube content. this is single time of video viewing-->
+    <string name="travel_content_yt_view_count_single_view">1 view</string>
     <!--Wiki content-->
     <string name="travel_content_wiki_source_name">Wikipedia</string>
 
     <!--detail information for the hotel room-->
     <string name="travel_hotel_detail_1">Free Wi-Fi</string>
-    <string name="travel_hotel_detail_2">Free cancellation</string>
+    <string name="travel_hotel_detail_2">No credit cards required</string>
     <string name="travel_hotel_detail_3">Pay upon check in</string>
+    <!--the "from" here is indicating that the price is the minimal price-->
+    <string name="travel_hotel_price_from">From</string>
+
 
     <!--bucket list -->
     <!--text in the empty state -->
     <string name="travel_empty_state_text">“I haven’t been everywhere, but it’s on my list.”</string>
+    <string name="travel_empty_state_text_2" translatable="false">- Susan Sontag</string>
     <!--button for entering the search page-->
     <string name="travel_empty_state_button">Explore a city</string>
 
@@ -937,6 +945,5 @@
     <!--this is a title indicates that users will see search results from google after tapping on the following option. the %1$s here is google. -->
     <string name="travel_search_engine_1">See results in %1$s</string>
     <!--this is a title indicates that users will see search results summerized by smart travel search after tapping on the following options. -->
-    <string name="travel_search_engine_2">See results in smart travel search</string>                                      
-  
+    <string name="travel_search_engine_2">See results in smart travel search</string>
 </resources>
