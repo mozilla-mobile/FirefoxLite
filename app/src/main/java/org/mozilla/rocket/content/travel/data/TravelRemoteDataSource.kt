@@ -154,6 +154,24 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
+    override suspend fun getMoreHotelsUrl(name: String, id: String, type: String): Result<String> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+                call = {
+                    sendHttpRequest(request = Request(url = getSearchCityApiEndpoint(name), method = Request.Method.GET, headers = createHeaders()),
+                            onSuccess = {
+                                val apiEntity = BcAutocompleteApiEntity.fromJson(it.body.string())
+                                val apiItem = apiEntity.result.first { item -> item.id == id && item.type == type }
+                                Result.Success(apiItem.url)
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get more hotels url"
+        )
+    }
+
     private fun getExploreApiEndpoint(): String {
         val exploreApiEndpoint = FirebaseHelper.getFirebase().getRcString(STR_TRAVEL_EXPLORE_ENDPOINT)
         return if (exploreApiEndpoint.isNotEmpty()) {

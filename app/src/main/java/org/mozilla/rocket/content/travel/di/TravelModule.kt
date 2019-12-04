@@ -16,6 +16,7 @@ import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
 import org.mozilla.rocket.content.travel.domain.GetEnglishNameUseCase
 import org.mozilla.rocket.content.travel.domain.GetExploreListUseCase
+import org.mozilla.rocket.content.travel.domain.GetMoreHotelsUrlUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
@@ -104,6 +105,11 @@ object TravelModule {
     fun provideGetEnglishNameUseCase(travelRepository: TravelRepository): GetEnglishNameUseCase = GetEnglishNameUseCase(travelRepository)
 
     @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetMoreHotelsUrlUseCase(travelRepository: TravelRepository): GetMoreHotelsUrlUseCase = GetMoreHotelsUrlUseCase(travelRepository)
+
+    @JvmStatic
     @Provides
     fun provideTravelExploreViewModel(getExploreListUseCase: GetExploreListUseCase): TravelExploreViewModel = TravelExploreViewModel(getExploreListUseCase)
 
@@ -129,6 +135,7 @@ object TravelModule {
         addToBucketListUseCase: AddToBucketListUseCase,
         removeFromBucketListUseCase: RemoveFromBucketListUseCase,
         getEnglishNameUseCase: GetEnglishNameUseCase,
+        getMoreHotelsUrlUseCase: GetMoreHotelsUrlUseCase,
         shouldShowOnboardingUseCase: ShouldShowOnboardingUseCase,
         setOnboardingHasShownUseCase: SetOnboardingHasShownUseCase
     ): TravelCityViewModel = TravelCityViewModel(
@@ -140,6 +147,7 @@ object TravelModule {
         addToBucketListUseCase,
         removeFromBucketListUseCase,
         getEnglishNameUseCase,
+        getMoreHotelsUrlUseCase,
         shouldShowOnboardingUseCase,
         setOnboardingHasShownUseCase
     )

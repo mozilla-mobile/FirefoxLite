@@ -18,6 +18,7 @@ interface TravelDataSource {
     suspend fun addToBucketList(city: BucketListCity)
     suspend fun removeFromBucketList(id: String)
     suspend fun getEnglishName(id: String, type: String): Result<String>
+    suspend fun getMoreHotelsUrl(name: String, id: String, type: String): Result<String>
 }
 
 data class BucketListCity(

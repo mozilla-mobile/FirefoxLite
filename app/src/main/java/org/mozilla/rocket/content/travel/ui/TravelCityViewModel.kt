@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.travel.ui
 
 import android.content.Context
 import android.net.Uri
+import android.webkit.URLUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,7 @@ import org.mozilla.rocket.content.travel.domain.GetCityIgUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
 import org.mozilla.rocket.content.travel.domain.GetEnglishNameUseCase
+import org.mozilla.rocket.content.travel.domain.GetMoreHotelsUrlUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
@@ -38,6 +40,7 @@ class TravelCityViewModel(
     private val addToBucketList: AddToBucketListUseCase,
     private val removeFromBucketList: RemoveFromBucketListUseCase,
     private val getEnglishName: GetEnglishNameUseCase,
+    private val getMoreHotelsUrl: GetMoreHotelsUrlUseCase,
     private val shouldShowOnboarding: ShouldShowOnboardingUseCase,
     private val setOnboardingHasShown: SetOnboardingHasShownUseCase
 ) : ViewModel() {
@@ -118,7 +121,13 @@ class TravelCityViewModel(
                 }
 
                 // add hotel section header
-                data.add(SectionHeaderUiModel(SectionType.TopHotels))
+                val moreHotelsUrlResult = getMoreHotelsUrl(name, id, type)
+                val hotelHeader = if (moreHotelsUrlResult is Result.Success) {
+                    SectionHeaderUiModel(SectionType.TopHotels, moreHotelsUrlResult.data)
+                } else {
+                    SectionHeaderUiModel(SectionType.TopHotels)
+                }
+                data.add(hotelHeader)
 
                 _items.postValue(data)
             }, {
@@ -184,6 +193,10 @@ class TravelCityViewModel(
 
     fun onHotelClicked(hotelItem: HotelUiModel) {
         openLinkUrl.value = hotelItem.linkUrl
+    }
+
+    fun onMoreClicked(headerItem: SectionHeaderUiModel) {
+        if (URLUtil.isValidUrl(headerItem.linkUrl)) openLinkUrl.value = headerItem.linkUrl
     }
 
     fun onDetailItemScrolled(firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int, isScrollDown: Boolean) {

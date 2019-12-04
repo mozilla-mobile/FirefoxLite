@@ -99,6 +99,10 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         TODO("not implemented")
     }
 
+    override suspend fun getMoreHotelsUrl(name: String, id: String, type: String): Result<String> {
+        TODO("not implemented")
+    }
+
     private fun getBucketListFromPreferences(): MutableList<BucketListCity> {
         return try {
             val jsonString = preference.getString(KEY_JSON_STRING_BUCKET_LIST, "") ?: ""
