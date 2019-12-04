@@ -75,7 +75,7 @@
   <string name="first_run_page3_title">节省流量 = 节省金钱</string>
   <string name="first_run_page3_text">拦截广告跟踪可节省流量，不载入图像还能再省更多。</string>
   <string name="first_run_page4_title">截取整个页面</string>
-  <string name="first_run_page4_text">不但能滚动截取整个网页、离线查看截图（无需流量），还可通过点击截图重新访问原网页。</string>
+  <string name="first_run_page4_text">不但能滚动截取整个网页、离线查看截图（无需流量），还可点按截图重新访问原网页。</string>
   <string name="first_run_page5_title">新一代隐私权保护</string>
   <string name="first_run_page5_text">无痕浏览。默认阻止各种常见的网络跟踪器。确保私密数据的安全性。</string>
   <string name="first_run_page6_text">您只需轻轻翻转，即可在“%1$s”处获取新资讯 - 涵盖最流行的话题到最热门的促销等各种内容。%2$s</string>
@@ -189,7 +189,7 @@
   <string name="update_to_latest_app_snack_bar_message">最新版本已下载完毕</string>
   <string name="update_to_latest_app_snack_bar_update">更新</string>
   <string name="privacy_policy_update_notification_title">产品更新通知</string>
-  <string name="privacy_policy_update_notification_action">为了让 Firefox Lite 更适合您和每个人，我们对隐私政策进行了一些修改。点击以了解更多信息。</string>
+  <string name="privacy_policy_update_notification_action">为了让 Firefox Lite 更适合您和每个人，我们对隐私政策进行了一些修改。点按以了解更多信息。</string>
   <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
   <string name="rate_app_dialog_btn_go_rate">为我们打分</string>
@@ -197,7 +197,7 @@
   <string name="rate_app_dialog_btn_feedback">留下反馈</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
   <string name="share_app_dialog_text_title">与朋友分享 %1$s！</string>
-  <string name="share_app_dialog_text_content">- 快速且轻量级\n- 节约流量\n- 强大的截图功能</string>
+  <string name="share_app_dialog_text_content">- 一如既往的轻快\n- 智能购物搜索\n- 免费游戏、热门新闻</string>
   <string name="share_app_dialog_btn_share">分享</string>
   <string name="share_app_promotion_text">嘿，来试试 %3$s 出品的这款超快、轻量级浏览器吧！%1$s %2$s</string>
   <string name="your_rights_content1">%1$s 是由 %2$s 和其他贡献者提供的自由且开源软件。</string>
@@ -302,7 +302,7 @@
   <string name="shopping_search_placeholder">输入您要搜索的产品</string>
   <string name="shopping_search_prompt_message_body">使用智能购物搜索，在多家电商间比价。</string>
   <string name="shopping_search_prompt_message_button">搜索</string>
-  <string name="shopping_switch_ui_onboarding_body">点击下方购物网站以浏览更多结果，或点击此按钮进行编辑。</string>
+  <string name="shopping_switch_ui_onboarding_body">点按下方购物网站以浏览更多结果，或点按此按钮进行编辑。</string>
   <string name="shopping_switch_ui_onboarding_button">好</string>
   <string name="shopping_switch_ui_preferences_title">购物搜索设置</string>
   <string name="shopping_switch_ui_preferences_subtitle">要比价的网站</string>
@@ -327,6 +327,7 @@
   <string name="gaming_vertical_hint_title">快速访问您喜欢的游戏</string>
   <string name="gaming_vertical_hint_body">按下此处，即可在主屏幕创建快捷方式。</string>
   <string name="gaming_vertical_hint_button">好</string>
+  <string name="gaming_vertical_shortcut_message">快捷方式已创建。</string>
   <string name="gaming_vertical_menu_option_1">分享游戏</string>
   <string name="gaming_vertical_menu_option_2">在主屏幕创建快捷方式</string>
   <string name="gaming_vertical_menu_option_3">从列表中移除</string>
@@ -344,10 +345,10 @@
   <string name="gaming_vertical_genre_11">体育﹠赛车</string>
   <string name="gaming_vertical_genre_12">女孩</string>
   <string name="onboarding_2_introduction_title">全新 %1$s</string>
-  <string name="onboarding_2_introduction_description">一如既往的轻快。我们增加了智能购物搜索与内容，让网络浏览更愉快有趣！</string>
-  <string name="onboarding_2_content_services_news_shopping_games">点击即可阅读热门新闻、寻找优惠折扣，或者玩最火的免费游戏！</string>
-  <string name="onboarding_2_content_services_news_games">点击即可阅读热门新闻，或玩最火的免费游戏！</string>
-  <string name="onboarding_2_content_services_games">点击此处即可玩最火的免费游戏！</string>
+  <string name="onboarding_2_introduction_description">一如既往的轻快。我们增加了超酷的智能购物搜索与内容，让网络浏览更愉快有趣！</string>
+  <string name="onboarding_2_content_services_news_shopping_games">点按即可阅读热门新闻、寻找优惠折扣，或者玩最火的免费游戏！</string>
+  <string name="onboarding_2_content_services_news_games">点按即可阅读热门新闻，或玩最火的免费游戏！</string>
+  <string name="onboarding_2_content_services_games">点按此处即可玩最火的免费游戏！</string>
   <string name="onboarding_2_smart_shopping_search_title">智能购物搜索</string>
   <string name="onboarding_2_smart_shopping_search_description">在不同电商间比价相当简单，现在就试试看！</string>
   <string name="home_search_bar_text">搜索…</string>
@@ -357,6 +358,8 @@
   <string name="content_home_context_menu_share_link">分享链接</string>
   <string name="content_home_error_message">哎呀！\n某处出错了</string>
   <string name="private_home_title">高级隐私浏览</string>
+  <string name="private_home_description_1">现在起，您可以私密地浏览，不会留下历史记录、登录密码，其他使用这台设备的人也不会知道您曾打开过哪些网站。\n\n我们的高级隐私浏览功能，甚至可以%1$s，这是其他大部分隐私模式做不到的。</string>
+  <string name="private_home_description_2">杜绝跟踪</string>
   <string name="msrp_logoman_message">赢取 %1$s</string>
   <string name="msrp_home_hint">每天使用购物、新闻、游戏功能，即可赢取 %1$s</string>
   <string name="msrp_reward_title">奖励</string>
@@ -421,4 +424,31 @@
   <string name="msrp_reward_challenge_error">啊呀！出错了</string>
   <string name="msrp_activitykilled_snackbar_button">兑换</string>
   <string name="msrp_activitykilled_snackbar_body">您赢得了一张代金券！</string>
+  <string name="travel_vertical_title">旅行</string>
+  <string name="travel_vertical_category_1">探索</string>
+  <string name="travel_vertical_category_2">目的地清单</string>
+  <string name="travel_destination_subcategory_1">“穷游”</string>
+  <string name="travel_destination_subcategory_2">寒假游最佳城市</string>
+  <string name="travel_find_destination_title">您想去哪里？</string>
+  <string name="travel_find_destination_placeholder_1">试试“巴厘岛”…</string>
+  <string name="travel_detail_page_subcategory_content">探索 %1$s</string>
+  <string name="travel_detail_page_subcategory_hotel">热门酒店</string>
+  <string name="travel_more">更多</string>
+  <string name="travel_content_ig_link">IG 上的 #%1$s</string>
+  <string name="travel_content_yt_view_count">%1$s 次观看</string>
+  <string name="travel_content_yt_view_count_single_view">%1$s 次观看</string>
+  <string name="travel_content_wiki_source_name">维基百科</string>
+  <string name="travel_hotel_detail_1">免费 Wi-Fi</string>
+  <string name="travel_hotel_detail_2">免费取消</string>
+  <string name="travel_hotel_detail_3">入住时付款</string>
+  <string name="travel_empty_state_text">“我没去过这些地方，但是在我的清单上。”</string>
+  <string name="travel_empty_state_button">探索城市</string>
+  <string name="travel_snack_bar_saved_message">已保存到您的目的地清单。</string>
+  <string name="travel_snack_bar_button">查看</string>
+  <string name="travel_onboarding_save_title">喜欢 %1$s 吗？</string>
+  <string name="travel_onboarding_save_description">将 %1$s 保存到您的目的地清单，以便快速获得旅行指南和最佳价格。</string>
+  <string name="travel_onboarding_save_button">确定</string>
+  <string name="travel_find_destination_placeholder_2">输入目的地</string>
+  <string name="travel_search_engine_1">用 %1$s 查看结果</string>
+  <string name="travel_search_engine_2">在智能旅行搜索中查看结果</string>
 </resources>
