@@ -65,7 +65,7 @@ class HotelViewHolder(
 
         hotel_no_creditcard_required.isVisible = !hotelUiModel.creditCardRequired
         hotel_pay_at_hotel.isVisible = hotelUiModel.canPayAtProperty
-        hotel_extras.isVisible = hotelUiModel.creditCardRequired || hotelUiModel.canPayAtProperty
+        hotel_extras.isVisible = !hotelUiModel.creditCardRequired || hotelUiModel.canPayAtProperty
 
         itemView.setOnClickListener { travelCityViewModel.onHotelClicked(hotelUiModel) }
     }

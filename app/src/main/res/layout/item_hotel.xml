@@ -34,9 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_margin_m3"
-            android:layout_marginTop="6dp"
             android:layout_marginEnd="@dimen/common_margin_m3"
-            android:layout_marginBottom="5dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,14 +44,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="4dp"
                 android:background="@color/paletteLightGreyA100" />
 
             <TextView
                 android:id="@+id/hotel_no_creditcard_required"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8.5dp"
-                android:layout_marginBottom="1.5dp"
+                android:layout_height="24dp"
                 android:drawableStart="@drawable/ic_check"
                 android:drawablePadding="4dp"
                 android:fontFamily="sans-serif-medium"
@@ -67,8 +65,7 @@
             <TextView
                 android:id="@+id/hotel_pay_at_hotel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8.5dp"
+                android:layout_height="24dp"
                 android:drawableStart="@drawable/ic_checkin"
                 android:drawablePadding="4dp"
                 android:fontFamily="sans-serif-medium"
@@ -76,9 +73,7 @@
                 android:letterSpacing="0.02"
                 android:text="@string/travel_hotel_detail_3"
                 android:textColor="#21b42f"
-                android:textSize="@dimen/travel_hotel_card_info_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hotel_no_creditcard_required" />
+                android:textSize="@dimen/travel_hotel_card_info_text_size" />
         </LinearLayout>
 
         <TextView
