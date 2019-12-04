@@ -55,10 +55,9 @@ data class BcAutocompleteApiItem(
     }
 }
 
-data class BcHotelApiEntity(val result: List<BcHotelApiItem>) : BcApiEntity() {
+data class BcHotelApiEntity(val result: List<BcHotelApiItem?>) : BcApiEntity() {
     companion object {
 
-        @Suppress("UNCHECKED_CAST")
         fun fromJson(jsonString: String?): BcHotelApiEntity {
             return if (jsonString != null) {
                 val jsonObject = jsonString.toJsonObject()
@@ -67,9 +66,8 @@ data class BcHotelApiEntity(val result: List<BcHotelApiItem>) : BcApiEntity() {
                         (0 until jsonArray.length())
                                 .map { index -> jsonArray.getJSONObject(index) }
                                 .map { jObj -> BcHotelApiItem.fromJson(jObj) }
-                                .filterNot { it == null }
 
-                BcHotelApiEntity(result as List<BcHotelApiItem>)
+                BcHotelApiEntity(result)
             } else {
                 BcHotelApiEntity(emptyList())
             }
