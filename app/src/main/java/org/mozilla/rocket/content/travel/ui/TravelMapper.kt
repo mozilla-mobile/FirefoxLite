@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.ui
 
+import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayItem
@@ -23,23 +24,25 @@ import java.util.regex.Pattern
 object TravelMapper {
 
     private const val BANNER = "banner"
+    private const val SOURCE_WIKI = "Wikipedia"
     private const val SOURCE_BC = "Booking.com"
 
     fun toExploreList(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
         return apiEntity.subcategories.map { subcategory ->
             if (subcategory.componentType == BANNER) {
                 Runway(
-                        subcategory.componentType,
-                        subcategory.subcategoryName,
-                        subcategory.subcategoryId,
-                        subcategory.items.map { item -> toRunwayItem(item) }
+                    subcategory.componentType,
+                    subcategory.subcategoryName,
+                    subcategory.subcategoryId,
+                    subcategory.items.map { item -> toRunwayItem(item) }
                 )
             } else {
                 CityCategoryUiModel(
-                        subcategory.componentType,
-                        subcategory.subcategoryName,
-                        subcategory.subcategoryId,
-                        subcategory.items.map { item -> toCityUiModel(item) }
+                    subcategory.componentType,
+                    subcategory.subcategoryName,
+                    getExploreCategoryStringResourceId(subcategory.subcategoryId),
+                    subcategory.subcategoryId,
+                    subcategory.items.map { item -> toCityUiModel(item) }
                 )
             }
         }
@@ -107,10 +110,11 @@ object TravelMapper {
                 ig.linkUrl
             )
 
-    fun toExploreWikiUiModel(wiki: Wiki, source: String): WikiUiModel =
+    fun toExploreWikiUiModel(wiki: Wiki, sourceName: String): WikiUiModel =
             WikiUiModel(
                 wiki.imageUrl,
-                source,
+                SOURCE_WIKI,
+                sourceName,
                 wiki.introduction,
                 wiki.linkUrl
             )
@@ -143,4 +147,11 @@ object TravelMapper {
                 hotel.canPayAtProperty,
                 hotel.linkUrl
             )
+
+    private fun getExploreCategoryStringResourceId(subCategoryId: Int): Int =
+        when (subCategoryId) {
+            1 -> R.string.travel_destination_subcategory_1
+            2 -> R.string.travel_destination_subcategory_2
+            else -> 0
+        }
 }
