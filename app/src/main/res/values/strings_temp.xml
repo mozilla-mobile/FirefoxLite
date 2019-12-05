@@ -2,8 +2,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="waiting_for_redemption" translatable="false" tools:ignore="MissingTranslation">Waiting for redemption</string>
 
-    <string name="travel_hotel_free_cancellation" translatable="false" tools:ignore="MissingTranslation">Free cancellation</string>
-
     <string name="msrp_force_update_dialog_positive_btn" translatable="false" tools:ignore="MissingTranslation">UPDATE NOW!</string>
     <string name="msrp_force_update_dialog_negative_btn" translatable="false" tools:ignore="MissingTranslation">LATER</string>
 </resources>
