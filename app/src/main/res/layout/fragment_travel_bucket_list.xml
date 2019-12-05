@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif"
-                android:text="@string/travel_bucket_list_no_bookmark_name"
+                android:text="@string/travel_empty_state_text_2"
                 android:textColor="@color/paletteDarkGreyE100"
                 android:textSize="12sp"
                 android:textStyle="italic" />

@@ -169,7 +169,7 @@
             android:id="@+id/hotel_price_from"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/travel_hotel_rating_from"
+            android:text="@string/travel_hotel_price_from"
             android:textColor="@color/paletteDarkGreyD100"
             android:textSize="@dimen/travel_hotel_card_info_text_size"
             app:layout_constraintBottom_toTopOf="@id/hotel_price"
