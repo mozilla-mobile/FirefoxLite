@@ -357,6 +357,8 @@
   <string name="content_home_context_menu_share_link">लिंक साझा करें</string>
   <string name="content_home_error_message">ओह!\nकुछ गलत हो गया</string>
   <string name="private_home_title">उन्नत निजी ब्राउज़िंग</string>
+   <string name="private_home_description_1">अब आप निजी तौर पर ब्राउज़ कर सकते हैं, कोई इतिहास, कोई पासवर्ड सहेजा नहीं जाएगा और उपकरण का उपयोग करनेवाले अन्य लोग आपकी गतिविधि नहीं देख पाएंगे।\n\nहमारी उन्नत निजी ब्राउज़िंग आपको विज्ञापनकारियों और वेबसाइटों द्वारा %1$s सकता है, जो कि अधिकांश निजी मोड नहीं कर सकते हैं।</string>
+   <string name="private_home_description_2">ट्रैक होने से भी बचा</string>
   <string name="msrp_logoman_message">एक %1$s जीतें</string>
   <string name="msrp_home_hint">%1$s जीतने के लिए रोज़ाना शॉपिंग, समाचार, गेम्स को आज़माएं</string>
   <string name="msrp_reward_title">पुरस्कार</string>
