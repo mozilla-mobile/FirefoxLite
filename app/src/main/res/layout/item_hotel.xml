@@ -57,7 +57,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:letterSpacing="0.02"
-                android:text="@string/travel_hotel_no_creditcard_required"
+                android:text="@string/travel_hotel_detail_2"
                 android:textColor="#21b42f"
                 android:textSize="@dimen/travel_hotel_card_info_text_size"
                 tools:text="No credit cards required" />
