@@ -357,6 +357,8 @@
   <string name="content_home_context_menu_share_link">Bagikan tautan</string>
   <string name="content_home_error_message">Ups!\nTerjadi kesalahan</string>
   <string name="private_home_title">Penjelajahan Pribadi Tingkat Lanjut</string>
+  <string name="private_home_description_1">Sekarang Anda dapat menjelajah secara privat, tidak ada riwayat, tidak ada kata sandi yang direkam dan orang lain yang menggunakan perangkat ini tidak akan melihat aktivitas Anda.\n\nPenjelajahan Privat Lanjutan kami bahkan dapat %1$s oleh pengiklan dan situs web, di mana kebanyakan mode privat tidak dapat melakukannya.</string>
+  <string name="private_home_description_2">mencegah Anda dilacak</string>
   <string name="msrp_logoman_message">Menangkan %1$s</string>
   <string name="msrp_home_hint">Coba fitur Belanja, Berita, Pemainan setiap hari untuk memenangkan %1$s</string>
   <string name="msrp_reward_title">Hadiah</string>
