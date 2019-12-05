@@ -350,6 +350,8 @@
   <string name="content_home_context_menu_share_link">แบ่งปันลิงก์</string>
   <string name="content_home_error_message">อุ๊ย!\nมีบางอย่างไม่ถูกต้อง</string>
   <string name="private_home_title">การท่องเว็บส่วนตัวขั้นสูง</string>
+  <string name="private_home_description_1">ตอนนี้คุณสามารถค้นดูแบบส่วนตัว ไม่เก็บประวัติ ไม่เก็บรหัสผ่านและคนอื่นที่ใช้อุปกรณ์นี้จะไม่เห็นกิจกรรมของคุณ\n\nการค้นดูแบบส่วนตัวขั้นสูงสามารถแม้แต่ %1$s จากโฆษณาและเว็บไซต์ซึ่งโหมดส่วนตัวส่วนใหญ่ทำไม่ได้</string>
+  <string name="private_home_description_2">ป้องกันคุณจากการติดตาม</string>
   <string name="msrp_reward_title">รางวัล</string>
   <string name="msrp_reward_category_1">ภารกิจ</string>
   <string name="msrp_reward_category_2">ของขวัญ</string>

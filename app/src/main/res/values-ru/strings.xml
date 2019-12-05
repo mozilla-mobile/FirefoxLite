@@ -357,6 +357,8 @@
   <string name="content_home_context_menu_share_link">Поделиться ссылкой</string>
   <string name="content_home_error_message">Ой!\nЧто-то пошло не так</string>
   <string name="private_home_title">Продвинутый приватный просмотр</string>
+  <string name="private_home_description_1">Теперь вы можете сёрфить приватно, без сохранения истории и паролей, а другие люди, которые будут использовать это устройство, не увидят вашу активность.\n\nНаш расширенный приватный просмотр может даже %1$s рекламодателями и веб-сайтами, что невозможно в большинстве других браузеров.</string>
+  <string name="private_home_description_2">защитить вас от отслеживания</string>
   <string name="msrp_logoman_message">Выиграйте %1$s</string>
   <string name="msrp_home_hint">Используйте Шоппинг, Новости, Игры каждый день, чтобы выиграть %1$s</string>
   <string name="msrp_reward_title">Вознаграждение</string>
