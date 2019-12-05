@@ -23,7 +23,6 @@
         android:lines="1"
         android:textColor="@color/paletteBlack100"
         android:textSize="14sp"
-        android:textStyle="bold"
         tools:text="A" />
 
 </LinearLayout>

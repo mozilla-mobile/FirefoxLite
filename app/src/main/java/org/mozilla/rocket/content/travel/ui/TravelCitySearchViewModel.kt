@@ -65,7 +65,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     }
 
     private fun applyStyle(keyword: String, keywordSerchResult: String): CharSequence {
-        val idx = keywordSerchResult.toLowerCase(Locale.getDefault()).indexOf(keyword.toLowerCase())
+        val idx = keywordSerchResult.toLowerCase(Locale.getDefault()).indexOf(keyword.toLowerCase(Locale.getDefault()))
         if (idx != -1) {
             return SpannableStringBuilder(keywordSerchResult).apply {
                 setSpan(ForegroundColorSpan(Color.BLACK),
