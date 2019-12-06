@@ -903,7 +903,7 @@
     <string name="travel_more">More</string>
 
     <!--Instagram content. the %1$s here is the destination name-->
-    <string name="travel_content_ig_link">#%1$s on IG</string>
+    <string name="travel_content_ig_link">#%1$s on Instagram</string>
     <!--Youtube content. the %1$s here is how many times of video viewing-->
     <string name="travel_content_yt_view_count">%1$s views</string>
     <!--Youtube content. this is single time of video viewing-->
