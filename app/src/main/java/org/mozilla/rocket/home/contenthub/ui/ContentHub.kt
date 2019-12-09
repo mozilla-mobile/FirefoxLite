@@ -24,6 +24,7 @@ class ContentHub : LinearLayout {
     init {
         orientation = HORIZONTAL
         clipToPadding = false
+        clipChildren = false
         dpToPx(PADDING_IN_DP).let { setPadding(it, it, it, it) }
     }
 
