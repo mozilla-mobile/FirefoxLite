@@ -9,6 +9,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
+import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -49,6 +50,7 @@ object HomeModule {
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
+        readContentHubItemUseCase: ReadContentHubItemUseCase,
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
         lastReadMissionIdUseCase: LastReadMissionIdUseCase,
         dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
@@ -72,6 +74,7 @@ object HomeModule {
         pinTopSiteUseCase,
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
+        readContentHubItemUseCase,
         getLogoManNotificationUseCase,
         lastReadMissionIdUseCase,
         dismissLogoManNotificationUseCase,
@@ -128,6 +131,11 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetContentHubItemsUseCase = GetContentHubItemsUseCase(contentHubRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideReadContentHubItemUseCase(contentHubRepo: ContentHubRepo): ReadContentHubItemUseCase = ReadContentHubItemUseCase(contentHubRepo)
 
     @JvmStatic
     @Singleton
