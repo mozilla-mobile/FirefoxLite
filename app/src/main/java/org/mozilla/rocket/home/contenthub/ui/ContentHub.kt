@@ -33,8 +33,13 @@ class ContentHub : LinearLayout {
             val isLast = i == items.size - 1
             val isUnread = item.isUnread
             val itemSize = dpToPx(ITEM_SIZE_IN_DP)
+            val itemPadding = dpToPx(ITEM_PADDING_IN_DP)
             addView(
                 FrameLayout(context).apply {
+                    clipChildren = false
+                    clipToPadding = false
+                    setPadding(itemPadding, itemPadding, itemPadding, itemPadding)
+
                     addView(
                         ImageView(context).apply {
                             setImageResource(item.iconResId)
@@ -43,8 +48,9 @@ class ContentHub : LinearLayout {
                             elevation = dpToPx(ITEM_ELEVATION_IN_DP).toFloat()
                             setOnClickListener { clickListener?.invoke(item) }
                         },
-                        FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                        FrameLayout.LayoutParams(itemSize, itemSize)
                     )
+
                     if (isUnread) {
                         val unreadDotSize = dpToPx(UNREAD_DOT_SIZE_IN_DP)
                         addView(
@@ -58,7 +64,7 @@ class ContentHub : LinearLayout {
                         )
                     }
                 },
-                LayoutParams(itemSize, itemSize).apply {
+                LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                     if (!isLast) {
                         MarginLayoutParamsCompat.setMarginEnd(this, dpToPx(ITEM_MARGIN_IN_DP))
                     }
@@ -79,9 +85,10 @@ class ContentHub : LinearLayout {
     }
 
     companion object {
-        private const val PADDING_IN_DP = 12f
+        private const val PADDING_IN_DP = 8f
         private const val ITEM_SIZE_IN_DP = 44f
-        private const val ITEM_MARGIN_IN_DP = 24f
+        private const val ITEM_PADDING_IN_DP = 4f
+        private const val ITEM_MARGIN_IN_DP = 16f
         private const val ITEM_ELEVATION_IN_DP = 4f
         private const val UNREAD_DOT_SIZE_IN_DP = 10f
     }
