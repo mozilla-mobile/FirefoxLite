@@ -12,7 +12,9 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.first
 import org.mozilla.rocket.extension.map
+import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
+import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -47,7 +49,8 @@ class HomeViewModel(
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
-    private val getContentHubItemsUseCase: GetContentHubItemsUseCase,
+    getContentHubItemsUseCase: GetContentHubItemsUseCase,
+    private val readContentHubItemUseCase: ReadContentHubItemUseCase,
     private val getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
     private val lastReadMissionIdUseCase: LastReadMissionIdUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
@@ -69,7 +72,7 @@ class HomeViewModel(
     val sitePages = MutableLiveData<List<SitePage>>()
     val topSitesPageIndex = MutableLiveData<Int>()
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
-    val contentHubItems = MutableLiveData<List<ContentHub.Item>>().apply { value = getContentHubItemsUseCase() }
+    val contentHubItems = getContentHubItemsUseCase()
     val logoManNotification = MediatorLiveData<StateNotification?>()
     val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
@@ -243,6 +246,7 @@ class HomeViewModel(
 
     fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
         openContentPage.value = item
+        readContentHubItemUseCase(item.getItemType())
         TelemetryWrapper.clickContentHub(item)
         val checkInResult = checkInMissionUseCase(
             when (item) {
@@ -355,3 +359,11 @@ private fun GetLogoManNotificationUseCase.Notification.toUiModel() = when (this)
     is GetLogoManNotificationUseCase.Notification.RemoteNotification -> Notification.RemoteNotification(id, title, subtitle, imageUrl)
     is GetLogoManNotificationUseCase.Notification.MissionNotification -> Notification.MissionNotification(id, title, subtitle, imageUrl)
 }
+
+private fun ContentHub.Item.getItemType() =
+        when (this) {
+            is ContentHub.Item.Travel -> ContentHubRepo.TRAVEL
+            is ContentHub.Item.Shopping -> ContentHubRepo.SHOPPING
+            is ContentHub.Item.News -> ContentHubRepo.NEWS
+            is ContentHub.Item.Games -> ContentHubRepo.GAMES
+        }
