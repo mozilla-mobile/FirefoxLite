@@ -148,9 +148,9 @@ class TravelCityViewModel(
         if (hotelResult is Result.Success) {
             hotelsCount += hotelResult.data.result.size
             data.addAll(
-                hotelResult.data.result.filterNotNull().map {
-                    TravelMapper.toHotelUiModel(it)
-                }
+                hotelResult.data.result.filterNotNull()
+                    .filter { it.price > 0f }
+                    .map { TravelMapper.toHotelUiModel(it) }
             )
         }
 
