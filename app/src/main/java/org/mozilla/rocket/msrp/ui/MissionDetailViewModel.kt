@@ -117,7 +117,7 @@ class MissionDetailViewModel(
         )
     }
 
-    fun onQuitMissionButtonClicked() = viewModelScope.launch {
+    fun onLeaveMissionConfirmed() = viewModelScope.launch {
         isLoading.value = true
         val quitResult = quitMissionUseCase(mission)
         if (quitResult.isSuccess) {

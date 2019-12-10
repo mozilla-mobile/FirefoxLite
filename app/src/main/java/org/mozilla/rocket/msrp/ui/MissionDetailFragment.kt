@@ -9,6 +9,7 @@ import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,6 +39,7 @@ import kotlinx.android.synthetic.main.fragment_mission_detail.redeem_layout
 import kotlinx.android.synthetic.main.fragment_mission_detail.sign_in_text
 import kotlinx.android.synthetic.main.fragment_mission_detail.title
 import kotlinx.android.synthetic.main.fragment_mission_detail.view.day_text
+import kotlinx.android.synthetic.main.fragment_urlinput.dismiss
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
@@ -98,7 +100,7 @@ class MissionDetailFragment : Fragment(), NavigationResult {
         }
         quit_button.setOnClickListener {
             if (missionDetailViewModel.isLoading.value != true) {
-                missionDetailViewModel.onQuitMissionButtonClicked()
+                showLeaveMissionConfirmationDialog()
             }
         }
         redeem_button.setOnClickListener {
@@ -347,6 +349,18 @@ class MissionDetailFragment : Fragment(), NavigationResult {
                 .onClose { missionDetailViewModel.onForceUpdateCloseButtonClicked() }
                 .onCancel { missionDetailViewModel.onForceUpdateDialogCanceled() }
                 .show()
+    }
+
+    private fun showLeaveMissionConfirmationDialog() {
+        AlertDialog.Builder(requireContext()).apply {
+            setMessage(R.string.msrp_challenge_leaving_body)
+            setPositiveButton(R.string.msrp_challenge_leaving_button_2) { _, _ ->
+                missionDetailViewModel.onLeaveMissionConfirmed()
+            }
+            setNegativeButton(R.string.msrp_challenge_leaving_button_1) { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.show()
     }
 
     private fun openAppOnGooglePlay() {
