@@ -3,17 +3,18 @@ package org.mozilla.rocket.home.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
+import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
-import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
@@ -34,6 +35,7 @@ import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import javax.inject.Singleton
@@ -52,6 +54,7 @@ object HomeModule {
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
+        shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
         readContentHubItemUseCase: ReadContentHubItemUseCase,
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
         lastReadMissionIdUseCase: LastReadMissionIdUseCase,
@@ -76,6 +79,7 @@ object HomeModule {
         pinTopSiteUseCase,
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
+        shouldShowContentHubItemTextUseCase,
         readContentHubItemUseCase,
         getLogoManNotificationUseCase,
         lastReadMissionIdUseCase,
@@ -138,6 +142,12 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideReadContentHubItemUseCase(contentHubRepo: ContentHubRepo): ReadContentHubItemUseCase = ReadContentHubItemUseCase(contentHubRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowContentHubItemTextUseCase(): ShouldShowContentHubItemTextUseCase =
+            ShouldShowContentHubItemTextUseCase(FirebaseHelper.getFirebase())
 
     @JvmStatic
     @Singleton

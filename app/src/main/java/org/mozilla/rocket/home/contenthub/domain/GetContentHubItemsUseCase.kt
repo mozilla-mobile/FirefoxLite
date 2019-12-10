@@ -26,8 +26,8 @@ class GetContentHubItemsUseCase(private val contentHubRepo: ContentHubRepo) {
 private fun List<ContentHubItem>.toViewItem(): List<ContentHub.Item> = map { it.toViewItem() }
 
 private fun ContentHubItem.toViewItem(): ContentHub.Item = when (this) {
-    is ContentHubItem.Travel -> ContentHub.Item.Travel(iconResId, isUnread)
-    is ContentHubItem.Shopping -> ContentHub.Item.Shopping(iconResId, isUnread)
-    is ContentHubItem.News -> ContentHub.Item.News(iconResId, isUnread)
-    is ContentHubItem.Games -> ContentHub.Item.Games(iconResId, isUnread)
+    is ContentHubItem.Travel -> ContentHub.Item.Travel(iconResId, textResId, isUnread)
+    is ContentHubItem.Shopping -> ContentHub.Item.Shopping(iconResId, textResId, isUnread)
+    is ContentHubItem.News -> ContentHub.Item.News(iconResId, textResId, isUnread)
+    is ContentHubItem.Games -> ContentHub.Item.Games(iconResId, textResId, isUnread)
 }

@@ -15,6 +15,7 @@ import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
+import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -50,6 +51,7 @@ class HomeViewModel(
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
     getContentHubItemsUseCase: GetContentHubItemsUseCase,
+    shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
     private val readContentHubItemUseCase: ReadContentHubItemUseCase,
     private val getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
     private val lastReadMissionIdUseCase: LastReadMissionIdUseCase,
@@ -73,6 +75,7 @@ class HomeViewModel(
     val topSitesPageIndex = MutableLiveData<Int>()
     val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
     val contentHubItems = getContentHubItemsUseCase()
+    val shouldShowContentHubItemText = MutableLiveData<Boolean>().apply { value = shouldShowContentHubItemTextUseCase() }
     val logoManNotification = MediatorLiveData<StateNotification?>()
     val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
