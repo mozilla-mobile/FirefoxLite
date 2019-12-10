@@ -200,6 +200,8 @@
   <string name="share_app_dialog_text_content">- Быстрый и легкий\n- Экономия трафика\n- Мощные скриншоты</string>
   <string name="share_app_dialog_btn_share">Поделиться</string>
   <string name="share_app_promotion_text">Привет, попробуй этот быстрый и лёгкий браузер от %3$s. %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">ОБНОВИТЬ СЕЙЧАС!</string>
+  <string name="update_app_dialog_btn_later">ПОЗЖЕ</string>
   <string name="your_rights_content1">%1$s является бесплатной программой с открытым исходным кодом, созданной %2$s и другими участниками.</string>
   <string name="your_rights_content2"><![CDATA["%1$s предоставляется вам на условиях "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" и других лицензий для открытого исходного кода."]]></string>
   <string name="your_rights_content3"><![CDATA["Вы не получаете никаких прав или лицензий на товарные знаки Mozilla Foundation или любой другой стороны, включая имена или логотипы %3$s, %4$s или %1$s. Дополнительную информацию можно найти "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#1079;&#1076;&#1077;&#1089;&#1100;</a>.]]></string>
@@ -327,6 +329,7 @@
   <string name="gaming_vertical_hint_title">Получайте быстрый доступ к вашим любимым играм</string>
   <string name="gaming_vertical_hint_body">Нажмите, чтобы создать ярлык на домашнем экране.</string>
   <string name="gaming_vertical_hint_button">ОК</string>
+  <string name="gaming_vertical_shortcut_message">ярлык создан.</string>
   <string name="gaming_vertical_menu_option_1">Поделиться игрой</string>
   <string name="gaming_vertical_menu_option_2">Создать ярлык на домашнем экране</string>
   <string name="gaming_vertical_menu_option_3">Удалить из списка</string>
@@ -344,10 +347,10 @@
   <string name="gaming_vertical_genre_11">Спорт и гонки</string>
   <string name="gaming_vertical_genre_12">Для девочек</string>
   <string name="onboarding_2_introduction_title">Совершенно новый %1$s</string>
-  <string name="onboarding_2_introduction_description">Остаётся быстрым и лёгким. Мы добавили умный поиск покупок и контент, чтобы сделать Интернет-сёрфинг более увлекательным и приятным!</string>
-  <string name="onboarding_2_content_services_news_shopping_games">Одно нажатие до чтения последних новостей, нахождения выгодных предложений или игры в самые горячие бесплатные игры для развлечения!</string>
-  <string name="onboarding_2_content_services_news_games">Одно нажатие до чтения последних новостей или игры в самые горячие бесплатные игры для развлечения!</string>
-  <string name="onboarding_2_content_services_games">Одно нажатие до игры в самые горячие бесплатные игры для развлечения!</string>
+  <string name="onboarding_2_introduction_description">Быстрый и лёгкий браузер, теперь с классными функциями. Мы добавили умный поиск покупок и контент, чтобы сделать Интернет-сёрфинг более увлекательным!</string>
+  <string name="onboarding_2_content_services_news_shopping_games">Нажмите, чтобы читать последние новости, найти выгодные предложения или играть в самые горячие бесплатные игры!</string>
+  <string name="onboarding_2_content_services_news_games">Нажмите, чтобы читать последние новости или играть в самые горячие бесплатные игры!</string>
+  <string name="onboarding_2_content_services_games">Нажмите, чтобы играть в самые горячие бесплатные игры!</string>
   <string name="onboarding_2_smart_shopping_search_title">Умный поиск покупок</string>
   <string name="onboarding_2_smart_shopping_search_description">Сравнивать цены во множестве интернет-магазинов — легко, попробуйте сейчас!</string>
   <string name="home_search_bar_text">Поиск…</string>
@@ -423,4 +426,27 @@
   <string name="msrp_reward_challenge_error">Ой! Что-то пошло не так</string>
   <string name="msrp_activitykilled_snackbar_button">ВЫКУПИТЬ</string>
   <string name="msrp_activitykilled_snackbar_body">Вы выиграли ваучер для покупок!</string>
+  <string name="travel_vertical_title">Путешествия</string>
+  <string name="travel_vertical_category_1">Обзор</string>
+  <string name="travel_vertical_category_2">Список желаний</string>
+  <string name="travel_destination_subcategory_1">Бюджетные путешествия</string>
+  <string name="travel_destination_subcategory_2">Лучшие города для зимнего отдыха</string>
+  <string name="travel_find_destination_title">Куда вы хотите отправиться?</string>
+  <string name="travel_find_destination_placeholder_1">Попробуйте «Бали»...</string>
+  <string name="travel_detail_page_subcategory_hotel">Популярные отели</string>
+  <string name="travel_more">Ещё</string>
+  <string name="travel_content_ig_link">#%1$s на IG</string>
+  <string name="travel_content_yt_view_count">%1$s просмотров</string>
+  <string name="travel_content_yt_view_count_single_view">1 просмотр</string>
+  <string name="travel_content_wiki_source_name">Википедия</string>
+  <string name="travel_hotel_detail_1">Бесплатный Wi-Fi</string>
+  <string name="travel_hotel_detail_2">Кредитные карты не требуются</string>
+  <string name="travel_hotel_detail_3">Оплата при регистрации</string>
+  <string name="travel_hotel_price_from">От</string>
+  <string name="travel_snack_bar_saved_message">Сохранено в вашем списке желаний.</string>
+  <string name="travel_snack_bar_button">ПРОСМОТРЕТЬ</string>
+  <string name="travel_onboarding_save_title">Нравится %1$s?</string>
+  <string name="travel_onboarding_save_button">OK</string>
+  <string name="travel_find_destination_placeholder_2">Введите пункт назначения</string>
+  <string name="travel_search_engine_1">Посмотреть результаты в %1$s</string>
 </resources>

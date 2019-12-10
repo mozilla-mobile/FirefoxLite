@@ -200,6 +200,8 @@
   <string name="share_app_dialog_text_content">- 輕量光速快\n- 智慧購物搜尋\n- 免費遊戲、熱門新聞</string>
   <string name="share_app_dialog_btn_share">分享</string>
   <string name="share_app_promotion_text">嘿！看看這套由 %3$s 所打造，光速快的瀏覽器 %1$s。%2$s</string>
+  <string name="update_app_dialog_btn_update_now">立即更新！</string>
+  <string name="update_app_dialog_btn_later">稍後</string>
   <string name="your_rights_content1">%1$s 是由 %2$s 及其貢獻者所打造，自由且開放原始碼的軟體。</string>
   <string name="your_rights_content2"><![CDATA["%1$s 是依照 "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" 以及其他開放原始碼授權條款提供給您。"]]></string>
   <string name="your_rights_content3"><![CDATA[您並未被授權使用 Mozilla 基金會或任何相關部門的商標，包含但不限於 %3$s、%4$s、%1$s 的文字或圖樣。您可以在<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#36889;&#35041;</a>找到更多資訊。]]></string>
@@ -436,11 +438,12 @@
   <string name="travel_more">更多</string>
   <string name="travel_content_ig_link">IG 上的 #%1$s</string>
   <string name="travel_content_yt_view_count">%1$s 次檢視</string>
-  <string name="travel_content_yt_view_count_single_view">%1$s 次檢視</string>
+  <string name="travel_content_yt_view_count_single_view">1 次檢視</string>
   <string name="travel_content_wiki_source_name">維基百科</string>
   <string name="travel_hotel_detail_1">免費 Wi-Fi</string>
-  <string name="travel_hotel_detail_2">免費取消</string>
+  <string name="travel_hotel_detail_2">不需信用卡</string>
   <string name="travel_hotel_detail_3">入住時付款</string>
+  <string name="travel_hotel_price_from">起</string>
   <string name="travel_empty_state_text">「我沒去過任何地方，但這些地方在我的清單上。」</string>
   <string name="travel_empty_state_button">探索城市</string>
   <string name="travel_snack_bar_saved_message">已儲存到您的目的地清單。</string>
