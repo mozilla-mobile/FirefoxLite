@@ -17,8 +17,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_instagram" />
+        android:layout_marginStart="16dp" />
 
     <TextView
         android:id="@+id/explore_ig_tag"
