@@ -729,6 +729,7 @@
     <string name="onboarding_2_content_services_news_games">Tap to read trending news or have fun playing the hottest free games!</string>
     <string name="onboarding_2_content_services_games">Tap to play the hottest free games to have fun!</string>
     <string name="onboarding_2_content_services_message" translatable="false">@string/onboarding_2_content_services_news_games</string>
+    <string name="onboarding_2_content_services_news_travel">Tap to read trending news, plan your next trip and more!</string>
     <!-- Introduce Smart Shopping Search -->
     <string name="onboarding_2_smart_shopping_search_title">Smart Shopping Search</string>
     <string name="onboarding_2_smart_shopping_search_description">Comparing prices across different online stores is super easy, try it now!</string>
@@ -938,12 +939,13 @@
     <!--onboarding button-->
     <string name="travel_onboarding_save_button">OK</string>
 
-
     <!--search page -->
     <!--introduce what can be type in the field-->
     <string name="travel_find_destination_placeholder_2">Enter a destination</string>
     <!--this is a title indicates that users will see search results from google after tapping on the following option. the %1$s here is google. -->
     <string name="travel_search_engine_1">See results in %1$s</string>
-    <!--this is a title indicates that users will see search results summerized by smart travel search after tapping on the following options. -->
-    <string name="travel_search_engine_2">See results in smart travel search</string>
+    <!--this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Firefox Lite.-->
+    <string name="travel_search_engine_fxlite"See results in %1$s Travel Discovery</string>
+   
+   
 </resources>
