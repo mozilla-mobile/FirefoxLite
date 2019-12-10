@@ -114,11 +114,11 @@ private fun String.jsonStringToContentHubItems(enabledUnreadTypes: List<Int>, re
     }
 }
 
-sealed class ContentHubItem(val iconResId: Int, open var isUnread: Boolean) {
-    class Travel(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_travel, isUnread)
-    class Shopping(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_shopping, isUnread)
-    class News(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_news, isUnread)
-    class Games(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_games, isUnread)
+sealed class ContentHubItem(val iconResId: Int, val textResId: Int, open var isUnread: Boolean) {
+    class Travel(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_travel, R.string.travel_vertical_title, isUnread)
+    class Shopping(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_shopping, R.string.shopping_vertical_title, isUnread)
+    class News(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_news, R.string.label_menu_news, isUnread)
+    class Games(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_games, R.string.gaming_vertical_title, isUnread)
 }
 
 private fun createContentHubItem(type: Int, isUnread: Boolean): ContentHubItem {

@@ -246,6 +246,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             homeViewModel.onContentHubItemClicked(it)
         }
         homeViewModel.run {
+            shouldShowContentHubItemText.observe(this@HomeFragment, Observer {
+                content_hub.setShowText(it)
+            })
             contentHubItems.observe(this@HomeFragment, Observer {
                 content_hub_layout.visibility = if (it.isEmpty()) {
                     View.INVISIBLE

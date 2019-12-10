@@ -4,12 +4,14 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mockito.Mockito.spy
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
+import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -50,6 +52,7 @@ object HomeModule {
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
+        shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
         readContentHubItemUseCase: ReadContentHubItemUseCase,
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
         lastReadMissionIdUseCase: LastReadMissionIdUseCase,
@@ -74,6 +77,7 @@ object HomeModule {
         pinTopSiteUseCase,
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
+        shouldShowContentHubItemTextUseCase,
         readContentHubItemUseCase,
         getLogoManNotificationUseCase,
         lastReadMissionIdUseCase,
@@ -136,6 +140,12 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideReadContentHubItemUseCase(contentHubRepo: ContentHubRepo): ReadContentHubItemUseCase = ReadContentHubItemUseCase(contentHubRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowContentHubItemTextUseCase(): ShouldShowContentHubItemTextUseCase =
+            ShouldShowContentHubItemTextUseCase(FirebaseHelper.getFirebase())
 
     @JvmStatic
     @Singleton

@@ -70,6 +70,7 @@ object FirebaseHelper {
 
     const val STR_CONTENT_HUB_ITEMS = "str_content_hub_items"
     const val STR_CONTENT_HUB_UNREAD_ENABLED_ITEMS = "str_content_hub_unread_enabled_items"
+    const val BOOL_CONTENT_HUB_ITEM_TEXT_ENABLED = "bool_content_hub_item_text_enabled"
 
     const val STR_TOP_SITES_FIXED_ITEMS = "str_top_sites_fixed_items"
     const val STR_TOP_SITES_DEFAULT_ITEMS = "str_top_sites_default_items"
