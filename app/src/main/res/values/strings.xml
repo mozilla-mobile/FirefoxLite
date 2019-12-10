@@ -945,7 +945,7 @@
     <!--this is a title indicates that users will see search results from google after tapping on the following option. the %1$s here is google. -->
     <string name="travel_search_engine_1">See results in %1$s</string>
     <!--this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Firefox Lite.-->
-    <string name="travel_search_engine_fxlite"See results in %1$s Travel Discovery</string>
+    <string name="travel_search_engine_fxlite">See results in %1$s Travel Discovery</string>
    
    
 </resources>
