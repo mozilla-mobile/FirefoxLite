@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.ui
 
+import android.text.Html
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.adapter.Runway
@@ -119,12 +120,13 @@ object TravelMapper {
                 wiki.linkUrl
             )
 
+    @Suppress("DEPRECATION")
     fun toVideoUiModel(video: VideoApiItem, read: Boolean): VideoUiModel =
             VideoUiModel(
                 video.componentId,
                 video.thumbnail,
                 video.duration,
-                video.title,
+                Html.fromHtml(video.title).toString(),
                 video.channelTitle,
                 video.viewCount,
                 video.publishedAt,
