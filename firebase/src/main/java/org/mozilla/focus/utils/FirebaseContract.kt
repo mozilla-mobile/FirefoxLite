@@ -23,6 +23,8 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun getRcBoolean(key: String): Boolean
 
+    abstract fun getInstanceId(): String?
+
     abstract fun deleteInstanceId()
 
     abstract fun enableAnalytics(context: Context, enable: Boolean)

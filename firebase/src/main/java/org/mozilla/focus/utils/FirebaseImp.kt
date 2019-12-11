@@ -48,6 +48,16 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         return remoteConfig.getBoolean(key)
     }
 
+    override fun getInstanceId(): String? = try {
+        // This method is synchronized and runs in background thread
+        FirebaseInstanceId.getInstance().id
+
+        // below catch is important, if the app starts with Firebase disabled, calling getInstance()
+        // will throw IllegalStateException
+    } catch (e: IOException) {
+        null
+    }
+
     @WorkerThread
     override fun deleteInstanceId() {
         try {
