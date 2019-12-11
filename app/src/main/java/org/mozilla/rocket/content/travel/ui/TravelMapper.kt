@@ -152,8 +152,8 @@ object TravelMapper {
 
     private fun getExploreCategoryStringResourceId(subCategoryId: Int): Int =
         when (subCategoryId) {
-            1 -> R.string.travel_destination_subcategory_1
-            2 -> R.string.travel_destination_subcategory_2
+            26 -> R.string.travel_destination_subcategory_1
+            25 -> R.string.travel_destination_subcategory_2
             else -> 0
         }
 }
