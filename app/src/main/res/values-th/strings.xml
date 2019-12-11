@@ -300,7 +300,7 @@
   <string name="shopping_search_onboarding_title">ค้นหาของราคาดี</string>
   <string name="shopping_search_onboarding_body">เปรียบเทียบราคากับร้านค้าออนไลน์ต่างๆ ด้วยการค้นหาแบบสมาร์ตช็อปปิ้ง</string>
   <string name="shopping_search_placeholder">พิมพ์สินค้าที่ต้องหาค้นหา</string>
-  <string name="shopping_search_prompt_message_body">เปรียบเทียบราคากับร้านค้าออนไลน์ต่างๆ ด้วยการค้นหาแบบสมาร์ตชอปปิง</string>
+  <string name="shopping_search_prompt_message_body">เปรียบเทียบราคากับร้านค้าออนไลน์ต่าง ๆ ด้วย Smart Shopping Search</string>
   <string name="shopping_search_prompt_message_button">ค้นหา</string>
   <string name="shopping_switch_ui_onboarding_body">แตะที่เว็บชอปปิงด้านล่างเพื่อดูผลลัพธ์เพิ่มเติม หรือแตะปุ่มนี้เพื่อแก้ไข</string>
   <string name="shopping_switch_ui_onboarding_button">ตกลง</string>
@@ -349,7 +349,7 @@
   <string name="onboarding_2_content_services_news_games">แตะเพื่ออ่านข่าวติดเทรนด์ หาดีลดีๆ หรือเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
   <string name="onboarding_2_content_services_games">แตะเพื่อเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
   <string name="onboarding_2_smart_shopping_search_title">ค้นหาแบบสมาร์ตชอปปิ้ง</string>
-  <string name="onboarding_2_smart_shopping_search_description">เปรียบเทียบราคากับร้านค้าออนไลน์ต่างๆ ง่ายสุดๆ ลองดูเลย!</string>
+  <string name="onboarding_2_smart_shopping_search_description">เปรียบเทียบราคากับร้านค้าออนไลน์ต่าง ๆ ได้ง่ายสุด ๆ ลองดูเลย!</string>
   <string name="home_search_bar_text">ค้นหา…</string>
   <string name="home_content_services">เนื้อหาและบริการ</string>
   <string name="home_discovery">ค้นพบ</string>

@@ -400,7 +400,6 @@
   <string name="msrp_voucher_nostock">Kupon habis</string>
   <string name="msrp_faq">Ada pertanyaan? %1$s.</string>
   <string name="msrp_contact_us">Hubungi kami</string>
-  <string name="msrp_reward_redeem_redeem">Tukar</string>
   <string name="msrp_reward_redeem_voucher">Voucer</string>
   <string name="msrp_disqualification_title_1">Peringatan: multipel akun Firefox terdeteksi</string>
   <string name="msrp_disqualification_body_1">Untuk berpartisipasi dalam tantangan 7-hari, Anda hanya dapat menggunakan satu akun Firefox. Jika Anda mengganti dan menggunakan akun lain, Anda akan didiskualifikasi dari tantangan ini.</string>
