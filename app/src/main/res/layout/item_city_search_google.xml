@@ -19,10 +19,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:ellipsize="end"
-        android:fontFamily="sans-serif-medium"
+        android:fontFamily="sans-serif-light"
         android:lines="1"
-        android:textColor="@color/paletteBlack100"
+        android:textColor="@color/paletteLightBlack100"
         android:textSize="14sp"
+        android:textStyle="bold"
         tools:text="A" />
 
 </LinearLayout>
