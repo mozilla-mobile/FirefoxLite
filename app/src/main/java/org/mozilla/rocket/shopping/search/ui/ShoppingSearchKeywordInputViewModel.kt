@@ -34,7 +34,7 @@ class ShoppingSearchKeywordInputViewModel(
 
     init {
         isFirstRun = shouldShowSearchInputOnboarding()
-        emitUiModel(ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun))
+        emitUiModel(ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = false))
     }
 
     fun fetchSuggestions(keyword: String) {
@@ -45,7 +45,7 @@ class ShoppingSearchKeywordInputViewModel(
         fetchSuggestionsJob = viewModelScope.launch(Dispatchers.Default) {
             val newUiModel: ShoppingSearchKeywordInputUiModel
             if (TextUtils.isEmpty(keyword)) {
-                newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = !isFirstRun)
+                newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = false)
             } else {
                 var styledSuggestions: List<CharSequence>? = null
                 val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
