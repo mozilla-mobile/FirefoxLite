@@ -255,12 +255,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 } else {
                     View.VISIBLE
                 }
-                // TODO: Remove filter when travel is ready for release
-                if (!AppConstants.isDevBuild() && !AppConstants.isFirebaseBuild() && !AppConstants.isNightlyBuild()) {
-                    content_hub.setItems(it.filter { item -> item !is ContentHub.Item.Travel })
-                } else {
-                    content_hub.setItems(it)
-                }
+                content_hub.setItems(it)
             })
             openContentPage.observe(this@HomeFragment, Observer {
                 val context = requireContext()
