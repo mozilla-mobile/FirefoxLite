@@ -1,12 +1,9 @@
 package org.mozilla.rocket.content.travel.ui
 
 import android.content.Context
-import android.graphics.Color
 import org.mozilla.rocket.download.SingleLiveEvent
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.text.style.TypefaceSpan
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -68,14 +65,10 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
         val idx = keywordSerchResult.toLowerCase(Locale.getDefault()).indexOf(keyword.toLowerCase(Locale.getDefault()))
         if (idx != -1) {
             return SpannableStringBuilder(keywordSerchResult).apply {
-                setSpan(ForegroundColorSpan(Color.BLACK),
+                setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
                     idx,
                     idx + keyword.length,
-                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
-                setSpan(TypefaceSpan("sans-serif-medium"),
-                    idx,
-                    idx + keyword.length,
-                    Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
         } else {
             return keywordSerchResult
