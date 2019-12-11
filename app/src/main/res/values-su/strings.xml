@@ -388,7 +388,7 @@
   <string name="msrp_challenge_completed_title">Wilujeng!</string>
   <string name="msrp_challenge_completed_body">Ngahaturkeun nuhun pikeun nyobaan sababaraha fitur anyar. Muga-muga anjeun resep!</string>
   <string name="msrp_challenge_button_5">Tebus engké</string>
-  <string name="msrp_voucher_title">$1$s Anjeun geus siap!</string>
+  <string name="msrp_voucher_title">%1$s Anjeun geus siap!</string>
   <string name="msrp_voucher_body_1">Pocer sah pikeun waktu kawates. Kami boga hak pikeun ngarobah atawa ngabolaykeun pocerna iraha waé.</string>
   <string name="msrp_voucher_body_2">Kami boga hak, luyu jeung kawijakan, pikeun ngarobah, ngaropéa, nambahan, atawa mupus bagian Katangtuan Pamakéan, iraha baé.</string>
   <string name="msrp_voucher_expire">Kadaluwarsa %1$s</string>
