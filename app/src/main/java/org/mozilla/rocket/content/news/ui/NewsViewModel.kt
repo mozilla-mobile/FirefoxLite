@@ -8,23 +8,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.domain.LoadNewsParameter
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.domain.nextPage
+import org.mozilla.rocket.content.news.ui.adapter.NewsUiModel
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
 
-    private val categoryNewsMap = HashMap<String, MutableLiveData<NewsUiModel>>()
+    private val categoryNewsMap = HashMap<String, MutableLiveData<List<DelegateAdapter.UiModel>>>()
     private val categoryParameterMap = HashMap<String, LoadNewsParameter>()
     val versionId: Long = System.currentTimeMillis()
 
     val event = SingleLiveEvent<NewsAction>()
 
-    fun startToObserveNews(category: String, language: String): LiveData<NewsUiModel> {
+    fun startToObserveNews(category: String, language: String): LiveData<List<DelegateAdapter.UiModel>> {
         if (categoryNewsMap[category] == null) {
             categoryNewsMap[category] = MutableLiveData()
             initialize(category, language)
@@ -51,7 +53,7 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
         initialize(category, language)
     }
 
-    fun onNewsItemClicked(category: String, newsItem: NewsItem) {
+    fun onNewsItemClicked(category: String, newsItem: NewsUiModel) {
         val telemetryData = ContentTabTelemetryData(
             TelemetryWrapper.Extra_Value.LIFESTYLE,
             newsItem.feed,
@@ -86,12 +88,12 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
 
     private fun emitUiModel(category: String, newsItems: List<NewsItem>) {
         val newsData = categoryNewsMap[category] ?: return
-        val results = arrayListOf<NewsItem>()
-        newsData.value?.newsList?.let {
+        val results = arrayListOf<DelegateAdapter.UiModel>()
+        newsData.value?.let {
             results.addAll(it)
         }
-        results.addAll(newsItems)
-        newsData.value = NewsUiModel(results)
+        results.addAll(newsItems.map { NewsMapper.toNewsUiModel(it) })
+        newsData.value = results
     }
 
     companion object {
@@ -101,8 +103,4 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
     sealed class NewsAction {
         data class OpenLink(val url: String, val telemetryData: ContentTabTelemetryData) : NewsAction()
     }
-
-    data class NewsUiModel(
-        val newsList: List<NewsItem>
-    )
 }
