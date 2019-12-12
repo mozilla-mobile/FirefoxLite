@@ -14,15 +14,9 @@ import kotlinx.coroutines.withContext
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
-import org.mozilla.rocket.shopping.search.domain.SetSearchInputOnboardingIsShownUseCase
-import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchInputOnboardingUseCase
 import java.util.Locale
 
-class ShoppingSearchKeywordInputViewModel(
-    private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase,
-    shouldShowSearchInputOnboarding: ShouldShowSearchInputOnboardingUseCase,
-    private val setSearchInputOnboardingIsShown: SetSearchInputOnboardingIsShownUseCase
-) : ViewModel() {
+class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase) : ViewModel() {
 
     private val _uiModel = MutableLiveData<ShoppingSearchKeywordInputUiModel>()
     val uiModel: LiveData<ShoppingSearchKeywordInputUiModel>
@@ -30,12 +24,6 @@ class ShoppingSearchKeywordInputViewModel(
 
     val navigateToResultTab = SingleLiveEvent<String>()
     private var fetchSuggestionsJob: Job? = null
-    private var isFirstRun = false
-
-    init {
-        isFirstRun = shouldShowSearchInputOnboarding()
-        emitUiModel(ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = false))
-    }
 
     fun fetchSuggestions(keyword: String) {
         if (fetchSuggestionsJob?.isCompleted == false) {
@@ -64,10 +52,6 @@ class ShoppingSearchKeywordInputViewModel(
     fun onKeywordSent(keyword: String) {
         if (!TextUtils.isEmpty(keyword)) {
             navigateToResultTab.value = keyword
-            if (isFirstRun) {
-                setSearchInputOnboardingIsShown()
-                isFirstRun = false
-            }
         }
     }
 

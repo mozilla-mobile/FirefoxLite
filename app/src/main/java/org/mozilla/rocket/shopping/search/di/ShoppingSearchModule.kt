@@ -10,10 +10,8 @@ import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
-import org.mozilla.rocket.shopping.search.domain.SetSearchInputOnboardingIsShownUseCase
 import org.mozilla.rocket.shopping.search.domain.SetSearchResultOnboardingIsShownUseCase
 import org.mozilla.rocket.shopping.search.domain.ShouldEnableTurboModeUseCase
-import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchInputOnboardingUseCase
 import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchResultOnboardingUseCase
 import org.mozilla.rocket.shopping.search.domain.UpdateShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchBottomBarViewModel
@@ -39,12 +37,8 @@ object ShoppingSearchModule {
 
     @JvmStatic
     @Provides
-    fun provideShoppingSearchKeywordInputViewModel(
-        fetchKeywordUseCase: FetchKeywordSuggestionUseCase,
-        shouldShowSearchInputOnboardingUseCase: ShouldShowSearchInputOnboardingUseCase,
-        setSearchInputOnboardingIsShownUseCase: SetSearchInputOnboardingIsShownUseCase
-    ): ShoppingSearchKeywordInputViewModel =
-        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase, shouldShowSearchInputOnboardingUseCase, setSearchInputOnboardingIsShownUseCase)
+    fun provideShoppingSearchKeywordInputViewModel(fetchKeywordUseCase: FetchKeywordSuggestionUseCase): ShoppingSearchKeywordInputViewModel =
+        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase)
 
     @JvmStatic
     @Singleton
@@ -122,18 +116,6 @@ object ShoppingSearchModule {
     @Provides
     fun provideSetSearchResultOnboardingIsShownUseCase(repo: ShoppingSearchRepository): SetSearchResultOnboardingIsShownUseCase =
         SetSearchResultOnboardingIsShownUseCase(repo)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideShouldShowSearchInputOnboardingUseCase(repo: ShoppingSearchRepository): ShouldShowSearchInputOnboardingUseCase =
-        ShouldShowSearchInputOnboardingUseCase(repo)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideSetSearchInputOnboardingIsShownUseCase(repo: ShoppingSearchRepository): SetSearchInputOnboardingIsShownUseCase =
-        SetSearchInputOnboardingIsShownUseCase(repo)
 
     @JvmStatic
     @Singleton

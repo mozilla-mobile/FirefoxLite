@@ -43,12 +43,6 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
     override fun shouldEnableTurboMode(): Boolean =
         Settings.getInstance(appContext).shouldUseTurboMode()
 
-    override fun shouldShowSearchInputOnboarding() =
-        preference.getBoolean(KEY_SEARCH_INPUT_ONBOARDING, true)
-
-    override fun setSearchInputOnboardingIsShown() =
-        preference.edit().putBoolean(KEY_SEARCH_INPUT_ONBOARDING, false).apply()
-
     override fun shouldShowSearchResultOnboarding() =
         preference.getBoolean(KEY_SEARCH_RESULT_ONBOARDING, true)
 
@@ -58,7 +52,6 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
     companion object {
         const val PREF_NAME = "shopping_search"
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"
-        const val KEY_SEARCH_INPUT_ONBOARDING = "shopping_search_input_onboarding"
         const val KEY_SEARCH_RESULT_ONBOARDING = "shopping_search_result_onboarding"
     }
 }
