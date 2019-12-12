@@ -29,5 +29,6 @@ data class CitySearchResultUiModel(
     val id: String,
     val name: CharSequence,
     val country: String,
+    val countryCode: String,
     val type: String
 ) : DelegateAdapter.UiModel()

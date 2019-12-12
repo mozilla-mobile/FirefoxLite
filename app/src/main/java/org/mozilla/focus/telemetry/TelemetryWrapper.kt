@@ -3093,7 +3093,7 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Item Content Home",
+            name = "Click Content Home Item",
             category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.CONTENT_HOME,
@@ -3101,6 +3101,7 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.GAME}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.MISSION}|${Extra_Value.GIFT}|${Extra_Value.EXPLORE}|${Extra_Value.BUCKET_LIST}"),
+                TelemetryExtra(name = Extra.ITEM_ID, value = "item id"),
                 TelemetryExtra(name = Extra.ITEM_NAME, value = "item name")
             ])
     fun clickContentHomeItem(vertical: String, category: String, itemId: String, itemName: String) {

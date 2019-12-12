@@ -55,6 +55,9 @@ class TravelCityViewModel(
     private val _isInBucketList = MutableLiveData<Boolean>()
     val isInBucketList: LiveData<Boolean> = _isInBucketList
 
+    private val _englishCityName = MutableLiveData<String>()
+    val englishCityName: LiveData<String> = _englishCityName
+
     private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
@@ -94,10 +97,11 @@ class TravelCityViewModel(
                 data.add(SectionHeaderUiModel(SectionType.Explore(name)))
 
                 val englishNameResult = getEnglishName(id, type)
-                if (englishNameResult is Result.Success) {
-                    englishName = englishNameResult.data
+                englishName = if (englishNameResult is Result.Success) {
+                    _englishCityName.value = englishNameResult.data
+                    englishNameResult.data
                 } else {
-                    englishName = name
+                    name
                 }
 
                 val igResult = getIg(englishName)
