@@ -12,10 +12,6 @@ interface ShoppingSearchDataSource {
 
     fun shouldEnableTurboMode(): Boolean
 
-    fun shouldShowSearchInputOnboarding(): Boolean
-
-    fun setSearchInputOnboardingIsShown()
-
     fun shouldShowSearchResultOnboarding(): Boolean
 
     fun setSearchResultOnboardingIsShown()

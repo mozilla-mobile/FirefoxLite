@@ -51,10 +51,6 @@ class ShoppingSearchRepository(
 
     fun shouldEnableTurboMode() = localDataSource.shouldEnableTurboMode()
 
-    fun shouldShowSearchInputOnboarding() = localDataSource.shouldShowSearchInputOnboarding()
-
-    fun setSearchInputOnboardingIsShown() = localDataSource.setSearchInputOnboardingIsShown()
-
     fun shouldShowSearchResultOnboarding() = localDataSource.shouldShowSearchResultOnboarding()
 
     fun setSearchResultOnboardingIsShown() = localDataSource.setSearchResultOnboardingIsShown()
