@@ -36,6 +36,7 @@ import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.BucketList
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
+import java.util.Locale
 import javax.inject.Inject
 
 class TravelCityActivity : BaseActivity() {
@@ -157,11 +158,13 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel.items.observe(this, Observer {
             detailAdapter.setData(it)
         })
+        travelCityViewModel.englishCityName.observe(this, Observer {
+            city = city.copy(nameInEnglish = it.toLowerCase(Locale.getDefault()))
+        })
         travelCityViewModel.getLatestItems(this@TravelCityActivity, city.name, city.id, city.type)
     }
 
     private fun initExploreActions() {
-
         travelCityViewModel.openLinkUrl.observe(this, Observer { linkUrl ->
             startActivity(ContentTabActivity.getStartIntent(this@TravelCityActivity, linkUrl))
         })

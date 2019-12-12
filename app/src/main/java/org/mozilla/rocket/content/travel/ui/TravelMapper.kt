@@ -97,11 +97,12 @@ object TravelMapper {
                 city.countryCode
             )
 
-    fun toCitySearchResultUiModel(id: String, name: CharSequence, country: String, type: String): CitySearchResultUiModel =
+    fun toCitySearchResultUiModel(id: String, name: CharSequence, country: String, countryCode: String, type: String): CitySearchResultUiModel =
             CitySearchResultUiModel(
                 id,
                 name,
                 country,
+                countryCode,
                 type
             )
 

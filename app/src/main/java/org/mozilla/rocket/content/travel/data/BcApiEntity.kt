@@ -23,7 +23,7 @@ data class BcAutocompleteApiEntity(val result: List<BcAutocompleteApiItem>) : Bc
                 val result =
                         (0 until jsonArray.length())
                                 .map { index -> jsonArray.getJSONObject(index) }
-                                .filter { jObj -> TYPE_CITY.equals(jObj.optString(KEY_TYPE)) || TYPE_REGION.equals(jObj.optString(KEY_TYPE)) }
+                                .filter { jObj -> TYPE_CITY == jObj.optString(KEY_TYPE) || TYPE_REGION == jObj.optString(KEY_TYPE) }
                                 .map { jObj -> BcAutocompleteApiItem.fromJson(jObj) }
                 BcAutocompleteApiEntity(result)
             } else {
@@ -37,6 +37,7 @@ data class BcAutocompleteApiItem(
     val id: String,
     val name: String,
     val country: String,
+    val countryCode: String,
     val type: String,
     val url: String
 ) {
@@ -44,6 +45,7 @@ data class BcAutocompleteApiItem(
         private const val KEY_ID = "id"
         private const val KEY_NAME = "name"
         private const val KEY_COUNTRY_NAME = "country_name"
+        private const val KEY_COUNTRY_CODE = "country"
         private const val KEY_TYPE = "type"
         private const val KEY_URL = "url"
 
@@ -52,6 +54,7 @@ data class BcAutocompleteApiItem(
                     jsonObject.optString(KEY_ID),
                     jsonObject.optString(KEY_NAME),
                     jsonObject.optString(KEY_COUNTRY_NAME),
+                    jsonObject.optString(KEY_COUNTRY_CODE),
                     jsonObject.optString(KEY_TYPE),
                     jsonObject.optString(KEY_URL)
                 )

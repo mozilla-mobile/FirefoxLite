@@ -51,7 +51,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
                     list.add(CitySearchGoogleUiModel(keyword))
                     list.add(CitySearchResultCategoryUiModel(R.drawable.ic_search_black, context.resources.getString(R.string.travel_search_engine_fxlite, context.resources.getString(R.string.app_name))))
                     list.addAll(result.data.result.map {
-                        TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.type)
+                        TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.countryCode, it.type)
                     })
                 }
 
@@ -77,7 +77,7 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
     }
 
     fun onCityClicked(it: CitySearchResultUiModel) {
-        openCity.value = BaseCityData(it.id, it.name.toString(), it.type, "", "")
+        openCity.value = BaseCityData(it.id, it.name.toString(), it.type, it.name.toString(), it.countryCode)
         TelemetryWrapper.selectQueryContentHome(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.BOOKING_COM)
     }
 
