@@ -5,27 +5,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.Lazy
+import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.rocket.adapter.AdapterDelegatesManager
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
-import org.mozilla.rocket.content.common.ui.NoResultView
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.common.ui.firstImpression
 import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsItem
+import org.mozilla.rocket.content.news.ui.adapter.NewsAdapterDelegate
+import org.mozilla.rocket.content.news.ui.adapter.NewsUiModel
 import javax.inject.Inject
 
 class NewsFragment : Fragment() {
@@ -41,11 +45,7 @@ class NewsFragment : Fragment() {
 
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
-    private var recyclerView: RecyclerView? = null
-    private var newsEmptyView: NoResultView? = null
-    private var newsProgressCenter: ProgressBar? = null
-    private var newsAdapter: NewsAdapter? = null
-    private var newsListLayoutManager: LinearLayoutManager? = null
+    private lateinit var newsAdapter: DelegateAdapter
 
     private var isLoading = false
     private val uiScope = CoroutineScope(Dispatchers.Main)
@@ -55,6 +55,8 @@ class NewsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        newsViewModel = getActivityViewModel(newsViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
     }
 
     override fun onCreateView(
@@ -67,43 +69,24 @@ class NewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        recyclerView = view.findViewById(R.id.news_list)
-        newsEmptyView = view.findViewById(R.id.no_result_view)
-        newsProgressCenter = view.findViewById(R.id.news_progress_center)
-        newsEmptyView?.setButtonOnClickListener(View.OnClickListener {
-            // call onStatus() again with null to display the loading indicator
-            onStatus(null)
-            newsViewModel.retry(getCategory(), getLanguage())
-        })
+        initNewsList()
+        bindNewsListData()
+        handleActions()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    private fun initNewsList() {
+        newsAdapter = DelegateAdapter(
+            AdapterDelegatesManager().apply {
+                add(NewsUiModel::class, R.layout.item_news, NewsAdapterDelegate(getCategory(), newsViewModel))
+            }
+        )
 
-        newsViewModel = getActivityViewModel(newsViewModelCreator)
-        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
+        news_list.apply {
+            adapter = newsAdapter
+        }
 
-        val newsLiveData: LiveData<NewsViewModel.NewsUiModel>? =
-            newsViewModel.startToObserveNews(getCategory(), getLanguage())
-        newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
-            updateNews(items.newsList)
-            telemetryViewModel.updateVersionId(getCategory(), newsViewModel.versionId)
-            isLoading = false
-
-            recyclerView?.firstImpression(
-                telemetryViewModel,
-                getCategory(),
-                NewsItem.DEFAULT_SUB_CATEGORY_ID
-            )
-        })
-
-        newsAdapter = NewsAdapter(getCategory(), newsViewModel)
-        recyclerView?.adapter = newsAdapter
-        newsListLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        recyclerView?.layoutManager = newsListLayoutManager
-        newsListLayoutManager?.let {
-            recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        (news_list.layoutManager as LinearLayoutManager).let {
+            news_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val totalItemCount = it.itemCount
@@ -114,9 +97,30 @@ class NewsFragment : Fragment() {
                     }
                 }
             })
-            recyclerView?.monitorScrollImpression(telemetryViewModel)
-        }
 
+            news_list.monitorScrollImpression(telemetryViewModel)
+        }
+    }
+
+    private fun bindNewsListData() {
+
+        val newsLiveData: LiveData<List<DelegateAdapter.UiModel>>? =
+            newsViewModel.startToObserveNews(getCategory(), getLanguage())
+        newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
+            onStatus(items)
+            newsAdapter.setData(items)
+            telemetryViewModel.updateVersionId(getCategory(), newsViewModel.versionId)
+            isLoading = false
+
+            news_list.firstImpression(
+                telemetryViewModel,
+                getCategory(),
+                NewsItem.DEFAULT_SUB_CATEGORY_ID
+            )
+        })
+    }
+
+    private fun handleActions() {
         newsViewModel.event.observe(this, Observer { event ->
             when (event) {
                 is NewsViewModel.NewsAction.OpenLink -> {
@@ -126,9 +130,15 @@ class NewsFragment : Fragment() {
                 }
             }
         })
+
+        no_result_view.setButtonOnClickListener(View.OnClickListener {
+            // call onStatus() again with null to display the loading indicator
+            onStatus(null)
+            newsViewModel.retry(getCategory(), getLanguage())
+        })
     }
 
-    fun onStatus(items: List<NewsItem>?) {
+    fun onStatus(items: List<DelegateAdapter.UiModel>?) {
         when {
             items == null -> {
                 stateLoading()
@@ -151,21 +161,21 @@ class NewsFragment : Fragment() {
     }
 
     private fun stateDisplay() {
-        recyclerView?.visibility = View.VISIBLE
-        newsEmptyView?.visibility = View.GONE
-        newsProgressCenter?.visibility = View.GONE
+        news_list.isVisible = true
+        no_result_view.isVisible = false
+        news_progress_center.isVisible = false
     }
 
     private fun stateEmpty() {
-        recyclerView?.visibility = View.GONE
-        newsEmptyView?.visibility = View.VISIBLE
-        newsProgressCenter?.visibility = View.GONE
+        news_list.isVisible = false
+        no_result_view.isVisible = true
+        news_progress_center.isVisible = false
     }
 
     private fun stateLoading() {
-        recyclerView?.visibility = View.GONE
-        newsEmptyView?.visibility = View.GONE
-        newsProgressCenter?.visibility = View.VISIBLE
+        news_list.isVisible = false
+        no_result_view.isVisible = false
+        news_progress_center.isVisible = true
     }
 
     private fun loadMore() {
@@ -187,12 +197,6 @@ class NewsFragment : Fragment() {
 
     private fun getLanguage(): String {
         return arguments?.getString(NewsTabFragment.EXTRA_NEWS_LANGUAGE) ?: "english"
-    }
-
-    private fun updateNews(items: List<NewsItem>?) {
-        onStatus(items)
-
-        newsAdapter?.submitList(items)
     }
 
     companion object {
