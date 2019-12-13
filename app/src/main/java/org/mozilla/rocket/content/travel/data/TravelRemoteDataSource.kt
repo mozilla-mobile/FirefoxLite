@@ -59,6 +59,22 @@ class TravelRemoteDataSource : TravelDataSource {
         TODO("not implemented")
     }
 
+    override suspend fun getCityWikiName(name: String): Result<String> = withContext(Dispatchers.IO) {
+        return@withContext safeApiCall(
+                call = {
+                    sendHttpRequest(request = Request(url = getWikiNameApiEndpoint(name)),
+                            onSuccess = {
+                                Result.Success(getWikiNameFromJson(it.body.string()))
+                            },
+                            onError = {
+                                Result.Error(it)
+                            }
+                    )
+                },
+                errorMessage = "Unable to get wiki name"
+        )
+    }
+
     override suspend fun getCityWikiImage(name: String): Result<String> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
                 call = {
@@ -234,7 +250,15 @@ class TravelRemoteDataSource : TravelDataSource {
         }
     }
 
-    private fun getWikiExtractApiEndpoint(name: String): String = WIKI_EXTRACT_API + name
+    private fun getWikiNameApiEndpoint(name: String): String = String.format(WIKI_NAME_API, Locale.getDefault().language, name)
+
+    private fun getWikiNameFromJson(jsonString: String): String {
+        val jsonObject = jsonString.toJsonObject()
+        val search = jsonObject.optJSONObject(WIKI_JSON_KEY_QUERY).optJSONArray(WIKI_JSON_KEY_SEARCH).optJSONObject(0)
+        return search.optString(WIKI_JSON_KEY_TITLE)
+    }
+
+    private fun getWikiExtractApiEndpoint(name: String): String = String.format(WIKI_EXTRACT_API, Locale.getDefault().language, Locale.getDefault().toLanguageTag().toLowerCase(), name)
 
     private fun getWikiExtractFromJson(jsonString: String): String {
         val jsonObject = jsonString.toJsonObject()
@@ -244,7 +268,7 @@ class TravelRemoteDataSource : TravelDataSource {
         return pageContent.optString(WIKI_JSON_KEY_EXTRACT)
     }
 
-    private fun getWikiImageApiEndpoint(name: String): String = WIKI_IMAGE_API + name
+    private fun getWikiImageApiEndpoint(name: String): String = String.format(WIKI_IMAGE_API, Locale.getDefault().language, name)
 
     private fun getWikiImageFromJson(jsonString: String): String {
         val jsonObject = jsonString.toJsonObject()
@@ -287,11 +311,14 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val BOOKING_COM_PATH_REGIONS = "regions"
 
         private const val WIKI_JSON_KEY_QUERY = "query"
+        private const val WIKI_JSON_KEY_SEARCH = "search"
+        private const val WIKI_JSON_KEY_TITLE = "title"
         private const val WIKI_JSON_KEY_PAGES = "pages"
         private const val WIKI_JSON_KEY_EXTRACT = "extract"
         private const val WIKI_JSON_KEY_ORIGINAL = "original"
         private const val WIKI_JSON_KEY_SOURCE = "source"
-        private const val WIKI_IMAGE_API = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles="
-        private const val WIKI_EXTRACT_API = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exlimit=1&exsectionformat=plain&exchars=320&explaintext=1&titles="
+        private const val WIKI_NAME_API = "https://%s.wikipedia.org/w/api.php?action=query&list=search&format=json&srlimit=1&srprop=timestamp&srsearch=%s"
+        private const val WIKI_IMAGE_API = "https://%s.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=%s"
+        private const val WIKI_EXTRACT_API = "https://%s.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exlimit=1&exsectionformat=plain&exchars=320&explaintext=1&variant=%s&titles=%s"
     }
 }

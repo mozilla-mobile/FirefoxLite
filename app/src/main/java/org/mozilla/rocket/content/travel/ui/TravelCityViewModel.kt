@@ -20,11 +20,11 @@ import org.mozilla.rocket.content.travel.domain.GetCityVideosUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityWikiUseCase
 import org.mozilla.rocket.content.travel.domain.GetEnglishNameUseCase
 import org.mozilla.rocket.content.travel.domain.GetMoreHotelsUrlUseCase
+import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
-import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
-import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
+import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.LoadingUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
@@ -115,7 +115,7 @@ class TravelCityViewModel(
                     )
                 }
 
-                val wikiResult = getWiki(Uri.encode(englishName))
+                val wikiResult = getWiki(name)
                 if (wikiResult is Result.Success) {
                     data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data, context.resources.getString(R.string.travel_content_wiki_source_name)))
                 }
