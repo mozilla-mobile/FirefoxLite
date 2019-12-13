@@ -10,6 +10,7 @@ interface TravelDataSource {
     suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity>
     suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
     suspend fun getCityIg(name: String): Result<Ig>
+    suspend fun getCityWikiName(name: String): Result<String>
     suspend fun getCityWikiImage(name: String): Result<String>
     suspend fun getCityWikiExtract(name: String): Result<String>
     suspend fun getCityVideos(keyword: String): Result<VideoApiEntity>

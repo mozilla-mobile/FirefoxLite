@@ -61,6 +61,10 @@ class TravelLocalDataSource(private val appContext: Context) : TravelDataSource 
         }
     }
 
+    override suspend fun getCityWikiName(name: String): Result<String> {
+        TODO("not implemented")
+    }
+
     override suspend fun getCityWikiImage(name: String): Result<String> {
         TODO("not implemented")
     }

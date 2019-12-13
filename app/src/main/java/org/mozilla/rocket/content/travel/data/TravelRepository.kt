@@ -1,7 +1,9 @@
 package org.mozilla.rocket.content.travel.data
 
+import android.net.Uri
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
+import java.util.Locale
 
 class TravelRepository(
     private val remoteDataSource: TravelRemoteDataSource,
@@ -29,14 +31,17 @@ class TravelRepository(
     }
 
     suspend fun getCityWiki(name: String): Result<Wiki> {
-        val resultExtract = remoteDataSource.getCityWikiExtract(name)
-        val resultImage = remoteDataSource.getCityWikiImage(name)
+        val resultName = remoteDataSource.getCityWikiName(name)
+        val normalizedName = Uri.encode(if (resultName is Result.Success) { resultName.data } else { name })
+
+        val resultExtract = remoteDataSource.getCityWikiExtract(normalizedName)
+        val resultImage = remoteDataSource.getCityWikiImage(normalizedName)
 
         if (resultImage !is Result.Success || resultExtract !is Result.Success) {
             return Result.Error(Exception())
         }
 
-        val wiki = Wiki(resultImage.data, resultExtract.data, WIKI_URL + name)
+        val wiki = Wiki(resultImage.data, resultExtract.data, String.format(WIKI_URL, Locale.getDefault().language, normalizedName))
 
         return Result.Success(wiki)
     }
@@ -70,6 +75,6 @@ class TravelRepository(
     }
 
     companion object {
-        private const val WIKI_URL = "https://en.wikipedia.org/wiki/"
+        private const val WIKI_URL = "https://%s.wikipedia.org/wiki/%s"
     }
 }
