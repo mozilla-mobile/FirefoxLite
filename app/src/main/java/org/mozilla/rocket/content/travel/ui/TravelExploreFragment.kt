@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_travel_explore.*
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
@@ -92,7 +93,7 @@ class TravelExploreFragment : Fragment() {
         })
         travelExploreViewModel.openCity.observe(this, Observer { city ->
             context?.let {
-                startActivity(TravelCityActivity.getStartIntent(it, city))
+                startActivity(TravelCityActivity.getStartIntent(it, city, TelemetryWrapper.Extra_Value.EXPLORE))
             }
         })
 

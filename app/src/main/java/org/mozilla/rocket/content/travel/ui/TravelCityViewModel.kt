@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.AddToBucketListUseCase
@@ -66,9 +67,8 @@ class TravelCityViewModel(
     val openLinkUrl = SingleLiveEvent<String>()
 
     private var hotelsCount = 0
-    private lateinit var id: String
-    private lateinit var type: String
-    private lateinit var englishName: String
+    private lateinit var city: BaseCityData
+    var category: String = ""
 
     init {
         if (shouldShowOnboarding()) {
@@ -83,33 +83,33 @@ class TravelCityViewModel(
         }
     }
 
-    fun getLatestItems(context: Context, name: String, id: String, type: String) {
+    fun getLatestItems(context: Context, city: BaseCityData) {
         data.clear()
         hotelsCount = 0
-        this.id = id
-        this.type = type
+        this.city = city
 
         launchDataLoad(
             {
                 // TODO: add price items
 
                 // add explore
-                data.add(SectionHeaderUiModel(SectionType.Explore(name)))
+                data.add(SectionHeaderUiModel(SectionType.Explore(city.name)))
 
-                val englishNameResult = getEnglishName(id, type)
-                englishName = if (englishNameResult is Result.Success) {
+                val englishNameResult = getEnglishName(city.id, city.type)
+                val englishName = if (englishNameResult is Result.Success) {
                     _englishCityName.value = englishNameResult.data
                     englishNameResult.data
                 } else {
-                    name
+                    city.name
                 }
+                this.city = city.copy(nameInEnglish = englishName)
 
                 val igResult = getIg(englishName)
                 if (igResult is Result.Success) {
                     data.add(TravelMapper.toExploreIgUiModel(igResult.data))
                 }
 
-                val videoResult = getVideos(String.format(VIDEO_QUERY_PATTERN, Uri.encode(name), context.resources.getString(R.string.travel_vertical_title)))
+                val videoResult = getVideos(String.format(VIDEO_QUERY_PATTERN, Uri.encode(city.name), context.resources.getString(R.string.travel_vertical_title)))
                 if (videoResult is Result.Success) {
                     data.addAll(
                             videoResult.data.videos.map {
@@ -119,13 +119,13 @@ class TravelCityViewModel(
                     )
                 }
 
-                val wikiResult = getWiki(name)
+                val wikiResult = getWiki(city.name)
                 if (wikiResult is Result.Success) {
                     data.add(TravelMapper.toExploreWikiUiModel(wikiResult.data, context.resources.getString(R.string.travel_content_wiki_source_name)))
                 }
 
                 // add hotel section header
-                val moreHotelsUrlResult = getMoreHotelsUrl(name, id, type)
+                val moreHotelsUrlResult = getMoreHotelsUrl(city.name, city.id, city.type)
                 val hotelHeader = if (moreHotelsUrlResult is Result.Success) {
                     SectionHeaderUiModel(SectionType.TopHotels, moreHotelsUrlResult.data)
                 } else {
@@ -146,7 +146,7 @@ class TravelCityViewModel(
         _items.postValue(data)
 
         isHotelLoading = true
-        val hotelResult = getHotels(id, type, hotelsCount)
+        val hotelResult = getHotels(city.id, city.type, hotelsCount)
 
         data.removeAt(data.size - 1)
         if (hotelResult is Result.Success) {
@@ -200,7 +200,10 @@ class TravelCityViewModel(
     }
 
     fun onMoreClicked(headerItem: SectionHeaderUiModel) {
-        if (URLUtil.isValidUrl(headerItem.linkUrl)) openLinkUrl.value = headerItem.linkUrl
+        if (URLUtil.isValidUrl(headerItem.linkUrl)) {
+            openLinkUrl.value = headerItem.linkUrl
+            TelemetryWrapper.openDetailPageMore(TelemetryWrapper.Extra_Value.TRAVEL, category, city.id, city.getTelemetryItemName(), HOTEL_LISTING_SUB_CATEGORY_ID)
+        }
     }
 
     fun onDetailItemScrolled(firstVisibleItem: Int, visibleItemCount: Int, totalItemCount: Int, isScrollDown: Boolean) {
@@ -265,5 +268,6 @@ class TravelCityViewModel(
     companion object {
         private const val LOAD_MORE_HOTELS_THRESHOLD = 15
         private const val VIDEO_QUERY_PATTERN = "%s+%s"
+        private const val HOTEL_LISTING_SUB_CATEGORY_ID = "29"
     }
 }

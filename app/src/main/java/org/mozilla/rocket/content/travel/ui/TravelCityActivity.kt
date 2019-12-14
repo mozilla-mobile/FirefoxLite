@@ -111,7 +111,7 @@ class TravelCityActivity : BaseActivity() {
             travelCityViewModel.onFavoriteToggled(city, it.isSelected)
         }
         refresh_button.setOnClickListener {
-            travelCityViewModel.getLatestItems(this@TravelCityActivity, city.name, city.id, city.type)
+            travelCityViewModel.getLatestItems(this@TravelCityActivity, city)
         }
     }
 
@@ -151,6 +151,7 @@ class TravelCityActivity : BaseActivity() {
     }
 
     private fun bindCityData() {
+        travelCityViewModel.category = intent?.extras?.getString(EXTRA_CATEGORY, "") ?: ""
         travelCityViewModel.isInBucketList.observe(this, Observer {
             favorite_button.isSelected = it
         })
@@ -161,7 +162,7 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel.englishCityName.observe(this, Observer {
             city = city.copy(nameInEnglish = it.toLowerCase(Locale.getDefault()))
         })
-        travelCityViewModel.getLatestItems(this@TravelCityActivity, city.name, city.id, city.type)
+        travelCityViewModel.getLatestItems(this@TravelCityActivity, city)
     }
 
     private fun initExploreActions() {
@@ -206,10 +207,12 @@ class TravelCityActivity : BaseActivity() {
 
     companion object {
         private const val EXTRA_CITY = "city"
-        fun getStartIntent(context: Context, city: BaseCityData) =
+        private const val EXTRA_CATEGORY = "category"
+        fun getStartIntent(context: Context, city: BaseCityData, category: String) =
                 Intent(context, TravelCityActivity::class.java).also {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     it.putExtra(EXTRA_CITY, city)
+                    it.putExtra(EXTRA_CATEGORY, category)
                 }
     }
 }
