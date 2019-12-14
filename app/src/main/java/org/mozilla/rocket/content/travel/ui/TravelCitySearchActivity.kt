@@ -108,7 +108,7 @@ class TravelCitySearchActivity : AppCompatActivity() {
             }
         })
         searchViewModel.openCity.observe(this, Observer { city ->
-            startActivity(TravelCityActivity.getStartIntent(this@TravelCitySearchActivity, city))
+            startActivity(TravelCityActivity.getStartIntent(this@TravelCitySearchActivity, city, TelemetryWrapper.Extra_Value.EXPLORE))
         })
         searchViewModel.changeClearBtnVisibility.observe(this, Observer {
             if (it != null) {

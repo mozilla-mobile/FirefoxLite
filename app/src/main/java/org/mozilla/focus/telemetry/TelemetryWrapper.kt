@@ -164,6 +164,7 @@ object TelemetryWrapper {
         const val ACCOUNT = "account"
         const val REDEEM_PAGE = "redeem_page"
         const val PROFILE = "profile"
+        const val DETAIL_PAGE = "detail_page"
     }
 
     object Value {
@@ -245,6 +246,7 @@ object TelemetryWrapper {
         internal const val CONTEXTMENU = "contextmenu"
         internal const val CONTENT_HOME = "content_home"
         internal const val UPDATE = "update"
+        internal const val MORE = "more"
     }
 
     internal object Extra {
@@ -2642,6 +2644,29 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.OPEN, Object.CATEGORY)
                 .extra(Extra.VERTICAL, vertical)
                 .extra(Extra.CATEGORY, category)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Open Detail Page More",
+            category = Category.ACTION,
+            method = Method.OPEN,
+            `object` = Object.DETAIL_PAGE,
+            value = Value.MORE,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "category"),
+                TelemetryExtra(name = Extra.ITEM_ID, value = "item id"),
+                TelemetryExtra(name = Extra.ITEM_NAME, value = "item name"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "sub category id")
+            ])
+    fun openDetailPageMore(vertical: String, category: String, itemId: String, itemName: String, subCategoryId: String) {
+        EventBuilder(Category.ACTION, Method.OPEN, Object.DETAIL_PAGE, Value.MORE)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.CATEGORY, category)
+                .extra(Extra.ITEM_ID, itemId)
+                .extra(Extra.ITEM_NAME, itemName)
+                .extra(Extra.SUB_CATEGORY_ID, subCategoryId)
                 .queue()
     }
 

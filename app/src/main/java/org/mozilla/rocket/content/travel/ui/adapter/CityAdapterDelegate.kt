@@ -7,6 +7,7 @@ import org.mozilla.focus.glide.GlideApp
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.travel.ui.TravelExploreViewModel
+import java.util.Locale
 
 class CityAdapterDelegate(private val travelExploreViewModel: TravelExploreViewModel) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
@@ -44,5 +45,5 @@ data class CityUiModel(
     val nameInEnglish: String,
     val countryCode: String
 ) : DelegateAdapter.UiModel() {
-    fun getTelemetryItemName() = String.format("%s-%s", countryCode, nameInEnglish)
+    fun getTelemetryItemName() = String.format("%s-%s", countryCode, nameInEnglish.toLowerCase(Locale.getDefault()))
 }
