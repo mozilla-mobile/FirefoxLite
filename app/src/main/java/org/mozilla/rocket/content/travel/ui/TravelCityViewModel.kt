@@ -181,6 +181,12 @@ class TravelCityViewModel(
 
             _isInBucketList.postValue(!isSelected)
         }
+        val action = if (isSelected) {
+            TelemetryWrapper.Extra_Value.REMOVE
+        } else {
+            TelemetryWrapper.Extra_Value.SAVE
+        }
+        TelemetryWrapper.changeTravelSettings(TelemetryWrapper.Extra_Value.TRAVEL, category, city.id, city.getTelemetryItemName(), DETAIL_PAGE_SUB_CATEGORY_ID, System.currentTimeMillis().toString(), action)
     }
 
     fun onIgClicked(igItem: IgUiModel) {
@@ -269,5 +275,6 @@ class TravelCityViewModel(
         private const val LOAD_MORE_HOTELS_THRESHOLD = 15
         private const val VIDEO_QUERY_PATTERN = "%s+%s"
         private const val HOTEL_LISTING_SUB_CATEGORY_ID = "29"
+        private const val DETAIL_PAGE_SUB_CATEGORY_ID = "30"
     }
 }
