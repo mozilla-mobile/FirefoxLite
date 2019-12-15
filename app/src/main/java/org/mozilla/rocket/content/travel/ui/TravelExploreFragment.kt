@@ -85,7 +85,6 @@ class TravelExploreFragment : Fragment() {
     }
 
     private fun observeExploreActions() {
-
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
                 startActivity(ContentTabActivity.getStartIntent(it, action.url))

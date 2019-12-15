@@ -247,6 +247,7 @@ object TelemetryWrapper {
         internal const val CONTENT_HOME = "content_home"
         internal const val UPDATE = "update"
         internal const val MORE = "more"
+        internal const val DETAIL_PAGE = "detail_page"
     }
 
     internal object Extra {
@@ -345,6 +346,8 @@ object TelemetryWrapper {
         const val GOOGLE = "google"
         const val BOOKING_COM = "booking.com"
         const val UPDATE = "update"
+        const val SAVE = "save"
+        const val REMOVE = "remove"
     }
 
     enum class FIND_IN_PAGE {
@@ -2955,6 +2958,33 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.TAB_SWIPE)
                 .extra(Extra.FEED, feed)
                 .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Change Travel Settings",
+        category = Category.ACTION,
+        method = Method.CHANGE,
+        `object` = Object.SETTING,
+        value = Value.DETAIL_PAGE,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+            TelemetryExtra(name = Extra.CATEGORY, value = "category"),
+            TelemetryExtra(name = Extra.ITEM_ID, value = "item id"),
+            TelemetryExtra(name = Extra.ITEM_NAME, value = "item name"),
+            TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "sub category id"),
+            TelemetryExtra(name = Extra.VERSION_ID, value = "version id"),
+            TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.SAVE}|${Extra_Value.REMOVE}")
+        ])
+    fun changeTravelSettings(vertical: String, category: String, itemId: String, itemName: String, subCategoryId: String, versionId: String, action: String) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.DETAIL_PAGE)
+            .extra(Extra.VERTICAL, vertical)
+            .extra(Extra.CATEGORY, category)
+            .extra(Extra.ITEM_ID, itemId)
+            .extra(Extra.ITEM_NAME, itemName)
+            .extra(Extra.SUB_CATEGORY_ID, subCategoryId)
+            .extra(Extra.VERSION_ID, versionId)
+            .extra(Extra.ACTION, action)
+            .queue()
     }
 
     @TelemetryDoc(
