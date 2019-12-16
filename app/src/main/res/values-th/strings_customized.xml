@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="onboarding_2_introduction_description">รวดเร็วและกะทัดรัด เราเพิ่มการค้นหาแบบสมาร์ตชอปปิงและเนื้อหาเพื่อให้การเล่นอินเทอร์เน็ตสนุกและเพลิดเพลินมากขึ้น</string>
+  <string name="onboarding_2_content_services_news_shopping_games">แตะเพื่ออ่านข่าวติดเทรนด์ หาดีลดีๆ หรือเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
+  <string name="onboarding_2_content_services_news_games">แตะเพื่ออ่านข่าวติดเทรนด์ หาดีลดีๆ หรือเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
+  <string name="private_home_description_1">ตอนนี้คุณสามารถค้นดูแบบส่วนตัว ไม่เก็บประวัติ ไม่เก็บรหัสผ่านและคนอื่นที่ใช้อุปกรณ์นี้จะไม่เห็นกิจกรรมของคุณ\n\nการค้นดูแบบส่วนตัวขั้นสูงสามารถแม้แต่ %1$s จากโฆษณาและเว็บไซต์ซึ่งโหมดส่วนตัวส่วนใหญ่ทำไม่ได้</string>
+  <string name="private_home_description_2">ป้องกันคุณจากการติดตาม</string>
+</resources>
