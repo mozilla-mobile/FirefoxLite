@@ -41,5 +41,6 @@ class ExploreIgViewHolder(
 
 data class IgUiModel(
     val title: String,
-    val linkUrl: String
+    val linkUrl: String,
+    val source: String = "ig"
 ) : DelegateAdapter.UiModel()
