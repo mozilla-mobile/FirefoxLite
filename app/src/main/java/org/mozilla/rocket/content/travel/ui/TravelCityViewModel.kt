@@ -207,7 +207,16 @@ class TravelCityViewModel(
     }
 
     fun onVideoClicked(videoItem: VideoUiModel) {
-        openLinkUrl.value = videoItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.TRAVEL,
+            videoItem.source,
+            videoItem.source,
+            category,
+            videoItem.linkUrl.sha256(),
+            EXPLORE_CITY_SUB_CATEGORY_ID,
+            versionId
+        )
+        openLink.value = OpenLinkAction(videoItem.linkUrl, telemetryData)
     }
 
     fun onWikiClicked(wikiItem: WikiUiModel) {
