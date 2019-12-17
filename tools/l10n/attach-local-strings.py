@@ -5,10 +5,10 @@
 import os
 from lxml import etree
 
-locale_folder = 'app/src/main/res'
+locale_folder = 'src/main/res'
 customized_strings_file = 'strings_customized.xml'
 
-source = etree.parse('app/src/main/res/values/strings.xml')
+source = etree.parse('src/main/res/values/strings.xml')
 strings = [x.attrib['name'] for x in source.iter(tag='strings')]
 
 
