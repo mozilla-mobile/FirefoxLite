@@ -220,7 +220,16 @@ class TravelCityViewModel(
     }
 
     fun onWikiClicked(wikiItem: WikiUiModel) {
-        openLinkUrl.value = wikiItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.TRAVEL,
+            wikiItem.source,
+            wikiItem.source,
+            category,
+            wikiItem.linkUrl.sha256(),
+            EXPLORE_CITY_SUB_CATEGORY_ID,
+            versionId
+        )
+        openLink.value = OpenLinkAction(wikiItem.linkUrl, telemetryData)
     }
 
     fun onHotelClicked(hotelItem: HotelUiModel) {
