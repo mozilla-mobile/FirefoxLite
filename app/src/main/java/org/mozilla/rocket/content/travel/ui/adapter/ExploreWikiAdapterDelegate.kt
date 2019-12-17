@@ -49,8 +49,8 @@ class ExploreWikiViewHolder(
 
 data class WikiUiModel(
     val imageUrl: String,
-    val source: String,
     val sourceName: String,
     val introduction: String,
-    val linkUrl: String
+    val linkUrl: String,
+    val source: String = "wiki"
 ) : DelegateAdapter.UiModel()
