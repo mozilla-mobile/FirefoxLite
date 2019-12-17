@@ -92,7 +92,9 @@ data class BcHotelApiItem(
     val price: Float,
     val currency: String,
     val canPayAtProperty: Boolean,
-    val linkUrl: String
+    val linkUrl: String,
+    val sourceName: String,
+    val source: String
 ) {
     companion object {
         private const val KEY_HOTEL_ID = "hotel_id"
@@ -116,8 +118,10 @@ data class BcHotelApiItem(
 
         private const val FACILITY_ID_FREE_WIFI = "107"
 
-        fun fromJson(jsonObject: JSONObject, affiliateId: String): BcHotelApiItem? {
+        private const val SOURCE_NAME = "Booking.com"
+        const val SOURCE = "booking.com"
 
+        fun fromJson(jsonObject: JSONObject, affiliateId: String): BcHotelApiItem? {
             try {
                 val hotelData = jsonObject.optJSONObject(KEY_HOTEL_DATA)
                 val hotelPhotos = hotelData.optJSONArray(KEY_DATA_HOTEL_PHOTOS)
@@ -173,7 +177,9 @@ data class BcHotelApiItem(
                         minPrice,
                         hotelData.optString(KEY_DATA_CURRENCY),
                         hotelPayAtProperty,
-                        hotelData.optString(KEY_DATA_URL) + affiliateId
+                        hotelData.optString(KEY_DATA_URL) + affiliateId,
+                        SOURCE_NAME,
+                        SOURCE
                 )
             } catch (e: Exception) {
                 return null

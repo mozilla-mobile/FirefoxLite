@@ -166,9 +166,6 @@ class TravelCityActivity : BaseActivity() {
     }
 
     private fun initExploreActions() {
-        travelCityViewModel.openLinkUrl.observe(this, Observer { linkUrl ->
-            startActivity(ContentTabActivity.getStartIntent(this@TravelCityActivity, linkUrl))
-        })
         travelCityViewModel.openLink.observe(this, Observer { action ->
             startActivity(ContentTabActivity.getStartIntent(this@TravelCityActivity, action.url, action.telemetryData))
         })

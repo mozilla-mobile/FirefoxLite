@@ -66,7 +66,6 @@ class TravelCityViewModel(
 
     val showOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showSnackBar = SingleLiveEvent<Unit>()
-    val openLinkUrl = SingleLiveEvent<String>()
     val openLink = SingleLiveEvent<OpenLinkAction>()
 
     private var hotelsCount = 0
@@ -233,12 +232,30 @@ class TravelCityViewModel(
     }
 
     fun onHotelClicked(hotelItem: HotelUiModel) {
-        openLinkUrl.value = hotelItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.TRAVEL,
+            hotelItem.source,
+            hotelItem.source,
+            category,
+            hotelItem.linkUrl.sha256(),
+            HOTEL_LISTING_SUB_CATEGORY_ID,
+            versionId
+        )
+        openLink.value = OpenLinkAction(hotelItem.linkUrl, telemetryData)
     }
 
     fun onMoreClicked(headerItem: SectionHeaderUiModel) {
         if (URLUtil.isValidUrl(headerItem.linkUrl)) {
-            openLinkUrl.value = headerItem.linkUrl
+            val telemetryData = ContentTabTelemetryData(
+                TelemetryWrapper.Extra_Value.TRAVEL,
+                headerItem.source,
+                headerItem.source,
+                category,
+                headerItem.linkUrl.sha256(),
+                HOTEL_LISTING_SUB_CATEGORY_ID,
+                versionId
+            )
+            openLink.value = OpenLinkAction(headerItem.linkUrl, telemetryData)
             TelemetryWrapper.openDetailPageMore(TelemetryWrapper.Extra_Value.TRAVEL, category, city.id, city.getTelemetryItemName(), HOTEL_LISTING_SUB_CATEGORY_ID)
         }
     }

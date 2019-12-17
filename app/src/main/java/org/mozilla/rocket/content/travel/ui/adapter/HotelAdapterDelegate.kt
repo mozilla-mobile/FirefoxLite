@@ -49,7 +49,7 @@ class HotelViewHolder(
                 })
                 .into(hotel_image)
 
-        hotel_source.text = hotelUiModel.source
+        hotel_source.text = hotelUiModel.sourceName
         hotel_name.text = hotelUiModel.name
         hotel_description.text = hotelUiModel.description
 
@@ -73,7 +73,7 @@ class HotelViewHolder(
 
 data class HotelUiModel(
     val imageUrl: String,
-    val source: String,
+    val sourceName: String,
     val name: String,
     val description: String,
     val rating: Float,
@@ -83,5 +83,6 @@ data class HotelUiModel(
     val price: Float,
     val currency: String,
     val canPayAtProperty: Boolean,
-    val linkUrl: String
+    val linkUrl: String,
+    val source: String
 ) : DelegateAdapter.UiModel()
