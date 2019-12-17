@@ -19,6 +19,8 @@ class TravelExploreViewModel(private val getExploreList: GetExploreListUseCase) 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
+    var versionId = 0L
+
     private val _items by lazy {
         MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
             launchDataLoad {
@@ -30,6 +32,7 @@ class TravelExploreViewModel(private val getExploreList: GetExploreListUseCase) 
                 // add explore list
                 val exploreListResult = getExploreList()
                 if (exploreListResult is Result.Success) {
+                    versionId = exploreListResult.data.version
                     data.addAll(
                             TravelMapper.toExploreList(exploreListResult.data)
                     )

@@ -87,7 +87,11 @@ class TravelExploreFragment : Fragment() {
     private fun observeExploreActions() {
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(it, action.url))
+                startActivity(ContentTabActivity.getStartIntent(
+                    it,
+                    action.url,
+                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.TRAVEL, versionId = travelExploreViewModel.versionId)
+                ))
             }
         })
         travelExploreViewModel.openCity.observe(this, Observer { city ->
