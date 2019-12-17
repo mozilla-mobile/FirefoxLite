@@ -13,6 +13,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.travel.domain.AddToBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.CheckIsInBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.GetCityHotelsUseCase
@@ -31,6 +32,7 @@ import org.mozilla.rocket.content.travel.ui.adapter.SectionHeaderUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.VideoUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.WikiUiModel
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.util.sha256
 
 class TravelCityViewModel(
     private val getIg: GetCityIgUseCase,
@@ -65,10 +67,12 @@ class TravelCityViewModel(
     val showOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showSnackBar = SingleLiveEvent<Unit>()
     val openLinkUrl = SingleLiveEvent<String>()
+    val openLink = SingleLiveEvent<OpenLinkAction>()
 
     private var hotelsCount = 0
     private lateinit var city: BaseCityData
     var category: String = ""
+    val versionId: Long = System.currentTimeMillis()
 
     init {
         if (shouldShowOnboarding()) {
@@ -190,7 +194,16 @@ class TravelCityViewModel(
     }
 
     fun onIgClicked(igItem: IgUiModel) {
-        openLinkUrl.value = igItem.linkUrl
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.TRAVEL,
+            igItem.source,
+            igItem.source,
+            category,
+            igItem.linkUrl.sha256(),
+            EXPLORE_CITY_SUB_CATEGORY_ID,
+            versionId
+        )
+        openLink.value = OpenLinkAction(igItem.linkUrl, telemetryData)
     }
 
     fun onVideoClicked(videoItem: VideoUiModel) {
@@ -260,6 +273,8 @@ class TravelCityViewModel(
         }
     }
 
+    data class OpenLinkAction(val url: String, val telemetryData: ContentTabTelemetryData)
+
     sealed class State {
         object Idle : State()
         object Loading : State()
@@ -274,6 +289,7 @@ class TravelCityViewModel(
     companion object {
         private const val LOAD_MORE_HOTELS_THRESHOLD = 15
         private const val VIDEO_QUERY_PATTERN = "%s+%s"
+        private const val EXPLORE_CITY_SUB_CATEGORY_ID = "28"
         private const val HOTEL_LISTING_SUB_CATEGORY_ID = "29"
         private const val DETAIL_PAGE_SUB_CATEGORY_ID = "30"
     }
