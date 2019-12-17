@@ -25,7 +25,6 @@ import java.util.regex.Pattern
 object TravelMapper {
 
     private const val BANNER = "banner"
-    private const val SOURCE_BC = "Booking.com"
 
     fun toExploreList(apiEntity: ApiEntity): List<DelegateAdapter.UiModel> {
         return apiEntity.subcategories.map { subcategory ->
@@ -137,7 +136,7 @@ object TravelMapper {
     fun toHotelUiModel(hotel: BcHotelApiItem): HotelUiModel =
             HotelUiModel(
                 hotel.imageUrl,
-                SOURCE_BC,
+                hotel.sourceName,
                 hotel.name,
                 hotel.description,
                 hotel.rating,
@@ -147,7 +146,8 @@ object TravelMapper {
                 hotel.price,
                 hotel.currency,
                 hotel.canPayAtProperty,
-                hotel.linkUrl
+                hotel.linkUrl,
+                hotel.source
             )
 
     private fun getExploreCategoryStringResourceId(subCategoryId: Int): Int =

@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.item_section_header.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.content.travel.data.BcHotelApiItem
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel.SectionType
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel.SectionType.Explore
@@ -36,5 +37,6 @@ class SectionHeaderViewHolder(
 
 data class SectionHeaderUiModel(
     val type: SectionType,
-    val linkUrl: String = ""
+    val linkUrl: String = "",
+    val source: String = BcHotelApiItem.SOURCE
 ) : DelegateAdapter.UiModel()
