@@ -132,7 +132,8 @@ object TravelMapper {
                 video.viewCount,
                 video.publishedAt,
                 read,
-                video.link
+                video.link,
+                video.source
             )
 
     fun toHotelUiModel(hotel: BcHotelApiItem): HotelUiModel =

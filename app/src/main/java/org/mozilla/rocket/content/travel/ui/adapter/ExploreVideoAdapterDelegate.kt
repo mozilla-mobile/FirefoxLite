@@ -95,5 +95,6 @@ data class VideoUiModel(
     val viewCount: Int,
     val date: String,
     val read: Boolean,
-    val linkUrl: String
+    val linkUrl: String,
+    val source: String
 ) : DelegateAdapter.UiModel()
