@@ -412,7 +412,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 afterEvaluate {
-    check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty', 'ktlint'
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty', 'ktlint', 'updateCustomizedStrings'
 }
 
 task checkTelemetryDocDirty() {
@@ -438,14 +438,8 @@ task checkTelemetryDocDirty() {
 // Generate strings.xml with customized translated strings
 // -------------------------------------------------------------------------------------------------
 
-task updateCustomizedStrings(type:Exec) {
-    commandLine 'python', 'tools/l10n/attach-local-strings.py'
-}
-
-tasks.whenTaskAdded { task ->
-    def variantName = variant.getName()
-
+task updateCustomizedStrings(type: Exec) {
     if (variantName.contains("Release")) {
-        task.dependsOn updateCustomizedStrings
+        commandLine 'python', 'tools/l10n/attach-local-strings.py'
     }
 }
