@@ -131,7 +131,7 @@ class TravelRemoteDataSource : TravelDataSource {
 
                     sendHttpRequest(request = Request(url = getHotelsApiEndpoint(id, type, offset), method = Request.Method.GET, headers = createHeaders()),
                             onSuccess = {
-                                Result.Success(BcHotelApiEntity.fromJson(it.body.string()))
+                                Result.Success(BcHotelApiEntity.fromJson(it.body.string(), getBcAffiliateId()))
                             },
                             onError = {
                                 Result.Error(it)
@@ -285,12 +285,22 @@ class TravelRemoteDataSource : TravelDataSource {
         return "$baseApiEndpoint/$path?$queryParamId=$id&languages=en"
     }
 
+    private fun getBcAffiliateId(): String {
+        val affiliateId = FirebaseHelper.getFirebase().getRcString(STR_BOOKING_COM_AFFILIATED_ID)
+        return if (affiliateId.isNotEmpty())
+            affiliateId
+        else
+            DEFAULT_BOOKING_COM_AFFILIATED_ID
+    }
+
     companion object {
         private const val STR_TRAVEL_EXPLORE_ENDPOINT = "str_travel_explore_endpoint"
         private const val DEFAULT_EXPLORE_URL_ENDPOINT = "https://zerda-dcf76.appspot.com/api/v1/content?locale=en-US&category=travelExplore&tag=global_default"
         private const val STR_BOOKING_COM_ENDPOINT = "str_booking_com_endpoint"
         private const val STR_BOOKING_COM_AUTHORIZATION = "str_booking_com_authorization"
         private const val DEFAULT_BOOKING_COM_ENDPOINT = "https://distribution-xml.booking.com/2.5/json"
+        private const val STR_BOOKING_COM_AFFILIATED_ID = "str_booking_com_affiliate_id"
+        private const val DEFAULT_BOOKING_COM_AFFILIATED_ID = "?aid=1873270"
         private const val STR_VIDEO_ENDPOINT = "str_travel_video_endpoint"
         private const val STR_VERTICAL_CLIENT_API_KEY = "str_vertical_client_api_key"
         private const val DEFAULT_VIDEO_ENDPOINT_FORMAT = "https://zerda-dcf76.appspot.com/api/v1/video?query=%s&locale=%s&limit=5"

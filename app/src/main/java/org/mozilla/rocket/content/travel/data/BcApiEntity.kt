@@ -61,14 +61,14 @@ data class BcAutocompleteApiItem(
 data class BcHotelApiEntity(val result: List<BcHotelApiItem?>) : BcApiEntity() {
     companion object {
 
-        fun fromJson(jsonString: String?): BcHotelApiEntity {
+        fun fromJson(jsonString: String?, affiliateId: String): BcHotelApiEntity {
             return if (jsonString != null) {
                 val jsonObject = jsonString.toJsonObject()
                 val jsonArray = jsonObject.optJSONArray(KEY_RESULT)
                 val result =
                         (0 until jsonArray.length())
                                 .map { index -> jsonArray.getJSONObject(index) }
-                                .map { jObj -> BcHotelApiItem.fromJson(jObj) }
+                                .map { jObj -> BcHotelApiItem.fromJson(jObj, affiliateId) }
 
                 BcHotelApiEntity(result)
             } else {
@@ -113,7 +113,7 @@ data class BcHotelApiItem(
 
         private const val FACILITY_ID_FREE_WIFI = "107"
 
-        fun fromJson(jsonObject: JSONObject): BcHotelApiItem? {
+        fun fromJson(jsonObject: JSONObject, affiliateId: String): BcHotelApiItem? {
 
             try {
                 val hotelData = jsonObject.optJSONObject(KEY_HOTEL_DATA)
@@ -170,7 +170,7 @@ data class BcHotelApiItem(
                         minPrice,
                         hotelData.optString(KEY_DATA_CURRENCY),
                         hotelPayAtProperty,
-                        hotelData.optString(KEY_DATA_URL)
+                        hotelData.optString(KEY_DATA_URL) + affiliateId
                 )
             } catch (e: Exception) {
                 return null
