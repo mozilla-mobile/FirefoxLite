@@ -412,7 +412,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 afterEvaluate {
-    check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty', 'ktlint', 'updateCustomizedStrings'
+    check.dependsOn 'findbugs', 'pmd', 'checkstyle', 'checkTelemetryDocDirty', 'ktlint'
 }
 
 task checkTelemetryDocDirty() {
@@ -439,7 +439,7 @@ task checkTelemetryDocDirty() {
 // -------------------------------------------------------------------------------------------------
 
 task updateCustomizedStrings(type: Exec) {
-    if (variantName.contains("Release")) {
-        commandLine 'python', 'tools/l10n/attach-local-strings.py'
-    }
+        commandLine 'python', '../tools/l10n/attach-local-strings.py'
 }
+
+
