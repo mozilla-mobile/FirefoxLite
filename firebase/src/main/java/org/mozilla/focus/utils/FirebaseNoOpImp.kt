@@ -45,6 +45,8 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
         return FIREBASE_BOOLEAN_DEFAULT
     }
 
+    override fun getInstanceId(): String? = null
+
     override fun deleteInstanceId() {
     }
 

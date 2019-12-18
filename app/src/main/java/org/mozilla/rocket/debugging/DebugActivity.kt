@@ -1,5 +1,7 @@
 package org.mozilla.rocket.debugging
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -8,8 +10,10 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_debug.debug_firebase_id
 import kotlinx.android.synthetic.main.activity_debug.debug_locale_layout
 import kotlinx.android.synthetic.main.activity_debug.debug_locale_text
 import kotlinx.android.synthetic.main.activity_debug.debug_mission_reminder
@@ -17,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_debug.toolbar
 import org.json.JSONArray
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
+import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.preference.stringLiveData
 import java.util.concurrent.TimeUnit
 
@@ -47,6 +52,11 @@ class DebugActivity : AppCompatActivity() {
         })
         debug_locale_layout.setOnClickListener {
             showDropDownListDialog(debugLocales)
+        }
+        debug_firebase_id.setOnClickListener {
+            val firebaseId = FirebaseHelper.getFirebase().getInstanceId() ?: "null"
+            copyToClipboard("firebaseId", firebaseId)
+            Toast.makeText(this, "$firebaseId copied", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -87,6 +97,12 @@ class DebugActivity : AppCompatActivity() {
         debug_mission_reminder.setOnClickListener {
             isMissionReminderDebugEnabled = true
             Toast.makeText(this, "Repeat interval has been set to 15 minutes", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun copyToClipboard(label: String, text: String) {
+        ContextCompat.getSystemService(applicationContext, ClipboardManager::class.java)?.run {
+            primaryClip = ClipData.newPlainText(label, text)
         }
     }
 
