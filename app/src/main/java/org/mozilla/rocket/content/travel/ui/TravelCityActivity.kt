@@ -22,6 +22,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.firstImpression
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreIgAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.ExploreLoadingAdapterDelegate
@@ -74,6 +76,7 @@ class TravelCityActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.TRAVEL)
+        telemetryViewModel.onCategorySelected(travelCityViewModel.category)
     }
 
     override fun onPause() {
@@ -112,6 +115,7 @@ class TravelCityActivity : BaseActivity() {
         }
         refresh_button.setOnClickListener {
             travelCityViewModel.getLatestItems(this@TravelCityActivity, city)
+            telemetryViewModel.onRefreshClicked()
         }
     }
 
@@ -135,6 +139,7 @@ class TravelCityActivity : BaseActivity() {
         )
         city_details.apply {
             adapter = detailAdapter
+            monitorScrollImpression(telemetryViewModel)
         }
 
         (city_details.layoutManager as LinearLayoutManager).let {
@@ -158,6 +163,14 @@ class TravelCityActivity : BaseActivity() {
         travelCityViewModel.checkIsInBucketList(city.id)
         travelCityViewModel.items.observe(this, Observer {
             detailAdapter.setData(it)
+            telemetryViewModel.updateVersionId(travelCityViewModel.category, travelCityViewModel.versionId)
+            if (!it.isNullOrEmpty()) {
+                city_details.firstImpression(
+                    telemetryViewModel,
+                    travelCityViewModel.category,
+                    TravelCityViewModel.DETAIL_PAGE_SUB_CATEGORY_ID
+                )
+            }
         })
         travelCityViewModel.englishCityName.observe(this, Observer {
             city = city.copy(nameInEnglish = it.toLowerCase(Locale.getDefault()))
