@@ -441,5 +441,3 @@ task checkTelemetryDocDirty() {
 task updateCustomizedStrings(type: Exec) {
         commandLine 'python', '../tools/l10n/attach-local-strings.py'
 }
-
-
