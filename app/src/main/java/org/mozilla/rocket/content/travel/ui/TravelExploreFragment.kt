@@ -17,6 +17,7 @@ import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
@@ -32,8 +33,12 @@ class TravelExploreFragment : Fragment() {
     @Inject
     lateinit var runwayViewModelCreator: Lazy<RunwayViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var runwayViewModel: RunwayViewModel
     private lateinit var travelExploreViewModel: TravelExploreViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var exploreAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +46,8 @@ class TravelExploreFragment : Fragment() {
         super.onCreate(savedInstanceState)
         runwayViewModel = getActivityViewModel(runwayViewModelCreator)
         travelExploreViewModel = getActivityViewModel(travelExploreViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
+        travelExploreViewModel.requestExploreList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,9 +65,9 @@ class TravelExploreFragment : Fragment() {
     private fun initExplore() {
         exploreAdapter = DelegateAdapter(
                 AdapterDelegatesManager().apply {
-                    add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel))
+                    add(Runway::class, R.layout.item_runway_list, RunwayAdapterDelegate(runwayViewModel, TelemetryWrapper.Extra_Value.EXPLORE, telemetryViewModel))
                     add(CitySearchUiModel::class, R.layout.city_search, CitySearchAdapterDelegate(travelExploreViewModel))
-                    add(CityCategoryUiModel::class, R.layout.item_city_category, CityCategoryAdapterDelegate(travelExploreViewModel))
+                    add(CityCategoryUiModel::class, R.layout.item_city_category, CityCategoryAdapterDelegate(travelExploreViewModel, telemetryViewModel))
                 }
         )
         explore_recycler_view.apply {
@@ -69,8 +76,9 @@ class TravelExploreFragment : Fragment() {
     }
 
     private fun bindExploreData() {
-        travelExploreViewModel.items.observe(this, Observer {
+        travelExploreViewModel.exploreItems.observe(this, Observer {
             exploreAdapter.setData(it)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.EXPLORE, travelExploreViewModel.versionId)
         })
     }
 
@@ -109,10 +117,12 @@ class TravelExploreFragment : Fragment() {
 
     private fun showLoadingView() {
         spinner.visibility = View.VISIBLE
+        explore_recycler_view.visibility = View.GONE
     }
 
     private fun showContentView() {
         spinner.visibility = View.GONE
+        explore_recycler_view.visibility = View.VISIBLE
     }
 
     private fun showErrorView() {

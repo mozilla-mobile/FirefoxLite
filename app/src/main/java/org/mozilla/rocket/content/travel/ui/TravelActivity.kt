@@ -100,6 +100,7 @@ class TravelActivity : FragmentActivity() {
     private fun initToolBar() {
         refresh_button.setOnClickListener {
             travelViewModel.onRefreshClicked()
+            telemetryViewModel.onRefreshClicked()
         }
     }
 
