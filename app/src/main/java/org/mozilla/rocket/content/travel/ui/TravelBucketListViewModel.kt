@@ -25,6 +25,8 @@ class TravelBucketListViewModel(
     private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
 
+    var versionId = 0L
+
     val openCity = SingleLiveEvent<BaseCityData>()
     val goSearch = SingleLiveEvent<Unit>()
 
@@ -53,6 +55,7 @@ class TravelBucketListViewModel(
     private suspend fun loadBucketList() {
         val result = getBucketListUseCase()
         if (result is Result.Success) {
+            versionId = System.currentTimeMillis()
             _items.postValue(result.data.map { TravelMapper.toBucketListCityUiModel(it) })
         } else if (result is Result.Error) {
             throw (result.exception)
@@ -75,5 +78,9 @@ class TravelBucketListViewModel(
         object Idle : State()
         object Loading : State()
         class Error(val t: Throwable) : State()
+    }
+
+    companion object {
+        const val BUCKET_LIST_SUB_CATEGORY_ID = "32"
     }
 }
