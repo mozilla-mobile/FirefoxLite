@@ -326,6 +326,6 @@ class TravelCityViewModel(
         private const val VIDEO_QUERY_PATTERN = "%s+%s"
         private const val EXPLORE_CITY_SUB_CATEGORY_ID = "28"
         private const val HOTEL_LISTING_SUB_CATEGORY_ID = "29"
-        private const val DETAIL_PAGE_SUB_CATEGORY_ID = "30"
+        const val DETAIL_PAGE_SUB_CATEGORY_ID = "30"
     }
 }
