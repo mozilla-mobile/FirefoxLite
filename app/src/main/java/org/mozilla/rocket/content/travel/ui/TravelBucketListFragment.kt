@@ -15,6 +15,9 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.VerticalSpaceItemDecoration
+import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
+import org.mozilla.rocket.content.common.ui.firstImpression
+import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
@@ -25,13 +28,18 @@ class TravelBucketListFragment : Fragment() {
     @Inject
     lateinit var travelBucketListViewModelCreator: Lazy<TravelBucketListViewModel>
 
+    @Inject
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+
     private lateinit var travelBucketListViewModel: TravelBucketListViewModel
+    private lateinit var telemetryViewModel: VerticalTelemetryViewModel
     private lateinit var bucketListAdapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         travelBucketListViewModel = getActivityViewModel(travelBucketListViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,6 +71,7 @@ class TravelBucketListFragment : Fragment() {
             addItemDecoration(VerticalSpaceItemDecoration(spaceWidth))
 
             adapter = bucketListAdapter
+            monitorScrollImpression(telemetryViewModel)
         }
 
         bucket_list_empty_explore.setOnClickListener {
@@ -73,6 +82,15 @@ class TravelBucketListFragment : Fragment() {
     private fun bindBucketListData() {
         travelBucketListViewModel.items.observe(this, Observer {
             bucketListAdapter.setData(it)
+            telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.BUCKET_LIST, travelBucketListViewModel.versionId)
+
+            if (!it.isNullOrEmpty() && it[0] is BucketListCityUiModel) {
+                bucket_list_recycler_view.firstImpression(
+                    telemetryViewModel,
+                    TelemetryWrapper.Extra_Value.BUCKET_LIST,
+                    TravelBucketListViewModel.BUCKET_LIST_SUB_CATEGORY_ID
+                )
+            }
 
             if (it.isEmpty()) {
                 showEmptyView()
