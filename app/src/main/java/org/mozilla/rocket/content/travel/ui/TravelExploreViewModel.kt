@@ -19,31 +19,10 @@ class TravelExploreViewModel(private val getExploreList: GetExploreListUseCase) 
     private val _isDataLoading = MutableLiveData<State>()
     val isDataLoading: LiveData<State> = _isDataLoading
 
+    private val _exploreItems = MutableLiveData<List<DelegateAdapter.UiModel>>()
+    val exploreItems: LiveData<List<DelegateAdapter.UiModel>> = _exploreItems
+
     var versionId = 0L
-
-    private val _items by lazy {
-        MutableLiveData<List<DelegateAdapter.UiModel>>().apply {
-            launchDataLoad {
-                val data = ArrayList<DelegateAdapter.UiModel>()
-
-                // addd search
-                data.add(CitySearchUiModel())
-
-                // add explore list
-                val exploreListResult = getExploreList()
-                if (exploreListResult is Result.Success) {
-                    versionId = exploreListResult.data.version
-                    data.addAll(
-                            TravelMapper.toExploreList(exploreListResult.data)
-                    )
-                }
-
-                // TODO: handle error
-
-                value = data
-            }
-        }
-    }
 
     val openCity = SingleLiveEvent<BaseCityData>()
     val goSearch = SingleLiveEvent<Unit>()
@@ -58,7 +37,30 @@ class TravelExploreViewModel(private val getExploreList: GetExploreListUseCase) 
         TelemetryWrapper.showContentHomeSearchBar(TelemetryWrapper.Extra_Value.TRAVEL)
     }
 
-    val items: LiveData<List<DelegateAdapter.UiModel>> = _items
+    fun requestExploreList() {
+        getExploreUiModelList()
+    }
+
+    private fun getExploreUiModelList() {
+        launchDataLoad {
+            val data = ArrayList<DelegateAdapter.UiModel>()
+
+            // add search
+            data.add(CitySearchUiModel())
+
+            // add explore list
+            val exploreListResult = getExploreList()
+            if (exploreListResult is Result.Success) {
+                versionId = exploreListResult.data.version
+                data.addAll(
+                    TravelMapper.toExploreList(exploreListResult.data)
+                )
+            }
+
+            // TODO: handle error
+            _exploreItems.postValue(data)
+        }
+    }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
