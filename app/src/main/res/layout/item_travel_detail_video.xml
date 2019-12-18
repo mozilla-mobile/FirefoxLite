@@ -13,11 +13,12 @@
 
     <ImageView
         android:id="@+id/explore_video_image"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="98dp"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
