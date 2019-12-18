@@ -1,6 +1,8 @@
 package org.mozilla.rocket.content.travel.ui.adapter
 
+import android.graphics.Outline
 import android.view.View
+import android.view.ViewOutlineProvider
 import kotlinx.android.synthetic.main.item_bucket_list.*
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
@@ -25,6 +27,15 @@ class BucketListCityViewHolder(
         val placeholderArray = itemView.resources.obtainTypedArray(R.array.travel_placeholders)
         val placeholder = placeholderArray.getResourceId((0 until placeholderArray.length()).random(), R.drawable.travel_card1)
         placeholderArray.recycle()
+
+        val radius = itemView.context.resources.getDimensionPixelSize(R.dimen.travel_explore_item_radius)
+
+        city_image.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View?, outline: Outline?) {
+                outline?.setRoundRect(0, 0, view!!.width, view.height, radius.toFloat())
+            }
+        }
+        city_image.clipToOutline = true
 
         GlideApp.with(itemView.context)
                 .asBitmap()
