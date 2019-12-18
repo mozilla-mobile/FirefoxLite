@@ -275,7 +275,7 @@ class TravelRemoteDataSource : TravelDataSource {
         val pages = jsonObject.optJSONObject(WIKI_JSON_KEY_QUERY).optJSONObject(WIKI_JSON_KEY_PAGES)
         val keyIterator = pages.keys()
         val pageContent = pages.optJSONObject(keyIterator.next())
-        return pageContent.optJSONObject(WIKI_JSON_KEY_ORIGINAL).optString(WIKI_JSON_KEY_SOURCE)
+        return pageContent.optJSONObject(WIKI_JSON_KEY_THUMBNAIL).optString(WIKI_JSON_KEY_SOURCE)
     }
 
     private fun getTranslationApiEndpoint(id: String, type: String): String {
@@ -325,10 +325,10 @@ class TravelRemoteDataSource : TravelDataSource {
         private const val WIKI_JSON_KEY_TITLE = "title"
         private const val WIKI_JSON_KEY_PAGES = "pages"
         private const val WIKI_JSON_KEY_EXTRACT = "extract"
-        private const val WIKI_JSON_KEY_ORIGINAL = "original"
+        private const val WIKI_JSON_KEY_THUMBNAIL = "thumbnail"
         private const val WIKI_JSON_KEY_SOURCE = "source"
         private const val WIKI_NAME_API = "https://%s.wikipedia.org/w/api.php?action=query&list=search&format=json&srlimit=1&srprop=timestamp&srsearch=%s"
-        private const val WIKI_IMAGE_API = "https://%s.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=%s"
+        private const val WIKI_IMAGE_API = "https://%s.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&pithumbsize=1080&titles=%s"
         private const val WIKI_EXTRACT_API = "https://%s.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exlimit=1&exsectionformat=plain&exchars=320&explaintext=1&variant=%s&titles=%s"
     }
 }
