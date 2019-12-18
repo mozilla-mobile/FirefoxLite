@@ -18,14 +18,16 @@ for dirpath, _, _ in os.walk(locale_folder):
         print("LOCALE: %s" % dirname)
 
         customized = etree.parse(os.path.join(dirpath, customized_strings_file))
+        customized_root = customized.getroot()
 
         locale = etree.parse(os.path.join(dirpath, 'strings.xml'), etree.XMLParser(strip_cdata=False))
         locale_root = locale.getroot()
         localized_strings = [x.attrib['name'] for x in locale_root.iter(tag='string')]
 
         for s in customized.iter(tag='string'):
-            if s.attrib['name'] not in localized_strings:
-                print("Missing string: %s" % s.attrib['name'])
-                locale_root.insert(len(locale_root), s)
-        with open(os.path.join(dirpath, 'strings.xml'), 'w') as f:
-            f.write(etree.tostring(locale_root, pretty_print=True, encoding='utf-8', xml_declaration=True))
+            if s.attrib['name'] in localized_strings:
+                print("Duplicated string: %s" % s.attrib['name'])
+                customized_root.remove(s)
+
+        with open(os.path.join(dirpath, customized_strings_file), 'w') as f:
+            f.write(etree.tostring(customized_root, pretty_print=True, encoding='utf-8', xml_declaration=True))
