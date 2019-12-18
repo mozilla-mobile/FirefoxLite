@@ -87,7 +87,7 @@ class TravelRemoteDataSource : TravelDataSource {
                             }
                     )
                 },
-                errorMessage = "Unable to get wiki extract"
+                errorMessage = "Unable to get wiki image"
         )
     }
 
@@ -212,14 +212,14 @@ class TravelRemoteDataSource : TravelDataSource {
 
     private fun getSearchCityApiEndpoint(keyword: String): String {
         val baseApiEndpoint = getBaseApiEndpoint()
-        val lang = Locale.getDefault().toLanguageTag()
+        val lang = getNormalizedLanguage(Locale.getDefault().toLanguageTag())
         val text = Uri.encode(keyword)
         return "$baseApiEndpoint/$BOOKING_COM_PATH_AUTOCOMPLETE?$BOOKING_COM_QUERY_PARAM_TEXT=$text&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang"
     }
 
     private fun getHotelsApiEndpoint(id: String, type: String, offset: Int): String {
         val baseApiEndpoint = getBaseApiEndpoint()
-        val lang = Locale.getDefault().toLanguageTag()
+        val lang = getNormalizedLanguage(Locale.getDefault().toLanguageTag())
         val queryParamId = if (type == BcAutocompleteApiEntity.TYPE_CITY) { BOOKING_COM_QUERY_PARAM_CITY_IDS } else { BOOKING_COM_QUERY_PARAM_REGION_IDS }
         return "$baseApiEndpoint/$BOOKING_COM_PATH_HOTELS?$queryParamId=$id&$BOOKING_COM_QUERY_PARAM_LANGUAGE=$lang&$BOOKING_COM_QUERY_PARAM_EXTRAS=$BOOKING_COM_QUERY_PARAM_EXTRAS_HOTEL&$BOOKING_COM_QUERY_PARAM_ROWS=$BOOKING_COM_QUERY_PARAM_ROWS_HOTEL&$BOOKING_COM_QUERY_PARAM_OFFSET=$offset"
     }
@@ -291,6 +291,11 @@ class TravelRemoteDataSource : TravelDataSource {
             affiliateId
         else
             DEFAULT_BOOKING_COM_AFFILIATED_ID
+    }
+
+    private fun getNormalizedLanguage(language: String): String {
+        val normalizedLang = language.toLowerCase()
+        return if (normalizedLang == "zh-hant-tw") { "zh-tw" } else { normalizedLang }
     }
 
     companion object {
