@@ -200,6 +200,8 @@
   <string name="share_app_dialog_text_content">- जलद आणि हलके\n- डेटा बचत \n- प्रभावी स्क्रीनशॉट</string>
   <string name="share_app_dialog_btn_share">सामयिक करा</string>
   <string name="share_app_promotion_text">अरे %3$s कडून हा जलद आणि हलका ब्राउझर पहा. %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">आत्ताच अद्ययावत करा!</string>
+  <string name="update_app_dialog_btn_later">नंतर</string>
   <string name="your_rights_content1">%1$s %2$s आणि इतर योगदानकर्त्यांनी बनवलेले मोफत आणि खुल्या स्रोताचे सॉफ्टवेअर आहे.</string>
   <string name="your_rights_content2"><![CDATA["%1$s आपल्याला "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" आणि इतर खुल्या स्त्रोत परवान्यांच्या नियमांतर्गत उपलब्ध करून दिले गेले आहे."]]></string>
   <string name="your_rights_content3"><![CDATA["%3$s, %4$s किंवा %1$s यांच्या नाव व चिन्हांसह Mozilla Foundation किंवा इतर पार्टीच्या व्यापारचिन्हाचे हक्क किंवा परवाने आपणास दिलेले नाहीत. अधिक माहिती "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2311;&#2341;&#2375;</a>" मिळेल."]]></string>
@@ -327,6 +329,7 @@
   <string name="gaming_vertical_hint_title">आपल्या पसंतीच्या खेळांमध्ये जलद प्रवेश</string>
   <string name="gaming_vertical_hint_body">आपल्या मुख्य स्क्रीनवर शॉर्टकट तयार करण्यासाठी दाबा.</string>
   <string name="gaming_vertical_hint_button">ठीक आहे</string>
+  <string name="gaming_vertical_shortcut_message">शॉर्टकट बनवला.</string>
   <string name="gaming_vertical_menu_option_1">खेळ शेअर करा</string>
   <string name="gaming_vertical_menu_option_2">मुख्य स्क्रीनवर शॉर्टकट तयार करा</string>
   <string name="gaming_vertical_menu_option_3">सूचीमधून काढून टाका</string>

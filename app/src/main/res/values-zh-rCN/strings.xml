@@ -351,6 +351,7 @@
   <string name="onboarding_2_content_services_news_shopping_games">点按即可阅读热门新闻、寻找优惠折扣，或者玩最火的免费游戏！</string>
   <string name="onboarding_2_content_services_news_games">点按即可阅读热门新闻，或玩最火的免费游戏！</string>
   <string name="onboarding_2_content_services_games">点按此处即可玩最火的免费游戏！</string>
+  <string name="onboarding_2_content_services_news_travel">点按即可阅读热门新闻，规划下次旅行及更多！</string>
   <string name="onboarding_2_smart_shopping_search_title">智能购物搜索</string>
   <string name="onboarding_2_smart_shopping_search_description">在不同电商间比价相当简单，现在就试试看！</string>
   <string name="home_search_bar_text">搜索…</string>
@@ -436,7 +437,7 @@
   <string name="travel_detail_page_subcategory_content">探索 %1$s</string>
   <string name="travel_detail_page_subcategory_hotel">热门酒店</string>
   <string name="travel_more">更多</string>
-  <string name="travel_content_ig_link">IG 上的 #%1$s</string>
+  <string name="travel_content_ig_link">#%1$s 在 Instagram</string>
   <string name="travel_content_yt_view_count">%1$s 次观看</string>
   <string name="travel_content_yt_view_count_single_view">1 次观看</string>
   <string name="travel_content_wiki_source_name">维基百科</string>
@@ -454,4 +455,5 @@
   <string name="travel_find_destination_placeholder_2">输入目的地</string>
   <string name="travel_search_engine_1">用 %1$s 查看结果</string>
   <string name="travel_search_engine_2">在智能旅行搜索中查看结果</string>
+  <string name="travel_search_engine_fxlite">查看 %1$s Travel Discovery 的搜索结果</string>
 </resources>

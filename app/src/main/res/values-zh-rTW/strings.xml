@@ -351,6 +351,7 @@
   <string name="onboarding_2_content_services_news_shopping_games">點擊即可閱讀熱門新聞、尋找優惠折扣，或者玩最熱門的免費遊戲！</string>
   <string name="onboarding_2_content_services_news_games">點擊即可閱讀熱門新聞，或玩最熱門的免費遊戲！</string>
   <string name="onboarding_2_content_services_games">點擊此處即可玩最熱門的免費遊戲！</string>
+  <string name="onboarding_2_content_services_news_travel">點擊此處即可閱讀熱門新聞、規劃下趟旅遊，或更多功能！</string>
   <string name="onboarding_2_smart_shopping_search_title">智慧購物搜尋</string>
   <string name="onboarding_2_smart_shopping_search_description">在不同線上商店間比價相當簡單，現在就試試看！</string>
   <string name="home_search_bar_text">搜尋…</string>
@@ -436,15 +437,15 @@
   <string name="travel_detail_page_subcategory_content">探索 %1$s</string>
   <string name="travel_detail_page_subcategory_hotel">熱門飯店</string>
   <string name="travel_more">更多</string>
-  <string name="travel_content_ig_link">IG 上的 #%1$s</string>
+  <string name="travel_content_ig_link">Instagram 上的 #%1$s</string>
   <string name="travel_content_yt_view_count">%1$s 次檢視</string>
   <string name="travel_content_yt_view_count_single_view">1 次檢視</string>
   <string name="travel_content_wiki_source_name">維基百科</string>
   <string name="travel_hotel_detail_1">免費 Wi-Fi</string>
   <string name="travel_hotel_detail_2">不需信用卡</string>
   <string name="travel_hotel_detail_3">入住時付款</string>
-  <string name="travel_hotel_price_from">起</string>
-  <string name="travel_empty_state_text">「我沒去過任何地方，但這些地方在我的清單上。」</string>
+  <string name="travel_hotel_price_from">最低房價</string>
+  <string name="travel_empty_state_text">「我沒去過任何地方，但任何地方都在我的清單上。」</string>
   <string name="travel_empty_state_button">探索城市</string>
   <string name="travel_snack_bar_saved_message">已儲存到您的目的地清單。</string>
   <string name="travel_snack_bar_button">檢視</string>
@@ -454,4 +455,5 @@
   <string name="travel_find_destination_placeholder_2">輸入目的地</string>
   <string name="travel_search_engine_1">用 %1$s 檢視結果</string>
   <string name="travel_search_engine_2">在智慧旅遊搜尋功能中檢視搜尋結果</string>
+  <string name="travel_search_engine_fxlite">檢視 %1$s Travel Discovery 的搜尋結果</string>
 </resources>

@@ -197,9 +197,11 @@
   <string name="rate_app_dialog_btn_feedback">Để lại phản hồi</string>
   <string name="rate_app_notification_action_feedback">PHẢN HỒI</string>
   <string name="share_app_dialog_text_title">Chia sẻ %1$s với bạn bè!</string>
-  <string name="share_app_dialog_text_content">- Nhanh và nhẹ\n- Tiết kiệm dữ liệu\n- Chụp ảnh màn hình mạnh mẽ</string>
+  <string name="share_app_dialog_text_content">- Nhanh và nhẹ\n- Tìm kiếm mua sắm thông minh\n- Trò chơi miễn phí, tin tức xu hướng</string>
   <string name="share_app_dialog_btn_share">Chia sẻ</string>
   <string name="share_app_promotion_text">Này, hãy xem trình duyệt nhanh và nhẹ này từ %3$s. %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">CẬP NHẬT BÂY GIỜ!</string>
+  <string name="update_app_dialog_btn_later">ĐỂ SAU</string>
   <string name="your_rights_content1">%1$s là phần mềm nguồn mở và miễn phí được tạo bởi %2$s và những người đóng góp khác.</string>
   <string name="your_rights_content2"><![CDATA["%1$s được cung cấp cho bạn theo các điều khoản của "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" và các giấy phép nguồn mở khác."]]></string>
   <string name="your_rights_content3"><![CDATA["Bạn không được cấp bất kỳ quyền hoặc giấy phép nào cho các nhãn hiệu của Tổ chức Mozilla hoặc bất kỳ bên nào, bao gồm %3$s, %4$s hoặc %1$s tên hoặc logo. Thông tin bổ sung có thể được tìm thấy "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">ta&#803;i &#273;&#226;y</a>.]]></string>
@@ -327,6 +329,7 @@
   <string name="gaming_vertical_hint_title">Truy cập nhanh vào các trò chơi yêu thích của bạn</string>
   <string name="gaming_vertical_hint_body">Nhấn để tạo lối tắt đến màn hình chính của bạn.</string>
   <string name="gaming_vertical_hint_button">OK</string>
+  <string name="gaming_vertical_shortcut_message">lối tắt đã được tạo.</string>
   <string name="gaming_vertical_menu_option_1">Chia sẻ trò chơi</string>
   <string name="gaming_vertical_menu_option_2">Tạo lối tắt trên màn hình chính</string>
   <string name="gaming_vertical_menu_option_3">Xóa khỏi danh sách</string>
@@ -344,10 +347,11 @@
   <string name="gaming_vertical_genre_11">Thể thao &amp; đua xe</string>
   <string name="gaming_vertical_genre_12">Gái</string>
   <string name="onboarding_2_introduction_title">%1$s hoàn toàn mới</string>
-  <string name="onboarding_2_introduction_description">Vẫn nhanh và nhẹ. Chúng tôi đã thêm tìm kiếm và nội dung mua sắm thông minh để làm cho trình duyệt internet trở nên thú vị hơn!</string>
-  <string name="onboarding_2_content_services_news_shopping_games">Chạm để đọc tin tức thời thượng, tìm ưu đãi tốt hoặc chơi các trò chơi miễn phí hấp dẫn nhất để vui chơi!</string>
-  <string name="onboarding_2_content_services_news_games">Chạm để đọc tin tức thời thượng hoặc chơi các trò chơi miễn phí hấp dẫn nhất để vui chơi!</string>
+  <string name="onboarding_2_introduction_description">Một trình duyệt nhanh và nhẹ, bây giờ với các tính năng thú vị! Chúng tôi đã thêm tìm kiếm và nội dung mua sắm thông minh để làm cho trình duyệt thú vị hơn!</string>
+  <string name="onboarding_2_content_services_news_shopping_games">Chạm để đọc tin tức xu hướng, tìm ưu đãi tốt hoặc vui chơi các trò chơi miễn phí hấp dẫn nhất!</string>
+  <string name="onboarding_2_content_services_news_games">Chạm để đọc tin tức xu hướng hoặc vui chơi các trò chơi miễn phí hot nhất!</string>
   <string name="onboarding_2_content_services_games">Chạm để chơi các trò chơi miễn hot nhất và vui vẻ!</string>
+  <string name="onboarding_2_content_services_news_travel">Chạm để đọc tin tức xu hướng, lập kế hoạch chuyến đi tiếp theo của bạn và nhiều hơn nữa!</string>
   <string name="onboarding_2_smart_shopping_search_title">Tìm kiếm mua sắm thông minh</string>
   <string name="onboarding_2_smart_shopping_search_description">So sánh giá giữa các cửa hàng trực tuyến khác nhau là siêu dễ dàng, hãy thử ngay bây giờ!</string>
   <string name="home_search_bar_text">Tìm kiếm…</string>
@@ -357,6 +361,8 @@
   <string name="content_home_context_menu_share_link">Chia sẻ liên kết</string>
   <string name="content_home_error_message">Oops!\nCó gì đó không ổn</string>
   <string name="private_home_title">Duyệt web riêng tư nâng cao</string>
+  <string name="private_home_description_1">Bây giờ bạn có thể duyệt riêng tư, không có lịch sử, không có mật khẩu được ghi lại và những người khác sử dụng thiết bị này sẽ không thấy hoạt động của bạn.\n\nDuyệt web riêng tư nâng cao của chúng tôi thậm chí có thể %1$s bởi các nhà quảng cáo và trang web, điều mà hầu hết các chế độ riêng tư không thể.</string>
+  <string name="private_home_description_2">ngăn bạn khỏi bị theo dõi</string>
   <string name="msrp_logoman_message">Giành phiếu mua hàng %1$s</string>
   <string name="msrp_home_hint">Hãy thử mua sắm, tin tức, trò chơi hàng ngày để giành được phiếu giảm giá %1$s</string>
   <string name="msrp_reward_title">Phần thưởng</string>
@@ -421,4 +427,30 @@
   <string name="msrp_reward_challenge_error">Oops! Có gì đó không ổn</string>
   <string name="msrp_activitykilled_snackbar_button">QUY ĐỔI</string>
   <string name="msrp_activitykilled_snackbar_body">Bạn đã giành được một phiếu mua sắm!</string>
+  <string name="travel_vertical_title">Du lịch</string>
+  <string name="travel_vertical_category_1">Khám phá</string>
+  <string name="travel_destination_subcategory_1">Du lịch trên một ngân sách</string>
+  <string name="travel_destination_subcategory_2">Thành phố tốt nhất cho kỳ nghỉ đông</string>
+  <string name="travel_find_destination_title">Bạn muốn đi đâu?</string>
+  <string name="travel_find_destination_placeholder_1">Hãy thử “Bali”…</string>
+  <string name="travel_detail_page_subcategory_content">Khám phá %1$s</string>
+  <string name="travel_detail_page_subcategory_hotel">Khách sạn nổi tiếng</string>
+  <string name="travel_more">Thêm</string>
+  <string name="travel_content_ig_link">#%1$s trên Instagram</string>
+  <string name="travel_content_yt_view_count">%1$s lượt xem</string>
+  <string name="travel_content_yt_view_count_single_view">1 lượt xem</string>
+  <string name="travel_content_wiki_source_name">Wikipedia</string>
+  <string name="travel_hotel_detail_1">Wi-Fi miễn phí</string>
+  <string name="travel_hotel_detail_2">Không cần thẻ tín dụng</string>
+  <string name="travel_hotel_detail_3">Thanh toán khi nhận phòng</string>
+  <string name="travel_hotel_price_from">Từ</string>
+  <string name="travel_empty_state_text">“Tôi chưa từng đến những nơi này, nhưng nó ở trong danh sách của tôi.”</string>
+  <string name="travel_empty_state_button">Khám phá một thành phố</string>
+  <string name="travel_snack_bar_button">XEM</string>
+  <string name="travel_onboarding_save_title">Thích ứng dụng %1$s?</string>
+  <string name="travel_onboarding_save_button">OK</string>
+  <string name="travel_find_destination_placeholder_2">Nhập một điểm đến</string>
+  <string name="travel_search_engine_1">Xem kết quả trong %1$s</string>
+  <string name="travel_search_engine_2">Xem kết quả trong tìm kiếm du lịch thông minh</string>
+  <string name="travel_search_engine_fxlite">Xem kết quả trong %1$s Travel Discovery</string>
 </resources>

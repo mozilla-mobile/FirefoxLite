@@ -433,12 +433,12 @@
   <string name="travel_detail_page_subcategory_content">Jelajahi %1$s</string>
   <string name="travel_detail_page_subcategory_hotel">Hotel populer</string>
   <string name="travel_more">Lebih banyak</string>
-  <string name="travel_content_ig_link">#%1$s di IG</string>
+  <string name="travel_content_ig_link">#%1$s di Instagram</string>
   <string name="travel_content_yt_view_count">%1$s tayangan</string>
   <string name="travel_content_yt_view_count_single_view">%1$s tayangan</string>
   <string name="travel_content_wiki_source_name">Wikipedia</string>
   <string name="travel_hotel_detail_1">Wi-Fi gratis</string>
-  <string name="travel_hotel_detail_2">Pembatalan gratis</string>
+  <string name="travel_hotel_detail_2">Kartu kredit tidak diperlukan</string>
   <string name="travel_hotel_detail_3">Bayar saat lapor masuk</string>
   <string name="travel_empty_state_text">“Saya belum pernah ke mana-mana, tetapi itu ada dalam daftar saya.”</string>
   <string name="travel_empty_state_button">Jelajahi kota</string>
