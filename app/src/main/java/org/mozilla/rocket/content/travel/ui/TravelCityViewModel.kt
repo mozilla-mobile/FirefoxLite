@@ -7,8 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -68,8 +70,12 @@ class TravelCityViewModel(
     val showSnackBar = SingleLiveEvent<Unit>()
     val openLink = SingleLiveEvent<OpenLinkAction>()
 
+    private var loadingJob: Job? = null
+    private var loadMoreJob: Job? = null
     private var hotelsCount = 0
     private lateinit var city: BaseCityData
+    private val loadingUiModel = LoadingUiModel()
+
     var category: String = ""
     val versionId: Long = System.currentTimeMillis()
 
@@ -88,10 +94,14 @@ class TravelCityViewModel(
 
     fun getLatestItems(context: Context, city: BaseCityData) {
         data.clear()
+        dataLoadingCount = 0
         hotelsCount = 0
+        isHotelLoading = false
         this.city = city
 
-        launchDataLoad(
+        loadMoreJob?.cancel()
+        loadingJob?.cancel()
+        loadingJob = launchDataLoad(
             {
                 // TODO: add price items
 
@@ -135,6 +145,7 @@ class TravelCityViewModel(
                     SectionHeaderUiModel(SectionType.TopHotels)
                 }
                 data.add(hotelHeader)
+                yield()
 
                 _items.postValue(data)
             }, {
@@ -145,13 +156,14 @@ class TravelCityViewModel(
     }
 
     private suspend fun loadHotels() {
-        data.add(LoadingUiModel())
+        data.add(loadingUiModel)
         _items.postValue(data)
 
         isHotelLoading = true
         val hotelResult = getHotels(city.id, city.type, hotelsCount)
 
-        data.removeAt(data.size - 1)
+        data.remove(loadingUiModel)
+        yield()
         if (hotelResult is Result.Success) {
             hotelsCount += hotelResult.data.result.size
             data.addAll(
@@ -167,7 +179,7 @@ class TravelCityViewModel(
 
     private fun loadMoreHotels() {
         if (!isHotelLoading) {
-            backgroundTask {
+            loadMoreJob = backgroundTask {
                 loadHotels()
             }
         }
@@ -273,6 +285,8 @@ class TravelCityViewModel(
                 block1()
                 setDataLoadingState(State.Idle)
                 block2()
+            } catch (ce: CancellationException) {
+                // do nothing
             } catch (t: Throwable) {
                 _isDataLoading.value = State.Error(t)
             }
@@ -283,6 +297,8 @@ class TravelCityViewModel(
         return viewModelScope.launch {
             try {
                 block()
+            } catch (ce: CancellationException) {
+                // do nothing
             } catch (t: Throwable) {
                 _isDataLoading.value = State.Error(t)
             }
