@@ -24,12 +24,12 @@ fun String.trimContentWithinParentheses(): String {
 
     val trimmed = this.filter {
 
-        if (it.equals('(')) {
+        if (it == '(' || it == '（') {
             parenthesesCounter += 1
         }
 
         val keep = parenthesesCounter == 0
-        if (it.equals(')') && parenthesesCounter > 0) {
+        if ((it == ')' || it == '）') && parenthesesCounter > 0) {
             parenthesesCounter -= 1
         }
         keep
