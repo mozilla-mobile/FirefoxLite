@@ -5,4 +5,6 @@
   <string name="onboarding_2_content_services_news_games">แตะเพื่ออ่านข่าวติดเทรนด์ หาดีลดีๆ หรือเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
   <string name="private_home_description_1">ตอนนี้คุณสามารถค้นดูแบบส่วนตัว ไม่เก็บประวัติ ไม่เก็บรหัสผ่านและคนอื่นที่ใช้อุปกรณ์นี้จะไม่เห็นกิจกรรมของคุณ\n\nการค้นดูแบบส่วนตัวขั้นสูงสามารถแม้แต่ %1$s จากโฆษณาและเว็บไซต์ซึ่งโหมดส่วนตัวส่วนใหญ่ทำไม่ได้</string>
   <string name="private_home_description_2">ป้องกันคุณจากการติดตาม</string>
+  <string name="onboarding_2_content_services_news_travel">แตะเพื่ออ่านข่าวที่เป็นกระแส วางแผนเที่ยวครั้งต่อไป และอื่นๆ!</string>
+  <string name="travel_search_engine_fxlite">ดูผลลัพธ์ใน เสาะหาสิ่งใหม่จากการเดินทางด้วย %1$s</string>
 </resources>
