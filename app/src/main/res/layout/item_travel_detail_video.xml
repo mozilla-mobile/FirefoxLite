@@ -18,9 +18,9 @@
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
 
     <ImageView
         android:id="@+id/explore_video_play_icon"
