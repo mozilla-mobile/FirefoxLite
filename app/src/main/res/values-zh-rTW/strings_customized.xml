@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="onboarding_2_content_services_news_travel">閱讀即時新聞，規劃下一個旅行，以及探索更多精彩內容！</string>
+  <string name="travel_search_engine_fxlite">檢視 %1$s 旅遊探索的結果</string>
+</resources>
