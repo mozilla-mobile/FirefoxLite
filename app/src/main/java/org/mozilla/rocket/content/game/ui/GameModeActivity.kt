@@ -12,7 +12,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import dagger.Lazy
-import kotlinx.android.synthetic.main.activity_game_mode.*
+import kotlinx.android.synthetic.main.activity_game_mode.fragment_container
+import kotlinx.android.synthetic.main.activity_game_mode.video_container
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -68,12 +69,11 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
         chromeViewModel.showUrlInput.value = chromeViewModel.currentUrl.value
 
         telemetryViewModel.initialize(intent?.extras?.getParcelable(EXTRA_TELEMETRY_DATA))
-
         if (savedInstanceState == null) {
             val url = intent?.extras?.getString(EXTRA_URL) ?: ""
             val contentTabFragment = ContentTabFragment.newInstance(url, enableTurboMode = false, forceDisableImageBlocking = true)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, contentTabFragment)
+                .replace(R.id.fragment_container, contentTabFragment, TAG_CONTENT_TAB_FRAGMENT)
                 .commit()
 
             Looper.myQueue().addIdleHandler {
@@ -89,6 +89,15 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
             if (isIntentFromGameShortcut(intent)) {
                 TelemetryWrapper.launchByGameShortcut()
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val url = intent?.extras?.getString(EXTRA_URL)
+        if (url != null) {
+            val contentTabFragment = supportFragmentManager.findFragmentByTag(TAG_CONTENT_TAB_FRAGMENT) as? ContentTabFragment
+            contentTabFragment?.loadUrl(url)
         }
     }
 
@@ -153,9 +162,19 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
         )
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isTaskRoot) {
+            startActivity(GameActivity.getStartIntent(this).apply {
+                flags = Intent.FLAG_ACTIVITY_TASK_ON_HOME
+            })
+        }
+    }
+
     companion object {
         private const val EXTRA_URL = "url"
         private const val EXTRA_TELEMETRY_DATA = "telemetry_data"
+        private const val TAG_CONTENT_TAB_FRAGMENT = "CONTENT_TAB_FRAGMENT"
 
         fun getStartIntent(
             context: Context,

@@ -3,11 +3,13 @@ package org.mozilla.rocket.deeplink
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
+import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.Task
+import org.mozilla.rocket.extension.getParam
 import java.net.URI
 
 enum class DeepLinkType {
@@ -18,6 +20,14 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: URI) {
             addTask(StartGameActivityTask())
+        }
+    },
+    GAME_ITEM {
+        override fun match(uri: URI) =
+            isContentLink(uri) && DeepLinkConstants.PATH_GAME_ITEM == uri.path
+
+        override fun addTasks(uri: URI) {
+            addTask(StartGameItemActivityTask(uri.getParam("url") ?: ""))
         }
     },
 

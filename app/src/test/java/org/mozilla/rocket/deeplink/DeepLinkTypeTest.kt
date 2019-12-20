@@ -4,10 +4,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
+import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
+import java.net.URLEncoder
 
 class DeepLinkTypeTest {
 
@@ -17,6 +19,16 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.GAME_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartGameActivityTask)
+    }
+
+    @Test
+    fun `When game item uri is matched, launch game mode activity`() {
+        val url = "https://www.google.com"
+        val deepLinkType = DeepLinkType.parse("rocket://content/game/item?url=${URLEncoder.encode(url, "utf-8")}")
+
+        assertEquals(DeepLinkType.GAME_ITEM, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is StartGameItemActivityTask)
+        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).url, url)
     }
 
     @Test

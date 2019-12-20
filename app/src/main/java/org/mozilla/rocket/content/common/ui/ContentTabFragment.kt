@@ -48,6 +48,10 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         contentLayout = view.findViewById(R.id.main_content)
     }
 
+    fun loadUrl(url: String) {
+        tabSession?.engineSession?.tabView?.loadUrl(url)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

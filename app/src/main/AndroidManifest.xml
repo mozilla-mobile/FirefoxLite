@@ -306,7 +306,9 @@
             android:name="org.mozilla.rocket.content.game.ui.GameModeActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true"
-            android:theme="@style/GameModeTheme" />
+            android:theme="@style/GameModeTheme"
+            android:launchMode="singleTask"
+            android:taskAffinity=".content.game" />
 
         <activity
             android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity"
