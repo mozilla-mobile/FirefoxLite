@@ -197,7 +197,7 @@
   <string name="rate_app_dialog_btn_feedback">Оставьте отзыв</string>
   <string name="rate_app_notification_action_feedback">ОТЗЫВ</string>
   <string name="share_app_dialog_text_title">Поделитесь %1$s с друзьями!</string>
-  <string name="share_app_dialog_text_content">- Быстрый и легкий\n- Экономия трафика\n- Мощные скриншоты</string>
+  <string name="share_app_dialog_text_content">- Быстрый и легкий\n- Умный поиск покупок\n- Бесплатные игры, актуальные новости</string>
   <string name="share_app_dialog_btn_share">Поделиться</string>
   <string name="share_app_promotion_text">Привет, попробуй этот быстрый и лёгкий браузер от %3$s. %1$s %2$s</string>
   <string name="update_app_dialog_btn_update_now">ОБНОВИТЬ СЕЙЧАС!</string>
@@ -351,6 +351,7 @@
   <string name="onboarding_2_content_services_news_shopping_games">Нажмите, чтобы читать последние новости, найти выгодные предложения или играть в самые горячие бесплатные игры!</string>
   <string name="onboarding_2_content_services_news_games">Нажмите, чтобы читать последние новости или играть в самые горячие бесплатные игры!</string>
   <string name="onboarding_2_content_services_games">Нажмите, чтобы играть в самые горячие бесплатные игры!</string>
+  <string name="onboarding_2_content_services_news_travel">Нажмите, чтобы читать последние новости, планировать следующую поездку и многое другое!</string>
   <string name="onboarding_2_smart_shopping_search_title">Умный поиск покупок</string>
   <string name="onboarding_2_smart_shopping_search_description">Сравнивать цены во множестве интернет-магазинов — легко, попробуйте сейчас!</string>
   <string name="home_search_bar_text">Поиск…</string>
@@ -433,9 +434,10 @@
   <string name="travel_destination_subcategory_2">Лучшие города для зимнего отдыха</string>
   <string name="travel_find_destination_title">Куда вы хотите отправиться?</string>
   <string name="travel_find_destination_placeholder_1">Попробуйте «Бали»...</string>
+  <string name="travel_detail_page_subcategory_content">Познакомьтесь с %1$s</string>
   <string name="travel_detail_page_subcategory_hotel">Популярные отели</string>
   <string name="travel_more">Ещё</string>
-  <string name="travel_content_ig_link">#%1$s на IG</string>
+  <string name="travel_content_ig_link">#%1$s в Инстаграме</string>
   <string name="travel_content_yt_view_count">%1$s просмотров</string>
   <string name="travel_content_yt_view_count_single_view">1 просмотр</string>
   <string name="travel_content_wiki_source_name">Википедия</string>
@@ -443,10 +445,15 @@
   <string name="travel_hotel_detail_2">Кредитные карты не требуются</string>
   <string name="travel_hotel_detail_3">Оплата при регистрации</string>
   <string name="travel_hotel_price_from">От</string>
+  <string name="travel_empty_state_text">«Я ещё не был везде, но это в моем списке».</string>
+  <string name="travel_empty_state_button">Найти город</string>
   <string name="travel_snack_bar_saved_message">Сохранено в вашем списке желаний.</string>
   <string name="travel_snack_bar_button">ПРОСМОТРЕТЬ</string>
   <string name="travel_onboarding_save_title">Нравится %1$s?</string>
+  <string name="travel_onboarding_save_description">Сохраните %1$s в свой список желаний, чтобы получать быстрый доступ к путеводителям и советам.</string>
   <string name="travel_onboarding_save_button">OK</string>
   <string name="travel_find_destination_placeholder_2">Введите пункт назначения</string>
   <string name="travel_search_engine_1">Посмотреть результаты в %1$s</string>
+  <string name="travel_search_engine_2">Посмотрите результаты в умном поиске мест для путешествий</string>
+  <string name="travel_search_engine_fxlite">Посмотрите результаты в поиске мест для путешествий %1$s</string>
 </resources>

@@ -111,7 +111,7 @@
   <string name="permission_dialog_not_now">現在不要</string>
   <string name="permission_toast_location">無法取得所在位置，請授權取得您的所在位置。</string>
   <string name="permission_toast_storage">儲存空間無法使用，請授權儲存照片與檔案到您的裝置。</string>
-  <string name="geolocation_dialog_message">%1$s 想要存取您的所在位置。</string>
+  <string name="geolocation_dialog_message">%1$s 想要取得您的所在位置。</string>
   <string name="geolocation_dialog_message_cache_it">再次啟動 %1$s 前，不要再為此網站詢問</string>
   <string name="geolocation_dialog_allow">允許</string>
   <string name="geolocation_dialog_block">封鎖</string>
