@@ -24,6 +24,7 @@ import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
 import org.mozilla.strictmodeviolator.StrictModeViolation
 import java.net.URI
+import java.net.URISyntaxException
 
 class SiteAdapterDelegate(
     private val homeViewModel: HomeViewModel,
@@ -106,10 +107,15 @@ class SiteViewHolder(
             findSpecifiedBgColor(url) ?: calculateBackgroundColor(bitmap)
 
     private fun findSpecifiedBgColor(url: String): Int? {
-        val host = URI(url).host
-        return specifiedFaviconBgColors
-                ?.find { it.host == host }
-                ?.bg_color
+        return try {
+            val host = URI(url).host
+            specifiedFaviconBgColors
+                    ?.find { it.host == host }
+                    ?.bg_color
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun calculateBackgroundColor(favicon: Bitmap): Int {
