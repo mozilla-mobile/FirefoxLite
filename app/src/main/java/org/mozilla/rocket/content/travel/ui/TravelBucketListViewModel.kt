@@ -10,13 +10,11 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.GetBucketListUseCase
-import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.BucketListCityUiModel
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class TravelBucketListViewModel(
-    private val getBucketListUseCase: GetBucketListUseCase,
-    private val removeFromBucketListUseCase: RemoveFromBucketListUseCase
+    private val getBucketListUseCase: GetBucketListUseCase
 ) : ViewModel() {
 
     private val _isDataLoading = MutableLiveData<State>()
@@ -43,13 +41,6 @@ class TravelBucketListViewModel(
 
     fun onExploreCityClicked() {
         goSearch.call()
-    }
-
-    fun removeCityFromBucket(cityItem: BucketListCityUiModel) {
-        launchDataLoad {
-            removeFromBucketListUseCase(cityItem.id)
-            loadBucketList()
-        }
     }
 
     private suspend fun loadBucketList() {

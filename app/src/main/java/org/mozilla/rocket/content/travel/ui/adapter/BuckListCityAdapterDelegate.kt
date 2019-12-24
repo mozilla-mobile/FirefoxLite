@@ -45,7 +45,6 @@ class BucketListCityViewHolder(
                 .into(city_image)
 
         itemView.setOnClickListener { travelBucketListViewModel.onBucketListCityClicked(bucketListCity) }
-        city_favorite_btn.setOnClickListener { travelBucketListViewModel.removeCityFromBucket(bucketListCity) }
     }
 }
 
