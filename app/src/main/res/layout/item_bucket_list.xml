@@ -66,6 +66,8 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="11dp"
             android:background="@null"
+            android:clickable="false"
+            android:focusable="false"
             android:src="@drawable/ic_favorite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -115,10 +115,7 @@ object TravelModule {
 
     @JvmStatic
     @Provides
-    fun provideTravelBucketListViewModel(
-        getBucketListUseCase: GetBucketListUseCase,
-        removeFromBucketListUseCase: RemoveFromBucketListUseCase
-    ): TravelBucketListViewModel = TravelBucketListViewModel(getBucketListUseCase, removeFromBucketListUseCase)
+    fun provideTravelBucketListViewModel(getBucketListUseCase: GetBucketListUseCase): TravelBucketListViewModel = TravelBucketListViewModel(getBucketListUseCase)
 
     @JvmStatic
     @Provides
