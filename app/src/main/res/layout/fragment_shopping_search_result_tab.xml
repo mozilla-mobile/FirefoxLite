@@ -81,9 +81,9 @@
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="@android:color/white"
+                app:tabTextAppearance="@style/ShoppingSearchTabText"
                 app:tabTextColor="@color/paletteDarkGreyE100"
-                app:tabUnboundedRipple="true"
-                app:tabTextAppearance="@style/ShoppingSearchTabText"/>
+                app:tabUnboundedRipple="true" />
 
             <ImageButton
                 android:id="@+id/preferenceButton"
@@ -92,6 +92,7 @@
                 android:layout_gravity="end"
                 android:background="@color/paletteLightGreyB100"
                 android:elevation="2dp"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_arrowhead_up_light_black" />
 
