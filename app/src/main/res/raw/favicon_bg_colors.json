@@ -1,10 +1,10 @@
 [
   {
     "host": "www.youtube.com",
-    "bg_color": "FFFFCDC1"
+    "bg_color": "FFEEEEEE"
   },
   {
     "host": "m.youtube.com",
-    "bg_color": "FFFFCDC1"
+    "bg_color": "FFEEEEEE"
   }
 ]
