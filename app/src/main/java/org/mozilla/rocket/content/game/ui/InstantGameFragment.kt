@@ -187,18 +187,20 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun showRecentPlayedSpotlight() {
-        activity?.let {
+        activity?.let { activity ->
             recycler_view.post {
                 recycler_view.scrollToPosition(0)
                 val gameCategoryView = recycler_view.layoutManager?.findViewByPosition(1)
                 val gameListView = gameCategoryView?.findViewById<RecyclerView>(R.id.game_list)
                 val gameItemView = gameListView?.layoutManager?.findViewByPosition(0)
 
-                setSpotlightStatusBarColor()
-                recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(it, gameItemView!!, {
-                    restoreStatusBarColor()
-                }) {
-                    instantGamesViewModel.onRecentPlayedSpotlightButtonClicked()
+                gameItemView?.let {
+                    setSpotlightStatusBarColor()
+                    recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(activity, it, {
+                        restoreStatusBarColor()
+                    }) {
+                        instantGamesViewModel.onRecentPlayedSpotlightButtonClicked()
+                    }
                 }
             }
         }
