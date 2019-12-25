@@ -32,10 +32,12 @@ class DeepLinkTypeTest {
         val deepLinkType = DeepLinkType.parse("rocket://content/game/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
 
         assertEquals(DeepLinkType.GAME_ITEM, deepLinkType)
-        assertTrue(deepLinkType.getTaskList()[0] is StartGameItemActivityTask)
-        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).url, url)
-        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).feed, feed)
-        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).source, source)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartGameItemActivityTask)
+        task as StartGameItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
     }
 
     @Test
@@ -54,10 +56,12 @@ class DeepLinkTypeTest {
         val deepLinkType = DeepLinkType.parse("rocket://content/news/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
 
         assertEquals(DeepLinkType.NEWS_ITEM, deepLinkType)
-        assertTrue(deepLinkType.getTaskList()[0] is StartNewsItemActivityTask)
-        assertEquals((deepLinkType.getTaskList()[0] as StartNewsItemActivityTask).url, url)
-        assertEquals((deepLinkType.getTaskList()[0] as StartNewsItemActivityTask).feed, feed)
-        assertEquals((deepLinkType.getTaskList()[0] as StartNewsItemActivityTask).source, source)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartNewsItemActivityTask)
+        task as StartNewsItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
     }
 
     @Test
@@ -76,10 +80,12 @@ class DeepLinkTypeTest {
         val deepLinkType = DeepLinkType.parse("rocket://content/shopping/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
 
         assertEquals(DeepLinkType.SHOPPING_ITEM, deepLinkType)
-        assertTrue(deepLinkType.getTaskList()[0] is StartShoppingItemActivityTask)
-        assertEquals((deepLinkType.getTaskList()[0] as StartShoppingItemActivityTask).url, url)
-        assertEquals((deepLinkType.getTaskList()[0] as StartShoppingItemActivityTask).feed, feed)
-        assertEquals((deepLinkType.getTaskList()[0] as StartShoppingItemActivityTask).source, source)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartShoppingItemActivityTask)
+        task as StartShoppingItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
     }
 
     @Test
@@ -98,10 +104,12 @@ class DeepLinkTypeTest {
         val deepLinkType = DeepLinkType.parse("rocket://content/travel/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
 
         assertEquals(DeepLinkType.TRAVEL_ITEM, deepLinkType)
-        assertTrue(deepLinkType.getTaskList()[0] is StartTravelItemActivityTask)
-        assertEquals((deepLinkType.getTaskList()[0] as StartTravelItemActivityTask).url, url)
-        assertEquals((deepLinkType.getTaskList()[0] as StartTravelItemActivityTask).feed, feed)
-        assertEquals((deepLinkType.getTaskList()[0] as StartTravelItemActivityTask).source, source)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartTravelItemActivityTask)
+        task as StartTravelItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
     }
 
     @Test
