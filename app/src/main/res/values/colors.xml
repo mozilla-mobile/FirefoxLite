@@ -188,7 +188,4 @@
     <!--  Content Hub  -->
     <color name="contentHubRedDotColor">#EC1C52</color>
 
-    <!-- Ripple -->
-    <color name="rippleColor">#4CCBCBCB</color>
-
 </resources>
