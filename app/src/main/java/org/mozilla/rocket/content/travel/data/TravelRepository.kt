@@ -30,18 +30,20 @@ class TravelRepository(
         return localDataSource.getCityIg(name)
     }
 
-    suspend fun getCityWiki(name: String): Result<Wiki> {
-        val resultName = remoteDataSource.getCityWikiName(name)
-        val normalizedName = Uri.encode(if (resultName is Result.Success) { resultName.data } else { name })
+    suspend fun getCityWikiName(name: String): Result<String> {
+        return remoteDataSource.getCityWikiName(name)
+    }
 
-        val resultExtract = remoteDataSource.getCityWikiExtract(normalizedName)
-        val resultImage = remoteDataSource.getCityWikiImage(normalizedName)
+    suspend fun getCityWiki(name: String): Result<Wiki> {
+        val encodedName = Uri.encode(name)
+        val resultExtract = remoteDataSource.getCityWikiExtract(encodedName)
+        val resultImage = remoteDataSource.getCityWikiImage(encodedName)
 
         if (resultImage !is Result.Success || resultExtract !is Result.Success) {
             return Result.Error(Exception())
         }
 
-        val wiki = Wiki(resultImage.data, resultExtract.data, String.format(WIKI_URL, Locale.getDefault().language, normalizedName))
+        val wiki = Wiki(resultImage.data, resultExtract.data, String.format(WIKI_URL, Locale.getDefault().language, encodedName))
 
         return Result.Success(wiki)
     }
