@@ -11,6 +11,7 @@
         android:layout_height="44dp"
         android:scaleType="centerInside"
         android:background="@drawable/bg_content_hub_item"
+        android:foreground="?android:attr/selectableItemBackground"
         android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

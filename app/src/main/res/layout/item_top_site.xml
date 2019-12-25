@@ -27,6 +27,7 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:background="@drawable/background_top_site"
+        android:foreground="?android:attr/selectableItemBackground"
         android:visibility="invisible"
         android:padding="11.5dp"
         app:layout_constraintTop_toTopOf="parent"
