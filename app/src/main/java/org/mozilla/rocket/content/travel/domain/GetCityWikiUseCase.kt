@@ -7,8 +7,8 @@ import org.mozilla.rocket.content.travel.data.Wiki
 class GetCityWikiUseCase(private val travelRepository: TravelRepository) {
 
     suspend operator fun invoke(name: String): Result<Wiki> {
-
-        val result = travelRepository.getCityWiki(name)
+        val resultName = travelRepository.getCityWikiName(name)
+        val result = travelRepository.getCityWiki(if (resultName is Result.Success) { resultName.data } else { name })
 
         if (result !is Result.Success) {
             return result
