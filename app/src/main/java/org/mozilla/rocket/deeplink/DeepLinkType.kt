@@ -8,6 +8,7 @@ import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
+import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.Task
 import org.mozilla.rocket.extension.getParam
@@ -63,6 +64,18 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: URI) {
             addTask(StartShoppingActivityTask())
+        }
+    },
+    SHOPPING_ITEM {
+        override fun match(uri: URI) =
+                isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_ITEM == uri.path
+
+        override fun addTasks(uri: URI) {
+            val url = uri.getParam("url") ?: ""
+            val feed = uri.getParam("feed") ?: ""
+            val source = uri.getParam("source") ?: ""
+
+            addTask(StartShoppingItemActivityTask(url, feed, source))
         }
     },
 

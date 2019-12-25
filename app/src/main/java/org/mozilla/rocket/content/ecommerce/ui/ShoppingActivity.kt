@@ -3,17 +3,22 @@ package org.mozilla.rocket.content.ecommerce.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_shopping.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ShoppingTabsAdapter
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
 
 class ShoppingActivity : FragmentActivity() {
@@ -37,6 +42,31 @@ class ShoppingActivity : FragmentActivity() {
         initViewPager()
         initTabLayout()
         observeRefreshAction()
+
+        intent.extras?.let {
+            parseDeepLink(it)
+        }
+    }
+
+    private fun parseDeepLink(bundle: Bundle): Boolean {
+        when (bundle.getString(EXTRA_DEEP_LINK) ?: return false) {
+            DEEP_LINK_SHOPPING_ITEM_PAGE -> openShoppingItemPageFromDeepLink(bundle.getParcelable(EXTRA_SHOPPING_ITEM_DATA)!!)
+        }
+
+        return true
+    }
+
+    private fun openShoppingItemPageFromDeepLink(shoppingItemData: DeepLink.ShoppingItemPage.Data) {
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.SHOPPING,
+            shoppingItemData.feed,
+            shoppingItemData.source,
+            "", // no need when triggered by deep link
+            shoppingItemData.url.sha256(),
+            "", // no need when triggered by deep link
+            System.currentTimeMillis()
+        )
+        startActivity(ContentTabActivity.getStartIntent(this, shoppingItemData.url, telemetryData))
     }
 
     private fun initViewPager() {
@@ -83,8 +113,30 @@ class ShoppingActivity : FragmentActivity() {
         telemetryViewModel.onSessionEnded()
     }
 
+    sealed class DeepLink(val name: String) {
+        data class ShoppingItemPage(val data: Data) : DeepLink(DEEP_LINK_SHOPPING_ITEM_PAGE) {
+            @Parcelize
+            data class Data(val url: String, val feed: String, val source: String) : Parcelable
+        }
+    }
+
     companion object {
+        private const val EXTRA_DEEP_LINK = "extra_deep_link"
+        private const val EXTRA_SHOPPING_ITEM_DATA = "extra_shopping_item_data"
+        private const val DEEP_LINK_SHOPPING_ITEM_PAGE = "deep_link_shopping_item_page"
+
         fun getStartIntent(context: Context) =
             Intent(context, ShoppingActivity::class.java).also { it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+
+        fun getStartIntent(context: Context, deepLink: DeepLink) = getStartIntent(context).apply {
+            putExtras(Bundle().apply {
+                putString(EXTRA_DEEP_LINK, deepLink.name)
+                when (deepLink) {
+                    is DeepLink.ShoppingItemPage -> {
+                        putParcelable(EXTRA_SHOPPING_ITEM_DATA, deepLink.data)
+                    }
+                }
+            })
+        }
     }
 }
