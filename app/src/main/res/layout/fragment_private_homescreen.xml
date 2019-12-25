@@ -68,6 +68,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/bg_private_mode_widget"
+        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true">
 
@@ -89,6 +90,7 @@
         android:layout_marginEnd="16dp"
         android:layout_toEndOf="@+id/pm_home_private_mode_btn"
         android:background="@drawable/bg_private_mode_widget"
+        android:foreground="?android:attr/selectableItemBackground"
         android:drawableStart="@drawable/ic_search_private_mode"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
