@@ -17,7 +17,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_news_inner_height">
+        android:layout_height="@dimen/item_news_inner_height"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <ImageView
             android:id="@+id/news_item_image"
