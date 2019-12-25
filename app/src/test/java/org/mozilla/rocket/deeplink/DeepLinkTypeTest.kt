@@ -11,6 +11,7 @@ import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
+import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import java.net.URLEncoder
 
 class DeepLinkTypeTest {
@@ -87,6 +88,20 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.TRAVEL_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartTravelActivityTask)
+    }
+
+    @Test
+    fun `When travel item uri is matched, launch content tab activity`() {
+        val url = "https://www.mozilla.org"
+        val feed = "test_feed"
+        val source = "test_source"
+        val deepLinkType = DeepLinkType.parse("rocket://content/travel/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
+
+        assertEquals(DeepLinkType.TRAVEL_ITEM, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is StartTravelItemActivityTask)
+        assertEquals((deepLinkType.getTaskList()[0] as StartTravelItemActivityTask).url, url)
+        assertEquals((deepLinkType.getTaskList()[0] as StartTravelItemActivityTask).feed, feed)
+        assertEquals((deepLinkType.getTaskList()[0] as StartTravelItemActivityTask).source, source)
     }
 
     @Test

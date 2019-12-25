@@ -4,20 +4,25 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Looper
+import android.os.Parcelable
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_travel.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Companion.TYPE_EXPLORE
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.Explore
+import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
 
 class TravelActivity : FragmentActivity() {
@@ -52,6 +57,31 @@ class TravelActivity : FragmentActivity() {
         initViewPager()
         initTabLayout()
         initToolBar()
+
+        intent.extras?.let {
+            parseDeepLink(it)
+        }
+    }
+
+    private fun parseDeepLink(bundle: Bundle): Boolean {
+        when (bundle.getString(EXTRA_DEEP_LINK) ?: return false) {
+            DEEP_LINK_TRAVEL_ITEM_PAGE -> openTravelItemPageFromDeepLink(bundle.getParcelable(EXTRA_TRAVEL_ITEM_DATA)!!)
+        }
+
+        return true
+    }
+
+    private fun openTravelItemPageFromDeepLink(travelItemData: DeepLink.TravelItemPage.Data) {
+        val telemetryData = ContentTabTelemetryData(
+            TelemetryWrapper.Extra_Value.TRAVEL,
+            travelItemData.feed,
+            travelItemData.source,
+            "", // no need when triggered by deep link
+            travelItemData.url.sha256(),
+            "", // no need when triggered by deep link
+            System.currentTimeMillis()
+        )
+        startActivity(ContentTabActivity.getStartIntent(this, travelItemData.url, telemetryData))
     }
 
     override fun onResume() {
@@ -104,12 +134,35 @@ class TravelActivity : FragmentActivity() {
         }
     }
 
+    sealed class DeepLink(val name: String) {
+        data class TravelItemPage(val data: Data) : DeepLink(DEEP_LINK_TRAVEL_ITEM_PAGE) {
+            @Parcelize
+            data class Data(val url: String, val feed: String, val source: String) : Parcelable
+        }
+    }
+
     companion object {
         private const val EXTRA_DEFAULT_TAB = "default_tab"
+
+        private const val EXTRA_DEEP_LINK = "extra_deep_link"
+        private const val EXTRA_TRAVEL_ITEM_DATA = "extra_travel_item_data"
+        private const val DEEP_LINK_TRAVEL_ITEM_PAGE = "deep_link_travel_item_page"
+
         fun getStartIntent(context: Context, tab: Tab = Explore) =
                 Intent(context, TravelActivity::class.java).also {
                     it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     it.putExtra(EXTRA_DEFAULT_TAB, tab)
                 }
+
+        fun getStartIntent(context: Context, deepLink: DeepLink) = getStartIntent(context).apply {
+            putExtras(Bundle().apply {
+                putString(EXTRA_DEEP_LINK, deepLink.name)
+                when (deepLink) {
+                    is DeepLink.TravelItemPage -> {
+                        putParcelable(EXTRA_TRAVEL_ITEM_DATA, deepLink.data)
+                    }
+                }
+            })
+        }
     }
 }
