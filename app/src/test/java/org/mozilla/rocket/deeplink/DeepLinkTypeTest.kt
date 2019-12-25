@@ -6,6 +6,7 @@ import org.junit.Test
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
+import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
@@ -41,6 +42,20 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.NEWS_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartNewsActivityTask)
+    }
+
+    @Test
+    fun `When news item uri is matched, launch content tab activity`() {
+        val url = "https://www.mozilla.org"
+        val feed = "test_feed"
+        val source = "test_source"
+        val deepLinkType = DeepLinkType.parse("rocket://content/news/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
+
+        assertEquals(DeepLinkType.NEWS_ITEM, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is StartNewsItemActivityTask)
+        assertEquals((deepLinkType.getTaskList()[0] as StartNewsItemActivityTask).url, url)
+        assertEquals((deepLinkType.getTaskList()[0] as StartNewsItemActivityTask).feed, feed)
+        assertEquals((deepLinkType.getTaskList()[0] as StartNewsItemActivityTask).source, source)
     }
 
     @Test

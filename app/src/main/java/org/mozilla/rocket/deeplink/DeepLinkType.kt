@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
+import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
@@ -41,6 +42,18 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: URI) {
             addTask(StartNewsActivityTask())
+        }
+    },
+    NEWS_ITEM {
+        override fun match(uri: URI) =
+            isContentLink(uri) && DeepLinkConstants.PATH_NEWS_ITEM == uri.path
+
+        override fun addTasks(uri: URI) {
+            val url = uri.getParam("url") ?: ""
+            val feed = uri.getParam("feed") ?: ""
+            val source = uri.getParam("source") ?: ""
+
+            addTask(StartNewsItemActivityTask(url, feed, source))
         }
     },
 
