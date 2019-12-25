@@ -144,7 +144,7 @@
             android:background="@android:color/white"
             android:backgroundTint="@color/home_search_panel">
 
-            <org.mozilla.rocket.nightmode.themed.ThemedImageView
+            <org.mozilla.rocket.home.ui.ShoppingSearchEntryButton
                 android:id="@+id/shopping_button"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

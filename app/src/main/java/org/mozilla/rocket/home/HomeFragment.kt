@@ -169,6 +169,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.openPrivateMode.observe(this, Observer {
             chromeViewModel.togglePrivateMode.call()
         })
+        homeViewModel.shouldShowShoppingSearchIndicator.observe(this, Observer {
+            shopping_button.setOngoingState(it)
+        })
         downloadIndicatorViewModel.downloadIndicatorObservable.observe(this, Observer {
             home_fragment_menu_button.apply {
                 when (it) {
@@ -310,7 +313,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     override fun onStart() {
         super.onStart()
-        homeViewModel.onPageForeground()
+        homeViewModel.run {
+            onPageForeground()
+            checkShoppingSearchMode(requireContext())
+        }
     }
 
     override fun onStop() {

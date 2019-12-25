@@ -1,5 +1,6 @@
 package org.mozilla.rocket.home
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -44,6 +45,7 @@ import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
 import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 import org.mozilla.rocket.util.ToastMessage
 
 class HomeViewModel(
@@ -103,6 +105,7 @@ class HomeViewModel(
     val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
     val hideLogoManNotification = SingleLiveEvent<Unit>()
     val executeUriAction = SingleLiveEvent<String>()
+    val shouldShowShoppingSearchIndicator = SingleLiveEvent<Boolean>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -366,6 +369,10 @@ class HomeViewModel(
             TelemetryWrapper.clickWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
         }
         dismissContentServiceOnboardingDialog.call()
+    }
+
+    fun checkShoppingSearchMode(context: Context) {
+        shouldShowShoppingSearchIndicator.value = ShoppingSearchMode.getInstance(context).hasShoppingSearchActivity()
     }
 
     data class ShowTopSiteMenuData(

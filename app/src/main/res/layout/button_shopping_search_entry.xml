@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="48dp"
+    tools:layout_width="48dp"
+    tools:parentTag="org.mozilla.rocket.home.ui.MenuButton">
+
+    <org.mozilla.rocket.nightmode.themed.ThemedImageView
+        android:id="@+id/shopping_search_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_shopping_search"
+        android:tint="@color/home_shopping_search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/shopping_search_ongoing_indicator"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/content_hub_red_dot"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/shopping_search_icon"
+        app:layout_constraintTop_toTopOf="@id/shopping_search_icon"
+        tools:visibility="visible" />
+</merge>

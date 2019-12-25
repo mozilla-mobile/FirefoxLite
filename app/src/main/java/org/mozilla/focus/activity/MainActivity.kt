@@ -70,6 +70,7 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.home.HomeFragment
+import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -105,11 +106,14 @@ class MainActivity : BaseActivity(),
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
+    lateinit var homeViewModelCreator: Lazy<HomeViewModel>
+    @Inject
     lateinit var tabModelStore: TabModelStore
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var downloadIndicatorViewModel: DownloadIndicatorViewModel
+    private lateinit var homeViewModel: HomeViewModel
     private var promotionModel: PromotionModel? = null
 
     private lateinit var menu: MenuDialog
@@ -166,6 +170,7 @@ class MainActivity : BaseActivity(),
 
         chromeViewModel = getViewModel(chromeViewModelCreator)
         downloadIndicatorViewModel = getViewModel(downloadIndicatorViewModelCreator)
+        homeViewModel = getViewModel(homeViewModelCreator)
         themeManager = ThemeManager(this)
         screenNavigator = ScreenNavigator(this)
         appUpdateController = InAppUpdateController(
@@ -299,7 +304,10 @@ class MainActivity : BaseActivity(),
             showTabTray.observe(this@MainActivity, Observer {
                 val tabTray = TabTray.show(supportFragmentManager)
                 if (tabTray != null) {
-                    tabTray.setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.TabTray) }
+                    tabTray.setOnDismissListener {
+                        portraitStateModel.cancelRequest(PortraitComponent.TabTray)
+                        homeViewModel.checkShoppingSearchMode(this@MainActivity)
+                    }
                     portraitStateModel.request(PortraitComponent.TabTray)
                 }
             })
