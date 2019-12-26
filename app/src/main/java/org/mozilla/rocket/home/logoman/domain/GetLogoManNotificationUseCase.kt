@@ -31,7 +31,7 @@ class GetLogoManNotificationUseCase(
             title: String,
             subtitle: String?,
             imageUrl: String?,
-            action: LogoManAction?
+            action: LogoManAction.UriAction?
         ) : Notification(id, title, subtitle, imageUrl, action)
 
         class MissionNotification(
@@ -39,11 +39,12 @@ class GetLogoManNotificationUseCase(
             title: String,
             subtitle: String?,
             imageUrl: String?,
-            action: LogoManAction?
+            action: LogoManAction.OpenMissionPage?
         ) : Notification(id, title, subtitle, imageUrl, action)
     }
 
     sealed class LogoManAction {
+        data class UriAction(val action: String) : LogoManAction()
         data class OpenMissionPage(val mission: Mission) : LogoManAction()
     }
 }
@@ -53,7 +54,7 @@ private fun Notification.toLogoManNotification() = GetLogoManNotificationUseCase
             title,
             subtitle,
             imageUrl,
-            null
+            action?.let { GetLogoManNotificationUseCase.LogoManAction.UriAction(it) }
         )
 
 private fun Mission.toLogoManNotification() = GetLogoManNotificationUseCase.Notification.MissionNotification(

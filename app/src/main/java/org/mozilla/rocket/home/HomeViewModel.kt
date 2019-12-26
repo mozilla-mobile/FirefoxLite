@@ -86,7 +86,7 @@ class HomeViewModel(
     val resetBackgroundColor = SingleLiveEvent<Unit>()
     val openShoppingSearch = SingleLiveEvent<Unit>()
     val openPrivateMode = SingleLiveEvent<Unit>()
-    val openBrowser = SingleLiveEvent<Site>()
+    val openBrowser = SingleLiveEvent<String>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
     val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
@@ -99,6 +99,7 @@ class HomeViewModel(
     val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
     val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
     val hideLogoManNotification = SingleLiveEvent<Unit>()
+    val executeUriAction = SingleLiveEvent<String>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var contentServicesOnboardingTimeSpent = 0L
@@ -210,7 +211,7 @@ class HomeViewModel(
     }
 
     fun onTopSiteClicked(site: Site, position: Int) {
-        openBrowser.value = site
+        openBrowser.value = site.url
         val allowToLogTitle = when (site) {
             is Site.FixedSite -> true
             is Site.RemovableSite -> site.isDefault
@@ -285,12 +286,22 @@ class HomeViewModel(
     }
 
     fun onLogoManNotificationClicked() {
-        logoManClickAction?.let {
-            when (it) {
-                is GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage -> openMissionDetailPage.value = it.mission
-            }
-        }
+        logoManClickAction?.let { executeLogomanAction(it) }
         TelemetryWrapper.clickLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+    }
+
+    private fun executeLogomanAction(logomanAction: GetLogoManNotificationUseCase.LogoManAction) {
+        when (logomanAction) {
+            is GetLogoManNotificationUseCase.LogoManAction.UriAction -> {
+                // workaround to handle open url action then be able to back to home page when clicking back key
+                if (logomanAction.action.startsWith("https://") or logomanAction.action.startsWith("http://")) {
+                    openBrowser.value = logomanAction.action
+                } else {
+                    executeUriAction.value = logomanAction.action
+                }
+            }
+            is GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage -> openMissionDetailPage.value = logomanAction.mission
+        }
     }
 
     fun onLogoManDismissed() {
