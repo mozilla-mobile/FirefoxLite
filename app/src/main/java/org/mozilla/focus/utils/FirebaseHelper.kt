@@ -47,7 +47,7 @@ object FirebaseHelper {
     internal const val ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread"
     internal const val SCREENSHOT_CATEGORY_MANIFEST = "screenshot_category_manifest"
     internal const val FIRST_LAUNCH_TIMER_MINUTES = "first_launch_timer_minutes"
-    internal const val FIRST_LAUNCH_NOTIFICATION_MESSAGE = "first_launch_notification_message"
+    internal const val FIRST_LAUNCH_NOTIFICATION = "first_launch_notification"
 
     private const val FIREBASE_WEB_ID = "default_web_client_id"
     private const val FIREBASE_DB_URL = "firebase_database_url"
@@ -235,7 +235,7 @@ object FirebaseHelper {
             map[RATE_APP_DIALOG_TEXT_CONTENT] = context.getString(R.string.rate_app_dialog_text_content)
             map[RATE_APP_DIALOG_TEXT_POSITIVE] = context.getString(R.string.rate_app_dialog_btn_go_rate)
             map[RATE_APP_DIALOG_TEXT_NEGATIVE] = context.getString(R.string.rate_app_dialog_btn_feedback)
-            map[FIRST_LAUNCH_NOTIFICATION_MESSAGE] =
+            map[FIRST_LAUNCH_NOTIFICATION] =
                 context.getString(R.string.preference_default_browser) + "?\uD83D\uDE0A"
             // Share App
             map[STR_SHARE_APP_DIALOG_TITLE] = context.getString(

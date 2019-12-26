@@ -85,8 +85,8 @@ public class AppConfigWrapper {
         return FirebaseHelper.getFirebase().getRcLong(FirebaseHelper.FIRST_LAUNCH_TIMER_MINUTES);
     }
 
-    public static String getFirstLaunchNotificationMessage() {
-        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.FIRST_LAUNCH_NOTIFICATION_MESSAGE);
+    public static String getFirstLaunchNotification() {
+        return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.FIRST_LAUNCH_NOTIFICATION);
     }
 
     static String getShareAppDialogTitle() {
