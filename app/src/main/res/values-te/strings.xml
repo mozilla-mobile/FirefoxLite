@@ -221,8 +221,8 @@
   <string name="label_menu_news">వార్తలు</string>
   <string name="label_menu_latest_top_trending_news">తాజా &amp; ట్రెండవుతూన్న వార్తలు</string>
   <string name="news_update_btn">కొత్త నవీకరణ</string>
-  <string name="title_news_preferences">వార్తల అభిరుచులు</string>
-  <string name="news_language_dialog_title">వార్తల భాష</string>
+  <string name="title_news_preferences">వార్తల అమరికలు</string>
+  <string name="news_language_dialog_title">భాష</string>
   <string name="news_language_dialog_option_english">ఆంగ్లం</string>
   <string name="news_language_dialog_option_hindi">హిందీ</string>
   <string name="news_language_dialog_option_marathi">మరాఠీ</string>
