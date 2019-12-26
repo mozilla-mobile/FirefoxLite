@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_debug.debug_firebase_id
+import kotlinx.android.synthetic.main.activity_debug.debug_firebase_register_token
 import kotlinx.android.synthetic.main.activity_debug.debug_locale_layout
 import kotlinx.android.synthetic.main.activity_debug.debug_locale_text
 import kotlinx.android.synthetic.main.activity_debug.debug_mission_reminder
@@ -57,6 +58,13 @@ class DebugActivity : AppCompatActivity() {
             val firebaseId = FirebaseHelper.getFirebase().getInstanceId() ?: "null"
             copyToClipboard("firebaseId", firebaseId)
             Toast.makeText(this, "$firebaseId copied", Toast.LENGTH_LONG).show()
+        }
+        debug_firebase_register_token.setOnClickListener {
+            FirebaseHelper.getFirebase().getRegisterToekn {
+                val token = it ?: ""
+                copyToClipboard("firebaseRegisterToken", token)
+                Toast.makeText(this, "$token copied", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

@@ -47,6 +47,9 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun getInstanceId(): String? = null
 
+    override fun getRegisterToekn(callback: (String?) -> Unit) {
+    }
+
     override fun deleteInstanceId() {
     }
 
