@@ -52,6 +52,7 @@ import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.FirebaseHelper
+import org.mozilla.focus.utils.FirebaseHelper.FIREBASE_READY
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.ShortcutUtils
@@ -75,6 +76,8 @@ import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitComponent
 import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.menu.MenuDialog
+import org.mozilla.rocket.periodic.FirstLaunchWorker
+import org.mozilla.rocket.periodic.PeriodicReceiver
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.promotion.PromotionModel
@@ -114,6 +117,7 @@ class MainActivity : BaseActivity(),
     private var myshotOnBoardingDialog: Dialog? = null
 
     private lateinit var screenNavigator: ScreenNavigator
+    private lateinit var firebaseEventReceiver: BroadcastReceiver
     private lateinit var uiMessageReceiver: BroadcastReceiver
 
     private lateinit var appUpdateController: InAppUpdateController
@@ -173,6 +177,7 @@ class MainActivity : BaseActivity(),
         setContentView(R.layout.activity_main)
         initViews()
         initBroadcastReceivers()
+        registerFirebaseEventReceiver()
 
         val intent = SafeIntent(intent)
         if (savedInstanceState == null) {
@@ -218,6 +223,13 @@ class MainActivity : BaseActivity(),
     }
 
     private fun initBroadcastReceivers() {
+        firebaseEventReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                when (intent.action) {
+                    FIREBASE_READY -> checkFirstrunNotification()
+                }
+            }
+        }
         uiMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 when (intent.action) {
@@ -231,6 +243,23 @@ class MainActivity : BaseActivity(),
                 }
             }
         }
+    }
+
+    private fun checkFirstrunNotification() {
+        if (!FirstLaunchWorker.isNotificationFired(this)) {
+            sendBroadcast(Intent(this, PeriodicReceiver::class.java).apply {
+                action = FirstLaunchWorker.ACTION
+            })
+        }
+    }
+
+    private fun registerFirebaseEventReceiver() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(firebaseEventReceiver,
+                IntentFilter(FIREBASE_READY))
+    }
+
+    private fun unregisterFirebaseEventReceiver() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(firebaseEventReceiver)
     }
 
     private fun checkAndRunPromotion(promotionModel: PromotionModel) {
@@ -346,6 +375,7 @@ class MainActivity : BaseActivity(),
 
     public override fun onDestroy() {
         sessionManager?.destroy()
+        unregisterFirebaseEventReceiver()
         super.onDestroy()
     }
 
