@@ -29,7 +29,7 @@
             android:id="@+id/reward_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/ripple_circle"
             android:scaleType="centerInside"
             android:src="@drawable/ic_gift_states" />
 
@@ -37,7 +37,7 @@
             android:id="@+id/profile_button"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="?android:attr/selectableItemBackground"
+            android:background="@drawable/ripple_circle"
             android:scaleType="centerInside"
             android:src="@drawable/ic_account_states" />
 
@@ -150,7 +150,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/bg_shopping_search_btn"
-                android:foreground="?android:attr/selectableItemBackground"
+                android:foreground="@drawable/ripple_circle"
                 android:elevation="1dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_shopping_search"
@@ -165,7 +165,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="16dp"
                 android:background="@drawable/bg_shopping_search_btn"
-                android:foreground="?android:attr/selectableItemBackground"
+                android:foreground="@drawable/ripple_circle"
                 android:elevation="1dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/private_browsing_mask_states"
@@ -180,7 +180,7 @@
                 android:layout_marginStart="76dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/bg_shopping_search_btn"
-                android:foreground="?android:attr/selectableItemBackground"
+                android:foreground="@drawable/ripple_round_rectangle_radius_20"
                 android:elevation="1dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -216,9 +216,9 @@
 
             <org.mozilla.rocket.home.ui.MenuButton
                 android:id="@+id/home_fragment_menu_button"
-                android:layout_width="44dp"
+                android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="@drawable/ripple_circle"
                 android:elevation="1dp"
                 android:paddingEnd="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -227,9 +227,9 @@
 
             <org.mozilla.focus.tabs.TabCounter
                 android:id="@+id/home_fragment_tab_counter"
-                android:layout_width="40dp"
+                android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="@drawable/ripple_circle"
                 android:elevation="1dp"
                 app:drawableColor="@color/home_search_bar_widget"
                 app:layout_constraintBottom_toBottomOf="parent"
