@@ -105,6 +105,7 @@ class HomeViewModel(
     val executeUriAction = SingleLiveEvent<String>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
+    private var logoManType: String? = null
     private var contentServicesOnboardingTimeSpent = 0L
     private var hasLoggedShowLogoman = false
     private var isFirstRun = isNewUserUseCase()
@@ -149,6 +150,7 @@ class HomeViewModel(
             getLogoManNotificationUseCase().first()
                     .map {
                         logoManClickAction = it?.action
+                        logoManType = it?.type
                         it?.run { StateNotification(it.toUiModel(), true) }
                     }
         ) {
@@ -174,9 +176,10 @@ class HomeViewModel(
             .map { SitePage(it) }
 
     fun onPageForeground() {
-        if (!hasLoggedShowLogoman && logoManNotification.value != null) {
+        val logoManNotification = logoManNotification.value
+        if (!hasLoggedShowLogoman && logoManNotification != null) {
             hasLoggedShowLogoman = true
-            TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+            TelemetryWrapper.showLogoman(logoManType, logoManClickAction?.getLink(), logoManNotification.notification.id)
         }
         TelemetryWrapper.showHome()
         updateTopSitesData()
@@ -283,10 +286,11 @@ class HomeViewModel(
 
     fun onLogoManShown() {
         // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
-        logoManNotification.value?.animate = false
+        val logoManNotification = logoManNotification.value
+        logoManNotification?.animate = false
         if (!hasLoggedShowLogoman) {
             hasLoggedShowLogoman = true
-            TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+            TelemetryWrapper.showLogoman(logoManType, logoManClickAction?.getLink(), logoManNotification?.notification?.id)
         }
     }
 
@@ -299,7 +303,7 @@ class HomeViewModel(
                 dismissLogoManNotificationUseCase(notification)
             }
         }
-        TelemetryWrapper.clickLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+        TelemetryWrapper.clickLogoman(logoManType, logoManClickAction?.getLink(), logoManNotification.value?.notification?.id)
     }
 
     private fun executeLogomanAction(logomanAction: GetLogoManNotificationUseCase.LogoManAction) {
@@ -320,8 +324,8 @@ class HomeViewModel(
         logoManNotification.value?.notification?.let {
             logoManNotification.value = null
             dismissLogoManNotificationUseCase(it)
+            TelemetryWrapper.swipeLogoman(logoManType, logoManClickAction?.getLink(), it.id)
         }
-        TelemetryWrapper.swipeLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
     fun onRewardButtonClicked() {

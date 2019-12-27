@@ -22,7 +22,7 @@ class LogoManNotificationRepo(appContext: Context) {
                 FirebaseHelper.getFirebase().getRcString(STR_LOGO_MAN_NOTIFICATION)
                         .takeIf { it.isNotEmpty() }
                         ?.jsonStringToNotification()
-                        ?.takeIf { it.serialNumber.toString() != lastReadId }
+                        ?.takeIf { it.messageId != lastReadId }
             }
 
     fun getLastReadNotificationId(): LiveData<String> =
@@ -41,22 +41,24 @@ class LogoManNotificationRepo(appContext: Context) {
 }
 
 data class Notification(
-    val serialNumber: Long,
+    val messageId: String,
     val title: String,
     val subtitle: String?,
     val imageUrl: String?,
-    val action: String?
+    val action: String?,
+    val type: String?
 )
 
 private fun String.jsonStringToNotification(): Notification? {
     return try {
         val jsonObject = JSONObject(this)
         Notification(
-            jsonObject.getLong("serialNumber"),
+            jsonObject.getString("messageId"),
             jsonObject.getString("title"),
             jsonObject.optString("subtitle", null),
             jsonObject.optString("imageUrl", null),
-            jsonObject.optString("action", null)
+            jsonObject.optString("action", null),
+            jsonObject.optString("type", null)
         )
     } catch (e: JSONException) {
         e.printStackTrace()
