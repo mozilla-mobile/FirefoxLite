@@ -19,7 +19,7 @@
             android:id="@+id/browsing_history_btn_clear"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@null"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:text="@string/browsing_history_clear_btn"
             android:textColor="@color/colorDownloadSubText"

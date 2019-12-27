@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@drawable/round_rectangle_ripple"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal">
 
     <ImageView
@@ -67,6 +67,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/download_item_action"
+        android:background="@drawable/ripple_circle"
         android:layout_gravity="center"/>
 
 </RelativeLayout>

@@ -50,17 +50,21 @@
             <androidx.appcompat.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
                 android:id="@+id/bookmarks"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_bookmarks" />
             <androidx.appcompat.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
                 android:id="@+id/downloads"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/menu_download" />
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/history"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 style="@style/ListPanelDrawable"
                 app:srcCompat="@drawable/menu_history" />
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/screenshots"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 style="@style/ListPanelDrawable"
                 app:srcCompat="@drawable/menu_my_shots" />
         </org.mozilla.focus.widget.EqualDistributeGrid>
