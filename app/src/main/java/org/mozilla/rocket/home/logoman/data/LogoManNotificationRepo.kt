@@ -25,7 +25,7 @@ class LogoManNotificationRepo(appContext: Context) {
                         ?.takeIf { it.serialNumber.toString() != lastReadId }
             }
 
-    private fun getLastReadNotificationId(): LiveData<String> =
+    fun getLastReadNotificationId(): LiveData<String> =
             preference.stringLiveData(SHARED_PREF_KEY_READ_NOTIFICATION_ID, "")
 
     fun saveLastReadNotificationId(readId: String) {

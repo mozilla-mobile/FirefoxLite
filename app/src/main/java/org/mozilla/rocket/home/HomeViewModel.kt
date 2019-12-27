@@ -3,6 +3,7 @@ package org.mozilla.rocket.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
@@ -20,6 +21,7 @@ import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
+import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
@@ -54,6 +56,7 @@ class HomeViewModel(
     shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
     private val readContentHubItemUseCase: ReadContentHubItemUseCase,
     private val getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
+    private val lastReadLogoManNotificationUseCase: LastReadLogoManNotificationUseCase,
     private val lastReadMissionIdUseCase: LastReadMissionIdUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
@@ -151,13 +154,15 @@ class HomeViewModel(
         ) {
             logoManNotification.value = it
         }
-        logoManNotification.addSource(lastReadMissionIdUseCase()) { lastReadMissionId ->
+        val lastReadIdObserver = Observer<String> { lastReadId ->
             val showingNotification = logoManNotification.value
-            if (showingNotification != null && showingNotification.notification.id == lastReadMissionId) {
+            if (showingNotification != null && showingNotification.notification.id == lastReadId) {
                 hideLogoManNotification.call()
                 logoManNotification.value = null
             }
         }
+        logoManNotification.addSource(lastReadLogoManNotificationUseCase(), lastReadIdObserver)
+        logoManNotification.addSource(lastReadMissionIdUseCase(), lastReadIdObserver)
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
@@ -286,7 +291,14 @@ class HomeViewModel(
     }
 
     fun onLogoManNotificationClicked() {
-        logoManClickAction?.let { executeLogomanAction(it) }
+        logoManClickAction?.let {
+            executeLogomanAction(it)
+            val notification = logoManNotification.value?.notification
+            if (notification != null && notification !is Notification.MissionNotification) {
+                // no need to call dismissLogoManNotificationUseCase since it will also be done when mission detail page get opened
+                dismissLogoManNotificationUseCase(notification)
+            }
+        }
         TelemetryWrapper.clickLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
