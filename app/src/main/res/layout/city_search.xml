@@ -29,7 +29,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/bg_travel_search_btn"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:foreground="@drawable/ripple_round_rectangle_radius_20"
         android:elevation="1dp"
         android:orientation="horizontal">
 
