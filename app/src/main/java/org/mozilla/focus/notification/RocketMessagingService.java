@@ -35,8 +35,7 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
             messageId,
             parseOpenUrl(intent),
             parseCommand(intent),
-            parseDeepLink(intent),
-            parseLink(intent)
+            parseDeepLink(intent)
         );
         final NotificationCompat.Builder builder = NotificationUtil.importantBuilder(this)
                 .setContentIntent(pendingIntent);
@@ -83,15 +82,14 @@ public class RocketMessagingService extends FirebaseMessagingServiceWrapper {
         return link;
     }
 
-    private PendingIntent getClickPendingIntent(Context appContext, String messageId, String openUrl, String command, String deepLink, String link) {
+    private PendingIntent getClickPendingIntent(Context appContext, String messageId, String openUrl, String command, String deepLink) {
         // RocketLauncherActivity will handle this intent
         Intent clickIntent = IntentUtils.genFirebaseNotificationClickForBroadcastReceiver(
                 appContext,
                 messageId,
                 openUrl,
                 command,
-                deepLink,
-                link
+                deepLink
         );
         return PendingIntent.getBroadcast(this, REQUEST_CODE_CLICK_NOTIFICATION, clickIntent, PendingIntent.FLAG_ONE_SHOT);
     }

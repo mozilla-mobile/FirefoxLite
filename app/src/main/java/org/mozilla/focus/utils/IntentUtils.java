@@ -41,6 +41,7 @@ public class IntentUtils {
     public static final String EXTRA_SHOW_RATE_DIALOG = "show_rate_dialog";
 
     public static final String EXTRA_NOTIFICATION_MESSAGE_ID = "ex_no_message_id";
+    public static final String EXTRA_NOTIFICATION_MESSAGE = "ex_no_message";
     public static final String EXTRA_NOTIFICATION_LINK = "ex_no_link";
     public static final String EXTRA_NOTIFICATION_OPEN_URL = "ex_no_open_url";
     public static final String EXTRA_NOTIFICATION_COMMAND = "ex_no_command";
@@ -51,10 +52,14 @@ public class IntentUtils {
     public static final String EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER = "ex_no_click_default_browser";
     public static final String EXTRA_NOTIFICATION_CLICK_LOVE_FIREFOX = "ex_no_click_love_firefox";
     public static final String EXTRA_NOTIFICATION_CLICK_PRIVACY_POLICY_UPDATE = "ex_no_click_privacy_policy_update";
-    public static final String EXTRA_NOTIFICATION_DELETE_FIREBASE_NOTIFICATION = "ex_no_delete_firebase_notification";
-    public static final String EXTRA_NOTIFICATION_CLICK_FIREBASE_NOTIFICATION = "ex_no_click_firebase_notification";
+    public static final String EXTRA_NOTIFICATION_NOTIFICATION_SOURCE = "ex_no_notification_source";
+    public static final String EXTRA_NOTIFICATION_DELETE_NOTIFICATION = "ex_no_delete_notification";
+    public static final String EXTRA_NOTIFICATION_CLICK_NOTIFICATION = "ex_no_click_notification";
 
     public static final String ACTION_NOTIFICATION = "action_notification";
+
+    public static final String NOTIFICATION_SOURCE_FIREBASE = "notification_source_firebase";
+    public static final String NOTIFICATION_SOURCE_FIRSTRUN = "notification_source_firstrun";
 
 
     /**
@@ -269,11 +274,24 @@ public class IntentUtils {
     }
 
     public static Intent genDeleteFirebaseNotificationActionForBroadcastReceiver(Context context, String messageId, String link) {
-        final Intent deleteNotification = new Intent(context, NotificationActionBroadcastReceiver.class);
-        deleteNotification.setAction(IntentUtils.ACTION_NOTIFICATION);
-        deleteNotification.putExtra(IntentUtils.EXTRA_NOTIFICATION_DELETE_FIREBASE_NOTIFICATION, true);
+        final Intent deleteNotification = genDeleteNotificationActionForBroadcastReceiver(context, NOTIFICATION_SOURCE_FIREBASE);
         deleteNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
         deleteNotification.putExtra(EXTRA_NOTIFICATION_LINK, link);
+        return deleteNotification;
+    }
+
+    public static Intent genDeleteFirstrunNotificationActionForBroadcastReceiver(Context context, String message, String link) {
+        final Intent deleteNotification = genDeleteNotificationActionForBroadcastReceiver(context, NOTIFICATION_SOURCE_FIRSTRUN);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE, message);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_LINK, link);
+        return deleteNotification;
+    }
+
+    public static Intent genDeleteNotificationActionForBroadcastReceiver(Context context, String source) {
+        final Intent deleteNotification = new Intent(context, NotificationActionBroadcastReceiver.class);
+        deleteNotification.setAction(ACTION_NOTIFICATION);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_DELETE_NOTIFICATION, true);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_NOTIFICATION_SOURCE, source);
         return deleteNotification;
     }
 
@@ -282,18 +300,41 @@ public class IntentUtils {
         String messageId,
         String openUrl,
         String command,
-        String deepLink,
-        String link
+        String deepLink
     ) {
-        final Intent clickFirebaseNotification = new Intent(context, NotificationActionBroadcastReceiver.class);
-        clickFirebaseNotification.setAction(IntentUtils.ACTION_NOTIFICATION);
-        clickFirebaseNotification.putExtra(IntentUtils.EXTRA_NOTIFICATION_CLICK_FIREBASE_NOTIFICATION, true);
-        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
-        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_OPEN_URL, openUrl);
-        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_COMMAND, command);
-        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_DEEP_LINK, deepLink);
-        clickFirebaseNotification.putExtra(EXTRA_NOTIFICATION_LINK, link);
-        return clickFirebaseNotification;
+        final Intent intent = genNotificationActionIntent(context, NOTIFICATION_SOURCE_FIREBASE, openUrl, command, deepLink);
+        intent.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
+        return intent;
+    }
+
+    public static Intent genFirstrunNotificationClickForBroadcastReceiver(
+        Context context,
+        String message,
+        String openUrl,
+        String command,
+        String deepLink
+    ) {
+        final Intent intent = genNotificationActionIntent(context, NOTIFICATION_SOURCE_FIRSTRUN, openUrl, command, deepLink);
+        intent.putExtra(EXTRA_NOTIFICATION_MESSAGE, message);
+        return intent;
+    }
+
+    private static Intent genNotificationActionIntent(
+        Context context,
+        String notificationSource,
+        String openUrl,
+        String command,
+        String deepLink
+    ) {
+        final Intent intent = new Intent(context, NotificationActionBroadcastReceiver.class);
+        intent.setAction(ACTION_NOTIFICATION);
+        intent.putExtra(EXTRA_NOTIFICATION_CLICK_NOTIFICATION, true);
+        intent.putExtra(EXTRA_NOTIFICATION_NOTIFICATION_SOURCE, notificationSource);
+        intent.putExtra(EXTRA_NOTIFICATION_OPEN_URL, openUrl);
+        intent.putExtra(EXTRA_NOTIFICATION_COMMAND, command);
+        intent.putExtra(EXTRA_NOTIFICATION_DEEP_LINK, deepLink);
+        intent.putExtra(EXTRA_NOTIFICATION_LINK, openUrl != null ? openUrl : (command != null ? command : deepLink));
+        return intent;
     }
 
     @CheckResult

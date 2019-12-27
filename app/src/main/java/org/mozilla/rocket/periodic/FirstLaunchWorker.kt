@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import org.json.JSONException
@@ -25,6 +26,9 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
         const val TIMER_SUSPEND = -1
 
         private const val PREF_KEY_BOOLEAN_NOTIFICATION_FIRED: String = "pref-key-boolean-notification-fired"
+
+        private const val REQUEST_CODE_CLICK_NOTIFICATION = 1
+        private const val REQUEST_CODE_DELETE_NOTIFICATION = 2
 
         fun isNotificationFired(context: Context, default: Boolean = false): Boolean {
             return getSharedPreference(context).getBoolean(PREF_KEY_BOOLEAN_NOTIFICATION_FIRED, default)
@@ -53,15 +57,23 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
     }
 
     private fun showNotification(context: Context, message: String, openUrl: String?, command: String?, deepLink: String?) {
-        val intent = IntentUtils.genFirebaseNotificationClickForBroadcastReceiver(context, null, openUrl, command, deepLink, null)
-        val openRocketPending = PendingIntent.getBroadcast(context, 0, intent,
+        val intent = IntentUtils.genFirstrunNotificationClickForBroadcastReceiver(context, message, openUrl, command, deepLink)
+        val openRocketPending = PendingIntent.getBroadcast(context, REQUEST_CODE_CLICK_NOTIFICATION, intent,
                 PendingIntent.FLAG_ONE_SHOT)
         val builder = NotificationUtil.importantBuilder(context)
                 .setContentTitle(message)
                 .setContentIntent(openRocketPending)
+
+        addDeleteTelemetry(applicationContext, builder, message, openUrl ?: command ?: deepLink)
         // Show notification
         val id = message.hashCode()
         NotificationUtil.sendNotification(context, id, builder)
+    }
+
+    private fun addDeleteTelemetry(appContext: Context, builder: NotificationCompat.Builder, message: String, link: String?) {
+        val intent = IntentUtils.genDeleteFirstrunNotificationActionForBroadcastReceiver(appContext, message, link)
+        val pendingIntent = PendingIntent.getBroadcast(appContext, REQUEST_CODE_DELETE_NOTIFICATION, intent, PendingIntent.FLAG_ONE_SHOT)
+        builder.setDeleteIntent(pendingIntent)
     }
 }
 
