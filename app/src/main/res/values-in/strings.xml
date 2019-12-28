@@ -200,6 +200,8 @@
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Pencarian Belanja Pintar\n- Permainan Gratis, berita terkini</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
   <string name="share_app_promotion_text">Yuk, coba peramban cepat dan ringan dari %3$s. %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">UPDATE SEKARANG!</string>
+  <string name="update_app_dialog_btn_later">NANTI</string>
   <string name="your_rights_content1">%1$s adalah perangkat lunak bebas dan sumber terbuka yang dibuat oleh %2$s dan kontributor lainnya.</string>
   <string name="your_rights_content2"><![CDATA["%1$s tersedia untuk Anda di bawah persyaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" dan lisensi sumber terbuka lainnya."]]></string>
   <string name="your_rights_content3"><![CDATA["Anda tidak diberi izin atau lisensi apa pun atas merek dagang Mozilla Foundation atau pihak mana pun, termasuk nama atau logo %3$s, %4$s, atau %1$s. Informasi lebih lanjut bisa ditemukan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di sini</a>.]]></string>
@@ -349,6 +351,7 @@
   <string name="onboarding_2_content_services_news_shopping_games">Ketuk untuk membaca berita terkini, temukan tawaran bagus, atau bersenang-senang dengan permainan gratis terbaru!</string>
   <string name="onboarding_2_content_services_news_games">Ketuk untuk membaca berita terkini atau bersenang-senang dengan permainan gratis terbaru!</string>
   <string name="onboarding_2_content_services_games">Ketuk untuk memainkan permainan gratis terkini untuk bersenang-senang!</string>
+  <string name="onboarding_2_content_services_news_travel">Ketuk untuk membaca berita hangat, rencanakan perjalananmu selanjutnya dan masih banyak lagi!</string>
   <string name="onboarding_2_smart_shopping_search_title">Pencarian Belanja Cerdas</string>
   <string name="onboarding_2_smart_shopping_search_description">Membandingkan harga di berbagai toko daring sangat mudah, coba sekarang!</string>
   <string name="home_search_bar_text">Cari…</string>
@@ -400,6 +403,7 @@
   <string name="msrp_voucher_nostock">Kupon habis</string>
   <string name="msrp_faq">Ada pertanyaan? %1$s.</string>
   <string name="msrp_contact_us">Hubungi kami</string>
+  <string name="msrp_reward_redeem_redeem">Tukar</string>
   <string name="msrp_reward_redeem_voucher">Voucer</string>
   <string name="msrp_disqualification_title_1">Peringatan: multipel akun Firefox terdeteksi</string>
   <string name="msrp_disqualification_body_1">Untuk berpartisipasi dalam tantangan 7-hari, Anda hanya dapat menggunakan satu akun Firefox. Jika Anda mengganti dan menggunakan akun lain, Anda akan didiskualifikasi dari tantangan ini.</string>
@@ -440,6 +444,7 @@
   <string name="travel_hotel_detail_1">Wi-Fi gratis</string>
   <string name="travel_hotel_detail_2">Kartu kredit tidak diperlukan</string>
   <string name="travel_hotel_detail_3">Bayar saat lapor masuk</string>
+  <string name="travel_hotel_price_from">Dari</string>
   <string name="travel_empty_state_text">“Saya belum pernah ke mana-mana, tetapi itu ada dalam daftar saya.”</string>
   <string name="travel_empty_state_button">Jelajahi kota</string>
   <string name="travel_snack_bar_saved_message">Disimpan dalam daftar keinginan Anda.</string>
@@ -450,4 +455,5 @@
   <string name="travel_find_destination_placeholder_2">Masukkan tujuan</string>
   <string name="travel_search_engine_1">Lihat hasilnya di %1$s</string>
   <string name="travel_search_engine_2">Lihat hasilnya dalam pencarian wisata pintar</string>
+  <string name="travel_search_engine_fxlite">Lihat hasil dalam Penemuan Perjalanan %1$s</string>
 </resources>
