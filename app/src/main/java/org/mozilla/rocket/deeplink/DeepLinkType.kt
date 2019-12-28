@@ -5,9 +5,12 @@ import androidx.annotation.VisibleForTesting
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
+import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
+import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
+import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import org.mozilla.rocket.deeplink.task.Task
 import org.mozilla.rocket.extension.getParam
 import java.net.URI
@@ -43,6 +46,18 @@ enum class DeepLinkType {
             addTask(StartNewsActivityTask())
         }
     },
+    NEWS_ITEM {
+        override fun match(uri: URI) =
+            isContentLink(uri) && DeepLinkConstants.PATH_NEWS_ITEM == uri.path
+
+        override fun addTasks(uri: URI) {
+            val url = uri.getParam("url") ?: ""
+            val feed = uri.getParam("feed") ?: ""
+            val source = uri.getParam("source") ?: ""
+
+            addTask(StartNewsItemActivityTask(url, feed, source))
+        }
+    },
 
     SHOPPING_HOME {
         override fun match(uri: URI) =
@@ -52,6 +67,18 @@ enum class DeepLinkType {
             addTask(StartShoppingActivityTask())
         }
     },
+    SHOPPING_ITEM {
+        override fun match(uri: URI) =
+                isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_ITEM == uri.path
+
+        override fun addTasks(uri: URI) {
+            val url = uri.getParam("url") ?: ""
+            val feed = uri.getParam("feed") ?: ""
+            val source = uri.getParam("source") ?: ""
+
+            addTask(StartShoppingItemActivityTask(url, feed, source))
+        }
+    },
 
     TRAVEL_HOME {
         override fun match(uri: URI) =
@@ -59,6 +86,18 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: URI) {
             addTask(StartTravelActivityTask())
+        }
+    },
+    TRAVEL_ITEM {
+        override fun match(uri: URI) =
+                isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL_ITEM == uri.path
+
+        override fun addTasks(uri: URI) {
+            val url = uri.getParam("url") ?: ""
+            val feed = uri.getParam("feed") ?: ""
+            val source = uri.getParam("source") ?: ""
+
+            addTask(StartTravelItemActivityTask(url, feed, source))
         }
     },
 

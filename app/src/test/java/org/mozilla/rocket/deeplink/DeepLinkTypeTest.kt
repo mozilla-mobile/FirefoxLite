@@ -6,9 +6,12 @@ import org.junit.Test
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
+import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
+import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
+import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import java.net.URLEncoder
 
 class DeepLinkTypeTest {
@@ -29,10 +32,12 @@ class DeepLinkTypeTest {
         val deepLinkType = DeepLinkType.parse("rocket://content/game/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
 
         assertEquals(DeepLinkType.GAME_ITEM, deepLinkType)
-        assertTrue(deepLinkType.getTaskList()[0] is StartGameItemActivityTask)
-        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).url, url)
-        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).feed, feed)
-        assertEquals((deepLinkType.getTaskList()[0] as StartGameItemActivityTask).source, source)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartGameItemActivityTask)
+        task as StartGameItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
     }
 
     @Test
@@ -44,6 +49,22 @@ class DeepLinkTypeTest {
     }
 
     @Test
+    fun `When news item uri is matched, launch content tab activity`() {
+        val url = "https://www.mozilla.org"
+        val feed = "test_feed"
+        val source = "test_source"
+        val deepLinkType = DeepLinkType.parse("rocket://content/news/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
+
+        assertEquals(DeepLinkType.NEWS_ITEM, deepLinkType)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartNewsItemActivityTask)
+        task as StartNewsItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
+    }
+
+    @Test
     fun `When shopping home uri is matched, launch shopping activity`() {
         val deepLinkType = DeepLinkType.parse("rocket://content/shopping")
 
@@ -52,11 +73,43 @@ class DeepLinkTypeTest {
     }
 
     @Test
+    fun `When shopping item uri is matched, launch content tab activity`() {
+        val url = "https://www.mozilla.org"
+        val feed = "test_feed"
+        val source = "test_source"
+        val deepLinkType = DeepLinkType.parse("rocket://content/shopping/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
+
+        assertEquals(DeepLinkType.SHOPPING_ITEM, deepLinkType)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartShoppingItemActivityTask)
+        task as StartShoppingItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
+    }
+
+    @Test
     fun `When travel home uri is matched, launch travel activity`() {
         val deepLinkType = DeepLinkType.parse("rocket://content/travel")
 
         assertEquals(DeepLinkType.TRAVEL_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartTravelActivityTask)
+    }
+
+    @Test
+    fun `When travel item uri is matched, launch content tab activity`() {
+        val url = "https://www.mozilla.org"
+        val feed = "test_feed"
+        val source = "test_source"
+        val deepLinkType = DeepLinkType.parse("rocket://content/travel/item?url=${URLEncoder.encode(url, "utf-8")}&feed=$feed&source=$source")
+
+        assertEquals(DeepLinkType.TRAVEL_ITEM, deepLinkType)
+        val task = deepLinkType.getTaskList()[0]
+        assertTrue(task is StartTravelItemActivityTask)
+        task as StartTravelItemActivityTask
+        assertEquals(task.url, url)
+        assertEquals(task.feed, feed)
+        assertEquals(task.source, source)
     }
 
     @Test

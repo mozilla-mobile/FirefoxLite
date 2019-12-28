@@ -52,10 +52,6 @@ class GameActivity : FragmentActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-    }
-
     private fun parseDeepLink(bundle: Bundle): Boolean {
         when (bundle.getString(EXTRA_DEEP_LINK) ?: return false) {
             DEEP_LINK_GAME_ITEM_PAGE -> openGameItemPageFromDeepLink(bundle.getParcelable(EXTRA_GAME_ITEM_DATA)!!)
