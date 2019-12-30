@@ -3005,21 +3005,6 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Predict audience",
-            category = Category.ACTION,
-            method = Method.PREDICTED,
-            `object` = Object.AUDIENCE,
-            value = Value.AUDIENCE_NAME,
-            extras = [
-                TelemetryExtra(name = Extra.AUDIENCE_NAME, value = "provided from the firebase config string")
-            ])
-    fun predictAudience(audienceName: String) {
-        EventBuilder(Category.ACTION, Method.PREDICTED, Object.AUDIENCE, Value.AUDIENCE_NAME)
-                .extra(Extra.AUDIENCE_NAME, audienceName)
-                .queue()
-    }
-
-    @TelemetryDoc(
             name = "Click Challenge Page Join",
             category = Category.ACTION,
             method = Method.CLICK,
