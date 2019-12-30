@@ -10,6 +10,8 @@ import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
+import org.mozilla.rocket.content.news.ui.NewsLanguageOnboardingViewModel
+import org.mozilla.rocket.content.news.ui.NewsOnboardingViewModel
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
 import org.mozilla.rocket.content.news.ui.NewsTabViewModel
 import org.mozilla.rocket.content.news.ui.NewsViewModel
@@ -67,6 +69,18 @@ object NewsModule {
         setUserPreferenceCategoriesUseCase: SetUserPreferenceCategoriesUseCase
     ): NewsSettingsViewModel =
         NewsSettingsViewModel(loadNewsSettingsUseCase, loadNewsLanguagesUseCase, setUserPreferenceLanguageUseCase, setUserPreferenceCategoriesUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideNewsLanguageOnboardingViewModel(
+        loadNewsLanguagesUseCase: LoadNewsLanguagesUseCase,
+        setUserPreferenceLanguageUseCase: SetUserPreferenceLanguageUseCase
+    ): NewsLanguageOnboardingViewModel =
+        NewsLanguageOnboardingViewModel(loadNewsLanguagesUseCase, setUserPreferenceLanguageUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideNewsOnboardingViewModel(): NewsOnboardingViewModel = NewsOnboardingViewModel()
 
     @JvmStatic
     @Singleton

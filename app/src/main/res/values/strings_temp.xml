@@ -4,4 +4,6 @@
 
     <string name="msrp_force_update_dialog_positive_btn" translatable="false" tools:ignore="MissingTranslation">UPDATE NOW!</string>
     <string name="msrp_force_update_dialog_negative_btn" translatable="false" tools:ignore="MissingTranslation">LATER</string>
+
+    <string name="news_language_onboarding_title" translatable="false" tools:ignore="MissingTranslation">Choose Your Preferred News Language</string>
 </resources>

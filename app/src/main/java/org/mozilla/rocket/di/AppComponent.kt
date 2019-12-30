@@ -43,6 +43,7 @@ import org.mozilla.rocket.content.game.ui.GameModeActivity
 import org.mozilla.rocket.content.game.ui.InstantGameFragment
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
+import org.mozilla.rocket.content.news.ui.NewsLanguageOnboardingFragment
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import org.mozilla.rocket.content.travel.ui.TravelActivity
@@ -97,6 +98,7 @@ interface AppComponent {
     fun inject(newsSettingFragment: NewsSettingFragment)
     fun inject(newsTabFragment: NewsTabFragment)
     fun inject(newsFragment: NewsFragment)
+    fun inject(newsLanguageOnboardingFragment: NewsLanguageOnboardingFragment)
     fun inject(mainActivity: MainActivity)
     fun inject(editBookmarkActivity: EditBookmarkActivity)
     fun inject(bookmarksFragment: BookmarksFragment)

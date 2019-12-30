@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.parcel.Parcelize
 import org.mozilla.focus.R
@@ -22,12 +23,17 @@ class NewsActivity : AppCompatActivity() {
     @Inject
     lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
 
+    @Inject
+    lateinit var newsOnboardingViewModelCreator: Lazy<NewsOnboardingViewModel>
+
+    private lateinit var newsOnboardingViewModel: NewsOnboardingViewModel
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
+        newsOnboardingViewModel = getViewModel(newsOnboardingViewModelCreator)
         telemetryViewModel = getViewModel(telemetryViewModelCreator)
 
         if (savedInstanceState == null) {
@@ -39,6 +45,12 @@ class NewsActivity : AppCompatActivity() {
                 parseDeepLink(it)
             }
         }
+
+        newsOnboardingViewModel.languageOnboardingDone.observe(this, Observer {
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, NewsTabFragment.newInstance())
+                    .commitNow()
+        })
     }
 
     private fun parseDeepLink(bundle: Bundle): Boolean {
