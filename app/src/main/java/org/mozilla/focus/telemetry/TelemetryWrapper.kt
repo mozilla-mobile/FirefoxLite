@@ -2416,12 +2416,14 @@ object TelemetryWrapper {
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
-                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null")
+                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
             ])
-    fun showLogoman(type: String?, link: String?) {
+    fun showLogoman(type: String?, link: String?, messageId: String?) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.LOGOMAN)
                 .extra(Extra.TYPE, type ?: "null")
                 .extra(Extra.LINK, link ?: "null")
+                .extra(Extra.MESSAGE_ID, messageId ?: "null")
                 .queue()
     }
 
@@ -2433,29 +2435,33 @@ object TelemetryWrapper {
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
-                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null")
+                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
             ])
-    fun clickLogoman(type: String?, link: String?) {
+    fun clickLogoman(type: String?, link: String?, messageId: String?) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.LOGOMAN)
                 .extra(Extra.TYPE, type ?: "null")
                 .extra(Extra.LINK, link ?: "null")
+                .extra(Extra.MESSAGE_ID, messageId ?: "null")
                 .queue()
     }
 
     @TelemetryDoc(
-            name = "Click Logoman",
+            name = "Swipe Logoman",
             category = Category.ACTION,
             method = Method.SWIPE,
             `object` = Object.LOGOMAN,
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
-                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null")
+                TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
             ])
-    fun swipeLogoman(type: String?, link: String?) {
+    fun swipeLogoman(type: String?, link: String?, messageId: String?) {
         EventBuilder(Category.ACTION, Method.SWIPE, Object.LOGOMAN)
                 .extra(Extra.TYPE, type ?: "null")
                 .extra(Extra.LINK, link ?: "null")
+                .extra(Extra.MESSAGE_ID, messageId ?: "null")
                 .queue()
     }
 

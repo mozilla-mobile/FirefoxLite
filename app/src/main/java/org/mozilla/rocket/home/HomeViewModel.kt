@@ -3,6 +3,7 @@ package org.mozilla.rocket.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
@@ -20,6 +21,7 @@ import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
+import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
@@ -54,6 +56,7 @@ class HomeViewModel(
     shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
     private val readContentHubItemUseCase: ReadContentHubItemUseCase,
     private val getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
+    private val lastReadLogoManNotificationUseCase: LastReadLogoManNotificationUseCase,
     private val lastReadMissionIdUseCase: LastReadMissionIdUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
@@ -86,7 +89,7 @@ class HomeViewModel(
     val resetBackgroundColor = SingleLiveEvent<Unit>()
     val openShoppingSearch = SingleLiveEvent<Unit>()
     val openPrivateMode = SingleLiveEvent<Unit>()
-    val openBrowser = SingleLiveEvent<Site>()
+    val openBrowser = SingleLiveEvent<String>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
     val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
@@ -99,8 +102,10 @@ class HomeViewModel(
     val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
     val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
     val hideLogoManNotification = SingleLiveEvent<Unit>()
+    val executeUriAction = SingleLiveEvent<String>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
+    private var logoManType: String? = null
     private var contentServicesOnboardingTimeSpent = 0L
     private var hasLoggedShowLogoman = false
     private var isFirstRun = isNewUserUseCase()
@@ -145,18 +150,21 @@ class HomeViewModel(
             getLogoManNotificationUseCase().first()
                     .map {
                         logoManClickAction = it?.action
+                        logoManType = it?.type
                         it?.run { StateNotification(it.toUiModel(), true) }
                     }
         ) {
             logoManNotification.value = it
         }
-        logoManNotification.addSource(lastReadMissionIdUseCase()) { lastReadMissionId ->
+        val lastReadIdObserver = Observer<String> { lastReadId ->
             val showingNotification = logoManNotification.value
-            if (showingNotification != null && showingNotification.notification.id == lastReadMissionId) {
+            if (showingNotification != null && showingNotification.notification.id == lastReadId) {
                 hideLogoManNotification.call()
                 logoManNotification.value = null
             }
         }
+        logoManNotification.addSource(lastReadLogoManNotificationUseCase(), lastReadIdObserver)
+        logoManNotification.addSource(lastReadMissionIdUseCase(), lastReadIdObserver)
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
@@ -168,9 +176,10 @@ class HomeViewModel(
             .map { SitePage(it) }
 
     fun onPageForeground() {
-        if (!hasLoggedShowLogoman && logoManNotification.value != null) {
+        val logoManNotification = logoManNotification.value
+        if (!hasLoggedShowLogoman && logoManNotification != null) {
             hasLoggedShowLogoman = true
-            TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+            TelemetryWrapper.showLogoman(logoManType, logoManClickAction?.getLink(), logoManNotification.notification.id)
         }
         TelemetryWrapper.showHome()
         updateTopSitesData()
@@ -210,7 +219,7 @@ class HomeViewModel(
     }
 
     fun onTopSiteClicked(site: Site, position: Int) {
-        openBrowser.value = site
+        openBrowser.value = site.url
         val allowToLogTitle = when (site) {
             is Site.FixedSite -> true
             is Site.RemovableSite -> site.isDefault
@@ -277,28 +286,46 @@ class HomeViewModel(
 
     fun onLogoManShown() {
         // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
-        logoManNotification.value?.animate = false
+        val logoManNotification = logoManNotification.value
+        logoManNotification?.animate = false
         if (!hasLoggedShowLogoman) {
             hasLoggedShowLogoman = true
-            TelemetryWrapper.showLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+            TelemetryWrapper.showLogoman(logoManType, logoManClickAction?.getLink(), logoManNotification?.notification?.id)
         }
     }
 
     fun onLogoManNotificationClicked() {
         logoManClickAction?.let {
-            when (it) {
-                is GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage -> openMissionDetailPage.value = it.mission
+            executeLogomanAction(it)
+            val notification = logoManNotification.value?.notification
+            if (notification != null && notification !is Notification.MissionNotification) {
+                // no need to call dismissLogoManNotificationUseCase since it will also be done when mission detail page get opened
+                dismissLogoManNotificationUseCase(notification)
             }
         }
-        TelemetryWrapper.clickLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
+        TelemetryWrapper.clickLogoman(logoManType, logoManClickAction?.getLink(), logoManNotification.value?.notification?.id)
+    }
+
+    private fun executeLogomanAction(logomanAction: GetLogoManNotificationUseCase.LogoManAction) {
+        when (logomanAction) {
+            is GetLogoManNotificationUseCase.LogoManAction.UriAction -> {
+                // workaround to handle open url action then be able to back to home page when clicking back key
+                if (logomanAction.action.startsWith("https://") or logomanAction.action.startsWith("http://")) {
+                    openBrowser.value = logomanAction.action
+                } else {
+                    executeUriAction.value = logomanAction.action
+                }
+            }
+            is GetLogoManNotificationUseCase.LogoManAction.OpenMissionPage -> openMissionDetailPage.value = logomanAction.mission
+        }
     }
 
     fun onLogoManDismissed() {
         logoManNotification.value?.notification?.let {
             logoManNotification.value = null
             dismissLogoManNotificationUseCase(it)
+            TelemetryWrapper.swipeLogoman(logoManType, logoManClickAction?.getLink(), it.id)
         }
-        TelemetryWrapper.swipeLogoman(TelemetryWrapper.Extra_Value.REWARDS, null)
     }
 
     fun onRewardButtonClicked() {

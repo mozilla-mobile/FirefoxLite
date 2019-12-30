@@ -2,7 +2,9 @@ package org.mozilla.rocket.home
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.Gravity
@@ -46,6 +48,7 @@ import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.component.RocketLauncherActivity
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
 import org.mozilla.rocket.content.game.ui.GameActivity
@@ -230,8 +233,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             topSitesPageIndex.observe(this@HomeFragment, Observer {
                 page_indicator.setSelection(it)
             })
-            openBrowser.observe(this@HomeFragment, Observer {
-                ScreenNavigator.get(context).showBrowserScreen(it.url, true, false)
+            openBrowser.observe(this@HomeFragment, Observer { url ->
+                ScreenNavigator.get(context).showBrowserScreen(url, true, false)
             })
             showTopSiteMenu.observe(this@HomeFragment, Observer { (site, position) ->
                 site as Site.RemovableSite
@@ -476,6 +479,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
         homeViewModel.showMissionCompleteDialog.observe(this, Observer { mission ->
             showMissionCompleteDialog(mission)
+        })
+        homeViewModel.executeUriAction.observe(this, Observer { action ->
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action), appContext, RocketLauncherActivity::class.java))
         })
         homeViewModel.openMissionDetailPage.observe(this, Observer { mission ->
             openMissionDetailPage(mission)
