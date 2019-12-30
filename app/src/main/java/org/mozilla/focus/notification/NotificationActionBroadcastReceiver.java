@@ -42,21 +42,33 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
         }
         Intent nexStep = null;
 
-        if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_DELETE_FIREBASE_NOTIFICATION)) {
-            String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+        if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_DELETE_NOTIFICATION)) {
+            String source = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_NOTIFICATION_SOURCE);
             String link = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_LINK, "");
-            TelemetryWrapper.dismissNotification(link, messageId);
+            if (IntentUtils.NOTIFICATION_SOURCE_FIREBASE.equals(source)) {
+                String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+                TelemetryWrapper.dismissNotification(link, messageId);
+            } else if (IntentUtils.NOTIFICATION_SOURCE_FIRSTRUN.equals(source)) {
+                String message = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE, "");
+                TelemetryWrapper.dismissFirstrunNotification(link, message);
+            }
 
-        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_FIREBASE_NOTIFICATION)) {
+        } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_NOTIFICATION)) {
             nexStep = new Intent();
             nexStep.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
             nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_OPEN_URL, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_OPEN_URL));
             nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_COMMAND, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_COMMAND));
             nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_DEEP_LINK, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_DEEP_LINK));
 
-            String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+            String source = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_NOTIFICATION_SOURCE);
             String link = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_LINK, "");
-            TelemetryWrapper.openNotification(link, messageId, false);
+            if (IntentUtils.NOTIFICATION_SOURCE_FIREBASE.equals(source)) {
+                String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+                TelemetryWrapper.openNotification(link, messageId, false);
+            } else if (IntentUtils.NOTIFICATION_SOURCE_FIRSTRUN.equals(source)) {
+                String message = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE, "");
+                TelemetryWrapper.openD1Notification(link, message);
+            }
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {
 
