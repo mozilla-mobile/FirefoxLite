@@ -25,6 +25,8 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun getInstanceId(): String?
 
+    abstract fun getRegisterToekn(callback: (String?) -> Unit)
+
     abstract fun deleteInstanceId()
 
     abstract fun enableAnalytics(context: Context, enable: Boolean)

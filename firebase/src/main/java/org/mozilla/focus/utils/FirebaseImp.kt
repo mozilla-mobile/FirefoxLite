@@ -58,6 +58,22 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         null
     }
 
+    override fun getRegisterToekn(callback: (String?) -> Unit) {
+        try {
+            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+                val result = if (task.isSuccessful) {
+                    task.result?.token
+                } else {
+                    null
+                }
+                callback(result)
+            }
+            // below catch is important, if the app starts with Firebase disabled, calling getInstance()
+            // will throw IllegalStateException
+        } catch (e: IOException) {
+        }
+    }
+
     @WorkerThread
     override fun deleteInstanceId() {
         try {
