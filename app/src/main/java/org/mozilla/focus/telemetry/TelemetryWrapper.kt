@@ -1897,13 +1897,15 @@ object TelemetryWrapper {
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.DELAY, value = "minutes"),
-                TelemetryExtra(name = Extra.MESSAGE, value = "message")
+                TelemetryExtra(name = Extra.MESSAGE, value = "message"),
+                TelemetryExtra(name = Extra.LINK, value = "url|deeplink|null")
             ])
     @JvmStatic
-    fun receiveFirstrunConfig(minutes: Long, message: String?) {
+    fun receiveFirstrunConfig(minutes: Long, message: String?, link: String?) {
         val builder = EventBuilder(Category.ACTION, Method.GET, Object.FIRSTRUN_PUSH)
                 .extra(Extra.DELAY, minutes.toString())
                 .extra(Extra.MESSAGE, message ?: "")
+                .extra(Extra.LINK, link ?: "")
         builder.queue()
     }
 
@@ -1915,13 +1917,15 @@ object TelemetryWrapper {
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.DELAY, value = "minutes"),
-                TelemetryExtra(name = Extra.MESSAGE, value = "message")
+                TelemetryExtra(name = Extra.MESSAGE, value = "message"),
+                TelemetryExtra(name = Extra.LINK, value = "url|deeplink|null")
             ])
     @JvmStatic
-    fun showFirstrunNotification(minutes: Long, message: String?) {
+    fun showFirstrunNotification(minutes: Long, message: String?, link: String?) {
         val builder = EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN_PUSH)
                 .extra(Extra.DELAY, minutes.toString())
                 .extra(Extra.MESSAGE, message ?: "")
+                .extra(Extra.LINK, link ?: "")
         builder.queue()
     }
 

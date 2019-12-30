@@ -49,7 +49,7 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
         val firstrunNotification = AppConfigWrapper.getFirstLaunchNotification().jsonStringToFirstrunNotification()
         firstrunNotification?.run {
             showNotification(applicationContext, message, openUrl, command, deepLink)
-            TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(), message)
+            TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(), message, openUrl ?: command ?: deepLink)
             setNotificationFired(applicationContext, true)
         }
 

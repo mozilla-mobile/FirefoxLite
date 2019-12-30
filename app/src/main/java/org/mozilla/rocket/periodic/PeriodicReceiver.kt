@@ -60,7 +60,8 @@ class PeriodicReceiver : BroadcastReceiver() {
         workManager.enqueue(builder.build())
 
         val firstrunNotification = AppConfigWrapper.getFirstLaunchNotification().jsonStringToFirstrunNotification()
-        TelemetryWrapper.receiveFirstrunConfig(delayMinutes, firstrunNotification?.message)
+        val link = firstrunNotification?.openUrl ?: firstrunNotification?.command ?: firstrunNotification?.deepLink
+        TelemetryWrapper.receiveFirstrunConfig(delayMinutes, firstrunNotification?.message, link)
     }
 
     private fun calculateDelayMinutes(context: Context, delayMinutesToInstallTime: Long): Long {
