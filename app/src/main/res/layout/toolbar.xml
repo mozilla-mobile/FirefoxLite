@@ -49,6 +49,7 @@
         android:requiresFadingEdge="horizontal"
         android:singleLine="true"
         android:textSize="12sp"
+        android:foreground="?android:attr/selectableItemBackground"
         tools:ignore="Deprecated" />
 
     <!-- The contentDescription is supplied by other applications in the Custom Tab Intent, and
