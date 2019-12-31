@@ -21,10 +21,10 @@ import javax.inject.Inject
 class NewsActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
+    lateinit var newsOnboardingViewModelCreator: Lazy<NewsOnboardingViewModel>
 
     @Inject
-    lateinit var newsOnboardingViewModelCreator: Lazy<NewsOnboardingViewModel>
+    lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
 
     private lateinit var newsOnboardingViewModel: NewsOnboardingViewModel
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
@@ -36,21 +36,24 @@ class NewsActivity : AppCompatActivity() {
         newsOnboardingViewModel = getViewModel(newsOnboardingViewModelCreator)
         telemetryViewModel = getViewModel(telemetryViewModelCreator)
 
-        if (savedInstanceState == null) {
+        newsOnboardingViewModel.showContent.observe(this, Observer { content ->
+            val fragment = when (content) {
+                is NewsOnboardingViewModel.Content.PersonalizationOnboarding -> NewsPersonalizationOnboardingFragment.newInstance()
+                is NewsOnboardingViewModel.Content.LanguageOnboarding -> NewsLanguageOnboardingFragment.newInstance()
+                is NewsOnboardingViewModel.Content.NewsTab -> NewsTabFragment.newInstance()
+            }
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, NewsTabFragment.newInstance())
+                .replace(R.id.container, fragment)
                 .commitNow()
+        })
+
+        if (savedInstanceState == null) {
+            newsOnboardingViewModel.checkContentToShow()
 
             intent.extras?.let {
                 parseDeepLink(it)
             }
         }
-
-        newsOnboardingViewModel.languageOnboardingDone.observe(this, Observer {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, NewsTabFragment.newInstance())
-                    .commitNow()
-        })
     }
 
     private fun parseDeepLink(bundle: Bundle): Boolean {

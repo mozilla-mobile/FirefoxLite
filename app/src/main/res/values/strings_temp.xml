@@ -5,5 +5,9 @@
     <string name="msrp_force_update_dialog_positive_btn" translatable="false" tools:ignore="MissingTranslation">UPDATE NOW!</string>
     <string name="msrp_force_update_dialog_negative_btn" translatable="false" tools:ignore="MissingTranslation">LATER</string>
 
+    <string name="news_personalization_onboarding_title">Recommended News For You</string>
+    <string name="news_personalization_onboarding_desc">Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News -&gt; Settings. <a href="about:blank">Learn more</a></string>
+    <string name="news_personalization_onboarding_no">NO, THANKS</string>
+    <string name="news_personalization_onboarding_yes">Yes</string>
     <string name="news_language_onboarding_title" translatable="false" tools:ignore="MissingTranslation">Choose Your Preferred News Language</string>
 </resources>

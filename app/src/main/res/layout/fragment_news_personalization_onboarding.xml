@@ -1,8 +1,93 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/paletteLightGreyD100"
     tools:context="org.mozilla.rocket.content.news.ui.NewsPersonalizationOnboardingFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/news_personalization_onboarding_guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/news_personalization_onboarding_guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp" />
+
+    <TextView
+        android:id="@+id/news_personalization_onboarding_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/news_personalization_onboarding_title"
+        android:textColor="@color/contentHeaderTextColor"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/news_personalization_onboarding_guideline_end"
+        app:layout_constraintStart_toStartOf="@id/news_personalization_onboarding_guideline_start"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/news_personalization_onboarding_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/news_personalization_onboarding_desc"
+        android:textColor="@color/paletteBlack100"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/news_personalization_onboarding_guideline_end"
+        app:layout_constraintStart_toStartOf="@id/news_personalization_onboarding_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/news_personalization_onboarding_title" />
+
+    <ImageView
+        android:id="@+id/news_personalization_onboarding_logo_man"
+        android:layout_width="262dp"
+        android:layout_height="290dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/logo_man_news_personalization_onboarding"
+        app:layout_constraintEnd_toEndOf="@id/news_personalization_onboarding_guideline_end"
+        app:layout_constraintStart_toStartOf="@id/news_personalization_onboarding_guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/news_personalization_onboarding_desc" />
+
+    <TextView
+        android:id="@+id/news_personalization_onboarding_btn_no"
+        android:layout_width="106dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/round"
+        android:backgroundTint="@color/paletteLightGreyA100"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/news_personalization_onboarding_no"
+        android:textColor="@color/paletteWhite100"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/news_personalization_onboarding_btn_yes"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/news_personalization_onboarding_logo_man" />
+
+    <TextView
+        android:id="@+id/news_personalization_onboarding_btn_yes"
+        android:layout_width="106dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/round"
+        android:backgroundTint="@color/paletteDarkBlueC100"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/news_personalization_onboarding_yes"
+        android:textColor="@color/paletteWhite100"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/news_personalization_onboarding_btn_no"
+        app:layout_constraintTop_toTopOf="@id/news_personalization_onboarding_btn_no" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

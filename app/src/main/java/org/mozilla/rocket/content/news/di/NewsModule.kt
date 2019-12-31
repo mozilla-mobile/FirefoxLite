@@ -3,15 +3,19 @@ package org.mozilla.rocket.content.news.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import org.mozilla.rocket.content.news.data.NewsOnboardingRepository
 import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
+import org.mozilla.rocket.content.news.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
+import org.mozilla.rocket.content.news.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.news.ui.NewsLanguageOnboardingViewModel
 import org.mozilla.rocket.content.news.ui.NewsOnboardingViewModel
+import org.mozilla.rocket.content.news.ui.NewsPersonalizationOnboardingViewModel
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
 import org.mozilla.rocket.content.news.ui.NewsTabViewModel
 import org.mozilla.rocket.content.news.ui.NewsViewModel
@@ -51,6 +55,16 @@ object NewsModule {
         LoadNewsUseCase(newsRepositoryProvider.provideNewsRepository())
 
     @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowOnboardingUseCase(newsOnboardingRepository: NewsOnboardingRepository): ShouldShowOnboardingUseCase = ShouldShowOnboardingUseCase(newsOnboardingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetOnboardingHasShownUseCase(newsOnboardingRepository: NewsOnboardingRepository): SetOnboardingHasShownUseCase = SetOnboardingHasShownUseCase(newsOnboardingRepository)
+
+    @JvmStatic
     @Provides
     fun provideNewsViewModel(loadNews: LoadNewsUseCase): NewsViewModel =
         NewsViewModel(loadNews)
@@ -72,15 +86,24 @@ object NewsModule {
 
     @JvmStatic
     @Provides
+    fun provideNewsOnboardingViewModel(
+        shouldShowOnboardingUseCase: ShouldShowOnboardingUseCase,
+        setOnboardingHasShownUseCase: SetOnboardingHasShownUseCase
+    ): NewsOnboardingViewModel =
+        NewsOnboardingViewModel(shouldShowOnboardingUseCase, setOnboardingHasShownUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideNewsPersonalizationOnboardingViewModel(): NewsPersonalizationOnboardingViewModel =
+        NewsPersonalizationOnboardingViewModel()
+
+    @JvmStatic
+    @Provides
     fun provideNewsLanguageOnboardingViewModel(
         loadNewsLanguagesUseCase: LoadNewsLanguagesUseCase,
         setUserPreferenceLanguageUseCase: SetUserPreferenceLanguageUseCase
     ): NewsLanguageOnboardingViewModel =
         NewsLanguageOnboardingViewModel(loadNewsLanguagesUseCase, setUserPreferenceLanguageUseCase)
-
-    @JvmStatic
-    @Provides
-    fun provideNewsOnboardingViewModel(): NewsOnboardingViewModel = NewsOnboardingViewModel()
 
     @JvmStatic
     @Singleton
@@ -93,4 +116,11 @@ object NewsModule {
     @Provides
     fun provideNewsSettingsRepositoryProvider(context: Context): NewsSettingsRepositoryProvider =
         NewsSettingsRepositoryProvider(context)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideNewsOnboardingRepository(
+        appContext: Context
+    ): NewsOnboardingRepository = NewsOnboardingRepository(appContext)
 }
