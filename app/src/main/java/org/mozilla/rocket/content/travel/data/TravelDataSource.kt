@@ -8,7 +8,6 @@ interface TravelDataSource {
     suspend fun getExploreList(): Result<ApiEntity>
     suspend fun getBucketList(): Result<List<BucketListCity>>
     suspend fun searchCity(keyword: String): Result<BcAutocompleteApiEntity>
-    suspend fun getCityPriceItems(name: String): Result<List<PriceItem>>
     suspend fun getCityIg(name: String): Result<Ig>
     suspend fun getCityWikiName(name: String): Result<String>
     suspend fun getCityWikiImage(name: String): Result<String>
@@ -55,14 +54,6 @@ data class BucketListCity(
         }
     }
 }
-
-data class PriceItem(
-    val type: String,
-    val source: String,
-    val price: Float,
-    val currency: String,
-    val linkUrl: String
-)
 
 data class Ig(
     val name: String,

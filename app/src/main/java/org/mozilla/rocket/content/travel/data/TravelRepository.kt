@@ -22,10 +22,6 @@ class TravelRepository(
         return remoteDataSource.searchCity(keyword)
     }
 
-    suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
-        return localDataSource.getCityPriceItems(name)
-    }
-
     suspend fun getCityIg(name: String): Result<Ig> {
         return localDataSource.getCityIg(name)
     }
