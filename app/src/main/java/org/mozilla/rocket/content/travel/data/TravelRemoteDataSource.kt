@@ -51,10 +51,6 @@ class TravelRemoteDataSource : TravelDataSource {
         )
     }
 
-    override suspend fun getCityPriceItems(name: String): Result<List<PriceItem>> {
-        TODO("not implemented")
-    }
-
     override suspend fun getCityIg(name: String): Result<Ig> {
         TODO("not implemented")
     }
