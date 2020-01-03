@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context="org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <org.mozilla.rocket.nightmode.themed.ThemedConstraintLayout
+        android:id="@+id/browser_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/shopping_search_result_tab_bg">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -67,6 +69,7 @@
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="47dp"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toTopOf="@id/bottom_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -76,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="48dp"
-                android:background="@color/paletteLightGreyB100"
+                android:background="@android:color/transparent"
                 app:tabBackground="@drawable/shopping_search_tab_item_selector"
                 app:tabIndicatorColor="@android:color/transparent"
                 app:tabMode="scrollable"
@@ -85,23 +88,25 @@
                 app:tabTextColor="@color/paletteDarkGreyE100"
                 app:tabUnboundedRipple="true" />
 
-            <ImageButton
+            <org.mozilla.rocket.nightmode.themed.ThemedImageButton
                 android:id="@+id/preferenceButton"
                 android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
-                android:background="@color/paletteLightGreyB100"
+                android:background="@android:color/transparent"
                 android:elevation="2dp"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_arrowhead_up_light_black" />
+                android:src="@drawable/ic_arrowhead_up_light_black"
+                android:tint="@color/shopping_search_preference_btn" />
 
         </FrameLayout>
 
-        <View
+        <org.mozilla.rocket.nightmode.themed.ThemedView
+            android:id="@+id/menu_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/paletteLightGreyC100"
+            android:background="@drawable/shopping_search_tab_menu_divider"
             app:layout_constraintBottom_toTopOf="@id/bottom_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -110,12 +115,12 @@
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/fixed_menu_height"
-            android:background="@color/paletteLightGreyB100"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </org.mozilla.rocket.nightmode.themed.ThemedConstraintLayout>
 
     <FrameLayout
         android:id="@+id/video_container"

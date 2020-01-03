@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -118,12 +120,42 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         ShoppingSearchMode.getInstance(requireContext()).saveKeyword(searchKeyword)
 
         observeAction()
+        observeNightMode()
     }
 
     private fun observeAction() {
         shoppingSearchResultViewModel.showOnboardingDialog.observe(this, Observer {
             val dialogFragment = ShoppingSearchContentSwitchOnboardingDialogFragment()
             dialogFragment.show(childFragmentManager, "onboardingDialogFragment")
+        })
+    }
+
+    private fun observeNightMode() {
+        chromeViewModel.isNightMode.observe(this, Observer {
+            val isNightMode = it.isEnabled
+
+            // overall background
+            browser_container.setNightMode(isNightMode)
+
+            // status bar
+            ViewUtils.updateStatusBarStyle(!isNightMode, activity!!.window)
+
+            // url bar
+            toolbar_root.setNightMode(isNightMode)
+            site_identity.setNightMode(isNightMode)
+            display_url.setNightMode(isNightMode)
+
+            // tab bar
+            tab_layout.tabTextColors = if (isNightMode) {
+                ContextCompat.getColorStateList(requireContext(), R.color.shopping_search_tab_text_night)
+            } else {
+                ContextCompat.getColorStateList(requireContext(), R.color.shopping_search_tab_text)
+            }
+            preferenceButton.setNightMode(isNightMode)
+
+            // bottom bar
+            menu_divider.setNightMode(isNightMode)
+            bottomBarItemAdapter.setNightMode(isNightMode)
         })
     }
 
