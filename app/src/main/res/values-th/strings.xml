@@ -380,10 +380,17 @@
   <string name="msrp_contact_us">ติดต่อเรา</string>
   <string name="msrp_reward_redeem_redeem">แลกใช้</string>
   <string name="msrp_reward_redeem_voucher">บัตรกำนัล</string>
+  <string name="msrp_disqualification_title_1">คำเตือน: ตรวจพบบัญชี Firefox หลายบัญชี</string>
   <string name="msrp_disqualification_button_1">ฉันเข้าใจ</string>
+  <string name="msrp_disqualification_title_3">บัญชีถูกปิดใช้งาน</string>
   <string name="msrp_disqualification_button_3">ปิด</string>
   <string name="msrp_reward_challenge_nointernet">ตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่อกับอินเทอร์เน็ต</string>
   <string name="msrp_reward_challenge_error_button">ลองอีกครั้ง</string>
   <string name="msrp_reward_challenge_error">อุปส์! มีบางอย่างผิดพลาด</string>
   <string name="msrp_activitykilled_snackbar_button">แลกใช้</string>
+  <string name="travel_vertical_category_1">สำรวจ</string>
+  <string name="travel_more">เพิ่มเติม</string>
+  <string name="travel_content_wiki_source_name">วิกิพีเดีย</string>
+  <string name="travel_hotel_detail_2">ไม่ต้องใช้บัตรเครดิต</string>
+  <string name="travel_onboarding_save_button">ตกลง</string>
 </resources>
