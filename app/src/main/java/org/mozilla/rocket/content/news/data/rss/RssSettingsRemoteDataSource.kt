@@ -86,6 +86,7 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
 
 fun getStringResourceId(key: String): Int =
     when (key) {
+        "Top-news" -> R.string.news_category_option_top_news
         "WORLD" -> R.string.news_category_option_world
         "NATION" -> R.string.news_category_option_nation
         "BUSINESS" -> R.string.news_category_option_business
