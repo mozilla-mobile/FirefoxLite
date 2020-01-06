@@ -59,15 +59,15 @@ class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?)
         )
     }
 
-    override suspend fun setSupportCategories(language: String, supportCategories: List<String>) {
+    override suspend fun setSupportCategories(language: String, supportCategories: List<NewsCategory>) {
         throw UnsupportedOperationException("Can't set news categories to server")
     }
 
-    override suspend fun getUserPreferenceCategories(language: String): Result<List<String>> {
+    override suspend fun getUserPreferenceCategories(language: String): Result<List<NewsCategory>> {
         throw UnsupportedOperationException("Can't get user preference news category setting from server")
     }
 
-    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) {
+    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) {
         throw UnsupportedOperationException("Can't set user preference news category setting to server")
     }
 
