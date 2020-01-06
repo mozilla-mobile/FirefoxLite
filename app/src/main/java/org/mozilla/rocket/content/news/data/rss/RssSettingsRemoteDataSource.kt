@@ -74,7 +74,7 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
         val items = JSONArray(jsonString)
         for (i in 0 until items.length()) {
             val categoryId = items.optString(i)
-            result.add(NewsCategory(categoryId, getStringResourceId(categoryId), i, true))
+            result.add(NewsCategory(categoryId, categoryId, getStringResourceId(categoryId), i, true))
         }
         return result
     }
