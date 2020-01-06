@@ -46,18 +46,18 @@ class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDat
         }
     }
 
-    override suspend fun setSupportCategories(language: String, supportCategories: List<String>) = withContext(Dispatchers.IO) {
+    override suspend fun setSupportCategories(language: String, supportCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
         getPreferences().edit().putString(
             KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
-            categoryListToJsonArray(supportCategories).toString()
+            categoryListToJsonArray(supportCategories.map { it.categoryId }).toString()
         ).apply()
     }
 
-    override suspend fun getUserPreferenceCategories(language: String): Result<List<String>> {
+    override suspend fun getUserPreferenceCategories(language: String): Result<List<NewsCategory>> {
         return Error(Exception("Not allow to customize category preferences"))
     }
 
-    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) = Unit
+    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = Unit
 
     override fun shouldEnableNewsSettings() = false
 

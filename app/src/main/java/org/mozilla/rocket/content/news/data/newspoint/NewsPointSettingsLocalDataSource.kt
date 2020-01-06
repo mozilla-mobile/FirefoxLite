@@ -79,21 +79,21 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
         }
     }
 
-    override suspend fun setSupportCategories(language: String, supportCategories: List<String>) = withContext(Dispatchers.IO) {
+    override suspend fun setSupportCategories(language: String, supportCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
         getPreferences().edit().putString(
             KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
-            categoryListToJsonArray(supportCategories).toString()
+            categoryListToJsonArray(supportCategories.map { it.categoryId }).toString()
         ).apply()
     }
 
-    override suspend fun getUserPreferenceCategories(language: String): Result<List<String>> = withContext(Dispatchers.IO) {
+    override suspend fun getUserPreferenceCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext try {
             val jsonString = getPreferences()
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
             val preferenceCategories = if (jsonString.isEmpty()) {
                 emptyList()
             } else {
-                toCategoryList(jsonString)
+                toCategoryList(jsonString).mapNotNull { categoryId -> NewsCategory.getCategoryById(categoryId) }
             }
             Success(preferenceCategories)
         } catch (e: Exception) {
@@ -101,10 +101,10 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
         }
     }
 
-    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<String>) = withContext(Dispatchers.IO) {
+    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
         getPreferences().edit().putString(
             KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
-            categoryListToJsonArray(userPreferenceCategories).toString()
+            categoryListToJsonArray(userPreferenceCategories.map { it.categoryId }).toString()
         ).apply()
     }
 

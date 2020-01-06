@@ -56,25 +56,14 @@ class NewsSettingsRepository(
     suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) {
         localDataSource.setUserPreferenceCategories(
             language,
-            userPreferenceCategories.asSequence()
-                .filter { it.isSelected }
-                .map { it.categoryId }
-                .toList()
+            userPreferenceCategories.filter { it.isSelected }
         )
     }
 
     private suspend fun getCategoriesByLanguage(language: String): Result<List<NewsCategory>> {
         val remoteCategoriesResult = remoteDataSource.getSupportCategories(language)
         if (remoteCategoriesResult is Result.Success && remoteCategoriesResult.isNotEmpty) {
-            val categories = ArrayList<String>()
-            remoteCategoriesResult.data.let {
-                categories.addAll(
-                    it.asSequence()
-                        .mapNotNull { category -> category.categoryId }
-                        .toList()
-                )
-            }
-            localDataSource.setSupportCategories(language, categories)
+            localDataSource.setSupportCategories(language, remoteCategoriesResult.data)
         }
 
         val supportCategories = ArrayList<NewsCategory>()
