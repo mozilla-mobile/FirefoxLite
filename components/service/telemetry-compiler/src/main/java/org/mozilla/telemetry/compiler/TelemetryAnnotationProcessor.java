@@ -5,6 +5,8 @@
 package org.mozilla.telemetry.compiler;
 
 
+import com.google.auto.service.AutoService;
+
 import org.mozilla.telemetry.annotation.TelemetryDoc;
 import org.mozilla.telemetry.annotation.TelemetryExtra;
 
@@ -26,6 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
@@ -35,6 +38,7 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
+@AutoService(Processor.class)
 public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
     private static final String fileReadme = "/docs/events.md";
