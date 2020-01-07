@@ -376,14 +376,16 @@ android.applicationVariants.all { variant ->
         println("Not setting adjust token (Not a focus release build)")
     }
     if (variant.buildType.name == "release" || variant.buildType.name == "firebase") {
-        variant.assemble.doFirst {
-            if (SystemEnv.google_app_id == null || SystemEnv.default_web_client_id == null ||
-                    SystemEnv.firebase_database_url == null || SystemEnv.gcm_defaultSenderId == null ||
-                    SystemEnv.google_api_key == null || SystemEnv.google_crash_reporting_api_key == null ||
-                    SystemEnv.project_id == null) {
-                logger.warn("If you want to enable Firebase, please follow the steps:")
-                logger.warn("1. Download google-services.json and put it in the folder where you run below command.")
-                logger.warn("2. Run 'python./tools/firebase/firebase_setup.py' and follow the steps.\n")
+        variant.getAssembleProvider().configure() {
+            it.doFirst {
+                if (SystemEnv.google_app_id == null || SystemEnv.default_web_client_id == null ||
+                        SystemEnv.firebase_database_url == null || SystemEnv.gcm_defaultSenderId == null ||
+                        SystemEnv.google_api_key == null || SystemEnv.google_crash_reporting_api_key == null ||
+                        SystemEnv.project_id == null) {
+                    logger.warn("If you want to enable Firebase, please follow the steps:")
+                    logger.warn("1. Download google-services.json and put it in the folder where you run below command.")
+                    logger.warn("2. Run 'python./tools/firebase/firebase_setup.py' and follow the steps.\n")
+                }
             }
         }
     }
