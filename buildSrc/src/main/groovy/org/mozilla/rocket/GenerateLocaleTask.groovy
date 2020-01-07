@@ -1,11 +1,15 @@
 package org.mozilla.rocket
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 public class GenerateLocaleTask extends DefaultTask {
-    String directory
-    String[] locales
+
+    @OutputDirectory String directory
+
+    @Input String[] locales
 
     @TaskAction
     def generateFile() {
