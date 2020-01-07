@@ -1,8 +1,13 @@
-apply plugin: 'java-library'
-sourceCompatibility = "8"
-targetCompatibility = "8"
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-kapt'
+
 dependencies {
     implementation project(path: ':telemetry-annotation')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
+
+    implementation "com.google.auto.service:auto-service-annotations:1.0-rc6"
+    kapt "com.google.auto.service:auto-service:1.0-rc6"
+
     testImplementation "junit:junit:${Versions.junit}"
     testImplementation 'com.google.testing.compile:compile-testing:0.15'
 }
