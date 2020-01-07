@@ -2,6 +2,7 @@ package org.mozilla.rocket.privately.browse
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
@@ -269,12 +270,13 @@ class BrowserFragment : LocaleAwareFragment(),
 
         if (tabView.canGoBack()) {
             goBack()
-            return true
+        } else {
+            if (!focus.isFromExternal && !focus.hasParentTab()) {
+                ScreenNavigator.get(context).popToHomeScreen(true)
+            }
+            sessionManager.closeTab(focus.id)
+            chromeViewModel.dropCurrentPage.call()
         }
-
-        sessionManager.dropTab(focus.id)
-        ScreenNavigator.get(activity).popToHomeScreen(true)
-        chromeViewModel.dropCurrentPage.call()
         return true
     }
 
@@ -311,7 +313,7 @@ class BrowserFragment : LocaleAwareFragment(),
         if (url.isNotBlank()) {
             displayUrlView.text = url
             if (sessionManager.tabsCount == 0) {
-                sessionManager.addTab(url, TabUtil.argument(null, false, true))
+                sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true))
             } else {
                 sessionManager.focusSession!!.engineSession?.tabView?.loadUrl(url)
             }
@@ -590,6 +592,12 @@ class BrowserFragment : LocaleAwareFragment(),
                 val canGoBack = fragment.sessionManager.focusSession?.canGoBack ?: false
                 val canGoForward = fragment.sessionManager.focusSession?.canGoForward ?: false
                 fragment.chromeViewModel.onNavigationStateChanged(canGoBack, canGoForward)
+            } else {
+                if (factor === SessionManager.Factor.FACTOR_NO_FOCUS && fragment.activity?.intent?.action != Intent.ACTION_VIEW) {
+                    ScreenNavigator.get(fragment.context).popToHomeScreen(true)
+                } else {
+                    fragment.activity?.finish()
+                }
             }
         }
     }
