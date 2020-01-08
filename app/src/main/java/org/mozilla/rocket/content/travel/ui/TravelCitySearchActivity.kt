@@ -13,6 +13,7 @@ import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_search_city.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
@@ -72,6 +73,8 @@ class TravelCitySearchActivity : AppCompatActivity() {
         clear.setOnClickListener {
             search_keyword_edit.setText("")
         }
+
+        initSearchOptionPrompt()
         initCityList()
         initGoogleSearchAction()
     }
@@ -79,10 +82,7 @@ class TravelCitySearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.TRAVEL)
-    }
 
-    override fun onStart() {
-        super.onStart()
         // search again to apply the default travel search setting
         if (search_keyword_edit.text.isNotEmpty()) {
             searchViewModel.search(this@TravelCitySearchActivity, search_keyword_edit.text.toString())
@@ -92,6 +92,12 @@ class TravelCitySearchActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         telemetryViewModel.onSessionEnded()
+    }
+
+    private fun initSearchOptionPrompt() {
+        searchViewModel.showSearchOptionPrompt.observe(this, Observer {
+            DialogUtils.showTravelDiscoverySearchOptionDialog(this, searchViewModel)
+        })
     }
 
     private fun initGoogleSearchAction() {
