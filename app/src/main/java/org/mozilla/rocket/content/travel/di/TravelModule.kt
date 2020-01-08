@@ -7,6 +7,7 @@ import org.mozilla.rocket.content.travel.data.TravelLocalDataSource
 import org.mozilla.rocket.content.travel.data.TravelOnboardingRepository
 import org.mozilla.rocket.content.travel.data.TravelRemoteDataSource
 import org.mozilla.rocket.content.travel.data.TravelRepository
+import org.mozilla.rocket.content.travel.data.TravelSearchSettingRepository
 import org.mozilla.rocket.content.travel.domain.AddToBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.CheckIsInBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.GetBucketListUseCase
@@ -20,7 +21,10 @@ import org.mozilla.rocket.content.travel.domain.GetMoreHotelsUrlUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
+import org.mozilla.rocket.content.travel.domain.SetTravelDiscoveryAsDefaultUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowChangeTravelSearchSettingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldTravelDiscoveryBeDefaultUseCase
 import org.mozilla.rocket.content.travel.ui.TravelBucketListViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
@@ -119,7 +123,13 @@ object TravelModule {
 
     @JvmStatic
     @Provides
-    fun provideTravelCitySearchViewModel(searchCityUseCase: SearchCityUseCase): TravelCitySearchViewModel = TravelCitySearchViewModel(searchCityUseCase)
+    fun provideTravelCitySearchViewModel(
+        searchCityUseCase: SearchCityUseCase,
+        shouldTravelDiscoveryBeDefaultUseCase: ShouldTravelDiscoveryBeDefaultUseCase
+    ): TravelCitySearchViewModel = TravelCitySearchViewModel(
+        searchCityUseCase,
+        shouldTravelDiscoveryBeDefaultUseCase
+    )
 
     @JvmStatic
     @Provides
@@ -134,7 +144,9 @@ object TravelModule {
         getEnglishNameUseCase: GetEnglishNameUseCase,
         getMoreHotelsUrlUseCase: GetMoreHotelsUrlUseCase,
         shouldShowOnboardingUseCase: ShouldShowOnboardingUseCase,
-        setOnboardingHasShownUseCase: SetOnboardingHasShownUseCase
+        setOnboardingHasShownUseCase: SetOnboardingHasShownUseCase,
+        shouldShowChangeTravelSearchSettingUseCase: ShouldShowChangeTravelSearchSettingUseCase,
+        setTravelDiscoveryAsDefaultUseCase: SetTravelDiscoveryAsDefaultUseCase
     ): TravelCityViewModel = TravelCityViewModel(
         getCityIgUseCase,
         getCityWikiUseCase,
@@ -146,7 +158,9 @@ object TravelModule {
         getEnglishNameUseCase,
         getMoreHotelsUrlUseCase,
         shouldShowOnboardingUseCase,
-        setOnboardingHasShownUseCase
+        setOnboardingHasShownUseCase,
+        shouldShowChangeTravelSearchSettingUseCase,
+        setTravelDiscoveryAsDefaultUseCase
     )
 
     @JvmStatic
@@ -169,4 +183,32 @@ object TravelModule {
     fun provideTravelOnboardingRepository(
         appContext: Context
     ): TravelOnboardingRepository = TravelOnboardingRepository(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowChangeTravelSearchSettingUseCase(
+        travelSearchSettingRepository: TravelSearchSettingRepository
+    ): ShouldShowChangeTravelSearchSettingUseCase = ShouldShowChangeTravelSearchSettingUseCase(travelSearchSettingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldTravelDiscoveryBeDefaultUseCase(
+        travelSearchSettingRepository: TravelSearchSettingRepository
+    ): ShouldTravelDiscoveryBeDefaultUseCase = ShouldTravelDiscoveryBeDefaultUseCase(travelSearchSettingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetTravelDiscoveryAsDefaultUseCase(
+        travelSearchSettingRepository: TravelSearchSettingRepository
+    ): SetTravelDiscoveryAsDefaultUseCase = SetTravelDiscoveryAsDefaultUseCase(travelSearchSettingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideTravelSearchSettingRepository(
+        appContext: Context
+    ): TravelSearchSettingRepository = TravelSearchSettingRepository(appContext)
 }

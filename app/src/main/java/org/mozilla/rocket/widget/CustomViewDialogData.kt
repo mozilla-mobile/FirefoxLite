@@ -13,4 +13,5 @@ open class CustomViewDialogData {
     var negativeText: String? = null
 
     var showCloseButton = false
+    var showDoNotAskMeAgainButton = false
 }
