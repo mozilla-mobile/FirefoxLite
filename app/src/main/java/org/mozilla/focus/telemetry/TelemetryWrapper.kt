@@ -248,6 +248,8 @@ object TelemetryWrapper {
         internal const val UPDATE = "update"
         internal const val MORE = "more"
         internal const val DETAIL_PAGE = "detail_page"
+        internal const val TRAVEL_SEARCH_RESULT = "travel_search_result"
+        internal const val SET_DEFAULT_TRAVEL_SEARCH = "setdefault_travel_search"
     }
 
     internal object Extra {
@@ -348,6 +350,9 @@ object TelemetryWrapper {
         const val UPDATE = "update"
         const val SAVE = "save"
         const val REMOVE = "remove"
+        const val TRAVEL_DISCOVERY = "travel_discovery"
+        const val GOOGLE_SEARCH = "google_search"
+        const val SET_DEFAULT = "setdefault"
     }
 
     enum class FIND_IN_PAGE {
@@ -3301,6 +3306,60 @@ object TelemetryWrapper {
     fun clickGameShortcutContextualHint() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.GAME_SHORTCUT)
                 .extra(Extra.ACTION, Value.POSITIVE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Travel Search Result Message",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.MESSAGE,
+            value = Value.TRAVEL_SEARCH_RESULT,
+            extras = [])
+    fun showTravelSearchResultMessage() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.TRAVEL_SEARCH_RESULT)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Travel Search Result Message",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MESSAGE,
+            value = Value.TRAVEL_SEARCH_RESULT,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS},${Extra_Value.TRAVEL_DISCOVERY},${Extra_Value.GOOGLE_SEARCH}")
+            ])
+    fun clickTravelSearchResultMessage(action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.TRAVEL_SEARCH_RESULT)
+                .extra(Extra.ACTION, action)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Set-default Travel Search Message",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.MESSAGE,
+            value = Value.SET_DEFAULT_TRAVEL_SEARCH,
+            extras = [])
+    fun showSetDefaultTravelSearchMessage() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.SET_DEFAULT_TRAVEL_SEARCH)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Set-default Travel Search Message",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MESSAGE,
+            value = Value.SET_DEFAULT_TRAVEL_SEARCH,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.SET_DEFAULT},${Extra_Value.CLOSE}")
+            ])
+    fun clickSetDefaultTravelSearchMessage(action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.SET_DEFAULT_TRAVEL_SEARCH)
+                .extra(Extra.ACTION, action)
                 .queue()
     }
 

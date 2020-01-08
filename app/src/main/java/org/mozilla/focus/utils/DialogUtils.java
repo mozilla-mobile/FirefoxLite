@@ -456,9 +456,7 @@ public class DialogUtils {
                     return null;
                 })
                 .onCancel(() -> {
-                    return null;
-                })
-                .addOnShowListener(() -> {
+                    viewModel.onDismissSearchOption();
                     return null;
                 })
                 .setCancellable(true);
@@ -493,9 +491,6 @@ public class DialogUtils {
                 })
                 .onDoNotAskMeAgain((isSelected) -> {
                     viewModel.onDoNotAskMeAgainAction(isSelected);
-                    return null;
-                })
-                .addOnShowListener(() -> {
                     return null;
                 });
         dialog.show();
