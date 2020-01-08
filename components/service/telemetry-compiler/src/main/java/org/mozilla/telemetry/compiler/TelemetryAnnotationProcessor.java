@@ -8,12 +8,19 @@ package org.mozilla.telemetry.compiler;
 import org.mozilla.telemetry.annotation.TelemetryDoc;
 import org.mozilla.telemetry.annotation.TelemetryExtra;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -26,12 +33,17 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
+import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 
 public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
-    static final String FILE_README = "/docs/events.md";          // tracked
-    static final String FILE_CSV = "/docs/amplitude.csv";    // not tracked
+    private static String fileReadme = "/docs/events.md";
+    private static String fileAmplitudeMapping = "/docs/view.sql";
+    private static final String FILE_SOURCE_SQL = "view-replace.sql";
+    private static final String FILE_SOURCE_SQL_PLACE_HOLDER = "---REPLACE---ME---";
+
 
     // TODO: TelemetryEvent's fields are private, I'll create a PR to make them public so I can
     // test the ping format in compile time.
@@ -63,18 +75,22 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
         Collection<? extends Element> annotatedElements =
                 env.getElementsAnnotatedWith(TelemetryDoc.class);
 
+        final String projectRootDir = processingEnv.getOptions().get("projectRootDir");
+
+        fileReadme = projectRootDir + fileReadme;
+
+        fileAmplitudeMapping = projectRootDir + fileAmplitudeMapping;
+
         if (annotatedElements.size() == 0) {
             return false;
         }
         try {
-            final String kaptGeneratedSourceFolder = fetchSourcePath();
 
             final String header = "| Event | category | method | object | value | extra |\n" +
                     "| ---- | ---- | ---- | ---- | ---- | ---- |\n";
-            genDoc(annotatedElements, header, kaptGeneratedSourceFolder + FILE_README, '|');
+            genDoc(annotatedElements, header, fileReadme, '|');
 
-
-            genDoc(annotatedElements, "", kaptGeneratedSourceFolder + FILE_CSV, ',');
+            genSQL(annotatedElements, fileAmplitudeMapping);
 
 
         } catch (Exception e) {
@@ -102,10 +118,6 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
         char start = separator;
         char end = ' ';
-        if (path.contains(FILE_CSV)) {
-            start = ' ';
-            end = ',';                      // csv needs an extra column: amplitude_property
-        }
 
         // check duplication
         final HashMap<String, Boolean> lookup = new HashMap<>();
@@ -142,6 +154,97 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
 
         printWriter.close();
+    }
+
+    private void genSQL(Collection<? extends Element> annotatedElements, String path) throws IOException {
+
+        final File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+        }
+        File directory = new File(file.getParentFile().getAbsolutePath());
+        directory.mkdirs();
+
+
+        final PrintWriter printWriter = new PrintWriter(new FileOutputStream(file, true));
+        StringBuffer sb = new StringBuffer();
+
+
+        // check duplication
+        final HashMap<String, Boolean> lookup = new HashMap<>();
+
+        for (Element type : annotatedElements) {
+            if (type.getKind() == ElementKind.METHOD) {
+                final TelemetryDoc annotation = type.getAnnotation(TelemetryDoc.class);
+                if (annotation.skipAmplitude()) {
+                    continue;
+                }
+                verifyAmplitudeMappingFormat(annotation);
+                final String result = verifyEventDuplication(annotation, lookup);
+                if (result != null) {
+                    throw new IllegalArgumentException("Duplicate event combination:" + annotation + "\n" + result);
+                }
+                StringBuilder partValue = new StringBuilder();
+                String telemetryValue = annotation.value();
+                if (!telemetryValue.isEmpty()) {
+                    partValue.append("AND (event_value IN (");
+                    ArrayList<String> split = new ArrayList<>(Arrays.asList(telemetryValue.split(",")));
+                    boolean hasNull = false;
+                    for (String value : split) {
+                        if (value.equals("null")) {
+                            hasNull = true;
+                            continue;
+                        }
+                        partValue.append("'").append(value).append("', ");
+                    }
+                    partValue.deleteCharAt(partValue.length() - 1).deleteCharAt(partValue.length() - 1);
+                    if (hasNull) {
+                        partValue.append(") OR event_value IS NULL) ");
+                    } else {
+                        partValue.append(") ) ");
+                    }
+                }
+
+                String event = "        WHEN (event_category IN ('" + annotation.category() + "') ) AND (event_method IN ('" + annotation.method() +
+                        "') ) AND (event_object IN ('" + annotation.object() + "') ) " + partValue.toString() + "THEN 'Rocket -  " + annotation.name().replace("'", "\\'") + "' ";
+                sb.append(event);
+                sb.append("\n");
+
+            } else {
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "This should not happen:" + type);
+            }
+        }
+
+
+        FileObject fileObject = processingEnv.getFiler().getResource(StandardLocation.ANNOTATION_PROCESSOR_PATH, "", FILE_SOURCE_SQL);
+        InputStream inputStream = fileObject.openInputStream();
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+        BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8));
+
+        String str;
+        while ((str = bufferedReader.readLine()) != null) {
+            str = str.replace(FILE_SOURCE_SQL_PLACE_HOLDER, sb.toString());
+            printWriter.println(str);
+        }
+        bufferedInputStream.close();
+        inputStream.close();
+
+        printWriter.close();
+    }
+
+    private void verifyAmplitudeMappingFormat(TelemetryDoc annotation) {
+        String pattern = "[A-Za-z0-9,_]*";
+        if (!annotation.object().matches(pattern)) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Contain invalid chars in Telemetry object:" + annotation.toString());
+        }
+        if (!annotation.method().matches(pattern)) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Contain invalid chars in Telemetry method:" + annotation.toString());
+        }
+        if (!annotation.value().matches(pattern)) {
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Contain invalid chars in Telemetry value:" + annotation.toString());
+        }
     }
 
     String verifyEventDuplication(TelemetryDoc annotation, HashMap<String, Boolean> lookup) {
@@ -186,15 +289,5 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
             }
         }
 
-    }
-
-    String fetchSourcePath() throws IOException {
-        JavaFileObject generationForPath = processingEnv.getFiler().createSourceFile("TempFile" + System.currentTimeMillis());
-        Writer writer = generationForPath.openWriter();
-        String sourcePath = new File(generationForPath.toUri().getPath()).getParentFile().getAbsolutePath();
-        writer.close();
-        generationForPath.delete();
-
-        return sourcePath;
     }
 }

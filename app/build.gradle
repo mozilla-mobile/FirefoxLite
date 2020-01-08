@@ -56,6 +56,12 @@ android {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_1_8
         }
+
+        kapt {
+            arguments {
+                arg("projectRootDir", project.rootDir.toString())
+            }
+        }
     }
 
     dexOptions {
