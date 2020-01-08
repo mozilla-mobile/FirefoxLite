@@ -59,10 +59,10 @@ class TravelCitySearchActivity : AppCompatActivity() {
         search_keyword_edit.post {
             search_keyword_edit.requestFocus()
         }
-        search_keyword_edit.setOnEditorActionListener { editTextView, actionId, _ ->
+        search_keyword_edit.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    searchViewModel.onGoogleSearchClicked(this, editTextView.text.toString())
+                    recyclerView.findViewHolderForAdapterPosition(1)?.itemView?.performClick()
                     true
                 }
                 else -> false
@@ -79,6 +79,14 @@ class TravelCitySearchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.TRAVEL)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // search again to apply the default travel search setting
+        if (search_keyword_edit.text.isNotEmpty()) {
+            searchViewModel.search(this@TravelCitySearchActivity, search_keyword_edit.text.toString())
+        }
     }
 
     override fun onPause() {

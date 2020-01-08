@@ -71,6 +71,7 @@ class TravelCityActivity : BaseActivity() {
         bindCityData()
         initExploreActions()
         initOnboardingSpotlight(city.name)
+        initChangeSearchSettingAction()
     }
 
     override fun onResume() {
@@ -82,6 +83,10 @@ class TravelCityActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         telemetryViewModel.onSessionEnded()
+    }
+
+    override fun onBackPressed() {
+        travelCityViewModel.onBackPressed()
     }
 
     private fun initOnboardingSpotlight(name: String) {
@@ -190,6 +195,15 @@ class TravelCityActivity : BaseActivity() {
                 startActivity(TravelActivity.getStartIntent(it.context, BucketList).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK) })
             }
         }.show()
+    }
+
+    private fun initChangeSearchSettingAction() {
+        travelCityViewModel.showChangeSearchSettingPrompt.observe(this, Observer {
+            DialogUtils.showChangeTravelSearchSettingDialog(this, travelCityViewModel)
+        })
+        travelCityViewModel.changeSearchSettingFinished.observe(this, Observer {
+            finish()
+        })
     }
 
     private fun bindPageState() {

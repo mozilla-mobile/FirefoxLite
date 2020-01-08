@@ -4,14 +4,7 @@ package org.mozilla.rocket.widget
 import android.content.Context
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.button_divider1
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.button_divider2
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.close_button
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.description
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.image
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.negative_button
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.positive_button
-import kotlinx.android.synthetic.main.layout_promotion_dialog.view.title
+import kotlinx.android.synthetic.main.layout_promotion_dialog.view.*
 import org.mozilla.focus.R
 import org.mozilla.rocket.landing.DialogQueue
 
@@ -25,6 +18,7 @@ class PromotionDialog(
     private var onNegativeListener: (() -> Unit)? = null
     private var onCloseListener: (() -> Unit)? = null
     private var onCancelListener: (() -> Unit)? = null
+    private var onDoNotAskMeAgainListener: ((Boolean) -> Unit)? = null
 
     private val onShowListeners = mutableListOf<() -> Unit>()
     private val onDismissListeners = mutableListOf<() -> Unit>()
@@ -52,6 +46,11 @@ class PromotionDialog(
 
     fun onCancel(listener: () -> Unit): PromotionDialog {
         this.onCancelListener = listener
+        return this
+    }
+
+    fun onDoNotAskMeAgain(listener: (Boolean) -> Unit): PromotionDialog {
+        this.onDoNotAskMeAgainListener = listener
         return this
     }
 
@@ -114,6 +113,12 @@ class PromotionDialog(
         } else {
             View.GONE
         }
+
+        view.do_not_ask_again_checkbox.visibility = if (data.showDoNotAskMeAgainButton) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun createDialog(): AlertDialog {
@@ -138,6 +143,10 @@ class PromotionDialog(
         view.close_button.setOnClickListener {
             dialog.dismiss()
             onCloseListener?.invoke()
+        }
+
+        view.do_not_ask_again_checkbox.setOnClickListener {
+            onDoNotAskMeAgainListener?.invoke(view.do_not_ask_again_checkbox.isChecked)
         }
 
         dialog.setOnShowListener {

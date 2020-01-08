@@ -31,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
@@ -49,6 +48,7 @@ import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.FocusView;
 import org.mozilla.focus.widget.RoundRecFocusView;
+import org.mozilla.rocket.content.travel.ui.TravelCityViewModel;
 import org.mozilla.rocket.widget.CustomViewDialogData;
 import org.mozilla.rocket.widget.PromotionDialog;
 
@@ -426,6 +426,42 @@ public class DialogUtils {
 
         return dialog;
 
+    }
+
+    public static void showChangeTravelSearchSettingDialog(@NonNull final Context context, @NonNull final TravelCityViewModel viewModel) {
+        CustomViewDialogData data = new CustomViewDialogData();
+
+        data.setDrawable(ContextCompat.getDrawable(context, R.drawable.search_with_firefox));
+
+        final String title = context.getString(R.string.travel_dialog_2_title);
+        data.setTitle(title);
+
+        final String content = context.getString(R.string.travel_dialog_2_description, context.getString(R.string.app_name));
+        data.setDescription(content);
+
+        final String positiveText = context.getString(R.string.travel_dialog_2_action);
+        data.setPositiveText(positiveText);
+
+        data.setShowCloseButton(true);
+        data.setShowDoNotAskMeAgainButton(true);
+
+        PromotionDialog dialog = new PromotionDialog(context, data)
+                .onPositive(() -> {
+                    viewModel.onChangeSearchSettingAction(true);
+                    return null;
+                })
+                .onClose(() -> {
+                    viewModel.onChangeSearchSettingAction(false);
+                    return null;
+                })
+                .onDoNotAskMeAgain((isSelected) -> {
+                    viewModel.onDoNotAskMeAgainAction(isSelected);
+                    return null;
+                })
+                .addOnShowListener(() -> {
+                    return null;
+                });
+        dialog.show();
     }
 
     @CheckResult

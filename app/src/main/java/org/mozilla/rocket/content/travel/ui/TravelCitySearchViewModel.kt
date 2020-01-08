@@ -1,7 +1,6 @@
 package org.mozilla.rocket.content.travel.ui
 
 import android.content.Context
-import org.mozilla.rocket.download.SingleLiveEvent
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.view.View
@@ -17,12 +16,17 @@ import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldTravelDiscoveryBeDefaultUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchGoogleUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultCategoryUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultUiModel
+import org.mozilla.rocket.download.SingleLiveEvent
 import java.util.Locale
 
-class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase) : ViewModel() {
+class TravelCitySearchViewModel(
+    private val searchCityUseCase: SearchCityUseCase,
+    private val shouldTravelDiscoveryBeDefault: ShouldTravelDiscoveryBeDefaultUseCase
+) : ViewModel() {
 
     private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
     val items: LiveData<List<DelegateAdapter.UiModel>> = _items
@@ -46,13 +50,20 @@ class TravelCitySearchViewModel(private val searchCityUseCase: SearchCityUseCase
             } else {
                 btnVisibility = View.VISIBLE
                 val result = searchCityUseCase(keyword)
-                if (result is Result.Success && !result.data.result.isEmpty()) {
-                    list.add(CitySearchResultCategoryUiModel(R.drawable.ic_google, context.resources.getString(R.string.travel_search_engine_1, context.resources.getString(R.string.search_engine_name_google))))
-                    list.add(CitySearchGoogleUiModel(keyword))
+                if (result is Result.Success && result.data.result.isNotEmpty()) {
                     list.add(CitySearchResultCategoryUiModel(R.drawable.ic_firefox_search_logo, context.resources.getString(R.string.travel_search_engine_fxlite, context.resources.getString(R.string.app_name))))
                     list.addAll(result.data.result.map {
                         TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.countryCode, it.type)
                     })
+
+                    val isTravelDiscoveryByDefault = shouldTravelDiscoveryBeDefault.invoke()
+                    if (isTravelDiscoveryByDefault) {
+                        list.add(CitySearchResultCategoryUiModel(R.drawable.ic_google, context.resources.getString(R.string.travel_search_engine_1, context.resources.getString(R.string.search_engine_name_google))))
+                        list.add(CitySearchGoogleUiModel(keyword))
+                    } else {
+                        list.add(0, CitySearchResultCategoryUiModel(R.drawable.ic_google, context.resources.getString(R.string.travel_search_engine_1, context.resources.getString(R.string.search_engine_name_google))))
+                        list.add(1, CitySearchGoogleUiModel(keyword))
+                    }
                 }
 
                 // TODO: handle error

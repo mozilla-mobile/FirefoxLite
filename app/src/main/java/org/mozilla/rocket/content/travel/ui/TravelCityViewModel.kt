@@ -26,7 +26,9 @@ import org.mozilla.rocket.content.travel.domain.GetEnglishNameUseCase
 import org.mozilla.rocket.content.travel.domain.GetMoreHotelsUrlUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
+import org.mozilla.rocket.content.travel.domain.SetTravelDiscoveryAsDefaultUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowChangeTravelSearchSettingUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.LoadingUiModel
@@ -47,7 +49,9 @@ class TravelCityViewModel(
     private val getEnglishName: GetEnglishNameUseCase,
     private val getMoreHotelsUrl: GetMoreHotelsUrlUseCase,
     private val shouldShowOnboarding: ShouldShowOnboardingUseCase,
-    private val setOnboardingHasShown: SetOnboardingHasShownUseCase
+    private val setOnboardingHasShown: SetOnboardingHasShownUseCase,
+    private val shouldShowChangeTravelSearchSetting: ShouldShowChangeTravelSearchSettingUseCase,
+    private val setTravelDiscoveryAsDefault: SetTravelDiscoveryAsDefaultUseCase
 ) : ViewModel() {
 
     private val data = ArrayList<DelegateAdapter.UiModel>()
@@ -69,12 +73,16 @@ class TravelCityViewModel(
     val showOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showSnackBar = SingleLiveEvent<Unit>()
     val openLink = SingleLiveEvent<OpenLinkAction>()
+    val showChangeSearchSettingPrompt = SingleLiveEvent<Unit>()
+    val changeSearchSettingFinished = SingleLiveEvent<Unit>()
 
     private var loadingJob: Job? = null
     private var loadMoreJob: Job? = null
     private var hotelsCount = 0
     private lateinit var city: BaseCityData
     private val loadingUiModel = LoadingUiModel()
+    private var shouldShowChangeSearchSettingPrompt = false
+    private var doNotAskChangeSearchSettingAgain = false
 
     var category: String = ""
     val versionId: Long = System.currentTimeMillis()
@@ -84,6 +92,8 @@ class TravelCityViewModel(
             showOnboardingSpotlight.call()
             setOnboardingHasShown()
         }
+
+        shouldShowChangeSearchSettingPrompt = shouldShowChangeTravelSearchSetting()
     }
 
     fun checkIsInBucketList(id: String) {
@@ -181,6 +191,31 @@ class TravelCityViewModel(
         if (!isHotelLoading) {
             loadMoreJob = backgroundTask {
                 loadHotels()
+            }
+        }
+    }
+
+    fun onBackPressed() {
+        if (shouldShowChangeSearchSettingPrompt) {
+            showChangeSearchSettingPrompt.call()
+        } else {
+            changeSearchSettingFinished.call()
+        }
+    }
+
+    fun onDoNotAskMeAgainAction(isSelected: Boolean) {
+        doNotAskChangeSearchSettingAgain = isSelected
+    }
+
+    fun onChangeSearchSettingAction(setTravelDiscoveryAsDefault: Boolean) {
+        viewModelScope.launch {
+            changeSearchSettingFinished.call()
+            if (setTravelDiscoveryAsDefault) {
+                setTravelDiscoveryAsDefault(true)
+            } else {
+                if (doNotAskChangeSearchSettingAgain) {
+                    setTravelDiscoveryAsDefault(false)
+                }
             }
         }
     }
