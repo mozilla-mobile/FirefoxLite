@@ -568,7 +568,7 @@ object TelemetryWrapper {
             category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.PRIVATE_SHORTCUT,
-            value = "[${Value.POSITIVE}|${Value.NEGATIVE}|${Value.DISMISS}]",
+            value = "${Value.POSITIVE},${Value.NEGATIVE},${Value.DISMISS}",
             extras = [TelemetryExtra(name = Extra.MODE, value = Extra_Value.PRIVATE_MODE)])
     @JvmStatic
     fun clickPrivateShortcutPrompt(value: String) {
@@ -660,7 +660,8 @@ object TelemetryWrapper {
             method = Method.CHANGE,
             `object` = Object.SETTING,
             value = "settings pref key",
-            extras = [TelemetryExtra(name = Extra.TO, value = "New Value for the pref")])
+            extras = [TelemetryExtra(name = Extra.TO, value = "New Value for the pref")],
+            skipAmplitude = true)
     @JvmStatic
     fun settingsEvent(key: String, value: String, sendNow: Boolean = false) {
         // We only log whitelist-ed setting
@@ -678,7 +679,8 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.SETTING,
             value = "settings pref key",
-            extras = [])
+            extras = [],
+            skipAmplitude = true)
     @JvmStatic
     fun settingsClickEvent(key: String) {
         val validPrefKey = FirebaseEvent.getValidPrefKey(key)
@@ -2923,7 +2925,7 @@ object TelemetryWrapper {
             category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
-            value = "${Value.SHARE}|${Value.OPEN_IN_BROWSER}|${Value.RELOAD}|${Value.BACK}",
+            value = "${Value.SHARE},${Value.OPEN_IN_BROWSER},${Value.RELOAD},${Value.BACK}",
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
