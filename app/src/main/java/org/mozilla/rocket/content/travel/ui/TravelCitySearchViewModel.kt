@@ -102,9 +102,15 @@ class TravelCitySearchViewModel(
     fun onSearchOptionClick(context: Context, tryTravelDiscovery: Boolean) {
         if (tryTravelDiscovery) {
             defaultCity?.let { onCityClicked(it) }
+            TelemetryWrapper.clickTravelSearchResultMessage(TelemetryWrapper.Extra_Value.TRAVEL_DISCOVERY)
         } else {
             goToGoogleSearch(context, searchKeyword)
+            TelemetryWrapper.clickTravelSearchResultMessage(TelemetryWrapper.Extra_Value.GOOGLE_SEARCH)
         }
+    }
+
+    fun onDismissSearchOption() {
+        TelemetryWrapper.clickTravelSearchResultMessage(TelemetryWrapper.Extra_Value.DISMISS)
     }
 
     fun onCityClicked(it: CitySearchResultUiModel) {
@@ -116,6 +122,7 @@ class TravelCitySearchViewModel(
         if (shouldShowTravelSearchOptionPrompt()) {
             setTravelSearchOptionPromptHasShown()
             showSearchOptionPrompt.call()
+            TelemetryWrapper.showTravelSearchResultMessage()
         } else {
             goToGoogleSearch(context, keyword)
         }

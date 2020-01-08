@@ -27,8 +27,8 @@ import org.mozilla.rocket.content.travel.domain.GetMoreHotelsUrlUseCase
 import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.SetTravelDiscoveryAsDefaultUseCase
-import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowChangeTravelSearchSettingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.HotelUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.IgUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.LoadingUiModel
@@ -198,6 +198,7 @@ class TravelCityViewModel(
     fun onBackPressed() {
         if (shouldShowChangeSearchSettingPrompt) {
             showChangeSearchSettingPrompt.call()
+            TelemetryWrapper.showSetDefaultTravelSearchMessage()
         } else {
             changeSearchSettingFinished.call()
         }
@@ -212,10 +213,12 @@ class TravelCityViewModel(
             changeSearchSettingFinished.call()
             if (setTravelDiscoveryAsDefault) {
                 setTravelDiscoveryAsDefault(true)
+                TelemetryWrapper.clickSetDefaultTravelSearchMessage(TelemetryWrapper.Extra_Value.SET_DEFAULT)
             } else {
                 if (doNotAskChangeSearchSettingAgain) {
                     setTravelDiscoveryAsDefault(false)
                 }
+                TelemetryWrapper.clickSetDefaultTravelSearchMessage(TelemetryWrapper.Extra_Value.CLOSE)
             }
         }
     }
