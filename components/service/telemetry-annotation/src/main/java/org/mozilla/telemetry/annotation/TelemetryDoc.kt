@@ -14,5 +14,6 @@ annotation class TelemetryDoc(
     val category: String,
     val method: String,
     val `object`: String,
-    val extras: Array<TelemetryExtra>
+    val extras: Array<TelemetryExtra>,
+    val skipAmplitude: Boolean = false
 )
