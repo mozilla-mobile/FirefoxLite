@@ -16,6 +16,8 @@ import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
+import org.mozilla.rocket.content.travel.domain.SetTravelSearchOptionPromptHasShownUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowTravelSearchOptionPromptUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldTravelDiscoveryBeDefaultUseCase
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchGoogleUiModel
 import org.mozilla.rocket.content.travel.ui.adapter.CitySearchResultCategoryUiModel
@@ -25,6 +27,8 @@ import java.util.Locale
 
 class TravelCitySearchViewModel(
     private val searchCityUseCase: SearchCityUseCase,
+    private val shouldShowTravelSearchOptionPrompt: ShouldShowTravelSearchOptionPromptUseCase,
+    private val setTravelSearchOptionPromptHasShown: SetTravelSearchOptionPromptHasShownUseCase,
     private val shouldTravelDiscoveryBeDefault: ShouldTravelDiscoveryBeDefaultUseCase
 ) : ViewModel() {
 
@@ -35,6 +39,10 @@ class TravelCitySearchViewModel(
     val openCity = SingleLiveEvent<BaseCityData>()
     val changeClearBtnVisibility = SingleLiveEvent<Int>()
     val openGoogleSearch = SingleLiveEvent<String>()
+    val showSearchOptionPrompt = SingleLiveEvent<Unit>()
+
+    private var searchKeyword = ""
+    private var defaultCity: CitySearchResultUiModel? = null
 
     fun search(context: Context, keyword: String) {
         if (searchCityJob?.isCompleted == false) {
@@ -52,9 +60,10 @@ class TravelCitySearchViewModel(
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success && result.data.result.isNotEmpty()) {
                     list.add(CitySearchResultCategoryUiModel(R.drawable.ic_firefox_search_logo, context.resources.getString(R.string.travel_search_engine_fxlite, context.resources.getString(R.string.app_name))))
-                    list.addAll(result.data.result.map {
+                    val cityResultList = result.data.result.map {
                         TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.countryCode, it.type)
-                    })
+                    }
+                    list.addAll(cityResultList)
 
                     val isTravelDiscoveryByDefault = shouldTravelDiscoveryBeDefault.invoke()
                     if (isTravelDiscoveryByDefault) {
@@ -64,6 +73,9 @@ class TravelCitySearchViewModel(
                         list.add(0, CitySearchResultCategoryUiModel(R.drawable.ic_google, context.resources.getString(R.string.travel_search_engine_1, context.resources.getString(R.string.search_engine_name_google))))
                         list.add(1, CitySearchGoogleUiModel(keyword))
                     }
+
+                    searchKeyword = keyword
+                    defaultCity = cityResultList[0]
                 }
 
                 // TODO: handle error
@@ -87,12 +99,29 @@ class TravelCitySearchViewModel(
         }
     }
 
+    fun onSearchOptionClick(context: Context, tryTravelDiscovery: Boolean) {
+        if (tryTravelDiscovery) {
+            defaultCity?.let { onCityClicked(it) }
+        } else {
+            goToGoogleSearch(context, searchKeyword)
+        }
+    }
+
     fun onCityClicked(it: CitySearchResultUiModel) {
         openCity.value = BaseCityData(it.id, it.name.toString(), it.type, it.name.toString(), it.countryCode)
         TelemetryWrapper.selectQueryContentHome(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.BOOKING_COM)
     }
 
     fun onGoogleSearchClicked(context: Context, keyword: String) {
+        if (shouldShowTravelSearchOptionPrompt()) {
+            setTravelSearchOptionPromptHasShown()
+            showSearchOptionPrompt.call()
+        } else {
+            goToGoogleSearch(context, keyword)
+        }
+    }
+
+    private fun goToGoogleSearch(context: Context, keyword: String) {
         openGoogleSearch.value = SearchUtils.createSearchUrl(context, keyword)
         TelemetryWrapper.selectQueryContentHome(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.GOOGLE)
     }

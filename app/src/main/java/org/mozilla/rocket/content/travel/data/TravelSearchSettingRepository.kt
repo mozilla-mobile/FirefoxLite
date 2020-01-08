@@ -13,6 +13,14 @@ class TravelSearchSettingRepository(appContext: Context) {
         })
     }
 
+    fun setSearchOptionPromptHasShown() {
+        preference.edit().putBoolean(KEY_SEARCH_OPTION_PROMPT, false).apply()
+    }
+
+    fun shouldShowSearchOptionPrompt(): Boolean {
+        return preference.getBoolean(KEY_SEARCH_OPTION_PROMPT, true)
+    }
+
     fun setAsDefaultSearch(searchSetting: TravelSearchSetting) {
         val value = when (searchSetting) {
             TravelSearchSetting.Default -> VALUE_DEFAULT
@@ -38,6 +46,7 @@ class TravelSearchSettingRepository(appContext: Context) {
 
     companion object {
         private const val PREF_NAME = "travel"
+        private const val KEY_SEARCH_OPTION_PROMPT = "search_option_prompt"
         private const val KEY_DEFAULT_SEARCH = "default_search"
         private const val VALUE_DEFAULT = 0
         private const val VALUE_GOOGLE = 1

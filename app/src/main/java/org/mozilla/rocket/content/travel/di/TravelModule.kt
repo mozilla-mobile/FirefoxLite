@@ -22,8 +22,10 @@ import org.mozilla.rocket.content.travel.domain.RemoveFromBucketListUseCase
 import org.mozilla.rocket.content.travel.domain.SearchCityUseCase
 import org.mozilla.rocket.content.travel.domain.SetOnboardingHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.SetTravelDiscoveryAsDefaultUseCase
-import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.SetTravelSearchOptionPromptHasShownUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldShowChangeTravelSearchSettingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowOnboardingUseCase
+import org.mozilla.rocket.content.travel.domain.ShouldShowTravelSearchOptionPromptUseCase
 import org.mozilla.rocket.content.travel.domain.ShouldTravelDiscoveryBeDefaultUseCase
 import org.mozilla.rocket.content.travel.ui.TravelBucketListViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
@@ -125,9 +127,13 @@ object TravelModule {
     @Provides
     fun provideTravelCitySearchViewModel(
         searchCityUseCase: SearchCityUseCase,
+        shouldShowTravelSearchOptionPromptUseCase: ShouldShowTravelSearchOptionPromptUseCase,
+        setTravelSearchOptionPromptHasShownUseCase: SetTravelSearchOptionPromptHasShownUseCase,
         shouldTravelDiscoveryBeDefaultUseCase: ShouldTravelDiscoveryBeDefaultUseCase
     ): TravelCitySearchViewModel = TravelCitySearchViewModel(
         searchCityUseCase,
+        shouldShowTravelSearchOptionPromptUseCase,
+        setTravelSearchOptionPromptHasShownUseCase,
         shouldTravelDiscoveryBeDefaultUseCase
     )
 
@@ -183,6 +189,20 @@ object TravelModule {
     fun provideTravelOnboardingRepository(
         appContext: Context
     ): TravelOnboardingRepository = TravelOnboardingRepository(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowTravelSearchOptionPromptUseCase(
+        travelSearchSettingRepository: TravelSearchSettingRepository
+    ): ShouldShowTravelSearchOptionPromptUseCase = ShouldShowTravelSearchOptionPromptUseCase(travelSearchSettingRepository)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetTravelSearchOptionPromptHasShownUseCase(
+        travelSearchSettingRepository: TravelSearchSettingRepository
+    ): SetTravelSearchOptionPromptHasShownUseCase = SetTravelSearchOptionPromptHasShownUseCase(travelSearchSettingRepository)
 
     @JvmStatic
     @Singleton

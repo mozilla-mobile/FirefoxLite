@@ -48,6 +48,7 @@ import org.mozilla.focus.notification.NotificationUtil;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.widget.FocusView;
 import org.mozilla.focus.widget.RoundRecFocusView;
+import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel;
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel;
 import org.mozilla.rocket.widget.CustomViewDialogData;
 import org.mozilla.rocket.widget.PromotionDialog;
@@ -426,6 +427,42 @@ public class DialogUtils {
 
         return dialog;
 
+    }
+
+    public static void showTravelDiscoverySearchOptionDialog(@NonNull final Context context, @NonNull final TravelCitySearchViewModel viewModel) {
+        CustomViewDialogData data = new CustomViewDialogData();
+
+        data.setDrawable(ContextCompat.getDrawable(context, R.drawable.ic_search_option));
+
+        final String title = context.getString(R.string.travel_dialog_1_title);
+        data.setTitle(title);
+
+        final String content = context.getString(R.string.travel_dialog_1_description, context.getString(R.string.app_name));
+        data.setDescription(content);
+
+        final String positiveText = context.getString(R.string.travel_dialog_1_action_1);
+        data.setPositiveText(positiveText);
+
+        final String negativeText = context.getString(R.string.travel_dialog_1_action_2);
+        data.setNegativeText(negativeText);
+
+        PromotionDialog dialog = new PromotionDialog(context, data)
+                .onPositive(() -> {
+                    viewModel.onSearchOptionClick(context, true);
+                    return null;
+                })
+                .onNegative(() -> {
+                    viewModel.onSearchOptionClick(context, false);
+                    return null;
+                })
+                .onCancel(() -> {
+                    return null;
+                })
+                .addOnShowListener(() -> {
+                    return null;
+                })
+                .setCancellable(true);
+        dialog.show();
     }
 
     public static void showChangeTravelSearchSettingDialog(@NonNull final Context context, @NonNull final TravelCityViewModel viewModel) {
