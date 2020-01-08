@@ -586,6 +586,10 @@
    <!-- Recommended news onboarding title and content. -->
    <string name="recommended_news_title">Recommended News For You</string>
    <string name="recommended_news_content">Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News->Settings. %1$s</string>
+   <!-- Recommended news choose language -->
+   <string name="recommended_news_preference_language">Choose Your Prefered\nNews Language</string>
+   <!-- Recommended news toggle title -->
+   <string name="recommended_news_preference_toggle">Personalized news experience</string>
    <!-- Disable personalized experience for news. -->
    <string name="recommended_news_preference_disable_dialog">Do you want to disable the recommended news? Tap “YES” to just display the latest news articles.</string>
    <!-- Enable personalized experience for news. -->
