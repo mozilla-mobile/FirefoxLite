@@ -582,6 +582,14 @@
     <string name="logo_text">Service provided by</string>
 
     <string name="coupon_valid_description" translatable="false">Berlaku hingga %s</string>
+   
+   <!-- Recommended news onboarding title and content. -->
+   <string name="recommended_news_title">Recommended News For You</string>
+   <string name="recommended_news_content">Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News->Settings. %1$s</string>
+   <!-- Disable personalized experience for news. -->
+   <string name="recommended_news_preference_disable_dialog">Do you want to disable the recommended news? Tap “YES” to just display the latest news articles.</string>
+   <!-- Enable personalized experience for news. -->
+   <string name="recommended_news_preference_enable_dialog">Do you want to enable the recommended news feature? Tap “YES” to start seeing a recommended selection of news articles.</string>
 
     <!-- Private Browsing-->
 
