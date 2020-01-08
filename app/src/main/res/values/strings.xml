@@ -950,24 +950,24 @@
     <string name="travel_search_engine_fxlite">See results in %1$s Travel Discovery</string>   
    
    
-   <!--Dialog-->
-   <!--dialog title for introducing Firefox Lite Travel Discovery-->
-   <string name="travel_dialog_1_title">Discover More!</string>
-   <!--dialog description for introducing the feature-->
-   <string name="travel_dialog_1_description">Explore things to do, accomodations, and more in Firefox Lite's Travel Discovery.</string>
-   <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
-   <string name="travel_dialog_1_action_1">TRY TRAVEL DISCOVERY</string>
-   <!--Action button for dismissing this prompt-->
-   <string name="travel_dialog_1_action_2">NO, THANKS</string>
+    <!--Dialog-->
+    <!--dialog title for introducing Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_title">Discover More!</string>
+    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_1_description">Explore things to do, accomodations, and more in %1$s Travel Discovery.</string>
+    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_action_1">TRY TRAVEL DISCOVERY</string>
+    <!--Action button for dismissing this prompt-->
+    <string name="travel_dialog_1_action_2">NO, THANKS</string>
 
-   <!--dialog title for asking if users want to change default search engine-->
-   <string name="travel_dialog_2_title">Enjoy Using Travel Discovery?</string>
-   <!--dialog description for introducing how it works-->
-   <string name="travel_dialog_2_description">You can set Firefox Lite Travel Disovery as your default search engine for travel.</string>
-   <!--checkbox for not showing this dialog again-->
-   <string name="travel_dialog_2_checkbox">Do not ask me again</string>
-   <!--Action button for setting Travel Discovery as default search engine-->
-   <string name="travel_dialog_2_action">SET AS DEFAULT</string>
+    <!--dialog title for asking if users want to change default search engine-->
+    <string name="travel_dialog_2_title">Enjoy Using Travel Discovery?</string>
+    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_2_description">You can set %1$s Travel Disovery as your default search engine for travel.</string>
+    <!--checkbox for not showing this dialog again-->
+    <string name="travel_dialog_2_checkbox">Do not ask me again</string>
+    <!--Action button for setting Travel Discovery as default search engine-->
+    <string name="travel_dialog_2_action">SET AS DEFAULT</string>
 
    
 </resources>
