@@ -59,6 +59,10 @@ class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDat
 
     override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = Unit
 
+    override fun getDefaultLanguage() = NewsLanguage("English", "1", "English")
+
+    override fun getDefaultCategory() = NewsCategory.getCategoryById("top-news")!!
+
     override fun shouldEnableNewsSettings() = false
 
     private fun getPreferences(): SharedPreferences {

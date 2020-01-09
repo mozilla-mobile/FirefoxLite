@@ -9,7 +9,7 @@ import java.util.Locale
 class LoadNewsLanguagesUseCase(private val repository: NewsSettingsRepository) {
 
     suspend operator fun invoke(): Result<List<NewsLanguage>> {
-        var defaultLanguage = DEFAULT_LANGUAGE
+        var defaultLanguage = repository.getDefaultLanguage()
         val result = repository.getLanguages()
         if (result is Result.Success && result.isNotEmpty) {
             val supportLanguages = result.data
@@ -26,13 +26,7 @@ class LoadNewsLanguagesUseCase(private val repository: NewsSettingsRepository) {
         return if (result.isNotEmpty) {
             result
         } else {
-            Result.Success(listOf(DEFAULT_LANGUAGE))
+            Result.Success(listOf(repository.getDefaultLanguage()))
         }
-    }
-
-    companion object {
-        private const val DEFAULT_LANGUAGE_KEY = "English"
-        private const val DEFAULT_LANGUAGE_CODE = "1"
-        val DEFAULT_LANGUAGE = NewsLanguage(DEFAULT_LANGUAGE_KEY, DEFAULT_LANGUAGE_CODE, DEFAULT_LANGUAGE_KEY)
     }
 }

@@ -11,7 +11,6 @@ import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettings
-import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 
 class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase) : ViewModel() {
@@ -19,6 +18,8 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
     private val _uiModel = MutableLiveData<NewsTabUiModel>()
     val uiModel: LiveData<NewsTabUiModel>
         get() = _uiModel
+
+    private var cachedLanguage: NewsLanguage? = null
 
     init {
         getNewsSettings()
@@ -32,11 +33,13 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
     }
 
     fun refresh() {
-        _uiModel.value = NewsTabUiModel(
-            Pair(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE, emptyList()),
-            _uiModel.value?.hasSettingsMenu ?: false
-        )
-        getNewsSettings()
+        cachedLanguage?.let {
+            _uiModel.value = NewsTabUiModel(
+                Pair(it, emptyList()),
+                _uiModel.value?.hasSettingsMenu ?: false
+            )
+            getNewsSettings()
+        }
     }
 
     private fun emitUiModel(newsSettings: NewsSettings) {
@@ -44,6 +47,7 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
             Pair(newsSettings.newsLanguage, newsSettings.newsCategories.filter { it.isSelected }),
             newsSettings.shouldEnableNewsSettings
         )
+        cachedLanguage = newsSettings.newsLanguage
     }
 }
 

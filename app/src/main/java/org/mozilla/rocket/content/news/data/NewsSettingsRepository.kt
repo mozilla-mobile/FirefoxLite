@@ -60,6 +60,10 @@ class NewsSettingsRepository(
         )
     }
 
+    fun getDefaultLanguage() = localDataSource.getDefaultLanguage()
+
+    fun getDefaultCategory() = localDataSource.getDefaultCategory()
+
     private suspend fun getCategoriesByLanguage(language: String): Result<List<NewsCategory>> {
         val remoteCategoriesResult = remoteDataSource.getSupportCategories(language)
         if (remoteCategoriesResult is Result.Success && remoteCategoriesResult.isNotEmpty) {

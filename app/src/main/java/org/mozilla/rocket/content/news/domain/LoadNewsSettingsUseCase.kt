@@ -18,7 +18,6 @@ package org.mozilla.rocket.content.news.domain
 
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.isNotEmpty
-import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsSettings
 import org.mozilla.rocket.content.news.data.NewsSettingsRepository
 import org.mozilla.rocket.content.succeeded
@@ -27,7 +26,7 @@ import java.util.Locale
 open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepository) {
 
     suspend operator fun invoke(): Result<NewsSettings> {
-        var defaultLanguage = LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE
+        var defaultLanguage = repository.getDefaultLanguage()
         val supportLanguagesResult = repository.getLanguages()
         if (supportLanguagesResult is Result.Success &&
             supportLanguagesResult.isNotEmpty &&
@@ -41,14 +40,7 @@ open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepositor
         return if (result.succeeded) {
             result
         } else {
-            Result.Success(NewsSettings(LoadNewsLanguagesUseCase.DEFAULT_LANGUAGE, DEFAULT_CATEGORY_LIST, false))
+            Result.Success(NewsSettings(repository.getDefaultLanguage(), listOf(repository.getDefaultCategory()), false))
         }
-    }
-
-    companion object {
-        private const val DEFAULT_CATEGORY_ID = "top-news"
-        private val DEFAULT_CATEGORY_LIST = listOf(
-            NewsCategory.getCategoryById(DEFAULT_CATEGORY_ID)!!
-        )
     }
 }

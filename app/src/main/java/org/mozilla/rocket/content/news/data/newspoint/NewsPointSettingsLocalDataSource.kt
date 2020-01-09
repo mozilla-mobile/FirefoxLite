@@ -108,6 +108,10 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
         ).apply()
     }
 
+    override fun getDefaultLanguage() = NewsLanguage("English", "1", "English")
+
+    override fun getDefaultCategory() = NewsCategory.getCategoryById("top-news")!!
+
     override fun shouldEnableNewsSettings() = true
 
     private fun getPreferences(): SharedPreferences {

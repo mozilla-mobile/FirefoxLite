@@ -87,6 +87,10 @@ class DailyHuntSettingsLocalDataSource(private val context: Context) : NewsSetti
 
     override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = Unit
 
+    override fun getDefaultLanguage() = NewsLanguage("en", "en", "English")
+
+    override fun getDefaultCategory() = NewsCategory("1", "News", 0, 1, true)
+
     override fun shouldEnableNewsSettings() = true
 
     private fun getPreferences(): SharedPreferences {
