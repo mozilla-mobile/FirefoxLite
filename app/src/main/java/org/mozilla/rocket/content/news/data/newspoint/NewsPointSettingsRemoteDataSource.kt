@@ -71,6 +71,14 @@ class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?)
         throw UnsupportedOperationException("Can't set user preference news category setting to server")
     }
 
+    override fun getDefaultLanguage(): NewsLanguage {
+        throw UnsupportedOperationException("Can't get default language setting from server")
+    }
+
+    override fun getDefaultCategory(): NewsCategory {
+        throw UnsupportedOperationException("Can't get default category setting from server")
+    }
+
     override fun shouldEnableNewsSettings(): Boolean {
         throw UnsupportedOperationException("Can't get menu setting from server")
     }
