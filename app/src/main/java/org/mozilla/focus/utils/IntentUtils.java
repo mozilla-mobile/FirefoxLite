@@ -171,10 +171,10 @@ public class IntentUtils {
         builder.show();
     }
 
-    public static void intentOpenFile(Context context, String fileUriStr, String mimeType) {
+    public static void intentOpenFile(Context context, String fileUriStr, String mimeType) throws URISyntaxException {
         if (fileUriStr != null) {
             String authorities = BuildConfig.APPLICATION_ID + ".provider.fileprovider";
-            Uri fileUri = FileProvider.getUriForFile(context, authorities, new File(URI.create(fileUriStr).getPath()));
+            Uri fileUri = FileProvider.getUriForFile(context, authorities, new File(new URI(fileUriStr).getPath()));
 
             Intent launchIntent = new Intent(Intent.ACTION_VIEW);
             launchIntent.setDataAndType(fileUri, mimeType);

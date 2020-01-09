@@ -29,6 +29,7 @@ import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -167,11 +168,21 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 TelemetryWrapper.downloadOpenFile(false);
 
                 ThreadUtils.postToBackgroundThread(() -> {
-                    final boolean fileExist = new File(URI.create(download.getFileUri()).getPath()).exists();
+                    boolean fileExist = false;
+                    try {
+                        fileExist = new File(new URI(download.getFileUri()).getPath()).exists();
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
 
+                    final boolean finalFileExist = fileExist;
                     ThreadUtils.postToMainThread(() -> {
-                        if (fileExist) {
-                            IntentUtils.intentOpenFile(view.getContext(), download.getFileUri(), download.getMimeType());
+                        if (finalFileExist) {
+                            try {
+                                IntentUtils.intentOpenFile(view.getContext(), download.getFileUri(), download.getMimeType());
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             Toast.makeText(mContext, R.string.cannot_find_the_file, Toast.LENGTH_LONG).show();
                         }

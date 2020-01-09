@@ -14,6 +14,7 @@ import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import org.mozilla.rocket.deeplink.task.Task
 import org.mozilla.rocket.extension.getParam
 import java.net.URI
+import java.net.URISyntaxException
 
 enum class DeepLinkType {
 
@@ -140,19 +141,22 @@ enum class DeepLinkType {
 
     companion object {
         fun parse(url: String): DeepLinkType {
+            try {
+                val uri = URI(url)
 
-            val uri = URI.create(url)
+                for (type in values()) {
+                    if (type === NOT_SUPPORT) {
+                        continue
+                    }
 
-            for (type in values()) {
-                if (type === NOT_SUPPORT) {
-                    continue
+                    if (type.match(uri)) {
+                        type.addTasks(uri)
+
+                        return type
+                    }
                 }
-
-                if (type.match(uri)) {
-                    type.addTasks(uri)
-
-                    return type
-                }
+            } catch (e: URISyntaxException) {
+                e.printStackTrace()
             }
 
             return NOT_SUPPORT

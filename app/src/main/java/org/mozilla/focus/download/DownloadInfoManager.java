@@ -29,6 +29,7 @@ import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -341,7 +342,13 @@ public class DownloadInfoManager {
             final Snackbar snackbar = Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG);
             // Set the open action only if we can.
             if (existInDownloadManager) {
-                snackbar.setAction(R.string.open, view -> IntentUtils.intentOpenFile(container.getContext(), downloadInfo.getFileUri(), downloadInfo.getMimeType()));
+                snackbar.setAction(R.string.open, view -> {
+                    try {
+                        IntentUtils.intentOpenFile(container.getContext(), downloadInfo.getFileUri(), downloadInfo.getMimeType());
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
+                });
             }
             snackbar.show();
         });
