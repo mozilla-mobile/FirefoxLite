@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.travel.data
 
 import android.net.Uri
+import org.mozilla.focus.locale.Locales
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
 import java.util.Locale
@@ -39,7 +40,7 @@ class TravelRepository(
             return Result.Error(Exception())
         }
 
-        val wiki = Wiki(resultImage.data, resultExtract.data, String.format(WIKI_URL, Locale.getDefault().language, encodedName))
+        val wiki = Wiki(resultImage.data, resultExtract.data, String.format(WIKI_URL, Locales.getLanguage(Locale.getDefault()), encodedName))
 
         return Result.Success(wiki)
     }
