@@ -70,7 +70,11 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
 
         override fun onBindViewHolder(vh: CategorySettingItemViewHolder, pos: Int) {
 
-            val displayString = vh.button.context.getString(categoryList[pos].stringResourceId)
+            val displayString = if (categoryList[pos].stringResourceId != 0) {
+                vh.button.context.getString(categoryList[pos].stringResourceId)
+            } else {
+                categoryList[pos].name
+            }
             // the first item is always selected and not changeable
             if (pos == 0) {
                 vh.button.isChecked = true
