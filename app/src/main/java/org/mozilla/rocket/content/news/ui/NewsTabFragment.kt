@@ -165,7 +165,7 @@ class NewsTabFragment : Fragment() {
             return if (displayCategories[position].stringResourceId != 0)
                 getString(displayCategories[position].stringResourceId)
             else
-                displayCategories[position].categoryId
+                displayCategories[position].name
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {

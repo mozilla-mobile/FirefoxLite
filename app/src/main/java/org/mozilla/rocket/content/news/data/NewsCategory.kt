@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.news.data
 
+import org.json.JSONObject
 import org.mozilla.focus.R
 
 data class NewsCategory(
@@ -10,6 +11,10 @@ data class NewsCategory(
     var isSelected: Boolean = false
 ) {
     companion object {
+        internal const val KEY_NAME = "name"
+        internal const val KEY_STRING_RESOURCE_ID = "stringResourceId"
+        internal const val KEY_ORDER = "order"
+
         private val mapping by lazy {
             setOf(
                 NewsCategory("top-news", "top-news", R.string.news_category_option_top_news, 1, true),
@@ -49,5 +54,32 @@ data class NewsCategory(
                 null
             }
         }
+
+        fun fromJson(jsonString: String): List<NewsCategory> {
+            val result = ArrayList<NewsCategory>()
+            val items = JSONObject(jsonString)
+            for (id in items.keys()) {
+                val item = items.getJSONObject(id)
+                val name = item.optString(KEY_NAME)
+                val stringResourceId = item.optInt(KEY_STRING_RESOURCE_ID)
+                val order = item.optInt(KEY_ORDER)
+                result.add(NewsCategory(id, name, stringResourceId, order))
+            }
+
+            return result
+        }
     }
+}
+
+fun List<NewsCategory>.toJson(): JSONObject {
+    val node = JSONObject()
+    for (newsCategory in this) {
+        val item = JSONObject()
+        item.put(NewsCategory.KEY_NAME, newsCategory.name)
+        item.put(NewsCategory.KEY_STRING_RESOURCE_ID, newsCategory.stringResourceId)
+        item.put(NewsCategory.KEY_ORDER, newsCategory.order)
+        node.put(newsCategory.categoryId, item)
+    }
+
+    return node
 }
