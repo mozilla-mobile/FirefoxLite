@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
+import org.mozilla.focus.locale.Locales
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
@@ -246,7 +247,7 @@ class TravelRemoteDataSource : TravelDataSource {
         }
     }
 
-    private fun getWikiNameApiEndpoint(name: String): String = String.format(WIKI_NAME_API, Locale.getDefault().language, name)
+    private fun getWikiNameApiEndpoint(name: String): String = String.format(WIKI_NAME_API, Locales.getLanguage(Locale.getDefault()), name)
 
     private fun getWikiNameFromJson(jsonString: String): String {
         val jsonObject = jsonString.toJsonObject()
@@ -254,7 +255,7 @@ class TravelRemoteDataSource : TravelDataSource {
         return search.optString(WIKI_JSON_KEY_TITLE)
     }
 
-    private fun getWikiExtractApiEndpoint(name: String): String = String.format(WIKI_EXTRACT_API, Locale.getDefault().language, Locale.getDefault().toLanguageTag().toLowerCase(), name)
+    private fun getWikiExtractApiEndpoint(name: String): String = String.format(WIKI_EXTRACT_API, Locales.getLanguage(Locale.getDefault()), Locale.getDefault().toLanguageTag().toLowerCase(), name)
 
     private fun getWikiExtractFromJson(jsonString: String): String {
         val jsonObject = jsonString.toJsonObject()
@@ -264,7 +265,7 @@ class TravelRemoteDataSource : TravelDataSource {
         return pageContent.optString(WIKI_JSON_KEY_EXTRACT)
     }
 
-    private fun getWikiImageApiEndpoint(name: String): String = String.format(WIKI_IMAGE_API, Locale.getDefault().language, name)
+    private fun getWikiImageApiEndpoint(name: String): String = String.format(WIKI_IMAGE_API, Locales.getLanguage(Locale.getDefault()), name)
 
     private fun getWikiImageFromJson(jsonString: String): String {
         val jsonObject = jsonString.toJsonObject()

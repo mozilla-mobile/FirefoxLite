@@ -4,6 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mozilla.components.concept.fetch.Request
 import org.json.JSONArray
+import org.mozilla.focus.locale.Locales
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsDataSource
 import org.mozilla.rocket.content.news.data.NewsItem
@@ -43,9 +44,9 @@ class RssNewsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsDat
             Locale.US,
             url,
             category,
-            Locale.getDefault().language,
+            Locales.getLanguage(Locale.getDefault()),
             Locale.getDefault().country,
-            Locale.getDefault().country + ":" + Locale.getDefault().language
+            Locale.getDefault().country + ":" + Locales.getLanguage(Locale.getDefault())
         )
     }
 
