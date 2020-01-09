@@ -9,6 +9,7 @@ import org.mozilla.focus.download.DownloadInfo
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 import java.net.URI
+import java.net.URISyntaxException
 
 class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : ViewModel() {
 
@@ -127,8 +128,13 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     fun delete(rowId: Long) {
         repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
             override fun onComplete(download: DownloadInfo) {
-                val file = File(URI.create(download.fileUri).path)
-                if (file.exists()) {
+                val file = try {
+                    File(URI(download.fileUri).path)
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                    null
+                }
+                if (file?.exists() == true) {
                     deleteSnackbarObservable.value = download
                 } else {
                     toastMessageObservable.value = R.string.cannot_find_the_file
@@ -138,8 +144,8 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun confirmDelete(download: DownloadInfo) {
-        val deleteFile = File(URI.create(download.fileUri).path)
         try {
+            val deleteFile = File(URI(download.fileUri).path)
             if (deleteFile.delete()) {
                 repository.deleteFromDownloadManager(download.downloadId)
                 repository.remove(download.rowId)
