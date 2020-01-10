@@ -1,5 +1,24 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  <string name="onboarding_2_content_services_news_travel">I-tap upang mabasa ang trending balita, planuhin ang iyong susunod na biyahe at higit pa!</string>
-  <string name="travel_search_engine_fxlite">Tingnan ang mga resulta sa %1$s Travel Discovery</string>
+    <string name="onboarding_2_content_services_news_travel">I-tap upang mabasa ang trending balita, planuhin ang iyong susunod na biyahe at higit pa!</string>
+    <string name="travel_search_engine_fxlite">Tingnan ang mga resulta sa %1$s Travel Discovery</string>
+
+    <!--Dialog-->
+    <!--dialog title for introducing Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_title">Tumuklas Pa!</string>
+    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_1_description">Mag-explore ng mga bagay na puwedeng gawin, mga accomodation, at higit pa sa Travel Discovery ng %1$s.</string>
+    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_action_1">SUBUKAN ANG TRAVEL DISCOVERY</string>
+    <!--Action button for dismissing this prompt-->
+    <string name="travel_dialog_1_action_2">HINDI, SALAMAT NA LANG</string>
+
+    <!--dialog title for asking if users want to change default search engine-->
+    <string name="travel_dialog_2_title">Nag-enjoy sa Paggamit ng Travel Discovery?</string>
+    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_2_description">Puwede mong itakda ang Travel Discovery ng %1$s bilang iyong default na search engine para sa paglalakbay.</string>
+    <!--checkbox for not showing this dialog again-->
+    <string name="travel_dialog_2_checkbox">Huwag na akong tanungin ulit</string>
+    <!--Action button for setting Travel Discovery as default search engine-->
+    <string name="travel_dialog_2_action">ITAKDA BILANG DEFAULT</string>
 </resources>
