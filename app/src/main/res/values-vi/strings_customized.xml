@@ -1,3 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  </resources>
+    <!--Dialog-->
+    <!--dialog title for introducing Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_title">Khám phá thêm!</string>
+    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_1_description">Thám hiểm những chân trời mới, khách sạn, nhà nghỉ và nhiều hơn trong Khám phá Du lịch của %1$s</string>
+    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_action_1">HÃY THỬ KHÁM PHÁ DU LỊCH</string>
+    <!--Action button for dismissing this prompt-->
+    <string name="travel_dialog_1_action_2">KHÔNG, CẢM ƠN NHÉ</string>
+
+    <!--dialog title for asking if users want to change default search engine-->
+    <string name="travel_dialog_2_title">Bạn có thích sử dụng Khám phá Du lịch không?</string>
+    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_2_description">Bạn có thể cài đặt Khám phá Du lịch của %1$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
+    <!--checkbox for not showing this dialog again-->
+    <string name="travel_dialog_2_checkbox">Đừng hỏi tôi lần nữa</string>
+    <!--Action button for setting Travel Discovery as default search engine-->
+    <string name="travel_dialog_2_action">CÀI ĐẶT LÀ MẶC ĐỊNH</string>
+</resources>

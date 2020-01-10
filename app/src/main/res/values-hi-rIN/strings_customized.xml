@@ -1,3 +1,21 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-  </resources>
+    <!--Dialog-->
+    <!--dialog title for introducing Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_title">और अधिक खोजें!</string>
+    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_1_description">%1$s की ट्रैवल डिस्कवरी में जो चीज़ें आप करना चाहते हैं, आवास आदि खोजें.</string>
+    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_action_1">ट्रैवल डिस्कवरी आज़माएं</string>
+    <!--Action button for dismissing this prompt-->
+    <string name="travel_dialog_1_action_2">जी नहीं, धन्यवाद</string>
+
+    <!--dialog title for asking if users want to change default search engine-->
+    <string name="travel_dialog_2_title">ट्रैवल डिस्कवरी का उपयोग करके आनंद आ रहा है?</string>
+    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_2_description">आप यात्रा के लिए %1$s ट्रैवल डिस्कवरी को अपने डिफ़ॉल्ट खोज इंजन के रूप में सेट कर सकते हैं.</string>
+    <!--checkbox for not showing this dialog again-->
+    <string name="travel_dialog_2_checkbox">मुझसे दोबारा न पूछें</string>
+    <!--Action button for setting Travel Discovery as default search engine-->
+    <string name="travel_dialog_2_action">डिफ़ॉल्ट रूप में सेट करें</string>
+</resources>
