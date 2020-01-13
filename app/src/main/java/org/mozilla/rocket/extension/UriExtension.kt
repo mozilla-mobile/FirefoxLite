@@ -2,11 +2,12 @@ package org.mozilla.rocket.extension
 
 import androidx.collection.ArrayMap
 import java.net.URI
+import java.net.URLDecoder
 
 private val URI.paramMap: Map<String, String>
-    get() = if (query != null) {
-        ArrayMap<String, String>(1).apply {
-            query.split("&")
+    get() = if (rawQuery != null) {
+        ArrayMap<String, String>().apply {
+            rawQuery.split("&")
                     .map { it.split("=") }
                     .filter { it.size == 2 }
                     .forEach {
@@ -19,4 +20,4 @@ private val URI.paramMap: Map<String, String>
         emptyMap()
     }
 
-fun URI.getParam(key: String): String? = paramMap[key]
+fun URI.getParam(key: String): String = URLDecoder.decode(paramMap[key] ?: "", "UTF-8")
