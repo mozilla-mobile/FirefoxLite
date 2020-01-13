@@ -31,9 +31,9 @@ enum class DeepLinkType {
             isContentLink(uri) && DeepLinkConstants.PATH_GAME_ITEM == uri.path
 
         override fun addTasks(uri: URI) {
-            val url = uri.getParam("url") ?: ""
-            val feed = uri.getParam("feed") ?: ""
-            val source = uri.getParam("source") ?: ""
+            val url = uri.getParam("url")
+            val feed = uri.getParam("feed")
+            val source = uri.getParam("source")
 
             addTask(StartGameItemActivityTask(url, feed, source))
         }
@@ -52,9 +52,9 @@ enum class DeepLinkType {
             isContentLink(uri) && DeepLinkConstants.PATH_NEWS_ITEM == uri.path
 
         override fun addTasks(uri: URI) {
-            val url = uri.getParam("url") ?: ""
-            val feed = uri.getParam("feed") ?: ""
-            val source = uri.getParam("source") ?: ""
+            val url = uri.getParam("url")
+            val feed = uri.getParam("feed")
+            val source = uri.getParam("source")
 
             addTask(StartNewsItemActivityTask(url, feed, source))
         }
@@ -73,9 +73,9 @@ enum class DeepLinkType {
                 isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_ITEM == uri.path
 
         override fun addTasks(uri: URI) {
-            val url = uri.getParam("url") ?: ""
-            val feed = uri.getParam("feed") ?: ""
-            val source = uri.getParam("source") ?: ""
+            val url = uri.getParam("url")
+            val feed = uri.getParam("feed")
+            val source = uri.getParam("source")
 
             addTask(StartShoppingItemActivityTask(url, feed, source))
         }
@@ -94,9 +94,9 @@ enum class DeepLinkType {
                 isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL_ITEM == uri.path
 
         override fun addTasks(uri: URI) {
-            val url = uri.getParam("url") ?: ""
-            val feed = uri.getParam("feed") ?: ""
-            val source = uri.getParam("source") ?: ""
+            val url = uri.getParam("url")
+            val feed = uri.getParam("feed")
+            val source = uri.getParam("source")
 
             addTask(StartTravelItemActivityTask(url, feed, source))
         }
