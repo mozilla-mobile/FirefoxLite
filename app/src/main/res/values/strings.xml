@@ -583,11 +583,11 @@
 
     <string name="coupon_valid_description" translatable="false">Berlaku hingga %s</string>
    
-   <!-- Recommended news onboarding title and content. -->
+   <!-- Recommended news onboarding title and content. The %1$s here is a placeholder for "Learn more" which directs users to SUMO page with detail information about the feature. -->
    <string name="recommended_news_title">Recommended News For You</string>
    <string name="recommended_news_content">Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News->Settings. %1$s</string>
-   <!-- Recommended news choose language -->
-   <string name="recommended_news_preference_language">Choose Your Prefered\nNews Language</string>
+   <!-- Recommended news choose your preferred language -->
+   <string name="recommended_news_preference_language">Choose Your Preferred\nNews Language</string>
    <!-- Recommended news toggle title -->
    <string name="recommended_news_preference_toggle">Personalized news experience</string>
    <!-- Disable personalized experience for news. -->
@@ -966,13 +966,13 @@
     <!--dialog title for introducing Firefox Lite Travel Discovery-->
     <string name="travel_dialog_1_title">Discover More!</string>
     <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
-    <string name="travel_dialog_1_description">Explore things to do, accomodations, and more in %1$s Travel Discovery.</string>
-    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_description">Explore things to do, accommodations, and more in %1$s Travel Discovery.</string>
+    <!--Action button for trying Firefox Lite's new feature "Travel Discovery"-->
     <string name="travel_dialog_1_action_1">TRY TRAVEL DISCOVERY</string>
     <!--Action button for dismissing this prompt-->
     <string name="travel_dialog_1_action_2">NO, THANKS</string>
 
-    <!--dialog title for asking if users want to change default search engine-->
+    <!--dialog title for asking how users feel about "Travel Discovery". If users enjoy it, they can change it to default search engine-->
     <string name="travel_dialog_2_title">Enjoy Using Travel Discovery?</string>
     <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
     <string name="travel_dialog_2_description">You can set %1$s Travel Disovery as your default search engine for travel.</string>
