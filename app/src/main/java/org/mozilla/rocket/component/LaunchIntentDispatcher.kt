@@ -17,6 +17,8 @@ import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.widget.DefaultBrowserPreference
 import org.mozilla.rocket.deeplink.DeepLinkType
+import java.net.URI
+import java.net.URISyntaxException
 
 class LaunchIntentDispatcher {
 
@@ -130,13 +132,20 @@ class LaunchIntentDispatcher {
                 }
             }
 
-            intent.dataString?.let {
-                val deepLinkType = DeepLinkType.parse(it)
-                return if (deepLinkType != DeepLinkType.NOT_SUPPORT) {
-                    deepLinkType.execute(context)
-                    Action.HANDLED
-                } else {
-                    Action.NORMAL
+            val url = intent.dataString
+            if (!url.isNullOrEmpty()) {
+                try {
+                    val uri = URI(url)
+                    if (DeepLinkType.isDeepLink(uri)) {
+                        val deepLinkType = DeepLinkType.parse(url)
+                        if (deepLinkType != DeepLinkType.NOT_SUPPORT) {
+                            deepLinkType.execute(context)
+                        }
+                        return Action.HANDLED
+                    }
+                } catch (e: URISyntaxException) {
+                    e.printStackTrace()
+                    return Action.HANDLED
                 }
             }
 
