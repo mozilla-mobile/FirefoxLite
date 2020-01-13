@@ -163,6 +163,8 @@ enum class DeepLinkType {
         }
 
         private fun isContentLink(uri: URI) =
-            DeepLinkConstants.SCHEMA_ROCKET == uri.scheme && DeepLinkConstants.HOST_CONTENT == uri.host
+                isDeepLink(uri) && DeepLinkConstants.HOST_CONTENT == uri.host
+
+        fun isDeepLink(uri: URI) = DeepLinkConstants.SCHEMA_ROCKET == uri.scheme
     }
 }
