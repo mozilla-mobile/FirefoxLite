@@ -200,6 +200,8 @@
   <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Rikrik data\n- Téwakan layar bedas</string>
   <string name="share_app_dialog_btn_share">Bagikeun</string>
   <string name="share_app_promotion_text">Euy, cobaan panyungsi gancang tur hampang ti %3$s. %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">ANYARKEUN AYEUNA!</string>
+  <string name="update_app_dialog_btn_later">ENGKÉ</string>
   <string name="your_rights_content1">%1$s téh aplikasi bébas sarta sumber nembrak nu dijieun ku %2$s jeung kontributor séjénna.</string>
   <string name="your_rights_content2"><![CDATA["%1$s dijieunna pikeun anjeun kalayan dina pasaratan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" jeung lisénsi sumber nembrak nu séjén."]]></string>
   <string name="your_rights_content3"><![CDATA["Anjeun teu dibéré idin atawa lisénsi nanaon kana mérek dagang Mozilla Foundation atawa pihak mana ogé, kaasup ngaran atawa logo %3$s, %4$s, atawa %1$s. Émbaran leuwih jero bisa dipanggihan "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">di dieu</a>.]]></string>
@@ -348,6 +350,7 @@
   <string name="onboarding_2_content_services_news_shopping_games">Toél pikeun maca warta anu keur sabiwir hiji, nyiar harga kortingan atawa maén kaulinan gratis panghadéna pikeun kalangenan!</string>
   <string name="onboarding_2_content_services_news_games">Toél pikeun maca warta anu keur sabiwir hiji atawa maén kaulinan gratis panghadéna pikeun kalangenan!</string>
   <string name="onboarding_2_content_services_games">Toél pikeun maén kaulinan gratis panghadéna pikeun kalangenan!</string>
+  <string name="onboarding_2_content_services_news_travel">Toél pikeun maca warta anu keur sabiwir hiji, ngararancang pelesir jeung lianna!</string>
   <string name="onboarding_2_smart_shopping_search_title">Paluruh Balanja Pinter</string>
   <string name="onboarding_2_smart_shopping_search_description">Ngabandingkeun harga di unggal toko onlén jadi gampang pisan, cobaan ayeuna!</string>
   <string name="home_search_bar_text">Paluruh…</string>
@@ -357,6 +360,7 @@
   <string name="content_home_context_menu_share_link">Bagikeun tutumbu</string>
   <string name="content_home_error_message">Euleuh!\nAya nu salah</string>
   <string name="private_home_title">Langlangan Nyamuni salengkepna</string>
+  <string name="private_home_description_1">Kiwari anjeun bisa ngalanglang bari nyamuni, tan laratan, tan rekaman kecap sandi, sarta moal bisa kapapay ku nu séjén anu maké ieu paranti.\n\nLanglangan Pribadi Tingkat Lanjut samalah bisa %1$s ku nu ngiklan jeung raramatloka, anu ku kalolobaan mode pribadi nu séjén mah teu bisa.</string>
   <string name="private_home_description_2"><![CDATA["Kiwari anjeun bisa ngalanglang bari nyamuni, tan laratan, tan rekaman kecap sandi, sarta moal bisa kapapay ku nu séjén anu maké ieu paranti.\n\nLanglangan Pribadi Tingkat Lanjut samalah bisa "<font xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" color="white">nyegah anjeun dilacak</font>" ku pangiklan jeung raramatloka, anu ku kalolobaan mode pribadi nu séjén mah teu bisa."]]></string>
   <string name="msrp_logoman_message">Meunangkeun %1$s</string>
   <string name="msrp_home_hint">Cobaan Balanja, Warta, Kaulinan unggal poé pikeun meunang %1$s</string>
@@ -422,4 +426,20 @@
   <string name="msrp_reward_challenge_error">Euleuh! Aya nu salah</string>
   <string name="msrp_activitykilled_snackbar_button">TEBUS</string>
   <string name="msrp_activitykilled_snackbar_body">Anjeun meunang pocer balanja!</string>
+  <string name="travel_vertical_title">Nyaba</string>
+  <string name="travel_vertical_category_1">Ngalanglang</string>
+  <string name="travel_destination_subcategory_1">Nyaba murah</string>
+  <string name="travel_find_destination_placeholder_1">Coba “Bali”…</string>
+  <string name="travel_content_ig_link">#%1$s dina Instagram</string>
+  <string name="travel_content_wiki_source_name">Wikipédia</string>
+  <string name="travel_hotel_detail_1">Wi-Fi Gratis</string>
+  <string name="travel_hotel_detail_2">Henteu butuh kartu kiridit</string>
+  <string name="travel_hotel_detail_3">Bayar pas asup</string>
+  <string name="travel_hotel_price_from">Ti</string>
+  <string name="travel_empty_state_text">“Can kungsi kamamana, tapi aya dina daptar jugjugeun kami.”</string>
+  <string name="travel_snack_bar_button">TÉMBONGKEUN</string>
+  <string name="travel_onboarding_save_title">Resep %1$s?</string>
+  <string name="travel_onboarding_save_button">HEUG</string>
+  <string name="travel_find_destination_placeholder_2">Asupkeun jugjugeun</string>
+  <string name="travel_search_engine_1">Tingali hasil dina %1$s</string>
 </resources>
