@@ -15,6 +15,7 @@ import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
+import org.mozilla.rocket.download.SingleLiveEvent
 
 class NewsSettingsViewModel(
     private val loadNewsSettings: LoadNewsSettingsUseCase,
@@ -30,6 +31,8 @@ class NewsSettingsViewModel(
     private val _uiModel = MutableLiveData<NewsSettingsUiModel>()
     val uiModel: LiveData<NewsSettingsUiModel>
         get() = _uiModel
+
+    val languageOnboardingDone = SingleLiveEvent<Unit>()
 
     init {
         getNewsSettings()
@@ -48,6 +51,11 @@ class NewsSettingsViewModel(
         withContext(Dispatchers.Main) {
             emitUiModel(preferenceLanguage, userPreferenceCategories, newsLanguages)
         }
+    }
+
+    fun languageOnboardingSelected(language: NewsLanguage) {
+        updateUserPreferenceLanguage(language)
+        languageOnboardingDone.call()
     }
 
     private fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {

@@ -64,6 +64,20 @@ class NewsSettingsRepository(
 
     fun getDefaultCategory() = localDataSource.getDefaultCategory()
 
+    fun shouldEnablePersonalizedNews() = remoteDataSource.shouldEnablePersonalizedNews()
+
+    fun shouldUserEnabledPersonalizedNews() = localDataSource.shouldUserEnabledPersonalizedNews()
+
+    fun setUserEnabledPersonalizedNews(enable: Boolean) = localDataSource.setUserEnabledPersonalizedNews(enable)
+
+    fun shouldShowPersonalizedNewsOnboarding() = localDataSource.shouldShowPersonalizedNewsOnboarding()
+
+    fun setPersonalizedNewsOnboardingHasShown() = localDataSource.setPersonalizedNewsOnboardingHasShown()
+
+    fun shouldShowNewsLanguageSettingPage() = localDataSource.shouldShowNewsLanguageSettingPage()
+
+    fun setNewsLanguageSettingPageState(enable: Boolean) = localDataSource.setNewsLanguageSettingPageState(enable)
+
     private suspend fun getCategoriesByLanguage(language: String): Result<List<NewsCategory>> {
         val remoteCategoriesResult = remoteDataSource.getSupportCategories(language)
         if (remoteCategoriesResult is Result.Success && remoteCategoriesResult.isNotEmpty) {

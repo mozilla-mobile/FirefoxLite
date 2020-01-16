@@ -10,10 +10,14 @@ import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
+import org.mozilla.rocket.content.news.data.dailyhunt.DailyHuntProvider
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 
-class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : NewsSettingsDataSource {
+class NewsPointSettingsRemoteDataSource(
+    private val newsProvider: NewsProvider?,
+    private val dailyHuntProvider: DailyHuntProvider?
+) : NewsSettingsDataSource {
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext safeApiCall(
@@ -81,6 +85,32 @@ class NewsPointSettingsRemoteDataSource(private val newsProvider: NewsProvider?)
 
     override fun shouldEnableNewsSettings(): Boolean {
         throw UnsupportedOperationException("Can't get menu setting from server")
+    }
+
+    override fun shouldEnablePersonalizedNews() = dailyHuntProvider?.isEnableFromRemote ?: false
+
+    override fun shouldUserEnabledPersonalizedNews(): Boolean {
+        throw UnsupportedOperationException("Can't get personalized news user setting from server")
+    }
+
+    override fun setUserEnabledPersonalizedNews(enable: Boolean) {
+        throw UnsupportedOperationException("Can't set personalized news user setting to server")
+    }
+
+    override fun shouldShowPersonalizedNewsOnboarding(): Boolean {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
+    override fun setPersonalizedNewsOnboardingHasShown() {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
+    override fun shouldShowNewsLanguageSettingPage(): Boolean {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
+    override fun setNewsLanguageSettingPageState(enable: Boolean) {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
     }
 
     private fun getLanguageApiEndpoint(): String {

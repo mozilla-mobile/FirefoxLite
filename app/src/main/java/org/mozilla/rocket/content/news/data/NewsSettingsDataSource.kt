@@ -14,4 +14,11 @@ interface NewsSettingsDataSource {
     fun getDefaultLanguage(): NewsLanguage
     fun getDefaultCategory(): NewsCategory
     fun shouldEnableNewsSettings(): Boolean
+    fun shouldEnablePersonalizedNews(): Boolean
+    fun shouldUserEnabledPersonalizedNews(): Boolean
+    fun setUserEnabledPersonalizedNews(enable: Boolean)
+    fun shouldShowPersonalizedNewsOnboarding(): Boolean
+    fun setPersonalizedNewsOnboardingHasShown()
+    fun shouldShowNewsLanguageSettingPage(): Boolean
+    fun setNewsLanguageSettingPageState(enable: Boolean)
 }

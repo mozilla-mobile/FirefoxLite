@@ -21,10 +21,6 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
 
     private var cachedLanguage: NewsLanguage? = null
 
-    init {
-        getNewsSettings()
-    }
-
     fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {
         val result = loadNewsSettingsUseCase()
         if (result is Result.Success) {

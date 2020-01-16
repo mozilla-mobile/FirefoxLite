@@ -73,6 +73,32 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
         throw UnsupportedOperationException("Can't get menu setting from server")
     }
 
+    override fun shouldEnablePersonalizedNews() = false
+
+    override fun shouldUserEnabledPersonalizedNews(): Boolean {
+        throw UnsupportedOperationException("Can't get personalized news user setting from server")
+    }
+
+    override fun setUserEnabledPersonalizedNews(enable: Boolean) {
+        throw UnsupportedOperationException("Can't set personalized news user setting to server")
+    }
+
+    override fun shouldShowPersonalizedNewsOnboarding(): Boolean {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
+    override fun setPersonalizedNewsOnboardingHasShown() {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
+    override fun shouldShowNewsLanguageSettingPage(): Boolean {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
+    override fun setNewsLanguageSettingPageState(enable: Boolean) {
+        throw UnsupportedOperationException("Can't get onboarding setting from server")
+    }
+
     private fun getCategoryApiEndpoint(): String {
         return newsProvider?.categoriesUrl ?: DEFAULT_CATEGORY_LIST_URL
     }
