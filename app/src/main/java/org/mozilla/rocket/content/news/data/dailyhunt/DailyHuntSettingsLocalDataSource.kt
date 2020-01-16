@@ -89,11 +89,27 @@ class DailyHuntSettingsLocalDataSource(private val appContext: Context) : NewsSe
         ).apply()
     }
 
-    override suspend fun getUserPreferenceCategories(language: String): Result<List<NewsCategory>> {
-        return Error(Exception("Not allow to customize category preferences"))
+    override suspend fun getUserPreferenceCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
+        return@withContext try {
+            val jsonString = preference
+                .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
+            val preferenceCategories = if (jsonString.isEmpty()) {
+                emptyList()
+            } else {
+                NewsCategory.fromJson(jsonString)
+            }
+            Success(preferenceCategories)
+        } catch (e: Exception) {
+            Error(e)
+        }
     }
 
-    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = Unit
+    override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
+        preference.edit().putString(
+            KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
+            userPreferenceCategories.toJson().toString()
+        ).apply()
+    }
 
     override fun getDefaultLanguage() = NewsLanguage("en", "en", "English")
 
@@ -134,6 +150,7 @@ class DailyHuntSettingsLocalDataSource(private val appContext: Context) : NewsSe
         private const val KEY_JSON_STRING_SUPPORT_LANGUAGES = "dailyhunt_support_lang"
         private const val KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE = "dailyhunt_user_pref_lang"
         private const val KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX = "dailyhunt_support_cat_"
+        private const val KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX = "dailyhunt_user_pref_cat_"
         private const val KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS = "is_user_enabled_personalized_news"
         private const val KEY_BOOL_PERSONALIZED_NEWS_ONBOARDING = "personalized_news_onboarding"
         private const val KEY_BOOL_NEWS_LANGUAGE_SETTING_PAGE_STATE = "news_language_setting_page_state"

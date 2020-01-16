@@ -94,10 +94,10 @@ class NewsSettingsRepository(
 
         val preferenceCategoriesResult = localDataSource.getUserPreferenceCategories(language)
         if (preferenceCategoriesResult is Result.Success && preferenceCategoriesResult.isNotEmpty) {
-            val selectedCategories = preferenceCategoriesResult.data.joinToString(",")
+            val selectedCategories = preferenceCategoriesResult.data.joinToString(",") { it.name }
             if (selectedCategories.isNotEmpty()) {
                 supportCategories.forEach {
-                    it.isSelected = selectedCategories.contains(it.categoryId)
+                    it.isSelected = selectedCategories.contains(it.name)
                 }
             }
         }

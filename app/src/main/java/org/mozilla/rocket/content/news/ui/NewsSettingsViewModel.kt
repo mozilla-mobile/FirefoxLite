@@ -13,15 +13,21 @@ import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
+import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
+import org.mozilla.rocket.content.news.domain.ShouldUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class NewsSettingsViewModel(
     private val loadNewsSettings: LoadNewsSettingsUseCase,
     private val loadNewsLanguages: LoadNewsLanguagesUseCase,
     private val setUserPreferenceLanguage: SetUserPreferenceLanguageUseCase,
-    private val setUserPreferenceCategories: SetUserPreferenceCategoriesUseCase
+    private val setUserPreferenceCategories: SetUserPreferenceCategoriesUseCase,
+    private val shouldEnablePersonalizedNews: ShouldEnablePersonalizedNewsUseCase,
+    private val shouldUserEnabledPersonalizedNews: ShouldUserEnabledPersonalizedNewsUseCase,
+    private val setUserEnabledPersonalizedNews: SetUserEnabledPersonalizedNewsUseCase
 ) : ViewModel() {
 
     private lateinit var preferenceLanguage: NewsLanguage
@@ -32,7 +38,8 @@ class NewsSettingsViewModel(
     val uiModel: LiveData<NewsSettingsUiModel>
         get() = _uiModel
 
-    val languageOnboardingDone = SingleLiveEvent<Unit>()
+    val showPersonalizedNewsSetting = SingleLiveEvent<Boolean>()
+    val personalizedNewsSettingChanged = SingleLiveEvent<Unit>()
 
     init {
         getNewsSettings()
@@ -53,9 +60,9 @@ class NewsSettingsViewModel(
         }
     }
 
-    fun languageOnboardingSelected(language: NewsLanguage) {
-        updateUserPreferenceLanguage(language)
-        languageOnboardingDone.call()
+    fun togglePersonalizedNewsSwitch(enable: Boolean) {
+        setUserEnabledPersonalizedNews(enable)
+        personalizedNewsSettingChanged.call()
     }
 
     private fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {
@@ -71,6 +78,12 @@ class NewsSettingsViewModel(
                     categories = newsSettings.newsCategories
                     newsLanguages = supportLanguages
                     emitUiModel(preferenceLanguage, categories, newsLanguages)
+
+                    // To avoid showing strange preference relayout animation
+                    // Show personalized news preference after the news categories are loaded
+                    if (shouldEnablePersonalizedNews()) {
+                        showPersonalizedNewsSetting.value = shouldUserEnabledPersonalizedNews()
+                    }
                 }
             }
         }

@@ -1,22 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:key="root_preferences_news">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="root_preferences_news">
     <!-- Empty default: we use an empty string to indicate "system default" language being selected -->
     <!--suppress AndroidDomInspection -->
 
     <org.mozilla.rocket.content.news.ui.NewsLanguagePreference
-            android:key="pref_dummy_s_news_lang"
-            android:title="@string/news_language_dialog_title"
-            app:iconSpaceReserved="false"
-    />
+        android:key="pref_dummy_s_news_lang"
+        android:title="@string/news_language_dialog_title"
+        app:iconSpaceReserved="false" />
 
     <org.mozilla.rocket.content.news.ui.NewsCategoryPreference
-            android:key="pref_dummy_s_news_Cat"
-            android:title="@string/news_category_title"/>
+        android:key="pref_dummy_s_news_Cat"
+        android:title="@string/news_category_title" />
+
+    <org.mozilla.rocket.content.news.ui.PersonalizedNewsPreference
+        android:key="pref_dummy_s_personalized_news"
+        android:persistent="false"
+        android:summary="@string/preference_learn_more"
+        android:title="@string/recommended_news_preference_toggle"
+        app:iconSpaceReserved="false" />
 
 </PreferenceScreen>
