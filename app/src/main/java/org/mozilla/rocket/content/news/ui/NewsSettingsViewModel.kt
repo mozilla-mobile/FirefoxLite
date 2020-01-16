@@ -13,6 +13,7 @@ import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.content.news.domain.SetNewsLanguageSettingPageStateUseCase
 import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
@@ -27,7 +28,8 @@ class NewsSettingsViewModel(
     private val setUserPreferenceCategories: SetUserPreferenceCategoriesUseCase,
     private val shouldEnablePersonalizedNews: ShouldEnablePersonalizedNewsUseCase,
     private val shouldUserEnabledPersonalizedNews: ShouldUserEnabledPersonalizedNewsUseCase,
-    private val setUserEnabledPersonalizedNews: SetUserEnabledPersonalizedNewsUseCase
+    private val setUserEnabledPersonalizedNews: SetUserEnabledPersonalizedNewsUseCase,
+    private val setNewsLanguageSettingPageState: SetNewsLanguageSettingPageStateUseCase
 ) : ViewModel() {
 
     private lateinit var preferenceLanguage: NewsLanguage
@@ -62,6 +64,7 @@ class NewsSettingsViewModel(
 
     fun togglePersonalizedNewsSwitch(enable: Boolean) {
         setUserEnabledPersonalizedNews(enable)
+        setNewsLanguageSettingPageState(true)
         personalizedNewsSettingChanged.call()
     }
 

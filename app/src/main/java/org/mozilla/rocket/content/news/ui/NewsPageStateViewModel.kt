@@ -1,23 +1,33 @@
 package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.ViewModel
+import org.mozilla.rocket.content.news.domain.SetNewsLanguageSettingPageStateUseCase
 import org.mozilla.rocket.content.news.domain.SetPersonalizedNewsOnboardingHasShownUseCase
 import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseCase
+import org.mozilla.rocket.content.news.domain.ShouldShowNewsLanguageSettingPageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowPersonalizedNewsOnboardingUseCase
 import org.mozilla.rocket.download.SingleLiveEvent
 
 class NewsPageStateViewModel(
     private val shouldShowPersonalizedNewsOnboarding: ShouldShowPersonalizedNewsOnboardingUseCase,
     private val setPersonalizedNewsOnboardingHasShown: SetPersonalizedNewsOnboardingHasShownUseCase,
+    private val shouldShowNewsLanguageSettingPage: ShouldShowNewsLanguageSettingPageUseCase,
+    private val setNewsLanguageSettingPageState: SetNewsLanguageSettingPageStateUseCase,
     private val setUserEnabledPersonalizedNews: SetUserEnabledPersonalizedNewsUseCase
 ) : ViewModel() {
     val showContent = SingleLiveEvent<Page>()
 
     fun checkPageToShow() {
-        showContent.value = if (shouldShowPersonalizedNewsOnboarding()) {
-            Page.PersonalizationOnboarding
-        } else {
-            Page.NewsContent
+        showContent.value = when {
+            shouldShowPersonalizedNewsOnboarding() -> {
+                Page.PersonalizationOnboarding
+            }
+            shouldShowNewsLanguageSettingPage() -> {
+                Page.LanguageSetting
+            }
+            else -> {
+                Page.NewsContent
+            }
         }
     }
 
@@ -28,6 +38,7 @@ class NewsPageStateViewModel(
     }
 
     fun onLanguageSelected() {
+        setNewsLanguageSettingPageState(false)
         showContent.value = Page.NewsContent
     }
 
