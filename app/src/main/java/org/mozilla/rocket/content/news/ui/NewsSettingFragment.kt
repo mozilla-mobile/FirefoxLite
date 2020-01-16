@@ -57,16 +57,22 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
             personalizedNewsPreference?.isChecked = it
         })
         newsSettingsViewModel.personalizedNewsSettingChanged.observe(this, Observer {
-            activity?.finish()
-            startActivity(NewsActivity.getStartIntent(context!!).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            context?.let {
+                startActivity(NewsActivity.getStartIntent(it).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+            }
         })
     }
 
     override fun onPause() {
         super.onPause()
         categoryPreference?.NewsCatSettingCatAdapter()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        newsSettingsViewModel.onLeaveSettingsPage()
     }
 
     override fun onCreatePreferences(p0: Bundle?, p1: String?) {

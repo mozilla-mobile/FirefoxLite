@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.CharacterValidator
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
@@ -20,6 +21,7 @@ import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.ShouldUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.download.SingleLiveEvent
+import java.util.Locale
 
 class NewsSettingsViewModel(
     private val loadNewsSettings: LoadNewsSettingsUseCase,
@@ -66,6 +68,14 @@ class NewsSettingsViewModel(
         setUserEnabledPersonalizedNews(enable)
         setNewsLanguageSettingPageState(true)
         personalizedNewsSettingChanged.call()
+    }
+
+    fun onLeaveSettingsPage() {
+        val language = uiModel.value?.preferenceLanguage?.name?.toLowerCase(Locale.getDefault()) ?: ""
+        val categories = uiModel.value?.categories?.filter { it.isSelected }
+            ?.joinToString(",") { it.order.toString() } ?: ""
+        val enablePersonalization = shouldUserEnabledPersonalizedNews()
+        TelemetryWrapper.changeNewsSettings(language, categories, enablePersonalization)
     }
 
     private fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {

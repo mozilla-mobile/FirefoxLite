@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.news.ui
 
 import androidx.lifecycle.ViewModel
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.news.domain.SetNewsLanguageSettingPageStateUseCase
 import org.mozilla.rocket.content.news.domain.SetPersonalizedNewsOnboardingHasShownUseCase
 import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseCase
@@ -20,6 +21,7 @@ class NewsPageStateViewModel(
     fun checkPageToShow() {
         showContent.value = when {
             shouldShowPersonalizedNewsOnboarding() -> {
+                TelemetryWrapper.showVerticalOnboarding(TelemetryWrapper.Extra_Value.LIFESTYLE)
                 Page.PersonalizationOnboarding
             }
             shouldShowNewsLanguageSettingPage() -> {
@@ -35,11 +37,13 @@ class NewsPageStateViewModel(
         setUserEnabledPersonalizedNews(enable)
         setPersonalizedNewsOnboardingHasShown()
         showContent.value = Page.LanguageSetting
+        TelemetryWrapper.changePersonalizationInOnboarding(TelemetryWrapper.Extra_Value.LIFESTYLE, enable)
     }
 
-    fun onLanguageSelected() {
+    fun onLanguageSelected(language: String) {
         setNewsLanguageSettingPageState(false)
         showContent.value = Page.NewsContent
+        TelemetryWrapper.changeLanguageInOnboarding(TelemetryWrapper.Extra_Value.LIFESTYLE, language)
     }
 
     sealed class Page {

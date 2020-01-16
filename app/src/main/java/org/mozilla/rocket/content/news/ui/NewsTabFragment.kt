@@ -72,10 +72,13 @@ class NewsTabFragment : Fragment() {
                     }
                 }
             })
+            newsTabViewModel.launchSettings.observe(viewLifecycleOwner, Observer {
+                launchSettings()
+            })
         }
 
         news_setting.setOnClickListener {
-            setting()
+            newsTabViewModel.onClickSettings()
         }
 
         news_refresh_button.setOnClickListener {
@@ -97,7 +100,7 @@ class NewsTabFragment : Fragment() {
         }
     }
 
-    fun setting() {
+    private fun launchSettings() {
         val intent = Intent().run {
             putExtra(EXTRA_CONFIG_NEWS, "config")
             setClass(context!!, SettingsActivity::class.java)
