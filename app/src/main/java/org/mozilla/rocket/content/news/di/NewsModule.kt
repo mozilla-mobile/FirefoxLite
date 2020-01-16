@@ -9,11 +9,13 @@ import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.domain.LoadRawNewsLanguagesUseCase
+import org.mozilla.rocket.content.news.domain.SetNewsLanguageSettingPageStateUseCase
 import org.mozilla.rocket.content.news.domain.SetPersonalizedNewsOnboardingHasShownUseCase
 import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
+import org.mozilla.rocket.content.news.domain.ShouldShowNewsLanguageSettingPageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowPersonalizedNewsOnboardingUseCase
 import org.mozilla.rocket.content.news.domain.ShouldUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.ui.NewsLanguageSettingViewModel
@@ -83,6 +85,16 @@ object NewsModule {
 
     @JvmStatic
     @Provides
+    fun provideShouldShowNewsLanguageSettingPageUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): ShouldShowNewsLanguageSettingPageUseCase =
+        ShouldShowNewsLanguageSettingPageUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
+
+    @JvmStatic
+    @Provides
+    fun provideSetNewsLanguageSettingPageStateUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): SetNewsLanguageSettingPageStateUseCase =
+        SetNewsLanguageSettingPageStateUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
+
+    @JvmStatic
+    @Provides
     fun provideNewsViewModel(loadNews: LoadNewsUseCase): NewsViewModel =
         NewsViewModel(loadNews)
 
@@ -100,7 +112,8 @@ object NewsModule {
         setUserPreferenceCategoriesUseCase: SetUserPreferenceCategoriesUseCase,
         shouldEnablePersonalizedNewsUseCase: ShouldEnablePersonalizedNewsUseCase,
         shouldUserEnabledPersonalizedNewsUseCase: ShouldUserEnabledPersonalizedNewsUseCase,
-        setUserEnabledPersonalizedNewsUseCase: SetUserEnabledPersonalizedNewsUseCase
+        setUserEnabledPersonalizedNewsUseCase: SetUserEnabledPersonalizedNewsUseCase,
+        setNewsLanguageSettingPageStateUseCase: SetNewsLanguageSettingPageStateUseCase
     ): NewsSettingsViewModel =
         NewsSettingsViewModel(
             loadNewsSettingsUseCase,
@@ -109,7 +122,8 @@ object NewsModule {
             setUserPreferenceCategoriesUseCase,
             shouldEnablePersonalizedNewsUseCase,
             shouldUserEnabledPersonalizedNewsUseCase,
-            setUserEnabledPersonalizedNewsUseCase
+            setUserEnabledPersonalizedNewsUseCase,
+            setNewsLanguageSettingPageStateUseCase
         )
 
     @JvmStatic
@@ -117,11 +131,15 @@ object NewsModule {
     fun provideNewsPageStateViewModel(
         shouldShowPersonalizedNewsOnboardingUseCase: ShouldShowPersonalizedNewsOnboardingUseCase,
         setPersonalizedNewsOnboardingHasShownUseCase: SetPersonalizedNewsOnboardingHasShownUseCase,
+        shouldShowNewsLanguageSettingPageUseCase: ShouldShowNewsLanguageSettingPageUseCase,
+        setNewsLanguageSettingPageStateUseCase: SetNewsLanguageSettingPageStateUseCase,
         setUserEnabledPersonalizedNewsUseCase: SetUserEnabledPersonalizedNewsUseCase
     ): NewsPageStateViewModel =
         NewsPageStateViewModel(
             shouldShowPersonalizedNewsOnboardingUseCase,
             setPersonalizedNewsOnboardingHasShownUseCase,
+            shouldShowNewsLanguageSettingPageUseCase,
+            setNewsLanguageSettingPageStateUseCase,
             setUserEnabledPersonalizedNewsUseCase
         )
 
