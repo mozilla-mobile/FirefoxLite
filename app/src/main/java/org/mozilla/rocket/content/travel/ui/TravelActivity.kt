@@ -22,6 +22,7 @@ import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Companion.TYPE_EXPLORE
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab
 import org.mozilla.rocket.content.travel.ui.adapter.TravelTabsAdapter.Tab.Explore
+import org.mozilla.rocket.extension.isLaunchedFromHistory
 import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
 
@@ -59,7 +60,9 @@ class TravelActivity : FragmentActivity() {
         initToolBar()
 
         intent.extras?.let {
-            parseDeepLink(it)
+            if (!isLaunchedFromHistory()) {
+                parseDeepLink(it)
+            }
         }
     }
 

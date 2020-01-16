@@ -14,6 +14,7 @@ import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.extension.isLaunchedFromHistory
 import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
 
@@ -36,14 +37,21 @@ class NewsActivity : AppCompatActivity() {
                 .commitNow()
 
             intent.extras?.let {
-                parseDeepLink(it)
+                if (!isLaunchedFromHistory()) {
+                    parseDeepLink(it)
+                }
             }
         }
     }
 
     private fun parseDeepLink(bundle: Bundle): Boolean {
+        if (intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY == Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) {
+            return false
+        }
         when (bundle.getString(EXTRA_DEEP_LINK) ?: return false) {
-            DEEP_LINK_NEWS_ITEM_PAGE -> openNewsItemPageFromDeepLink(bundle.getParcelable(EXTRA_NEWS_ITEM_DATA)!!)
+            DEEP_LINK_NEWS_ITEM_PAGE -> {
+                openNewsItemPageFromDeepLink(bundle.getParcelable(EXTRA_NEWS_ITEM_DATA)!!)
+            }
         }
 
         return true

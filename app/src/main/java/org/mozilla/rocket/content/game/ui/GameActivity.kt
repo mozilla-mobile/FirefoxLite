@@ -23,6 +23,7 @@ import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.GameTabsAdapter
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.extension.isLaunchedFromHistory
 import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
 
@@ -48,7 +49,9 @@ class GameActivity : FragmentActivity() {
         initBroadcastReceivers()
 
         intent.extras?.let {
-            parseDeepLink(it)
+            if (!isLaunchedFromHistory()) {
+                parseDeepLink(it)
+            }
         }
     }
 

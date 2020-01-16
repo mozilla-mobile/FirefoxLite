@@ -18,6 +18,7 @@ import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ShoppingTabsAdapter
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.extension.isLaunchedFromHistory
 import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
 
@@ -44,7 +45,9 @@ class ShoppingActivity : FragmentActivity() {
         observeRefreshAction()
 
         intent.extras?.let {
-            parseDeepLink(it)
+            if (!isLaunchedFromHistory()) {
+                parseDeepLink(it)
+            }
         }
     }
 
