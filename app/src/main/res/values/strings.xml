@@ -583,8 +583,10 @@
 
     <string name="coupon_valid_description" translatable="false">Berlaku hingga %s</string>
    
-   <!-- Recommended news onboarding title and content. The %1$s here is a placeholder for "Learn more" which directs users to SUMO page with detail information about the feature. -->
+   <!-- Recommended news onboarding title. -->
    <string name="recommended_news_title">Recommended News For You</string>
+   <!-- Recommended news onboarding content.
+   The %1$s here is a placeholder for "Learn more" which directs users to SUMO page with detail information about the feature. -->
    <string name="recommended_news_content">Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News->Settings. %1$s</string>
    <!-- Recommended news choose your preferred language -->
    <string name="recommended_news_preference_language">Choose Your Preferred\nNews Language</string>
