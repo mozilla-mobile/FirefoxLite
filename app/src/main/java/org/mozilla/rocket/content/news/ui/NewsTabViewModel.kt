@@ -7,17 +7,21 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettings
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
+import org.mozilla.rocket.download.SingleLiveEvent
 
 class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseCase) : ViewModel() {
 
     private val _uiModel = MutableLiveData<NewsTabUiModel>()
     val uiModel: LiveData<NewsTabUiModel>
         get() = _uiModel
+
+    val launchSettings = SingleLiveEvent<Unit>()
 
     private var cachedLanguage: NewsLanguage? = null
 
@@ -36,6 +40,11 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
             )
             getNewsSettings()
         }
+    }
+
+    fun onClickSettings() {
+        launchSettings.call()
+        TelemetryWrapper.clickNewsSettings()
     }
 
     private fun emitUiModel(newsSettings: NewsSettings) {

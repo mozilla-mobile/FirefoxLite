@@ -250,6 +250,9 @@ object TelemetryWrapper {
         internal const val DETAIL_PAGE = "detail_page"
         internal const val TRAVEL_SEARCH_RESULT = "travel_search_result"
         internal const val SET_DEFAULT_TRAVEL_SEARCH = "setdefault_travel_search"
+        internal const val PERSONALIZATION = "personalization"
+        internal const val LANGUAGE = "language"
+        internal const val LIFESTYLE = "lifestyle"
     }
 
     internal object Extra {
@@ -298,6 +301,8 @@ object TelemetryWrapper {
         const val BACKGROUND = "background"
         const val CHALLENGE_NAME = "challenge_name"
         const val BUTTON_TEXT = "button_text"
+        const val PERSONALIZATION = "personalization"
+        const val LANGUAGE = "language"
     }
 
     object Extra_Value {
@@ -2842,6 +2847,21 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Show Vertical Onboarding",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.ONBOARDING,
+            value = Value.VERTICAL,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
+            ])
+    fun showVerticalOnboarding(vertical: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.ONBOARDING, Value.VERTICAL)
+                .extra(Extra.VERTICAL, vertical)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Start Tab Swipe Process",
             category = Category.ACTION,
             method = Method.START,
@@ -3038,6 +3058,80 @@ object TelemetryWrapper {
             .extra(Extra.VERSION_ID, versionId)
             .extra(Extra.ACTION, action)
             .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Change Personalization in Onboarding",
+            category = Category.ACTION,
+            method = Method.CHANGE,
+            `object` = Object.ONBOARDING,
+            value = Value.PERSONALIZATION,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.PERSONALIZATION, value = "true,false")
+            ])
+    @JvmStatic
+    fun changePersonalizationInOnboarding(vertical: String, enablePersonalization: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.ONBOARDING, Value.PERSONALIZATION)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.PERSONALIZATION, enablePersonalization.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Change Language in Onboarding",
+            category = Category.ACTION,
+            method = Method.CHANGE,
+            `object` = Object.ONBOARDING,
+            value = Value.LANGUAGE,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.LANGUAGE, value = "language")
+            ])
+    @JvmStatic
+    fun changeLanguageInOnboarding(vertical: String, language: String) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.ONBOARDING, Value.LANGUAGE)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.LANGUAGE, language)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click News Settings",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.SETTING,
+            value = Value.LIFESTYLE,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = Extra_Value.LIFESTYLE)
+            ])
+    @JvmStatic
+    fun clickNewsSettings() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.LIFESTYLE)
+                .extra(Extra.VERTICAL, Extra_Value.LIFESTYLE)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Change News Settings",
+            category = Category.ACTION,
+            method = Method.CHANGE,
+            `object` = Object.SETTING,
+            value = Value.LIFESTYLE,
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = Extra_Value.LIFESTYLE),
+                TelemetryExtra(name = Extra.LANGUAGE, value = "language"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "[category list]"),
+                TelemetryExtra(name = Extra.PERSONALIZATION, value = "true,false")
+            ])
+    @JvmStatic
+    fun changeNewsSettings(language: String, category: String, enablePersonalization: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.LIFESTYLE)
+                .extra(Extra.VERTICAL, Extra_Value.LIFESTYLE)
+                .extra(Extra.LANGUAGE, language)
+                .extra(Extra.CATEGORY, "[$category]")
+                .extra(Extra.PERSONALIZATION, enablePersonalization.toString())
+                .queue()
     }
 
     @TelemetryDoc(

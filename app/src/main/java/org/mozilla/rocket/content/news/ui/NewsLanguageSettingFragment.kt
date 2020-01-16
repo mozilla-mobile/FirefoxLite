@@ -17,6 +17,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.GridLayoutItemDecoration
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import java.util.Locale
 import javax.inject.Inject
 
 class NewsLanguageSettingFragment : Fragment(), BackKeyHandleable {
@@ -57,7 +58,7 @@ class NewsLanguageSettingFragment : Fragment(), BackKeyHandleable {
     }
 
     override fun onBackPressed(): Boolean {
-        newsPageStateViewModel.onLanguageSelected()
+        newsPageStateViewModel.onLanguageSelected("")
         return true
     }
 
@@ -125,7 +126,7 @@ class NewsLanguageSettingFragment : Fragment(), BackKeyHandleable {
             vh.button.text = languages[pos].name
             vh.button.setOnClickListener {
                 newsLanguageSettingViewModel.onLanguageSelected(languages[pos])
-                newsPageStateViewModel.onLanguageSelected()
+                newsPageStateViewModel.onLanguageSelected(languages[pos].name.toLowerCase(Locale.getDefault()))
             }
         }
 
