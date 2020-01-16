@@ -1,7 +1,6 @@
 package org.mozilla.rocket.content.news.data.newspoint
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.text.TextUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -14,13 +13,22 @@ import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
 import org.mozilla.rocket.content.news.data.toJson
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
-class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
+class NewsPointSettingsLocalDataSource(private val appContext: Context) : NewsSettingsDataSource {
+
+    private val preference by lazy {
+        StrictModeViolation.tempGrant({ builder ->
+            builder.permitDiskReads()
+        }, {
+            appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        })
+    }
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> = withContext(Dispatchers.IO) {
         return@withContext try {
             val newsLanguageList = ArrayList<NewsLanguage>()
-            val jsonString = getPreferences()
+            val jsonString = preference
                 .getString(KEY_JSON_STRING_SUPPORT_LANGUAGES, "") ?: ""
             if (!TextUtils.isEmpty(jsonString)) {
                 newsLanguageList.addAll(NewsLanguage.fromJson(jsonString))
@@ -32,13 +40,13 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
     }
 
     override suspend fun setSupportLanguages(languages: List<NewsLanguage>) = withContext(Dispatchers.IO) {
-        getPreferences().edit().putString(KEY_JSON_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
+        preference.edit().putString(KEY_JSON_STRING_SUPPORT_LANGUAGES, languages.toJson().toString()).apply()
     }
 
     override suspend fun getUserPreferenceLanguage(): Result<NewsLanguage?> = withContext(Dispatchers.IO) {
         return@withContext try {
             var selectedLanguage: NewsLanguage? = null
-            val jsonString = getPreferences()
+            val jsonString = preference
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, "") ?: ""
             if (!TextUtils.isEmpty(jsonString)) {
                 try {
@@ -57,12 +65,12 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
     }
 
     override suspend fun setUserPreferenceLanguage(language: NewsLanguage) = withContext(Dispatchers.IO) {
-        getPreferences().edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
+        preference.edit().putString(KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE, language.toJson().toString()).apply()
     }
 
     override suspend fun getSupportCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext try {
-            val jsonString = getPreferences()
+            val jsonString = preference
                 .getString(KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language, "") ?: ""
             val supportCategories = ArrayList<NewsCategory>()
             toCategoryList(jsonString).let {
@@ -80,7 +88,7 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
     }
 
     override suspend fun setSupportCategories(language: String, supportCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
-        getPreferences().edit().putString(
+        preference.edit().putString(
             KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
             categoryListToJsonArray(supportCategories.map { it.categoryId }).toString()
         ).apply()
@@ -88,7 +96,7 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
 
     override suspend fun getUserPreferenceCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext try {
-            val jsonString = getPreferences()
+            val jsonString = preference
                 .getString(KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language, "") ?: ""
             val preferenceCategories = if (jsonString.isEmpty()) {
                 emptyList()
@@ -102,7 +110,7 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
     }
 
     override suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
-        getPreferences().edit().putString(
+        preference.edit().putString(
             KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX + language,
             categoryListToJsonArray(userPreferenceCategories.map { it.categoryId }).toString()
         ).apply()
@@ -114,8 +122,32 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
 
     override fun shouldEnableNewsSettings() = true
 
-    private fun getPreferences(): SharedPreferences {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    override fun shouldEnablePersonalizedNews(): Boolean {
+        throw UnsupportedOperationException("Can't get personalized news enable setting from device")
+    }
+
+    override fun shouldUserEnabledPersonalizedNews(): Boolean {
+        return preference.getBoolean(KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS, false)
+    }
+
+    override fun setUserEnabledPersonalizedNews(enable: Boolean) {
+        preference.edit().putBoolean(KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS, enable).apply()
+    }
+
+    override fun shouldShowPersonalizedNewsOnboarding(): Boolean {
+        return preference.getBoolean(KEY_BOOL_PERSONALIZED_NEWS_ONBOARDING, true)
+    }
+
+    override fun setPersonalizedNewsOnboardingHasShown() {
+        preference.edit().putBoolean(KEY_BOOL_PERSONALIZED_NEWS_ONBOARDING, false).apply()
+    }
+
+    override fun shouldShowNewsLanguageSettingPage(): Boolean {
+        return preference.getBoolean(KEY_BOOL_NEWS_LANGUAGE_SETTING_PAGE_STATE, true)
+    }
+
+    override fun setNewsLanguageSettingPageState(enable: Boolean) {
+        preference.edit().putBoolean(KEY_BOOL_NEWS_LANGUAGE_SETTING_PAGE_STATE, enable).apply()
     }
 
     private fun categoryListToJsonArray(categories: List<String>): JSONArray {
@@ -150,5 +182,8 @@ class NewsPointSettingsLocalDataSource(private val context: Context) : NewsSetti
         private const val KEY_JSON_STRING_USER_PREFERENCE_LANGUAGE = "user_pref_lang"
         private const val KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX = "support_cat_"
         private const val KEY_JSON_STRING_USER_PREFERENCE_CATEGORIES_PREFIX = "user_pref_cat_"
+        private const val KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS = "is_user_enabled_personalized_news"
+        private const val KEY_BOOL_PERSONALIZED_NEWS_ONBOARDING = "personalized_news_onboarding"
+        private const val KEY_BOOL_NEWS_LANGUAGE_SETTING_PAGE_STATE = "news_language_setting_page_state"
     }
 }

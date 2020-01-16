@@ -1,7 +1,6 @@
 package org.mozilla.rocket.content.news.data.rss
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.text.TextUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,8 +12,17 @@ import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
+import org.mozilla.strictmodeviolator.StrictModeViolation
 
-class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDataSource {
+class RssSettingsLocalDataSource(private val appContext: Context) : NewsSettingsDataSource {
+
+    private val preference by lazy {
+        StrictModeViolation.tempGrant({ builder ->
+            builder.permitDiskReads()
+        }, {
+            appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        })
+    }
 
     override suspend fun getSupportLanguages(): Result<List<NewsLanguage>> {
         return Success(listOf(DUMMY_NEWS_LANGUAGE))
@@ -30,7 +38,7 @@ class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDat
 
     override suspend fun getSupportCategories(language: String): Result<List<NewsCategory>> = withContext(Dispatchers.IO) {
         return@withContext try {
-            val jsonString = getPreferences()
+            val jsonString = preference
                 .getString(KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language, "") ?: ""
             val supportCategories = ArrayList<NewsCategory>()
             toCategoryList(jsonString).let {
@@ -47,7 +55,7 @@ class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDat
     }
 
     override suspend fun setSupportCategories(language: String, supportCategories: List<NewsCategory>) = withContext(Dispatchers.IO) {
-        getPreferences().edit().putString(
+        preference.edit().putString(
             KEY_JSON_STRING_SUPPORT_CATEGORIES_PREFIX + language,
             categoryListToJsonArray(supportCategories.map { it.categoryId }).toString()
         ).apply()
@@ -65,9 +73,21 @@ class RssSettingsLocalDataSource(private val context: Context) : NewsSettingsDat
 
     override fun shouldEnableNewsSettings() = false
 
-    private fun getPreferences(): SharedPreferences {
-        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    override fun shouldEnablePersonalizedNews(): Boolean {
+        throw UnsupportedOperationException("Can't get personalized news enable setting from device")
     }
+
+    override fun shouldUserEnabledPersonalizedNews() = false
+
+    override fun setUserEnabledPersonalizedNews(enable: Boolean) = Unit
+
+    override fun shouldShowPersonalizedNewsOnboarding() = false
+
+    override fun setPersonalizedNewsOnboardingHasShown() = Unit
+
+    override fun shouldShowNewsLanguageSettingPage() = false
+
+    override fun setNewsLanguageSettingPageState(enable: Boolean) = Unit
 
     private fun categoryListToJsonArray(categories: List<String>): JSONArray {
         val jsonArray = JSONArray()

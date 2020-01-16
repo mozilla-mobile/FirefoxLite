@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.parcel.Parcelize
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
@@ -21,20 +23,34 @@ import javax.inject.Inject
 class NewsActivity : AppCompatActivity() {
 
     @Inject
+    lateinit var newsPageStateViewModelCreator: Lazy<NewsPageStateViewModel>
+
+    @Inject
     lateinit var telemetryViewModelCreator: Lazy<VerticalTelemetryViewModel>
 
+    private lateinit var newsPageStateViewModel: NewsPageStateViewModel
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_news)
+        newsPageStateViewModel = getViewModel(newsPageStateViewModelCreator)
         telemetryViewModel = getViewModel(telemetryViewModelCreator)
 
-        if (savedInstanceState == null) {
+        newsPageStateViewModel.showContent.observe(this, Observer { content ->
+            val fragment = when (content) {
+                is NewsPageStateViewModel.Page.PersonalizationOnboarding -> PersonalizedNewsOnboardingFragment.newInstance()
+                is NewsPageStateViewModel.Page.LanguageSetting -> NewsLanguageSettingFragment.newInstance()
+                is NewsPageStateViewModel.Page.NewsContent -> NewsTabFragment.newInstance()
+            }
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, NewsTabFragment.newInstance())
+                .replace(R.id.container, fragment)
                 .commitNow()
+        })
+
+        if (savedInstanceState == null) {
+            newsPageStateViewModel.checkPageToShow()
 
             intent.extras?.let {
                 if (!isLaunchedFromHistory()) {
@@ -78,6 +94,24 @@ class NewsActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         telemetryViewModel.onSessionEnded()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.isStateSaved) {
+            return
+        }
+
+        if (supportFragmentManager.fragments.size > 0) {
+            val fragment = supportFragmentManager.fragments[0]
+            if (fragment is BackKeyHandleable) {
+                val handled = fragment.onBackPressed()
+                if (handled) {
+                    return
+                }
+            }
+        }
+
+        super.onBackPressed()
     }
 
     sealed class DeepLink(val name: String) {

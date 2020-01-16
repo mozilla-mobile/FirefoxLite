@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/news_language_item"
+    android:layout_width="match_parent"
+    android:layout_height="53dp"
+    android:background="@drawable/bg_news_language_setting_button"
+    android:ellipsize="end"
+    android:lines="1"
+    android:gravity="center"
+    android:textSize="14sp"
+    android:textColor="@color/paletteWhite100"
+    android:textStyle="bold"
+    android:fontFamily="sans-serif"
+    tools:text="english" />

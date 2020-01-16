@@ -99,6 +99,9 @@
     <dimen name="item_news_inner_width">@dimen/item_news_inner_height</dimen>
     <dimen name="item_news_inner_height">84dp</dimen>
 
+    <dimen name="news_language_setting_card_horizontal_space">9dp</dimen>
+    <dimen name="news_language_setting_card_vertical_space">8dp</dimen>
+
     <!--  HomeFragment  -->
     <item name="home_firefox_logo_visibility" type="integer">@integer/visibility_gone</item>
     <item name="content_hub_title_visibility" type="integer">@integer/visibility_gone</item>

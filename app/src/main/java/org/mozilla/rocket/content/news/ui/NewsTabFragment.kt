@@ -85,6 +85,8 @@ class NewsTabFragment : Fragment() {
                 telemetryViewModel.onRefreshClicked()
             }
         }
+
+        newsTabViewModel.getNewsSettings()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

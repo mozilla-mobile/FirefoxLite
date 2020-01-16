@@ -11,12 +11,26 @@ data class DailyHuntProvider(
     val apiKey: String,
     val secretKey: String,
     val partnerCode: String,
-    val isEnable: Boolean,
+    val isEnableFromRemote: Boolean,
     val userId: String
 ) {
+
+    fun shouldEnable(appContext: Context): Boolean {
+        val preference =
+            StrictModeViolation.tempGrant({ builder ->
+                builder.permitDiskReads()
+            }, {
+                appContext.getSharedPreferences(NEWS_SETTING_PREF_NAME, Context.MODE_PRIVATE)
+            })
+        val isEnabledByUser = preference.getBoolean(KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS, false)
+        return isEnabledByUser && isEnableFromRemote
+    }
+
     companion object {
-        private const val PREF_NAME = "daily_hunt"
-        private const val KEY_USER_ID = "user_id"
+        private const val DAILY_HUNT_PREF_NAME = "daily_hunt"
+        private const val KEY_STR_USER_ID = "user_id"
+        private const val NEWS_SETTING_PREF_NAME = "news_settings"
+        private const val KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS = "is_user_enabled_personalized_news"
 
         fun getProvider(appContext: Context): DailyHuntProvider? {
             val config = FirebaseHelper.getFirebase().getRcString("str_dailyhunt_provider")
@@ -37,18 +51,17 @@ data class DailyHuntProvider(
         }
 
         private fun getUserId(appContext: Context): String {
-            val preference by lazy {
+            val preference =
                 StrictModeViolation.tempGrant({ builder ->
                     builder.permitDiskReads()
                 }, {
-                    appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                    appContext.getSharedPreferences(DAILY_HUNT_PREF_NAME, Context.MODE_PRIVATE)
                 })
-            }
 
-            val cachedUserId = preference.getString(KEY_USER_ID, "") ?: ""
+            val cachedUserId = preference.getString(KEY_STR_USER_ID, "") ?: ""
             return if (cachedUserId.isEmpty()) {
                 UUID.randomUUID().toString().also {
-                    preference.edit().putString(KEY_USER_ID, it).apply()
+                    preference.edit().putString(KEY_STR_USER_ID, it).apply()
                 }
             } else {
                 cachedUserId
