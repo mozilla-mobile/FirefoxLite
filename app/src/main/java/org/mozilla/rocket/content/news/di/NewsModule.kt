@@ -13,7 +13,9 @@ import org.mozilla.rocket.content.news.domain.SetPersonalizedNewsOnboardingHasSh
 import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
+import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowPersonalizedNewsOnboardingUseCase
+import org.mozilla.rocket.content.news.domain.ShouldUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.ui.NewsLanguageSettingViewModel
 import org.mozilla.rocket.content.news.ui.NewsPageStateViewModel
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
@@ -61,6 +63,16 @@ object NewsModule {
 
     @JvmStatic
     @Provides
+    fun provideShouldUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): ShouldUserEnabledPersonalizedNewsUseCase =
+        ShouldUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
+
+    @JvmStatic
+    @Provides
+    fun provideShouldEnablePersonalizedNewsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): ShouldEnablePersonalizedNewsUseCase =
+        ShouldEnablePersonalizedNewsUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
+
+    @JvmStatic
+    @Provides
     fun provideShouldShowPersonalizedNewsOnboardingUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): ShouldShowPersonalizedNewsOnboardingUseCase =
         ShouldShowPersonalizedNewsOnboardingUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
@@ -85,9 +97,20 @@ object NewsModule {
         loadNewsSettingsUseCase: LoadNewsSettingsUseCase,
         loadNewsLanguagesUseCase: LoadNewsLanguagesUseCase,
         setUserPreferenceLanguageUseCase: SetUserPreferenceLanguageUseCase,
-        setUserPreferenceCategoriesUseCase: SetUserPreferenceCategoriesUseCase
+        setUserPreferenceCategoriesUseCase: SetUserPreferenceCategoriesUseCase,
+        shouldEnablePersonalizedNewsUseCase: ShouldEnablePersonalizedNewsUseCase,
+        shouldUserEnabledPersonalizedNewsUseCase: ShouldUserEnabledPersonalizedNewsUseCase,
+        setUserEnabledPersonalizedNewsUseCase: SetUserEnabledPersonalizedNewsUseCase
     ): NewsSettingsViewModel =
-        NewsSettingsViewModel(loadNewsSettingsUseCase, loadNewsLanguagesUseCase, setUserPreferenceLanguageUseCase, setUserPreferenceCategoriesUseCase)
+        NewsSettingsViewModel(
+            loadNewsSettingsUseCase,
+            loadNewsLanguagesUseCase,
+            setUserPreferenceLanguageUseCase,
+            setUserPreferenceCategoriesUseCase,
+            shouldEnablePersonalizedNewsUseCase,
+            shouldUserEnabledPersonalizedNewsUseCase,
+            setUserEnabledPersonalizedNewsUseCase
+        )
 
     @JvmStatic
     @Provides

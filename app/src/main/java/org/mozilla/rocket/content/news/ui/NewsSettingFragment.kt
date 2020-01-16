@@ -1,6 +1,8 @@
 package org.mozilla.rocket.content.news.ui
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.preference.Preference
@@ -24,6 +26,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
     private var languagePreference: NewsLanguagePreference? = null
     private var categoryPreference: NewsCategoryPreference? = null
+    private var personalizedNewsPreference: PersonalizedNewsPreference? = null
 
     private var dialogHelper = LanguageListDialogHelper()
 
@@ -49,6 +52,16 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
             dialogHelper.updateLangList(newsSettingsUiModel.allLanguages)
         })
+        newsSettingsViewModel.showPersonalizedNewsSetting.observe(this, Observer {
+            personalizedNewsPreference?.isVisible = true
+            personalizedNewsPreference?.isChecked = it
+        })
+        newsSettingsViewModel.personalizedNewsSettingChanged.observe(this, Observer {
+            activity?.finish()
+            startActivity(NewsActivity.getStartIntent(context!!).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            })
+        })
     }
 
     override fun onPause() {
@@ -66,11 +79,16 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
                 newsSettingsViewModel.updateUserPreferenceCategories(key, it)
             }
         }
+
+        personalizedNewsPreference = findPreference(PREF_PERSONALIZED_NEWS) as? PersonalizedNewsPreference
+        personalizedNewsPreference?.isVisible = false
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         if (preference?.key == PREF_NEWS_LANG) {
             onLanguagePrefClick()
+        } else if (preference?.key == PREF_PERSONALIZED_NEWS) {
+            onPersonalizedNewsClick()
         }
         return super.onPreferenceTreeClick(preference)
     }
@@ -79,13 +97,48 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         dialogHelper.build(context!!, ::setUserPreferLanguage)
     }
 
+    private fun onPersonalizedNewsClick() {
+        personalizedNewsPreference?.let {
+            if (it.isChecked) {
+                showEnablePersonalizedNewsDialog()
+            } else {
+                showDisablePersonalizedNewsDialog()
+            }
+        }
+    }
+
     private fun setUserPreferLanguage(language: NewsLanguage) {
         newsSettingsViewModel.updateUserPreferenceLanguage(language)
+    }
+
+    private fun showEnablePersonalizedNewsDialog() {
+        AlertDialog.Builder(context)
+            .setMessage(R.string.recommended_news_preference_enable_dialog)
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                newsSettingsViewModel.togglePersonalizedNewsSwitch(true)
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
+                personalizedNewsPreference?.isChecked = false
+            }
+            .show()
+    }
+
+    private fun showDisablePersonalizedNewsDialog() {
+        AlertDialog.Builder(context)
+            .setMessage(R.string.recommended_news_preference_disable_dialog)
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                newsSettingsViewModel.togglePersonalizedNewsSwitch(false)
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
+                personalizedNewsPreference?.isChecked = true
+            }
+            .show()
     }
 
     companion object {
         private const val PREF_NEWS_LANG = "pref_dummy_s_news_lang"
         private const val PREF_NEWS_CAT = "pref_dummy_s_news_Cat"
+        private const val PREF_PERSONALIZED_NEWS = "pref_dummy_s_personalized_news"
 
         fun newInstance(): NewsSettingFragment {
             return NewsSettingFragment()

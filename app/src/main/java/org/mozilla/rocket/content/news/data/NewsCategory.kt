@@ -47,12 +47,7 @@ data class NewsCategory(
         }
 
         fun getCategoryById(categoryId: String): NewsCategory? {
-            val newsCategory = mapping[categoryId]
-            return if (newsCategory != null) {
-                NewsCategory(newsCategory.categoryId, newsCategory.name, newsCategory.stringResourceId, newsCategory.order, newsCategory.isSelected)
-            } else {
-                null
-            }
+            return mapping[categoryId]?.copy()
         }
 
         fun fromJson(jsonString: String): List<NewsCategory> {
