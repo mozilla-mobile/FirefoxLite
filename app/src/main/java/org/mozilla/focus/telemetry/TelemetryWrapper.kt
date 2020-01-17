@@ -253,6 +253,7 @@ object TelemetryWrapper {
         internal const val PERSONALIZATION = "personalization"
         internal const val LANGUAGE = "language"
         internal const val LIFESTYLE = "lifestyle"
+        internal const val CATEGORY = "category"
     }
 
     internal object Extra {
@@ -3113,6 +3114,28 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+        name = "Change Category in Settings",
+        category = Category.ACTION,
+        method = Method.CHANGE,
+        `object` = Object.SETTING,
+        value = Value.CATEGORY,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = Extra_Value.LIFESTYLE),
+            TelemetryExtra(name = Extra.CATEGORY, value = "category"),
+            TelemetryExtra(name = Extra.TO, value = "true,false"),
+            TelemetryExtra(name = Extra.PERSONALIZATION, value = "true,false")
+        ])
+    @JvmStatic
+    fun changeCategoryInSettings(category: String, to: Boolean, enablePersonalization: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.CATEGORY)
+            .extra(Extra.VERTICAL, Extra_Value.LIFESTYLE)
+            .extra(Extra.CATEGORY, category)
+            .extra(Extra.TO, to.toString())
+            .extra(Extra.PERSONALIZATION, enablePersonalization.toString())
+            .queue()
+    }
+
+    @TelemetryDoc(
             name = "Change News Settings",
             category = Category.ACTION,
             method = Method.CHANGE,
@@ -3121,15 +3144,13 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERTICAL, value = Extra_Value.LIFESTYLE),
                 TelemetryExtra(name = Extra.LANGUAGE, value = "language"),
-                TelemetryExtra(name = Extra.CATEGORY, value = "[category list]"),
                 TelemetryExtra(name = Extra.PERSONALIZATION, value = "true,false")
             ])
     @JvmStatic
-    fun changeNewsSettings(language: String, category: String, enablePersonalization: Boolean) {
+    fun changeNewsSettings(language: String, enablePersonalization: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.LIFESTYLE)
                 .extra(Extra.VERTICAL, Extra_Value.LIFESTYLE)
                 .extra(Extra.LANGUAGE, language)
-                .extra(Extra.CATEGORY, "[$category]")
                 .extra(Extra.PERSONALIZATION, enablePersonalization.toString())
                 .queue()
     }

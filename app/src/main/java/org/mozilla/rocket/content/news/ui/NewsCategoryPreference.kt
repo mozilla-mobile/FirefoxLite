@@ -28,7 +28,7 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
     private var recyclerView: RecyclerView? = null
     private var progress: ProgressBar? = null
     private var categoryList: List<NewsCategory> = listOf()
-    var onCategoryClick: (categories: List<NewsCategory>) -> Unit = {}
+    var onCategoryClick: (effectCategory: NewsCategory, allCategories: List<NewsCategory>) -> Unit = { _: NewsCategory, _: List<NewsCategory> -> }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
@@ -43,8 +43,6 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
             hideProgressBar()
         }
     }
-
-    fun getCatList() = categoryList
 
     fun updateCatList(newList: List<NewsCategory>?) {
         if (newList == null || newList.isEmpty()) {
@@ -89,7 +87,7 @@ class NewsCategoryPreference @JvmOverloads constructor(context: Context, attribu
 
             vh.button.setOnClickListener {
                 categoryList[pos].isSelected = !categoryList[pos].isSelected
-                onCategoryClick(categoryList)
+                onCategoryClick(categoryList[pos], categoryList)
             }
         }
 

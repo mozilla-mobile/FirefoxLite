@@ -11,6 +11,7 @@ import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
+import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import javax.inject.Inject
 
@@ -80,9 +81,9 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
         languagePreference = findPreference(PREF_NEWS_LANG) as? NewsLanguagePreference
         categoryPreference = findPreference(PREF_NEWS_CAT) as? NewsCategoryPreference
-        categoryPreference?.onCategoryClick = {
+        categoryPreference?.onCategoryClick = { effectCategory: NewsCategory, allCategories: List<NewsCategory> ->
             langKey?.let { key ->
-                newsSettingsViewModel.updateUserPreferenceCategories(key, it)
+                newsSettingsViewModel.updateUserPreferenceCategories(key, effectCategory, allCategories)
             }
         }
 
