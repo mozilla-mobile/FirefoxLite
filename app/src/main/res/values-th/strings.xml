@@ -200,6 +200,8 @@
   <string name="share_app_dialog_text_content">- เร็วและเบา\n- ประหยัดข้อมูล\n- ตัวจับภาพหน้าจอที่ทรงพลัง</string>
   <string name="share_app_dialog_btn_share">แบ่งปัน</string>
   <string name="share_app_promotion_text">เฮ้ ลองดูเบราว์เซอร์ที่เร็วและเบานี้จาก %3$s %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">อัปเดตตอนนี้!</string>
+  <string name="update_app_dialog_btn_later">ภายหลัง</string>
   <string name="your_rights_content1">%1$s เป็นซอฟต์แวร์เสรีและเปิดต้นฉบับที่สร้างขึ้นโดย %2$s และผู้มีส่วนร่วมอื่น ๆ</string>
   <string name="your_rights_content2"><![CDATA["%1$s ให้คุณใช้ภายใต้เงื่อนไขของ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" และสัญญาอนุญาตการเปิดต้นฉบับอื่น ๆ"]]></string>
   <string name="your_rights_content3"><![CDATA["คุณไม่ได้รับสิทธิหรือสัญญาอนุญาตใด ๆ ในเครื่องหมายการค้าของมูลนิธิ Mozilla หรือบุคคลใด ๆ รวมทั้งชื่อหรือโลโก้ %3$s, %4$s หรือ %1$s ข้อมูลเพิ่มเติมอาจพบได้ "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#3607;&#3637;&#3656;&#3609;&#3637;&#3656;</a>]]></string>
@@ -327,6 +329,7 @@
   <string name="gaming_vertical_hint_title">เข้าถึงเกมโปรดของคุณอย่างรวดเร็ว</string>
   <string name="gaming_vertical_hint_body">กดเพื่อสร้างทางลัดไปที่หน้าจอหลัก</string>
   <string name="gaming_vertical_hint_button">ตกลง</string>
+  <string name="gaming_vertical_shortcut_message">สร้างทางลัดแล้ว</string>
   <string name="gaming_vertical_menu_option_1">แบ่งปันเกม</string>
   <string name="gaming_vertical_menu_option_2">กดเพื่อสร้างทางลัดบนหน้าจอหลัก</string>
   <string name="gaming_vertical_menu_option_3">เอาออกจากรายการ</string>
@@ -388,9 +391,24 @@
   <string name="msrp_reward_challenge_error_button">ลองอีกครั้ง</string>
   <string name="msrp_reward_challenge_error">อุปส์! มีบางอย่างผิดพลาด</string>
   <string name="msrp_activitykilled_snackbar_button">แลกใช้</string>
+  <string name="travel_vertical_title">การท่องเที่ยว</string>
   <string name="travel_vertical_category_1">สำรวจ</string>
+  <string name="travel_find_destination_title">คุณต้องการไปที่ไหน?</string>
+  <string name="travel_find_destination_placeholder_1">ลอง “บาหลี”…</string>
+  <string name="travel_detail_page_subcategory_content">สำรวจ %1$s</string>
+  <string name="travel_detail_page_subcategory_hotel">โรงแรมยอดนิยม</string>
   <string name="travel_more">เพิ่มเติม</string>
+  <string name="travel_content_ig_link">#%1$s บน Instagram</string>
+  <string name="travel_content_yt_view_count">%1$s การดู</string>
+  <string name="travel_content_yt_view_count_single_view">1 การดู</string>
   <string name="travel_content_wiki_source_name">วิกิพีเดีย</string>
+  <string name="travel_hotel_detail_1">Wi-Fi ฟรี</string>
   <string name="travel_hotel_detail_2">ไม่ต้องใช้บัตรเครดิต</string>
+  <string name="travel_hotel_price_from">จาก</string>
+  <string name="travel_empty_state_button">สำรวจเมือง</string>
+  <string name="travel_snack_bar_button">ดู</string>
+  <string name="travel_onboarding_save_title">รัก %1$s?</string>
   <string name="travel_onboarding_save_button">ตกลง</string>
+  <string name="travel_find_destination_placeholder_2">ป้อนปลายทาง</string>
+  <string name="travel_search_engine_1">ดูผลลัพธ์ใน %1$s</string>
 </resources>
