@@ -126,6 +126,9 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
             .setNegativeButton(android.R.string.cancel) { _, _ ->
                 personalizedNewsPreference?.isChecked = false
             }
+            .setOnCancelListener {
+                personalizedNewsPreference?.isChecked = false
+            }
             .show()
     }
 
@@ -136,6 +139,9 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
                 newsSettingsViewModel.togglePersonalizedNewsSwitch(false)
             }
             .setNegativeButton(android.R.string.cancel) { _, _ ->
+                personalizedNewsPreference?.isChecked = true
+            }
+            .setOnCancelListener {
                 personalizedNewsPreference?.isChecked = true
             }
             .show()
