@@ -58,15 +58,15 @@
         app:layout_constraintTop_toBottomOf="@id/personalized_news_onboarding_title"
         tools:text="Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News -&gt; Settings. Learn more" />
 
-    <TextView
+    <Button
         android:id="@+id/personalized_news_onboarding_btn_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="89dp"
-        android:background="@drawable/round"
-        android:backgroundTint="@color/paletteLightGreyA100"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/bg_shopping_coupon_code"
+        android:backgroundTint="@color/paletteLightGreyD100"
+        android:foreground="@drawable/round_rectangle_ripple"
         android:gravity="center"
         android:minWidth="106dp"
         android:minHeight="36dp"
@@ -75,22 +75,21 @@
         android:paddingEnd="12dp"
         android:paddingBottom="10dp"
         android:text="@string/private_browsing_dialog_add_shortcut_no"
-        android:textAllCaps="true"
-        android:textColor="@color/paletteWhite100"
+        android:textColor="@color/paletteDarkBlueC100"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/personalized_news_onboarding_btn_yes"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
+    <Button
         android:id="@+id/personalized_news_onboarding_btn_yes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:background="@drawable/round"
         android:backgroundTint="@color/paletteDarkBlueC100"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:foreground="@drawable/round_rectangle_ripple"
         android:gravity="center"
         android:minWidth="106dp"
         android:minHeight="36dp"

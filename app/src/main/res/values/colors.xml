@@ -5,6 +5,7 @@
 <resources>
     <color name="paletteBlack100">#FF000000</color>
     <color name="paletteBlack87">#DE000000</color>
+    <color name="paletteBlack67">#AB000000</color>
     <color name="paletteBlack64">#A3000000</color>
     <color name="paletteBlack54">#8B000000</color>
     <color name="paletteBlack50">#80000000</color>

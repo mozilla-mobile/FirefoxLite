@@ -9,7 +9,7 @@
     android:lines="1"
     android:gravity="center"
     android:textSize="14sp"
-    android:textColor="@color/paletteWhite100"
+    android:textColor="@color/news_language_button_text"
     android:textStyle="bold"
     android:fontFamily="sans-serif"
     tools:text="english" />
