@@ -187,6 +187,7 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('personalization') ) THEN 'Rocket -  Change Personalization in Onboarding' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('language') ) THEN 'Rocket -  Change Language in Onboarding' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('setting') ) AND (event_value IN ('lifestyle') ) THEN 'Rocket -  Click News Settings' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('setting') ) AND (event_value IN ('category') ) THEN 'Rocket -  Change Category in Settings' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('setting') ) AND (event_value IN ('lifestyle') ) THEN 'Rocket -  Change News Settings' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('pin') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Pin Topsite' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('challenge_page') ) AND (event_value IN ('join') ) THEN 'Rocket -  Click Challenge Page Join' 

@@ -49,18 +49,21 @@ class NewsSettingsViewModel(
         getNewsSettings()
     }
 
-    fun updateUserPreferenceLanguage(language: NewsLanguage) = viewModelScope.launch(Dispatchers.Default) {
+    fun updateUserPreferenceLanguage(language: NewsLanguage) = viewModelScope.launch {
         setUserPreferenceLanguage(language)
         getNewsSettings()
     }
 
     fun updateUserPreferenceCategories(
         language: String,
+        effectCategory: NewsCategory,
         userPreferenceCategories: List<NewsCategory>
     ) = viewModelScope.launch(Dispatchers.Default) {
         setUserPreferenceCategories(language, userPreferenceCategories)
+        val enablePersonalization = shouldUserEnabledPersonalizedNews()
         withContext(Dispatchers.Main) {
             emitUiModel(preferenceLanguage, userPreferenceCategories, newsLanguages)
+            TelemetryWrapper.changeCategoryInSettings(effectCategory.name, effectCategory.isSelected, enablePersonalization)
         }
     }
 
@@ -72,10 +75,8 @@ class NewsSettingsViewModel(
 
     fun onLeaveSettingsPage() {
         val language = uiModel.value?.preferenceLanguage?.name?.toLowerCase(Locale.getDefault()) ?: ""
-        val categories = uiModel.value?.categories?.filter { it.isSelected }
-            ?.joinToString(",") { it.order.toString() } ?: ""
         val enablePersonalization = shouldUserEnabledPersonalizedNews()
-        TelemetryWrapper.changeNewsSettings(language, categories, enablePersonalization)
+        TelemetryWrapper.changeNewsSettings(language, enablePersonalization)
     }
 
     private fun getNewsSettings() = viewModelScope.launch(Dispatchers.Default) {
