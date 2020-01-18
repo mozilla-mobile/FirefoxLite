@@ -275,6 +275,12 @@
   <string name="news_category_option_jokes">笑话</string>
   <string name="news_category_option_nation">国内</string>
   <string name="logo_text">服务提供方：</string>
+  <string name="recommended_news_title">为您推荐的新闻</string>
+  <string name="recommended_news_content">点按“是”即可看到由 AI 新闻引擎推荐给您的新闻。您可以随时到“新闻” -&gt;“设置”中关闭推荐功能。%1$s</string>
+  <string name="recommended_news_preference_language">选择您的首选新闻语言</string>
+  <string name="recommended_news_preference_toggle">个性化新闻体验</string>
+  <string name="recommended_news_preference_disable_dialog">您要关闭新闻推荐吗？点按“是”即可只显示最新新闻。</string>
+  <string name="recommended_news_preference_enable_dialog">您要开启新闻推荐功能吗？点按“是”即可看到推荐的新闻。</string>
   <string name="private_tab">隐私标签页</string>
   <string name="private_browsing_title">隐私浏览</string>
   <string name="private_browsing_erase_message">清除隐私浏览历史</string>
@@ -327,7 +333,7 @@
   <string name="gaming_vertical_category_2">下载玩</string>
   <string name="gaming_vertical_new">新游戏</string>
   <string name="gaming_vertical_hint_title">快速访问您喜欢的游戏</string>
-  <string name="gaming_vertical_hint_body">按下此处，即可在主屏幕创建快捷方式。</string>
+  <string name="gaming_vertical_hint_body">长按此处，即可在主屏幕创建快捷方式。</string>
   <string name="gaming_vertical_hint_button">好</string>
   <string name="gaming_vertical_shortcut_message">快捷方式已创建。</string>
   <string name="gaming_vertical_menu_option_1">分享游戏</string>
@@ -456,4 +462,12 @@
   <string name="travel_search_engine_1">用 %1$s 查看结果</string>
   <string name="travel_search_engine_2">在智能旅行搜索中查看结果</string>
   <string name="travel_search_engine_fxlite">查看 %1$s Travel Discovery 的搜索结果</string>
+  <string name="travel_dialog_1_title">探索更多！</string>
+  <string name="travel_dialog_1_description">到 %1$s Travel Discovery 探索更多活动、住宿与更多內容。</string>
+  <string name="travel_dialog_1_action_1">试用 Travel Discovery 功能</string>
+  <string name="travel_dialog_1_action_2">不用，谢谢</string>
+  <string name="travel_dialog_2_title">Travel Discovery 体验如何？</string>
+  <string name="travel_dialog_2_description">您可以将 %1$s Travel Discovery 设为默认旅游搜索引擎。</string>
+  <string name="travel_dialog_2_checkbox">不再询问我</string>
+  <string name="travel_dialog_2_action">设为默认值</string>
 </resources>

@@ -275,6 +275,12 @@
   <string name="news_category_option_jokes">笑話</string>
   <string name="news_category_option_nation">國內新聞</string>
   <string name="logo_text">服務提供者：</string>
+  <string name="recommended_news_title">為您推薦的新聞</string>
+  <string name="recommended_news_content">點擊「是」即可看到根據 AI 新聞引擎推薦給您的新聞。您可以到 新聞 -&gt; 設定 自行調整設定，關閉推薦功能。%1$s</string>
+  <string name="recommended_news_preference_language">選擇您偏好的新聞語言</string>
+  <string name="recommended_news_preference_toggle">個人化新聞體驗</string>
+  <string name="recommended_news_preference_disable_dialog">您要關閉推薦新聞嗎？點擊「是」即可只顯示最新新聞。</string>
+  <string name="recommended_news_preference_enable_dialog">您要開啟推薦新聞功能嗎？點擊「是」即可看到推薦的新聞。</string>
   <string name="private_tab">隱私分頁</string>
   <string name="private_browsing_title">隱私瀏覽模式</string>
   <string name="private_browsing_erase_message">清除隱私瀏覽紀錄</string>
@@ -327,7 +333,7 @@
   <string name="gaming_vertical_category_2">下載後才可玩</string>
   <string name="gaming_vertical_new">新遊戲</string>
   <string name="gaming_vertical_hint_title">快速開啟您最愛的遊戲</string>
-  <string name="gaming_vertical_hint_body">點擊此處，即可在裝置主畫面加入捷徑。</string>
+  <string name="gaming_vertical_hint_body">長按此處，即可在裝置主畫面加入捷徑。</string>
   <string name="gaming_vertical_hint_button">確定</string>
   <string name="gaming_vertical_shortcut_message">已建立捷徑。</string>
   <string name="gaming_vertical_menu_option_1">分享遊戲</string>
@@ -456,4 +462,12 @@
   <string name="travel_search_engine_1">用 %1$s 檢視結果</string>
   <string name="travel_search_engine_2">在智慧旅遊搜尋功能中檢視搜尋結果</string>
   <string name="travel_search_engine_fxlite">檢視 %1$s 旅遊探索的搜尋結果</string>
+  <string name="travel_dialog_1_title">探索更多！</string>
+  <string name="travel_dialog_1_description">到 %1$s Travel Discovery 探索更多活動、住宿與更多內容。</string>
+  <string name="travel_dialog_1_action_1">試用 Travel Discovery 功能</string>
+  <string name="travel_dialog_1_action_2">不用，謝謝</string>
+  <string name="travel_dialog_2_title">還喜歡 Travel Discovery 嗎？</string>
+  <string name="travel_dialog_2_description">您可以將 %1$s Travel Discovery 設定為預設旅遊搜尋引擎。</string>
+  <string name="travel_dialog_2_checkbox">不要再問我</string>
+  <string name="travel_dialog_2_action">設為預設值</string>
 </resources>
