@@ -275,6 +275,7 @@
   <string name="news_category_option_jokes">Юмор</string>
   <string name="news_category_option_nation">Местные</string>
   <string name="logo_text">Услуги предоставлены</string>
+  <string name="recommended_news_title">Рекомендованные новости для вас</string>
   <string name="private_tab">Приватная вкладка</string>
   <string name="private_browsing_title">Приватный просмотр</string>
   <string name="private_browsing_erase_message">Удалить историю приватного просмотра</string>
@@ -456,4 +457,8 @@
   <string name="travel_search_engine_1">Посмотреть результаты в %1$s</string>
   <string name="travel_search_engine_2">Посмотрите результаты в умном поиске мест для путешествий</string>
   <string name="travel_search_engine_fxlite">Посмотрите результаты в поиске мест для путешествий %1$s</string>
+  <string name="travel_dialog_1_title">Откройте для себя ещё больше!</string>
+  <string name="travel_dialog_1_action_2">НЕТ, СПАСИБО</string>
+  <string name="travel_dialog_2_checkbox">Не спрашивать в следующий раз</string>
+  <string name="travel_dialog_2_action">УСТАНОВИТЬ ПО УМОЛЧАНИЮ</string>
 </resources>
