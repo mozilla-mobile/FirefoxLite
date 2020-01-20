@@ -1,21 +1,3 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <!--Dialog-->
-    <!--dialog title for introducing Firefox Lite Travel Discovery-->
-    <string name="travel_dialog_1_title">探索更多可能！</string>
-    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
-    <string name="travel_dialog_1_description">邂逅嶄新城市，尋找私房景點，盡享住宿優惠都在 %1$s 旅遊探索</string>
-    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
-    <string name="travel_dialog_1_action_1">立即探索</string>
-    <!--Action button for dismissing this prompt-->
-    <string name="travel_dialog_1_action_2">不用了，謝謝</string>
-
-    <!--dialog title for asking if users want to change default search engine-->
-    <string name="travel_dialog_2_title">喜歡旅遊探索嗎？</string>
-    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
-    <string name="travel_dialog_2_description">您可以將 %1$s 旅遊探索設為旅遊用的預設搜尋引擎。</string>
-    <!--checkbox for not showing this dialog again-->
-    <string name="travel_dialog_2_checkbox">下次不要再問我</string>
-    <!--Action button for setting Travel Discovery as default search engine-->
-    <string name="travel_dialog_2_action">設為預設</string>
 </resources>
