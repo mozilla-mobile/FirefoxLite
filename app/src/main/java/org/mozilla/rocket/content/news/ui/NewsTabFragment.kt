@@ -42,6 +42,10 @@ class NewsTabFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        newsTabViewModel = getActivityViewModel(newsTabViewModelCreator)
+        newsViewModel = getActivityViewModel(newsViewModelCreator)
+        telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
+        newsTabViewModel.getNewsSettings()
     }
 
     override fun onCreateView(
@@ -54,28 +58,37 @@ class NewsTabFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindTabData(view)
+        handleActions()
+    }
 
-        if (savedInstanceState == null) {
-            newsTabViewModel = getActivityViewModel(newsTabViewModelCreator)
-            newsViewModel = getActivityViewModel(newsViewModelCreator)
-            telemetryViewModel = getActivityViewModel(telemetryViewModelCreator)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-            newsTabViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
-                settings?.let {
-                    if (newsSettings != it.newsSettings) {
-                        newsSettings = it.newsSettings
-                        setupViewPager(view, it.newsSettings)
-                        news_setting.visibility = if (it.hasSettingsMenu)
-                            View.VISIBLE
-                        else
-                            View.GONE
-                    }
-                }
-            })
-            newsTabViewModel.launchSettings.observe(viewLifecycleOwner, Observer {
-                launchSettings()
-            })
+        if (requestCode == SETTING_REQUEST_CODE) {
+            newsTabViewModel.getNewsSettings()
         }
+    }
+
+    private fun bindTabData(view: View) {
+        newsTabViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
+            settings?.let {
+                if (newsSettings != it.newsSettings) {
+                    newsSettings = it.newsSettings
+                    setupViewPager(view, it.newsSettings)
+                    news_setting.visibility = if (it.hasSettingsMenu)
+                        View.VISIBLE
+                    else
+                        View.GONE
+                }
+            }
+        })
+    }
+
+    private fun handleActions() {
+        newsTabViewModel.launchSettings.observe(viewLifecycleOwner, Observer {
+            launchSettings()
+        })
 
         news_setting.setOnClickListener {
             newsTabViewModel.onClickSettings()
@@ -88,24 +101,6 @@ class NewsTabFragment : Fragment() {
                 telemetryViewModel.onRefreshClicked()
             }
         }
-
-        newsTabViewModel.getNewsSettings()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SETTING_REQUEST_CODE) {
-            newsTabViewModel.getNewsSettings()
-        }
-    }
-
-    private fun launchSettings() {
-        val intent = Intent().run {
-            putExtra(EXTRA_CONFIG_NEWS, "config")
-            setClass(context!!, SettingsActivity::class.java)
-        }
-        startActivityForResult(intent, SETTING_REQUEST_CODE)
     }
 
     private fun setupViewPager(view: View, newsSettings: Pair<NewsLanguage, List<NewsCategory>>) {
@@ -136,6 +131,14 @@ class NewsTabFragment : Fragment() {
                 telemetryViewModel.onCategorySelected(newsSettings.second[0].categoryId)
             }
         }
+    }
+
+    private fun launchSettings() {
+        val intent = Intent().run {
+            putExtra(EXTRA_CONFIG_NEWS, "config")
+            setClass(context!!, SettingsActivity::class.java)
+        }
+        startActivityForResult(intent, SETTING_REQUEST_CODE)
     }
 
     companion object {
