@@ -2942,11 +2942,11 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Toolbar - Share/Reload/Back",
+            name = "Click Toolbar - Share",
             category = Category.ACTION,
             method = Method.CLICK,
             `object` = Object.TOOLBAR,
-            value = "${Value.SHARE},${Value.OPEN_IN_BROWSER},${Value.RELOAD},${Value.BACK}",
+            value = Value.SHARE,
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
@@ -2958,8 +2958,101 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
                 TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
             ])
-    fun clickContentTabToolbar(value: String, position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, value)
+    fun clickContentTabToolbarShare(position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.SHARE)
+                .extra(Extra.MODE, Extra_Value.WEBVIEW)
+                .extra(Extra.POSITION, position.toString())
+                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                .extra(Extra.FEED, contentTabTelemetryData.feed)
+                .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Toolbar - Open in browser",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.TOOLBAR,
+            value = Value.OPEN_IN_BROWSER,
+            extras = [
+                TelemetryExtra(name = Extra.MODE, value = "webview"),
+                TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.FEED, value = "feed"),
+                TelemetryExtra(name = Extra.SOURCE, value = "source"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "category"),
+                TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
+            ])
+    fun clickContentTabToolbarOpenInBrowser(position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.OPEN_IN_BROWSER)
+                .extra(Extra.MODE, Extra_Value.WEBVIEW)
+                .extra(Extra.POSITION, position.toString())
+                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                .extra(Extra.FEED, contentTabTelemetryData.feed)
+                .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Toolbar - Reload",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.TOOLBAR,
+            value = Value.RELOAD,
+            extras = [
+                TelemetryExtra(name = Extra.MODE, value = "webview"),
+                TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.FEED, value = "feed"),
+                TelemetryExtra(name = Extra.SOURCE, value = "source"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "category"),
+                TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
+            ])
+    fun clickContentTabToolbarReload(position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD)
+                .extra(Extra.MODE, Extra_Value.WEBVIEW)
+                .extra(Extra.POSITION, position.toString())
+                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                .extra(Extra.FEED, contentTabTelemetryData.feed)
+                .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Toolbar - Back",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.TOOLBAR,
+            value = Value.BACK,
+            extras = [
+                TelemetryExtra(name = Extra.MODE, value = "webview"),
+                TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.FEED, value = "feed"),
+                TelemetryExtra(name = Extra.SOURCE, value = "source"),
+                TelemetryExtra(name = Extra.CATEGORY, value = "category"),
+                TelemetryExtra(name = Extra.COMPONENT_ID, value = "component id"),
+                TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
+                TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
+            ])
+    fun clickContentTabToolbarBack(position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.BACK)
                 .extra(Extra.MODE, Extra_Value.WEBVIEW)
                 .extra(Extra.POSITION, position.toString())
                 .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
