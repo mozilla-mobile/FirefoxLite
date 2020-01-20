@@ -1189,17 +1189,6 @@ object TelemetryWrapper {
                 .queue()
     }
 
-    @TelemetryDoc(
-            name = "Click Toolbar - Reload",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.TOOLBAR,
-            value = Value.RELOAD,
-            extras = [
-                TelemetryExtra(name = Extra.VERSION, value = "2"),
-                TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
     @JvmStatic
     fun clickToolbarReload(mode: String, position: Int) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD)
