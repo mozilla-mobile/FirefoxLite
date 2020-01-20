@@ -29,6 +29,8 @@ import org.mozilla.rocket.content.common.ui.monitorScrollImpression
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.ui.adapter.NewsAdapterDelegate
+import org.mozilla.rocket.content.news.ui.adapter.NewsSourceLogoAdapterDelegate
+import org.mozilla.rocket.content.news.ui.adapter.NewsSourceLogoUiModel
 import org.mozilla.rocket.content.news.ui.adapter.NewsUiModel
 import javax.inject.Inject
 
@@ -77,6 +79,7 @@ class NewsFragment : Fragment() {
     private fun initNewsList() {
         newsAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
+                add(NewsSourceLogoUiModel::class, R.layout.item_news_source_logo, NewsSourceLogoAdapterDelegate())
                 add(NewsUiModel::class, R.layout.item_news, NewsAdapterDelegate(getCategory(), newsViewModel))
             }
         )

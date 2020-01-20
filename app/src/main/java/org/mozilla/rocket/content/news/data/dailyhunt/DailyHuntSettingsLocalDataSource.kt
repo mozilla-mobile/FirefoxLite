@@ -5,12 +5,14 @@ import android.text.TextUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
+import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.Result.Error
 import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
+import org.mozilla.rocket.content.news.data.NewsSourceInfo
 import org.mozilla.rocket.content.news.data.toJson
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
@@ -114,6 +116,8 @@ class DailyHuntSettingsLocalDataSource(private val appContext: Context) : NewsSe
     override fun getDefaultLanguage() = NewsLanguage("en", "en", "English")
 
     override fun getDefaultCategory() = NewsCategory("1", "News", 0, 1, true)
+
+    override fun getAdditionalSourceInfo() = NewsSourceInfo(R.drawable.ic_dailyhunt_logo)
 
     override fun shouldEnableNewsSettings() = true
 

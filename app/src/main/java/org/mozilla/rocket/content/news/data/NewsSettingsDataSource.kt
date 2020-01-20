@@ -13,6 +13,7 @@ interface NewsSettingsDataSource {
     suspend fun setUserPreferenceCategories(language: String, userPreferenceCategories: List<NewsCategory>)
     fun getDefaultLanguage(): NewsLanguage
     fun getDefaultCategory(): NewsCategory
+    fun getAdditionalSourceInfo(): NewsSourceInfo?
     fun shouldEnableNewsSettings(): Boolean
     fun shouldEnablePersonalizedNews(): Boolean
     fun shouldUserEnabledPersonalizedNews(): Boolean
