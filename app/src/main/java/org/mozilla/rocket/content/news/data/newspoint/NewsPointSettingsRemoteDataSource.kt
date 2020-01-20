@@ -94,7 +94,7 @@ class NewsPointSettingsRemoteDataSource(
 
     override fun shouldEnablePersonalizedNews() = dailyHuntProvider?.isEnableFromRemote ?: false
 
-    override fun shouldUserEnabledPersonalizedNews(): Boolean {
+    override fun hasUserEnabledPersonalizedNews(): Boolean {
         throw UnsupportedOperationException("Can't get personalized news user setting from server")
     }
 

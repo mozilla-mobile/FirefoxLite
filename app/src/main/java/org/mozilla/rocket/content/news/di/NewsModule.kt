@@ -6,6 +6,7 @@ import dagger.Provides
 import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
 import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
+import org.mozilla.rocket.content.news.domain.HasUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
@@ -18,7 +19,6 @@ import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowNewsLanguageSettingPageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowPersonalizedNewsOnboardingUseCase
-import org.mozilla.rocket.content.news.domain.ShouldUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.ui.NewsLanguageSettingViewModel
 import org.mozilla.rocket.content.news.ui.NewsPageStateViewModel
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
@@ -71,8 +71,8 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideShouldUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): ShouldUserEnabledPersonalizedNewsUseCase =
-        ShouldUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
+    fun provideShouldUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): HasUserEnabledPersonalizedNewsUseCase =
+        HasUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
     @JvmStatic
     @Provides
@@ -120,7 +120,7 @@ object NewsModule {
         setUserPreferenceLanguageUseCase: SetUserPreferenceLanguageUseCase,
         setUserPreferenceCategoriesUseCase: SetUserPreferenceCategoriesUseCase,
         shouldEnablePersonalizedNewsUseCase: ShouldEnablePersonalizedNewsUseCase,
-        shouldUserEnabledPersonalizedNewsUseCase: ShouldUserEnabledPersonalizedNewsUseCase,
+        hasUserEnabledPersonalizedNewsUseCase: HasUserEnabledPersonalizedNewsUseCase,
         setUserEnabledPersonalizedNewsUseCase: SetUserEnabledPersonalizedNewsUseCase,
         setNewsLanguageSettingPageStateUseCase: SetNewsLanguageSettingPageStateUseCase
     ): NewsSettingsViewModel =
@@ -130,7 +130,7 @@ object NewsModule {
             setUserPreferenceLanguageUseCase,
             setUserPreferenceCategoriesUseCase,
             shouldEnablePersonalizedNewsUseCase,
-            shouldUserEnabledPersonalizedNewsUseCase,
+            hasUserEnabledPersonalizedNewsUseCase,
             setUserEnabledPersonalizedNewsUseCase,
             setNewsLanguageSettingPageStateUseCase
         )

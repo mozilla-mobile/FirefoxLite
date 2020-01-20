@@ -129,7 +129,7 @@ class NewsPointSettingsLocalDataSource(private val appContext: Context) : NewsSe
         throw UnsupportedOperationException("Can't get personalized news enable setting from device")
     }
 
-    override fun shouldUserEnabledPersonalizedNews(): Boolean {
+    override fun hasUserEnabledPersonalizedNews(): Boolean {
         return preference.getBoolean(KEY_BOOL_IS_USER_ENABLED_PERSONALIZED_NEWS, false)
     }
 

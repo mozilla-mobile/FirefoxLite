@@ -80,7 +80,7 @@ class RssSettingsLocalDataSource(private val appContext: Context) : NewsSettings
         throw UnsupportedOperationException("Can't get personalized news enable setting from device")
     }
 
-    override fun shouldUserEnabledPersonalizedNews() = false
+    override fun hasUserEnabledPersonalizedNews() = false
 
     override fun setUserEnabledPersonalizedNews(enable: Boolean) = Unit
 

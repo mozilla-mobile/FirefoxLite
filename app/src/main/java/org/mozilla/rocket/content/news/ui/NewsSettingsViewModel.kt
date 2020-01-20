@@ -12,6 +12,7 @@ import org.mozilla.focus.utils.CharacterValidator
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
+import org.mozilla.rocket.content.news.domain.HasUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.SetNewsLanguageSettingPageStateUseCase
@@ -19,7 +20,6 @@ import org.mozilla.rocket.content.news.domain.SetUserEnabledPersonalizedNewsUseC
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceCategoriesUseCase
 import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
-import org.mozilla.rocket.content.news.domain.ShouldUserEnabledPersonalizedNewsUseCase
 import org.mozilla.rocket.download.SingleLiveEvent
 import java.util.Locale
 
@@ -29,7 +29,7 @@ class NewsSettingsViewModel(
     private val setUserPreferenceLanguage: SetUserPreferenceLanguageUseCase,
     private val setUserPreferenceCategories: SetUserPreferenceCategoriesUseCase,
     private val shouldEnablePersonalizedNews: ShouldEnablePersonalizedNewsUseCase,
-    private val shouldUserEnabledPersonalizedNews: ShouldUserEnabledPersonalizedNewsUseCase,
+    private val hasUserEnabledPersonalizedNews: HasUserEnabledPersonalizedNewsUseCase,
     private val setUserEnabledPersonalizedNews: SetUserEnabledPersonalizedNewsUseCase,
     private val setNewsLanguageSettingPageState: SetNewsLanguageSettingPageStateUseCase
 ) : ViewModel() {
@@ -60,7 +60,7 @@ class NewsSettingsViewModel(
         userPreferenceCategories: List<NewsCategory>
     ) = viewModelScope.launch(Dispatchers.Default) {
         setUserPreferenceCategories(language, userPreferenceCategories)
-        val enablePersonalization = shouldUserEnabledPersonalizedNews()
+        val enablePersonalization = hasUserEnabledPersonalizedNews()
         withContext(Dispatchers.Main) {
             emitUiModel(preferenceLanguage, userPreferenceCategories, newsLanguages)
             TelemetryWrapper.changeCategoryInSettings(effectCategory.name, effectCategory.isSelected, enablePersonalization)
@@ -75,7 +75,7 @@ class NewsSettingsViewModel(
 
     fun onLeaveSettingsPage() {
         val language = uiModel.value?.preferenceLanguage?.name?.toLowerCase(Locale.getDefault()) ?: ""
-        val enablePersonalization = shouldUserEnabledPersonalizedNews()
+        val enablePersonalization = hasUserEnabledPersonalizedNews()
         TelemetryWrapper.changeNewsSettings(language, enablePersonalization)
     }
 
@@ -96,7 +96,7 @@ class NewsSettingsViewModel(
                     // To avoid showing strange preference relayout animation
                     // Show personalized news preference after the news categories are loaded
                     if (shouldEnablePersonalizedNews()) {
-                        showPersonalizedNewsSetting.value = shouldUserEnabledPersonalizedNews()
+                        showPersonalizedNewsSetting.value = hasUserEnabledPersonalizedNews()
                     }
                 }
             }
