@@ -68,7 +68,7 @@ class NewsSettingsRepository(
 
     fun shouldEnablePersonalizedNews() = remoteDataSource.shouldEnablePersonalizedNews()
 
-    fun shouldUserEnabledPersonalizedNews() = localDataSource.shouldUserEnabledPersonalizedNews()
+    fun hasUserEnabledPersonalizedNews() = localDataSource.hasUserEnabledPersonalizedNews()
 
     fun setUserEnabledPersonalizedNews(enable: Boolean) = localDataSource.setUserEnabledPersonalizedNews(enable)
 

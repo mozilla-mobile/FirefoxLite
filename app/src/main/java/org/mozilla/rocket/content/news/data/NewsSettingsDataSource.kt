@@ -16,7 +16,7 @@ interface NewsSettingsDataSource {
     fun getAdditionalSourceInfo(): NewsSourceInfo?
     fun shouldEnableNewsSettings(): Boolean
     fun shouldEnablePersonalizedNews(): Boolean
-    fun shouldUserEnabledPersonalizedNews(): Boolean
+    fun hasUserEnabledPersonalizedNews(): Boolean
     fun setUserEnabledPersonalizedNews(enable: Boolean)
     fun shouldShowPersonalizedNewsOnboarding(): Boolean
     fun setPersonalizedNewsOnboardingHasShown()
