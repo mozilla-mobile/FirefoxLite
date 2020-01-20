@@ -58,14 +58,13 @@
         app:layout_constraintTop_toBottomOf="@id/personalized_news_onboarding_title"
         tools:text="Tap “Yes” to begin seeing news recommended for you by our AI news engine. You can turn off recommendations and control your settings anytime in News -&gt; Settings. Learn more" />
 
-    <Button
+    <TextView
         android:id="@+id/personalized_news_onboarding_btn_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="89dp"
-        android:background="@drawable/bg_shopping_coupon_code"
-        android:backgroundTint="@color/paletteLightGreyD100"
+        android:background="@drawable/bg_personalized_news_onboarding_button"
         android:foreground="@drawable/round_rectangle_ripple"
         android:gravity="center"
         android:minWidth="106dp"
@@ -82,7 +81,7 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <TextView
         android:id="@+id/personalized_news_onboarding_btn_yes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
