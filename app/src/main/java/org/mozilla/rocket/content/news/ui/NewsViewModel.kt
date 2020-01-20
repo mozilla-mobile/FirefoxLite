@@ -12,13 +12,18 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.news.data.NewsItem
+import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsParameter
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
 import org.mozilla.rocket.content.news.domain.nextPage
+import org.mozilla.rocket.content.news.ui.adapter.NewsSourceLogoUiModel
 import org.mozilla.rocket.content.news.ui.adapter.NewsUiModel
 import org.mozilla.rocket.download.SingleLiveEvent
 
-class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
+class NewsViewModel(
+    private val loadNews: LoadNewsUseCase,
+    private val getAdditionalSourceInfo: GetAdditionalSourceInfoUseCase
+) : ViewModel() {
 
     private val categoryNewsMap = HashMap<String, MutableLiveData<List<DelegateAdapter.UiModel>>>()
     private val categoryParameterMap = HashMap<String, LoadNewsParameter>()
@@ -77,20 +82,32 @@ class NewsViewModel(private val loadNews: LoadNewsUseCase) : ViewModel() {
         if (newsResults is Result.Success) {
             val newsItems = newsResults.data
             withContext(Dispatchers.Main) {
-                emitUiModel(loadNewsParameter.topic, newsItems)
+                if (loadNewsParameter.pages == 1) {
+                    emitUiModel(
+                        loadNewsParameter.topic,
+                        getAdditionalSourceInfo()?.let { NewsSourceLogoUiModel(it.resourceId) },
+                        newsItems
+                    )
+                } else {
+                    emitUiModel(loadNewsParameter.topic, null, newsItems)
+                }
             }
         } else {
             withContext(Dispatchers.Main) {
-                emitUiModel(loadNewsParameter.topic, emptyList())
+                emitUiModel(loadNewsParameter.topic, null, emptyList())
             }
         }
     }
 
-    private fun emitUiModel(category: String, newsItems: List<NewsItem>) {
+    private fun emitUiModel(category: String, newsSourceLogoUiModel: NewsSourceLogoUiModel?, newsItems: List<NewsItem>) {
         val newsData = categoryNewsMap[category] ?: return
         val results = arrayListOf<DelegateAdapter.UiModel>()
         newsData.value?.let {
             results.addAll(it)
+        }
+
+        newsSourceLogoUiModel?.let {
+            results.add(it)
         }
         results.addAll(newsItems.map { NewsMapper.toNewsUiModel(it) })
         newsData.value = results

@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
+import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsLanguagesUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsSettingsUseCase
 import org.mozilla.rocket.content.news.domain.LoadNewsUseCase
@@ -60,6 +61,11 @@ object NewsModule {
 
     @JvmStatic
     @Provides
+    fun provideGetAdditonalSourceInfoUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): GetAdditionalSourceInfoUseCase =
+        GetAdditionalSourceInfoUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
+
+    @JvmStatic
+    @Provides
     fun provideSetUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): SetUserEnabledPersonalizedNewsUseCase =
         SetUserEnabledPersonalizedNewsUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
@@ -95,8 +101,11 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideNewsViewModel(loadNews: LoadNewsUseCase): NewsViewModel =
-        NewsViewModel(loadNews)
+    fun provideNewsViewModel(
+        loadNews: LoadNewsUseCase,
+        getAdditionalSourceInfoUseCase: GetAdditionalSourceInfoUseCase
+    ): NewsViewModel =
+        NewsViewModel(loadNews, getAdditionalSourceInfoUseCase)
 
     @JvmStatic
     @Provides

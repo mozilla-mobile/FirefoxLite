@@ -11,6 +11,7 @@ import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
+import org.mozilla.rocket.content.news.data.NewsSourceInfo
 import org.mozilla.rocket.content.news.data.rss.RssSettingsLocalDataSource.Companion.DUMMY_NEWS_LANGUAGE
 import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
@@ -67,6 +68,10 @@ class RssSettingsRemoteDataSource(private val newsProvider: NewsProvider?) : New
 
     override fun getDefaultCategory(): NewsCategory {
         throw UnsupportedOperationException("Can't get default category setting from server")
+    }
+
+    override fun getAdditionalSourceInfo(): NewsSourceInfo? {
+        throw UnsupportedOperationException("Can't get the additional source info from server")
     }
 
     override fun shouldEnableNewsSettings(): Boolean {

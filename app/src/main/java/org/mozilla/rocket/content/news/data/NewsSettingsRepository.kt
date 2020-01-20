@@ -64,6 +64,8 @@ class NewsSettingsRepository(
 
     fun getDefaultCategory() = localDataSource.getDefaultCategory()
 
+    fun getAdditionalSourceInfo(): NewsSourceInfo? = localDataSource.getAdditionalSourceInfo()
+
     fun shouldEnablePersonalizedNews() = remoteDataSource.shouldEnablePersonalizedNews()
 
     fun shouldUserEnabledPersonalizedNews() = localDataSource.shouldUserEnabledPersonalizedNews()

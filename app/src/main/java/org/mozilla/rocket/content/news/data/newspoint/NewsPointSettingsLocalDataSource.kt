@@ -12,6 +12,7 @@ import org.mozilla.rocket.content.Result.Success
 import org.mozilla.rocket.content.news.data.NewsCategory
 import org.mozilla.rocket.content.news.data.NewsLanguage
 import org.mozilla.rocket.content.news.data.NewsSettingsDataSource
+import org.mozilla.rocket.content.news.data.NewsSourceInfo
 import org.mozilla.rocket.content.news.data.toJson
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
@@ -119,6 +120,8 @@ class NewsPointSettingsLocalDataSource(private val appContext: Context) : NewsSe
     override fun getDefaultLanguage() = NewsLanguage("English", "1", "English")
 
     override fun getDefaultCategory() = NewsCategory.getCategoryById("top-news")!!
+
+    override fun getAdditionalSourceInfo(): NewsSourceInfo? = null
 
     override fun shouldEnableNewsSettings() = true
 
