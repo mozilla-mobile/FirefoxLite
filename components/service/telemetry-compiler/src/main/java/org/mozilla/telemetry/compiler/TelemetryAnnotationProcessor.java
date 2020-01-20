@@ -39,8 +39,8 @@ import javax.tools.StandardLocation;
 
 public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
-    private static String fileReadme = "/docs/events.md";
-    private static String fileAmplitudeMapping = "/docs/view.sql";
+    private static final String fileReadme = "/docs/events.md";
+    private static final String fileAmplitudeMapping = "/docs/view.sql";
     private static final String FILE_SOURCE_SQL = "view-replace.sql";
     private static final String FILE_SOURCE_SQL_PLACE_HOLDER = "---REPLACE---ME---";
 
@@ -77,10 +77,6 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
         final String projectRootDir = processingEnv.getOptions().get("projectRootDir");
 
-        fileReadme = projectRootDir + fileReadme;
-
-        fileAmplitudeMapping = projectRootDir + fileAmplitudeMapping;
-
         if (annotatedElements.size() == 0) {
             return false;
         }
@@ -88,13 +84,13 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
             final String header = "| Event | category | method | object | value | extra |\n" +
                     "| ---- | ---- | ---- | ---- | ---- | ---- |\n";
-            genDoc(annotatedElements, header, fileReadme, '|');
+            genDoc(annotatedElements, header, projectRootDir + fileReadme, '|');
 
-            genSQL(annotatedElements, fileAmplitudeMapping);
+            genSQL(annotatedElements, projectRootDir + fileAmplitudeMapping);
 
 
         } catch (Exception e) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Exception while creating Telemetry related documents" + e);
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Exception while creating Telemetry related documents" + e);
             e.printStackTrace();
         }
 
@@ -104,6 +100,8 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
 
     private void genDoc(Collection<? extends Element> annotatedElements, String header, String path, char separator) throws FileNotFoundException {
+
+
 
         final File file = new File(path);
         if (file.exists()) {
@@ -145,6 +143,8 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
                 }
                 sb.append('"');
                 sb.append(end);
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "===" + sb.toString());
+
                 printWriter.println(sb);
                 sb = new StringBuffer();
             } else {
