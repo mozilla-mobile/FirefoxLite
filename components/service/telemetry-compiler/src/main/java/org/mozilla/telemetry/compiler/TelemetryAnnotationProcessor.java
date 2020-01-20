@@ -242,11 +242,14 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
     }
 
     String verifyEventDuplication(TelemetryDoc annotation, HashMap<String, Boolean> lookup) {
-        String key = annotation.category() + annotation.method() + annotation.object() + annotation.value();
-        if (lookup.containsKey(key)) {
-            return key;
+        StringBuilder key = new StringBuilder(annotation.category() + annotation.method() + annotation.object() + annotation.value());
+        for (TelemetryExtra extra : annotation.extras()) {
+            key.append(extra.name());
         }
-        lookup.put(key, true);
+        if (lookup.containsKey(key.toString())) {
+            return key.toString();
+        }
+        lookup.put(key.toString(), true);
         return null;
 
     }
