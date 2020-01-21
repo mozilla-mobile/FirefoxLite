@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,13 +33,12 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
-import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
 public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
-    private static String fileReadme = "/docs/events.md";
-    private static String fileAmplitudeMapping = "/docs/view.sql";
+    private static final String fileReadme = "/docs/events.md";
+    private static final String fileAmplitudeMapping = "/docs/view.sql";
     private static final String FILE_SOURCE_SQL = "view-replace.sql";
     private static final String FILE_SOURCE_SQL_PLACE_HOLDER = "---REPLACE---ME---";
 
@@ -77,10 +75,6 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
         final String projectRootDir = processingEnv.getOptions().get("projectRootDir");
 
-        fileReadme = projectRootDir + fileReadme;
-
-        fileAmplitudeMapping = projectRootDir + fileAmplitudeMapping;
-
         if (annotatedElements.size() == 0) {
             return false;
         }
@@ -88,13 +82,13 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
             final String header = "| Event | category | method | object | value | extra |\n" +
                     "| ---- | ---- | ---- | ---- | ---- | ---- |\n";
-            genDoc(annotatedElements, header, fileReadme, '|');
+            genDoc(annotatedElements, header, projectRootDir + fileReadme, '|');
 
-            genSQL(annotatedElements, fileAmplitudeMapping);
+            genSQL(annotatedElements, projectRootDir + fileAmplitudeMapping);
 
 
         } catch (Exception e) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "Exception while creating Telemetry related documents" + e);
+            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Exception while creating Telemetry related documents" + e);
             e.printStackTrace();
         }
 
@@ -248,11 +242,14 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
     }
 
     String verifyEventDuplication(TelemetryDoc annotation, HashMap<String, Boolean> lookup) {
-        String key = annotation.category() + annotation.method() + annotation.object() + annotation.value();
-        if (lookup.containsKey(key)) {
-            return key;
+        StringBuilder key = new StringBuilder(annotation.category() + annotation.method() + annotation.object() + annotation.value());
+        for (TelemetryExtra extra : annotation.extras()) {
+            key.append(extra.name());
         }
-        lookup.put(key, true);
+        if (lookup.containsKey(key.toString())) {
+            return key.toString();
+        }
+        lookup.put(key.toString(), true);
         return null;
 
     }
