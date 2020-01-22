@@ -197,7 +197,7 @@
   <string name="rate_app_dialog_btn_feedback">Tinggalkeun Pangdeudeul</string>
   <string name="rate_app_notification_action_feedback">PANGDEUDEUL</string>
   <string name="share_app_dialog_text_title">Bagikeun %1$s ka babaturan!</string>
-  <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Rikrik data\n- Téwakan layar bedas</string>
+  <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Sungsi Balanja Pinter\n- Kaulinan Gratis, warta sabiwir hiji</string>
   <string name="share_app_dialog_btn_share">Bagikeun</string>
   <string name="share_app_promotion_text">Euy, cobaan panyungsi gancang tur hampang ti %3$s. %1$s %2$s</string>
   <string name="update_app_dialog_btn_update_now">ANYARKEUN AYEUNA!</string>
@@ -333,7 +333,7 @@
   <string name="gaming_vertical_category_2">Unduh pikeun maén</string>
   <string name="gaming_vertical_new">Anyar</string>
   <string name="gaming_vertical_hint_title">Aksés gancang ka kaulinan karesep</string>
-  <string name="gaming_vertical_hint_body">Pencét pikeun nyieun tarabas ka layar tepas.</string>
+  <string name="gaming_vertical_hint_body">Pencét lila pikeun nyieun takulan ka layar tepas.</string>
   <string name="gaming_vertical_hint_button">Heug</string>
   <string name="gaming_vertical_shortcut_message">takulan geus dijieun.</string>
   <string name="gaming_vertical_menu_option_1">Bagikeun kaulinan</string>
@@ -353,9 +353,9 @@
   <string name="gaming_vertical_genre_11">Olahraga &amp; Balap</string>
   <string name="gaming_vertical_genre_12">Awéwé</string>
   <string name="onboarding_2_introduction_title">Anyar pisan %1$s</string>
-  <string name="onboarding_2_introduction_description">Angger Gancang jeung Énténg. Kami nambahan paluruh balanja pinter jeung kontén pikeun ngajadikeun langlangan internét leuwih pikaresepeun jeung ngeunaheun!</string>
+  <string name="onboarding_2_introduction_description">Panyungsi gancang jeung énténg, kiwari diémbohan ku pitur hébring! Kami nambahkeun paluruh balanja pinter jeung kontén ngarah nyungsi jadi pikaresepeun!</string>
   <string name="onboarding_2_content_services_news_shopping_games">Toél pikeun maca warta anu keur sabiwir hiji, nyiar harga kortingan atawa maén kaulinan gratis panghadéna pikeun kalangenan!</string>
-  <string name="onboarding_2_content_services_news_games">Toél pikeun maca warta anu keur sabiwir hiji atawa maén kaulinan gratis panghadéna pikeun kalangenan!</string>
+  <string name="onboarding_2_content_services_news_games">Toél pikeun maca warta anu keur sabiwir hiji atawa maén kaulinan gratis panghadéna!</string>
   <string name="onboarding_2_content_services_games">Toél pikeun maén kaulinan gratis panghadéna pikeun kalangenan!</string>
   <string name="onboarding_2_content_services_news_travel">Toél pikeun maca warta anu keur sabiwir hiji, ngararancang pelesir jeung lianna!</string>
   <string name="onboarding_2_smart_shopping_search_title">Paluruh Balanja Pinter</string>
@@ -460,4 +460,14 @@
   <string name="travel_onboarding_save_button">HEUG</string>
   <string name="travel_find_destination_placeholder_2">Asupkeun jugjugeun</string>
   <string name="travel_search_engine_1">Tingali hasil dina %1$s</string>
+  <string name="travel_search_engine_2">Tingali hasil dina sungsian nyaba pinter</string>
+  <string name="travel_search_engine_fxlite">Tingali hasil dina %1$s Travel Discovery</string>
+  <string name="travel_dialog_1_title">Panggihan Nu Lianna!</string>
+  <string name="travel_dialog_1_description">Langlang anu kudu disiapkeun, akomodasi, jeung lianna di %1$s Travel Discovery.</string>
+  <string name="travel_dialog_1_action_1">COBAAN TRAVEL DISCOVERY</string>
+  <string name="travel_dialog_1_action_2">MOAL, NUHUN</string>
+  <string name="travel_dialog_2_title">Resep Maké Travel Discovery?</string>
+  <string name="travel_dialog_2_description">Anjeun bisa nyetél %1$s Travel Discovery salaku mesin sungsi baku anjeun pikeun nyaba.</string>
+  <string name="travel_dialog_2_checkbox">Ulah nanya deui</string>
+  <string name="travel_dialog_2_action">SETÉL JADI BAKU</string>
 </resources>
