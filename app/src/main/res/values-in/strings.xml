@@ -275,6 +275,12 @@
   <string name="news_category_option_jokes">Lelucon</string>
   <string name="news_category_option_nation">Berita Lokal</string>
   <string name="logo_text">Layanan disediakan oleh</string>
+  <string name="recommended_news_title">Rekomendasi Berita Untuk Anda</string>
+  <string name="recommended_news_content">Ketuk “Ya” untuk mulai melihat rekomendasi berita untuk Anda dengan mesin AI berita kami. Anda dapat mematikan rekomendasi dan mengatur pengaturan Anda kapanpun di Berita-&gt;Pengaturan. %1$s</string>
+  <string name="recommended_news_preference_language">Pilih Bahasa Berita\nPilihan Anda</string>
+  <string name="recommended_news_preference_toggle">Pengalaman berita yang dipersonalisasi</string>
+  <string name="recommended_news_preference_disable_dialog">Apakah Anda ingin menonaktifkan rekomendasi berita? Ketuk “YA” untuk hanya menampilkan artikel berita terbaru.</string>
+  <string name="recommended_news_preference_enable_dialog">Apakah Anda ingin mengaktifkan fitur rekomendasi berita? Ketuk “YA” untuk mulai melihat pilihan artikel berita yang direkomendasikan.</string>
   <string name="private_tab">Tab pribadi</string>
   <string name="private_browsing_title">Penjelajahan Pribadi</string>
   <string name="private_browsing_erase_message">Hapus riwayat penjelajahan pribadi</string>
@@ -456,4 +462,12 @@
   <string name="travel_search_engine_1">Lihat hasilnya di %1$s</string>
   <string name="travel_search_engine_2">Lihat hasilnya dalam pencarian wisata pintar</string>
   <string name="travel_search_engine_fxlite">Lihat hasil dalam Penemuan Perjalanan %1$s</string>
+  <string name="travel_dialog_1_title">Temukan Lebih Banyak!</string>
+  <string name="travel_dialog_1_description">Temukan berbagai aktivitas, akomodasi, dan masih banyak lagi di %1$s Jelajah Perjalanan.</string>
+  <string name="travel_dialog_1_action_1">COBALAH JELAJAH PERJALANAN</string>
+  <string name="travel_dialog_1_action_2">TIDAK, TERIMA KASIH</string>
+  <string name="travel_dialog_2_title">Senang Menggunakan Jelajah Perjalanan?</string>
+  <string name="travel_dialog_2_description">Anda dapat mengatur Jelajah Perjalanan %1$s sebagai mesin pencari baku untuk perjalanan.</string>
+  <string name="travel_dialog_2_checkbox">Jangan tanyakan lagi</string>
+  <string name="travel_dialog_2_action">TETAPKAN SEBAGAI BAKU</string>
 </resources>
