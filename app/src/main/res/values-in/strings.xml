@@ -333,7 +333,7 @@
   <string name="gaming_vertical_category_2">Unduh untuk bermain</string>
   <string name="gaming_vertical_new">Baru</string>
   <string name="gaming_vertical_hint_title">Akses cepat ke permainan favorit Anda</string>
-  <string name="gaming_vertical_hint_body">Tekan untuk membuat pintasan ke layar beranda Anda.</string>
+  <string name="gaming_vertical_hint_body">Tekan dan tahan untuk membuat pintasan ke layar beranda Anda.</string>
   <string name="gaming_vertical_hint_button">OK</string>
   <string name="gaming_vertical_shortcut_message">pintasan dibuat.</string>
   <string name="gaming_vertical_menu_option_1">Bagikan permainan</string>
@@ -445,7 +445,7 @@
   <string name="travel_more">Lebih banyak</string>
   <string name="travel_content_ig_link">#%1$s di Instagram</string>
   <string name="travel_content_yt_view_count">%1$s tayangan</string>
-  <string name="travel_content_yt_view_count_single_view">%1$s tayangan</string>
+  <string name="travel_content_yt_view_count_single_view">1 tayangan</string>
   <string name="travel_content_wiki_source_name">Wikipedia</string>
   <string name="travel_hotel_detail_1">Wi-Fi gratis</string>
   <string name="travel_hotel_detail_2">Kartu kredit tidak diperlukan</string>
