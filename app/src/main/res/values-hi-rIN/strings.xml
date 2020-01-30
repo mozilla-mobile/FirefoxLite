@@ -275,6 +275,12 @@
   <string name="news_category_option_jokes">चुटकुले</string>
   <string name="news_category_option_nation">राष्ट्र</string>
   <string name="logo_text">द्वारा सेवा प्राप्त</string>
+  <string name="recommended_news_title">आपके लिए अनुशंसित समाचार</string>
+  <string name="recommended_news_content">हमारे AI समाचार इंजन द्वारा आपके लिए अनुशंसित समाचार देखना शुरू करने के लिए “हां” दबाएं। आप जब चाहें समाचार-&gt;सेटिंग में जाकर सिफारिशों को बंद कर सकते हैं और अपने सेटिंग्स को नियंत्रित कर सकते हैं। %1$s</string>
+  <string name="recommended_news_preference_language">अपने पसंद की\nसमाचार भाषा चुनें</string>
+  <string name="recommended_news_preference_toggle">व्यक्तिगत समाचार अनुभव</string>
+  <string name="recommended_news_preference_disable_dialog">क्या आप अनुशंसित समाचारों को अक्षम करना चाहते हैं? केवल नवीनतम समाचार लेखों को देखने के लिए “हां” दबाएं।</string>
+  <string name="recommended_news_preference_enable_dialog">क्या आप अनुशंसित समाचारों को सक्षम करना चाहते हैं? अनुशंसित समाचार लेखों को देखने के लिए “हां” दबाएं।</string>
   <string name="private_tab">निजी टैब</string>
   <string name="private_browsing_title">निजी ब्राउज़िंग</string>
   <string name="private_browsing_erase_message">निजी ब्राउज़िंग इतिहास मिटाएं</string>
@@ -456,4 +462,5 @@
   <string name="travel_search_engine_1">%1$s में खोज परिणाम देखें</string>
   <string name="travel_search_engine_2">स्मार्ट यात्रा खोज में परिणामों को देखें</string>
   <string name="travel_search_engine_fxlite">%1$s यात्रा खोज में परिणामों को देखें</string>
+  <string name="travel_dialog_1_title">और जानें!</string>
 </resources>
