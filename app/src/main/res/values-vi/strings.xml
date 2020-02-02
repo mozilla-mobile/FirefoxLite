@@ -279,6 +279,8 @@
   <string name="recommended_news_content">Chạm “Có” để bắt đầu xem tin tức được đề xuất cho bạn bởi công cụ tin tức AI của chúng tôi. Bạn có thể tắt đề xuất và kiểm soát cài đặt của mình bất cứ lúc nào trong Tin tức-&gt;Cài đặt. %1$s</string>
   <string name="recommended_news_preference_language">Chọn ưu tiên của bạn\nNgôn ngữ tin tức</string>
   <string name="recommended_news_preference_toggle">Trải nghiệm tin tức cá nhân</string>
+  <string name="recommended_news_preference_disable_dialog">Bạn có muốn vô hiệu hóa các tin tức được đề xuất? Chạm “CÓ” để chỉ hiển thị các bài báo mới nhất.</string>
+  <string name="recommended_news_preference_enable_dialog">Bạn có muốn kích hoạt tính năng tin tức được đề xuất? Chạm “CÓ” để bắt đầu thấy lựa chọn các bài báo được đề xuất.</string>
   <string name="private_tab">Thẻ riêng tư</string>
   <string name="private_browsing_title">Duyệt web riêng tư</string>
   <string name="private_browsing_erase_message">Xóa lịch sử duyệt web riêng tư</string>
