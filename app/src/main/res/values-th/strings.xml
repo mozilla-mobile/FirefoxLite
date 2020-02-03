@@ -275,6 +275,8 @@
   <string name="news_category_option_jokes">เรื่องตลก</string>
   <string name="news_category_option_nation">ข่าวท้องถิ่น</string>
   <string name="logo_text">ให้บริการโดย</string>
+  <string name="recommended_news_title">ข่าวแนะนำสำหรับคุณ</string>
+  <string name="recommended_news_preference_toggle">ประสบการณ์ข่าวส่วนบุคคล</string>
   <string name="private_tab">แท็บส่วนตัว</string>
   <string name="private_browsing_title">การเรียกดูแบบส่วนตัว</string>
   <string name="private_browsing_erase_message">ล้างประวัติการเรียกดูแบบส่วนตัว</string>
@@ -357,11 +359,13 @@
   <string name="content_home_context_menu_share_link">แบ่งปันลิงก์</string>
   <string name="content_home_error_message">อุ๊ย!\nมีบางอย่างไม่ถูกต้อง</string>
   <string name="private_home_title">การท่องเว็บส่วนตัวขั้นสูง</string>
+  <string name="private_home_description_2">ป้องกันตัวคุณไม่ให้ถูกติดตาม</string>
   <string name="msrp_reward_title">รางวัล</string>
   <string name="msrp_reward_category_1">ภารกิจ</string>
   <string name="msrp_reward_category_2">ของขวัญ</string>
   <string name="msrp_reward_challenge_expire">หมดอายุเมื่อ %1$s</string>
   <string name="msrp_challenge_details_sign_in_to_start">ป้อนที่อยู่อีเมลของคุณเพื่อเริ่มต้นใช้งาน</string>
+  <string name="msrp_challenge_button_1">เข้าร่วมด้วย!</string>
   <string name="msrp_challenge_tou_terms_of_use">เงื่อนไขการใช้งาน</string>
   <string name="msrp_challenge_button_2">ออกจากภารกิจ</string>
   <string name="msrp_challenge_separator">วิธีการแลกใช้</string>
@@ -387,12 +391,15 @@
   <string name="msrp_disqualification_button_1">ฉันเข้าใจ</string>
   <string name="msrp_disqualification_title_3">บัญชีถูกปิดใช้งาน</string>
   <string name="msrp_disqualification_button_3">ปิด</string>
+  <string name="msrp_reward_redeem_nodata">รวบรวมรางวัลทั้งหมดแล้ว</string>
   <string name="msrp_reward_challenge_nointernet">ตรวจสอบให้แน่ใจว่าคุณได้เชื่อมต่อกับอินเทอร์เน็ต</string>
   <string name="msrp_reward_challenge_error_button">ลองอีกครั้ง</string>
   <string name="msrp_reward_challenge_error">อุปส์! มีบางอย่างผิดพลาด</string>
   <string name="msrp_activitykilled_snackbar_button">แลกใช้</string>
   <string name="travel_vertical_title">การท่องเที่ยว</string>
   <string name="travel_vertical_category_1">สำรวจ</string>
+  <string name="travel_vertical_category_2">สิ่งที่อยากทำก่อนตาย</string>
+  <string name="travel_destination_subcategory_1">เดินทางด้วยงบพอเพียง</string>
   <string name="travel_find_destination_title">คุณต้องการไปที่ไหน?</string>
   <string name="travel_find_destination_placeholder_1">ลอง “บาหลี”…</string>
   <string name="travel_detail_page_subcategory_content">สำรวจ %1$s</string>
@@ -406,6 +413,7 @@
   <string name="travel_hotel_detail_2">ไม่ต้องใช้บัตรเครดิต</string>
   <string name="travel_hotel_price_from">จาก</string>
   <string name="travel_empty_state_button">สำรวจเมือง</string>
+  <string name="travel_snack_bar_saved_message">ถูกบันทึกไว้ในสิ่งที่อยากทำก่อนตายแล้ว</string>
   <string name="travel_snack_bar_button">ดู</string>
   <string name="travel_onboarding_save_title">รัก %1$s?</string>
   <string name="travel_onboarding_save_button">ตกลง</string>

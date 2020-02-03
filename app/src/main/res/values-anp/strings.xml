@@ -136,8 +136,8 @@
   <string name="browsing_history_menu_delete">हटाबियै</string>
   <string name="browsing_history_dialog_confirm_clear_message">सब ब्राउजिंग इतिहास मेटैइयै?</string>
   <string name="browsing_history_dialog_btn_clear">मेटैइयै</string>
-  <string name="remove_from_list">लिस्ट से हटैइयै</string>
-  <string name="delete_file">फाइल हटैइयै</string>
+  <string name="remove_from_list">लिस्ट से हटाबोॅ</string>
+  <string name="delete_file">फाइल हटाबोॅ</string>
   <string name="screenshot_saved">स्क्रीनशॉट सहेजलो गेलै</string>
   <string name="screenshot_failed">स्क्रीनशॉट केपचर फेल होए गेलै</string>
   <string name="screenshot_illustration">पूरे पेज क स्क्रीनशॉट कैप्चर होए गेलै ...</string>
@@ -197,8 +197,8 @@
   <string name="setting_default_browser_notification_title">सेटिंग्स बदलि रहलो छै...</string>
   <string name="setting_default_browser_notification_text">इ मअ कुछ समय लागतअ</string>
   <string name="setting_default_browser_notification_clickable_text">डिफ़ॉल्ट ब्राउज़र सेट करे ल टैप करियै</string>
-  <string name="tab_tray_close_tabs_btn_text">सब बंद करियै</string>
-  <string name="tab_tray_close_tabs_dialog_msg">सब टैब बंद करियै?</string>
+  <string name="tab_tray_close_tabs_btn_text">सब बंद करोॅ</string>
+  <string name="tab_tray_close_tabs_dialog_msg">सब टैबो बंद करोॅ?</string>
   <string name="themetoy_onboarding_title">अपनो जीवन क रंग़िइयै!</string>
   <string name="themetoy_onboarding_description">थीमस स्विच करै ल होम बेकग्रउंड पर डबल क्लिक करियै.</string>
   <string name="bookmark_saved">बुकमार्क सहेजल गेलै</string>
