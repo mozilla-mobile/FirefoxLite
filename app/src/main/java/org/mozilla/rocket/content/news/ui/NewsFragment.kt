@@ -106,7 +106,6 @@ class NewsFragment : Fragment() {
     }
 
     private fun bindNewsListData() {
-
         val newsLiveData: LiveData<List<DelegateAdapter.UiModel>>? =
             newsViewModel.startToObserveNews(getCategory(), getLanguage())
         newsLiveData?.observe(viewLifecycleOwner, Observer { items ->

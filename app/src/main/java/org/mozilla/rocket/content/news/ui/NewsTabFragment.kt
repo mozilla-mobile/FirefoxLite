@@ -74,6 +74,7 @@ class NewsTabFragment : Fragment() {
         newsTabViewModel.uiModel.observe(viewLifecycleOwner, Observer { settings ->
             settings?.let {
                 if (newsSettings != it.newsSettings) {
+                    newsViewModel.clear()
                     newsSettings = it.newsSettings
                     setupViewPager(view, it.newsSettings)
                     news_setting.visibility = if (it.hasSettingsMenu)
