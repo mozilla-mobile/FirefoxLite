@@ -333,7 +333,7 @@
   <string name="gaming_vertical_category_2">चलाने के लिए डाउनलोड करें</string>
   <string name="gaming_vertical_new">नया</string>
   <string name="gaming_vertical_hint_title">आपके पसंदीदा गेम तक तीव्र पहुंच</string>
-  <string name="gaming_vertical_hint_body">अपने होम स्क्रीन पर शॉर्टकट बनाने के लिए दबाएं।</string>
+  <string name="gaming_vertical_hint_body">अपने होम स्क्रीन पर कोई शॉर्टकट बनाने के लिए देर तक दबाएं।</string>
   <string name="gaming_vertical_hint_button">ठीक</string>
   <string name="gaming_vertical_shortcut_message">शॉर्टकट बना दिया गया।</string>
   <string name="gaming_vertical_menu_option_1">गेम साझा करें</string>
@@ -463,4 +463,11 @@
   <string name="travel_search_engine_2">स्मार्ट यात्रा खोज में परिणामों को देखें</string>
   <string name="travel_search_engine_fxlite">%1$s यात्रा खोज में परिणामों को देखें</string>
   <string name="travel_dialog_1_title">और जानें!</string>
+  <string name="travel_dialog_1_description">%1$s यात्रा खोज में करने के रोमांचक कार्य, आवास तथा और भी बहुत सी चीज़ें देखें।</string>
+  <string name="travel_dialog_1_action_1">यात्रा खोज आज़माएं</string>
+  <string name="travel_dialog_1_action_2">नहीं, शुक्रिया</string>
+  <string name="travel_dialog_2_title">यात्रा खोज पसंद आया?</string>
+  <string name="travel_dialog_2_description">यात्रा के लिए आप %1$s यात्रा खोज को अपने तयशुदा खोज इंजन के रूप में सेट कर सकते हैं।</string>
+  <string name="travel_dialog_2_checkbox">मुझसे दोबारा ना पूछें</string>
+  <string name="travel_dialog_2_action">तयशुदा बनाएं</string>
 </resources>
