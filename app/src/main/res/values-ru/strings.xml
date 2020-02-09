@@ -328,7 +328,7 @@
   <string name="gaming_vertical_category_2">Загрузите, чтобы поиграть</string>
   <string name="gaming_vertical_new">Новинка</string>
   <string name="gaming_vertical_hint_title">Получайте быстрый доступ к вашим любимым играм</string>
-  <string name="gaming_vertical_hint_body">Нажмите, чтобы создать ярлык на домашнем экране.</string>
+  <string name="gaming_vertical_hint_body">Длинное нажатие создаёт ярлык на домашнем экране.</string>
   <string name="gaming_vertical_hint_button">ОК</string>
   <string name="gaming_vertical_shortcut_message">ярлык создан.</string>
   <string name="gaming_vertical_menu_option_1">Поделиться игрой</string>
