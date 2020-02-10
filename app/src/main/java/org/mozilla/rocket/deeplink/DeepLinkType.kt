@@ -9,6 +9,7 @@ import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
+import org.mozilla.rocket.deeplink.task.StartShoppingSearchActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import org.mozilla.rocket.deeplink.task.Task
@@ -108,6 +109,15 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: URI) {
             addTask(StartRewardActivityTask())
+        }
+    },
+
+    SHOPPING_SEARCH_HOME {
+        override fun match(uri: URI) =
+            isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_SEARCH == uri.path && uri.query.isNullOrEmpty()
+
+        override fun addTasks(uri: URI) {
+            addTask(StartShoppingSearchActivityTask())
         }
     },
 

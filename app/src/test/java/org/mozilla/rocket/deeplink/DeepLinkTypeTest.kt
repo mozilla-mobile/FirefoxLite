@@ -10,6 +10,7 @@ import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
+import org.mozilla.rocket.deeplink.task.StartShoppingSearchActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import java.net.URLEncoder
@@ -118,5 +119,13 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.REWARD_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartRewardActivityTask)
+    }
+
+    @Test
+    fun `When shopping search home uri is matched, launch shopping search activity`() {
+        val deepLinkType = DeepLinkType.parse("rocket://content/shopping-search")
+
+        assertEquals(DeepLinkType.SHOPPING_SEARCH_HOME, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is StartShoppingSearchActivityTask)
     }
 }

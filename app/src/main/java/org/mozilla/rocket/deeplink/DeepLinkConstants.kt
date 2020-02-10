@@ -12,4 +12,5 @@ object DeepLinkConstants {
     const val PATH_TRAVEL = "/travel"
     const val PATH_TRAVEL_ITEM = "/travel/item"
     const val PATH_REWARD = "/reward"
+    const val PATH_SHOPPING_SEARCH = "/shopping-search"
 }
