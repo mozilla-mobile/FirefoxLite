@@ -172,7 +172,7 @@ class HomeViewModel(
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
-            .filterIndexed { index, _ -> index < TOP_SITES_MAX_PAGE_SIZE }
+            .take(TOP_SITES_MAX_PAGE_SIZE)
             .map { SitePage(it) }
 
     fun onPageForeground() {
