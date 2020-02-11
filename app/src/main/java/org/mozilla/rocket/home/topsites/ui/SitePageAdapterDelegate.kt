@@ -26,8 +26,8 @@ class SitePageViewHolder(
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(Site.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
-            add(Site.RemovableSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
+            add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
+            add(Site.UrlSite.RemovableSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
         }
     )
 

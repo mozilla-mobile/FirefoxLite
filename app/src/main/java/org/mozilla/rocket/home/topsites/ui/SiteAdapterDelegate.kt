@@ -44,43 +44,47 @@ class SiteViewHolder(
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
         val site = uiModel as Site
-        text.text = site.title
-        text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
+        when (site) {
+            is Site.UrlSite -> {
+                text.text = site.title
+                text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
 
-        // Tried AsyncTask and other simple offloading, the performance drops significantly.
-        // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
-        // Favicon
-        val favicon = StrictModeViolation.tempGrant(
-            { obj: StrictMode.ThreadPolicy.Builder -> obj.permitDiskReads() },
-            { getFavicon(itemView.context, site) }
-        )
-        content_image.visibility = View.VISIBLE
-        content_image.setImageBitmap(favicon)
+                // Tried AsyncTask and other simple offloading, the performance drops significantly.
+                // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
+                // Favicon
+                val favicon = StrictModeViolation.tempGrant(
+                        { obj: StrictMode.ThreadPolicy.Builder -> obj.permitDiskReads() },
+                        { getFavicon(itemView.context, site) }
+                )
+                content_image.visibility = View.VISIBLE
+                content_image.setImageBitmap(favicon)
 
-        // Background color
-        val backgroundColor = when (site) {
-            is Site.FixedSite -> Color.WHITE
-            is Site.RemovableSite -> getBackgroundColor(site.url, favicon)
-        }
-        ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(backgroundColor))
+                // Background color
+                val backgroundColor = when (site) {
+                    is Site.UrlSite.FixedSite -> Color.WHITE
+                    is Site.UrlSite.RemovableSite -> getBackgroundColor(site.url, favicon)
+                }
+                ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(backgroundColor))
 
-        // Pin
-        PinViewWrapper(pin_indicator).run {
-            visibility = when (site) {
-                is Site.FixedSite -> View.GONE
-                is Site.RemovableSite -> if (site.isPinned) View.VISIBLE else View.GONE
+                // Pin
+                PinViewWrapper(pin_indicator).run {
+                    visibility = when (site) {
+                        is Site.UrlSite.FixedSite -> View.GONE
+                        is Site.UrlSite.RemovableSite -> if (site.isPinned) View.VISIBLE else View.GONE
+                    }
+                    setPinColor(backgroundColor)
+                }
+
+                itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
+                itemView.setOnLongClickListener {
+                    it.tag = TOP_SITE_LONG_CLICK_TARGET
+                    homeViewModel.onTopSiteLongClicked(site, adapterPosition)
+                }
             }
-            setPinColor(backgroundColor)
-        }
-
-        itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
-        itemView.setOnLongClickListener {
-            it.tag = TOP_SITE_LONG_CLICK_TARGET
-            homeViewModel.onTopSiteLongClicked(site, adapterPosition)
         }
     }
 
-    private fun getFavicon(context: Context, site: Site): Bitmap {
+    private fun getFavicon(context: Context, site: Site.UrlSite): Bitmap {
         val faviconUri = site.iconUri
         var favicon: Bitmap? = null
         if (faviconUri != null) {
@@ -141,48 +145,49 @@ class SiteViewHolder(
     }
 }
 
-sealed class Site(
-    open val id: Long,
-    open val title: String,
-    open val url: String,
-    open val iconUri: String?,
-    open val viewCount: Long,
-    open val lastViewTimestamp: Long
-) : DelegateAdapter.UiModel() {
+sealed class Site : DelegateAdapter.UiModel() {
+    sealed class UrlSite(
+        open val id: Long,
+        open val title: String,
+        open val url: String,
+        open val iconUri: String?,
+        open val viewCount: Long,
+        open val lastViewTimestamp: Long
+    ) : Site() {
+        data class FixedSite(
+            override val id: Long,
+            override val title: String,
+            override val url: String,
+            override val iconUri: String?,
+            override val viewCount: Long,
+            override val lastViewTimestamp: Long
+        ) : UrlSite(id, title, url, iconUri, viewCount, lastViewTimestamp)
 
-    data class FixedSite(
-        override val id: Long,
-        override val title: String,
-        override val url: String,
-        override val iconUri: String?,
-        override val viewCount: Long,
-        override val lastViewTimestamp: Long
-    ) : Site(id, title, url, iconUri, viewCount, lastViewTimestamp)
-
-    data class RemovableSite(
-        override val id: Long,
-        override val title: String,
-        override val url: String,
-        override val iconUri: String?,
-        override val viewCount: Long,
-        override val lastViewTimestamp: Long,
-        val isDefault: Boolean,
-        val isPinned: Boolean
-    ) : Site(id, title, url, iconUri, viewCount, lastViewTimestamp)
+        data class RemovableSite(
+            override val id: Long,
+            override val title: String,
+            override val url: String,
+            override val iconUri: String?,
+            override val viewCount: Long,
+            override val lastViewTimestamp: Long,
+            val isDefault: Boolean,
+            val isPinned: Boolean
+        ) : UrlSite(id, title, url, iconUri, viewCount, lastViewTimestamp)
+    }
 }
 
-fun Site.toSiteModel(): org.mozilla.focus.history.model.Site =
+fun Site.UrlSite.toSiteModel(): org.mozilla.focus.history.model.Site =
         org.mozilla.focus.history.model.Site(
-                id,
-                title,
-                url,
-                viewCount,
-                lastViewTimestamp,
-                iconUri
+            id,
+            title,
+            url,
+            viewCount,
+            lastViewTimestamp,
+            iconUri
         ).apply {
             isDefault = when (this@toSiteModel) {
-                is Site.FixedSite -> true
-                is Site.RemovableSite -> this@toSiteModel.isDefault
+                is Site.UrlSite.FixedSite -> true
+                is Site.UrlSite.RemovableSite -> this@toSiteModel.isDefault
             }
         }
 

@@ -87,8 +87,10 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         val sizeLimit = TOP_SITES_SIZE
         if (sites.size > sizeLimit) {
             val outboundSites = sites.takeLast(sites.size - sizeLimit)
-            outboundSites.filter { it is Site.RemovableSite && it.isDefault }
+            outboundSites.filter { it is Site.UrlSite.RemovableSite && it.isDefault }
                     .forEach { defaultSite ->
+                        // Must be a RemovableSite
+                        defaultSite as Site.UrlSite.RemovableSite
                         topSitesRepo.removeDefaultSite(defaultSite.toSiteModel())
                     }
         }
@@ -99,11 +101,11 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
     }
 }
 
-private fun List<org.mozilla.focus.history.model.Site>.toFixedSite(): List<Site> =
+private fun List<org.mozilla.focus.history.model.Site>.toFixedSite(): List<Site.UrlSite> =
         map { it.toFixedSite() }
 
-private fun org.mozilla.focus.history.model.Site.toFixedSite(): Site =
-        Site.FixedSite(
+private fun org.mozilla.focus.history.model.Site.toFixedSite(): Site.UrlSite =
+        Site.UrlSite.FixedSite(
             id = id,
             title = title,
             url = url,
@@ -112,11 +114,11 @@ private fun org.mozilla.focus.history.model.Site.toFixedSite(): Site =
             lastViewTimestamp = lastViewTimestamp
         )
 
-private fun List<org.mozilla.focus.history.model.Site>.toRemovableSite(topSitesRepo: TopSitesRepo): List<Site> =
+private fun List<org.mozilla.focus.history.model.Site>.toRemovableSite(topSitesRepo: TopSitesRepo): List<Site.UrlSite> =
         map { it.toRemovableSite(topSitesRepo) }
 
-private fun org.mozilla.focus.history.model.Site.toRemovableSite(topSitesRepo: TopSitesRepo): Site =
-        Site.RemovableSite(
+private fun org.mozilla.focus.history.model.Site.toRemovableSite(topSitesRepo: TopSitesRepo): Site.UrlSite =
+        Site.UrlSite.RemovableSite(
             id = id,
             title = title,
             url = url,

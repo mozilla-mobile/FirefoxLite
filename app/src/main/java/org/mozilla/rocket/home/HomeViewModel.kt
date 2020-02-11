@@ -219,20 +219,24 @@ class HomeViewModel(
     }
 
     fun onTopSiteClicked(site: Site, position: Int) {
-        openBrowser.value = site.url
-        val allowToLogTitle = when (site) {
-            is Site.FixedSite -> true
-            is Site.RemovableSite -> site.isDefault
+        when (site) {
+            is Site.UrlSite -> {
+                openBrowser.value = site.url
+                val allowToLogTitle = when (site) {
+                    is Site.UrlSite.FixedSite -> true
+                    is Site.UrlSite.RemovableSite -> site.isDefault
+                }
+                val title = if (allowToLogTitle) site.title else ""
+                val pageIndex = requireNotNull(topSitesPageIndex.value)
+                val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+                val isAffiliate = site is Site.UrlSite.FixedSite
+                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
+            }
         }
-        val title = if (allowToLogTitle) site.title else ""
-        val pageIndex = requireNotNull(topSitesPageIndex.value)
-        val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-        val isAffiliate = site is Site.FixedSite
-        TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
     }
 
     fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
-            if (site is Site.RemovableSite) {
+            if (site is Site.UrlSite.RemovableSite) {
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
                 showTopSiteMenu.value = ShowTopSiteMenuData(site, topSitePosition)
@@ -242,18 +246,25 @@ class HomeViewModel(
             }
 
     fun onPinTopSiteClicked(site: Site, position: Int) {
-        pinTopSiteUseCase(site)
-        updateTopSitesData()
-        val pageIndex = requireNotNull(topSitesPageIndex.value)
-        val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-        TelemetryWrapper.pinTopSite(site.title, topSitePosition)
+        when (site) {
+            is Site.UrlSite -> {
+                pinTopSiteUseCase(site)
+                updateTopSitesData()
+                val pageIndex = requireNotNull(topSitesPageIndex.value)
+                val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+                TelemetryWrapper.pinTopSite(site.title, topSitePosition)
+            }
+        }
     }
 
     fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
-        site as Site.RemovableSite
-        removeTopSiteUseCase(site)
-        updateTopSitesData()
-        TelemetryWrapper.removeTopSite(site.isDefault)
+        when (site) {
+            is Site.UrlSite.RemovableSite -> {
+                removeTopSiteUseCase(site)
+                updateTopSitesData()
+                TelemetryWrapper.removeTopSite(site.isDefault)
+            }
+        }
     }
 
     fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
