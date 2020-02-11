@@ -29,6 +29,7 @@ import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.home.topsites.domain.GetTopSitesWithContentItemUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -49,6 +50,7 @@ import org.mozilla.rocket.util.ToastMessage
 class HomeViewModel(
     private val settings: Settings,
     private val getTopSitesUseCase: GetTopSitesUseCase,
+    private val getTopSitesWithContentItemUseCase: GetTopSitesWithContentItemUseCase,
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -169,7 +171,12 @@ class HomeViewModel(
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
-        sitePages.value = getTopSitesUseCase().toSitePages()
+        // TODO: add remote config
+        if (true) {
+            sitePages.value = getTopSitesWithContentItemUseCase().toSitePages()
+        } else {
+            sitePages.value = getTopSitesUseCase().toSitePages()
+        }
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
@@ -294,6 +301,16 @@ class HomeViewModel(
             }
             TelemetryWrapper.endMissionTask(currentDay, hasMissionCompleted)
         }
+    }
+
+    fun onContentHubItemClicked(item: Site.ContentItem) {
+        val contentHubItem = when (item) {
+            is Site.ContentItem.Travel -> ContentHub.Item.Travel(item.iconResId, item.textResId, item.isUnread)
+            is Site.ContentItem.Games -> ContentHub.Item.Games(item.iconResId, item.textResId, item.isUnread)
+            is Site.ContentItem.News -> ContentHub.Item.News(item.iconResId, item.textResId, item.isUnread)
+            is Site.ContentItem.Shopping -> ContentHub.Item.Shopping(item.iconResId, item.textResId, item.isUnread)
+        }
+        onContentHubItemClicked(contentHubItem)
     }
 
     fun onTopSiteContentItemClicked(item: Site.ContentItem) = viewModelScope.launch {

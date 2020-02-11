@@ -86,7 +86,7 @@ class SiteViewHolder(
                 content_image.setImageResource(site.iconResId)
                 ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(Color.WHITE))
 
-                itemView.setOnClickListener { homeViewModel.onTopSiteContentItemClicked(site) }
+                itemView.setOnClickListener { homeViewModel.onContentHubItemClicked(site) }
             }
         }
         text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
