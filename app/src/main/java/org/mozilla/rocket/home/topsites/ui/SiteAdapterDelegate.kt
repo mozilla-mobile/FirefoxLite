@@ -174,6 +174,13 @@ sealed class Site : DelegateAdapter.UiModel() {
             val isPinned: Boolean
         ) : UrlSite(id, title, url, iconUri, viewCount, lastViewTimestamp)
     }
+
+    sealed class ContentItem(open val iconResId: Int, open val textResId: Int, open var isUnread: Boolean) : Site() {
+        data class Travel(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
+        data class Shopping(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
+        data class News(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
+        data class Games(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
+    }
 }
 
 fun Site.UrlSite.toSiteModel(): org.mozilla.focus.history.model.Site =
