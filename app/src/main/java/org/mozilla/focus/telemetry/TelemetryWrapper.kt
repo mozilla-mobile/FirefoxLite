@@ -32,6 +32,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.data.TabSwipeTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.strictmodeviolator.StrictModeViolation
 import org.mozilla.telemetry.Telemetry
@@ -2629,12 +2630,21 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
             ])
-    fun clickContentHub(item: ContentHub.Item) {
-        val vertical = when (item) {
-            is ContentHub.Item.Shopping -> Extra_Value.SHOPPING
-            is ContentHub.Item.Games -> Extra_Value.GAME
-            is ContentHub.Item.Travel -> Extra_Value.TRAVEL
-            is ContentHub.Item.News -> Extra_Value.LIFESTYLE
+    fun clickContentHub(item: ContentHub.Item? = null, contentItem: Site.ContentItem? = null) {
+        val vertical = when {
+            item != null -> when (item) {
+                is ContentHub.Item.Shopping -> Extra_Value.SHOPPING
+                is ContentHub.Item.Games -> Extra_Value.GAME
+                is ContentHub.Item.Travel -> Extra_Value.TRAVEL
+                is ContentHub.Item.News -> Extra_Value.LIFESTYLE
+            }
+            contentItem != null -> when (contentItem) {
+                is Site.ContentItem.Shopping -> Extra_Value.SHOPPING
+                is Site.ContentItem.Games -> Extra_Value.GAME
+                is Site.ContentItem.Travel -> Extra_Value.TRAVEL
+                is Site.ContentItem.News -> Extra_Value.LIFESTYLE
+            }
+            else -> throw RuntimeException("at least once of the parameters 'item' or 'contentItem' is required")
         }
         EventBuilder(Category.ACTION, Method.CLICK, Object.CONTENT_HUB)
                 .extra(Extra.VERTICAL, vertical)

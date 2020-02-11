@@ -47,7 +47,6 @@ class SiteViewHolder(
         when (site) {
             is Site.UrlSite -> {
                 text.text = site.title
-                text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
 
                 // Tried AsyncTask and other simple offloading, the performance drops significantly.
                 // FIXME: 9/21/18 by saving bitmap color, cause FaviconUtils.getDominantColor runs slow.
@@ -81,7 +80,16 @@ class SiteViewHolder(
                     homeViewModel.onTopSiteLongClicked(site, adapterPosition)
                 }
             }
+            is Site.ContentItem -> {
+                text.setText(site.textResId)
+                content_image.visibility = View.VISIBLE
+                content_image.setImageResource(site.iconResId)
+                ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(Color.WHITE))
+
+                itemView.setOnClickListener { homeViewModel.onTopSiteContentItemClicked(site) }
+            }
         }
+        text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
     }
 
     private fun getFavicon(context: Context, site: Site.UrlSite): Bitmap {

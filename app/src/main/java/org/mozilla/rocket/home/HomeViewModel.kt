@@ -92,6 +92,7 @@ class HomeViewModel(
     val openBrowser = SingleLiveEvent<String>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
+    val openContentPageTopSite = SingleLiveEvent<Site.ContentItem>()
     val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showToast = SingleLiveEvent<ToastMessage>()
     val openRewardPage = SingleLiveEvent<Unit>()
@@ -270,13 +271,41 @@ class HomeViewModel(
     fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
         openContentPage.value = item
         readContentHubItemUseCase(item.getItemType())
-        TelemetryWrapper.clickContentHub(item)
+        TelemetryWrapper.clickContentHub(item = item)
         val checkInResult = checkInMissionUseCase(
             when (item) {
                 is ContentHub.Item.Travel -> CheckInMissionUseCase.PingType.Travel()
                 is ContentHub.Item.Shopping -> CheckInMissionUseCase.PingType.Shopping()
                 is ContentHub.Item.News -> CheckInMissionUseCase.PingType.Lifestyle()
                 is ContentHub.Item.Games -> CheckInMissionUseCase.PingType.Game()
+            }
+        )
+        checkInResult.data?.let { (mission, hasMissionCompleted) ->
+            val (message, currentDay) = when (val progress = mission.missionProgress) {
+                is MissionProgress.TypeDaily -> progress.message to progress.currentDay
+                null -> error("Unknown MissionProgress type")
+            }
+            if (message.isNotEmpty()) {
+                showToast.value = ToastMessage(message)
+            }
+            if (hasMissionCompleted) {
+                showMissionCompleteDialog.value = mission
+                TelemetryWrapper.showChallengeCompleteMessage()
+            }
+            TelemetryWrapper.endMissionTask(currentDay, hasMissionCompleted)
+        }
+    }
+
+    fun onTopSiteContentItemClicked(item: Site.ContentItem) = viewModelScope.launch {
+        openContentPageTopSite.value = item
+        readContentHubItemUseCase(item.getItemType())
+        TelemetryWrapper.clickContentHub(contentItem = item)
+        val checkInResult = checkInMissionUseCase(
+            when (item) {
+                is Site.ContentItem.Travel -> CheckInMissionUseCase.PingType.Travel()
+                is Site.ContentItem.Shopping -> CheckInMissionUseCase.PingType.Shopping()
+                is Site.ContentItem.News -> CheckInMissionUseCase.PingType.Lifestyle()
+                is Site.ContentItem.Games -> CheckInMissionUseCase.PingType.Game()
             }
         )
         checkInResult.data?.let { (mission, hasMissionCompleted) ->
@@ -407,4 +436,12 @@ private fun ContentHub.Item.getItemType() =
             is ContentHub.Item.Shopping -> ContentHubRepo.SHOPPING
             is ContentHub.Item.News -> ContentHubRepo.NEWS
             is ContentHub.Item.Games -> ContentHubRepo.GAMES
+        }
+
+private fun Site.ContentItem.getItemType() =
+        when (this) {
+            is Site.ContentItem.Travel -> ContentHubRepo.TRAVEL
+            is Site.ContentItem.Shopping -> ContentHubRepo.SHOPPING
+            is Site.ContentItem.News -> ContentHubRepo.NEWS
+            is Site.ContentItem.Games -> ContentHubRepo.GAMES
         }
