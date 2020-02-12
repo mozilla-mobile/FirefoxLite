@@ -12,7 +12,7 @@ open class GetTopSitesWithContentItemUseCase(
 ) {
 
     open suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
-        (getNonLiveDataContentHubItemsUseCase()?.toSites() ?: emptyList()) + getTopSitesUseCase()
+        (getNonLiveDataContentHubItemsUseCase()?.toSites() ?: emptyList()) + getTopSitesUseCase(enableFixedSites = false)
     }
 }
 

@@ -13,7 +13,7 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         topSitesRepo.getConfiguredFixedSites() ?: topSitesRepo.getDefaultFixedSites() ?: emptyList()
     }
 
-    open suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
+    open suspend operator fun invoke(enableFixedSites: Boolean = true): List<Site> = withContext(Dispatchers.IO) {
         val pinnedSites = topSitesRepo.getPinnedSites()
         val defaultSites = topSitesRepo.getChangedDefaultSites()
                 ?: topSitesRepo.getConfiguredDefaultSites()
@@ -22,7 +22,7 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         val historySites = topSitesRepo.getHistorySites()
 
         composeTopSites(
-            fixedSites,
+            if (enableFixedSites) fixedSites else emptyList(),
             pinnedSites,
             defaultSites,
             historySites
