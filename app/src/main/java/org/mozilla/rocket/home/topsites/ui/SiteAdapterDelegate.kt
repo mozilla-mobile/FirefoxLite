@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.item_top_site.content_image
 import kotlinx.android.synthetic.main.item_top_site.pin_indicator
+import kotlinx.android.synthetic.main.item_top_site.red_dot
 import kotlinx.android.synthetic.main.item_top_site.text
 import org.json.JSONException
 import org.json.JSONObject
@@ -73,6 +74,8 @@ class SiteViewHolder(
                     }
                     setPinColor(backgroundColor)
                 }
+                // Red dot
+                red_dot.visibility = View.GONE
 
                 itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
                 itemView.setOnLongClickListener {
@@ -85,6 +88,14 @@ class SiteViewHolder(
                 content_image.visibility = View.VISIBLE
                 content_image.setImageResource(site.iconResId)
                 ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(Color.WHITE))
+                // Pin
+                PinViewWrapper(pin_indicator).visibility = View.GONE
+                // Red dot
+                red_dot.visibility = if (site.isUnread) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
 
                 itemView.setOnClickListener { homeViewModel.onContentHubItemClicked(site) }
                 itemView.setOnLongClickListener(null)
