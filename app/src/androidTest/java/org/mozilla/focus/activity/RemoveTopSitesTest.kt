@@ -72,7 +72,7 @@ class RemoveTopSitesTest {
 
         // Pick a test site to delete
         val siteIndex = 4
-        val testSite = siteList[siteIndex]
+        val testSite = siteList[siteIndex] as Site.UrlSite
 
         onView(withId(R.id.main_list)).check(matches(isDisplayed()))
 
@@ -110,7 +110,7 @@ class RemoveTopSitesTest {
 
         // Pick a test site to test
         val siteIndex = 4
-        val testSite = siteList[siteIndex]
+        val testSite = siteList[siteIndex] as Site.UrlSite
 
         onView(withId(R.id.main_list)).check(matches(isDisplayed()))
 
