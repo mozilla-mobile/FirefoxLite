@@ -13,6 +13,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_ico
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_text
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
+import kotlinx.android.synthetic.main.fragment_home.home_fragment_title
 import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
@@ -254,11 +256,17 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             shouldShowContentHubItemText.observe(this@HomeFragment, Observer {
                 content_hub.setShowText(it)
             })
+            // TODO: modify this after the content hub abtesting finished
             combineLatest(contentHubItems, isContentHubMergeIntoTopSite)
                     .observe(this@HomeFragment, Observer { (items, isMergeIntoTopSite) ->
                         if (isMergeIntoTopSite) {
                             content_hub_layout.visibility = View.INVISIBLE
                             content_hub.setItems(emptyList())
+                            home_fragment_title.apply {
+                                layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                                    verticalBias = 0.36f
+                                }
+                            }
                         } else {
                             content_hub_layout.visibility = if (items.isEmpty()) {
                                 View.INVISIBLE
@@ -266,6 +274,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                                 View.VISIBLE
                             }
                             content_hub.setItems(items)
+                            home_fragment_title.apply {
+                                layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                                    verticalBias = 0.26f
+                                }
+                            }
                         }
                     })
             openContentPage.observe(this@HomeFragment, Observer {
