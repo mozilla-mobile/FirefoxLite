@@ -27,25 +27,17 @@ class ContentHubRepo(private val appContext: Context) {
     })
 
     fun getConfiguredContentHubItemsLive(): LiveData<List<ContentHubItem>?> {
-        val unreadEnabledTypes = getUnreadEnabledTypes()
         val readTypes = getReadTypesLive()
         val contentHubItemsJsonStr = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_ITEMS)
                 .takeIf { it.isNotEmpty() }
         return readTypes.map {
-            contentHubItemsJsonStr?.jsonStringToContentHubItems(unreadEnabledTypes, it)
+            contentHubItemsJsonStr?.jsonStringToContentHubItems(it)
         }
     }
 
     fun getDefaultContentHubItems(): List<ContentHubItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.content_hub_default_items)
-                    ?.jsonStringToContentHubItems(enabledUnreadTypes = emptyList(), readTypes = getReadTypes())
-
-    private fun getUnreadEnabledTypes(): List<Int> =
-            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_UNREAD_ENABLED_ITEMS)
-                    .takeIf { it.isNotEmpty() }
-                    ?.jsonStringToTypeList() ?: emptyList()
-
-    fun isUnreadEnabled(): Boolean = getUnreadEnabledTypes().isNotEmpty()
+                    ?.jsonStringToContentHubItems(readTypes = getReadTypes())
 
     private fun getReadTypes(): List<Int> =
             preference.getString(SHARED_PREF_KEY_READ_CONTENT_HUB, "")?.jsonStringToTypeList() ?: emptyList()
@@ -97,15 +89,14 @@ private fun String.jsonStringToTypeList(): List<Int>? {
     }
 }
 
-private fun String.jsonStringToContentHubItems(enabledUnreadTypes: List<Int>, readTypes: List<Int>): List<ContentHubItem>? {
+private fun String.jsonStringToContentHubItems(readTypes: List<Int>): List<ContentHubItem>? {
     return try {
         val jsonArray = this.toJsonArray()
         (0 until jsonArray.length())
                 .map { index -> jsonArray.getJSONObject(index) }
                 .map { jsonObject -> jsonObject.getInt(JSON_KEY_TYPE) }
                 .map { type ->
-                    val unreadEnabled = enabledUnreadTypes.contains(type)
-                    val isUnread = unreadEnabled && !readTypes.contains(type)
+                    val isUnread = !readTypes.contains(type)
                     createContentHubItem(type, isUnread)
                 }
     } catch (e: JSONException) {
