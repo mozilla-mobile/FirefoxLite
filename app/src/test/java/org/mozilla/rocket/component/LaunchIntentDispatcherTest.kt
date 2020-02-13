@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Intent
 import android.content.Intent.ACTION_MAIN
 import androidx.test.core.app.ApplicationProvider
-import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_COMMAND
-import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.PUSH_OPEN_URL
+import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.Companion.PUSH_COMMAND
+import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.Companion.PUSH_OPEN_URL
 
 // @RunWith(RobolectricTestRunner::class)
 class LaunchIntentDispatcherTest {
