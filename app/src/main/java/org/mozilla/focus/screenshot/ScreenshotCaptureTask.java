@@ -9,6 +9,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.firebase.perf.FirebasePerformance;
+import com.google.firebase.perf.metrics.AddTrace;
+import com.google.firebase.perf.metrics.Trace;
 
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.screenshot.model.Screenshot;
@@ -30,19 +35,26 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
 
     private final Context context;
     private ChromeViewModel.ScreenCaptureTelemetryData telemetryData;
+    Trace trace;
 
     public ScreenshotCaptureTask(Context context, ChromeViewModel.ScreenCaptureTelemetryData telemetryData) {
         this.context = context.getApplicationContext();
         this.telemetryData = telemetryData;
     }
 
+    @AddTrace(name = "screenshot doInBackground")
     @Override
     protected String doInBackground(Object... params) {
         String title = (String) params[0];
         String url = (String) params[1];
         Bitmap content = (Bitmap) params[2];
         long timestamp = System.currentTimeMillis();
+        Log.d("timestamp", "timestamp=======" + timestamp);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
+        trace = FirebasePerformance.getInstance().newTrace("test_trace");
+        trace.start();
+        trace.putAttribute("screenshot_timestamp", timestamp + "");
 
         try {
             final String path = saveBitmapToStorage(context, "Screenshot_" + sdf.format(new Date(timestamp)), content);
@@ -99,5 +111,13 @@ public class ScreenshotCaptureTask extends AsyncTask<Object, Void, String> {
         return path;
     }
 
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        String timestamp = trace.getAttribute("screenshot_timestamp");
+        trace.stop();
+        Log.d("timestamp", "timestamp=======" + timestamp);
+
+    }
 }
 

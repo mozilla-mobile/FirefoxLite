@@ -62,7 +62,7 @@ public class DownloadCompleteIdlingResource implements IdlingResource {
     public void registerDownloadCompleteObserver() {
         final MainActivity activity = activityWeakReference.get();
         if (activity != null) {
-            activity.getContentResolver().registerContentObserver(DownloadContract.Download.CONTENT_URI, true, contentObserver);
+                activity.getContentResolver().registerContentObserver(DownloadContract.Download.CONTENT_URI, true, contentObserver);
         }
     }
 

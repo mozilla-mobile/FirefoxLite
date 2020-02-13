@@ -18,6 +18,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.firebase.perf.FirebasePerformance
+import com.google.firebase.perf.metrics.AddTrace
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_home.account_layout
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
@@ -104,12 +106,24 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         appContext.showFxToast(it)
     }
 
+    @AddTrace(name = "HomeOnCreateTrace", enabled = true /* optional */)
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        val trace = FirebasePerformance.getInstance().newTrace("home_trace")
+        trace.start()
+
+        trace.putAttribute("home_timestamp", "nevin")
+        if (System.currentTimeMillis() % 2L == 0L) {
+            trace.incrementMetric("rand_even", 1)
+        } else {
+            trace.incrementMetric("rand_odd", 1)
+        }
+
         homeViewModel = getActivityViewModel(homeViewModelCreator)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
         downloadIndicatorViewModel = getActivityViewModel(downloadIndicatorViewModelCreator)
+        trace.stop()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -212,9 +226,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun initTopSites() {
         val specifiedFaviconBgColors = getFaviconBgColorsFromResource(appContext)
         topSitesAdapter = DelegateAdapter(
-            AdapterDelegatesManager().apply {
-                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
-            }
+                AdapterDelegatesManager().apply {
+                    add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
+                }
         )
         main_list.apply {
             adapter = this@HomeFragment.topSitesAdapter

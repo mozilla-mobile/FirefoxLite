@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -219,6 +220,7 @@ dependencies {
     implementation "androidx.preference:preference:${Versions.preference}"
     implementation "androidx.palette:palette:${Versions.palette}"
     implementation "androidx.core:core-ktx:${Versions.ktx}"
+    implementation 'com.google.firebase:firebase-perf:19.0.5'
 
     // Architecture components
     implementation "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
