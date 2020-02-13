@@ -152,16 +152,16 @@ class HomeTest {
 }
 
 private val TEST_TOP_SITES = listOf(
-    Site.FixedSite(-100, "test fixed 1", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
-    Site.FixedSite(-200, "test fixed 2", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
-    Site.FixedSite(-300, "test fixed 3", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
-    Site.FixedSite(-400, "test fixed 4", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
-    Site.RemovableSite(-1, "test site 1", "file:///android_asset/gpl.html", "ic_facebook.png", 20, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-2, "test site 2", "file:///android_asset/gpl.html", "ic_facebook.png", 18, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-3, "test site 3", "file:///android_asset/gpl.html", "ic_facebook.png", 16, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-4, "test site 4", "file:///android_asset/gpl.html", "ic_facebook.png", 14, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-5, "test site 5", "file:///android_asset/gpl.html", "ic_facebook.png", 12, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-6, "test site 6", "file:///android_asset/gpl.html", "ic_facebook.png", 10, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-7, "test site 7", "file:///android_asset/gpl.html", "ic_facebook.png", 8, 0, isDefault = true, isPinned = false),
-    Site.RemovableSite(-8, "test site 8", "file:///android_asset/gpl.html", "ic_facebook.png", 6, 0, isDefault = true, isPinned = false)
+    Site.UrlSite.FixedSite(-100, "test fixed 1", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
+    Site.UrlSite.FixedSite(-200, "test fixed 2", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
+    Site.UrlSite.FixedSite(-300, "test fixed 3", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
+    Site.UrlSite.FixedSite(-400, "test fixed 4", "file:///android_asset/gpl.html", "ic_facebook.png", 0, 0),
+    Site.UrlSite.RemovableSite(-1, "test site 1", "file:///android_asset/gpl.html", "ic_facebook.png", 20, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-2, "test site 2", "file:///android_asset/gpl.html", "ic_facebook.png", 18, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-3, "test site 3", "file:///android_asset/gpl.html", "ic_facebook.png", 16, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-4, "test site 4", "file:///android_asset/gpl.html", "ic_facebook.png", 14, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-5, "test site 5", "file:///android_asset/gpl.html", "ic_facebook.png", 12, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-6, "test site 6", "file:///android_asset/gpl.html", "ic_facebook.png", 10, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-7, "test site 7", "file:///android_asset/gpl.html", "ic_facebook.png", 8, 0, isDefault = true, isPinned = false),
+    Site.UrlSite.RemovableSite(-8, "test site 8", "file:///android_asset/gpl.html", "ic_facebook.png", 6, 0, isDefault = true, isPinned = false)
 )

@@ -103,6 +103,10 @@ public class AppConfigWrapper {
         return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_SHARE_APP_DIALOG_MSG);
     }
 
+    public static Boolean isContentHubMergeIntoTopSite() {
+        return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.BOOL_CONTENT_HUB_MERGE_INTO_TOP_SITE);
+    }
+
     public static List<BottomBarItemAdapter.ItemData> getBottomBarItems() {
         List<BottomBarItemAdapter.ItemData> itemDataList = new ArrayList<>();
         String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_BOTTOM_BAR_ITEMS_V2);

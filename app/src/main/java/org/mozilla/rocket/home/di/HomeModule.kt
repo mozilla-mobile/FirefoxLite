@@ -9,6 +9,7 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
+import org.mozilla.rocket.home.contenthub.domain.GetNonLiveDataContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
@@ -25,6 +26,7 @@ import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.home.topsites.domain.GetTopSitesWithContentItemUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -51,6 +53,7 @@ object HomeModule {
     fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
+        getTopSitesWithContentItemUseCase: GetTopSitesWithContentItemUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -77,6 +80,7 @@ object HomeModule {
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
+        getTopSitesWithContentItemUseCase,
         topSitesConfigsUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
@@ -106,6 +110,14 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetTopSitesUseCase(topSitesRepo: TopSitesRepo): GetTopSitesUseCase = GetTopSitesUseCase(topSitesRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetTopSitesWithContentItemUseCase(
+        getTopSitesUseCase: GetTopSitesUseCase,
+        getNonLiveDataContentHubItemsUseCase: GetNonLiveDataContentHubItemsUseCase
+    ): GetTopSitesWithContentItemUseCase = GetTopSitesWithContentItemUseCase(getTopSitesUseCase, getNonLiveDataContentHubItemsUseCase)
 
     @JvmStatic
     @Singleton
@@ -140,6 +152,11 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetContentHubItemsUseCase = GetContentHubItemsUseCase(contentHubRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetNonLiveDataContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetNonLiveDataContentHubItemsUseCase = GetNonLiveDataContentHubItemsUseCase(contentHubRepo)
 
     @JvmStatic
     @Singleton

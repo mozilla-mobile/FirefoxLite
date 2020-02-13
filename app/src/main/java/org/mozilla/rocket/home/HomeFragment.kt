@@ -13,6 +13,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_ico
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_text
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
+import kotlinx.android.synthetic.main.fragment_home.home_fragment_title
 import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
@@ -56,6 +58,7 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
+import org.mozilla.rocket.extension.combineLatest
 import org.mozilla.rocket.extension.showFxToast
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
@@ -237,7 +240,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 ScreenNavigator.get(context).showBrowserScreen(url, true, false)
             })
             showTopSiteMenu.observe(this@HomeFragment, Observer { (site, position) ->
-                site as Site.RemovableSite
+                site as Site.UrlSite.RemovableSite
                 val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
                 val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
                 showTopSiteMenu(anchorView, allowToPin, site, position)
@@ -253,14 +256,31 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             shouldShowContentHubItemText.observe(this@HomeFragment, Observer {
                 content_hub.setShowText(it)
             })
-            contentHubItems.observe(this@HomeFragment, Observer {
-                content_hub_layout.visibility = if (it.isEmpty()) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
-                }
-                content_hub.setItems(it)
-            })
+            // TODO: modify this after the content hub abtesting finished
+            combineLatest(contentHubItems, isContentHubMergeIntoTopSite)
+                    .observe(this@HomeFragment, Observer { (items, isMergeIntoTopSite) ->
+                        if (isMergeIntoTopSite) {
+                            content_hub_layout.visibility = View.INVISIBLE
+                            content_hub.setItems(emptyList())
+                            home_fragment_title.apply {
+                                layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                                    verticalBias = 0.36f
+                                }
+                            }
+                        } else {
+                            content_hub_layout.visibility = if (items.isEmpty()) {
+                                View.INVISIBLE
+                            } else {
+                                View.VISIBLE
+                            }
+                            content_hub.setItems(items)
+                            home_fragment_title.apply {
+                                layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                                    verticalBias = 0.26f
+                                }
+                            }
+                        }
+                    })
             openContentPage.observe(this@HomeFragment, Observer {
                 val context = requireContext()
                 when (it) {

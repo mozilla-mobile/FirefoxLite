@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.first
@@ -29,6 +30,7 @@ import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.home.topsites.domain.GetTopSitesWithContentItemUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -49,6 +51,7 @@ import org.mozilla.rocket.util.ToastMessage
 class HomeViewModel(
     private val settings: Settings,
     private val getTopSitesUseCase: GetTopSitesUseCase,
+    private val getTopSitesWithContentItemUseCase: GetTopSitesWithContentItemUseCase,
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -84,6 +87,7 @@ class HomeViewModel(
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
     val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
+    val isContentHubMergeIntoTopSite: LiveData<Boolean> = MutableLiveData<Boolean>().apply { value = AppConfigWrapper.isContentHubMergeIntoTopSite() }
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -92,6 +96,7 @@ class HomeViewModel(
     val openBrowser = SingleLiveEvent<String>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
+    val openContentPageTopSite = SingleLiveEvent<Site.ContentItem>()
     val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showToast = SingleLiveEvent<ToastMessage>()
     val openRewardPage = SingleLiveEvent<Unit>()
@@ -168,11 +173,15 @@ class HomeViewModel(
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
-        sitePages.value = getTopSitesUseCase().toSitePages()
+        if (isContentHubMergeIntoTopSite.value == true) {
+            sitePages.value = getTopSitesWithContentItemUseCase().toSitePages()
+        } else {
+            sitePages.value = getTopSitesUseCase().toSitePages()
+        }
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
-            .filterIndexed { index, _ -> index < TOP_SITES_MAX_PAGE_SIZE }
+            .take(TOP_SITES_MAX_PAGE_SIZE)
             .map { SitePage(it) }
 
     fun onPageForeground() {
@@ -219,20 +228,24 @@ class HomeViewModel(
     }
 
     fun onTopSiteClicked(site: Site, position: Int) {
-        openBrowser.value = site.url
-        val allowToLogTitle = when (site) {
-            is Site.FixedSite -> true
-            is Site.RemovableSite -> site.isDefault
+        when (site) {
+            is Site.UrlSite -> {
+                openBrowser.value = site.url
+                val allowToLogTitle = when (site) {
+                    is Site.UrlSite.FixedSite -> true
+                    is Site.UrlSite.RemovableSite -> site.isDefault
+                }
+                val title = if (allowToLogTitle) site.title else ""
+                val pageIndex = requireNotNull(topSitesPageIndex.value)
+                val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+                val isAffiliate = site is Site.UrlSite.FixedSite
+                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
+            }
         }
-        val title = if (allowToLogTitle) site.title else ""
-        val pageIndex = requireNotNull(topSitesPageIndex.value)
-        val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-        val isAffiliate = site is Site.FixedSite
-        TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
     }
 
     fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
-            if (site is Site.RemovableSite) {
+            if (site is Site.UrlSite.RemovableSite) {
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
                 showTopSiteMenu.value = ShowTopSiteMenuData(site, topSitePosition)
@@ -242,30 +255,75 @@ class HomeViewModel(
             }
 
     fun onPinTopSiteClicked(site: Site, position: Int) {
-        pinTopSiteUseCase(site)
-        updateTopSitesData()
-        val pageIndex = requireNotNull(topSitesPageIndex.value)
-        val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-        TelemetryWrapper.pinTopSite(site.title, topSitePosition)
+        when (site) {
+            is Site.UrlSite -> {
+                pinTopSiteUseCase(site)
+                updateTopSitesData()
+                val pageIndex = requireNotNull(topSitesPageIndex.value)
+                val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+                TelemetryWrapper.pinTopSite(site.title, topSitePosition)
+            }
+        }
     }
 
     fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
-        site as Site.RemovableSite
-        removeTopSiteUseCase(site)
-        updateTopSitesData()
-        TelemetryWrapper.removeTopSite(site.isDefault)
+        when (site) {
+            is Site.UrlSite.RemovableSite -> {
+                removeTopSiteUseCase(site)
+                updateTopSitesData()
+                TelemetryWrapper.removeTopSite(site.isDefault)
+            }
+        }
     }
 
     fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
         openContentPage.value = item
         readContentHubItemUseCase(item.getItemType())
-        TelemetryWrapper.clickContentHub(item)
+        TelemetryWrapper.clickContentHub(item = item)
         val checkInResult = checkInMissionUseCase(
             when (item) {
                 is ContentHub.Item.Travel -> CheckInMissionUseCase.PingType.Travel()
                 is ContentHub.Item.Shopping -> CheckInMissionUseCase.PingType.Shopping()
                 is ContentHub.Item.News -> CheckInMissionUseCase.PingType.Lifestyle()
                 is ContentHub.Item.Games -> CheckInMissionUseCase.PingType.Game()
+            }
+        )
+        checkInResult.data?.let { (mission, hasMissionCompleted) ->
+            val (message, currentDay) = when (val progress = mission.missionProgress) {
+                is MissionProgress.TypeDaily -> progress.message to progress.currentDay
+                null -> error("Unknown MissionProgress type")
+            }
+            if (message.isNotEmpty()) {
+                showToast.value = ToastMessage(message)
+            }
+            if (hasMissionCompleted) {
+                showMissionCompleteDialog.value = mission
+                TelemetryWrapper.showChallengeCompleteMessage()
+            }
+            TelemetryWrapper.endMissionTask(currentDay, hasMissionCompleted)
+        }
+    }
+
+    fun onContentHubItemClicked(item: Site.ContentItem) {
+        val contentHubItem = when (item) {
+            is Site.ContentItem.Travel -> ContentHub.Item.Travel(item.iconResId, item.textResId, item.isUnread)
+            is Site.ContentItem.Games -> ContentHub.Item.Games(item.iconResId, item.textResId, item.isUnread)
+            is Site.ContentItem.News -> ContentHub.Item.News(item.iconResId, item.textResId, item.isUnread)
+            is Site.ContentItem.Shopping -> ContentHub.Item.Shopping(item.iconResId, item.textResId, item.isUnread)
+        }
+        onContentHubItemClicked(contentHubItem)
+    }
+
+    fun onTopSiteContentItemClicked(item: Site.ContentItem) = viewModelScope.launch {
+        openContentPageTopSite.value = item
+        readContentHubItemUseCase(item.getItemType())
+        TelemetryWrapper.clickContentHub(contentItem = item)
+        val checkInResult = checkInMissionUseCase(
+            when (item) {
+                is Site.ContentItem.Travel -> CheckInMissionUseCase.PingType.Travel()
+                is Site.ContentItem.Shopping -> CheckInMissionUseCase.PingType.Shopping()
+                is Site.ContentItem.News -> CheckInMissionUseCase.PingType.Lifestyle()
+                is Site.ContentItem.Games -> CheckInMissionUseCase.PingType.Game()
             }
         )
         checkInResult.data?.let { (mission, hasMissionCompleted) ->
@@ -396,4 +454,12 @@ private fun ContentHub.Item.getItemType() =
             is ContentHub.Item.Shopping -> ContentHubRepo.SHOPPING
             is ContentHub.Item.News -> ContentHubRepo.NEWS
             is ContentHub.Item.Games -> ContentHubRepo.GAMES
+        }
+
+private fun Site.ContentItem.getItemType() =
+        when (this) {
+            is Site.ContentItem.Travel -> ContentHubRepo.TRAVEL
+            is Site.ContentItem.Shopping -> ContentHubRepo.SHOPPING
+            is Site.ContentItem.News -> ContentHubRepo.NEWS
+            is Site.ContentItem.Games -> ContentHubRepo.GAMES
         }

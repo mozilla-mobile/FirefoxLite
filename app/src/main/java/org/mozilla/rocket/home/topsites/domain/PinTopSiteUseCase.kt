@@ -6,7 +6,7 @@ import org.mozilla.rocket.home.topsites.ui.toSiteModel
 
 class PinTopSiteUseCase(private val topSitesRepo: TopSitesRepo) {
 
-    operator fun invoke(site: Site) {
+    operator fun invoke(site: Site.UrlSite) {
         topSitesRepo.pin(site.toSiteModel())
     }
 }

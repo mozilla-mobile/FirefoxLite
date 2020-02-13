@@ -36,6 +36,14 @@ class ContentHubRepo(private val appContext: Context) {
         }
     }
 
+    fun getConfiguredContentHubItems(): List<ContentHubItem>? {
+        val unreadEnabledTypes = getUnreadEnabledTypes()
+        val readTypes = getReadTypes()
+        val contentHubItemsJsonStr = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_ITEMS)
+                .takeIf { it.isNotEmpty() }
+        return contentHubItemsJsonStr?.jsonStringToContentHubItems(unreadEnabledTypes, readTypes)
+    }
+
     fun getDefaultContentHubItems(): List<ContentHubItem>? =
             AssetsUtils.loadStringFromRawResource(appContext, R.raw.content_hub_default_items)
                     ?.jsonStringToContentHubItems(enabledUnreadTypes = emptyList(), readTypes = getReadTypes())
