@@ -1,8 +1,8 @@
 package org.mozilla.rocket.content.travel.data
 
-import org.json.JSONArray
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.common.data.ApiEntity
+import org.mozilla.rocket.util.getJsonArray
 
 interface TravelDataSource {
     suspend fun getExploreList(): Result<ApiEntity>
@@ -38,19 +38,16 @@ data class BucketListCity(
         internal const val KEY_COUNTRY_CODE = "countryCode"
 
         fun fromJson(jsonString: String): List<BucketListCity> {
-            val items = JSONArray(jsonString)
-            return (0 until items.length())
-                    .map { index -> items.getJSONObject(index) }
-                    .map { item ->
-                        BucketListCity(
-                            item.optString(KEY_ID),
-                            item.optString(KEY_IMAGE_URL),
-                            item.optString(KEY_NAME),
-                            item.optString(KEY_TYPE),
-                            item.optString(KEY_NAME_IN_ENGLISH),
-                            item.optString(KEY_COUNTRY_CODE)
-                        )
-                    }
+            return jsonString.getJsonArray {
+                BucketListCity(
+                    it.optString(KEY_ID),
+                    it.optString(KEY_IMAGE_URL),
+                    it.optString(KEY_NAME),
+                    it.optString(KEY_TYPE),
+                    it.optString(KEY_NAME_IN_ENGLISH),
+                    it.optString(KEY_COUNTRY_CODE)
+                )
+            }
         }
     }
 }

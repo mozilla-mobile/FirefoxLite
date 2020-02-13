@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.common.data
 
 import org.json.JSONArray
 import org.json.JSONObject
+import org.mozilla.rocket.util.optJsonArray
 import org.mozilla.rocket.util.toJsonObject
 
 data class ApiEntity(
@@ -27,11 +28,9 @@ data class ApiEntity(
         fun fromJson(jsonString: String?): ApiEntity {
             return if (jsonString != null) {
                 val jsonObject = jsonString.toJsonObject()
-                val jsonArray = jsonObject.optJSONArray(KEY_SUBCATEGORIES)
-                val subcategories =
-                    (0 until jsonArray.length())
-                        .map { index -> jsonArray.getJSONObject(index) }
-                        .map { jObj -> ApiCategory.fromJson(jObj) }
+                val subcategories = jsonObject.optJsonArray(KEY_SUBCATEGORIES) {
+                    ApiCategory.fromJson(it)
+                }
 
                 ApiEntity(
                     jsonObject.optLong(KEY_VERSION),
@@ -71,12 +70,7 @@ data class ApiCategory(
         private const val KEY_ITEMS = "items"
 
         fun fromJson(jsonObject: JSONObject): ApiCategory {
-            val jsonArray = jsonObject.optJSONArray(KEY_ITEMS)
-            val items =
-                (0 until jsonArray.length())
-                    .map { index -> jsonArray.getJSONObject(index) }
-                    .map { jObj -> ApiItem.fromJson(jObj) }
-
+            val items = jsonObject.optJsonArray("KEY_ITEMS") { ApiItem.fromJson(it) }
             return ApiCategory(
                 jsonObject.optString(KEY_COMPONENT_TYPE),
                 jsonObject.optString(KEY_SUBCATEGORY_NAME),

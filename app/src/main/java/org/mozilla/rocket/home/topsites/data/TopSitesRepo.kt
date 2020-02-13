@@ -26,6 +26,7 @@ import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
+import org.mozilla.rocket.util.getJsonArray
 import java.util.ArrayList
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -233,10 +234,7 @@ class TopSitesRepo(
 
 private fun String.jsonStringToSites(): List<Site>? {
     return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> TopSitesUtils.paresSite(jsonObject) }
+        this.getJsonArray { TopSitesUtils.paresSite(it) }
     } catch (e: JSONException) {
         e.printStackTrace()
         null

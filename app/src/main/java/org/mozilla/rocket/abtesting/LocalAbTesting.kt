@@ -7,7 +7,6 @@ import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.getJsonArray
-import org.mozilla.rocket.util.toJsonArray
 
 object LocalAbTesting {
     private val NUMBER_RANGE = (1..20)
@@ -26,7 +25,7 @@ object LocalAbTesting {
     }
     private val activeExperiments: List<Experiment> by lazy {
         AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting)!!
-                .toJsonArray { it.toExperiment() }
+                .getJsonArray { it.toExperiment() }
                 .filter { it.enabled && it.matchNewUserCondition(isNewUser) }
                 .also { updateActiveExperiments(it) }
     }

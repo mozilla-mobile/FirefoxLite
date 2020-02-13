@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.travel.data
 
 import org.json.JSONObject
+import org.mozilla.rocket.util.getJsonArray
 import org.mozilla.rocket.util.toJsonObject
 
 // api entity for Booking.com
@@ -66,13 +67,9 @@ data class BcHotelApiEntity(val result: List<BcHotelApiItem?>) : BcApiEntity() {
 
         fun fromJson(jsonString: String?, affiliateId: String): BcHotelApiEntity {
             return if (jsonString != null) {
-                val jsonObject = jsonString.toJsonObject()
-                val jsonArray = jsonObject.optJSONArray(KEY_RESULT)
-                val result =
-                        (0 until jsonArray.length())
-                                .map { index -> jsonArray.getJSONObject(index) }
-                                .map { jObj -> BcHotelApiItem.fromJson(jObj, affiliateId) }
-
+                val result = jsonString.toJsonObject().getJsonArray(KEY_RESULT) {
+                    BcHotelApiItem.fromJson(it, affiliateId)
+                }
                 BcHotelApiEntity(result)
             } else {
                 BcHotelApiEntity(emptyList())
