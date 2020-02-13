@@ -7,11 +7,16 @@ package org.mozilla.focus.notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.core.app.NotificationCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import org.mozilla.focus.telemetry.TelemetryWrapper.getNotification
 import org.mozilla.focus.telemetry.TelemetryWrapper.isTelemetryEnabled
 import org.mozilla.focus.telemetry.TelemetryWrapper.showNotification
 import org.mozilla.focus.utils.IntentUtils
+import org.mozilla.threadutils.ThreadUtils
 
 // Prov
 class RocketMessagingService : FirebaseMessagingServiceWrapper() {
@@ -34,8 +39,27 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         title?.let { builder.setContentTitle(it) }
         body?.let { builder.setContentText(it) }
         addDeleteTelemetry(applicationContext, builder, messageId, link)
-        NotificationUtil.sendNotification(this, NotificationId.FIREBASE_AD_HOC, builder)
-        showNotification(link, messageId)
+
+        val imageUrl = parseImageUrl(intent)
+        if (!imageUrl.isNullOrEmpty()) {
+            ThreadUtils.postToMainThread {
+                Glide.with(applicationContext)
+                    .asBitmap()
+                    .load(imageUrl)
+                    .into(object : SimpleTarget<Bitmap?>() {
+                        override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap?>?) {
+                            builder.setLargeIcon(resource)
+                            builder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(resource))
+
+                            NotificationUtil.sendNotification(this@RocketMessagingService, NotificationId.FIREBASE_AD_HOC, builder)
+                            showNotification(link, messageId)
+                        }
+                    })
+            }
+        } else {
+            NotificationUtil.sendNotification(this, NotificationId.FIREBASE_AD_HOC, builder)
+            showNotification(link, messageId)
+        }
     }
 
     private fun parseMessageId(intent: Intent): String? {
@@ -63,6 +87,10 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
             link = intent.getStringExtra(PUSH_DEEP_LINK)
         }
         return link
+    }
+
+    private fun parseImageUrl(intent: Intent): String? {
+        return intent.getStringExtra(PUSH_IMAGE_URL)
     }
 
     private fun getClickPendingIntent(appContext: Context, messageId: String?, openUrl: String?, command: String?, deepLink: String?): PendingIntent { // RocketLauncherActivity will handle this intent

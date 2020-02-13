@@ -28,6 +28,9 @@ abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
             intent.putExtra(PUSH_OPEN_URL, remoteMessage.data[PUSH_OPEN_URL])
             intent.putExtra(PUSH_COMMAND, remoteMessage.data[PUSH_COMMAND])
             intent.putExtra(PUSH_DEEP_LINK, remoteMessage.data[PUSH_DEEP_LINK])
+            remoteMessage.notification?.imageUrl?.let {
+                intent.putExtra(PUSH_IMAGE_URL, it.toString())
+            }
             val title = remoteMessage.notification?.title
             val body = remoteMessage.notification?.body
             // We have a remote message from gcm, let the child decides what to do with it.
@@ -40,5 +43,6 @@ abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
         const val PUSH_OPEN_URL = "push_open_url"
         const val PUSH_COMMAND = "push_command"
         const val PUSH_DEEP_LINK = "push_deep_link"
+        const val PUSH_IMAGE_URL = "push_image_url"
     }
 }
