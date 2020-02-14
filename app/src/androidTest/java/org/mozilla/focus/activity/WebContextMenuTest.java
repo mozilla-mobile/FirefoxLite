@@ -157,7 +157,7 @@ public class WebContextMenuTest {
         onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed()));
 
         // Click switch
-        onView(allOf(withId(R.id.snackbar_action), withText(R.string.new_background_tab_switch))).check(matches(isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.snackbar_action), withText("NOT EXIST"))).check(matches(isDisplayed())).perform(click());
 
         // Check tab count is 2
         onView(allOf(withId(R.id.counter_text), isDescendantOfA(new BottomBarRobot().browserBottomBarItemView(R.id.bottom_bar_tab_counter)))).check(matches(withText("2")));
