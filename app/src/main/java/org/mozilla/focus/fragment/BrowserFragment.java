@@ -500,24 +500,19 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 setupShoppingSearchPrompt(shoppingSearchViewStub.inflate());
             }
 
-            if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Hidden) {
-                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_HIDDEN);
-            } else if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Collapsed) {
-                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_COLLAPSED);
-            } else if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Expanded) {
+            if (visibilityState instanceof ShoppingSearchPromptViewModel.VisibilityState.Expanded) {
                 changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                changeShoppingSearchPromptMessageState(BottomSheetBehavior.STATE_HIDDEN);
             }
         });
 
         shoppingSearchPromptMessageViewModel.getShoppingSiteList().observe(this, unit -> {
-            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(getUrl(), getHistorySiteUrl(false), getHistorySiteUrl(true));
+            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(getUrl());
         });
     }
     private void setupShoppingSearchPrompt(View view) {
         shoppingSearchPromptMessageBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet));
-
-        shoppingSearchPromptMessageBehavior.setHideable(true);
-
         shoppingSearchBottomSheetSearchBtn = view.findViewById(R.id.bottom_sheet_search);
         shoppingSearchBottomSheetSearchBtn.setOnClickListener(v -> shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().call());
     }
@@ -1135,30 +1130,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 && sessionManager.getFocusSession().getCanGoBack();
     }
 
-    private String getHistorySiteUrl(boolean isPrevious) {
-        final Session currentTab = sessionManager.getFocusSession();
-        if (currentTab == null) {
-            return null;
-        } else {
-            final TabView current = currentTab.getEngineSession().getTabView();
-            if (current == null) {
-                return null;
-            } else if (isPrevious && !current.canGoBack()) {
-                return null;
-            } else if (!isPrevious && !current.canGoForward()) {
-                return null;
-            }
-
-            WebBackForwardList webBackForwardList = ((WebView) current).copyBackForwardList();
-            WebHistoryItem item = webBackForwardList.getItemAtIndex(isPrevious ? webBackForwardList.getCurrentIndex() - 1 : webBackForwardList.getCurrentIndex() + 1);
-            if (item != null) {
-                return item.getUrl();
-            } else {
-                return null;
-            }
-        }
-    }
-
     public void goBack() {
         final Session currentTab = sessionManager.getFocusSession();
         if (currentTab != null) {
@@ -1353,7 +1324,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
             updateURL(url);
 
-            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(url, getHistorySiteUrl(false), getHistorySiteUrl(true));
+            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(url);
         }
 
         @Override
@@ -1662,7 +1633,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             dismissGeoDialog();
 
             updateURL(tab.getUrl());
-            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(tab.getUrl(), getHistorySiteUrl(false), getHistorySiteUrl(true));
+            shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(tab.getUrl());
             progressView.setProgress(0);
 
             int identity = (tab.getSecurityInfo().getSecure()) ? SITE_LOCK : SITE_GLOBE;
