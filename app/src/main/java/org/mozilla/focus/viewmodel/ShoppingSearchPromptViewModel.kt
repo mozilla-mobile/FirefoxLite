@@ -14,34 +14,12 @@ class ShoppingSearchPromptViewModel(getShoppingSite: GetShoppingSitesUseCase) : 
 
     val openShoppingSearch = SingleLiveEvent<Unit>()
 
-    fun checkShoppingSearchPromptVisibility(url: String?, forwardSiteUrl: String?, previousSiteUrl: String?) {
+    fun checkShoppingSearchPromptVisibility(url: String?) {
         val currentShoppingSiteTitle: String? = getPromptShoppingSiteTitle(url)
         matchedShoppingSiteTitle.value = currentShoppingSiteTitle
 
         val isShoppingSite = (matchedShoppingSiteTitle.value != null)
         if (isShoppingSite) {
-            if (!currentShoppingSiteTitle.isNullOrEmpty()) {
-                var hasForwardUrl = false
-                if (!forwardSiteUrl.isNullOrEmpty()) {
-                    hasForwardUrl = true
-                    val forwardShoppingSiteTitle: String? = getPromptShoppingSiteTitle(forwardSiteUrl)
-                    if (currentShoppingSiteTitle.equals(forwardShoppingSiteTitle, true)) {
-                        promptVisibilityState.value = VisibilityState.Collapsed
-                        return
-                    }
-                }
-
-                if (!hasForwardUrl) {
-                    if (!previousSiteUrl.isNullOrEmpty()) {
-                        val previousShoppingSiteTitle: String? = getPromptShoppingSiteTitle(previousSiteUrl)
-                        if (currentShoppingSiteTitle.equals(previousShoppingSiteTitle, true)) {
-                            promptVisibilityState.value = VisibilityState.Collapsed
-                            return
-                        }
-                    }
-                }
-            }
-
             promptVisibilityState.value = VisibilityState.Expanded
         } else {
             promptVisibilityState.value = VisibilityState.Hidden
@@ -59,6 +37,5 @@ class ShoppingSearchPromptViewModel(getShoppingSite: GetShoppingSitesUseCase) : 
     sealed class VisibilityState {
         object Hidden : VisibilityState()
         object Expanded : VisibilityState()
-        object Collapsed : VisibilityState()
     }
 }
