@@ -17,7 +17,7 @@ import org.mozilla.rocket.content.ecommerce.ui.adapter.Voucher
 import org.mozilla.rocket.content.ecommerce.ui.adapter.VoucherKey
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.util.sha256
-import org.mozilla.rocket.util.toJsonArray
+import org.mozilla.rocket.util.getJsonArray
 
 class VoucherViewModel(
     private val getVouchers: GetVouchersUseCase
@@ -58,10 +58,7 @@ class VoucherViewModel(
 
     private fun String.jsonStringToVoucherItems(): List<Voucher>? {
         return try {
-            val jsonArray = this.toJsonArray()
-            (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> createVoucherItem(jsonObject) }
+            this.getJsonArray { createVoucherItem(it) }
         } catch (e: JSONException) {
             e.printStackTrace()
             null

@@ -1,18 +1,13 @@
 package org.mozilla.rocket.content.travel.data
 
 import org.json.JSONObject
-import org.mozilla.rocket.util.toJsonArray
+import org.mozilla.rocket.util.getJsonArray
 
 data class VideoApiEntity(val videos: List<VideoApiItem>) {
     companion object {
         fun fromJson(jsonString: String?): VideoApiEntity {
             return if (jsonString != null) {
-                val jsonArray = jsonString.toJsonArray()
-                val videos =
-                    (0 until jsonArray.length())
-                        .map { index -> jsonArray.getJSONObject(index) }
-                        .map { jObj -> VideoApiItem.fromJson(jObj) }
-
+                val videos = jsonString.getJsonArray { VideoApiItem.fromJson(it) }
                 VideoApiEntity(videos)
             } else {
                 VideoApiEntity(emptyList())

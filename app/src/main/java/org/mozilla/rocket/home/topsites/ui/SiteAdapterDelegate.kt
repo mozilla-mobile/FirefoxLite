@@ -22,7 +22,7 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.util.AssetsUtils
-import org.mozilla.rocket.util.toJsonArray
+import org.mozilla.rocket.util.getJsonArray
 import org.mozilla.strictmodeviolator.StrictModeViolation
 import java.net.URI
 import java.net.URISyntaxException
@@ -231,10 +231,7 @@ fun getFaviconBgColorsFromResource(appContext: Context): List<FaviconBgColor>? =
 
 private fun String.jsonStringToFaviconBgColors(): List<FaviconBgColor>? {
     return try {
-        val jsonArray = this.toJsonArray()
-        (0 until jsonArray.length())
-                .map { index -> jsonArray.getJSONObject(index) }
-                .map { jsonObject -> paresFaviconBgColor(jsonObject) }
+        this.getJsonArray { paresFaviconBgColor(it) }
     } catch (e: JSONException) {
         e.printStackTrace()
         null

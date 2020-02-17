@@ -29,6 +29,7 @@ import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.data.TabSwipeTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
@@ -3725,7 +3726,7 @@ object TelemetryWrapper {
             addCustomPing(configuration, ThemeToyMeasurement(context))
             addCustomPing(configuration, CaptureCountMeasurement(context))
             addCustomPing(configuration, InstallReferrerMeasurement(context))
-            addCustomPing(configuration, ExperimentBucketMeasurement(context))
+            addCustomPing(configuration, ExperimentBucketMeasurement())
             addCustomPing(configuration, ExperimentNameMeasurement())
         }
 
@@ -3804,28 +3805,18 @@ object TelemetryWrapper {
         }
     }
 
-    private class ExperimentBucketMeasurement internal constructor(internal var context: Context) : TelemetryMeasurement(MEASUREMENT_EXPERIMENT_BUCKET) {
+    private class ExperimentBucketMeasurement internal constructor() : TelemetryMeasurement(MEASUREMENT_EXPERIMENT_BUCKET) {
 
         override fun flush(): Any {
-            return getExperimentBucket(context)
+            return getExperimentBucket()
         }
 
-        private fun getExperimentBucket(context: Context): Int {
-            val sharedPref = PreferenceManager.getDefaultSharedPreferences(context)
-            val prefKey = context.getString(R.string.pref_key_experiment_bucket)
-
-            var userGroup = sharedPref.getInt(prefKey, -1)
-            if (userGroup < 0) {
-                userGroup = NUMBER_RANGE.random()
-                sharedPref.edit().putInt(prefKey, userGroup).apply()
-            }
-
-            return userGroup
+        private fun getExperimentBucket(): Int {
+            return LocalAbTesting.userGroup
         }
 
         companion object {
             private const val MEASUREMENT_EXPERIMENT_BUCKET = "experiment_bucket"
-            private val NUMBER_RANGE = (1..20)
         }
     }
 
@@ -3836,7 +3827,15 @@ object TelemetryWrapper {
         }
 
         private fun getExperimentName(): String {
-            return FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_EXPERIMENT_NAME)
+            return if (LocalAbTesting.isActive) {
+                if (LocalAbTesting.assignedBuckets.isEmpty()) {
+                    "null"
+                } else {
+                    LocalAbTesting.assignedBuckets.joinToString(separator = ",")
+                }
+            } else {
+                FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_EXPERIMENT_NAME)
+            }
         }
 
         companion object {

@@ -19,6 +19,7 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
 import org.mozilla.rocket.di.DaggerAppComponent
@@ -85,6 +86,7 @@ open class FocusApplication : LocaleAwareApplication() {
 
         SearchEngineManager.getInstance().init(this)
 
+        LocalAbTesting.init(this)
         TelemetryWrapper.init(this)
         AdjustHelper.setupAdjustIfNeeded(this)
 
