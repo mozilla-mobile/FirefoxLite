@@ -463,7 +463,7 @@
   <string name="travel_search_engine_2">在智能旅行搜索中查看结果</string>
   <string name="travel_search_engine_fxlite">查看 %1$s Travel Discovery 的搜索结果</string>
   <string name="travel_dialog_1_title">探索更多！</string>
-  <string name="travel_dialog_1_description">到 %1$s Travel Discovery 探索更多活动、住宿与更多內容。</string>
+  <string name="travel_dialog_1_description">到 %1$s Travel Discovery 探索更多活动、住宿与更多内容。</string>
   <string name="travel_dialog_1_action_1">试用 Travel Discovery 功能</string>
   <string name="travel_dialog_1_action_2">不用，谢谢</string>
   <string name="travel_dialog_2_title">Travel Discovery 体验如何？</string>
