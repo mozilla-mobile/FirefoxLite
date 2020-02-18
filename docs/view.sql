@@ -183,6 +183,7 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('reload') ) THEN 'Rocket -  Click Toolbar - Reload' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('back') ) THEN 'Rocket -  Click Toolbar - Back' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('tab_swipe') ) THEN 'Rocket -  Click Toolbar - Tab Swipe' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('drawer') ) AND (event_value IN ('tab_swipe') ) THEN 'Rocket -  Show Tab Swipe Drawer' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('drawer') ) AND (event_value IN ('tab_swipe') ) THEN 'Rocket -  Click Tab Swipe Drawer' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('add') ) AND (event_object IN ('tab') ) AND (event_value IN ('tab_swipe') ) THEN 'Rocket -  Add Tab Swipe Tab' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('setting') ) AND (event_value IN ('tab_swipe') ) THEN 'Rocket -  Change Tab Swipe Settings' 

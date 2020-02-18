@@ -159,6 +159,7 @@
 |Click Toolbar - Reload|action|click|toolbar|"reload"|"mode=webview,position=[0-9],vertical=shopping,game,travel,lifestyle,feed=feed,source=source,category=category,component_id=component id,subcategory_id=subcategory id,version_id=version id," 
 |Click Toolbar - Back|action|click|toolbar|"back"|"mode=webview,position=[0-9],vertical=shopping,game,travel,lifestyle,feed=feed,source=source,category=category,component_id=component id,subcategory_id=subcategory id,version_id=version id," 
 |Click Toolbar - Tab Swipe|action|click|toolbar|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards,from=home,tab_swipe," 
+|Show Tab Swipe Drawer|action|show|drawer|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards,feed=feed," 
 |Click Tab Swipe Drawer|action|click|drawer|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards,feed=feed," 
 |Add Tab Swipe Tab|action|add|tab|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards," 
 |Change Tab Swipe Settings|action|change|setting|"tab_swipe"|"feed=feed," 
