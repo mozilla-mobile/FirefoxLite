@@ -18,7 +18,6 @@ import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.text.TextUtils
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -47,6 +46,7 @@ import org.mozilla.focus.widget.FocusView
 import org.mozilla.focus.widget.RoundRecFocusView
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
+import org.mozilla.rocket.extension.inflate
 import org.mozilla.rocket.widget.CustomViewDialogData
 import org.mozilla.rocket.widget.PromotionDialog
 
@@ -244,7 +244,7 @@ object DialogUtils {
     }
 
     fun showSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener, messageId: Int): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.spotlight, null) as ViewGroup
+        val container = activity.inflate(R.layout.spotlight) as ViewGroup
         val messageTextView = container.findViewById<TextView>(R.id.spotlight_message)
         messageTextView.setText(messageId)
         val dialog = createSpotlightDialog(activity, targetView, container)
@@ -255,7 +255,7 @@ object DialogUtils {
     }
 
     fun showMyShotOnBoarding(activity: Activity, targetView: View, cancelListener: DialogInterface.OnCancelListener, learnMore: View.OnClickListener?): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.myshot_onboarding, null) as ViewGroup
+        val container = activity.inflate(R.layout.myshot_onboarding) as ViewGroup
         container.findViewById<View>(R.id.my_shot_category_learn_more).setOnClickListener(learnMore)
         val dialog = createSpotlightDialog(activity, targetView, container)
         // Press back key will dismiss on boarding view and menu view
@@ -269,7 +269,7 @@ object DialogUtils {
         targetView: View,
         dismissListener: DialogInterface.OnDismissListener
     ): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_shopping_search, null) as ViewGroup
+        val container = activity.inflate(R.layout.onboarding_spotlight_shopping_search) as ViewGroup
         val dialog = createShoppingSearchSpotlightDialog(activity, targetView, container)
         dialog.setOnDismissListener(dismissListener)
         dialog.show()
@@ -282,7 +282,7 @@ object DialogUtils {
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
     ): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_content_services, null) as ViewGroup
+        val container = activity.inflate(R.layout.onboarding_spotlight_content_services) as ViewGroup
         container.findViewById<View>(R.id.next).setOnClickListener(ok)
         val dialog = createContentServiceSpotlightDialog(activity, targetView, container,
                 activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
@@ -300,7 +300,7 @@ object DialogUtils {
         couponName: String,
         dismissListener: DialogInterface.OnDismissListener
     ): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_content_services_request_click, null) as ViewGroup
+        val container = activity.inflate(R.layout.onboarding_spotlight_content_services_request_click) as ViewGroup
         val text = container.findViewById<TextView>(R.id.content_services_plateform_onboarding_message)
         text.text = activity.getString(R.string.msrp_home_hint, couponName)
         val dialog = createContentServiceSpotlightDialog(activity, targetView, container,
@@ -320,7 +320,7 @@ object DialogUtils {
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
     ): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_travel, null) as ViewGroup
+        val container = activity.inflate(R.layout.onboarding_spotlight_travel) as ViewGroup
         val title = container.findViewById<TextView>(R.id.travel_details_onboarding_title)
         val message = container.findViewById<TextView>(R.id.travel_details_onboarding_message)
         title.text = activity.getString(R.string.travel_onboarding_save_title, cityName)
@@ -344,7 +344,7 @@ object DialogUtils {
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
     ): Dialog {
-        val container = LayoutInflater.from(activity).inflate(R.layout.onboarding_spotlight_game_recent_played, null) as ViewGroup
+        val container = activity.inflate(R.layout.onboarding_spotlight_game_recent_played) as ViewGroup
         container.findViewById<View>(R.id.next).setOnClickListener(ok)
         val dialog = createGameSpotlightDialog(
                 activity,
