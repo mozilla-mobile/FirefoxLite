@@ -3093,6 +3093,23 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+        name = "Show Tab Swipe Drawer",
+        category = Category.ACTION,
+        method = Method.SHOW,
+        `object` = Object.DRAWER,
+        value = Value.TAB_SWIPE,
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+            TelemetryExtra(name = Extra.FEED, value = "feed")
+        ])
+    @JvmStatic
+    fun showTabSwipeDrawer(vertical: String, feed: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.DRAWER, Value.TAB_SWIPE)
+                .extra(Extra.VERTICAL, vertical)
+                .extra(Extra.FEED, feed)
+                .queue()
+    }
+
+    @TelemetryDoc(
         name = "Click Tab Swipe Drawer",
         category = Category.ACTION,
         method = Method.CLICK,

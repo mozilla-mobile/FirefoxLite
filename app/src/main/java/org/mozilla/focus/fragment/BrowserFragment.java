@@ -488,11 +488,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 unit -> {
                     startActivity(ShoppingSearchActivity.Companion.getStartIntent(getContext()));
                     ScreenNavigator.get(getContext()).popToHomeScreen(false);
-
-                    String feed = shoppingSearchPromptMessageViewModel.getMatchedShoppingSiteTitle().getValue();
-                    if (feed != null) {
-                        TelemetryWrapper.clickTabSwipeDrawer(TelemetryWrapper.Extra_Value.SHOPPING, feed);
-                    }
                 });
 
         shoppingSearchPromptMessageViewModel.getPromptVisibilityState().observe(this, visibilityState -> {
@@ -511,10 +506,24 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(getUrl());
         });
     }
+
     private void setupShoppingSearchPrompt(View view) {
         shoppingSearchPromptMessageBehavior = BottomSheetBehavior.from(view.findViewById(R.id.bottom_sheet));
+        shoppingSearchPromptMessageBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    shoppingSearchPromptMessageViewModel.onPromptIsShown();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // Do nothing
+            }
+        });
         shoppingSearchBottomSheetSearchBtn = view.findViewById(R.id.bottom_sheet_search);
-        shoppingSearchBottomSheetSearchBtn.setOnClickListener(v -> shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().call());
+        shoppingSearchBottomSheetSearchBtn.setOnClickListener(v -> shoppingSearchPromptMessageViewModel.onShoppingSearchPromptButtonClicked());
     }
 
     private void changeShoppingSearchPromptMessageState(int state) {
