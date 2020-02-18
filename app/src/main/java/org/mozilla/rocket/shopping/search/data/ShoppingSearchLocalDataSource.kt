@@ -49,9 +49,16 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
     override fun setSearchResultOnboardingIsShown() =
         preference.edit().putBoolean(KEY_SEARCH_RESULT_ONBOARDING, false).apply()
 
+    override fun getSearchPromptMessageShowCount() =
+        preference.getInt(KEY_SEARCH_PROMPT_MESSAGE_SHOW_COUNT, 0)
+
+    override fun setSearchPromptMessageShowCount(count: Int) =
+        preference.edit().putInt(KEY_SEARCH_PROMPT_MESSAGE_SHOW_COUNT, count).apply()
+
     companion object {
         const val PREF_NAME = "shopping_search"
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"
         const val KEY_SEARCH_RESULT_ONBOARDING = "shopping_search_result_onboarding"
+        const val KEY_SEARCH_PROMPT_MESSAGE_SHOW_COUNT = "shopping_search_prompt_message_show_count"
     }
 }

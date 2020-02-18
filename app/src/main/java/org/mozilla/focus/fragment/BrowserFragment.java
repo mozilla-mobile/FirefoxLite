@@ -514,6 +514,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                     shoppingSearchPromptMessageViewModel.onPromptIsShown();
+                } else if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    shoppingSearchPromptMessageViewModel.onPromptIsDismissed();
+                } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                    shoppingSearchPromptMessageViewModel.onPromptIsDragged();
                 }
             }
 
