@@ -70,7 +70,7 @@ data class ApiCategory(
         private const val KEY_ITEMS = "items"
 
         fun fromJson(jsonObject: JSONObject): ApiCategory {
-            val items = jsonObject.optJsonArray("KEY_ITEMS") { ApiItem.fromJson(it) }
+            val items = jsonObject.optJsonArray(KEY_ITEMS) { ApiItem.fromJson(it) }
             return ApiCategory(
                 jsonObject.optString(KEY_COMPONENT_TYPE),
                 jsonObject.optString(KEY_SUBCATEGORY_NAME),
