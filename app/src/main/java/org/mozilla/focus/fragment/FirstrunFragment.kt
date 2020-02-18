@@ -174,7 +174,7 @@ class FirstrunFragment : Fragment(), View.OnClickListener, Screen {
     private fun promoteSetDefaultBrowserIfPreload(): FirstrunFragment {
         // if it's a system app(preload), we'll like to promote set default browser when the user finish first run
         if (isSystemApp()) {
-            DialogUtils.showDefaultSettingNotification(context)
+            DialogUtils.showDefaultSettingNotification(requireContext())
         }
         return this
     }

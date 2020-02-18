@@ -10,6 +10,7 @@ import android.app.Dialog
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
@@ -654,7 +655,7 @@ class MainActivity : BaseActivity(),
             DialogUtils.showSpotlight(
                     this@MainActivity,
                     view,
-                    {},
+                    DialogInterface.OnCancelListener {},
                     R.string.night_mode_on_boarding_message)
         }
     }
@@ -667,8 +668,8 @@ class MainActivity : BaseActivity(),
             myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
                     this@MainActivity,
                     view,
-                    { dismissAllMenus() },
-                    {
+                    DialogInterface.OnCancelListener { dismissAllMenus() },
+                    View.OnClickListener {
                         val url = SupportUtils.getSumoURLForTopic(this@MainActivity, "screenshot-telemetry")
                         screenNavigator.showBrowserScreen(url, true, false)
                         dismissAllMenus()

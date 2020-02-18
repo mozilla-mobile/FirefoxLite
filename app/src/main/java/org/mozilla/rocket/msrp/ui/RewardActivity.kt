@@ -1,6 +1,7 @@
 package org.mozilla.rocket.msrp.ui
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -37,9 +38,9 @@ class RewardActivity : AppCompatActivity(), NavHostActivity, FxLoginFragment.OnL
     override fun onLoginSuccess(requestCode: Int, jwt: String, isDisabled: Boolean, statusCode: Int) {
         when {
             isDisabled -> {
-                DialogUtils.showAccountDisabledDialog(this) {
+                DialogUtils.showAccountDisabledDialog(this, DialogInterface.OnDismissListener {
                     finish()
-                }
+                })
             }
             statusCode == STATUS_CODE_WARNING -> DialogUtils.showLoginMultipleTimesWarningDialog(this)
             statusCode == STATUS_CODE_FINAL_WARNING -> DialogUtils.showLoginMultipleTimesFinalWarningDialog(this)

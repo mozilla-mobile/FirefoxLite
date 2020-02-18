@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.game.ui
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -196,11 +197,11 @@ class InstantGameFragment : Fragment() {
 
                 gameItemView?.let {
                     setSpotlightStatusBarColor()
-                    recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(activity, it, {
+                    recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(activity, it, DialogInterface.OnDismissListener {
                         restoreStatusBarColor()
-                    }) {
+                    }, View.OnClickListener {
                         instantGamesViewModel.onRecentPlayedSpotlightButtonClicked()
-                    }
+                    })
                 }
             }
         }
