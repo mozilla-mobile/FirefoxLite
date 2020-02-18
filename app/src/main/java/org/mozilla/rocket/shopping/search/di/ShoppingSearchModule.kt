@@ -8,8 +8,10 @@ import org.mozilla.rocket.shopping.search.data.ShoppingSearchLocalDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
+import org.mozilla.rocket.shopping.search.domain.GetSearchPromptMessageShowCountUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
+import org.mozilla.rocket.shopping.search.domain.SetSearchPromptMessageShowCountUseCase
 import org.mozilla.rocket.shopping.search.domain.SetSearchResultOnboardingIsShownUseCase
 import org.mozilla.rocket.shopping.search.domain.ShouldEnableTurboModeUseCase
 import org.mozilla.rocket.shopping.search.domain.ShouldShowSearchResultOnboardingUseCase
@@ -122,4 +124,16 @@ object ShoppingSearchModule {
     @Provides
     fun provideShouldEnableTurboModeUseCase(repo: ShoppingSearchRepository): ShouldEnableTurboModeUseCase =
         ShouldEnableTurboModeUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetSearchPromptMessageShowCountUseCase(repo: ShoppingSearchRepository): GetSearchPromptMessageShowCountUseCase =
+        GetSearchPromptMessageShowCountUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetSearchPromptMessageShowCountUseCase(repo: ShoppingSearchRepository): SetSearchPromptMessageShowCountUseCase =
+        SetSearchPromptMessageShowCountUseCase(repo)
 }

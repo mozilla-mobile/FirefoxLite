@@ -38,6 +38,14 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
         throw UnsupportedOperationException("Can't set search result onboarding status to server")
     }
 
+    override fun getSearchPromptMessageShowCount(): Int {
+        throw UnsupportedOperationException("Can't get search prompt message status from server")
+    }
+
+    override fun setSearchPromptMessageShowCount(count: Int) {
+        throw UnsupportedOperationException("Can't set search prompt message status to server")
+    }
+
     companion object {
         const val RC_KEY_ENABLE_SHOPPING_SEARCH = "enable_shopping_search"
         const val RC_KEY_STR_SHOPPING_SEARCH_SITES = "str_shopping_search_sites"

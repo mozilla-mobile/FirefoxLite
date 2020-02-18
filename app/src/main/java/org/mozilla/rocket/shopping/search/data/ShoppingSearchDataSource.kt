@@ -15,4 +15,8 @@ interface ShoppingSearchDataSource {
     fun shouldShowSearchResultOnboarding(): Boolean
 
     fun setSearchResultOnboardingIsShown()
+
+    fun getSearchPromptMessageShowCount(): Int
+
+    fun setSearchPromptMessageShowCount(count: Int)
 }

@@ -55,6 +55,10 @@ class ShoppingSearchRepository(
 
     fun setSearchResultOnboardingIsShown() = localDataSource.setSearchResultOnboardingIsShown()
 
+    fun getSearchPromptMessageShowCount() = localDataSource.getSearchPromptMessageShowCount()
+
+    fun setSearchPromptMessageShowCount(count: Int) = localDataSource.setSearchPromptMessageShowCount(count)
+
     private fun shouldMergeShoppingSites(remoteShoppingSites: List<ShoppingSite>, localShoppingSites: List<ShoppingSite>): Boolean {
         if (remoteShoppingSites.size != localShoppingSites.size) {
             return true
