@@ -25,7 +25,13 @@ open class MissionRepository(
     })
 
     private val couponCache = LruCache<String, MissionCoupon>(COUPON_CACHE_SIZE) // mission unique id -> coupon
-    private val missionsLiveData = MutableLiveData<List<Mission>>()
+    private val missionsLiveData: MutableLiveData<List<Mission>> by lazy {
+        MutableLiveData<List<Mission>>().apply {
+            if (!isMsrpAvailable()) {
+                postValue(emptyList())
+            }
+        }
+    }
     private val showContentHubClickOnboarding = SingleLiveEvent<String>()
 
     fun isMsrpAvailable(): Boolean = missionRemoteDataSource.isMsrpAvailable()
