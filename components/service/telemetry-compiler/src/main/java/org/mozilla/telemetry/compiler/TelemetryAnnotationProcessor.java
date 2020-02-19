@@ -197,6 +197,9 @@ public class TelemetryAnnotationProcessor extends AbstractProcessor {
                     } else {
                         partValue.append(") ) ");
                     }
+                } else {
+                    partValue.append("AND event_value IS NULL ");
+
                 }
 
                 String event = "        WHEN (event_category IN ('" + annotation.category() + "') ) AND (event_method IN ('" + annotation.method() +
