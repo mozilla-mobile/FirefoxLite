@@ -16,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.TransitionDrawable;
@@ -62,6 +63,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.download.EnqueueDownloadTask;
 import org.mozilla.focus.locale.LocaleAwareFragment;
+import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.menu.WebContextMenu;
 import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.screenshot.CaptureRunnable;
@@ -950,7 +952,29 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             return;
         }
 
-        new EnqueueDownloadTask(getActivity(), download, getUrl()).execute();
+        android.app.AlertDialog.Builder localBuilder = new android.app.AlertDialog.Builder(getContext());
+        final Resources resources = Locales.getLocalizedResources(activity);
+        String appName = activity.getResources().getString(R.string.app_name);
+        String title = resources.getString(R.string.download_notification_title, appName);
+        localBuilder.setTitle(title);
+        localBuilder.setMessage(R.string.download_notification_message );
+        localBuilder.setPositiveButton(R.string.action_ok , new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+
+                new EnqueueDownloadTask(getActivity(), download, getUrl()).execute();
+            }
+        });
+        localBuilder.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+
+                return;
+            }
+        });
+
+        localBuilder.setCancelable(false).create();
+
+        localBuilder.show();
+
     }
 
     /*

@@ -1004,4 +1004,9 @@
     <!--Action button for setting Travel Discovery as default search engine-->
     <string name="travel_dialog_2_action">SET AS DEFAULT</string>
 
+    <!--Download Notification, ask user's approval before starting download-->
+    <!--%1$s here is the app name-->
+    <string name="download_notification_title">%1$s is going to download this file</string>
+    <string name="download_notification_message">Do you want to download from this page?</string>
+
 </resources>
