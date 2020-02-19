@@ -1,3 +1,9 @@
+---
+name: In-App communication/Remote Config
+about: Note an in-app communication event or Remote configuration changes
+
+---
+
 **READ BEFORE YOU GO**
 _To start an in-app communication for an event/campaign, please finish [In-App Communication Form](https://docs.google.com/spreadsheets/d/1gHi7ySasf4CyAnrmNEmJe4nbXfWHfnW4G2qf13okNSA/edit#gid=1890711327) and reach BI team first._
 
