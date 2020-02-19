@@ -1,8 +1,5 @@
 blank_issues_enabled: true
 contact_links:
-  - name: In-App Communication Request Format
-    url: https://docs.google.com/spreadsheets/d/1gHi7ySasf4CyAnrmNEmJe4nbXfWHfnW4G2qf13okNSA/edit#gid=1890711327
-    about: Request for BI Team
   - name: Security issue
     url: https://bugzilla.mozilla.org/enter_bug.cgi?product=Emerging%20Markets
     about: Report security issues here
