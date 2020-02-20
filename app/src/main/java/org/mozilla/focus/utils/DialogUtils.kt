@@ -209,6 +209,7 @@ object DialogUtils {
         Settings.getInstance(context).setRateAppNotificationDidShow()
     }
 
+    @JvmStatic
     @JvmOverloads
     fun showDefaultSettingNotification(context: Context, message: String? = null) { // Let NotificationActionBroadcastReceiver handle what to do
         val openDefaultBrowserSetting = IntentUtils.genDefaultBrowserSettingIntentForBroadcastReceiver(context)
