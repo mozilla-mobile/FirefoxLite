@@ -206,6 +206,7 @@ dependencies {
     implementation project(':cachedrequestloader')
     implementation project(':permissionhandler')
     implementation project(':strictmodeviolator')
+    implementation project(':customizedresources')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.kotlin}"
 

@@ -38,6 +38,9 @@ project(':permissionhandler').projectDir = new File('components/utils/android-pe
 include ':strictmodeviolator'
 project(':strictmodeviolator').projectDir = new File(rootDir, 'components/utils/strictmodeviolator')
 
+include ':customizedresources'
+project(':customizedresources').projectDir = new File(rootDir, 'components/customizedresources')
+
 include ':app'
 include ':firebase'
 include ':third_party:subsampling-scale-image-view'
