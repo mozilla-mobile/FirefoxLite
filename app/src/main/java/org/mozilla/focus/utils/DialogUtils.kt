@@ -243,11 +243,21 @@ object DialogUtils {
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow()
     }
 
-    fun showSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener, messageId: Int): Dialog {
+    fun showNightModeBrightnessSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener, messageId: Int): Dialog {
         val container = activity.inflate(R.layout.spotlight) as ViewGroup
         val messageTextView = container.findViewById<TextView>(R.id.spotlight_message)
         messageTextView.setText(messageId)
-        val dialog = createSpotlightDialog(activity, targetView, container)
+        val dialog = createSpotlightDialog(
+            activity,
+            targetView,
+            container,
+            SpotlightConfigs(
+                FocusViewType.CIRCLE,
+                radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
+                backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
+            ),
+            true
+        )
         // Press back key will dismiss on boarding view and menu view
         dialog.setOnCancelListener(onCancelListener)
         dialog.show()
@@ -257,7 +267,17 @@ object DialogUtils {
     fun showMyShotOnBoarding(activity: Activity, targetView: View, cancelListener: DialogInterface.OnCancelListener, learnMore: View.OnClickListener?): Dialog {
         val container = activity.inflate(R.layout.myshot_onboarding) as ViewGroup
         container.findViewById<View>(R.id.my_shot_category_learn_more).setOnClickListener(learnMore)
-        val dialog = createSpotlightDialog(activity, targetView, container)
+        val dialog = createSpotlightDialog(
+            activity,
+            targetView,
+            container,
+            SpotlightConfigs(
+                FocusViewType.CIRCLE,
+                radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
+                backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
+            ),
+            true
+        )
         // Press back key will dismiss on boarding view and menu view
         dialog.setOnCancelListener(cancelListener)
         dialog.show()
@@ -286,9 +306,22 @@ object DialogUtils {
         container.findViewById<View>(R.id.next).setOnClickListener(ok)
         val dialog = createContentServiceSpotlightDialog(activity, targetView, container,
                 activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_height),
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
                 false)
+        dialog.setOnDismissListener(dismissListener)
+        dialog.show()
+        return dialog
+    }
+
+    fun showContentServiceInTopSitesOnboardingSpotlight(
+        activity: FragmentActivity,
+        targetView: View,
+        dismissListener: DialogInterface.OnDismissListener,
+        ok: View.OnClickListener?
+    ): Dialog {
+        val container = activity.inflate(R.layout.onboarding_spotlight_content_services_in_top_sites) as ViewGroup
+        val dialog = createContentServiceInTopSitesSpotlightDialog(activity, targetView, container,
+                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
+                false, ok)
         dialog.setOnDismissListener(dismissListener)
         dialog.show()
         return dialog
@@ -305,8 +338,6 @@ object DialogUtils {
         text.text = activity.getString(R.string.msrp_home_hint, couponName)
         val dialog = createContentServiceSpotlightDialog(activity, targetView, container,
                 activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_height),
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
                 true)
         dialog.setOnDismissListener(dismissListener)
         dialog.show()
@@ -408,21 +439,6 @@ object DialogUtils {
     }
 
     @CheckResult
-    private fun createSpotlightDialog(activity: Activity, targetView: View, container: ViewGroup): Dialog {
-        return createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            0,
-            activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
-            0,
-            0,
-            FocusViewType.CIRCLE, ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground),
-            true
-        )
-    }
-
-    @CheckResult
     private fun createShoppingSearchSpotlightDialog(
         activity: Activity,
         targetView: View,
@@ -432,12 +448,7 @@ object DialogUtils {
             activity,
             targetView,
             container,
-            0,
-            activity.resources.getDimensionPixelSize(R.dimen.shopping_focus_view_radius),
-            0,
-            0,
-            FocusViewType.CIRCLE,
-            ContextCompat.getColor(activity, R.color.paletteBlack50),
+            SpotlightConfigs(FocusViewType.CIRCLE, radius = activity.resources.getDimensionPixelSize(R.dimen.shopping_focus_view_radius)),
             true
         )
     }
@@ -448,21 +459,53 @@ object DialogUtils {
         targetView: View,
         container: ViewGroup,
         radius: Int,
-        height: Int,
-        width: Int,
         cancelOnTouchOutside: Boolean
     ): Dialog {
         return createSpotlightDialog(
             activity,
             targetView,
             container,
-            activity.resources.getDimensionPixelSize(R.dimen.content_services_offset),
-            radius,
-            height,
-            width,
-            FocusViewType.ROUND_REC,
-            ContextCompat.getColor(activity, R.color.paletteBlack50),
+            SpotlightConfigs(
+                type = FocusViewType.ROUND_REC,
+                width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
+                height = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_height),
+                yOffsetRatio = -0.31f,
+                radius = radius
+            ),
             cancelOnTouchOutside
+        )
+    }
+
+    @CheckResult
+    private fun createContentServiceInTopSitesSpotlightDialog(
+        activity: Activity,
+        targetView: View,
+        container: ViewGroup,
+        radius: Int,
+        cancelOnTouchOutside: Boolean,
+        ok: View.OnClickListener?
+    ): Dialog {
+        val attachedView = activity.inflate(R.layout.content_services_in_top_sites_onboarding_attached_view)
+        attachedView.findViewById<View>(R.id.next).setOnClickListener(ok)
+        val attachedViewConfigs = AttachedViewConfigs(
+            position = AttachedPosition.TOP,
+            gravity = AttachedGravity.CENTER_SCREEN
+        )
+        return createSpotlightDialog(
+            activity,
+            targetView,
+            container,
+            SpotlightConfigs(
+                type = FocusViewType.ROUND_REC,
+                widthRatio = 0.65f,
+                heightRatio = 0.53f,
+                xOffsetRatio = -0.115f,
+                yOffsetRatio = -0.29f,
+                radius = radius
+            ),
+            cancelOnTouchOutside,
+            attachedView = attachedView,
+            attachedViewConfigs = attachedViewConfigs
         )
     }
 
@@ -479,12 +522,12 @@ object DialogUtils {
             activity,
             targetView,
             container,
-            0,
-            radius,
-            height,
-            width,
-            FocusViewType.ROUND_REC,
-            ContextCompat.getColor(activity, R.color.paletteBlack50),
+            SpotlightConfigs(
+                type = FocusViewType.ROUND_REC,
+                width = width,
+                height = height,
+                radius = radius
+            ),
             false
         )
     }
@@ -502,12 +545,12 @@ object DialogUtils {
             activity,
             targetView,
             container,
-            0,
-            radius,
-            height,
-            width,
-            FocusViewType.ROUND_REC,
-            ContextCompat.getColor(activity, R.color.paletteBlack50),
+            SpotlightConfigs(
+                type = FocusViewType.ROUND_REC,
+                width = width,
+                height = height,
+                radius = radius
+            ),
             false
         )
     }
@@ -517,25 +560,80 @@ object DialogUtils {
         activity: Activity,
         targetView: View,
         container: ViewGroup,
-        offsetY: Int,
-        radius: Int,
-        height: Int,
-        width: Int,
-        type: FocusViewType,
-        backgroundDimColor: Int,
-        cancelOnTouchOutside: Boolean
+        configs: SpotlightConfigs,
+        cancelOnTouchOutside: Boolean,
+        attachedView: View? = null,
+        attachedViewConfigs: AttachedViewConfigs? = null
     ): Dialog {
         val location = IntArray(2)
-        val centerX: Int
-        val centerY: Int
         // Get target view's position
         targetView.getLocationInWindow(location)
+
+        val offsetX = (configs.xOffsetRatio * targetView.measuredWidth).toInt()
+        val offsetY = (configs.yOffsetRatio * targetView.measuredHeight).toInt()
+
         // Get spotlight circle's center
-        centerX = location[0] + targetView.measuredWidth / 2
-        centerY = location[1] + targetView.measuredHeight / 2
+        val centerX = location[0] + targetView.measuredWidth / 2 + offsetX
+        val centerY = location[1] + targetView.measuredHeight / 2 + offsetY
+
+        val spotlightWidth: Int = if (configs.width > 0) {
+            configs.width
+        } else {
+            (configs.widthRatio * targetView.measuredWidth).toInt()
+        }
+        val spotlightHeight: Int = if (configs.height > 0) {
+            configs.height
+        } else {
+            (configs.heightRatio * targetView.measuredHeight).toInt()
+        }
+
         // Initialize FocusView and add it to container view's index 0(the bottom of Z-order)
-        val focusView = getFocusView(activity, centerX, centerY, offsetY, radius, height, width, type, backgroundDimColor)
-        container.addView(focusView, 0)
+        val focusView = getFocusView(activity, centerX, centerY,
+                configs.radius, spotlightHeight, spotlightWidth,
+                configs.type, configs.backgroundDimColor) as ViewGroup
+        container.addView(focusView, 0, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT))
+
+        attachedView?.run {
+            requireNotNull(attachedViewConfigs) { "Must to have attachedViewConfigs" }
+            focusView.addView(attachedView, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                when (attachedViewConfigs.position) {
+                    AttachedPosition.LEFT, AttachedPosition.RIGHT -> {
+                        if (attachedViewConfigs.position == AttachedPosition.LEFT) {
+                            addRule(RelativeLayout.LEFT_OF, R.id.spotlight_placeholder)
+                        } else {
+                            addRule(RelativeLayout.RIGHT_OF, R.id.spotlight_placeholder)
+                        }
+                        when (attachedViewConfigs.gravity) {
+                            AttachedGravity.START -> addRule(RelativeLayout.ALIGN_TOP, R.id.spotlight_placeholder)
+                            AttachedGravity.END -> addRule(RelativeLayout.ALIGN_BOTTOM, R.id.spotlight_placeholder)
+                            AttachedGravity.START_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_TOP)
+                            AttachedGravity.CENTER_SCREEN -> addRule(RelativeLayout.CENTER_VERTICAL)
+                            AttachedGravity.END_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                        }
+                    }
+                    AttachedPosition.TOP, AttachedPosition.BOTTOM -> {
+                        if (attachedViewConfigs.position == AttachedPosition.TOP) {
+                            addRule(RelativeLayout.ABOVE, R.id.spotlight_placeholder)
+                        } else {
+                            addRule(RelativeLayout.BELOW, R.id.spotlight_placeholder)
+                        }
+                        when (attachedViewConfigs.gravity) {
+                            AttachedGravity.START -> addRule(RelativeLayout.ALIGN_START, R.id.spotlight_placeholder)
+                            AttachedGravity.END -> addRule(RelativeLayout.ALIGN_END, R.id.spotlight_placeholder)
+                            AttachedGravity.START_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_START)
+                            AttachedGravity.CENTER_SCREEN -> addRule(RelativeLayout.CENTER_HORIZONTAL)
+                            AttachedGravity.END_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_END)
+                        }
+                    }
+                }
+
+                topMargin = attachedViewConfigs.marginTop
+                bottomMargin = attachedViewConfigs.marginBottom
+                leftMargin = attachedViewConfigs.marginStart
+                rightMargin = attachedViewConfigs.marginEnd
+            })
+        }
+
         // Add a delegate view to determine the position of hint image and text. Also consuming the click/longClick event.
         val delegateView = container.findViewById<View>(R.id.spotlight_mock_menu)
         val params = delegateView.layoutParams as RelativeLayout.LayoutParams
@@ -621,10 +719,10 @@ object DialogUtils {
         return resultBitmap
     }
 
-    private fun getFocusView(context: Context, centerX: Int, centerY: Int, offsetY: Int, radius: Int, height: Int, width: Int, type: FocusViewType, backgroundDimColor: Int): View {
+    private fun getFocusView(context: Context, centerX: Int, centerY: Int, radius: Int, height: Int, width: Int, type: FocusViewType, backgroundDimColor: Int): View {
         return when (type) {
             FocusViewType.CIRCLE -> FocusView(context, centerX, centerY, radius, backgroundDimColor)
-            FocusViewType.ROUND_REC -> RoundRecFocusView(context, centerX, centerY, offsetY, radius, height, width, backgroundDimColor)
+            FocusViewType.ROUND_REC -> RoundRecFocusView(context, centerX, centerY, radius, height, width, backgroundDimColor)
         }
     }
 
@@ -659,7 +757,36 @@ object DialogUtils {
         return dialog
     }
 
-    internal enum class FocusViewType {
+    enum class FocusViewType {
         CIRCLE, ROUND_REC
+    }
+
+    data class SpotlightConfigs(
+        val type: FocusViewType,
+        val width: Int = Int.MIN_VALUE,
+        val height: Int = Int.MIN_VALUE,
+        val widthRatio: Float = 1.0f,
+        val heightRatio: Float = 1.0f,
+        val xOffsetRatio: Float = 0f,
+        val yOffsetRatio: Float = 0f,
+        val radius: Int = 0,
+        val backgroundDimColor: Int = 0x80000000.toInt()
+    )
+
+    data class AttachedViewConfigs(
+        val position: AttachedPosition,
+        val gravity: AttachedGravity = AttachedGravity.START,
+        val marginStart: Int = 0,
+        val marginTop: Int = 0,
+        val marginEnd: Int = 0,
+        val marginBottom: Int = 0
+    )
+
+    enum class AttachedGravity {
+        START, END, START_SCREEN, CENTER_SCREEN, END_SCREEN
+    }
+
+    enum class AttachedPosition {
+        LEFT, TOP, RIGHT, BOTTOM
     }
 }

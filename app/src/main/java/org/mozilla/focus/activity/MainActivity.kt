@@ -652,7 +652,7 @@ class MainActivity : BaseActivity(),
     private fun showNightModeOnBoarding() {
         val view = menu.findViewById<View>(R.id.menu_night_mode)
         view?.post {
-            DialogUtils.showSpotlight(
+            DialogUtils.showNightModeBrightnessSpotlight(
                     this@MainActivity,
                     view,
                     DialogInterface.OnCancelListener {},

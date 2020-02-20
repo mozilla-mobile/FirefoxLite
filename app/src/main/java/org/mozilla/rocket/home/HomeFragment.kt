@@ -435,12 +435,18 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         activity?.let {
             content_hub.post {
                 setOnboardingStatusBarColor()
-                contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, DialogInterface.OnDismissListener {
+                val dismissListener = DialogInterface.OnDismissListener {
                     restoreStatusBarColor()
                     homeViewModel.onContentServicesOnboardingSpotlightDismiss()
-                }, View.OnClickListener {
+                }
+                val clickOkButtonListener = View.OnClickListener {
                     homeViewModel.onContentServiceOnboardingButtonClicked()
-                })
+                }
+                contentServiceSpotlightDialog = if (homeViewModel.isContentHubMergeIntoTopSite.value == true) {
+                    DialogUtils.showContentServiceInTopSitesOnboardingSpotlight(it, main_list, dismissListener, clickOkButtonListener)
+                } else {
+                    DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, dismissListener, clickOkButtonListener)
+                }
             }
         }
     }
