@@ -54,6 +54,7 @@ object TravelMapper {
                 item.subCategoryId,
                 item.image,
                 item.destination,
+                item.destinationType,
                 item.title,
                 item.componentId
             )

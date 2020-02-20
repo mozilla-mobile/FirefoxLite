@@ -1,5 +1,7 @@
 package org.mozilla.rocket.content.ecommerce.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +17,13 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategory
 import org.mozilla.rocket.content.ecommerce.ui.adapter.ProductCategoryAdapterDelegate
+import org.mozilla.rocket.content.game.ui.GameModeActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
 
@@ -93,11 +97,25 @@ class DealFragment : Fragment() {
     private fun observeAction() {
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(ContentTabActivity.getStartIntent(
-                    it,
-                    action.url,
-                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.SHOPPING, versionId = dealViewModel.versionId)
-                ))
+                when (action.type) {
+                    RunwayItem.TYPE_FULL_SCREEN_CONTENT_TAB -> {
+                        startActivity(GameModeActivity.getStartIntent(
+                            it,
+                            action.url,
+                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.SHOPPING, versionId = dealViewModel.versionId)))
+                    }
+                    RunwayItem.TYPE_EXTERNAL_LINK -> {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(action.url))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                    else -> {
+                        startActivity(ContentTabActivity.getStartIntent(
+                            it,
+                            action.url,
+                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.SHOPPING, versionId = dealViewModel.versionId)))
+                    }
+                }
             }
         })
 

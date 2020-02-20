@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -28,6 +29,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.DownloadGameCategoryAdapterDelegate
@@ -181,10 +184,25 @@ class DownloadGameFragment : Fragment() {
     private fun observeGameAction() {
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(GameModeActivity.getStartIntent(
-                    it,
-                    action.url,
-                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = downloadGameViewModel.versionId)))
+                when (action.type) {
+                    RunwayItem.TYPE_CONTENT_TAB -> {
+                        startActivity(ContentTabActivity.getStartIntent(
+                            it,
+                            action.url,
+                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = downloadGameViewModel.versionId)))
+                    }
+                    RunwayItem.TYPE_EXTERNAL_LINK -> {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(action.url))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                    else -> {
+                        startActivity(GameModeActivity.getStartIntent(
+                            it,
+                            action.url,
+                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = downloadGameViewModel.versionId)))
+                    }
+                }
             }
         })
 
