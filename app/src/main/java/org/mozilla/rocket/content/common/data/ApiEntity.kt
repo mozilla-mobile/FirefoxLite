@@ -94,7 +94,8 @@ data class ApiItem(
     var score: Float = 0F,
     var scoreReviews: String = "",
     var description: String = "",
-    var endDate: Long = 0L
+    var endDate: Long = 0L,
+    var destinationType: Int = 0
 ) {
 
     fun toJsonObject(): JSONObject {
@@ -112,6 +113,7 @@ data class ApiItem(
         jsonObject.put(KEY_SCORE_REVIEWS, scoreReviews)
         jsonObject.put(KEY_DESCRIPTION, description)
         jsonObject.put(KEY_END_DATE, endDate)
+        jsonObject.put(KEY_DESTINATION_TYPE, destinationType)
         return jsonObject
     }
 
@@ -129,6 +131,7 @@ data class ApiItem(
         private const val KEY_SCORE_REVIEWS = "score_reviews"
         private const val KEY_DESCRIPTION = "description"
         private const val KEY_END_DATE = "end_date"
+        private const val KEY_DESTINATION_TYPE = "destination_type"
 
         fun fromJson(jsonObject: JSONObject): ApiItem =
             ApiItem(
@@ -144,7 +147,8 @@ data class ApiItem(
                 jsonObject.optDouble(KEY_SCORE, 0.toDouble()).toFloat(),
                 jsonObject.optString(KEY_SCORE_REVIEWS),
                 jsonObject.optString(KEY_DESCRIPTION),
-                jsonObject.optLong(KEY_END_DATE)
+                jsonObject.optLong(KEY_END_DATE),
+                jsonObject.optInt(KEY_DESTINATION_TYPE)
             )
     }
 }

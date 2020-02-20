@@ -19,8 +19,8 @@ class RunwayViewModel : ViewModel() {
             runwayItem.subCategoryId,
             0L
         )
-        openRunway.value = OpenLinkAction(runwayItem.linkUrl, telemetryData)
+        openRunway.value = OpenLinkAction(runwayItem.linkUrl, runwayItem.linkType, telemetryData)
     }
 
-    data class OpenLinkAction(val url: String, val telemetryData: ContentTabTelemetryData)
+    data class OpenLinkAction(val url: String, val type: Int, val telemetryData: ContentTabTelemetryData)
 }

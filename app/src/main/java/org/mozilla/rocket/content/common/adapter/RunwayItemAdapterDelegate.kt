@@ -70,6 +70,13 @@ data class RunwayItem(
     val subCategoryId: String,
     val imageUrl: String,
     val linkUrl: String,
+    val linkType: Int,
     val title: String,
     val componentId: String
-) : DelegateAdapter.UiModel()
+) : DelegateAdapter.UiModel() {
+    companion object {
+        const val TYPE_FULL_SCREEN_CONTENT_TAB = 1
+        const val TYPE_CONTENT_TAB = 2
+        const val TYPE_EXTERNAL_LINK = 3
+    }
+}

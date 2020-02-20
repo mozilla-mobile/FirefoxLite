@@ -26,6 +26,8 @@ import org.mozilla.rocket.component.LaunchIntentDispatcher
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.adapter.Runway
 import org.mozilla.rocket.content.common.adapter.RunwayAdapterDelegate
+import org.mozilla.rocket.content.common.adapter.RunwayItem
+import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.InstantGameCategoryAdapterDelegate
@@ -107,10 +109,25 @@ class InstantGameFragment : Fragment() {
     private fun observeGameAction() {
         runwayViewModel.openRunway.observe(this, Observer { action ->
             context?.let {
-                startActivity(GameModeActivity.getStartIntent(
-                    it,
-                    action.url,
-                    action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = instantGamesViewModel.versionId)))
+                when (action.type) {
+                    RunwayItem.TYPE_CONTENT_TAB -> {
+                        startActivity(ContentTabActivity.getStartIntent(
+                            it,
+                            action.url,
+                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = instantGamesViewModel.versionId)))
+                    }
+                    RunwayItem.TYPE_EXTERNAL_LINK -> {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(action.url))
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    }
+                    else -> {
+                        startActivity(GameModeActivity.getStartIntent(
+                            it,
+                            action.url,
+                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.GAME, versionId = instantGamesViewModel.versionId)))
+                    }
+                }
             }
         })
 
