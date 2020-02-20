@@ -182,7 +182,6 @@
   <string name="rate_app_dialog_btn_feedback">प्रतिक्रिया भेजोॅ</string>
   <string name="rate_app_notification_action_feedback">प्रतिक्रिया</string>
   <string name="share_app_dialog_text_title">संगी सँ %1$s शेयर करियै!</string>
-  <string name="share_app_dialog_text_content">- तेज आरु हल्का\n- डेटा क बचत\n- शक्तिशाली स्क्रीनशॉट</string>
   <string name="share_app_dialog_btn_share">शेयर</string>
   <string name="share_app_promotion_text">हे, %3$s सअ तेज आरु हल्का ब्राउज़र क देखिइयै. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s %2$s आरू दोसरो योगदानकर्ता द्वारा बनाएल गेलो स्वतंत्र आरू मुक्त स्रोत सॉफ्टवेयर छियै.</string>
