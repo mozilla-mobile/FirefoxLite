@@ -9,9 +9,11 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import android.widget.RelativeLayout
+import org.mozilla.focus.R
 import org.mozilla.focus.utils.ViewUtils
 
-class RoundRecFocusView : View {
+class RoundRecFocusView : RelativeLayout {
     private val transparentPaint: Paint = Paint()
     private val path = Path()
     private var centerX: Int = 0
@@ -35,22 +37,24 @@ class RoundRecFocusView : View {
         initPaints()
     }
 
-    constructor(context: Context, centerX: Int, centerY: Int, offsetY: Int, radius: Int, height: Int, width: Int, backgroundColor: Int) : super(context) {
+    constructor(context: Context, centerX: Int, centerY: Int, radius: Int, height: Int, width: Int, backgroundColor: Int) : super(context) {
         this.centerX = centerX
-        this.centerY = centerY - offsetY
+        this.centerY = centerY
         this.statusBarOffset = ViewUtils.getStatusBarHeight(context as Activity)
         this.radius = radius
         this.rectangleHeight = height
         this.rectangleWidth = width
         this.backgroundDimColor = backgroundColor
 
-        val left = centerX - rectangleWidth / 2
+        val left = this.centerX - rectangleWidth / 2
         val top = this.centerY - rectangleHeight / 2 - statusBarOffset
-        val right = centerX + rectangleWidth / 2
+        val right = this.centerX + rectangleWidth / 2
         val bottom = this.centerY + rectangleHeight / 2 - statusBarOffset
         this.rectF = RectF(left.toFloat(), top.toFloat(), right.toFloat(), bottom.toFloat())
 
         initPaints()
+        drawSpotlight()
+        addSpotlightPlaceholder(width, height, left, top)
     }
 
     private fun initPaints() {
@@ -58,15 +62,34 @@ class RoundRecFocusView : View {
         transparentPaint.strokeWidth = 10f
     }
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
+    private fun drawSpotlight() {
+        addView(object : View(context) {
+            override fun onDraw(canvas: Canvas) {
+                super.onDraw(canvas)
 
-        path.reset()
-        path.addRoundRect(rectF, radius.toFloat(), radius.toFloat(), Path.Direction.CW)
-        path.fillType = Path.FillType.INVERSE_EVEN_ODD
+                path.reset()
+                path.addRoundRect(rectF, radius.toFloat(), radius.toFloat(), Path.Direction.CW)
+                path.fillType = Path.FillType.INVERSE_EVEN_ODD
 
-        canvas.drawRoundRect(rectF, radius.toFloat(), radius.toFloat(), transparentPaint)
-        canvas.clipPath(path)
-        canvas.drawColor(backgroundDimColor)
+                canvas.drawRoundRect(rectF, radius.toFloat(), radius.toFloat(), transparentPaint)
+                canvas.clipPath(path)
+                canvas.drawColor(backgroundDimColor)
+            }
+        }, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+    }
+
+    private fun addSpotlightPlaceholder(width: Int, height: Int, left: Int, top: Int) {
+        addView(View(context).apply {
+            id = R.id.spotlight_anchor_view
+        }, LayoutParams(width, height).apply {
+            leftMargin = left
+            topMargin = top
+        })
+        addView(View(context).apply {
+            id = R.id.spotlight_placeholder
+        }, LayoutParams(width, height).apply {
+            addRule(ALIGN_TOP, R.id.spotlight_anchor_view)
+            addRule(ALIGN_START, R.id.spotlight_anchor_view)
+        })
     }
 }

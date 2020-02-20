@@ -2,6 +2,7 @@ package org.mozilla.rocket.home
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -434,11 +435,17 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         activity?.let {
             content_hub.post {
                 setOnboardingStatusBarColor()
-                contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, {
+                val dismissListener = DialogInterface.OnDismissListener {
                     restoreStatusBarColor()
                     homeViewModel.onContentServicesOnboardingSpotlightDismiss()
-                }) {
+                }
+                val clickOkButtonListener = View.OnClickListener {
                     homeViewModel.onContentServiceOnboardingButtonClicked()
+                }
+                contentServiceSpotlightDialog = if (homeViewModel.isContentHubMergeIntoTopSite.value == true) {
+                    DialogUtils.showContentServiceInTopSitesOnboardingSpotlight(it, main_list, dismissListener, clickOkButtonListener)
+                } else {
+                    DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, dismissListener, clickOkButtonListener)
                 }
             }
         }
@@ -454,12 +461,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         activity?.let {
             shopping_button.post {
                 setOnboardingStatusBarColor()
-                DialogUtils.showShoppingSearchSpotlight(it, shopping_button) {
+                DialogUtils.showShoppingSearchSpotlight(it, shopping_button, DialogInterface.OnDismissListener {
                     restoreStatusBarColor()
                     shopping_button.isVisible = currentShoppingBtnVisibleState
                     private_mode_button.isVisible = !currentShoppingBtnVisibleState
                     homeViewModel.onShoppingSearchOnboardingSpotlightDismiss()
-                }
+                })
             }
         }
     }
@@ -530,10 +537,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             content_hub.post {
                 homeViewModel.onShowClickContentHubOnboarding()
                 setOnboardingStatusBarColor()
-                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub, couponName) {
+                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub, couponName, DialogInterface.OnDismissListener {
                     restoreStatusBarColor()
                     homeViewModel.onContentHubRequestClickHintDismissed()
-                }
+                })
             }
         }
     }

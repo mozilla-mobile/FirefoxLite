@@ -2,6 +2,7 @@ package org.mozilla.rocket.content.travel.ui
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -98,13 +99,13 @@ class TravelCityActivity : BaseActivity() {
     private fun showOnboardingSpotlight(name: String) {
         favorite_button.post {
             window.statusBarColor = ContextCompat.getColor(this, R.color.paletteBlack50)
-            onboardingSpotlightDialog = DialogUtils.showTravelSpotlight(this, favorite_button, name, {
+            onboardingSpotlightDialog = DialogUtils.showTravelSpotlight(this, favorite_button, name, DialogInterface.OnDismissListener {
                 window?.statusBarColor = Color.TRANSPARENT
-            }) {
+            }, View.OnClickListener {
                 if (::onboardingSpotlightDialog.isInitialized) {
                     onboardingSpotlightDialog.dismiss()
                 }
-            }
+            })
         }
     }
 

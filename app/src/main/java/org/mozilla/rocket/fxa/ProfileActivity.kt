@@ -1,6 +1,7 @@
 package org.mozilla.rocket.fxa
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -64,9 +65,9 @@ class ProfileActivity : FragmentActivity(), TabsSessionProvider.SessionHost, FxL
             bindFxAccountUseCase(jwt)
             when {
                 isDisabled -> {
-                    DialogUtils.showAccountDisabledDialog(this@ProfileActivity) {
+                    DialogUtils.showAccountDisabledDialog(this@ProfileActivity, DialogInterface.OnDismissListener {
                         finish()
-                    }
+                    })
                     return@launch
                 }
                 statusCode == STATUS_CODE_WARNING -> DialogUtils.showLoginMultipleTimesWarningDialog(this@ProfileActivity)
