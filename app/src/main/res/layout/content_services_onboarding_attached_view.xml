@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/tooltip_pointer"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/tooltip_pointer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/onboarding_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tooltip_pointer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <android.widget.LinearLayout
+            android:orientation="vertical"
+            android:layout_width="232dp"
+            android:layout_height="wrap_content"
+            android:minHeight="144dp">
+
+            <TextView
+                android:id="@+id/content_services_plateform_onboarding_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/home_content_services"
+                android:textColor="@color/paletteLightBlack100"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/content_services_plateform_onboarding_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/onboarding_2_content_services_message"
+                android:textColor="@color/paletteLightBlack100"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <Button
+                android:id="@+id/next"
+                android:layout_width="96dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_plateform_onboarding_button"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/action_ok"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:layout_gravity="bottom|end"/>
+
+        </android.widget.LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
