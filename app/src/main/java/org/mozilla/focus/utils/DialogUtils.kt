@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.myshot_onboarding.view.my_shot_category_le
 import kotlinx.android.synthetic.main.onboarding_spotlight_content_services_request_click.view.content_services_plateform_onboarding_message
 import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_message
 import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_title
-import kotlinx.android.synthetic.main.spotlight.view.spotlight_message
+import kotlinx.android.synthetic.main.spotlight_message.view.spotlight_message
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
@@ -251,7 +251,7 @@ object DialogUtils {
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow()
     }
 
-    fun showNightModeBrightnessSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener, messageId: Int): Dialog =
+    fun showNightModeBrightnessSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener): Dialog =
             SpotlightDialog.Builder(activity, targetView)
                     .spotlightConfigs(
                         CircleSpotlightConfigs(
@@ -259,9 +259,23 @@ object DialogUtils {
                             backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
                         )
                     )
-                    .addView(activity.inflate(R.layout.spotlight).apply {
-                        spotlight_message.setText(messageId)
-                    })
+                    .setAttachedView(
+                        activity.inflate(R.layout.spotlight_hand_pointer),
+                        AttachedViewConfigs(
+                            position = AttachedPosition.TOP,
+                            gravity = AttachedGravity.END_ALIGN_START,
+                            marginEnd = activity.dpToPx(-42f),
+                            marginBottom = activity.dpToPx(-42f)
+                        )
+                    )
+                    .addView(
+                        activity.inflate(R.layout.spotlight_message).apply {
+                            spotlight_message.setText(R.string.night_mode_on_boarding_message)
+                        }, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer)
+                            addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        })
+                    )
                     .cancelListener(onCancelListener)
                     .build()
                     .also { it.show() }
