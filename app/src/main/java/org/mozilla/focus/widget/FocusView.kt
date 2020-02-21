@@ -46,7 +46,7 @@ class FocusView : RelativeLayout {
         drawSpotlight()
         val left = this.centerX - radius
         val top = this.centerY - statusBarOffset - radius
-        addSpotlightPlaceholder(width, height, left, top)
+        addSpotlightPlaceholder(radius * 2, radius * 2, left, top)
     }
 
     private fun initPaints() {
