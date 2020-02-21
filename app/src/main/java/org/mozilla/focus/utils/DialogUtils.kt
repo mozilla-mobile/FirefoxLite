@@ -288,9 +288,31 @@ object DialogUtils {
                             backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
                         )
                     )
-                    .addView(activity.inflate(R.layout.myshot_onboarding).apply {
-                        my_shot_category_learn_more.setOnClickListener(learnMore)
-                    })
+                    .addView(
+                        activity.inflate(R.layout.myshot_onboarding).apply {
+                            my_shot_category_learn_more.setOnClickListener(learnMore)
+                        },
+                        RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                            addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                        }
+                    )
+                    .setAttachedView(
+                        activity.inflate(R.layout.spotlight_hand_pointer),
+                        AttachedViewConfigs(
+                            position = AttachedPosition.TOP,
+                            gravity = AttachedGravity.END_ALIGN_START,
+                            marginEnd = activity.dpToPx(-42f),
+                            marginBottom = activity.dpToPx(-42f)
+                        )
+                    )
+                    .addView(
+                        activity.inflate(R.layout.spotlight_message).apply {
+                            spotlight_message.setText(R.string.my_shot_on_boarding_message)
+                        }, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer)
+                            addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        })
+                    )
                     .cancelListener(cancelListener)
                     .build()
                     .also { it.show() }
