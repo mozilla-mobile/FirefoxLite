@@ -304,8 +304,6 @@ object DialogUtils {
             .spotlightConfigs(
                 RectangleSpotlightConfigs(
                     width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
-                    height = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_height),
-                    yOffsetRatio = -0.31f,
                     cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
                 )
             )
@@ -377,8 +375,6 @@ object DialogUtils {
             .spotlightConfigs(
                 RectangleSpotlightConfigs(
                     width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
-                    height = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_height),
-                    yOffsetRatio = -0.31f,
                     cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
                 )
             )
