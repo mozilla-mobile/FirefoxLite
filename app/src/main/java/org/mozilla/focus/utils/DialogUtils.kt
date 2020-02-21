@@ -309,7 +309,7 @@ object DialogUtils {
                         activity.inflate(R.layout.spotlight_message).apply {
                             spotlight_message.setText(R.string.my_shot_on_boarding_message)
                         }, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer)
+                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer) // Root view in spotlight_hand_pointer.xml
                             addRule(RelativeLayout.CENTER_HORIZONTAL)
                         })
                     )
@@ -464,9 +464,26 @@ object DialogUtils {
                     cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_radius)
                 )
             )
-            .addView(activity.inflate(R.layout.onboarding_spotlight_game_recent_played).apply {
-                next.setOnClickListener(ok)
-            })
+            .setAttachedView(
+                activity.inflate(R.layout.onboarding_spotlight_game_recent_played_attached_view).apply {
+                    next.setOnClickListener(ok)
+                },
+                AttachedViewConfigs(
+                    position = AttachedPosition.BOTTOM,
+                    gravity = AttachedGravity.START
+                )
+            )
+            .addView(
+                activity.inflate(R.layout.onboarding_spotlight_game_recent_played_logo_man).apply {
+                    elevation = activity.dpToPx(4f).toFloat() // Make logo man on top of message dialog
+                },
+                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                    // Root view in onboarding_spotlight_game_recent_played_attached_view.xml
+                    addRule(RelativeLayout.ABOVE, R.id.onboarding_dialog)
+                    addRule(RelativeLayout.ALIGN_END, R.id.onboarding_dialog)
+                    bottomMargin = activity.dpToPx(-32f)
+                }
+            )
             .cancelOnTouchOutside(false)
             .dismissListener(dismissListener)
             .build()
