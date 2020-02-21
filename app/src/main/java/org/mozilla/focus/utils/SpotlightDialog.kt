@@ -42,15 +42,16 @@ class SpotlightDialog private constructor(
                 .also { dialog ->
                     if (cancelOnTouchOutside) {
                         focusView.setOnClickListener { dialog.dismiss() }
-                        // TODO
-//                        delegateView.setOnClickListener {
-//                            dialog.dismiss()
-//                            targetView.performClick()
-//                        }
-//                        delegateView.setOnLongClickListener {
-//                            dialog.dismiss()
-//                            targetView.performLongClick()
-//                        }
+                        focusView.findViewById<View>(R.id.spotlight_placeholder).apply {
+                            setOnClickListener {
+                                dialog.dismiss()
+                                targetView.performClick()
+                            }
+                            setOnLongClickListener {
+                                dialog.dismiss()
+                                targetView.performLongClick()
+                            }
+                        }
                     }
                 }
     }
