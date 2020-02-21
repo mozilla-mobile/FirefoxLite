@@ -120,6 +120,8 @@ class SpotlightDialog private constructor(
                             AttachedGravity.START_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_TOP)
                             AttachedGravity.CENTER_SCREEN -> addRule(RelativeLayout.CENTER_VERTICAL)
                             AttachedGravity.END_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                            AttachedGravity.END_ALIGN_START -> addRule(RelativeLayout.ABOVE, R.id.spotlight_placeholder)
+                            AttachedGravity.START_ALIGN_END -> addRule(RelativeLayout.BELOW, R.id.spotlight_placeholder)
                         }
                     }
                     AttachedPosition.TOP, AttachedPosition.BOTTOM -> {
@@ -134,6 +136,8 @@ class SpotlightDialog private constructor(
                             AttachedGravity.START_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_START)
                             AttachedGravity.CENTER_SCREEN -> addRule(RelativeLayout.CENTER_HORIZONTAL)
                             AttachedGravity.END_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_END)
+                            AttachedGravity.END_ALIGN_START -> addRule(RelativeLayout.LEFT_OF, R.id.spotlight_placeholder)
+                            AttachedGravity.START_ALIGN_END -> addRule(RelativeLayout.RIGHT_OF, R.id.spotlight_placeholder)
                         }
                     }
                 }
@@ -235,7 +239,7 @@ class SpotlightDialog private constructor(
     )
 
     enum class AttachedGravity {
-        START, END, START_SCREEN, CENTER_SCREEN, END_SCREEN
+        START, END_ALIGN_START, END, START_ALIGN_END, START_SCREEN, CENTER_SCREEN, END_SCREEN
     }
 
     enum class AttachedPosition {
