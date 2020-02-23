@@ -197,9 +197,11 @@
   <string name="rate_app_dialog_btn_feedback">প্রতিক্রিয়া জানান</string>
   <string name="rate_app_notification_action_feedback">প্রতিক্রিয়া</string>
   <string name="share_app_dialog_text_title">আপনার বন্ধুদের সাথে %1$s শেয়ার করুন!</string>
-  <string name="share_app_dialog_text_content">- দ্রুত এবং হালকা\n- ডেটা সংরক্ষণ করে\n- জোরাল স্ক্রিনশট</string>
+  <string name="share_app_dialog_text_content">- দ্রুত এবং হালকা\n- স্মার্ট শপিং অনুসন্ধান\n- ফ্রি গেমস, চলমান সংবাদ</string>
   <string name="share_app_dialog_btn_share">শেয়ার করুন</string>
   <string name="share_app_promotion_text">আরে, %3$s-র এই দ্রুত এবং হালকা ব্রাউজারটি দেখুন। %1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">এখনই আপডেট করুন!</string>
+  <string name="update_app_dialog_btn_later">পরবর্তীতে</string>
   <string name="your_rights_content1">%2$s এবং অন্যান্য অবদানকারীর দ্বারা তৈরি %1$s হল বিনামূল্যের এবং ওপেন সোর্স সফ্টওয়্যার।</string>
   <string name="your_rights_content2"><![CDATA["%1$s আপনার কাছে "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" এবং অন্যান্য ওপেন সোর্স লাইসেন্সের শর্তাবলী অনুসারে উপলব্ধ করা হয়েছে।"]]></string>
   <string name="your_rights_content3"><![CDATA["%3$s, %4$s বা %1$s নাম বা লোগো সহ Mozilla ফাউন্ডেশন বা কোনও পক্ষের ট্রেডমার্কে উপর কোন অধিকার বা লাইসেন্স আপনাকে মঞ্জুর করা হয়নি। "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">here</a>" এ অতিরিক্ত তথ্য পাওয়া যেতে পারে।"]]></string>
@@ -273,6 +275,8 @@
   <string name="news_category_option_jokes">কৌতুক</string>
   <string name="news_category_option_nation">জাতি</string>
   <string name="logo_text">পরিষেবা সরবরাহ করেছেন</string>
+  <string name="recommended_news_title">আপনার জন্য সুপারিশকৃত খবর</string>
+  <string name="recommended_news_preference_language">আপনার পছন্দসই সংবাদের ভাষা\nবাছাই করুন</string>
   <string name="private_tab">ব্যক্তিগত ট্যাব</string>
   <string name="private_browsing_title">ব্যক্তিগত ব্রাউজিং</string>
   <string name="private_browsing_erase_message">ব্রাউজিং-র পূর্ববর্তী তথ্য মুছে দিন</string>
@@ -327,6 +331,7 @@
   <string name="gaming_vertical_hint_title">আপনার প্রিয় গেমগুলো দ্রুত খেলুন</string>
   <string name="gaming_vertical_hint_body">আপনার হোম স্ক্রিনে শর্টকাট তৈরি করতে ট্যাপ করুন।</string>
   <string name="gaming_vertical_hint_button">ঠিক আছে</string>
+  <string name="gaming_vertical_shortcut_message">শর্টকাট তৈরি হয়েছে।</string>
   <string name="gaming_vertical_menu_option_1">খেলা শেয়ার করুন</string>
   <string name="gaming_vertical_menu_option_2">হোম স্ক্রিনে শর্টকাট তৈরি করুন</string>
   <string name="gaming_vertical_menu_option_3">তালিকা থেকে বাদ দিন</string>
@@ -421,4 +426,22 @@
   <string name="msrp_reward_challenge_error">ওহ! কিছু একটা ভুল হয়েছে</string>
   <string name="msrp_activitykilled_snackbar_button">REDEEM</string>
   <string name="msrp_activitykilled_snackbar_body">আপনি একটি শপিং ভাউচার জিতেছেন!</string>
+  <string name="travel_detail_page_subcategory_hotel">জনপ্রিয় হোটেল সমূহ</string>
+  <string name="travel_more">আরও</string>
+  <string name="travel_content_yt_view_count">%1$sদেখুন</string>
+  <string name="travel_content_yt_view_count_single_view">1দেখুন</string>
+  <string name="travel_content_wiki_source_name">উইকিপিডিয়া</string>
+  <string name="travel_hotel_detail_1">বিনামূল্যে Wi-Fi</string>
+  <string name="travel_hotel_detail_2">কোনও ক্রেডিট কার্ডের প্রয়োজন নেই</string>
+  <string name="travel_empty_state_button">একটি শহর ঘুরুন</string>
+  <string name="travel_snack_bar_button">দেখুন</string>
+  <string name="travel_onboarding_save_button">ঠিক আছে</string>
+  <string name="travel_find_destination_placeholder_2">গন্তব্য লিখুন</string>
+  <string name="travel_search_engine_1">এ ফলাফল দেখুন%1$s</string>
+  <string name="travel_search_engine_2">স্মার্ট ভ্রমণ অনুসন্ধানে ফলাফল দেখুন</string>
+  <string name="travel_search_engine_fxlite">%1$s Travel Discovery তে ফলাফল দেখুন</string>
+  <string name="travel_dialog_1_title">আরও আবিষ্কার করুন!</string>
+  <string name="travel_dialog_1_action_2">না, ধন্যবাদ</string>
+  <string name="travel_dialog_2_checkbox">পুনরায় আমাকে জিজ্ঞেস করবে না</string>
+  <string name="travel_dialog_2_action">ডিফল্ট হিসেবে সেট করুন</string>
 </resources>
