@@ -109,7 +109,6 @@
     <item name="content_hub_title_top_margin" type="dimen">0dp</item>
     <dimen name="shopping_focus_view_radius">51dp</dimen>
     <dimen name="content_service_focus_view_width">320dp</dimen>
-    <dimen name="content_service_focus_view_height">100dp</dimen>
     <dimen name="content_service_focus_view_radius">12dp</dimen>
 
     <!--  MissionDetailFragment  -->

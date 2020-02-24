@@ -445,7 +445,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 contentServiceSpotlightDialog = if (homeViewModel.isContentHubMergeIntoTopSite.value == true) {
                     DialogUtils.showContentServiceInTopSitesOnboardingSpotlight(it, main_list, dismissListener, clickOkButtonListener)
                 } else {
-                    DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub, dismissListener, clickOkButtonListener)
+                    DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub_layout, dismissListener, clickOkButtonListener)
                 }
             }
         }

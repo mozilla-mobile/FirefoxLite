@@ -655,8 +655,7 @@ class MainActivity : BaseActivity(),
             DialogUtils.showNightModeBrightnessSpotlight(
                     this@MainActivity,
                     view,
-                    DialogInterface.OnCancelListener {},
-                    R.string.night_mode_on_boarding_message)
+                    DialogInterface.OnCancelListener {})
         }
     }
 

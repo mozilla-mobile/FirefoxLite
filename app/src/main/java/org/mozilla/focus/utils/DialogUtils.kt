@@ -19,11 +19,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.annotation.CheckResult
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -34,6 +31,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
+import kotlinx.android.synthetic.main.content_services_in_top_sites_onboarding_attached_view.view.next
+import kotlinx.android.synthetic.main.myshot_onboarding.view.my_shot_category_learn_more
+import kotlinx.android.synthetic.main.onboarding_spotlight_content_services_request_click.view.content_services_plateform_onboarding_message
+import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_message
+import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_title
+import kotlinx.android.synthetic.main.spotlight_message.view.spotlight_message
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
@@ -42,10 +45,14 @@ import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper.clickRateApp
 import org.mozilla.focus.telemetry.TelemetryWrapper.promoteShareClickEvent
-import org.mozilla.focus.widget.FocusView
-import org.mozilla.focus.widget.RoundRecFocusView
+import org.mozilla.focus.utils.SpotlightDialog.AttachedGravity
+import org.mozilla.focus.utils.SpotlightDialog.AttachedPosition
+import org.mozilla.focus.utils.SpotlightDialog.AttachedViewConfigs
+import org.mozilla.focus.utils.SpotlightDialog.SpotlightConfigs.CircleSpotlightConfigs
+import org.mozilla.focus.utils.SpotlightDialog.SpotlightConfigs.RectangleSpotlightConfigs
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
+import org.mozilla.rocket.extension.dpToPx
 import org.mozilla.rocket.extension.inflate
 import org.mozilla.rocket.widget.CustomViewDialogData
 import org.mozilla.rocket.widget.PromotionDialog
@@ -244,106 +251,181 @@ object DialogUtils {
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow()
     }
 
-    fun showNightModeBrightnessSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener, messageId: Int): Dialog {
-        val container = activity.inflate(R.layout.spotlight) as ViewGroup
-        val messageTextView = container.findViewById<TextView>(R.id.spotlight_message)
-        messageTextView.setText(messageId)
-        val dialog = createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(
-                FocusViewType.CIRCLE,
-                radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
-                backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
-            ),
-            true
-        )
-        // Press back key will dismiss on boarding view and menu view
-        dialog.setOnCancelListener(onCancelListener)
-        dialog.show()
-        return dialog
-    }
+    fun showNightModeBrightnessSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener): Dialog =
+            SpotlightDialog.Builder(activity, targetView)
+                    .spotlightConfigs(
+                        CircleSpotlightConfigs(
+                            radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
+                            backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
+                        )
+                    )
+                    .setAttachedView(
+                        activity.inflate(R.layout.spotlight_hand_pointer),
+                        AttachedViewConfigs(
+                            position = AttachedPosition.TOP,
+                            gravity = AttachedGravity.END_ALIGN_START,
+                            marginEnd = activity.dpToPx(-42f),
+                            marginBottom = activity.dpToPx(-42f)
+                        )
+                    )
+                    .addView(
+                        activity.inflate(R.layout.spotlight_message).apply {
+                            spotlight_message.setText(R.string.night_mode_on_boarding_message)
+                        }, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer)
+                            addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        })
+                    )
+                    .cancelListener(onCancelListener)
+                    .build()
+                    .also { it.show() }
 
-    fun showMyShotOnBoarding(activity: Activity, targetView: View, cancelListener: DialogInterface.OnCancelListener, learnMore: View.OnClickListener?): Dialog {
-        val container = activity.inflate(R.layout.myshot_onboarding) as ViewGroup
-        container.findViewById<View>(R.id.my_shot_category_learn_more).setOnClickListener(learnMore)
-        val dialog = createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(
-                FocusViewType.CIRCLE,
-                radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
-                backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
-            ),
-            true
-        )
-        // Press back key will dismiss on boarding view and menu view
-        dialog.setOnCancelListener(cancelListener)
-        dialog.show()
-        return dialog
-    }
+    fun showMyShotOnBoarding(activity: Activity, targetView: View, cancelListener: DialogInterface.OnCancelListener, learnMore: View.OnClickListener?): Dialog =
+            SpotlightDialog.Builder(activity, targetView)
+                    .spotlightConfigs(
+                        CircleSpotlightConfigs(
+                            radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
+                            backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
+                        )
+                    )
+                    .addView(
+                        activity.inflate(R.layout.myshot_onboarding).apply {
+                            my_shot_category_learn_more.setOnClickListener(learnMore)
+                        },
+                        RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                            addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                        }
+                    )
+                    .setAttachedView(
+                        activity.inflate(R.layout.spotlight_hand_pointer),
+                        AttachedViewConfigs(
+                            position = AttachedPosition.TOP,
+                            gravity = AttachedGravity.END_ALIGN_START,
+                            marginEnd = activity.dpToPx(-42f),
+                            marginBottom = activity.dpToPx(-42f)
+                        )
+                    )
+                    .addView(
+                        activity.inflate(R.layout.spotlight_message).apply {
+                            spotlight_message.setText(R.string.my_shot_on_boarding_message)
+                        }, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer) // Root view in spotlight_hand_pointer.xml
+                            addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        })
+                    )
+                    .cancelListener(cancelListener)
+                    .build()
+                    .also { it.show() }
 
     fun showShoppingSearchSpotlight(
         activity: Activity,
         targetView: View,
         dismissListener: DialogInterface.OnDismissListener
-    ): Dialog {
-        val container = activity.inflate(R.layout.onboarding_spotlight_shopping_search) as ViewGroup
-        val dialog = createShoppingSearchSpotlightDialog(activity, targetView, container)
-        dialog.setOnDismissListener(dismissListener)
-        dialog.show()
-        return dialog
-    }
+    ): Dialog =
+            SpotlightDialog.Builder(activity, targetView)
+                    .spotlightConfigs(
+                        CircleSpotlightConfigs(radius = activity.resources.getDimensionPixelSize(R.dimen.shopping_focus_view_radius))
+                    )
+                    .addView(activity.inflate(R.layout.onboarding_spotlight_shopping_search))
+                    .dismissListener(dismissListener)
+                    .build()
+                    .also { it.show() }
 
     fun showContentServiceOnboardingSpotlight(
         activity: FragmentActivity,
         targetView: View,
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
-    ): Dialog {
-        val container = activity.inflate(R.layout.onboarding_spotlight_content_services) as ViewGroup
-        container.findViewById<View>(R.id.next).setOnClickListener(ok)
-        val dialog = createContentServiceSpotlightDialog(activity, targetView, container,
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
-                false)
-        dialog.setOnDismissListener(dismissListener)
-        dialog.show()
-        return dialog
-    }
+    ): Dialog = SpotlightDialog.Builder(activity, targetView)
+            .spotlightConfigs(
+                RectangleSpotlightConfigs(
+                    width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
+                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
+                )
+            )
+            .addView(
+                activity.inflate(R.layout.onboarding_spotlight_content_services_logo_man),
+                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                    addRule(RelativeLayout.ALIGN_PARENT_END)
+                    addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                    rightMargin = activity.dpToPx(27.6f)
+                }
+            )
+            .setAttachedView(
+                activity.inflate(R.layout.content_services_onboarding_attached_view).apply {
+                    next.setOnClickListener(ok)
+                },
+                AttachedViewConfigs(
+                    position = AttachedPosition.BOTTOM,
+                    gravity = AttachedGravity.CENTER_SCREEN
+                )
+            )
+            .cancelOnTouchOutside(false)
+            .dismissListener(dismissListener)
+            .build()
+            .also { it.show() }
 
     fun showContentServiceInTopSitesOnboardingSpotlight(
         activity: FragmentActivity,
         targetView: View,
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
-    ): Dialog {
-        val container = activity.inflate(R.layout.onboarding_spotlight_content_services_in_top_sites) as ViewGroup
-        val dialog = createContentServiceInTopSitesSpotlightDialog(activity, targetView, container,
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
-                false, ok)
-        dialog.setOnDismissListener(dismissListener)
-        dialog.show()
-        return dialog
-    }
+    ): Dialog = SpotlightDialog.Builder(activity, targetView)
+            .spotlightConfigs(
+                RectangleSpotlightConfigs(
+                    widthRatio = 0.65f,
+                    heightRatio = 0.53f,
+                    xOffsetRatio = -0.115f,
+                    yOffsetRatio = -0.29f,
+                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
+                )
+            )
+            .addView(
+                activity.inflate(R.layout.onboarding_spotlight_content_services_logo_man),
+                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                    addRule(RelativeLayout.ALIGN_PARENT_END)
+                    addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                    rightMargin = activity.dpToPx(27.6f)
+                }
+            )
+            .setAttachedView(
+                activity.inflate(R.layout.content_services_in_top_sites_onboarding_attached_view).apply {
+                    next.setOnClickListener(ok)
+                },
+                AttachedViewConfigs(
+                    position = AttachedPosition.TOP,
+                    gravity = AttachedGravity.CENTER_SCREEN
+                )
+            )
+            .cancelOnTouchOutside(false)
+            .dismissListener(dismissListener)
+            .build()
+            .also { it.show() }
 
     fun showContentServiceRequestClickSpotlight(
         activity: FragmentActivity,
         targetView: View,
         couponName: String,
         dismissListener: DialogInterface.OnDismissListener
-    ): Dialog {
-        val container = activity.inflate(R.layout.onboarding_spotlight_content_services_request_click) as ViewGroup
-        val text = container.findViewById<TextView>(R.id.content_services_plateform_onboarding_message)
-        text.text = activity.getString(R.string.msrp_home_hint, couponName)
-        val dialog = createContentServiceSpotlightDialog(activity, targetView, container,
-                activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius),
-                true)
-        dialog.setOnDismissListener(dismissListener)
-        dialog.show()
-        return dialog
-    }
+    ): Dialog = SpotlightDialog.Builder(activity, targetView)
+            .spotlightConfigs(
+                RectangleSpotlightConfigs(
+                    width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
+                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
+                )
+            )
+            .setAttachedView(
+                activity.inflate(R.layout.onboarding_spotlight_content_services_request_click).apply {
+                    content_services_plateform_onboarding_message.text = activity.getString(R.string.msrp_home_hint, couponName)
+                },
+                AttachedViewConfigs(
+                    position = AttachedPosition.BOTTOM,
+                    gravity = AttachedGravity.CENTER_SCREEN
+                )
+            )
+            .dismissListener(dismissListener)
+            .build()
+            .also { it.show() }
 
     fun showTravelSpotlight(
         activity: Activity,
@@ -351,44 +433,61 @@ object DialogUtils {
         cityName: String,
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
-    ): Dialog {
-        val container = activity.inflate(R.layout.onboarding_spotlight_travel) as ViewGroup
-        val title = container.findViewById<TextView>(R.id.travel_details_onboarding_title)
-        val message = container.findViewById<TextView>(R.id.travel_details_onboarding_message)
-        title.text = activity.getString(R.string.travel_onboarding_save_title, cityName)
-        message.text = activity.getString(R.string.travel_onboarding_save_description, cityName)
-        container.findViewById<View>(R.id.next).setOnClickListener(ok)
-        val dialog = createTravelSpotlightDialog(
-                activity,
-                targetView,
-                container,
-                activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_radius),
-                activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_height),
-                activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_width))
-        dialog.setOnDismissListener(dismissListener)
-        dialog.show()
-        return dialog
-    }
+    ): Dialog = SpotlightDialog.Builder(activity, targetView)
+            .spotlightConfigs(
+                RectangleSpotlightConfigs(
+                    width = activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_width),
+                    height = activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_height),
+                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_radius)
+                )
+            )
+            .addView(activity.inflate(R.layout.onboarding_spotlight_travel).apply {
+                travel_details_onboarding_title.text = activity.getString(R.string.travel_onboarding_save_title, cityName)
+                travel_details_onboarding_message.text = activity.getString(R.string.travel_onboarding_save_description, cityName)
+                next.setOnClickListener(ok)
+            })
+            .cancelOnTouchOutside(false)
+            .dismissListener(dismissListener)
+            .build()
+            .also { it.show() }
 
     fun showGameSpotlight(
         activity: Activity,
         targetView: View,
         dismissListener: DialogInterface.OnDismissListener,
         ok: View.OnClickListener?
-    ): Dialog {
-        val container = activity.inflate(R.layout.onboarding_spotlight_game_recent_played) as ViewGroup
-        container.findViewById<View>(R.id.next).setOnClickListener(ok)
-        val dialog = createGameSpotlightDialog(
-                activity,
-                targetView,
-                container,
-                activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_radius),
-                activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_height),
-                activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_width))
-        dialog.setOnDismissListener(dismissListener)
-        dialog.show()
-        return dialog
-    }
+    ): Dialog = SpotlightDialog.Builder(activity, targetView)
+            .spotlightConfigs(
+                RectangleSpotlightConfigs(
+                    width = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_width),
+                    height = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_height),
+                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_radius)
+                )
+            )
+            .setAttachedView(
+                activity.inflate(R.layout.onboarding_spotlight_game_recent_played_attached_view).apply {
+                    next.setOnClickListener(ok)
+                },
+                AttachedViewConfigs(
+                    position = AttachedPosition.BOTTOM,
+                    gravity = AttachedGravity.START
+                )
+            )
+            .addView(
+                activity.inflate(R.layout.onboarding_spotlight_game_recent_played_logo_man).apply {
+                    elevation = activity.dpToPx(4f).toFloat() // Make logo man on top of message dialog
+                },
+                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
+                    // Root view in onboarding_spotlight_game_recent_played_attached_view.xml
+                    addRule(RelativeLayout.ABOVE, R.id.onboarding_dialog)
+                    addRule(RelativeLayout.ALIGN_END, R.id.onboarding_dialog)
+                    bottomMargin = activity.dpToPx(-32f)
+                }
+            )
+            .cancelOnTouchOutside(false)
+            .dismissListener(dismissListener)
+            .build()
+            .also { it.show() }
 
     fun showTravelDiscoverySearchOptionDialog(context: Context, viewModel: TravelCitySearchViewModel) {
         val data = CustomViewDialogData()
@@ -437,226 +536,6 @@ object DialogUtils {
                     viewModel.onDoNotAskMeAgainAction(isSelected!!)
                 }
         dialog.show()
-    }
-
-    @CheckResult
-    private fun createShoppingSearchSpotlightDialog(
-        activity: Activity,
-        targetView: View,
-        container: ViewGroup
-    ): Dialog {
-        return createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(FocusViewType.CIRCLE, radius = activity.resources.getDimensionPixelSize(R.dimen.shopping_focus_view_radius)),
-            true
-        )
-    }
-
-    @CheckResult
-    private fun createContentServiceSpotlightDialog(
-        activity: Activity,
-        targetView: View,
-        container: ViewGroup,
-        radius: Int,
-        cancelOnTouchOutside: Boolean
-    ): Dialog {
-        return createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(
-                type = FocusViewType.ROUND_REC,
-                width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
-                height = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_height),
-                yOffsetRatio = -0.31f,
-                radius = radius
-            ),
-            cancelOnTouchOutside
-        )
-    }
-
-    @CheckResult
-    private fun createContentServiceInTopSitesSpotlightDialog(
-        activity: Activity,
-        targetView: View,
-        container: ViewGroup,
-        radius: Int,
-        cancelOnTouchOutside: Boolean,
-        ok: View.OnClickListener?
-    ): Dialog {
-        val attachedView = activity.inflate(R.layout.content_services_in_top_sites_onboarding_attached_view)
-        attachedView.findViewById<View>(R.id.next).setOnClickListener(ok)
-        val attachedViewConfigs = AttachedViewConfigs(
-            position = AttachedPosition.TOP,
-            gravity = AttachedGravity.CENTER_SCREEN
-        )
-        return createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(
-                type = FocusViewType.ROUND_REC,
-                widthRatio = 0.65f,
-                heightRatio = 0.53f,
-                xOffsetRatio = -0.115f,
-                yOffsetRatio = -0.29f,
-                radius = radius
-            ),
-            cancelOnTouchOutside,
-            attachedView = attachedView,
-            attachedViewConfigs = attachedViewConfigs
-        )
-    }
-
-    @CheckResult
-    private fun createTravelSpotlightDialog(
-        activity: Activity,
-        targetView: View,
-        container: ViewGroup,
-        radius: Int,
-        height: Int,
-        width: Int
-    ): Dialog {
-        return createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(
-                type = FocusViewType.ROUND_REC,
-                width = width,
-                height = height,
-                radius = radius
-            ),
-            false
-        )
-    }
-
-    @CheckResult
-    private fun createGameSpotlightDialog(
-        activity: Activity,
-        targetView: View,
-        container: ViewGroup,
-        radius: Int,
-        height: Int,
-        width: Int
-    ): Dialog {
-        return createSpotlightDialog(
-            activity,
-            targetView,
-            container,
-            SpotlightConfigs(
-                type = FocusViewType.ROUND_REC,
-                width = width,
-                height = height,
-                radius = radius
-            ),
-            false
-        )
-    }
-
-    @CheckResult
-    private fun createSpotlightDialog(
-        activity: Activity,
-        targetView: View,
-        container: ViewGroup,
-        configs: SpotlightConfigs,
-        cancelOnTouchOutside: Boolean,
-        attachedView: View? = null,
-        attachedViewConfigs: AttachedViewConfigs? = null
-    ): Dialog {
-        val location = IntArray(2)
-        // Get target view's position
-        targetView.getLocationInWindow(location)
-
-        val offsetX = (configs.xOffsetRatio * targetView.measuredWidth).toInt()
-        val offsetY = (configs.yOffsetRatio * targetView.measuredHeight).toInt()
-
-        // Get spotlight circle's center
-        val centerX = location[0] + targetView.measuredWidth / 2 + offsetX
-        val centerY = location[1] + targetView.measuredHeight / 2 + offsetY
-
-        val spotlightWidth: Int = if (configs.width > 0) {
-            configs.width
-        } else {
-            (configs.widthRatio * targetView.measuredWidth).toInt()
-        }
-        val spotlightHeight: Int = if (configs.height > 0) {
-            configs.height
-        } else {
-            (configs.heightRatio * targetView.measuredHeight).toInt()
-        }
-
-        // Initialize FocusView and add it to container view's index 0(the bottom of Z-order)
-        val focusView = getFocusView(activity, centerX, centerY,
-                configs.radius, spotlightHeight, spotlightWidth,
-                configs.type, configs.backgroundDimColor) as ViewGroup
-        container.addView(focusView, 0, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT))
-
-        attachedView?.run {
-            requireNotNull(attachedViewConfigs) { "Must to have attachedViewConfigs" }
-            focusView.addView(attachedView, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                when (attachedViewConfigs.position) {
-                    AttachedPosition.LEFT, AttachedPosition.RIGHT -> {
-                        if (attachedViewConfigs.position == AttachedPosition.LEFT) {
-                            addRule(RelativeLayout.LEFT_OF, R.id.spotlight_placeholder)
-                        } else {
-                            addRule(RelativeLayout.RIGHT_OF, R.id.spotlight_placeholder)
-                        }
-                        when (attachedViewConfigs.gravity) {
-                            AttachedGravity.START -> addRule(RelativeLayout.ALIGN_TOP, R.id.spotlight_placeholder)
-                            AttachedGravity.END -> addRule(RelativeLayout.ALIGN_BOTTOM, R.id.spotlight_placeholder)
-                            AttachedGravity.START_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                            AttachedGravity.CENTER_SCREEN -> addRule(RelativeLayout.CENTER_VERTICAL)
-                            AttachedGravity.END_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-                        }
-                    }
-                    AttachedPosition.TOP, AttachedPosition.BOTTOM -> {
-                        if (attachedViewConfigs.position == AttachedPosition.TOP) {
-                            addRule(RelativeLayout.ABOVE, R.id.spotlight_placeholder)
-                        } else {
-                            addRule(RelativeLayout.BELOW, R.id.spotlight_placeholder)
-                        }
-                        when (attachedViewConfigs.gravity) {
-                            AttachedGravity.START -> addRule(RelativeLayout.ALIGN_START, R.id.spotlight_placeholder)
-                            AttachedGravity.END -> addRule(RelativeLayout.ALIGN_END, R.id.spotlight_placeholder)
-                            AttachedGravity.START_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_START)
-                            AttachedGravity.CENTER_SCREEN -> addRule(RelativeLayout.CENTER_HORIZONTAL)
-                            AttachedGravity.END_SCREEN -> addRule(RelativeLayout.ALIGN_PARENT_END)
-                        }
-                    }
-                }
-
-                topMargin = attachedViewConfigs.marginTop
-                bottomMargin = attachedViewConfigs.marginBottom
-                leftMargin = attachedViewConfigs.marginStart
-                rightMargin = attachedViewConfigs.marginEnd
-            })
-        }
-
-        // Add a delegate view to determine the position of hint image and text. Also consuming the click/longClick event.
-        val delegateView = container.findViewById<View>(R.id.spotlight_mock_menu)
-        val params = delegateView.layoutParams as RelativeLayout.LayoutParams
-        params.width = targetView.measuredWidth
-        params.height = targetView.measuredHeight
-        params.setMargins(location[0], location[1] - ViewUtils.getStatusBarHeight(activity), 0, 0)
-        val builder = AlertDialog.Builder(activity, R.style.TabTrayTheme)
-        builder.setView(container)
-        val dialog: Dialog = builder.create()
-        if (cancelOnTouchOutside) { // Click delegateView will dismiss on boarding view and open my shot panel
-            delegateView.setOnClickListener {
-                dialog.dismiss()
-                targetView.performClick()
-            }
-            delegateView.setOnLongClickListener {
-                dialog.dismiss()
-                targetView.performLongClick()
-            }
-            // Click outside of the delegateView will dismiss on boarding view
-            container.setOnClickListener { dialog.dismiss() }
-        }
-        return dialog
     }
 
     fun createMissionCompleteDialog(context: Context, imageUrl: String?): PromotionDialog {
@@ -720,13 +599,6 @@ object DialogUtils {
         return resultBitmap
     }
 
-    private fun getFocusView(context: Context, centerX: Int, centerY: Int, radius: Int, height: Int, width: Int, type: FocusViewType, backgroundDimColor: Int): View {
-        return when (type) {
-            FocusViewType.CIRCLE -> FocusView(context, centerX, centerY, radius, backgroundDimColor)
-            FocusViewType.ROUND_REC -> RoundRecFocusView(context, centerX, centerY, radius, height, width, backgroundDimColor)
-        }
-    }
-
     fun createMissionForceUpdateDialog(context: Context, title: String?, description: String?, imageUrl: String?): PromotionDialog {
         val data = CustomViewDialogData()
         val width = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 134f, context.resources.displayMetrics).toInt()
@@ -756,38 +628,5 @@ object DialogUtils {
             }
         }
         return dialog
-    }
-
-    enum class FocusViewType {
-        CIRCLE, ROUND_REC
-    }
-
-    data class SpotlightConfigs(
-        val type: FocusViewType,
-        val width: Int = Int.MIN_VALUE,
-        val height: Int = Int.MIN_VALUE,
-        val widthRatio: Float = 1.0f,
-        val heightRatio: Float = 1.0f,
-        val xOffsetRatio: Float = 0f,
-        val yOffsetRatio: Float = 0f,
-        val radius: Int = 0,
-        val backgroundDimColor: Int = 0x80000000.toInt()
-    )
-
-    data class AttachedViewConfigs(
-        val position: AttachedPosition,
-        val gravity: AttachedGravity = AttachedGravity.START,
-        val marginStart: Int = 0,
-        val marginTop: Int = 0,
-        val marginEnd: Int = 0,
-        val marginBottom: Int = 0
-    )
-
-    enum class AttachedGravity {
-        START, END, START_SCREEN, CENTER_SCREEN, END_SCREEN
-    }
-
-    enum class AttachedPosition {
-        LEFT, TOP, RIGHT, BOTTOM
     }
 }
