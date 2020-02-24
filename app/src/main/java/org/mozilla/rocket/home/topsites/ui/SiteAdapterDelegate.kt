@@ -78,9 +78,13 @@ class SiteViewHolder(
                 red_dot.visibility = View.GONE
 
                 itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
-                itemView.setOnLongClickListener {
-                    it.tag = TOP_SITE_LONG_CLICK_TARGET
-                    homeViewModel.onTopSiteLongClicked(site, adapterPosition)
+                if (site is Site.UrlSite.FixedSite) {
+                    itemView.setOnLongClickListener(null)
+                } else {
+                    itemView.setOnLongClickListener {
+                        it.tag = TOP_SITE_LONG_CLICK_TARGET
+                        homeViewModel.onTopSiteLongClicked(site, adapterPosition)
+                    }
                 }
             }
             is Site.ContentItem -> {
