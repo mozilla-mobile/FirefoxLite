@@ -16,7 +16,7 @@ import com.google.firebase.messaging.RemoteMessage
  * If actual impl is provided, it'll handle the push and call onRemoteMessage().
  */
 abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
-    abstract fun onRemoteMessage(intent: Intent, title: String?, body: String?)
+    abstract fun onNotificationMessage(intent: Intent, title: String?, body: String?)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // This happens when the app is running in foreground, and the user clicks on the push
@@ -34,7 +34,7 @@ abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
             val title = remoteMessage.notification?.title
             val body = remoteMessage.notification?.body
             // We have a remote message from gcm, let the child decides what to do with it.
-            onRemoteMessage(intent, title, body)
+            onNotificationMessage(intent, title, body)
         }
     }
 

@@ -21,7 +21,7 @@ import org.mozilla.threadutils.ThreadUtils
 // Prov
 class RocketMessagingService : FirebaseMessagingServiceWrapper() {
     //
-    override fun onRemoteMessage(intent: Intent, title: String?, body: String?) {
+    override fun onNotificationMessage(intent: Intent, title: String?, body: String?) {
         val messageId = parseMessageId(intent)
         val link = parseLink(intent)
         getNotification(link, messageId)
