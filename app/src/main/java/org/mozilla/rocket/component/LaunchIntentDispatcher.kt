@@ -90,7 +90,7 @@ class LaunchIntentDispatcher {
                 return Action.HANDLED
             }
             /**
-             * This extra is passed by the Notification (either [RocketMessagingService.onRemoteMessage] or System tray
+             * This extra is passed by the Notification (either [RocketMessagingService.onNotificationMessage] or System tray
              * if we have this extra, we want to show this url in a new tab
              */
             intent.getStringExtra(PUSH_OPEN_URL)?.run {
@@ -102,7 +102,7 @@ class LaunchIntentDispatcher {
             }
 
             /**
-             * This extra is passed by the Notification (either [RocketMessagingService.onRemoteMessage] or System tray
+             * This extra is passed by the Notification (either [RocketMessagingService.onNotificationMessage] or System tray
              *  Called by the internal app, doesn't count as a launch event
              * */
             intent.getStringExtra(PUSH_COMMAND)?.apply {
@@ -119,7 +119,7 @@ class LaunchIntentDispatcher {
                 }
             }
             /**
-             * This extra is passed by the Notification (either [RocketMessagingService.onRemoteMessage] or System tray
+             * This extra is passed by the Notification (either [RocketMessagingService.onNotificationMessage] or System tray
              * if we have this extra, we want to enable the deep link
              */
             intent.getStringExtra(PUSH_DEEP_LINK)?.let {
