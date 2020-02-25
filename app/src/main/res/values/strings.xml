@@ -940,6 +940,8 @@
     <string name="travel_empty_state_text_2" translatable="false">- Susan Sontag</string>
     <!--button for entering the search page-->
     <string name="travel_empty_state_button">Explore a city</string>
+    <!--button for entering the search page-->
+    <string name="travel_empty_state_button_new">EXPLORE A CITY</string>
 
     <!--snackbar message after saving a destination-->
     <string name="travel_snack_bar_saved_message">Saved in your bucket list.</string>
@@ -962,6 +964,11 @@
     <string name="travel_search_engine_2">See results in smart travel search</string>  
     <!--this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Firefox Lite.-->
     <string name="travel_search_engine_fxlite">See results in %1$s Travel Discovery</string>   
+   
+    <!--error message for no results state-->
+    <string name="travel_no_result_state_text">Hmm. No results found.</string>
+    <!--button for searching the keyword on Google. the %1$s here is GOOGLE-->
+    <string name="travel_google_search_button">SEARCH ON %1$s</string>
    
    
     <!--Dialog-->
