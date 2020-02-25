@@ -256,6 +256,7 @@ dependencies {
     implementation "org.mozilla.components:concept-fetch:${Versions.android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
+    implementation "com.android.installreferrer:installreferrer:${Versions.android_installreferrer}"
 
     implementation "com.airbnb.android:lottie:${Versions.lottie}"
 
