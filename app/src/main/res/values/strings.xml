@@ -965,7 +965,12 @@
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery" translatable="false">Travel Discovery</string>
 
+    <!--error message for no results state-->
+    <string name="travel_no_result_state_text">Hmm. No results found.</string>
+    <!--button for searching the keyword on Google. the %1$s here is GOOGLE-->
+    <string name="travel_google_search_button">SEARCH ON %1$s</string>
 
+ 
     <!--Dialog-->
     <!--dialog title for introducing Firefox Lite Travel Discovery-->
     <string name="travel_dialog_1_title">Discover More!</string>
