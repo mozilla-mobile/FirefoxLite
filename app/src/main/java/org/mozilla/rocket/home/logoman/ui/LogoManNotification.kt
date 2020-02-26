@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -222,11 +223,17 @@ class LogoManNotification : FrameLayout {
             }
             itemView.setOnClickListener { clickListener() }
 
-            GlideApp.with(itemView.context)
-                    .asBitmap()
-                    .centerCrop()
-                    .load(uiModel.imageUrl)
-                    .into(notification_icon)
+            if (uiModel.imageUrl != null) {
+                notification_icon.isVisible = true
+                GlideApp.with(itemView.context)
+                        .asBitmap()
+                        .centerCrop()
+                        .load(uiModel.imageUrl)
+                        .into(notification_icon)
+            } else {
+                notification_icon.isVisible = false
+                notification_icon.setImageDrawable(null)
+            }
         }
     }
 

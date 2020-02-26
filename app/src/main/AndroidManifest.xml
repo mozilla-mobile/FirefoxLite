@@ -21,6 +21,10 @@
     <!-- Permission needed to publish the app on Samsung AppStore -->
     <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
 
+    <!-- https://issuetracker.google.com/issues/146115244 -->
+    <!-- Remove unnecessary permissions added by install referrer -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
