@@ -940,8 +940,6 @@
     <string name="travel_empty_state_text_2" translatable="false">- Susan Sontag</string>
     <!--button for entering the search page-->
     <string name="travel_empty_state_button">Explore a city</string>
-    <!--button for entering the search page-->
-    <string name="travel_empty_state_button_new">EXPLORE A CITY</string>
 
     <!--snackbar message after saving a destination-->
     <string name="travel_snack_bar_saved_message">Saved in your bucket list.</string>
