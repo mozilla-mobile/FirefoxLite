@@ -38,7 +38,7 @@ public class TelemetryAnnotationProcessorTest {
                                 "}"
                         )).generatedFiles();
         assert (telemetryWrapper.size() == 1);
-        assert (new File(TelemetryAnnotationProcessor.FILE_README).exists());
+        assert (new File(TelemetryAnnotationProcessor.fileReadme).exists());
     }
 
     @Test
