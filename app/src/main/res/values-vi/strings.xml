@@ -457,7 +457,6 @@
   <string name="travel_onboarding_save_button">OK</string>
   <string name="travel_find_destination_placeholder_2">Nhập một điểm đến</string>
   <string name="travel_search_engine_1">Xem kết quả trong %1$s</string>
-  <string name="travel_search_engine_2">Xem kết quả trong tìm kiếm du lịch thông minh</string>
   <string name="travel_search_engine_fxlite">Xem kết quả trong Khám phá du lịch %1$s</string>
   <string name="travel_dialog_1_title">Khám phá nhiều hơn!</string>
   <string name="travel_dialog_1_description">Khám phá những việc cần làm, chỗ ở và nhiều hơn nữa trong Khám phá du lịch %1$s.</string>
