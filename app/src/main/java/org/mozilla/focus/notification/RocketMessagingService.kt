@@ -6,7 +6,6 @@ package org.mozilla.focus.notification
 
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
@@ -21,9 +20,9 @@ import org.mozilla.threadutils.ThreadUtils
 // Prov
 class RocketMessagingService : FirebaseMessagingServiceWrapper() {
     //
-    override fun onNotificationMessage(intent: Intent, title: String?, body: String?) {
-        val messageId = parseMessageId(intent)
-        val link = parseLink(intent)
+    override fun onNotificationMessage(data: Map<String, String>, title: String?, body: String?, imageUrl: String?) {
+        val messageId = parseMessageId(data)
+        val link = parseLink(data)
         getNotification(link, messageId)
         if (!isTelemetryEnabled(this)) {
             return
@@ -31,16 +30,15 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         val pendingIntent = getClickPendingIntent(
                 applicationContext,
                 messageId,
-                parseOpenUrl(intent),
-                parseCommand(intent),
-                parseDeepLink(intent)
+                parseOpenUrl(data),
+                parseCommand(data),
+                parseDeepLink(data)
         )
         val builder = NotificationUtil.importantBuilder(this).setContentIntent(pendingIntent)
         title?.let { builder.setContentTitle(it) }
         body?.let { builder.setContentText(it) }
         addDeleteTelemetry(applicationContext, builder, messageId, link)
 
-        val imageUrl = parseImageUrl(intent)
         if (!imageUrl.isNullOrEmpty()) {
             ThreadUtils.postToMainThread {
                 Glide.with(applicationContext)
@@ -62,35 +60,31 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         }
     }
 
-    private fun parseMessageId(intent: Intent): String? {
-        return intent.getStringExtra(MESSAGE_ID)
+    private fun parseMessageId(data: Map<String, String>): String? {
+        return data[MESSAGE_ID]
     }
 
-    private fun parseOpenUrl(intent: Intent): String? {
-        return intent.getStringExtra(PUSH_OPEN_URL)
+    private fun parseOpenUrl(data: Map<String, String>): String? {
+        return data[PUSH_OPEN_URL]
     }
 
-    private fun parseCommand(intent: Intent): String? {
-        return intent.getStringExtra(PUSH_COMMAND)
+    private fun parseCommand(data: Map<String, String>): String? {
+        return data[PUSH_COMMAND]
     }
 
-    private fun parseDeepLink(intent: Intent): String? {
-        return intent.getStringExtra(PUSH_DEEP_LINK)
+    private fun parseDeepLink(data: Map<String, String>): String? {
+        return data[PUSH_DEEP_LINK]
     }
 
-    private fun parseLink(intent: Intent): String? {
-        var link = intent.getStringExtra(PUSH_OPEN_URL)
+    private fun parseLink(data: Map<String, String>): String? {
+        var link = data[PUSH_OPEN_URL]
         if (link == null) {
-            link = intent.getStringExtra(PUSH_COMMAND)
+            link = data[PUSH_COMMAND]
         }
         if (link == null) {
-            link = intent.getStringExtra(PUSH_DEEP_LINK)
+            link = data[PUSH_DEEP_LINK]
         }
         return link
-    }
-
-    private fun parseImageUrl(intent: Intent): String? {
-        return intent.getStringExtra(PUSH_IMAGE_URL)
     }
 
     private fun getClickPendingIntent(appContext: Context, messageId: String?, openUrl: String?, command: String?, deepLink: String?): PendingIntent { // RocketLauncherActivity will handle this intent

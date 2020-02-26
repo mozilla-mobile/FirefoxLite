@@ -41,7 +41,7 @@ import javax.tools.StandardLocation;
 @AutoService(Processor.class)
 public class TelemetryAnnotationProcessor extends AbstractProcessor {
 
-    private static final String fileReadme = "/docs/events.md";
+    static final String fileReadme = "/docs/events.md";
     private static final String fileAmplitudeMapping = "/docs/view.sql";
     private static final String FILE_SOURCE_SQL = "view-replace.sql";
     private static final String FILE_SOURCE_SQL_PLACE_HOLDER = "---REPLACE---ME---";

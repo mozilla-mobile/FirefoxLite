@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 package org.mozilla.focus.notification
 
-import android.content.Intent
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -16,25 +15,18 @@ import com.google.firebase.messaging.RemoteMessage
  * If actual impl is provided, it'll handle the push and call onRemoteMessage().
  */
 abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
-    abstract fun onNotificationMessage(intent: Intent, title: String?, body: String?)
+    abstract fun onNotificationMessage(data: Map<String, String>, title: String?, body: String?, imageUrl: String?)
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // This happens when the app is running in foreground, and the user clicks on the push
         // notification with payload "PUSH_OPEN_URL"
         if (remoteMessage.notification != null) {
-            val intent = Intent()
-            // check if message contains data payload
-            intent.putExtra(MESSAGE_ID, remoteMessage.data[MESSAGE_ID])
-            intent.putExtra(PUSH_OPEN_URL, remoteMessage.data[PUSH_OPEN_URL])
-            intent.putExtra(PUSH_COMMAND, remoteMessage.data[PUSH_COMMAND])
-            intent.putExtra(PUSH_DEEP_LINK, remoteMessage.data[PUSH_DEEP_LINK])
-            remoteMessage.notification?.imageUrl?.let {
-                intent.putExtra(PUSH_IMAGE_URL, it.toString())
-            }
+
             val title = remoteMessage.notification?.title
             val body = remoteMessage.notification?.body
+            val imageUrl = remoteMessage.notification?.imageUrl?.toString()
             // We have a remote message from gcm, let the child decides what to do with it.
-            onNotificationMessage(intent, title, body)
+            onNotificationMessage(remoteMessage.data, title, body, imageUrl)
         }
     }
 
