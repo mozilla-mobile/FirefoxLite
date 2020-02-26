@@ -970,9 +970,9 @@
     <!--dialog title for introducing Firefox Lite Travel Discovery-->
     <string name="travel_dialog_1_title">Discover More!</string>
     <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
-    <string name="travel_dialog_1_description">Explore things to do, accomodations, and more in %1$s Travel Discovery.</string>
+    <string name="travel_dialog_1_description">Explore things to do, accommodations, and more in %1$s Travel Discovery.</string>
     <!--dialog description for introducing the feature. the first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
-    <string name="travel_dialog_1_description_new">Explore things to do, accomodations, and more in %1$s %2$s.</string>
+    <string name="travel_dialog_1_description_new">Explore things to do, accommodations, and more in %1$s %2$s.</string>
     <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
     <string name="travel_dialog_1_action_1">TRY TRAVEL DISCOVERY</string>
     <!--Action button for seeing the search result in Firefox Lite Travel Discovery. the %1$s is Travel Discovery.-->
@@ -989,6 +989,6 @@
     <!--checkbox for not showing this dialog again-->
     <string name="travel_dialog_2_checkbox">Do not ask me again</string>
     <!--Action button for setting Travel Discovery as default search engine-->
-    <string name="travel_dialog_2_action">SET AS DEFAULT</string>  
+    <string name="travel_dialog_2_action">SET AS DEFAULT</string>
 
 </resources>
