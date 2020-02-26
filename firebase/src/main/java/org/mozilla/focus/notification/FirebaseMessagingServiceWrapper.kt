@@ -17,6 +17,8 @@ import com.google.firebase.messaging.RemoteMessage
 abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
     abstract fun onNotificationMessage(data: Map<String, String>, title: String?, body: String?, imageUrl: String?)
 
+    abstract fun onDataMessage(data: MutableMap<String, String>)
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // This happens when the app is running in foreground, and the user clicks on the push
         // notification with payload "PUSH_OPEN_URL"
@@ -27,14 +29,10 @@ abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
             val imageUrl = remoteMessage.notification?.imageUrl?.toString()
             // We have a remote message from gcm, let the child decides what to do with it.
             onNotificationMessage(remoteMessage.data, title, body, imageUrl)
+        } else if (remoteMessage.data.isNotEmpty()) {
+
+            onDataMessage(remoteMessage.data)
         }
     }
 
-    companion object {
-        const val MESSAGE_ID = "message_id"
-        const val PUSH_OPEN_URL = "push_open_url"
-        const val PUSH_COMMAND = "push_command"
-        const val PUSH_DEEP_LINK = "push_deep_link"
-        const val PUSH_IMAGE_URL = "push_image_url"
-    }
 }

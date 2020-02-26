@@ -7,15 +7,22 @@ package org.mozilla.focus.notification
 import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
+import android.webkit.URLUtil
 import androidx.core.app.NotificationCompat
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.telemetry.TelemetryWrapper.getNotification
 import org.mozilla.focus.telemetry.TelemetryWrapper.isTelemetryEnabled
 import org.mozilla.focus.telemetry.TelemetryWrapper.showNotification
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.threadutils.ThreadUtils
+import java.util.concurrent.TimeUnit
 
 // Prov
 class RocketMessagingService : FirebaseMessagingServiceWrapper() {
@@ -60,29 +67,97 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         }
     }
 
+    override fun onDataMessage(data: MutableMap<String, String>) {
+
+        val messageId = parseMessageId(data)
+
+        val title = data[STR_DATA_MSG_TITLE]
+        val body = data[STR_DATA_MSG_BODY]
+        val openUrl = data[STR_PUSH_OPEN_URL]
+        val pushCommand = data[STR_PUSH_COMMAND]
+        val deepLink = data[STR_PUSH_DEEP_LINK]
+        val displayType = data[STR_DATA_MSG_DISPLAY_TYPE]   // we only have one time now
+        val displayTimestamp = data[LONG_DATA_MSG_DISPLAY_TIMESTAMP]?.toLong()
+
+        if (messageId == null || title == null || body == null || displayTimestamp == null || displayType == null) {
+            return
+        }
+
+        val link = parseLink(data)
+        getNotification(link, messageId)
+
+        val imageUri = data[STR_DATA_MSG_IMAGE_URL]
+        if (imageUri != null && !URLUtil.isValidUrl(imageUri)) {
+            return
+        }
+        val inputDataBuilder = Data.Builder()
+                .putString(STR_MESSAGE_ID, messageId)
+                .putString(STR_DATA_MSG_TITLE, title)
+                .putString(STR_DATA_MSG_BODY, body)
+                .putString(STR_PUSH_OPEN_URL, openUrl)
+                .putString(STR_PUSH_COMMAND, pushCommand)
+                .putString(STR_PUSH_DEEP_LINK, deepLink)
+
+
+        if ((imageUri != null)) {
+            inputDataBuilder.putString(STR_DATA_MSG_IMAGE_URL, imageUri)
+        }
+
+        val request =
+                OneTimeWorkRequest.Builder(NotificationScheduleWorker::class.java)
+                        .setInputData(inputDataBuilder.build())
+                        .setInitialDelay(displayTimestamp-System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                        .addTag(messageId)
+                        .build()
+
+        WorkManager.getInstance(this).enqueue(request)
+
+        for (entry in data) {
+            if (BuildConfig.DEBUG) {
+                Log.d("FCM", "onDataMessage---[${entry.key}]----${entry.value}")
+            }
+        }
+    }
+
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        sendRegistrationToServer(token)
+    }
+
+    private fun sendRegistrationToServer(token: String) {
+//        place holder for the server side
+//        HttpURLConnectionClient()
+//                .withInterceptors(LoggingInterceptor())
+//                .fetch(Request(
+//                        url = ""
+//                )).use {
+//                    Log.d("FirebaseAaaa", "[$token]----${it.body.toString()}")
+//                }
+    }
+
     private fun parseMessageId(data: Map<String, String>): String? {
-        return data[MESSAGE_ID]
+        return data[STR_MESSAGE_ID]
     }
 
     private fun parseOpenUrl(data: Map<String, String>): String? {
-        return data[PUSH_OPEN_URL]
+        return data[STR_PUSH_OPEN_URL]
     }
 
     private fun parseCommand(data: Map<String, String>): String? {
-        return data[PUSH_COMMAND]
+        return data[STR_PUSH_COMMAND]
     }
 
     private fun parseDeepLink(data: Map<String, String>): String? {
-        return data[PUSH_DEEP_LINK]
+        return data[STR_PUSH_DEEP_LINK]
     }
 
     private fun parseLink(data: Map<String, String>): String? {
-        var link = data[PUSH_OPEN_URL]
+        var link = data[STR_PUSH_OPEN_URL]
         if (link == null) {
-            link = data[PUSH_COMMAND]
+            link = data[STR_PUSH_COMMAND]
         }
         if (link == null) {
-            link = data[PUSH_DEEP_LINK]
+            link = data[STR_PUSH_DEEP_LINK]
         }
         return link
     }
@@ -105,7 +180,20 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
     }
 
     companion object {
-        private const val REQUEST_CODE_CLICK_NOTIFICATION = 1
-        private const val REQUEST_CODE_DELETE_NOTIFICATION = 2
+        const val REQUEST_CODE_CLICK_NOTIFICATION = 1
+        const val REQUEST_CODE_DELETE_NOTIFICATION = 2
+
+        // shared between data and notification message
+        const val STR_MESSAGE_ID = "message_id"
+        const val STR_PUSH_OPEN_URL = "push_open_url"
+        const val STR_PUSH_COMMAND = "push_command"
+        const val STR_PUSH_DEEP_LINK = "push_deep_link"
+
+        // data message only
+        const val STR_DATA_MSG_TITLE = "title"
+        const val STR_DATA_MSG_BODY = "body"
+        const val STR_DATA_MSG_DISPLAY_TYPE = "display_type"
+        const val LONG_DATA_MSG_DISPLAY_TIMESTAMP = "display_timestamp"
+        const val STR_DATA_MSG_IMAGE_URL = "image_uri"
     }
 }
