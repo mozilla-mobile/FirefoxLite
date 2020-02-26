@@ -46,7 +46,7 @@
   <string name="accessibility_announcement_loading">लोडिंग</string>
   <string name="accessibility_announcement_loading_finished">वेबसाईट लोड भेलै</string>
   <string name="content_description_menu">अधिकोॅ विकल्प</string>
-  <string name="content_description_forward">आगाँ मार्गनिर्देशित करियै</string>
+  <string name="content_description_forward">आगाँ मार्गनिर्देशित करोॅ</string>
   <string name="content_description_reload">वेबसाईट फेनु लोड करियै</string>
   <string name="content_description_back">पाछाँ मार्गनिर्देशित करियै</string>
   <string name="content_description_stop">लोड भ्य रहलो वेबसाईट के रोकियै</string>
