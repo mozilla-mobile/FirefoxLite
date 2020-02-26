@@ -460,7 +460,6 @@
   <string name="travel_onboarding_save_button">確定</string>
   <string name="travel_find_destination_placeholder_2">輸入目的地</string>
   <string name="travel_search_engine_1">用 %1$s 檢視結果</string>
-  <string name="travel_search_engine_2">在智慧旅遊搜尋功能中檢視搜尋結果</string>
   <string name="travel_search_engine_fxlite">檢視 %1$s 旅遊探索的搜尋結果</string>
   <string name="travel_dialog_1_title">探索更多！</string>
   <string name="travel_dialog_1_description">到 %1$s Travel Discovery 探索更多活動、住宿與更多內容。</string>

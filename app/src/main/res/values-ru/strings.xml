@@ -455,7 +455,6 @@
   <string name="travel_onboarding_save_button">OK</string>
   <string name="travel_find_destination_placeholder_2">Введите пункт назначения</string>
   <string name="travel_search_engine_1">Посмотреть результаты в %1$s</string>
-  <string name="travel_search_engine_2">Посмотрите результаты в умном поиске мест для путешествий</string>
   <string name="travel_search_engine_fxlite">Посмотрите результаты в поиске мест для путешествий %1$s</string>
   <string name="travel_dialog_1_title">Откройте для себя ещё больше!</string>
   <string name="travel_dialog_1_action_2">НЕТ, СПАСИБО</string>
