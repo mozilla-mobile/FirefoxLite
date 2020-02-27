@@ -8,10 +8,10 @@ import org.mozilla.focus.BuildConfig.FXA_EMAIL_VERIFY_URL
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.activity.SettingsActivity
-import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.Companion.PUSH_COMMAND
-import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.Companion.PUSH_DEEP_LINK
-import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper.Companion.PUSH_OPEN_URL
 import org.mozilla.focus.notification.RocketMessagingService
+import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_COMMAND
+import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_DEEP_LINK
+import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_OPEN_URL
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.SupportUtils
@@ -93,7 +93,7 @@ class LaunchIntentDispatcher {
              * This extra is passed by the Notification (either [RocketMessagingService.onNotificationMessage] or System tray
              * if we have this extra, we want to show this url in a new tab
              */
-            intent.getStringExtra(PUSH_OPEN_URL)?.run {
+            intent.getStringExtra(STR_PUSH_OPEN_URL)?.run {
 
                 intent.data = Uri.parse(this)
                 intent.action = Intent.ACTION_VIEW
@@ -105,7 +105,7 @@ class LaunchIntentDispatcher {
              * This extra is passed by the Notification (either [RocketMessagingService.onNotificationMessage] or System tray
              *  Called by the internal app, doesn't count as a launch event
              * */
-            intent.getStringExtra(PUSH_COMMAND)?.apply {
+            intent.getStringExtra(STR_PUSH_COMMAND)?.apply {
                 when (this) {
                     Command.SET_DEFAULT.value -> {
                         if (!IntentUtils.openDefaultAppsSettings(context)) {
@@ -122,7 +122,7 @@ class LaunchIntentDispatcher {
              * This extra is passed by the Notification (either [RocketMessagingService.onNotificationMessage] or System tray
              * if we have this extra, we want to enable the deep link
              */
-            intent.getStringExtra(PUSH_DEEP_LINK)?.let {
+            intent.getStringExtra(STR_PUSH_DEEP_LINK)?.let {
                 val deepLinkType = DeepLinkType.parse(it)
                 return if (deepLinkType != DeepLinkType.NOT_SUPPORT) {
                     deepLinkType.execute(context)
@@ -177,12 +177,12 @@ class LaunchIntentDispatcher {
         }
 
         private fun parseLink(intent: Intent): String? {
-            var link: String? = intent.getStringExtra(PUSH_OPEN_URL)
+            var link: String? = intent.getStringExtra(STR_PUSH_OPEN_URL)
             if (link == null) {
-                link = intent.getStringExtra(PUSH_COMMAND)
+                link = intent.getStringExtra(STR_PUSH_COMMAND)
             }
             if (link == null) {
-                link = intent.getStringExtra(PUSH_DEEP_LINK)
+                link = intent.getStringExtra(STR_PUSH_DEEP_LINK)
             }
 
             return link
