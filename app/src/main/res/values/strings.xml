@@ -654,8 +654,12 @@
     <string name="shopping_search_onboarding_title">Find great prices</string>
     <!--Shopping Search Onboarding Message, and would need to localize "Smart Shopping Search"-->
     <string name="shopping_search_onboarding_body">Compare prices across many online stores with Smart Shopping Search.</string>
+    <!--Smart Shopping Search onboarding message-->
+    <string name="shopping_search_onboarding_body_A">Compare prices easily on popular shopping sites.</string> 
+    <!--Smart Shopping Search onboarding message-->
+    <string name="shopping_search_onboarding_body_B">Start saving today. Search and compare prices on popular sites.</string>
     <!--Shopping Search Input Placeholder-->
-    <string name="shopping_search_placeholder">Type the product you want to search</string>
+    <string name="shopping_search_placeholder">Enter a product name</string>
     <!--Shopping Search Prompt Message, and would need to localize "Smart Shopping Search"-->
     <string name="shopping_search_prompt_message_body">Compare prices across many online stores with Smart Shopping Search.</string>
     <string name="shopping_search_prompt_message_button">Search</string>
