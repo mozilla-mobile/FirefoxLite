@@ -59,7 +59,14 @@ class TravelCitySearchViewModel(
                 btnVisibility = View.VISIBLE
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success && result.data.result.isNotEmpty()) {
-                    list.add(CitySearchResultCategoryUiModel(R.drawable.ic_firefox_search_logo, context.resources.getString(R.string.travel_search_engine_fxlite, context.resources.getString(R.string.app_name))))
+                    list.add(CitySearchResultCategoryUiModel(
+                        R.drawable.ic_firefox_search_logo,
+                        context.resources.getString(
+                            R.string.travel_search_engine_fxlite_new,
+                            context.resources.getString(R.string.app_name),
+                            context.resources.getString(R.string.travel_discovery)
+                        )
+                    ))
                     val cityResultList = result.data.result.map {
                         TravelMapper.toCitySearchResultUiModel(it.id, applyStyle(keyword, it.name), it.country, it.countryCode, it.type)
                     }

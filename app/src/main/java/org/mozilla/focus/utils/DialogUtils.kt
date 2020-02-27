@@ -494,9 +494,16 @@ object DialogUtils {
         data.drawable = ContextCompat.getDrawable(context, R.drawable.ic_search_option)
         val title = context.getString(R.string.travel_dialog_1_title)
         data.title = title
-        val content = context.getString(R.string.travel_dialog_1_description, context.getString(R.string.app_name))
+        val content = context.getString(
+                R.string.travel_dialog_1_description_new,
+                context.getString(R.string.app_name),
+                context.getString(R.string.travel_discovery)
+            )
         data.description = content
-        val positiveText = context.getString(R.string.travel_dialog_1_action_1)
+        val positiveText = context.getString(
+                R.string.travel_dialog_1_action_1_new,
+                context.getString(R.string.travel_discovery)
+            )
         data.positiveText = positiveText
         val negativeText = context.getString(R.string.travel_dialog_1_action_2)
         data.negativeText = negativeText
@@ -517,9 +524,16 @@ object DialogUtils {
     fun showChangeTravelSearchSettingDialog(context: Context, viewModel: TravelCityViewModel) {
         val data = CustomViewDialogData()
         data.drawable = ContextCompat.getDrawable(context, R.drawable.search_with_firefox)
-        val title = context.getString(R.string.travel_dialog_2_title)
+        val title = context.getString(
+                R.string.travel_dialog_2_title_new,
+                context.getString(R.string.travel_discovery)
+            )
         data.title = title
-        val content = context.getString(R.string.travel_dialog_2_description, context.getString(R.string.app_name))
+        val content = context.getString(
+                R.string.travel_dialog_2_description_new,
+                context.getString(R.string.app_name),
+                context.getString(R.string.travel_discovery)
+            )
         data.description = content
         val positiveText = context.getString(R.string.travel_dialog_2_action)
         data.positiveText = positiveText
