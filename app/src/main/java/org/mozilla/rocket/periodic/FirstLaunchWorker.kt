@@ -11,8 +11,10 @@ import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
-import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper
 import org.mozilla.focus.notification.NotificationUtil
+import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_COMMAND
+import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_DEEP_LINK
+import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_OPEN_URL
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.focus.utils.IntentUtils
@@ -102,9 +104,9 @@ fun String.jsonStringToFirstrunNotification(): FirstrunNotification? {
             jsonObject.getString("messageId"),
             jsonObject.optString("title", null),
             jsonObject.getString("message"),
-            jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_OPEN_URL, null),
-            jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_COMMAND, null),
-            jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_DEEP_LINK, null)
+            jsonObject.optString(STR_PUSH_OPEN_URL, null),
+            jsonObject.optString(STR_PUSH_COMMAND, null),
+            jsonObject.optString(STR_PUSH_DEEP_LINK, null)
         )
     } catch (e: JSONException) {
         e.printStackTrace()

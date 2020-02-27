@@ -24,6 +24,10 @@ import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
 import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask;
 
+import static org.mozilla.focus.notification.RocketMessagingService.STR_PUSH_COMMAND;
+import static org.mozilla.focus.notification.RocketMessagingService.STR_PUSH_DEEP_LINK;
+import static org.mozilla.focus.notification.RocketMessagingService.STR_PUSH_OPEN_URL;
+
 // This class handles all click/actions users performed on a notification.
 // This ensures that all telemetry works for action/click are in one place.
 // The UI code will be responsible for telemetry work for displaying the notifications.
@@ -59,9 +63,9 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_NOTIFICATION)) {
             nexStep = new Intent();
             nexStep.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
-            nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_OPEN_URL, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_OPEN_URL));
-            nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_COMMAND, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_COMMAND));
-            nexStep.putExtra(FirebaseMessagingServiceWrapper.PUSH_DEEP_LINK, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_DEEP_LINK));
+            nexStep.putExtra(STR_PUSH_OPEN_URL, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_OPEN_URL));
+            nexStep.putExtra(STR_PUSH_COMMAND, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_COMMAND));
+            nexStep.putExtra(STR_PUSH_DEEP_LINK, intent.getStringExtra(IntentUtils.EXTRA_NOTIFICATION_DEEP_LINK));
 
             String source = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_NOTIFICATION_SOURCE);
             String link = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_LINK, "");

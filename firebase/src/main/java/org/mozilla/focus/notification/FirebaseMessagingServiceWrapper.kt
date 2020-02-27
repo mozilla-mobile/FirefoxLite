@@ -34,5 +34,4 @@ abstract class FirebaseMessagingServiceWrapper : FirebaseMessagingService() {
             onDataMessage(remoteMessage.data)
         }
     }
-
 }
