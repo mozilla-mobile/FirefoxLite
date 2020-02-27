@@ -16,107 +16,45 @@ import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper.getNotification
 import org.mozilla.focus.telemetry.TelemetryWrapper.isTelemetryEnabled
-import org.mozilla.focus.telemetry.TelemetryWrapper.showNotification
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.threadutils.ThreadUtils
 import java.util.concurrent.TimeUnit
 
-// Prov
+/**
+ * Handle Notification & Data Message from FCM
+ * */
 class RocketMessagingService : FirebaseMessagingServiceWrapper() {
-    //
+
     override fun onNotificationMessage(data: Map<String, String>, title: String?, body: String?, imageUrl: String?) {
         val messageId = parseMessageId(data)
-        val link = parseLink(data)
-        getNotification(link, messageId)
-        if (!isTelemetryEnabled(this)) {
-            return
-        }
-        val pendingIntent = getClickPendingIntent(
-                applicationContext,
-                messageId,
-                parseOpenUrl(data),
-                parseCommand(data),
-                parseDeepLink(data)
-        )
-        val builder = NotificationUtil.importantBuilder(this).setContentIntent(pendingIntent)
-        title?.let { builder.setContentTitle(it) }
-        body?.let { builder.setContentText(it) }
-        addDeleteTelemetry(applicationContext, builder, messageId, link)
+        val openUrl = parseOpenUrl(data)
+        val pushCommand = parseCommand(data)
+        val deepLink = parseDeepLink(data)
 
-        if (!imageUrl.isNullOrEmpty()) {
-            ThreadUtils.postToMainThread {
-                Glide.with(applicationContext)
-                    .asBitmap()
-                    .load(imageUrl)
-                    .into(object : SimpleTarget<Bitmap?>() {
-                        override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap?>?) {
-                            builder.setLargeIcon(resource)
-                            builder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(resource))
-
-                            NotificationUtil.sendNotification(this@RocketMessagingService, NotificationId.FIREBASE_AD_HOC, builder)
-                            showNotification(link, messageId)
-                        }
-                    })
-            }
-        } else {
-            NotificationUtil.sendNotification(this, NotificationId.FIREBASE_AD_HOC, builder)
-            showNotification(link, messageId)
-        }
+        handlePushMessage(applicationContext, messageId, openUrl, pushCommand, deepLink, title, body, imageUrl)
     }
 
     override fun onDataMessage(data: MutableMap<String, String>) {
 
         val messageId = parseMessageId(data)
-
-        val title = data[STR_DATA_MSG_TITLE]
-        val body = data[STR_DATA_MSG_BODY]
-        val openUrl = data[STR_PUSH_OPEN_URL]
-        val pushCommand = data[STR_PUSH_COMMAND]
-        val deepLink = data[STR_PUSH_DEEP_LINK]
-        val displayType = data[STR_DATA_MSG_DISPLAY_TYPE]   // we only have one time now
-        val displayTimestamp = data[LONG_DATA_MSG_DISPLAY_TIMESTAMP]?.toLong()
+        val title = parseTitle(data)
+        val body = parseBody(data)
+        val openUrl = parseOpenUrl(data)
+        val pushCommand = parseCommand(data)
+        val deepLink = parseDeepLink(data)
+        val displayType = parseDisplayType(data)
+        val displayTimestamp = parseDisplayTimestamp(data)
 
         if (messageId == null || title == null || body == null || displayTimestamp == null || displayType == null) {
             return
         }
 
-        val link = parseLink(data)
-        getNotification(link, messageId)
+        val imageUri = parseImageUrl(data)
 
-        val imageUri = data[STR_DATA_MSG_IMAGE_URL]
-        if (imageUri != null && !URLUtil.isValidUrl(imageUri)) {
-            return
-        }
-        val inputDataBuilder = Data.Builder()
-                .putString(STR_MESSAGE_ID, messageId)
-                .putString(STR_DATA_MSG_TITLE, title)
-                .putString(STR_DATA_MSG_BODY, body)
-                .putString(STR_PUSH_OPEN_URL, openUrl)
-                .putString(STR_PUSH_COMMAND, pushCommand)
-                .putString(STR_PUSH_DEEP_LINK, deepLink)
-
-
-        if ((imageUri != null)) {
-            inputDataBuilder.putString(STR_DATA_MSG_IMAGE_URL, imageUri)
-        }
-
-        val request =
-                OneTimeWorkRequest.Builder(NotificationScheduleWorker::class.java)
-                        .setInputData(inputDataBuilder.build())
-                        .setInitialDelay(displayTimestamp-System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                        .addTag(messageId)
-                        .build()
-
-        WorkManager.getInstance(this).enqueue(request)
-
-        for (entry in data) {
-            if (BuildConfig.DEBUG) {
-                Log.d("FCM", "onDataMessage---[${entry.key}]----${entry.value}")
-            }
-        }
+        scheduleNotification(applicationContext, messageId, imageUri, title, body, openUrl, pushCommand, deepLink, displayTimestamp)
     }
 
     override fun onNewToken(token: String) {
@@ -125,6 +63,7 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
     }
 
     private fun sendRegistrationToServer(token: String) {
+        Log.d("FirebaseAaaa", "[$token]----")
 //        place holder for the server side
 //        HttpURLConnectionClient()
 //                .withInterceptors(LoggingInterceptor())
@@ -139,6 +78,14 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         return data[STR_MESSAGE_ID]
     }
 
+    private fun parseTitle(data: Map<String, String>): String? {
+        return data[STR_DATA_MSG_TITLE]
+    }
+
+    private fun parseBody(data: Map<String, String>): String? {
+        return data[STR_DATA_MSG_BODY]
+    }
+
     private fun parseOpenUrl(data: Map<String, String>): String? {
         return data[STR_PUSH_OPEN_URL]
     }
@@ -151,32 +98,16 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         return data[STR_PUSH_DEEP_LINK]
     }
 
-    private fun parseLink(data: Map<String, String>): String? {
-        var link = data[STR_PUSH_OPEN_URL]
-        if (link == null) {
-            link = data[STR_PUSH_COMMAND]
-        }
-        if (link == null) {
-            link = data[STR_PUSH_DEEP_LINK]
-        }
-        return link
+    private fun parseDisplayType(data: Map<String, String>): String? {
+        return data[STR_DATA_MSG_DISPLAY_TYPE]
     }
 
-    private fun getClickPendingIntent(appContext: Context, messageId: String?, openUrl: String?, command: String?, deepLink: String?): PendingIntent { // RocketLauncherActivity will handle this intent
-        val clickIntent = IntentUtils.genFirebaseNotificationClickForBroadcastReceiver(
-                appContext,
-                messageId,
-                openUrl,
-                command,
-                deepLink
-        )
-        return PendingIntent.getBroadcast(this, REQUEST_CODE_CLICK_NOTIFICATION, clickIntent, PendingIntent.FLAG_ONE_SHOT)
+    private fun parseDisplayTimestamp(data: Map<String, String>): Long? {
+        return data[LONG_DATA_MSG_DISPLAY_TIMESTAMP]?.toLong()
     }
 
-    private fun addDeleteTelemetry(appContext: Context, builder: NotificationCompat.Builder, messageId: String?, link: String?) {
-        val intent = IntentUtils.genDeleteFirebaseNotificationActionForBroadcastReceiver(appContext, messageId, link)
-        val pendingIntent = PendingIntent.getBroadcast(appContext, REQUEST_CODE_DELETE_NOTIFICATION, intent, PendingIntent.FLAG_ONE_SHOT)
-        builder.setDeleteIntent(pendingIntent)
+    private fun parseImageUrl(data: Map<String, String>): String? {
+        return data[STR_DATA_MSG_IMAGE_URL]
     }
 
     companion object {
@@ -195,5 +126,104 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         const val STR_DATA_MSG_DISPLAY_TYPE = "display_type"
         const val LONG_DATA_MSG_DISPLAY_TIMESTAMP = "display_timestamp"
         const val STR_DATA_MSG_IMAGE_URL = "image_uri"
+
+        fun scheduleNotification(applicationContext: Context, messageId: String, imageUri: String?, title: String?, body: String?, openUrl: String?, pushCommand: String?, deepLink: String?, displayTimestamp: Long) {
+
+            if (imageUri != null && !URLUtil.isValidUrl(imageUri)) {
+                return
+            }
+            val inputDataBuilder = Data.Builder()
+                    .putString(STR_MESSAGE_ID, messageId)
+                    .putString(STR_DATA_MSG_TITLE, title)
+                    .putString(STR_DATA_MSG_BODY, body)
+                    .putString(STR_PUSH_OPEN_URL, openUrl)
+                    .putString(STR_PUSH_COMMAND, pushCommand)
+                    .putString(STR_PUSH_DEEP_LINK, deepLink)
+
+            if ((imageUri != null)) {
+                inputDataBuilder.putString(STR_DATA_MSG_IMAGE_URL, imageUri)
+            }
+
+            val request =
+                    OneTimeWorkRequest.Builder(NotificationScheduleWorker::class.java)
+                            .setInputData(inputDataBuilder.build())
+                            .setInitialDelay(displayTimestamp - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                            .addTag(messageId)
+                            .build()
+
+            WorkManager.getInstance(applicationContext).enqueue(request)
+        }
+
+        fun handlePushMessage(applicationContext: Context, messageId: String?, openUrl: String?, pushCommand: String?, deepLink: String?, title: String?, body: String?, imageUrl: String?) {
+
+            val pendingIntent = getClickPendingIntent(
+                    applicationContext,
+                    messageId,
+                    openUrl,
+                    pushCommand,
+                    deepLink
+            )
+            val builder = NotificationUtil.importantBuilder(applicationContext).setContentIntent(pendingIntent)
+            title?.let { builder.setContentTitle(it) }
+            body?.let { builder.setContentText(it) }
+
+            val link = parseLink(openUrl, pushCommand, deepLink)
+
+            getNotification(link, messageId)
+
+            if (!isTelemetryEnabled(applicationContext)) {
+                return
+            }
+
+            addDeleteTelemetry(applicationContext, builder, messageId, link)
+
+            if (!imageUrl.isNullOrEmpty()) {
+                ThreadUtils.postToMainThread {
+                    Glide.with(applicationContext)
+                            .asBitmap()
+                            .load(imageUrl)
+                            .into(object : SimpleTarget<Bitmap?>() {
+                                override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap?>?) {
+                                    builder.setLargeIcon(resource)
+                                    builder.setStyle(NotificationCompat.BigPictureStyle().bigPicture(resource))
+
+                                    NotificationUtil.sendNotification(applicationContext, NotificationId.FIREBASE_AD_HOC, builder)
+                                    TelemetryWrapper.showNotification(link, messageId)
+                                }
+                            })
+                }
+            } else {
+                NotificationUtil.sendNotification(applicationContext, NotificationId.FIREBASE_AD_HOC, builder)
+                TelemetryWrapper.showNotification(link, messageId)
+            }
+        }
+
+        private fun parseLink(openUrl: String?, pushCommand: String?, deepLink: String?): String? {
+            var link = openUrl
+            if (link == null) {
+                link = pushCommand
+            }
+            if (link == null) {
+                link = deepLink
+            }
+            return link
+        }
+
+        private fun getClickPendingIntent(appContext: Context, messageId: String?, openUrl: String?, command: String?, deepLink: String?): PendingIntent { // RocketLauncherActivity will handle this intent
+            val clickIntent = IntentUtils.genFirebaseNotificationClickForBroadcastReceiver(
+                    appContext,
+                    messageId,
+                    openUrl,
+                    command,
+                    deepLink
+            )
+            return PendingIntent.getBroadcast(appContext, RocketMessagingService.REQUEST_CODE_CLICK_NOTIFICATION, clickIntent, PendingIntent.FLAG_ONE_SHOT)
+        }
+
+        private fun addDeleteTelemetry(appContext: Context, builder: NotificationCompat.Builder, messageId: String?, link: String?) {
+            val intent = IntentUtils.genDeleteFirebaseNotificationActionForBroadcastReceiver(appContext, messageId, link)
+            val pendingIntent = PendingIntent.getBroadcast(appContext, RocketMessagingService.REQUEST_CODE_DELETE_NOTIFICATION, intent, PendingIntent.FLAG_ONE_SHOT)
+            builder.setDeleteIntent(pendingIntent)
+        }
     }
 }
