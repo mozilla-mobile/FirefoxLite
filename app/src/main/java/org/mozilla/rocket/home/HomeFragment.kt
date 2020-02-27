@@ -432,20 +432,20 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun showContentServiceSpotlight() {
-        activity?.let {
-            content_hub.post {
+        val dismissListener = DialogInterface.OnDismissListener {
+            restoreStatusBarColor()
+            homeViewModel.onContentServicesOnboardingSpotlightDismiss()
+        }
+        val clickOkButtonListener = View.OnClickListener {
+            homeViewModel.onContentServiceOnboardingButtonClicked()
+        }
+        content_hub.post {
+            if (isAdded) {
                 setOnboardingStatusBarColor()
-                val dismissListener = DialogInterface.OnDismissListener {
-                    restoreStatusBarColor()
-                    homeViewModel.onContentServicesOnboardingSpotlightDismiss()
-                }
-                val clickOkButtonListener = View.OnClickListener {
-                    homeViewModel.onContentServiceOnboardingButtonClicked()
-                }
                 contentServiceSpotlightDialog = if (homeViewModel.isContentHubMergeIntoTopSite.value == true) {
-                    DialogUtils.showContentServiceInTopSitesOnboardingSpotlight(it, main_list, dismissListener, clickOkButtonListener)
+                    DialogUtils.showContentServiceInTopSitesOnboardingSpotlight(requireActivity(), main_list, dismissListener, clickOkButtonListener)
                 } else {
-                    DialogUtils.showContentServiceOnboardingSpotlight(it, content_hub_layout, dismissListener, clickOkButtonListener)
+                    DialogUtils.showContentServiceOnboardingSpotlight(requireActivity(), content_hub_layout, dismissListener, clickOkButtonListener)
                 }
             }
         }
@@ -458,15 +458,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun showShoppingSearchSpotlight() {
-        activity?.let {
-            shopping_button.post {
+        val dismissListener = DialogInterface.OnDismissListener {
+            restoreStatusBarColor()
+            shopping_button?.isVisible = currentShoppingBtnVisibleState
+            private_mode_button?.isVisible = !currentShoppingBtnVisibleState
+            homeViewModel.onShoppingSearchOnboardingSpotlightDismiss()
+        }
+        shopping_button.post {
+            if (isAdded) {
                 setOnboardingStatusBarColor()
-                DialogUtils.showShoppingSearchSpotlight(it, shopping_button, DialogInterface.OnDismissListener {
-                    restoreStatusBarColor()
-                    shopping_button.isVisible = currentShoppingBtnVisibleState
-                    private_mode_button.isVisible = !currentShoppingBtnVisibleState
-                    homeViewModel.onShoppingSearchOnboardingSpotlightDismiss()
-                })
+                DialogUtils.showShoppingSearchSpotlight(requireActivity(), shopping_button, dismissListener)
             }
         }
     }
@@ -533,14 +534,15 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun showRequestClickContentHubOnboarding(couponName: String) {
-        activity?.let {
-            content_hub.post {
+        val dismissListener = DialogInterface.OnDismissListener {
+            restoreStatusBarColor()
+            homeViewModel.onContentHubRequestClickHintDismissed()
+        }
+        content_hub.post {
+            if (isAdded) {
                 homeViewModel.onShowClickContentHubOnboarding()
                 setOnboardingStatusBarColor()
-                DialogUtils.showContentServiceRequestClickSpotlight(it, content_hub, couponName, DialogInterface.OnDismissListener {
-                    restoreStatusBarColor()
-                    homeViewModel.onContentHubRequestClickHintDismissed()
-                })
+                DialogUtils.showContentServiceRequestClickSpotlight(requireActivity(), content_hub, couponName, dismissListener)
             }
         }
     }
