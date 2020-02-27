@@ -991,6 +991,8 @@
     <string name="travel_dialog_2_title_new">Enjoy Using %1$s?</string>
     <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
     <string name="travel_dialog_2_description">You can set %1$s Travel Disovery as your default search engine for travel.</string>
+    <!--dialog description for introducing how it works. The first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
+    <string name="travel_dialog_2_description">You can set %1$s %2$s as your default search engine for travel.</string>
     <!--checkbox for not showing this dialog again-->
     <string name="travel_dialog_2_checkbox">Do not ask me again</string>
     <!--Action button for setting Travel Discovery as default search engine-->
