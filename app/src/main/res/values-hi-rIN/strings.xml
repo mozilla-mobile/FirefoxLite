@@ -460,6 +460,7 @@
   <string name="travel_onboarding_save_button">ठीक</string>
   <string name="travel_find_destination_placeholder_2">कोई गंतव्य स्थान दर्ज करें</string>
   <string name="travel_search_engine_1">%1$s में खोज परिणाम देखें</string>
+  <string name="travel_search_engine_2">स्मार्ट यात्रा खोज में परिणामों को देखें</string>
   <string name="travel_search_engine_fxlite">%1$s यात्रा खोज में परिणामों को देखें</string>
   <string name="travel_dialog_1_title">और जानें!</string>
   <string name="travel_dialog_1_description">%1$s यात्रा खोज में करने के रोमांचक कार्य, आवास तथा और भी बहुत सी चीज़ें देखें।</string>
