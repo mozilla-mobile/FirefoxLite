@@ -276,6 +276,10 @@
   <string name="news_category_option_nation">Местные</string>
   <string name="logo_text">Услуги предоставлены</string>
   <string name="recommended_news_title">Рекомендованные новости для вас</string>
+  <string name="recommended_news_preference_language">Выберите предпочтительный¶\nязык новостей</string>
+  <string name="recommended_news_preference_toggle">Персонализированные новости</string>
+  <string name="recommended_news_preference_disable_dialog">Отключить рекомендации новостей? Нажмите “ДА”, чтобы просто показывать новости по порядку.</string>
+  <string name="recommended_news_preference_enable_dialog">Включить рекомендации новостей? Нажмите “ДА”, чтобы смотреть избранную подборку новостей.</string>
   <string name="private_tab">Приватная вкладка</string>
   <string name="private_browsing_title">Приватный просмотр</string>
   <string name="private_browsing_erase_message">Удалить историю приватного просмотра</string>
