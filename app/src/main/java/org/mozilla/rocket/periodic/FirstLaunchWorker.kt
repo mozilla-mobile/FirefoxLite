@@ -61,7 +61,9 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
         val openRocketPending = PendingIntent.getBroadcast(context, REQUEST_CODE_CLICK_NOTIFICATION, intent,
                 PendingIntent.FLAG_ONE_SHOT)
         val builder = NotificationUtil.importantBuilder(context)
-                .setContentTitle(message)
+                .setContentText(message)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(message))
                 .setContentIntent(openRocketPending)
 
         addDeleteTelemetry(applicationContext, builder, message, openUrl ?: command ?: deepLink)
