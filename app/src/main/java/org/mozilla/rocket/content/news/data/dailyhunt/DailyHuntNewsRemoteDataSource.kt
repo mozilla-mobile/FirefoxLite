@@ -13,6 +13,7 @@ import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.sha256
 import org.mozilla.rocket.util.toJsonObject
+import java.net.URLEncoder
 import java.util.Locale
 
 class DailyHuntNewsRemoteDataSource(private val appContext: Context, private val newsProvider: DailyHuntProvider?) : NewsDataSource {
@@ -104,13 +105,19 @@ class DailyHuntNewsRemoteDataSource(private val appContext: Context, private val
                     ""
                 }
 
+                val linkUrl = if (item.optString("deepLinkUrl").isNotEmpty()) {
+                    item.optString("deepLinkUrl") + "&puid=${URLEncoder.encode(newsProvider?.userId, "UTF-8")}"
+                } else {
+                    ""
+                }
+
                 NewsItem(
                     item.optString("title"),
-                    item.optString("deepLinkUrl"),
+                    linkUrl,
                     imageUrl,
                     item.optString("source"),
                     item.optLong("publishTime"),
-                    item.optString("deepLinkUrl").sha256(),
+                    linkUrl.sha256(),
                     feed = "dailyhunt"
                 )
             }
