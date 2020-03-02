@@ -59,13 +59,13 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // TODO: Deal with non-sequence responses when a user types quickly
-                s?.let { viewModel.fetchSuggestions(it.toString()) }
+                s?.let { viewModel.onTypingKeyword(it.toString()) }
             }
         })
         search_keyword_edit.setOnEditorActionListener { editTextView, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
-                    viewModel.onKeywordSent(editTextView.text.toString())
+                    viewModel.onTypedKeywordSent(editTextView.text.toString())
                     true
                 }
                 else -> false
@@ -81,11 +81,18 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
         }
 
         clear.setOnClickListener(this)
+
+        root_view.setOnKeyboardVisibilityChangedListener { visible ->
+            if (visible) {
+                viewModel.onKeyboardShown()
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
         search_keyword_edit.requestFocus()
+        viewModel.onStart()
     }
 
     override fun onClick(view: View) {
@@ -94,7 +101,7 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
             R.id.suggestion_item -> {
                 val searchTerm = (view as TextView).text
                 search_keyword_edit.text = SpannableStringBuilder(searchTerm)
-                viewModel.onKeywordSent(searchTerm.toString())
+                viewModel.onSuggestionKeywordSent(searchTerm.toString())
             }
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
@@ -24,8 +25,17 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
 
     val navigateToResultTab = SingleLiveEvent<String>()
     private var fetchSuggestionsJob: Job? = null
+    private var firstTimeTyping: Boolean = true
 
-    fun fetchSuggestions(keyword: String) {
+    fun onStart() {
+        TelemetryWrapper.showSearchBarFromTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING)
+    }
+
+    fun onKeyboardShown() {
+        TelemetryWrapper.showKeyboardFromTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
+    }
+
+    fun onTypingKeyword(keyword: String) {
         if (fetchSuggestionsJob?.isCompleted == false) {
             fetchSuggestionsJob?.cancel()
         }
@@ -47,12 +57,21 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
                 emitUiModel(newUiModel)
             }
         }
+
+        if (firstTimeTyping) {
+            TelemetryWrapper.startTypingFromTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
+            firstTimeTyping = false
+        }
     }
 
-    fun onKeywordSent(keyword: String) {
-        if (!TextUtils.isEmpty(keyword)) {
-            navigateToResultTab.value = keyword
-        }
+    fun onTypedKeywordSent(keyword: String) {
+        onKeywordSent(keyword)
+        TelemetryWrapper.searchWithTextInSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
+    }
+
+    fun onSuggestionKeywordSent(keyword: String) {
+        onKeywordSent(keyword)
+        TelemetryWrapper.useSearchSuggestionInTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
     }
 
     private fun applyStyle(keyword: String, keywordSuggestions: List<String>): List<CharSequence> {
@@ -73,6 +92,12 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
 
     private fun emitUiModel(newUiModel: ShoppingSearchKeywordInputUiModel) {
         _uiModel.value = newUiModel
+    }
+
+    private fun onKeywordSent(keyword: String) {
+        if (!TextUtils.isEmpty(keyword)) {
+            navigateToResultTab.value = keyword
+        }
     }
 }
 
