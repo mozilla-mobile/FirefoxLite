@@ -112,6 +112,8 @@ object TelemetryWrapper {
         const val LAUNCH = "launch"
         const val KILL = "kill"
         const val SIGN_IN = "sign_in"
+        const val SHOW_KEYBOARD = "show_keyboard"
+        const val START_TYPING = "start_typing"
     }
 
     internal object Object {
@@ -3153,6 +3155,86 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, Value.TAB_SWIPE)
                 .extra(Extra.FEED, feed)
                 .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Show SearchBar from Tab Swipe",
+        category = Category.ACTION,
+        method = Method.SHOW,
+        `object` = Object.SEARCH_BAR,
+        value = Value.TAB_SWIPE,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+        ])
+    @JvmStatic
+    fun showSearchBarFromTabSwipe(vertical: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.TAB_SWIPE)
+            .extra(Extra.VERTICAL, vertical)
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Show Keyboard from Tab Swipe SearchBar",
+        category = Category.ACTION,
+        method = Method.SHOW_KEYBOARD,
+        `object` = Object.SEARCH_BAR,
+        value = Value.TAB_SWIPE,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+        ])
+    @JvmStatic
+    fun showKeyboardFromTabSwipeSearchBar(vertical: String) {
+        EventBuilder(Category.ACTION, Method.SHOW_KEYBOARD, Object.SEARCH_BAR, Value.TAB_SWIPE)
+            .extra(Extra.VERTICAL, vertical)
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Start Typing from Tab Swipe SearchBar",
+        category = Category.ACTION,
+        method = Method.START_TYPING,
+        `object` = Object.SEARCH_BAR,
+        value = Value.TAB_SWIPE,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+        ])
+    @JvmStatic
+    fun startTypingFromTabSwipeSearchBar(vertical: String) {
+        EventBuilder(Category.ACTION, Method.START_TYPING, Object.SEARCH_BAR, Value.TAB_SWIPE)
+            .extra(Extra.VERTICAL, vertical)
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Search with text in SearchBar",
+        category = Category.ACTION,
+        method = Method.TYPE_QUERY,
+        `object` = Object.SEARCH_BAR,
+        value = Value.TAB_SWIPE,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+        ])
+    @JvmStatic
+    fun searchWithTextInSearchBar(vertical: String) {
+        EventBuilder(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR, Value.TAB_SWIPE)
+            .extra(Extra.VERTICAL, vertical)
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Use SearchSuggestion in Tab Swipe SearchBar",
+        category = Category.ACTION,
+        method = Method.TYPE_SELECT_QUERY,
+        `object` = Object.SEARCH_BAR,
+        value = Value.TAB_SWIPE,
+        extras = [
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+        ])
+    @JvmStatic
+    fun useSearchSuggestionInTabSwipeSearchBar(vertical: String) {
+        EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR, Value.TAB_SWIPE)
+            .extra(Extra.VERTICAL, vertical)
+            .queue()
     }
 
     @TelemetryDoc(
