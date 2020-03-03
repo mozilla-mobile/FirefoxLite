@@ -280,9 +280,9 @@ public class IntentUtils {
         return deleteNotification;
     }
 
-    public static Intent genDeleteFirstrunNotificationActionForBroadcastReceiver(Context context, String message, String link) {
+    public static Intent genDeleteFirstrunNotificationActionForBroadcastReceiver(Context context, String messageId, String link) {
         final Intent deleteNotification = genDeleteNotificationActionForBroadcastReceiver(context, NOTIFICATION_SOURCE_FIRSTRUN);
-        deleteNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE, message);
+        deleteNotification.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
         deleteNotification.putExtra(EXTRA_NOTIFICATION_LINK, link);
         return deleteNotification;
     }
@@ -309,13 +309,13 @@ public class IntentUtils {
 
     public static Intent genFirstrunNotificationClickForBroadcastReceiver(
         Context context,
-        String message,
+        String messageId,
         String openUrl,
         String command,
         String deepLink
     ) {
         final Intent intent = genNotificationActionIntent(context, NOTIFICATION_SOURCE_FIRSTRUN, openUrl, command, deepLink);
-        intent.putExtra(EXTRA_NOTIFICATION_MESSAGE, message);
+        intent.putExtra(EXTRA_NOTIFICATION_MESSAGE_ID, messageId);
         return intent;
     }
 

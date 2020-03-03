@@ -49,8 +49,8 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
                 String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
                 TelemetryWrapper.dismissNotification(link, messageId);
             } else if (IntentUtils.NOTIFICATION_SOURCE_FIRSTRUN.equals(source)) {
-                String message = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE, "");
-                TelemetryWrapper.dismissFirstrunNotification(link, message);
+                String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+                TelemetryWrapper.dismissFirstrunNotification(link, messageId);
             }
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_NOTIFICATION)) {
@@ -66,8 +66,8 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
                 String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
                 TelemetryWrapper.openNotification(link, messageId, false);
             } else if (IntentUtils.NOTIFICATION_SOURCE_FIRSTRUN.equals(source)) {
-                String message = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE, "");
-                TelemetryWrapper.openD1Notification(link, message);
+                String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
+                TelemetryWrapper.openD1Notification(link, messageId);
             }
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {

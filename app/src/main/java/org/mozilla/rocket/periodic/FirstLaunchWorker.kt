@@ -48,36 +48,45 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
     override fun doWork(): Result {
         val firstrunNotification = AppConfigWrapper.getFirstLaunchNotification().jsonStringToFirstrunNotification()
         firstrunNotification?.run {
-            showNotification(applicationContext, message, openUrl, command, deepLink)
-            TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(), message, openUrl ?: command ?: deepLink)
+            showNotification(applicationContext, messageId, title, message, openUrl, command, deepLink)
+            TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(), messageId, openUrl ?: command ?: deepLink)
             setNotificationFired(applicationContext, true)
         }
 
         return Result.success()
     }
 
-    private fun showNotification(context: Context, message: String, openUrl: String?, command: String?, deepLink: String?) {
-        val intent = IntentUtils.genFirstrunNotificationClickForBroadcastReceiver(context, message, openUrl, command, deepLink)
+    private fun showNotification(context: Context, messageId: String, title: String?, message: String, openUrl: String?, command: String?, deepLink: String?) {
+        val intent = IntentUtils.genFirstrunNotificationClickForBroadcastReceiver(context, messageId, openUrl, command, deepLink)
         val openRocketPending = PendingIntent.getBroadcast(context, REQUEST_CODE_CLICK_NOTIFICATION, intent,
                 PendingIntent.FLAG_ONE_SHOT)
         val builder = NotificationUtil.importantBuilder(context)
-                .setContentTitle(message)
+                .also {
+                    if (title != null) {
+                        it.setContentTitle(title)
+                    }
+                }
+                .setContentText(message)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(message))
                 .setContentIntent(openRocketPending)
 
-        addDeleteTelemetry(applicationContext, builder, message, openUrl ?: command ?: deepLink)
+        addDeleteTelemetry(applicationContext, builder, messageId, openUrl ?: command ?: deepLink)
         // Show notification
         val id = message.hashCode()
         NotificationUtil.sendNotification(context, id, builder)
     }
 
-    private fun addDeleteTelemetry(appContext: Context, builder: NotificationCompat.Builder, message: String, link: String?) {
-        val intent = IntentUtils.genDeleteFirstrunNotificationActionForBroadcastReceiver(appContext, message, link)
+    private fun addDeleteTelemetry(appContext: Context, builder: NotificationCompat.Builder, messageId: String, link: String?) {
+        val intent = IntentUtils.genDeleteFirstrunNotificationActionForBroadcastReceiver(appContext, messageId, link)
         val pendingIntent = PendingIntent.getBroadcast(appContext, REQUEST_CODE_DELETE_NOTIFICATION, intent, PendingIntent.FLAG_ONE_SHOT)
         builder.setDeleteIntent(pendingIntent)
     }
 }
 
 class FirstrunNotification(
+    val messageId: String,
+    val title: String?,
     val message: String,
     val openUrl: String?,
     val command: String?,
@@ -88,6 +97,8 @@ fun String.jsonStringToFirstrunNotification(): FirstrunNotification? {
     return try {
         val jsonObject = JSONObject(this)
         FirstrunNotification(
+            jsonObject.getString("messageId"),
+            jsonObject.optString("title", null),
             jsonObject.getString("message"),
             jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_OPEN_URL, null),
             jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_COMMAND, null),
