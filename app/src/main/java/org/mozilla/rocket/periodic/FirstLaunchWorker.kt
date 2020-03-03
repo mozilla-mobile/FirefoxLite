@@ -80,6 +80,8 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
 }
 
 class FirstrunNotification(
+    val messageId: String,
+    val title: String?,
     val message: String,
     val openUrl: String?,
     val command: String?,
@@ -90,6 +92,8 @@ fun String.jsonStringToFirstrunNotification(): FirstrunNotification? {
     return try {
         val jsonObject = JSONObject(this)
         FirstrunNotification(
+            jsonObject.getString("messageId"),
+            jsonObject.optString("title", null),
             jsonObject.getString("message"),
             jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_OPEN_URL, null),
             jsonObject.optString(FirebaseMessagingServiceWrapper.PUSH_COMMAND, null),
