@@ -408,6 +408,7 @@ tasks.whenTaskAdded { task ->
     if (name.contains("compile")) {
         task.dependsOn generatePreviewLocaleList
         task.dependsOn generateFocusLocaleList
+        task.dependsOn updateCustomizedResources
     }
 }
 
@@ -440,12 +441,8 @@ task checkTelemetryDocDirty() {
     }
 }
 
-// -------------------------------------------------------------------------------------------------
-// Generate strings.xml with customized translated strings
-// -------------------------------------------------------------------------------------------------
-
-task updateCustomizedStrings(type: Exec) {
-        commandLine 'python', '../tools/l10n/attach-local-strings.py'
+task updateCustomizedResources(type: Exec) {
+    commandLine 'python', '../tools/l10n/update_customized_resources.py'
 }
 
 import org.mozilla.rocket.CheckPermissionsTask
