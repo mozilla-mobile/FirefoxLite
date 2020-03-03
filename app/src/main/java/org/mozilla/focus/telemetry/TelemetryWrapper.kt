@@ -308,6 +308,7 @@ object TelemetryWrapper {
         const val BUTTON_TEXT = "button_text"
         const val PERSONALIZATION = "personalization"
         const val LANGUAGE = "language"
+        const val KEYWORD = "keyword"
     }
 
     object Extra_Value {
@@ -3228,12 +3229,16 @@ object TelemetryWrapper {
         `object` = Object.SEARCH_BAR,
         value = Value.TAB_SWIPE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+            TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
+            TelemetryExtra(name = Extra.KEYWORD, value = "default name xxx,null")
         ])
     @JvmStatic
-    fun useSearchSuggestionInTabSwipeSearchBar(vertical: String) {
+    fun useSearchSuggestionInTabSwipeSearchBar(vertical: String, isDefault: Boolean, keyword: String) {
         EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR, Value.TAB_SWIPE)
             .extra(Extra.VERTICAL, vertical)
+            .extra(Extra.DEFAULT, isDefault.toString())
+            .extra(Extra.KEYWORD, keyword)
             .queue()
     }
 
