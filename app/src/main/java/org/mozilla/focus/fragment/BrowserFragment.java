@@ -1346,6 +1346,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 Log.w(BROWSER_FRAGMENT_TAG, "No context to use, abort callback handleExternalUrl");
                 return false;
             }
+            ScreenNavigator.NavigationState navigationState = chromeViewModel.getNavigationState().getValue();
+            if (navigationState != null && navigationState.isHome()) {
+                Log.w(BROWSER_FRAGMENT_TAG, "Ignore external url when browser page is not on the front");
+                return false;
+            }
 
             return IntentUtils.handleExternalUri(getContext(), url);
         }
