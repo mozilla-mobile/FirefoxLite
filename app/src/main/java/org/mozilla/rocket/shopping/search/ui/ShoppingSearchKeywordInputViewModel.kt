@@ -71,7 +71,7 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
 
     fun onSuggestionKeywordSent(keyword: String) {
         onKeywordSent(keyword)
-        TelemetryWrapper.useSearchSuggestionInTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
+        TelemetryWrapper.useSearchSuggestionInTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING, false, "null")
     }
 
     private fun applyStyle(keyword: String, keywordSuggestions: List<String>): List<CharSequence> {

@@ -167,7 +167,7 @@
 |Show Keyboard from Tab Swipe SearchBar|action|show_keyboard|search_bar|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards," 
 |Start Typing from Tab Swipe SearchBar|action|start_typing|search_bar|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards," 
 |Search with text in SearchBar|action|type_query|search_bar|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards," 
-|Use SearchSuggestion in Tab Swipe SearchBar|action|select_query|search_bar|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards," 
+|Use SearchSuggestion in Tab Swipe SearchBar|action|select_query|search_bar|"tab_swipe"|"vertical=shopping,game,travel,lifestyle,rewards,default=true,false,keyword=default name xxx,null," 
 |Change Travel Settings|action|change|setting|"detail_page"|"vertical=shopping,game,travel,lifestyle,category=category,item_id=item id,item_name=item name,subcategory_id=sub category id,version_id=version id,action=save|remove," 
 |Change Personalization in Onboarding|action|change|onboarding|"personalization"|"vertical=shopping,game,travel,lifestyle,all,personalization=true,false," 
 |Change Language in Onboarding|action|change|onboarding|"language"|"vertical=shopping,game,travel,lifestyle,all,language=language," 
