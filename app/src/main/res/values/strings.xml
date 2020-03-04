@@ -962,11 +962,11 @@
     <string name="travel_find_destination_placeholder_2">Enter a destination</string>
     <!--this is a title indicates that users will see search results from google after tapping on the following option. the %1$s here is google. -->
     <string name="travel_search_engine_1">See results in %1$s</string>
-    <!--this is a title indicates that users will see search results summerized by smart travel search after tapping on the following options. -->
-    <string name="travel_search_engine_2">See results in smart travel search</string>
-    <!--this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Firefox Lite.-->
-    <string name="travel_search_engine_fxlite">See results in %1$s Travel Discovery</string>   
-    <!--this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
+    <!--!NOT USE! this is a title indicates that users will see search results summerized by smart travel search after tapping on the following options. -->
+    <string name="travel_search_engine_2" translatable="false">See results in smart travel search</string>
+    <!--!NOT USE! this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Firefox Lite.-->
+    <string name="travel_search_engine_fxlite" translatable="false">See results in %1$s Travel Discovery</string>   
+    <!--this is a title of search suggestions from Firefox Lite Travel Discovery. the first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
     <string name="travel_search_engine_fxlite_new">See results in %1$s %2$s</string>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery" translatable="false">Travel Discovery</string>
@@ -980,23 +980,23 @@
     <!--Dialog-->
     <!--dialog title for introducing Firefox Lite Travel Discovery-->
     <string name="travel_dialog_1_title">Discover More!</string>
-    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
-    <string name="travel_dialog_1_description">Explore things to do, accommodations, and more in %1$s Travel Discovery.</string>
+    <!--!NOT USE! dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_1_description" translatable="false">Explore things to do, accommodations, and more in %1$s Travel Discovery.</string>
     <!--dialog description for introducing the feature. the first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
     <string name="travel_dialog_1_description_new">Explore things to do, accommodations, and more in %1$s %2$s.</string>
-    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
-    <string name="travel_dialog_1_action_1">TRY TRAVEL DISCOVERY</string>
+    <!--!NOT USE! Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <string name="travel_dialog_1_action_1" translatable="false">TRY TRAVEL DISCOVERY</string>
     <!--Action button for seeing the search result in Firefox Lite Travel Discovery. the %1$s is Travel Discovery.-->
     <string name="travel_dialog_1_action_1_new">TRY %1$s</string>
     <!--Action button for dismissing this prompt-->
     <string name="travel_dialog_1_action_2">NO, THANKS</string>
 
-    <!--dialog title for asking if users want to change default search engine-->
-    <string name="travel_dialog_2_title">Enjoy Using Travel Discovery?</string>
+    <!--!NOT USE! dialog title for asking if users want to change default search engine-->
+    <string name="travel_dialog_2_title" translatable="false">Enjoy Using Travel Discovery?</string>
     <!--dialog title for asking if users want to change default search engine. the %1$s is Travel Discovery.-->
     <string name="travel_dialog_2_title_new">Enjoy Using %1$s?</string>
-    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
-    <string name="travel_dialog_2_description">You can set %1$s Travel Disovery as your default search engine for travel.</string>
+    <!--!NOT USE! dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <string name="travel_dialog_2_description" translatable="false">You can set %1$s Travel Disovery as your default search engine for travel.</string>
     <!--dialog description for introducing how it works. The first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
     <string name="travel_dialog_2_description_new">You can set %1$s %2$s as your default search engine for travel.</string>
     <!--checkbox for not showing this dialog again-->
