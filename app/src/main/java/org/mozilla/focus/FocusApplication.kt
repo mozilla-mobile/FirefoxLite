@@ -9,6 +9,10 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
@@ -30,12 +34,13 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.settings.SettingsProvider
 import java.io.File
 
-open class FocusApplication : LocaleAwareApplication() {
+open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
     private var appComponent: AppComponent? = null
 
     lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
+    var isForeground = false
 
     val settings by lazy {
         SettingsProvider(this)
@@ -79,6 +84,7 @@ open class FocusApplication : LocaleAwareApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
@@ -178,5 +184,15 @@ open class FocusApplication : LocaleAwareApplication() {
 
         StrictMode.setThreadPolicy(threadPolicyBuilder.build())
         StrictMode.setVmPolicy(vmPolicyBuilder.build())
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onAppInForeground() {
+        isForeground = true
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onAppInBackground() {
+        isForeground = false
     }
 }

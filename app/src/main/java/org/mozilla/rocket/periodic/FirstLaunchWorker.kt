@@ -10,6 +10,7 @@ import androidx.work.WorkerParameters
 import org.json.JSONException
 import org.json.JSONObject
 import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.notification.FirebaseMessagingServiceWrapper
 import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -47,9 +48,10 @@ class FirstLaunchWorker(context: Context, workerParams: WorkerParameters) : Work
 
     override fun doWork(): Result {
         val firstrunNotification = AppConfigWrapper.getFirstLaunchNotification().jsonStringToFirstrunNotification()
+        val isAppInBackground = !(applicationContext as FocusApplication).isForeground
         firstrunNotification?.run {
             showNotification(applicationContext, messageId, title, message, openUrl, command, deepLink)
-            TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(), messageId, openUrl ?: command ?: deepLink)
+            TelemetryWrapper.showFirstrunNotification(AppConfigWrapper.getFirstLaunchWorkerTimer(), messageId, openUrl ?: command ?: deepLink, isAppInBackground)
             setNotificationFired(applicationContext, true)
         }
 
