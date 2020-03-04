@@ -1,7 +1,7 @@
 [
   {
     "name": "content_hub_ab_testing",
-    "enabled": true,
+    "enabled": false,
     "newUserOnly": true,
     "buckets": [
       {
