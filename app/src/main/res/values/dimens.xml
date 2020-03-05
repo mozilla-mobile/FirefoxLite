@@ -133,7 +133,5 @@
 
     <!-- InstantGameFragment -->
     <dimen name="game_focus_view_radius">4dp</dimen>
-    <dimen name="game_focus_view_height">166dp</dimen>
-    <dimen name="game_focus_view_width">104dp</dimen>
 
 </resources>
