@@ -5,8 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.Lazy
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_search_city.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
+import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
@@ -64,6 +67,7 @@ class TravelCitySearchActivity : AppCompatActivity() {
             when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
                     recyclerView.findViewHolderForAdapterPosition(1)?.itemView?.performClick()
+                        ?: ViewUtils.forceHideKeyboard(search_keyword_edit)
                     true
                 }
                 else -> false
@@ -77,6 +81,7 @@ class TravelCitySearchActivity : AppCompatActivity() {
         initSearchOptionPrompt()
         initCityList()
         initGoogleSearchAction()
+        initNoResultView()
     }
 
     override fun onResume() {
@@ -106,6 +111,15 @@ class TravelCitySearchActivity : AppCompatActivity() {
         })
     }
 
+    private fun initNoResultView() {
+        no_result_view.setIconResource(R.drawable.no_finding)
+        no_result_view.setMessage(getString(R.string.travel_no_result_state_text))
+        no_result_view.setButtonText(getString(R.string.travel_google_search_button, getString(R.string.search_engine_name_google)))
+        no_result_view.setButtonOnClickListener(View.OnClickListener {
+            searchViewModel.onEmptyViewActionClicked(this@TravelCitySearchActivity, search_keyword_edit.text.toString())
+        })
+    }
+
     private fun initCityList() {
         recyclerView.let {
             it.layoutManager = LinearLayoutManager(this@TravelCitySearchActivity)
@@ -116,18 +130,16 @@ class TravelCitySearchActivity : AppCompatActivity() {
             })
             it.adapter = adapter
         }
-        searchViewModel.items.observe(this, Observer {
-            if (it != null) {
-                adapter.setData(it)
-            }
+
+        searchViewModel.viewState.observe(this, Observer { viewState ->
+            clear.visibility = viewState.clearButtonVisibility
+            adapter.setData(viewState.searchResult)
+            spinner.isVisible = viewState.isLoading
+            no_result_view.isVisible = (viewState.error == TravelCitySearchViewState.Error.NotFound)
         })
+
         searchViewModel.openCity.observe(this, Observer { city ->
             startActivity(TravelCityActivity.getStartIntent(this@TravelCitySearchActivity, city, TelemetryWrapper.Extra_Value.EXPLORE))
-        })
-        searchViewModel.changeClearBtnVisibility.observe(this, Observer {
-            if (it != null) {
-                clear.visibility = it
-            }
         })
     }
 

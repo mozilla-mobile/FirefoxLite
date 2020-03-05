@@ -32,12 +32,11 @@ class TravelCitySearchViewModel(
     private val shouldTravelDiscoveryBeDefault: ShouldTravelDiscoveryBeDefaultUseCase
 ) : ViewModel() {
 
-    private val _items = MutableLiveData<List<DelegateAdapter.UiModel>>()
-    val items: LiveData<List<DelegateAdapter.UiModel>> = _items
+    private val _viewState = MutableLiveData<TravelCitySearchViewState>()
+    val viewState: LiveData<TravelCitySearchViewState> = _viewState
 
     private var searchCityJob: Job? = null
     val openCity = SingleLiveEvent<BaseCityData>()
-    val changeClearBtnVisibility = SingleLiveEvent<Int>()
     val openGoogleSearch = SingleLiveEvent<String>()
     val showSearchOptionPrompt = SingleLiveEvent<Unit>()
 
@@ -49,14 +48,17 @@ class TravelCitySearchViewModel(
             searchCityJob?.cancel()
         }
 
+        _viewState.value = TravelCitySearchViewState(
+            isLoading = true,
+            clearButtonVisibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
+        )
+
         searchCityJob = viewModelScope.launch {
-            val btnVisibility: Int
             val list = ArrayList<DelegateAdapter.UiModel>()
 
             if (keyword.isEmpty()) {
-                btnVisibility = View.GONE
+                _viewState.value = TravelCitySearchViewState()
             } else {
-                btnVisibility = View.VISIBLE
                 val result = searchCityUseCase(keyword)
                 if (result is Result.Success && result.data.result.isNotEmpty()) {
                     list.add(CitySearchResultCategoryUiModel(
@@ -83,12 +85,18 @@ class TravelCitySearchViewModel(
 
                     searchKeyword = keyword
                     defaultCity = cityResultList[0]
-                }
 
-                // TODO: handle error
+                    _viewState.value = TravelCitySearchViewState(
+                        clearButtonVisibility = View.VISIBLE,
+                        searchResult = list
+                    )
+                } else {
+                    _viewState.value = TravelCitySearchViewState(
+                        error = TravelCitySearchViewState.Error.NotFound,
+                        clearButtonVisibility = View.VISIBLE
+                    )
+                }
             }
-            _items.postValue(list)
-            changeClearBtnVisibility.value = btnVisibility
         }
     }
 
@@ -135,8 +143,24 @@ class TravelCitySearchViewModel(
         }
     }
 
+    fun onEmptyViewActionClicked(context: Context, keyword: String) {
+        goToGoogleSearch(context, keyword)
+    }
+
     private fun goToGoogleSearch(context: Context, keyword: String) {
         openGoogleSearch.value = SearchUtils.createSearchUrl(context, keyword)
         TelemetryWrapper.selectQueryContentHome(TelemetryWrapper.Extra_Value.TRAVEL, TelemetryWrapper.Extra_Value.GOOGLE)
+    }
+}
+
+data class TravelCitySearchViewState(
+    val isLoading: Boolean = false,
+    val error: Error = Error.None,
+    val clearButtonVisibility: Int = View.GONE,
+    val searchResult: List<DelegateAdapter.UiModel> = emptyList()
+) {
+    sealed class Error {
+        object NotFound : Error()
+        object None : Error()
     }
 }
