@@ -20,6 +20,7 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/no_result_view_text"
             style="@style/Body3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
