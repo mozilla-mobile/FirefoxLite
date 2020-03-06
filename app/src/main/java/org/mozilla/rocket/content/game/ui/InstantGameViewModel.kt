@@ -95,6 +95,10 @@ class InstantGameViewModel(
         getGameUiModelList()
     }
 
+    fun onRecentPlayedSpotlightDismissed() {
+        setRecentPlayedSpotlightIsShownUseCase()
+    }
+
     fun onRecentPlayedSpotlightButtonClicked() {
         setRecentPlayedSpotlightIsShownUseCase()
         dismissRecentPlayedSpotlight.call()
