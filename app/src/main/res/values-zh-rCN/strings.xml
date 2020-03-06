@@ -307,7 +307,9 @@
   <string name="about_link_terms_of_service">服务条款</string>
   <string name="shopping_search_onboarding_title">寻好价</string>
   <string name="shopping_search_onboarding_body">使用智能购物搜索，在多家电商间比价。</string>
-  <string name="shopping_search_placeholder">输入您要搜索的产品</string>
+  <string name="shopping_search_onboarding_body_A">在知名购物网站间轻松比价。</string>
+  <string name="shopping_search_onboarding_body_B">立即开始省钱。在知名网站间搜索比价。</string>
+  <string name="shopping_search_placeholder">输入商品名称</string>
   <string name="shopping_search_prompt_message_body">使用智能购物搜索，在多家电商间比价。</string>
   <string name="shopping_search_prompt_message_button">搜索</string>
   <string name="shopping_switch_ui_onboarding_body">点按下方购物网站以浏览更多结果，或点按此按钮进行编辑。</string>
@@ -460,14 +462,15 @@
   <string name="travel_onboarding_save_button">确定</string>
   <string name="travel_find_destination_placeholder_2">输入目的地</string>
   <string name="travel_search_engine_1">用 %1$s 查看结果</string>
-  <string name="travel_search_engine_2">在智能旅行搜索中查看结果</string>
-  <string name="travel_search_engine_fxlite">查看 %1$s Travel Discovery 的搜索结果</string>
+  <string name="travel_search_engine_fxlite_new">用 %1$s %2$s 查看结果</string>
+  <string name="travel_no_result_state_text">嗯…找不到结果。</string>
+  <string name="travel_google_search_button">用 %1$s 搜索</string>
   <string name="travel_dialog_1_title">探索更多！</string>
-  <string name="travel_dialog_1_description">到 %1$s Travel Discovery 探索更多活动、住宿与更多内容。</string>
-  <string name="travel_dialog_1_action_1">试用 Travel Discovery 功能</string>
+  <string name="travel_dialog_1_description_new">到 %1$s %2$s 探索更多活动、住宿与更多内容。</string>
+  <string name="travel_dialog_1_action_1_new">试用 %1$s</string>
   <string name="travel_dialog_1_action_2">不用，谢谢</string>
-  <string name="travel_dialog_2_title">Travel Discovery 体验如何？</string>
-  <string name="travel_dialog_2_description">您可以将 %1$s Travel Discovery 设为默认旅游搜索引擎。</string>
+  <string name="travel_dialog_2_title_new">%1$s 使用体验如何？</string>
+  <string name="travel_dialog_2_description_new">您可以将 %1$s %2$s 设为默认旅游搜索引擎。</string>
   <string name="travel_dialog_2_checkbox">不再询问我</string>
   <string name="travel_dialog_2_action">设为默认值</string>
 </resources>

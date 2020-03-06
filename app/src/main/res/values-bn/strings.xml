@@ -438,8 +438,6 @@
   <string name="travel_onboarding_save_button">ঠিক আছে</string>
   <string name="travel_find_destination_placeholder_2">গন্তব্য লিখুন</string>
   <string name="travel_search_engine_1">এ ফলাফল দেখুন%1$s</string>
-  <string name="travel_search_engine_2">স্মার্ট ভ্রমণ অনুসন্ধানে ফলাফল দেখুন</string>
-  <string name="travel_search_engine_fxlite">%1$s Travel Discovery তে ফলাফল দেখুন</string>
   <string name="travel_dialog_1_title">আরও আবিষ্কার করুন!</string>
   <string name="travel_dialog_1_action_2">না, ধন্যবাদ</string>
   <string name="travel_dialog_2_checkbox">পুনরায় আমাকে জিজ্ঞেস করবে না</string>
