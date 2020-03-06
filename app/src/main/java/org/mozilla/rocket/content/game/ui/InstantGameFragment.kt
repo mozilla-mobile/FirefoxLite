@@ -221,6 +221,7 @@ class InstantGameFragment : Fragment() {
                     setSpotlightStatusBarColor()
                     recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(activity, it, DialogInterface.OnDismissListener {
                         restoreStatusBarColor()
+                        instantGamesViewModel.onRecentPlayedSpotlightDismissed()
                     }, View.OnClickListener {
                         instantGamesViewModel.onRecentPlayedSpotlightButtonClicked()
                     })
