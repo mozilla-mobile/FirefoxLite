@@ -277,6 +277,7 @@
   <string name="logo_text">ให้บริการโดย</string>
   <string name="recommended_news_title">ข่าวแนะนำสำหรับคุณ</string>
   <string name="recommended_news_content">แตะ “ใช่” เพื่อเริ่มดูข่าวที่แนะนำโดยเครื่องมือข่าว AI ของเรา คุณสามารถปิดคำแนะนำและควบคุมการตั้งค่าของคุณได้ทุกเมื่อใน News-&gt;การตั้งค่า %1$s</string>
+  <string name="recommended_news_preference_language">เลือกภาษาของข่าว\nที่คุณต้องการ</string>
   <string name="recommended_news_preference_toggle">ประสบการณ์ข่าวส่วนบุคคล</string>
   <string name="private_tab">แท็บส่วนตัว</string>
   <string name="private_browsing_title">การเรียกดูแบบส่วนตัว</string>
@@ -421,4 +422,11 @@
   <string name="travel_onboarding_save_button">ตกลง</string>
   <string name="travel_find_destination_placeholder_2">ป้อนปลายทาง</string>
   <string name="travel_search_engine_1">ดูผลลัพธ์ใน %1$s</string>
+  <string name="travel_search_engine_fxlite_new">ดูผลลัพธ์ใน %1$s %2$s</string>
+  <string name="travel_google_search_button">ค้นหาใน %1$s</string>
+  <string name="travel_dialog_1_action_1_new">ลอง %1$s</string>
+  <string name="travel_dialog_1_action_2">ไม่ ขอบคุณ</string>
+  <string name="travel_dialog_2_title_new">เพลิดเพลินกับการใช้ %1$s?</string>
+  <string name="travel_dialog_2_checkbox">ไม่ต้องถามฉันอีก</string>
+  <string name="travel_dialog_2_action">ตั้งเป็นค่าเริ่มต้น</string>
 </resources>
