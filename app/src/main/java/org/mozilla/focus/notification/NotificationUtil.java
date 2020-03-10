@@ -47,7 +47,7 @@ public class NotificationUtil {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-                .setColor(ContextCompat.getColor(context, R.color.surveyNotificationAccent))
+                .setColor(ContextCompat.getColor(context, R.color.notificationAccent))
                 .setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

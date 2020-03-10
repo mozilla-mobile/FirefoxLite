@@ -139,7 +139,7 @@
     <color name="colorPromotionDialogDivider">@color/paletteLightGreyA100</color>
     <color name="colorPromotionDialogSecBtn">@color/sharedColorAppPaletteGray2</color>
 
-    <color name="surveyNotificationAccent">#002275</color>
+    <color name="notificationAccent">#00C8D7</color>
 
     <!-- Tab Tray -->
     <color name="tabTrayBackgroundTop">#2493DB</color>
