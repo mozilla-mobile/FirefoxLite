@@ -121,14 +121,14 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
     private fun reload() = sessionManager.focusSession?.engineSession?.reload()
 
     private fun observeChromeAction() {
-        chromeViewModel.refreshOrStop.observe(this, Observer {
+        chromeViewModel.refreshOrStop.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.isRefreshing.value == true) {
                 stop()
             } else {
                 reload()
             }
         })
-        chromeViewModel.goNext.observe(this, Observer {
+        chromeViewModel.goNext.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.canGoForward.value == true) {
                 goForward()
             }
@@ -137,7 +137,7 @@ class ContentTabFragment : LocaleAwareFragment(), BackKeyHandleable {
         val forceDisableImageBlocking =
             arguments?.getBoolean(EXTRA_FORCE_DISABLE_IMAGE_BLOCKING) ?: false
         if (forceDisableImageBlocking) {
-            chromeViewModel.isRefreshing.observe(this, Observer { isRefreshing ->
+            chromeViewModel.isRefreshing.observe(viewLifecycleOwner, Observer { isRefreshing ->
                 if (!isRefreshing) {
                     tabSession?.engineSession?.tabView?.apply {
                         setImageBlockingEnabled(false)

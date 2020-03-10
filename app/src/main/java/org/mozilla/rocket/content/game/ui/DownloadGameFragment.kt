@@ -165,14 +165,14 @@ class DownloadGameFragment : Fragment() {
     }
 
     private fun bindListData() {
-        downloadGameViewModel.downloadGameItems.observe(this@DownloadGameFragment, Observer {
+        downloadGameViewModel.downloadGameItems.observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.DOWNLOAD_GAME, downloadGameViewModel.versionId)
         })
     }
 
     private fun bindPageState() {
-        downloadGameViewModel.isDataLoading.observe(this@DownloadGameFragment, Observer { state ->
+        downloadGameViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DownloadGameViewModel.State.Idle -> showContentView()
                 is DownloadGameViewModel.State.Loading -> showLoadingView()
@@ -182,7 +182,7 @@ class DownloadGameFragment : Fragment() {
     }
 
     private fun observeGameAction() {
-        runwayViewModel.openRunway.observe(this, Observer { action ->
+        runwayViewModel.openRunway.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 when (action.type) {
                     RunwayItem.TYPE_CONTENT_TAB -> {
@@ -206,7 +206,7 @@ class DownloadGameFragment : Fragment() {
             }
         })
 
-        downloadGameViewModel.event.observe(this, Observer { event ->
+        downloadGameViewModel.event.observe(viewLifecycleOwner, Observer { event ->
             when (event) {
                 is DownloadGameViewModel.GameAction.Install -> {
                     // val install: DownloadGameViewModel.GameAction.Install = event

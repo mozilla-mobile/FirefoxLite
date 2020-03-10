@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -88,7 +88,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                         }
                         mAdapter.clear();
                         TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
-                        ChromeViewModel chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
+                        ChromeViewModel chromeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
                         chromeViewModel.getClearBrowsingHistory().call();
                         TelemetryWrapper.clearHistory();
                     }

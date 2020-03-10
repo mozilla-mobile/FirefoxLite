@@ -169,26 +169,26 @@ class MissionDetailFragment : Fragment(), NavigationResult {
     }
 
     private fun bindViews() {
-        missionDetailViewModel.missionStatus.observe(this, Observer { status ->
+        missionDetailViewModel.missionStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
                 Mission.STATUS_NEW -> showUnjoinMission()
                 Mission.STATUS_JOINED -> showJoinedMission(mission)
                 Mission.STATUS_REDEEMABLE -> showRedeemableMission(mission)
             }
         })
-        missionDetailViewModel.title.observe(this, Observer {
+        missionDetailViewModel.title.observe(viewLifecycleOwner, Observer {
             title.text = it
         })
-        missionDetailViewModel.missionImage.observe(this, Observer { url ->
+        missionDetailViewModel.missionImage.observe(viewLifecycleOwner, Observer { url ->
             Glide.with(requireContext())
                     .load(url)
                     .apply(RequestOptions().apply { transforms(CircleCrop()) })
                     .into(image)
         })
-        missionDetailViewModel.isLoading.observe(this, Observer {
+        missionDetailViewModel.isLoading.observe(viewLifecycleOwner, Observer {
             loading_view.isVisible = it
         })
-        missionDetailViewModel.isFxAccount.observe(this, Observer { isFxAccount ->
+        missionDetailViewModel.isFxAccount.observe(viewLifecycleOwner, Observer { isFxAccount ->
             initSignInText(needSignInLink = !isFxAccount)
         })
     }
@@ -279,40 +279,40 @@ class MissionDetailFragment : Fragment(), NavigationResult {
     }
 
     private fun observeActions() {
-        missionDetailViewModel.showToast.observe(this, Observer {
+        missionDetailViewModel.showToast.observe(viewLifecycleOwner, Observer {
             appContext().showToast(it)
         })
-        missionDetailViewModel.startMissionReminder.observe(this, Observer { mission ->
+        missionDetailViewModel.startMissionReminder.observe(viewLifecycleOwner, Observer { mission ->
             DailyMissionReminderWorker.startMissionReminder(appContext(), mission)
         })
-        missionDetailViewModel.stopMissionReminder.observe(this, Observer { mission ->
+        missionDetailViewModel.stopMissionReminder.observe(viewLifecycleOwner, Observer { mission ->
             DailyMissionReminderWorker.stopMissionReminder(appContext(), mission)
         })
-        missionDetailViewModel.closePage.observe(this, Observer {
+        missionDetailViewModel.closePage.observe(viewLifecycleOwner, Observer {
             findNavController().popBackStack()
         })
-        missionDetailViewModel.closeAllMissionPages.observe(this, Observer {
+        missionDetailViewModel.closeAllMissionPages.observe(viewLifecycleOwner, Observer {
             requireActivity().finish()
         })
-        missionDetailViewModel.requestFxLogin.observe(this, Observer { action ->
+        missionDetailViewModel.requestFxLogin.observe(viewLifecycleOwner, Observer { action ->
             openFxLoginPage(action.actionId, action.uid)
         })
-        missionDetailViewModel.openCouponPage.observe(this, Observer { mission ->
+        missionDetailViewModel.openCouponPage.observe(viewLifecycleOwner, Observer { mission ->
             openCouponPage(mission)
         })
-        missionDetailViewModel.openFaqPage.observe(this, Observer {
+        missionDetailViewModel.openFaqPage.observe(viewLifecycleOwner, Observer {
             openFaqPage()
         })
-        missionDetailViewModel.openTermsOfUsePage.observe(this, Observer {
+        missionDetailViewModel.openTermsOfUsePage.observe(viewLifecycleOwner, Observer {
             openUrlInCustomTab(TERMS_OF_USE_PAGE_URL)
         })
-        missionDetailViewModel.showForceUpdateDialog.observe(this, Observer { info ->
+        missionDetailViewModel.showForceUpdateDialog.observe(viewLifecycleOwner, Observer { info ->
             showForceUpdateDialog(info.title, info.description, info.imageUrl)
         })
-        missionDetailViewModel.openAppOnGooglePlay.observe(this, Observer {
+        missionDetailViewModel.openAppOnGooglePlay.observe(viewLifecycleOwner, Observer {
             openAppOnGooglePlay()
         })
-        missionDetailViewModel.openApkDownloadLink.observe(this, Observer { apkDownloadUrl ->
+        missionDetailViewModel.openApkDownloadLink.observe(viewLifecycleOwner, Observer { apkDownloadUrl ->
             openUrlInCustomTab(apkDownloadUrl)
         })
     }

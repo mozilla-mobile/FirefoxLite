@@ -44,11 +44,11 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
 
         ShoppingSearchMode.getInstance(view.context).deleteKeyword()
 
-        viewModel.uiModel.observe(this, Observer { uiModel ->
+        viewModel.uiModel.observe(viewLifecycleOwner, Observer { uiModel ->
             setupView(uiModel)
         })
 
-        viewModel.navigateToResultTab.observe(this, Observer { showResultTab(it) })
+        viewModel.navigateToResultTab.observe(viewLifecycleOwner, Observer { showResultTab(it) })
 
         search_keyword_edit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {

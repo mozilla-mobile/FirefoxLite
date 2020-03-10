@@ -37,7 +37,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -168,14 +168,14 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
         privateModeBtn = view.findViewById(R.id.btn_private_browsing);
         privateModeBadge = view.findViewById(R.id.badge_in_private_mode);
-        tabTrayViewModel = ViewModelProviders.of(this).get(TabTrayViewModel.class);
-        tabTrayViewModel.hasPrivateTab().observe(this, hasPrivateTab -> {
+        tabTrayViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(TabTrayViewModel.class);
+        tabTrayViewModel.hasPrivateTab().observe(getViewLifecycleOwner(), hasPrivateTab -> {
             // Update the UI, in this case, a TextView.
             if (privateModeBadge != null) {
                 privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
             }
         });
-        tabTrayViewModel.getUiModel().observe(this, uiModel -> {
+        tabTrayViewModel.getUiModel().observe(getViewLifecycleOwner(), uiModel -> {
             boolean isDiff = showShoppingSearch ^ uiModel.getShowShoppingSearch();
             if (isDiff) {
                 showShoppingSearch = uiModel.getShowShoppingSearch();

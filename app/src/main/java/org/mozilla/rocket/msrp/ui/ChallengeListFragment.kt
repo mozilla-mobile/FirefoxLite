@@ -73,10 +73,10 @@ class ChallengeListFragment : Fragment() {
     }
 
     private fun bindListData() {
-        missionViewModel.challengeList.observe(this, Observer {
+        missionViewModel.challengeList.observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
         })
-        missionViewModel.isChallengeListEmpty.observe(this, Observer { isEmpty ->
+        missionViewModel.isChallengeListEmpty.observe(viewLifecycleOwner, Observer { isEmpty ->
             if (isEmpty) {
                 showEmptyView()
             } else {
@@ -96,7 +96,7 @@ class ChallengeListFragment : Fragment() {
     }
 
     private fun bindChallengeListViewState() {
-        missionViewModel.challengeListViewState.observe(this, Observer { state ->
+        missionViewModel.challengeListViewState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MissionViewModel.State.Loaded -> showLoaded()
                 is MissionViewModel.State.Loading -> showLoading()

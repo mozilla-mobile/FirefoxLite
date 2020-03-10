@@ -51,7 +51,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
@@ -233,9 +233,9 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
-        bottomBarViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(bottomBarViewModelCreator::get)).get(BottomBarViewModel.class);
-        chromeViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
-        shoppingSearchPromptMessageViewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(promptMessageViewModelCreator::get)).get(ShoppingSearchPromptViewModel.class);
+        bottomBarViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(bottomBarViewModelCreator::get)).get(BottomBarViewModel.class);
+        chromeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
+        shoppingSearchPromptMessageViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(promptMessageViewModelCreator::get)).get(ShoppingSearchPromptViewModel.class);
     }
 
     @Override
@@ -484,13 +484,13 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void observeShoppingSearchPromptMessageViewModel() {
-        shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().observe(this,
+        shoppingSearchPromptMessageViewModel.getOpenShoppingSearch().observe(getViewLifecycleOwner(),
                 unit -> {
                     startActivity(ShoppingSearchActivity.Companion.getStartIntent(getContext()));
                     ScreenNavigator.get(getContext()).popToHomeScreen(false);
                 });
 
-        shoppingSearchPromptMessageViewModel.getPromptVisibilityState().observe(this, visibilityState -> {
+        shoppingSearchPromptMessageViewModel.getPromptVisibilityState().observe(getViewLifecycleOwner(), visibilityState -> {
             if (shoppingSearchViewStub.getParent() != null) {
                 setupShoppingSearchPrompt(shoppingSearchViewStub.inflate());
             }
@@ -502,7 +502,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             }
         });
 
-        shoppingSearchPromptMessageViewModel.getShoppingSiteList().observe(this, unit -> {
+        shoppingSearchPromptMessageViewModel.getShoppingSiteList().observe(getViewLifecycleOwner(), unit -> {
             shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(getUrl());
         });
     }
@@ -537,25 +537,25 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void observeChromeAction() {
-        chromeViewModel.isTurboModeEnabled().observe(this, this::setContentBlockingEnabled);
-        chromeViewModel.isBlockImageEnabled().observe(this, this::setImageBlockingEnabled);
-        chromeViewModel.isBlockJavaScriptEnabled().observe(this, this::setJavaScriptBlockingEnabled);
-        chromeViewModel.getDoScreenshot().observe(this, telemetryData -> {
+        chromeViewModel.isTurboModeEnabled().observe(getViewLifecycleOwner(), this::setContentBlockingEnabled);
+        chromeViewModel.isBlockImageEnabled().observe(getViewLifecycleOwner(), this::setImageBlockingEnabled);
+        chromeViewModel.isBlockJavaScriptEnabled().observe(getViewLifecycleOwner(), this::setJavaScriptBlockingEnabled);
+        chromeViewModel.getDoScreenshot().observe(getViewLifecycleOwner(), telemetryData -> {
             permissionHandler.tryAction(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, ACTION_CAPTURE, telemetryData);
         });
-        chromeViewModel.getRefreshOrStop().observe(this, unit -> {
+        chromeViewModel.getRefreshOrStop().observe(getViewLifecycleOwner(), unit -> {
             if (isLoading()) {
                 stop();
             } else {
                 reload();
             }
         });
-        chromeViewModel.getGoNext().observe(this, unit -> {
+        chromeViewModel.getGoNext().observe(getViewLifecycleOwner(), unit -> {
             if (canGoForward()) {
                 goForward();
             }
         });
-        chromeViewModel.getShowFindInPage().observe(this, unit -> {
+        chromeViewModel.getShowFindInPage().observe(getViewLifecycleOwner(), unit -> {
             ScreenNavigator.NavigationState state = chromeViewModel.getNavigationState().getValue();
             if (state != null & state.isBrowser()) {
                 showFindInPage();
@@ -564,7 +564,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void observeNightMode() {
-        chromeViewModel.isNightMode().observe(this,
+        chromeViewModel.isNightMode().observe(getViewLifecycleOwner(),
                 nightModeSettings -> setNightModeEnabled(nightModeSettings.isEnabled()));
     }
 
@@ -627,18 +627,18 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             return false;
         });
         bottomBarItemAdapter = new BottomBarItemAdapter(bottomBar, BottomBarItemAdapter.Theme.Light.INSTANCE);
-        bottomBarViewModel.getItems().observe(this, bottomBarItemAdapter::setItems);
+        bottomBarViewModel.getItems().observe(getViewLifecycleOwner(), bottomBarItemAdapter::setItems);
 
         LiveDataExtensionKt.switchFrom(chromeViewModel.isNightMode(), bottomBarViewModel.getItems())
-                .observe(this, nightModeSettings -> bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled()));
+                .observe(getViewLifecycleOwner(), nightModeSettings -> bottomBarItemAdapter.setNightMode(nightModeSettings.isEnabled()));
         LiveDataExtensionKt.switchFrom(chromeViewModel.getTabCount(), bottomBarViewModel.getItems())
-                .observe(this, count -> bottomBarItemAdapter.setTabCount(count, true));
+                .observe(getViewLifecycleOwner(), count -> bottomBarItemAdapter.setTabCount(count, true));
         LiveDataExtensionKt.switchFrom(chromeViewModel.isRefreshing(), bottomBarViewModel.getItems())
-                .observe(this, bottomBarItemAdapter::setRefreshing);
+                .observe(getViewLifecycleOwner(), bottomBarItemAdapter::setRefreshing);
         LiveDataExtensionKt.switchFrom(chromeViewModel.getCanGoForward(), bottomBarViewModel.getItems())
-                .observe(this, bottomBarItemAdapter::setCanGoForward);
+                .observe(getViewLifecycleOwner(), bottomBarItemAdapter::setCanGoForward);
         LiveDataExtensionKt.switchFrom(chromeViewModel.isCurrentUrlBookmarked(), bottomBarViewModel.getItems())
-                .observe(this, bottomBarItemAdapter::setBookmark);
+                .observe(getViewLifecycleOwner(), bottomBarItemAdapter::setBookmark);
 
         setupDownloadIndicator(rootView);
     }
@@ -647,9 +647,9 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
 
         DownloadIndicatorViewModel downloadIndicatorViewModel =
-                ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class);
+                new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
-                .observe(this, status -> {
+                .observe(getViewLifecycleOwner(), status -> {
                     switch (status) {
                         case DOWNLOADING:
                             bottomBarItemAdapter.setDownloadState(DOWNLOAD_STATE_DOWNLOADING);

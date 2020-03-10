@@ -15,7 +15,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.Lazy
 import org.mozilla.focus.BuildConfig
@@ -343,7 +343,7 @@ class PrivateModeActivity : BaseActivity(),
     }
 
     private fun checkShortcutPromotion(continuation: () -> Unit) {
-        ViewModelProviders.of(this)
+        ViewModelProvider(this)
                 .get(ShortcutViewModel::class.java)
                 .interceptLeavingAndCheckShortcut(this)
                 .observe(this, Observer {

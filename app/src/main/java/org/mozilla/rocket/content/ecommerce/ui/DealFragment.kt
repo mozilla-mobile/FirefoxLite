@@ -78,14 +78,14 @@ class DealFragment : Fragment() {
     }
 
     private fun bindListData() {
-        dealViewModel.dealItems.observe(this@DealFragment, Observer {
+        dealViewModel.dealItems.observe(viewLifecycleOwner, Observer {
             dealAdapter.setData(it)
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.SHOPPING_DEAL, dealViewModel.versionId)
         })
     }
 
     private fun bindPageState() {
-        dealViewModel.isDataLoading.observe(this@DealFragment, Observer { state ->
+        dealViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is DealViewModel.State.Idle -> showContentView()
                 is DealViewModel.State.Loading -> showLoadingView()
@@ -95,7 +95,7 @@ class DealFragment : Fragment() {
     }
 
     private fun observeAction() {
-        runwayViewModel.openRunway.observe(this, Observer { action ->
+        runwayViewModel.openRunway.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 when (action.type) {
                     RunwayItem.TYPE_FULL_SCREEN_CONTENT_TAB -> {
@@ -119,7 +119,7 @@ class DealFragment : Fragment() {
             }
         })
 
-        dealViewModel.openProduct.observe(this, Observer { action ->
+        dealViewModel.openProduct.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 startActivity(ContentTabActivity.getStartIntent(it, action.url, action.telemetryData))
             }

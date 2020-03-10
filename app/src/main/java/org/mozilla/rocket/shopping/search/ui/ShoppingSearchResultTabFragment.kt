@@ -121,7 +121,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     }
 
     private fun observeAction() {
-        shoppingSearchResultViewModel.showOnboardingDialog.observe(this, Observer {
+        shoppingSearchResultViewModel.showOnboardingDialog.observe(viewLifecycleOwner, Observer {
             val dialogFragment = ShoppingSearchContentSwitchOnboardingDialogFragment()
             dialogFragment.show(childFragmentManager, "onboardingDialogFragment")
         })
@@ -200,7 +200,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         }
 
         chromeViewModel.isRefreshing.switchFrom(bottomBarViewModel.items)
-            .observe(this, Observer {
+            .observe(viewLifecycleOwner, Observer {
                 bottomBarItemAdapter.setRefreshing(it == true)
 
                 if (it == true) {
@@ -210,11 +210,11 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 }
             })
         chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
-            .observe(this, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
+            .observe(viewLifecycleOwner, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
     }
 
     private fun initViewPager() {
-        shoppingSearchResultViewModel.uiModel.observe(this, Observer { uiModel ->
+        shoppingSearchResultViewModel.uiModel.observe(viewLifecycleOwner, Observer { uiModel ->
             tabItems.clear()
             tabItems.addAll(uiModel.shoppingSearchSiteList.mapIndexed { index, site ->
                 TabItem(
@@ -278,7 +278,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
             shoppingSearchResultViewModel.goPreferences.call()
         }
 
-        shoppingSearchResultViewModel.goPreferences.observe(this, Observer {
+        shoppingSearchResultViewModel.goPreferences.observe(viewLifecycleOwner, Observer {
             activity?.baseContext?.let {
                 startActivity(ShoppingSearchPreferencesActivity.getStartIntent(it))
             }
@@ -286,25 +286,25 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     }
 
     private fun observeChromeAction() {
-        chromeViewModel.refreshOrStop.observe(this, Observer {
+        chromeViewModel.refreshOrStop.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.isRefreshing.value == true) {
                 stop()
             } else {
                 reload()
             }
         })
-        chromeViewModel.goNext.observe(this, Observer {
+        chromeViewModel.goNext.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.canGoForward.value == true) {
                 goForward()
             }
         })
-        chromeViewModel.share.observe(this, Observer {
+        chromeViewModel.share.observe(viewLifecycleOwner, Observer {
             chromeViewModel.currentUrl.value?.let { url ->
                 onShareClicked(url)
             }
         })
 
-        chromeViewModel.currentUrl.observe(this, Observer {
+        chromeViewModel.currentUrl.observe(viewLifecycleOwner, Observer {
             telemetryViewModel.onUrlOpened()
         })
     }

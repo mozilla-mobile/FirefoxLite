@@ -80,7 +80,7 @@ class TravelBucketListFragment : Fragment() {
     }
 
     private fun bindBucketListData() {
-        travelBucketListViewModel.items.observe(this, Observer {
+        travelBucketListViewModel.items.observe(viewLifecycleOwner, Observer {
             bucketListAdapter.setData(it)
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.BUCKET_LIST, travelBucketListViewModel.versionId)
 
@@ -101,7 +101,7 @@ class TravelBucketListFragment : Fragment() {
     }
 
     private fun bindLoadingState() {
-        travelBucketListViewModel.isDataLoading.observe(this@TravelBucketListFragment, Observer { state ->
+        travelBucketListViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is TravelBucketListViewModel.State.Idle -> showLoadedView()
                 is TravelBucketListViewModel.State.Loading -> showLoadingView()
@@ -111,13 +111,13 @@ class TravelBucketListFragment : Fragment() {
     }
 
     private fun observeBucketListActions() {
-        travelBucketListViewModel.openCity.observe(this, Observer { city ->
+        travelBucketListViewModel.openCity.observe(viewLifecycleOwner, Observer { city ->
             context?.let {
                 startActivity(TravelCityActivity.getStartIntent(it, city, TelemetryWrapper.Extra_Value.BUCKET_LIST))
             }
         })
 
-        travelBucketListViewModel.goSearch.observe(this, Observer {
+        travelBucketListViewModel.goSearch.observe(viewLifecycleOwner, Observer {
             context?.let {
                 startActivity(TravelCitySearchActivity.getStartIntent(it))
             }

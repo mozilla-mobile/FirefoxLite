@@ -56,10 +56,10 @@ class RewardFragment : Fragment() {
 
     private fun observeNavigation() {
         viewModel.run {
-            openMissionDetailPage.observe(this@RewardFragment, Observer {
+            openMissionDetailPage.observe(viewLifecycleOwner, Observer {
                 openMissionDetailPage(it)
             })
-            openRedeemPage.observe(this@RewardFragment, Observer {
+            openRedeemPage.observe(viewLifecycleOwner, Observer {
                 openRedeemPage(it)
             })
         }

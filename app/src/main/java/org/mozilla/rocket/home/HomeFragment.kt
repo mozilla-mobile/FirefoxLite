@@ -155,25 +155,25 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             chromeViewModel.showTabTray.call()
             TelemetryWrapper.showTabTrayHome()
         }
-        chromeViewModel.tabCount.observe(this, Observer {
+        chromeViewModel.tabCount.observe(viewLifecycleOwner, Observer {
             setTabCount(it ?: 0)
         })
-        homeViewModel.isShoppingSearchEnabled.observe(this, Observer { isEnabled ->
+        homeViewModel.isShoppingSearchEnabled.observe(viewLifecycleOwner, Observer { isEnabled ->
             shopping_button.isVisible = isEnabled
             private_mode_button.isVisible = !isEnabled
         })
         shopping_button.setOnClickListener { homeViewModel.onShoppingButtonClicked() }
-        homeViewModel.openShoppingSearch.observe(this, Observer {
+        homeViewModel.openShoppingSearch.observe(viewLifecycleOwner, Observer {
             showShoppingSearch()
         })
-        chromeViewModel.isPrivateBrowsingActive.observe(this, Observer {
+        chromeViewModel.isPrivateBrowsingActive.observe(viewLifecycleOwner, Observer {
             private_mode_button.isActivated = it
         })
         private_mode_button.setOnClickListener { homeViewModel.onPrivateModeButtonClicked() }
-        homeViewModel.openPrivateMode.observe(this, Observer {
+        homeViewModel.openPrivateMode.observe(viewLifecycleOwner, Observer {
             chromeViewModel.togglePrivateMode.call()
         })
-        downloadIndicatorViewModel.downloadIndicatorObservable.observe(this, Observer {
+        downloadIndicatorViewModel.downloadIndicatorObservable.observe(viewLifecycleOwner, Observer {
             home_fragment_menu_button.apply {
                 when (it) {
                     DownloadIndicatorViewModel.Status.DOWNLOADING -> setDownloadState(DOWNLOAD_STATE_DOWNLOADING)
@@ -203,11 +203,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         home_background.setOnTouchListener { _, event ->
             backgroundGestureDetector.onTouchEvent(event)
         }
-        homeViewModel.toggleBackgroundColor.observe(this, Observer {
+        homeViewModel.toggleBackgroundColor.observe(viewLifecycleOwner, Observer {
             val themeSet = themeManager.toggleNextTheme()
             TelemetryWrapper.changeThemeTo(themeSet.name)
         })
-        homeViewModel.resetBackgroundColor.observe(this, Observer {
+        homeViewModel.resetBackgroundColor.observe(viewLifecycleOwner, Observer {
             themeManager.resetDefaultTheme()
             TelemetryWrapper.resetThemeToDefault()
         })
@@ -226,7 +226,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
         var savedTopSitesPagePosition = homeViewModel.topSitesPageIndex.value
         homeViewModel.run {
-            sitePages.observe(this@HomeFragment, Observer {
+            sitePages.observe(viewLifecycleOwner, Observer {
                 page_indicator.setSize(it.size)
                 topSitesAdapter.setData(it)
                 savedTopSitesPagePosition?.let { savedPosition ->
@@ -234,13 +234,13 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     main_list.setCurrentItem(savedPosition, false)
                 }
             })
-            topSitesPageIndex.observe(this@HomeFragment, Observer {
+            topSitesPageIndex.observe(viewLifecycleOwner, Observer {
                 page_indicator.setSelection(it)
             })
-            openBrowser.observe(this@HomeFragment, Observer { url ->
+            openBrowser.observe(viewLifecycleOwner, Observer { url ->
                 ScreenNavigator.get(context).showBrowserScreen(url, true, false)
             })
-            showTopSiteMenu.observe(this@HomeFragment, Observer { (site, position) ->
+            showTopSiteMenu.observe(viewLifecycleOwner, Observer { (site, position) ->
                 site as Site.UrlSite.RemovableSite
                 val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
                 val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
@@ -254,12 +254,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             homeViewModel.onContentHubItemClicked(it)
         }
         homeViewModel.run {
-            shouldShowContentHubItemText.observe(this@HomeFragment, Observer {
+            shouldShowContentHubItemText.observe(viewLifecycleOwner, Observer {
                 content_hub.setShowText(it)
             })
             // TODO: modify this after the content hub abtesting finished
             combineLatest(contentHubItems, isContentHubMergeIntoTopSite)
-                    .observe(this@HomeFragment, Observer { (items, isMergeIntoTopSite) ->
+                    .observe(viewLifecycleOwner, Observer { (items, isMergeIntoTopSite) ->
                         if (isMergeIntoTopSite) {
                             content_hub_layout.visibility = View.INVISIBLE
                             content_hub.setItems(emptyList())
@@ -282,7 +282,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                             }
                         }
                     })
-            openContentPage.observe(this@HomeFragment, Observer {
+            openContentPage.observe(viewLifecycleOwner, Observer {
                 val context = requireContext()
                 when (it) {
                     is ContentHub.Item.Travel -> startActivity(TravelActivity.getStartIntent(context))
@@ -295,13 +295,13 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initFxaView() {
-        homeViewModel.isAccountLayerVisible.observe(this, Observer {
+        homeViewModel.isAccountLayerVisible.observe(viewLifecycleOwner, Observer {
             account_layout.isVisible = it
         })
-        homeViewModel.hasUnreadMissions.observe(this, Observer {
+        homeViewModel.hasUnreadMissions.observe(viewLifecycleOwner, Observer {
             reward_button.isActivated = it
         })
-        homeViewModel.isFxAccount.observe(this, Observer {
+        homeViewModel.isFxAccount.observe(viewLifecycleOwner, Observer {
             profile_button.isActivated = it
         })
         reward_button.setOnClickListener { homeViewModel.onRewardButtonClicked() }
@@ -309,7 +309,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun observeNightMode() {
-        chromeViewModel.isNightMode.observe(this, Observer {
+        chromeViewModel.isNightMode.observe(viewLifecycleOwner, Observer {
             val isNightMode = it.isEnabled
             ViewUtils.updateStatusBarStyle(!isNightMode, requireActivity().window)
             topSitesAdapter.notifyDataSetChanged()
@@ -403,12 +403,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initLogoManNotification() {
-        homeViewModel.logoManNotification.observe(this, Observer {
+        homeViewModel.logoManNotification.observe(viewLifecycleOwner, Observer {
             it?.let { (notification, animate) ->
                 showLogoManNotification(notification, animate)
             }
         })
-        homeViewModel.hideLogoManNotification.observe(this, Observer {
+        homeViewModel.hideLogoManNotification.observe(viewLifecycleOwner, Observer {
             hideLogoManNotification()
         })
         logo_man_notification.setNotificationActionListener(object : LogoManNotification.NotificationActionListener {
@@ -483,13 +483,13 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initOnboardingSpotlight() {
-        homeViewModel.showContentServicesOnboardingSpotlight.observe(this, Observer {
+        homeViewModel.showContentServicesOnboardingSpotlight.observe(viewLifecycleOwner, Observer {
             showContentServiceSpotlight()
         })
-        homeViewModel.dismissContentServiceOnboardingDialog.observe(this, Observer {
+        homeViewModel.dismissContentServiceOnboardingDialog.observe(viewLifecycleOwner, Observer {
             closeContentServiceSpotlight()
         })
-        homeViewModel.showShoppingSearchOnboardingSpotlight.observe(this, Observer {
+        homeViewModel.showShoppingSearchOnboardingSpotlight.observe(viewLifecycleOwner, Observer {
             currentShoppingBtnVisibleState = shopping_button.isVisible
             shopping_button.isVisible = true
             private_mode_button.isVisible = false
@@ -499,22 +499,22 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun observeActions() {
         homeViewModel.showToast.observeForever(toastObserver)
-        homeViewModel.openRewardPage.observe(this, Observer {
+        homeViewModel.openRewardPage.observe(viewLifecycleOwner, Observer {
             openRewardPage()
         })
-        homeViewModel.openProfilePage.observe(this, Observer {
+        homeViewModel.openProfilePage.observe(viewLifecycleOwner, Observer {
             openProfilePage()
         })
-        homeViewModel.showMissionCompleteDialog.observe(this, Observer { mission ->
+        homeViewModel.showMissionCompleteDialog.observe(viewLifecycleOwner, Observer { mission ->
             showMissionCompleteDialog(mission)
         })
-        homeViewModel.executeUriAction.observe(this, Observer { action ->
+        homeViewModel.executeUriAction.observe(viewLifecycleOwner, Observer { action ->
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action), appContext, RocketLauncherActivity::class.java))
         })
-        homeViewModel.openMissionDetailPage.observe(this, Observer { mission ->
+        homeViewModel.openMissionDetailPage.observe(viewLifecycleOwner, Observer { mission ->
             openMissionDetailPage(mission)
         })
-        homeViewModel.showContentHubClickOnboarding.observe(this, Observer { couponName ->
+        homeViewModel.showContentHubClickOnboarding.observe(viewLifecycleOwner, Observer { couponName ->
             showRequestClickContentHubOnboarding(couponName)
         })
     }

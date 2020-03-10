@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.View;
 
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.action.CoordinatesProvider;
@@ -48,9 +48,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.core.AllOf.allOf;
 import static org.mozilla.focus.utils.RecyclerViewTestUtils.clickChildViewWithId;
 
 public final class AndroidTestUtils {
@@ -119,7 +119,7 @@ public final class AndroidTestUtils {
             final MainActivity mainActivity = activityTestRule.getActivity();
             mainActivity.runOnUiThread(() -> {
                 ChromeViewModel chromeViewModelCreator = ExtentionKt.appComponent(mainActivity).chromeViewModel();
-                ChromeViewModel chromeViewModel = ViewModelProviders.of(mainActivity, new BaseViewModelFactory<>(() -> chromeViewModelCreator)).get(ChromeViewModel.class);
+                ChromeViewModel chromeViewModel = new ViewModelProvider(mainActivity, new BaseViewModelFactory<>(() -> chromeViewModelCreator)).get(ChromeViewModel.class);
                 chromeViewModel.getShowMenu().call();
             });
         }

@@ -5,15 +5,16 @@
 
 package org.mozilla.focus.fragment;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.EditBookmarkActivity;
@@ -49,7 +50,7 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(bookmarkViewModelCreator::get)).get(BookmarkViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(bookmarkViewModelCreator::get)).get(BookmarkViewModel.class);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(layoutManager);
 
-        viewModel.getBookmarks().observe(this, bookmarks -> adapter.setData(bookmarks));
+        viewModel.getBookmarks().observe(getViewLifecycleOwner(), bookmarks -> adapter.setData(bookmarks));
 
         onStatus(VIEW_TYPE_NON_EMPTY);
     }

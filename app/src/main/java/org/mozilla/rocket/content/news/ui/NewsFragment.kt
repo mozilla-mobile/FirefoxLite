@@ -123,7 +123,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun handleActions() {
-        newsViewModel.event.observe(this, Observer { event ->
+        newsViewModel.event.observe(viewLifecycleOwner, Observer { event ->
             when (event) {
                 is NewsViewModel.NewsAction.OpenLink -> {
                     context?.let {
