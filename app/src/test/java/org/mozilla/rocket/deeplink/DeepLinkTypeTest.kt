@@ -3,6 +3,7 @@ package org.mozilla.rocket.deeplink
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
@@ -127,5 +128,13 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.SHOPPING_SEARCH_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartShoppingSearchActivityTask)
+    }
+
+    @Test
+    fun `When set default browser command uri is matched, show set default browser dialog`() {
+        val deepLinkType = DeepLinkType.parse("rocket://command?command=${DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER}")
+
+        assertEquals(DeepLinkType.COMMAND_SET_DEFAULT_BROWSER, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is SetDefaultBrowserTask)
     }
 }
