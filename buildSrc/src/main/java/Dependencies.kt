@@ -22,7 +22,7 @@ object Versions {
     const val viewmodel_ktx = "2.2.0-alpha02"
     const val room = "2.1.0"
     const val glide = "4.0.0"
-    const val kotlin = "1.3.41"
+    const val kotlin = "1.3.70"
     const val ktlint = "0.32.0"
     const val ktx = "1.0.1"
     const val gms = "11.8.0"
@@ -55,9 +55,9 @@ object Versions {
     const val fastlane_screengrab = "1.2.0"
     const val jraska_falcon = "2.0.1"
     const val dagger = "2.16"
-    const val coroutine = "1.2.0"
     const val play = "1.6.4"
-    const val coroutines_test = "1.3.0"
+    const val coroutine = "1.3.4"
+    const val coroutines_test = "1.3.4"
 }
 
 object SystemEnv {
