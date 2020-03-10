@@ -22,6 +22,7 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
+import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask;
 
 // This class handles all click/actions users performed on a notification.
 // This ensures that all telemetry works for action/click are in one place.
@@ -93,14 +94,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER)) {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                nexStep = new Intent(android.provider.Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
-            } else {
-                final String fallbackTitle = context.getString(R.string.preference_default_browser) + "\uD83D\uDE4C";
-                nexStep = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), fallbackTitle);
-            }
-
+            nexStep = new SetDefaultBrowserTask().getPreferenceDefaultBrowserIntent(context);
             TelemetryWrapper.clickDefaultSettingNotification();
 
             NotificationManagerCompat.from(context).cancel(NotificationId.DEFAULT_BROWSER);
