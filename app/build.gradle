@@ -223,7 +223,8 @@ dependencies {
     // Architecture components
     implementation "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewmodel_ktx}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:${Versions.viewmodel}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewmodel}"
     implementation "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     implementation "androidx.room:room-runtime:${Versions.room}"
@@ -273,14 +274,14 @@ dependencies {
 
     testImplementation "org.json:json:${Versions.json}"
     testImplementation "androidx.test:core:${Versions.test_core}"
-    testImplementation "androidx.arch.core:core-testing:${Versions.arch_core}"
+    testImplementation "androidx.arch.core:core-testing:${Versions.arch_core_testing}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines_test}"
 
     androidTestImplementation "org.mockito:mockito-android:${Versions.mockito}"
 
     androidTestImplementation "androidx.annotation:annotation:${Versions.annotation}"
     androidTestImplementation "androidx.room:room-testing:${Versions.room}"
-    androidTestImplementation "androidx.arch.core:core-testing:${Versions.arch_core}"
+    androidTestImplementation "androidx.arch.core:core-testing:${Versions.arch_core_testing}"
     androidTestImplementation "androidx.test.ext:junit:${Versions.test_ext}"
     androidTestImplementation "androidx.test:runner:${Versions.test_runner}"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:${Versions.uiautomator}"

@@ -75,14 +75,14 @@ class NewsLanguageSettingFragment : Fragment(), BackKeyHandleable {
     }
 
     private fun bindListData() {
-        newsLanguageSettingViewModel.uiModel.observe(this, Observer { newsSettingsUiModel ->
+        newsLanguageSettingViewModel.uiModel.observe(viewLifecycleOwner, Observer { newsSettingsUiModel ->
             languages.addAll(newsSettingsUiModel.allLanguages)
             news_language_list.adapter?.notifyDataSetChanged()
         })
     }
 
     private fun bindPageState() {
-        newsLanguageSettingViewModel.isDataLoading.observe(this, Observer { state ->
+        newsLanguageSettingViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is NewsLanguageSettingViewModel.State.Idle -> showContentView()
                 is NewsLanguageSettingViewModel.State.Loading -> showLoadingView()

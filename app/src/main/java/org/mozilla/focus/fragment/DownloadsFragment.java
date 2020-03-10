@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -91,7 +91,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
                              Bundle savedInstanceState) {
         recyclerView = (RecyclerView) inflater.inflate(R.layout.fragment_downloads, container, false);
 
-        viewModel = ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadInfoViewModelCreator::get)).get(DownloadInfoViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(downloadInfoViewModelCreator::get)).get(DownloadInfoViewModel.class);
         downloadListAdapter = new DownloadListAdapter(getContext(), viewModel);
         viewModel.getDownloadInfoObservable().observe(getViewLifecycleOwner(), downloadInfoPack -> {
             if (downloadInfoPack != null) {
@@ -176,7 +176,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
         viewModel.markAllItemsAreRead();
         // When download indicator is showing and download is failed, we won't get notified by DownloadManager. Then back to BrowserFragment/HomeFragment will not
         // go through fragment's onResume i.e. LiveData's onActive. So force trigger download indicator update here.
-        ViewModelProviders.of(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class)
+        new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class)
                 .updateIndicator();
         cleanUp();
         super.onDestroy();

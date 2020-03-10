@@ -89,39 +89,39 @@ class MissionCouponFragment : Fragment() {
     }
 
     private fun bindData() {
-        viewModel.couponName.observe(this, Observer {
+        viewModel.couponName.observe(viewLifecycleOwner, Observer {
             title.text = getString(R.string.msrp_voucher_title, it)
         })
-        viewModel.expirationTime.observe(this, Observer { timeText ->
+        viewModel.expirationTime.observe(viewLifecycleOwner, Observer { timeText ->
             coupon_expiration.text = getString(R.string.msrp_reward_challenge_expire, timeText)
         })
-        viewModel.missionImage.observe(this, Observer { url ->
+        viewModel.missionImage.observe(viewLifecycleOwner, Observer { url ->
             Glide.with(requireContext())
                     .load(url)
                     .apply(RequestOptions().apply { transforms(CircleCrop()) })
                     .into(image)
         })
-        viewModel.couponCode.observe(this, Observer { couponCode ->
+        viewModel.couponCode.observe(viewLifecycleOwner, Observer { couponCode ->
             coupon_code.text = couponCode
         })
-        viewModel.isLoading.observe(this, Observer {
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
             loading_view.isVisible = it
         })
     }
 
     private fun observeAction() {
-        viewModel.showToast.observe(this, Observer {
+        viewModel.showToast.observe(viewLifecycleOwner, Observer {
             appContext().showToast(it)
         })
-        viewModel.copyToClipboard.observe(this, Observer { text ->
+        viewModel.copyToClipboard.observe(viewLifecycleOwner, Observer { text ->
             copyToClipboard(COUPON_COPY_LABEL, text)
         })
-        viewModel.openShoppingPage.observe(this, Observer { url ->
+        viewModel.openShoppingPage.observe(viewLifecycleOwner, Observer { url ->
             if (url != null) {
                 openContentTab(url)
             }
         })
-        viewModel.openFaqPage.observe(this, Observer {
+        viewModel.openFaqPage.observe(viewLifecycleOwner, Observer {
             openFaqPage()
         })
     }

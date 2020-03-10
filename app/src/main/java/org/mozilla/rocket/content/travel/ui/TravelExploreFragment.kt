@@ -80,14 +80,14 @@ class TravelExploreFragment : Fragment() {
     }
 
     private fun bindExploreData() {
-        travelExploreViewModel.exploreItems.observe(this, Observer {
+        travelExploreViewModel.exploreItems.observe(viewLifecycleOwner, Observer {
             exploreAdapter.setData(it)
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.EXPLORE, travelExploreViewModel.versionId)
         })
     }
 
     private fun bindLoadingState() {
-        travelExploreViewModel.isDataLoading.observe(this@TravelExploreFragment, Observer { state ->
+        travelExploreViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is TravelExploreViewModel.State.Idle -> showContentView()
                 is TravelExploreViewModel.State.Loading -> showLoadingView()
@@ -97,7 +97,7 @@ class TravelExploreFragment : Fragment() {
     }
 
     private fun observeExploreActions() {
-        runwayViewModel.openRunway.observe(this, Observer { action ->
+        runwayViewModel.openRunway.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 when (action.type) {
                     RunwayItem.TYPE_FULL_SCREEN_CONTENT_TAB -> {
@@ -120,13 +120,13 @@ class TravelExploreFragment : Fragment() {
                 }
             }
         })
-        travelExploreViewModel.openCity.observe(this, Observer { city ->
+        travelExploreViewModel.openCity.observe(viewLifecycleOwner, Observer { city ->
             context?.let {
                 startActivity(TravelCityActivity.getStartIntent(it, city, TelemetryWrapper.Extra_Value.EXPLORE))
             }
         })
 
-        travelExploreViewModel.goSearch.observe(this, Observer {
+        travelExploreViewModel.goSearch.observe(viewLifecycleOwner, Observer {
             context?.let {
                 startActivity(TravelCitySearchActivity.getStartIntent(it))
             }

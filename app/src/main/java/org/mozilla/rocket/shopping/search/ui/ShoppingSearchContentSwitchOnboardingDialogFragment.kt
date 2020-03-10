@@ -43,7 +43,7 @@ class ShoppingSearchContentSwitchOnboardingDialogFragment : DialogFragment() {
     }
 
     private fun observeAction() {
-        viewModel.dismissEvent.observe(this, Observer {
+        viewModel.dismissEvent.observe(viewLifecycleOwner, Observer {
             dismiss()
         })
     }

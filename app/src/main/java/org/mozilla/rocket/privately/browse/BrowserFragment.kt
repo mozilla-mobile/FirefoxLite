@@ -374,9 +374,9 @@ class BrowserFragment : LocaleAwareFragment(),
         }
 
         chromeViewModel.isRefreshing.switchFrom(bottomBarViewModel.items)
-                .observe(this, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
+                .observe(viewLifecycleOwner, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
         chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
-                .observe(this, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
+                .observe(viewLifecycleOwner, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
     }
 
     private fun initTrackerView(parentView: View) {
@@ -411,14 +411,14 @@ class BrowserFragment : LocaleAwareFragment(),
     }
 
     private fun observeChromeAction() {
-        chromeViewModel.refreshOrStop.observe(this, Observer {
+        chromeViewModel.refreshOrStop.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.isRefreshing.value == true) {
                 stop()
             } else {
                 reload()
             }
         })
-        chromeViewModel.goNext.observe(this, Observer {
+        chromeViewModel.goNext.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.canGoForward.value == true) {
                 goForward()
             }

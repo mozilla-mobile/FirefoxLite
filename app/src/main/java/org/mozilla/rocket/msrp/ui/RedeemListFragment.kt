@@ -75,10 +75,10 @@ class RedeemListFragment : Fragment() {
     }
 
     private fun bindListData() {
-        missionViewModel.redeemList.observe(this, Observer {
+        missionViewModel.redeemList.observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
         })
-        missionViewModel.isRedeemListEmpty.observe(this, Observer { isEmpty ->
+        missionViewModel.isRedeemListEmpty.observe(viewLifecycleOwner, Observer { isEmpty ->
             if (isEmpty) {
                 showEmptyView()
             } else {
@@ -98,7 +98,7 @@ class RedeemListFragment : Fragment() {
     }
 
     private fun bindRedeemListViewState() {
-        missionViewModel.redeemListViewState.observe(this, Observer { state ->
+        missionViewModel.redeemListViewState.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is MissionViewModel.State.Loaded -> showLoaded()
                 is MissionViewModel.State.Loading -> showLoading()

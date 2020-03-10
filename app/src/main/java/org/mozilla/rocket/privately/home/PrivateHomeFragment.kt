@@ -18,7 +18,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.airbnb.lottie.LottieAnimationView
 import dagger.Lazy
@@ -65,7 +65,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
         initDescription()
 
         fakeInput.setOnClickListener { chromeViewModel.showUrlInput.call() }
-        chromeViewModel.isHomePageUrlInputShowing.observe(this, Observer { isShowing ->
+        chromeViewModel.isHomePageUrlInputShowing.observe(viewLifecycleOwner, Observer { isShowing ->
             if (isShowing == true) hideFakeInput() else showFakeInput()
         })
         privateModeBtn = view.findViewById(R.id.pm_home_private_mode_btn)
@@ -92,7 +92,7 @@ class PrivateHomeFragment : LocaleAwareFragment(),
 
     private fun observeViewModel() {
         activity?.apply {
-            val shortcutViewModel = ViewModelProviders.of(this).get(ShortcutViewModel::class.java)
+            val shortcutViewModel = ViewModelProvider(this).get(ShortcutViewModel::class.java)
             monitorShortcutPromotion(this, shortcutViewModel)
             monitorShortcutMessage(this, shortcutViewModel)
             monitorShortcutCreation(this, shortcutViewModel)

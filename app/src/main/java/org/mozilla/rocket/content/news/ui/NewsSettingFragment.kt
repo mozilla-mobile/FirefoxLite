@@ -42,7 +42,7 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
         super.onActivityCreated(savedInstanceState)
 
         newsSettingsViewModel = getActivityViewModel(newsSettingsViewModelCreator)
-        newsSettingsViewModel.uiModel.observe(this, Observer { newsSettingsUiModel ->
+        newsSettingsViewModel.uiModel.observe(viewLifecycleOwner, Observer { newsSettingsUiModel ->
             newsSettingsUiModel.preferenceLanguage.let { langChanged ->
                 languagePreference?.summary = langChanged.name
                 langKey = langChanged.apiId
@@ -53,11 +53,11 @@ class NewsSettingFragment : PreferenceFragmentCompat() {
 
             dialogHelper.updateLangList(newsSettingsUiModel.allLanguages)
         })
-        newsSettingsViewModel.showPersonalizedNewsSetting.observe(this, Observer {
+        newsSettingsViewModel.showPersonalizedNewsSetting.observe(viewLifecycleOwner, Observer {
             personalizedNewsPreference?.isVisible = true
             personalizedNewsPreference?.isChecked = it
         })
-        newsSettingsViewModel.personalizedNewsSettingChanged.observe(this, Observer {
+        newsSettingsViewModel.personalizedNewsSettingChanged.observe(viewLifecycleOwner, Observer {
             context?.let {
                 startActivity(NewsActivity.getStartIntent(it).apply {
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

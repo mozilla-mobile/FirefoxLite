@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import dagger.Lazy
 import org.mozilla.focus.FocusApplication
 import org.mozilla.rocket.di.AppComponent
@@ -28,9 +28,9 @@ fun Context.appComponent(): AppComponent = (applicationContext as FocusApplicati
  */
 inline fun <reified T : ViewModel> Fragment.getViewModel(creator: Lazy<T>? = null): T {
     return if (creator == null)
-        ViewModelProviders.of(this).get(T::class.java)
+        ViewModelProvider(this).get(T::class.java)
     else
-        ViewModelProviders.of(this, BaseViewModelFactory { creator.get() }).get(T::class.java)
+        ViewModelProvider(this, BaseViewModelFactory { creator.get() }).get(T::class.java)
 }
 
 /**
@@ -38,9 +38,9 @@ inline fun <reified T : ViewModel> Fragment.getViewModel(creator: Lazy<T>? = nul
  */
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(creator: Lazy<T>? = null): T {
     return if (creator == null)
-        ViewModelProviders.of(this).get(T::class.java)
+        ViewModelProvider(this).get(T::class.java)
     else
-        ViewModelProviders.of(this, BaseViewModelFactory { creator.get() }).get(T::class.java)
+        ViewModelProvider(this, BaseViewModelFactory { creator.get() }).get(T::class.java)
 }
 
 /**
@@ -48,9 +48,9 @@ inline fun <reified T : ViewModel> FragmentActivity.getViewModel(creator: Lazy<T
  */
 inline fun <reified T : ViewModel> Fragment.getActivityViewModel(creator: Lazy<T>? = null): T {
     return if (creator == null)
-        ViewModelProviders.of(requireActivity()).get(T::class.java)
+        ViewModelProvider(requireActivity()).get(T::class.java)
     else
-        ViewModelProviders.of(requireActivity(), BaseViewModelFactory { creator.get() }).get(T::class.java)
+        ViewModelProvider(requireActivity(), BaseViewModelFactory { creator.get() }).get(T::class.java)
 }
 
 /**
@@ -58,7 +58,7 @@ inline fun <reified T : ViewModel> Fragment.getActivityViewModel(creator: Lazy<T
  */
 inline fun <reified T : ViewModel> AppCompatDialog.getActivityViewModel(creator: Lazy<T>? = null): T {
     return if (creator == null)
-        ViewModelProviders.of(context.toFragmentActivity()).get(T::class.java)
+        ViewModelProvider(context.toFragmentActivity()).get(T::class.java)
     else
-        ViewModelProviders.of(context.toFragmentActivity(), BaseViewModelFactory { creator.get() }).get(T::class.java)
+        ViewModelProvider(context.toFragmentActivity(), BaseViewModelFactory { creator.get() }).get(T::class.java)
 }

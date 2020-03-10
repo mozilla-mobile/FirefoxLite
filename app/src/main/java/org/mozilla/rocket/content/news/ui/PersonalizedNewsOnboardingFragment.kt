@@ -84,10 +84,10 @@ class PersonalizedNewsOnboardingFragment : Fragment() {
     }
 
     private fun observeAction() {
-        personalizedNewsOnboardingViewModel.openLearnMorePage.observe(this, Observer {
+        personalizedNewsOnboardingViewModel.openLearnMorePage.observe(viewLifecycleOwner, Observer {
             openLearnMorePage()
         })
-        personalizedNewsOnboardingViewModel.setEnablePersonalizedNews.observe(this, Observer {
+        personalizedNewsOnboardingViewModel.setEnablePersonalizedNews.observe(viewLifecycleOwner, Observer {
             enablePersonalizedNews(it)
         })
     }

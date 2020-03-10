@@ -91,7 +91,7 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun bindListData() {
-        instantGamesViewModel.instantGameItems.observe(this@InstantGameFragment, Observer {
+        instantGamesViewModel.instantGameItems.observe(viewLifecycleOwner, Observer {
             adapter.setData(it)
             instantGamesViewModel.checkRecentPlayedSpotlight()
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.INSTANT_GAME, instantGamesViewModel.versionId)
@@ -99,7 +99,7 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun bindPageState() {
-        instantGamesViewModel.isDataLoading.observe(this@InstantGameFragment, Observer { state ->
+        instantGamesViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is InstantGameViewModel.State.Idle -> showContentView()
                 is InstantGameViewModel.State.Loading -> showLoadingView()
@@ -109,7 +109,7 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun observeGameAction() {
-        runwayViewModel.openRunway.observe(this, Observer { action ->
+        runwayViewModel.openRunway.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 when (action.type) {
                     RunwayItem.TYPE_CONTENT_TAB -> {
@@ -133,7 +133,7 @@ class InstantGameFragment : Fragment() {
             }
         })
 
-        instantGamesViewModel.event.observe(this, Observer { event ->
+        instantGamesViewModel.event.observe(viewLifecycleOwner, Observer { event ->
             when (event) {
                 is InstantGameViewModel.GameAction.Play -> {
                     val play: InstantGameViewModel.GameAction.Play = event
@@ -163,10 +163,10 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun observeRecentPlayedSpotlight() {
-        instantGamesViewModel.showRecentPlayedSpotlight.observe(this, Observer {
+        instantGamesViewModel.showRecentPlayedSpotlight.observe(viewLifecycleOwner, Observer {
             showRecentPlayedSpotlight()
         })
-        instantGamesViewModel.dismissRecentPlayedSpotlight.observe(this, Observer {
+        instantGamesViewModel.dismissRecentPlayedSpotlight.observe(viewLifecycleOwner, Observer {
             closeRecentPlayedSpotlight()
         })
     }

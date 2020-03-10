@@ -66,7 +66,7 @@ class CouponFragment : Fragment() {
     }
 
     private fun bindListData() {
-        couponViewModel.couponItems.observe(this@CouponFragment, Observer {
+        couponViewModel.couponItems.observe(viewLifecycleOwner, Observer {
             couponAdapter.setData(it)
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.SHOPPING_COUPON, couponViewModel.versionId)
 
@@ -81,7 +81,7 @@ class CouponFragment : Fragment() {
     }
 
     private fun bindPageState() {
-        couponViewModel.isDataLoading.observe(this@CouponFragment, Observer { state ->
+        couponViewModel.isDataLoading.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 is CouponViewModel.State.Idle -> showContentView()
                 is CouponViewModel.State.Loading -> showLoadingView()
@@ -91,7 +91,7 @@ class CouponFragment : Fragment() {
     }
 
     private fun observeAction() {
-        couponViewModel.openCoupon.observe(this, Observer { action ->
+        couponViewModel.openCoupon.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 startActivity(ContentTabActivity.getStartIntent(it, action.url, action.telemetryData))
             }

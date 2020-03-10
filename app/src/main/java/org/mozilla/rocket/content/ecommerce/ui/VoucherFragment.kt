@@ -66,7 +66,7 @@ class VoucherFragment : Fragment() {
     }
 
     private fun bindListData() {
-        voucherViewModel.voucherItems.observe(this@VoucherFragment, Observer {
+        voucherViewModel.voucherItems.observe(viewLifecycleOwner, Observer {
             voucherAdapter.setData(it)
             telemetryViewModel.updateVersionId(TelemetryWrapper.Extra_Value.SHOPPING_VOUCHER, voucherViewModel.versionId)
 
@@ -81,7 +81,7 @@ class VoucherFragment : Fragment() {
     }
 
     private fun observeAction() {
-        voucherViewModel.openVoucher.observe(this, Observer { action ->
+        voucherViewModel.openVoucher.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 startActivity(ContentTabActivity.getStartIntent(it, action.url, action.telemetryData))
             }
