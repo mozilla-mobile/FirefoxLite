@@ -2,6 +2,7 @@ package org.mozilla.rocket.deeplink
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
@@ -111,6 +112,14 @@ enum class DeepLinkType {
         }
     },
 
+    COMMAND_SET_DEFAULT_BROWSER {
+        override fun match(uri: URI) = isCommandUri(uri, DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER)
+
+        override fun addTasks(uri: URI) {
+            addTask(SetDefaultBrowserTask())
+        }
+    },
+
     NOT_SUPPORT {
         override fun match(uri: URI) = false
 
@@ -172,6 +181,12 @@ enum class DeepLinkType {
 
         private fun isContentLink(uri: URI) =
                 isDeepLink(uri) && DeepLinkConstants.HOST_CONTENT == uri.host
+
+        private fun isCommandUri(uri: URI, command: String) = isCommandUri(uri) &&
+                uri.getParam(DeepLinkConstants.COMMAND_PARAM_KEY) == command
+
+        private fun isCommandUri(uri: URI) =
+                isDeepLink(uri) && DeepLinkConstants.HOST_COMMAND == uri.host
 
         fun isDeepLink(uri: URI) = DeepLinkConstants.SCHEMA_ROCKET == uri.scheme
     }
