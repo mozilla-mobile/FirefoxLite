@@ -20,16 +20,14 @@ import java.net.URISyntaxException
 enum class DeepLinkType {
 
     GAME_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_GAME == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_GAME, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartGameActivityTask())
         }
     },
     GAME_ITEM {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_GAME_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_GAME_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -41,16 +39,14 @@ enum class DeepLinkType {
     },
 
     NEWS_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_NEWS == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_NEWS, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartNewsActivityTask())
         }
     },
     NEWS_ITEM {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_NEWS_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_NEWS_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -62,16 +58,14 @@ enum class DeepLinkType {
     },
 
     SHOPPING_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_SHOPPING, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartShoppingActivityTask())
         }
     },
     SHOPPING_ITEM {
-        override fun match(uri: URI) =
-                isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_SHOPPING_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -83,16 +77,14 @@ enum class DeepLinkType {
     },
 
     TRAVEL_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_TRAVEL, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartTravelActivityTask())
         }
     },
     TRAVEL_ITEM {
-        override fun match(uri: URI) =
-                isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_TRAVEL_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -104,8 +96,7 @@ enum class DeepLinkType {
     },
 
     REWARD_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_REWARD == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_REWARD, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartRewardActivityTask())
@@ -113,8 +104,7 @@ enum class DeepLinkType {
     },
 
     SHOPPING_SEARCH_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_SEARCH == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_SHOPPING_SEARCH, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartShoppingSearchActivityTask())
@@ -170,6 +160,14 @@ enum class DeepLinkType {
             }
 
             return NOT_SUPPORT
+        }
+
+        private fun isContentLink(uri: URI, path: String, hasQuery: Boolean): Boolean {
+            return isContentLink(uri) && path == uri.path && if (hasQuery) {
+                !uri.query.isNullOrEmpty()
+            } else {
+                uri.query.isNullOrEmpty()
+            }
         }
 
         private fun isContentLink(uri: URI) =
