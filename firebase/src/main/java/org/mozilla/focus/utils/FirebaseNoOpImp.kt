@@ -8,6 +8,7 @@ package org.mozilla.focus.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import org.mozilla.focus.inappmessage.InAppMessage
 import java.util.HashMap
 
 /**
@@ -93,5 +94,14 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
     }
 
     override fun enableCrashlytics(applicationContext: Context, enabled: Boolean) {
+    }
+
+    override fun setIamMessagesSuppressed(suppressed: Boolean) {
+    }
+
+    override fun addIamImpressionListener(impressionListener: (InAppMessage) -> Unit) {
+    }
+
+    override fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit) {
     }
 }
