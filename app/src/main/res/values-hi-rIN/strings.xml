@@ -307,7 +307,9 @@
   <string name="about_link_terms_of_service">सेवा की शर्तें</string>
   <string name="shopping_search_onboarding_title">बेहतर कीमत ढूंढें</string>
   <string name="shopping_search_onboarding_body">स्मार्ट खरीदारी खोज के साथ कई ऑनलाइन स्टोर में कीमतों की तुलना करें।</string>
-  <string name="shopping_search_placeholder">वह उत्पाद लिखें जिसे आप खोजना चाहते हैं</string>
+  <string name="shopping_search_onboarding_body_A">लोकप्रिय शॉपिंग साइटों पर आसानी से कीमतों की तुलना करें</string>
+  <string name="shopping_search_onboarding_body_B">आज से ही बचत करना शुरू करें। लोकप्रिय साइटों पर खोजें और कीमतों की तुलना करें।</string>
+  <string name="shopping_search_placeholder">किसी उत्पाद का नाम दर्ज करें</string>
   <string name="shopping_search_prompt_message_body">स्मार्ट खरीदारी खोज के साथ कई ऑनलाइन स्टोर में कीमतों की तुलना करें।</string>
   <string name="shopping_search_prompt_message_button">खोजें</string>
   <string name="shopping_switch_ui_onboarding_body">अधिक परिणाम खोजने के लिए नीचे खरीदारी की साइटों को टैप करें, या संपादित करने के लिए इस बटन को दबाएं।</string>
@@ -460,8 +462,15 @@
   <string name="travel_onboarding_save_button">ठीक</string>
   <string name="travel_find_destination_placeholder_2">कोई गंतव्य स्थान दर्ज करें</string>
   <string name="travel_search_engine_1">%1$s में खोज परिणाम देखें</string>
+  <string name="travel_search_engine_fxlite_new">%1$s %2$s में परिणाम देखें</string>
+  <string name="travel_no_result_state_text">हम्म, कोई परिणाम नहीं मिला।</string>
+  <string name="travel_google_search_button">%1$s पर खोजें</string>
   <string name="travel_dialog_1_title">और जानें!</string>
+  <string name="travel_dialog_1_description_new">%1$s के %2$s में करने हेतु रोमांचक कार्य, आवास तथा और भी बहुत सी चीज़ें देखें।</string>
+  <string name="travel_dialog_1_action_1_new">%1$s को आजमाएं</string>
   <string name="travel_dialog_1_action_2">नहीं, शुक्रिया</string>
+  <string name="travel_dialog_2_title_new">%1$s का उपयोग पसंद आया?</string>
+  <string name="travel_dialog_2_description_new">यात्रा के लिए आप %1$s के %2$s को अपने तयशुदा खोज इंजन के रूप में सेट कर सकते हैं।</string>
   <string name="travel_dialog_2_checkbox">मुझसे दोबारा ना पूछें</string>
   <string name="travel_dialog_2_action">तयशुदा बनाएं</string>
 </resources>
