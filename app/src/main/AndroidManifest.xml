@@ -192,7 +192,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/surveyNotificationAccent"/>
+            android:resource="@color/notificationAccent"/>
 
         <provider
             android:name="org.mozilla.focus.provider.HistoryProvider"
