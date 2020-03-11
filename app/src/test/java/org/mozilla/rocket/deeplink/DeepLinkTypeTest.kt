@@ -3,6 +3,7 @@ package org.mozilla.rocket.deeplink
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mozilla.rocket.deeplink.task.OpenPrivateModeTask
 import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
@@ -128,6 +129,14 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.SHOPPING_SEARCH_HOME, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is StartShoppingSearchActivityTask)
+    }
+
+    @Test
+    fun `When private mode uri is matched, launch private mode activity`() {
+        val deepLinkType = DeepLinkType.parse("rocket://private-mode")
+
+        assertEquals(DeepLinkType.PRIVATE_MODE, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is OpenPrivateModeTask)
     }
 
     @Test

@@ -2,6 +2,7 @@ package org.mozilla.rocket.deeplink
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import org.mozilla.rocket.deeplink.task.OpenPrivateModeTask
 import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
@@ -109,6 +110,14 @@ enum class DeepLinkType {
 
         override fun addTasks(uri: URI) {
             addTask(StartShoppingSearchActivityTask())
+        }
+    },
+
+    PRIVATE_MODE {
+        override fun match(uri: URI) = isDeepLink(uri) && DeepLinkConstants.HOST_PRIVATE_MODE == uri.host && uri.path.isNullOrEmpty()
+
+        override fun addTasks(uri: URI) {
+            addTask(OpenPrivateModeTask())
         }
     },
 
