@@ -32,11 +32,11 @@ class Config(object):
             'dest': 'gettext_dir',
             'kwargs': {'metavar': 'DIR'}
             # No default, and will not actually be stored on the config object.
-         },
+        },
         {
             'name': 'groups',
-            'help': 'process the given default XML files (for example ' +
-                    '"strings arrays"); by default all files which contain ' +
+            'help': 'process the given default XML files (for example '
+                    '"strings arrays"); by default all files which contain '
                     'string resources will be used',
             'dest': 'groups',
             'default': [],
@@ -51,7 +51,7 @@ class Config(object):
         },
         {
             'name': 'template',
-            'help': 'filename to use for the .pot file(s); may contain the ' +
+            'help': 'filename to use for the .pot file(s); may contain the '
                     '%%(domain)s and %%(group)s variables',
             'dest': 'template_name',
             'default': '',
@@ -59,8 +59,8 @@ class Config(object):
         },
         {
             'name': 'ignore',
-            'help': 'ignore the given message; can be given multiple times; ' +
-                    'regular expressions can be used if putting the value ' +
+            'help': 'ignore the given message; can be given multiple times; '
+                    'regular expressions can be used if putting the value '
                     'inside slashes (/match/)',
             'dest': 'ignores',
             'default': [],
@@ -75,7 +75,7 @@ class Config(object):
         },
         {
             'name': 'require-min-complete',
-            'help': 'ignore a language\'s .po file(s) completely if there ' +
+            'help': 'ignore a language\'s .po file(s) completely if there '
                     'aren\'t at least the given percentage of translations',
             'dest': 'min_completion',
             'default': 0,
@@ -89,18 +89,18 @@ class Config(object):
         },
         {
             'name': 'layout',
-            'help': 'how and where .po files are stored; may be "default", ' +
-                    '"gnu", or a custom path using the variables %%(locale)s ' +
-                    '%%(domain)s and optionally %%(group)s. E.g., ' +
-                    '"%%(group)s-%%(locale)s.po" will write to "strings-es.po" ' +
+            'help': 'how and where .po files are stored; may be "default", '
+                    '"gnu", or a custom path using the variables %%(locale)s '
+                    '%%(domain)s and optionally %%(group)s. E.g., '
+                    '"%%(group)s-%%(locale)s.po" will write to "strings-es.po" '
                     'for Spanish in strings.xml.',
             'dest': 'layout',
             'default': 'default',
         },
         {
             'name': 'enable-fuzzy-matching',
-            'help': 'enable fuzzy matching during export command. When it is enabled ' +
-                    'android2po will automatically add translations for new strings. ' +
+            'help': 'enable fuzzy matching during export command. When it is enabled '
+                    'android2po will automatically add translations for new strings. '
                     'by default this behaviour is turned off',
             'dest': 'enable_fuzzy_matching',
             'default': False,
@@ -112,7 +112,15 @@ class Config(object):
             'dest': 'clear_obsolete',
             'default': True,
             'kwargs': {'action': 'store_true'}
-        }
+        },
+        {
+            'name': 'line-width',
+            'help': 'the maximum line width for the generated output; use 0 or a negative number to completely '
+                    'disable line wrapping',
+            'dest': 'width',
+            'default': 76,
+            'kwargs': {'metavar': 'N', 'type': int}
+        },
     )
 
     def __init__(self):

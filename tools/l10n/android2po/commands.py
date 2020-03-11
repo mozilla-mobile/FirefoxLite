@@ -2,20 +2,20 @@ from __future__ import absolute_import
 
 import os
 import collections
-
 try:
     from cStringIO import StringIO as BytesIO
 except ImportError:  # pragma: no cover
     from io import BytesIO
+from io import open
 from lxml import etree
 from babel.messages import pofile, Catalog
 from termcolor import colored
 
 import convert
-from patch import read_po
 from env import resolve_locale
 
-__all__ = ('CommandError', 'ExportCommand', 'ImportCommand', 'InitCommand',)
+
+__all__ = ('CommandError', 'ExportCommand', 'ImportCommand', 'InitCommand')
 
 
 class CommandError(Exception):
@@ -25,9 +25,9 @@ class CommandError(Exception):
 def read_catalog(filename, **kwargs):
     """Helper to read a catalog from a .po file.
     """
-    f = open(filename, 'r')
+    f = open(filename, 'r', encoding='utf-8')
     try:
-        return read_po(f, **kwargs)
+        return pofile.read_po(f, **kwargs)
     finally:
         f.close()
 
@@ -117,9 +117,7 @@ def list_languages(source, env, writer):
     diagnostic messages along the way.
     """
     assert source in ('gettext', 'android')
-    languages = getattr(
-        env,
-        'get_gettext_languages' if source == 'gettext' else 'get_android_languages')()
+    languages = getattr(env, 'get_gettext_languages' if source == 'gettext' else 'get_android_languages')()
     lstr = ", ".join(map(str, languages))
     writer.action('info',
                   "Found %d language(s): %s" % (len(languages), lstr))
@@ -231,7 +229,7 @@ class InitCommand(Command):
     @classmethod
     def setup_arg_parser(cls, parser):
         parser.add_argument('language', nargs='*',
-                            help='Language code to initialize. If none given, all ' +
+                            help='Language code to initialize. If none given, all '
                                  'languages lacking a .po file will be initialized.')
 
     def make_or_get_template(self, kind, read_action=None, do_write=False,
@@ -281,7 +279,7 @@ class InitCommand(Command):
             # Note that this is always rendered with "ignore_exists",
             # i.e. we only log this action if we change the template.
             if write_file(self, template_pot,
-                          content=lambda: catalog2string(template_catalog),
+                          content=lambda: catalog2string(template_catalog, width=self.env.config.width),
                           action=action, ignore_exists=True, update=update):
                 something_written = True
 
@@ -338,7 +336,7 @@ class InitCommand(Command):
                                'without translations')
                 lang_catalog = xml2po(self.env, action, default_data)
 
-            catalog = catalog2string(lang_catalog)
+            catalog = catalog2string(lang_catalog, width=self.env.config.width)
 
             num_total, num_translated, _ = get_catalog_counts(lang_catalog)
             action.message("%d strings processed, %d translated." % (
@@ -380,7 +378,7 @@ class InitCommand(Command):
                     continue
             else:
                 language_data = read_xml(action, language_xml, language=language)
-                if not language_data:
+                if language_data == False:
                     # File was invalid
                     continue
 
@@ -477,7 +475,7 @@ class ExportCommand(InitCommand):
                 target_po = language.po(kind)
                 if not target_po.exists():
                     w.action('skipped', target_po)
-                    w.message('File does not exist yet. ' +
+                    w.message('File does not exist yet. '
                               'Use the \'init\' command.')
                     initial_warning = True
                     continue
@@ -527,13 +525,13 @@ class ExportCommand(InitCommand):
 
                 # TODO: Should we include previous?
                 write_file(self, target_po,
-                           catalog2string(lang_catalog, include_previous=False),
+                           catalog2string(lang_catalog, include_previous=False, width=self.env.config.width),
                            action=action)
 
         if initial_warning:
             print("")
-            print(colored("Warning: One or more .po files were skipped " +
-                          "because they did not exist yet. Use the 'init' command " +
+            print(colored("Warning: One or more .po files were skipped "
+                          "because they did not exist yet. Use the 'init' command "
                           "to generate them for the first time.",
                           color='magenta', attrs=['bold']))
 

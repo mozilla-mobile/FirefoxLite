@@ -17,6 +17,7 @@ from utils import Writer
 if hasattr(argparse, '__version__') and argparse.__version__ < '1.1':  # pragma: no cover
     raise RuntimeError('Needs at least argparse 1.1 to function, you are using: %s' % argparse.__version__)
 
+
 __all__ = ('main', 'run',)
 
 COMMANDS = {
@@ -51,18 +52,26 @@ def parse_args(argv):
     )
     Config.setup_arguments(group)
     # Add our commands with the base arguments + their own.
-    subparsers = parser.add_subparsers(
-        dest="command", title='commands', description='valid commands', help='additional help'
-    )
+    subparsers = parser.add_subparsers(dest="command", title='commands',
+                                       description='valid commands',
+                                       help='additional help')
     for name, cmdclass in list(COMMANDS.items()):
         cmd_parser = subparsers.add_parser(name, parents=[base_parser], add_help=True)
         group = cmd_parser.add_argument_group('command arguments')
         cmdclass.setup_arg_parser(group)
 
-    return parser.parse_args(argv[1:])
+    options = parser.parse_args(argv[1:])
+
+    # Stop immediately if we are called without any options (as
+    # there is no default command) else return the parsed options.
+    if options.command is None:
+        parser.print_usage()
+        sys.exit(0)
+    else:
+        return options
 
 
-def read_config(in_file):
+def read_config(file):
     """Read the config file in ``file``.
 
     ``file`` may either be a file object, or a filename.
@@ -78,26 +87,25 @@ def read_config(in_file):
     as we currently need.
     """
 
-    if hasattr(in_file, 'read'):
-        lines = in_file.readlines()
-        if hasattr(in_file, 'name'):
-            filename = in_file.name
+    if hasattr(file, 'read'):
+        lines = file.readlines()
+        if hasattr(file, 'name'):
+            filename = file.name
         else:
             filename = None
     else:
         # Open the config file and read the arguments.
-        filename = in_file
-        f = open(in_file, 'rb')
+        filename = file
+        f = open(file, 'r')
         try:
             lines = f.readlines()
         finally:
             f.close()
 
-    args = filter(lambda x: bool(x),  # get rid of '' elements
-                  [i.strip() for i in  # get rid of surrounding whitespace
-                   " ".join(filter(lambda x: not x.strip().startswith('#'),
-                                   lines)
-                            ).split(" ")])
+    args = filter(lambda x: bool(x),     # get rid of '' elements
+                  [i.strip() for i in    # get rid of surrounding whitespace
+                      " ".join(filter(lambda x: not x.strip().startswith('#'),
+                                      lines)).split(" ")])
 
     # Use a parser that specifically only supports those options that
     # we want to support within a config file (as opposed to all the
@@ -208,12 +216,10 @@ def main(argv):
         env, writer = make_env_and_writer(argv)
         try:
             cmd = COMMANDS[env.options.command](env, writer)
-            cmd.execute()
+            command_result = cmd.execute()
         finally:
             writer.finish()
-        if writer.erroneous:
-            return 1
-        return 0
+        return 1 if writer.erroneous else 0
     except CommandError as e:
         print('Error:', e)
         return 2

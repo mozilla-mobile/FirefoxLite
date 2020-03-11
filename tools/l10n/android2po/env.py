@@ -193,19 +193,19 @@ MISSING_LOCALES = {
         'local_name': 'தமிழ்',
         'plural_rule': 'ka',
         'team': 'ta <LL@li.org>\n'
-     },
+    },
     'kn': {
         'name': 'Kannada',
         'local_name': 'ಕನ್ನಡ',
         'plural_rule': 'ka',
         'team': 'kn <LL@li.org>\n'
-     },
+    },
     'ml': {
         'name': 'Malayalam',
         'local_name': 'മലയാളം',
         'plural_rule': 'ka',
         'team': 'ml <LL@li.org>\n'
-     }
+    }
 }
 
 

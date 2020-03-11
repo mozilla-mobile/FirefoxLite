@@ -149,7 +149,7 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                 if not active_quote or c is EOF:
                     # Replace by a single space, will get rid of
                     # non-significant newlines/tabs etc.
-                    text[i-space_count: i] = ' '
+                    text[i - space_count: i] = ' '
                     i -= space_count - 1
                 space_count = 0
             elif space_count == 1:
@@ -159,7 +159,7 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                 # it will be considered significant on import. So,
                 # make sure that this kind of whitespace is always a
                 # standard space.
-                text[i-1] = ' '
+                text[i - 1] = ' '
                 space_count = 0
             else:
                 space_count = 0
@@ -199,13 +199,13 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                         # in the clauses below without issue.
                         pass
                     elif c == 'n':
-                        text[i-1: i+1] = '\n'  # an actual newline
+                        text[i - 1: i + 1] = '\n'  # an actual newline
                         i -= 1
                     elif c == 't':
-                        text[i-1: i+1] = '\t'  # an actual tab
+                        text[i - 1: i + 1] = '\t'  # an actual tab
                         i -= 1
                     elif c in '"\'@':
-                        text[i-1: i] = ''        # remove the backslash
+                        text[i - 1: i] = ''        # remove the backslash
                         i -= 1
                     elif c == 'u':
                         # Unicode sequence. Android is nice enough to deal
@@ -218,10 +218,10 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                         # prefixing the missing digits with zeros.
                         # Note: max(len()) is needed in the slice due to
                         # trailing ``None`` element.
-                        max_slice = min(i+5, len(text)-1)
-                        codepoint_str = "".join(text[i+1: max_slice])
+                        max_slice = min(i + 5, len(text) - 1)
+                        codepoint_str = "".join(text[i + 1: max_slice])
                         if len(codepoint_str) < 4:
-                            codepoint_str = "0" * (4-len(codepoint_str)) + codepoint_str
+                            codepoint_str = "0" * (4 - len(codepoint_str)) + codepoint_str
                         print(repr(codepoint_str))
                         try:
                             # We can't trust int() to raise a ValueError,
@@ -229,19 +229,18 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                             if not codepoint_str.isalnum():
                                 raise ValueError(codepoint_str)
                             codepoint = chr(int(codepoint_str, 16))
-                        except ValueError:
-                            raise UnsupportedResourceError('bad unicode escape sequence')
+                        except ValueError as exc:
+                            raise UnsupportedResourceError('bad unicode escape sequence: %s' % exc)
 
-                        text[i-1: max_slice] = codepoint
+                        text[i - 1: max_slice] = codepoint
                         i -= 1
                     else:
                         # All others, remove, like Android does as well.
                         # However, Android does so silently, we show a
                         # warning so the dev can fix the problem.
                         warnfunc(('Resource "%s": removing unsupported '
-                                  'escape sequence "%s"') % (
-                                    name, "".join(text[i-1: i+1])), 'warning')
-                        text[i-1: i+1] = ''
+                                  'escape sequence "%s"') % (name, "".join(text[i - 1: i + 1])), 'warning')
+                        text[i - 1: i + 1] = ''
                         i -= 1
                     active_escape = False
 
@@ -257,7 +256,7 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
         """
         if elem.prefix:
             namespace = elem.nsmap[elem.prefix]
-            raw_name = elem.tag[elem.tag.index('}')+1:]
+            raw_name = elem.tag[elem.tag.index('}') + 1:]
             if namespace in KNOWN_NAMESPACES:
                 return "%s:%s" % (KNOWN_NAMESPACES[namespace], raw_name), None
             return "%s:%s" % (elem.prefix, raw_name), (elem.prefix, namespace)
@@ -317,7 +316,7 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                     raise UnsupportedResourceError(
                         'resource references (%s) are not supported' % t)
 
-                if "<![CDATA[" in raw:
+                if b"<![CDATA[" in raw:
                     # Don't escape CDATA sections - they're already hand-crafted and can break
                     # if we do more escaping:
                     value += t
@@ -326,6 +325,12 @@ def get_element_text(tag, name, warnfunc=dummy_warn):
                     if elem_formatted:
                         formatted = True
                     value += converted_value
+
+                # converted_value, elem_formatted = convert_text(t)
+                # if elem_formatted:
+                #     formatted = True
+                # value += converted_value
+
         elif ev == 'end':
             # The closing root tag has no info for us at all.
             if not is_root:
@@ -351,6 +356,13 @@ def read_xml(xml_file, language=None, warnfunc=dummy_warn):
 
     The result is a ``ResourceTree`` instance.
     """
+
+    def check_formatted(forced_state, detected_state):
+        """If forced_state is not set (None), return detected_state.
+        Otherwise return forced_state (should be True or False).
+        """
+        return detected_state if (forced_state is None) else forced_state
+
     result = ResourceTree(language)
     comment = []
 
@@ -382,6 +394,17 @@ def read_xml(xml_file, language=None, warnfunc=dummy_warn):
             comment = []
             continue
 
+        # Check for the formatted attribute, to override strings which the
+        # developer says definitely do or do not contain format directives.
+        # TODO: add force_fmt as an argument to get_element_text, so we don't
+        # have to compare its result to the flag in every place it is used.
+        force_fmt = None
+        if 'formatted' in tag.attrib:
+            if tag.attrib['formatted'] == 'true':
+                force_fmt = True
+            elif tag.attrib['formatted'] == 'false':
+                force_fmt = False
+
         if tag.tag == 'string':
             try:
                 text, formatted = get_element_text(tag, name, warnfunc)
@@ -389,6 +412,7 @@ def read_xml(xml_file, language=None, warnfunc=dummy_warn):
                 warnfunc('"%s" has been skipped, reason: %s' % (
                     name, e.reason), 'info')
             else:
+                formatted = check_formatted(force_fmt, formatted)
                 translation = Translation(text, comment, formatted)
                 result[name] = translation
 
@@ -413,11 +437,12 @@ def read_xml(xml_file, language=None, warnfunc=dummy_warn):
                     # reference and should be escaped or not. Or, better,
                     # the import process would need to use information from
                     # the default strings.xml file to fill the vacancies.
-                    warnfunc(('Warning: The array "%s" contains items ' +
+                    warnfunc(('Warning: The array "%s" contains items '
                               'that can\'t be processed (reason: %s) - '
                               'the array will be incomplete') %
                              (name, e.reason), 'warning')
                 else:
+                    formatted = check_formatted(force_fmt, formatted)
                     translation = Translation(text, comment, formatted)
                     result[name].append(translation)
 
@@ -428,17 +453,18 @@ def read_xml(xml_file, language=None, warnfunc=dummy_warn):
                     quantity = child.attrib['quantity']
                     assert quantity in PLURAL_TAGS
                 except (IndexError, AssertionError):
-                    warnfunc(('"%s" contains a plural with no or ' +
+                    warnfunc(('"%s" contains a plural with no or '
                               'an invalid quantity') % name, 'warning')
                 else:
                     try:
                         text, formatted = get_element_text(child, name, warnfunc)
                     except UnsupportedResourceError as e:
-                        warnfunc(('Warning: The plural "%s" can\'t ' +
+                        warnfunc(('Warning: The plural "%s" can\'t '
                                   'be processed (reason: %s) - '
                                   'the plural will be incomplete') %
                                  (name, e.reason), 'warning')
                     else:
+                        formatted = check_formatted(force_fmt, formatted)
                         translation = Translation(text, comment, formatted)
                         result[name][quantity] = translation
 
@@ -811,8 +837,8 @@ def po2xml(catalog, with_untranslated=False, resfilter=None, warnfunc=dummy_warn
             continue
 
         if not message.context:
-            warnfunc(('Ignoring message "%s": has no context; somebody other ' +
-                      'than android2po seems to have added to this ' +
+            warnfunc(('Ignoring message "%s": has no context; somebody other '
+                      'than android2po seems to have added to this '
                       'catalog.') % message.id, 'error')
             continue
 
@@ -833,8 +859,8 @@ def po2xml(catalog, with_untranslated=False, resfilter=None, warnfunc=dummy_warn
             while index >= len(xml_tree[name]):
                 xml_tree[name].append(None)  # fill None for missing indices
             if xml_tree[name][index] is not None:
-                warnfunc(('Duplicate index %s in array "%s"; ignoring ' +
-                          'the message. The catalog has possibly been ' +
+                warnfunc(('Duplicate index %s in array "%s"; ignoring '
+                          'the message. The catalog has possibly been '
                           'corrupted.') % (index, name), 'error')
             xml_tree[name][index] = value
 
@@ -882,10 +908,11 @@ def stringify_children(node):
     from lxml.etree import tostring
     from itertools import chain
     parts = ([node.text] +
-            list(chain(*([tostring(c, with_tail=False), c.tail] for c in node.getchildren()))) +
-            [node.tail])
+             list(chain(*([tostring(c, with_tail=False), c.tail] for c in node.getchildren()))) +
+             [node.tail])
     # filter removes possible Nones in texts and tails
-    return ''.join(filter(None, parts))
+    return ''.join(filter(None, str(parts)))
+
 
 def write_xml(tree, warnfunc=dummy_warn):
     """Takes a ``ResourceTree`` (our in-memory representation of an Android
@@ -932,7 +959,6 @@ def write_xml(tree, warnfunc=dummy_warn):
             # since that confuses 'tag in text'.
             if len(string_el) > 0:
                 text = stringify_children(string_el).strip()
-
                 if (tag in text for tag in ['<ul>', '<p>', '<br', '<strong>', '<li>', '<b>']):
                     # delete all the existing children, since we're readding them as text
                     del string_el[:]

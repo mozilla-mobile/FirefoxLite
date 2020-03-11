@@ -1,19 +1,15 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from os import getcwd
-from sys import stdout
-from re import escape as re_escape
-from uuid import uuid1
-from locale import getpreferredencoding
-from codecs import getwriter
+import os, sys, re, uuid, locale
+import codecs
 try:
     from hashlib import md5
 except ImportError:
     import md5
 from os import path
 from termcolor import colored
-
+import colorama
 
 __all__ = ('Path', 'Writer', 'file_md5', 'format_to_re',)
 
@@ -32,7 +28,7 @@ def format_to_re(format):
     See this link for more info on the problem:
     http://stackoverflow.com/questions/2654856/python-convert-format-string-to-regular-expression
     """
-    UNIQ = uuid1().hex
+    UNIQ = uuid.uuid1().hex
     assert UNIQ not in format
 
     class MarkPlaceholders(dict):
@@ -40,7 +36,7 @@ def format_to_re(format):
             return UNIQ + ('(?P<%s>.*?)' % key) + UNIQ
     parts = (format % MarkPlaceholders()).split(UNIQ)
     for i in range(0, len(parts), 2):
-        parts[i] = re_escape(parts[i])
+        parts[i] = re.escape(parts[i])
     return ''.join(parts)
 
 
@@ -78,7 +74,7 @@ class Path(str):
     def rel(self):
         """Return this path relative to the base it was bound to.
         """
-        base = self.base or getcwd()
+        base = self.base or os.getcwd()
         if not hasattr(path, 'relpath'):  # pragma: no cover
             # Python < 2.6 doesn't have relpath, and I don't want
             # to bother with a wbole bunch of code for this. See
@@ -218,19 +214,23 @@ class Writer():
             return sev
 
     def __init__(self, verbosity=LEVELS['default']):
+        colorama.init()
         self._current_action = None
         self._pending_actions = []
         self.verbosity = verbosity
         self.erroneous = False
 
-        # Create a codec writer wrapping stdout
-        self.stdout = getwriter(self.get_encoding())(stdout)
-
-    @staticmethod
-    def get_encoding():
-        if hasattr(stdout, 'isatty') and stdout.isatty():
-            return stdout.encoding
-        return getpreferredencoding()
+        # sys.stdout is in text mode by default in Python 3.
+        # Create a codec writer wrapping stdout only for Python 2.
+        if sys.version_info.major < 3:
+            isatty = sys.stdout.isatty() \
+                if hasattr(sys.stdout, 'isatty') else False
+            self.stdout = codecs.getwriter(
+                sys.stdout.encoding
+                    if isatty
+                    else locale.getpreferredencoding())(sys.stdout)
+        else:
+            self.stdout = sys.stdout
 
     def action(self, event, *a, **kw):
         action = Writer.Action(self, *a, **kw)

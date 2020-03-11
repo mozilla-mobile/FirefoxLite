@@ -1,7 +1,8 @@
 # Install using pip install -r requirements.txt
 
 argparse
-babel==2.4
+babel==2.6
+colorama
 lxml==3.8.0
 ordereddict
 termcolor
