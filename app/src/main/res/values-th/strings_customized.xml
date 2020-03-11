@@ -25,4 +25,6 @@
     <string name="travel_dialog_2_checkbox">อย่าถามฉันอีก</string>
     <!--Action button for setting Travel Discovery as default search engine-->
     <string name="travel_dialog_2_action">ตั้งเป็นค่าเริ่มต้น</string>
+    <!--The product feature "Travel Discovery"-->
+    <string name="travel_discovery">เสาะหาสิ่งใหม่จากการเดินทาง</string>
 </resources>
