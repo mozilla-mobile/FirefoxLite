@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 
 def etree_to_dict(tree):
     d = {}
-    for element in tree.getchildren():
+    for element in list(tree):
         if 'name' in element.attrib:
             d[element.attrib['name']] = element.text
         else:
@@ -26,6 +26,7 @@ def raise_exception(lang, code):
         lang=lang,
         code=code
     ))
+
 
 PATH = path.join(path.dirname(path.abspath(__file__)), '../../app/src/main/res/')
 files = []
