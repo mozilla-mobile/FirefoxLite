@@ -5,7 +5,8 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
-
+import androidx.annotation.DrawableRes
+import kotlinx.android.synthetic.main.no_result_view.view.*
 import org.mozilla.focus.R
 
 class NoResultView @JvmOverloads constructor(
@@ -21,6 +22,18 @@ class NoResultView @JvmOverloads constructor(
         button = findViewById(R.id.no_result_view_button)
 
         isClickable = false
+    }
+
+    fun setIconResource(@DrawableRes resourceId: Int) {
+        no_result_view_image.setImageResource(resourceId)
+    }
+
+    fun setMessage(message: String) {
+        no_result_view_text.text = message
+    }
+
+    fun setButtonText(text: String) {
+        no_result_view_button.text = text
     }
 
     fun release() {

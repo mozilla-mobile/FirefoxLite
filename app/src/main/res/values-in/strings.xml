@@ -460,14 +460,8 @@
   <string name="travel_onboarding_save_button">Oke</string>
   <string name="travel_find_destination_placeholder_2">Masukkan tujuan</string>
   <string name="travel_search_engine_1">Lihat hasilnya di %1$s</string>
-  <string name="travel_search_engine_2">Lihat hasilnya dalam pencarian wisata pintar</string>
-  <string name="travel_search_engine_fxlite">Lihat hasil dalam Penemuan Perjalanan %1$s</string>
   <string name="travel_dialog_1_title">Temukan Lebih Banyak!</string>
-  <string name="travel_dialog_1_description">Temukan berbagai aktivitas, akomodasi, dan masih banyak lagi di %1$s Jelajah Perjalanan.</string>
-  <string name="travel_dialog_1_action_1">COBALAH JELAJAH PERJALANAN</string>
   <string name="travel_dialog_1_action_2">TIDAK, TERIMA KASIH</string>
-  <string name="travel_dialog_2_title">Senang Menggunakan Jelajah Perjalanan?</string>
-  <string name="travel_dialog_2_description">Anda dapat mengatur Jelajah Perjalanan %1$s sebagai mesin pencari baku untuk perjalanan.</string>
   <string name="travel_dialog_2_checkbox">Jangan tanyakan lagi</string>
   <string name="travel_dialog_2_action">TETAPKAN SEBAGAI BAKU</string>
 </resources>

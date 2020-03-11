@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -205,8 +206,12 @@ class InstantGameFragment : Fragment() {
     }
 
     private fun showRecentPlayedSpotlight() {
-        activity?.let { activity ->
-            recycler_view.post {
+        Looper.myQueue().addIdleHandler {
+            activity?.let { activity ->
+                if (isStateSaved) {
+                    return@let
+                }
+
                 recycler_view.scrollToPosition(0)
                 val gameCategoryView = recycler_view.layoutManager?.findViewByPosition(1)
                 val gameListView = gameCategoryView?.findViewById<RecyclerView>(R.id.game_list)
@@ -216,11 +221,13 @@ class InstantGameFragment : Fragment() {
                     setSpotlightStatusBarColor()
                     recentPlayedSpotlightDialog = DialogUtils.showGameSpotlight(activity, it, DialogInterface.OnDismissListener {
                         restoreStatusBarColor()
+                        instantGamesViewModel.onRecentPlayedSpotlightDismissed()
                     }, View.OnClickListener {
                         instantGamesViewModel.onRecentPlayedSpotlightButtonClicked()
                     })
                 }
             }
+            return@addIdleHandler false
         }
     }
 

@@ -448,3 +448,21 @@ task checkTelemetryDocDirty() {
 task updateCustomizedStrings(type: Exec) {
         commandLine 'python', '../tools/l10n/attach-local-strings.py'
 }
+
+import org.mozilla.rocket.CheckPermissionsTask
+task checkPermissionsTask(type: CheckPermissionsTask) {
+    def PERMISSIONS_FILE_NAME = "acceptable_permissions.txt"
+    permissionsFilePath = "$project.projectDir/$PERMISSIONS_FILE_NAME"
+    aapt2DirPath = System.getenv("AAPT2_DIR_PATH") ?: ""
+    apkFilePaths = []
+    doFirst {
+        android.applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def filePath = output.outputFile
+                if (filePath.exists()) {
+                    apkFilePaths.add(filePath)
+                }
+            }
+        }
+    }
+}

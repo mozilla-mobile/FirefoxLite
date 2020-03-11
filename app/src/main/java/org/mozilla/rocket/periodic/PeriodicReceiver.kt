@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConfigWrapper
 import java.util.concurrent.TimeUnit
@@ -61,7 +62,8 @@ class PeriodicReceiver : BroadcastReceiver() {
 
         AppConfigWrapper.getFirstLaunchNotification().jsonStringToFirstrunNotification()?.let {
             val link = it.openUrl ?: it.command ?: it.deepLink
-            TelemetryWrapper.receiveFirstrunConfig(delayMinutes, it.messageId, link)
+            val isAppInBackground = !(context.applicationContext as FocusApplication).isForeground
+            TelemetryWrapper.receiveFirstrunConfig(delayMinutes, it.messageId, link, isAppInBackground)
         }
     }
 

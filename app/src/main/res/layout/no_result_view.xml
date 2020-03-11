@@ -20,9 +20,11 @@
             tools:ignore="ContentDescription" />
 
         <TextView
+            android:id="@+id/no_result_view_text"
             style="@style/Body3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/common_margin_m2"
             android:layout_marginBottom="40dp"
             android:gravity="center"

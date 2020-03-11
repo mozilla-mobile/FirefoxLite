@@ -307,7 +307,9 @@
   <string name="about_link_terms_of_service">Điều khoản dịch vụ</string>
   <string name="shopping_search_onboarding_title">Tìm giá tốt</string>
   <string name="shopping_search_onboarding_body">So sánh giá trên nhiều cửa hàng trực tuyến với Tìm kiếm mua sắm thông minh.</string>
-  <string name="shopping_search_placeholder">Nhập sản phẩm bạn muốn tìm kiếm</string>
+  <string name="shopping_search_onboarding_body_A">So sánh giá dễ dàng trên các trang web mua sắm phổ biến.</string>
+  <string name="shopping_search_onboarding_body_B">Bắt đầu tiết kiệm ngay hôm nay. Tìm kiếm và so sánh giá trên các trang web phổ biến.</string>
+  <string name="shopping_search_placeholder">Nhập tên sản phẩm</string>
   <string name="shopping_search_prompt_message_body">So sánh giá trên nhiều cửa hàng trực tuyến với Tìm kiếm mua sắm thông minh.</string>
   <string name="shopping_search_prompt_message_button">Tìm kiếm</string>
   <string name="shopping_switch_ui_onboarding_body">Nhấn vào các trang web mua sắm bên dưới để duyệt thêm kết quả hoặc nhấn vào nút này để chỉnh sửa.</string>
@@ -457,14 +459,15 @@
   <string name="travel_onboarding_save_button">OK</string>
   <string name="travel_find_destination_placeholder_2">Nhập một điểm đến</string>
   <string name="travel_search_engine_1">Xem kết quả trong %1$s</string>
-  <string name="travel_search_engine_2">Xem kết quả trong tìm kiếm du lịch thông minh</string>
-  <string name="travel_search_engine_fxlite">Xem kết quả trong Khám phá du lịch %1$s</string>
+  <string name="travel_search_engine_fxlite_new">Xem kết quả trong %1$s %2$s</string>
+  <string name="travel_no_result_state_text">Hmm. Không tìm thấy kết quả.</string>
+  <string name="travel_google_search_button">TÌM KIẾM TRÊN %1$s</string>
   <string name="travel_dialog_1_title">Khám phá nhiều hơn!</string>
-  <string name="travel_dialog_1_description">Khám phá những việc cần làm, chỗ ở và nhiều hơn nữa trong Khám phá du lịch %1$s.</string>
-  <string name="travel_dialog_1_action_1">KHÁM PHÁ DU LỊCH</string>
+  <string name="travel_dialog_1_description_new">Khám phá những việc cần làm, chỗ ở và nhiều hơn nữa trong %1$s %2$s.</string>
+  <string name="travel_dialog_1_action_1_new">THỬ %1$s</string>
   <string name="travel_dialog_1_action_2">KHÔNG, CÁM ƠN</string>
-  <string name="travel_dialog_2_title">Thích sử dụng Khám phá du lịch?</string>
-  <string name="travel_dialog_2_description">Bạn có thể đặt Khám phá du lịch %1$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
+  <string name="travel_dialog_2_title_new">Thích %1$s?</string>
+  <string name="travel_dialog_2_description_new">Bạn có thể đặt %1$s %2$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
   <string name="travel_dialog_2_checkbox">Đừng hỏi lại tôi nữa</string>
   <string name="travel_dialog_2_action">ĐẶT LÀM MẶC ĐỊNH</string>
 </resources>

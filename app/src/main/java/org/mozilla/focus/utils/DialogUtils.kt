@@ -459,8 +459,8 @@ object DialogUtils {
     ): Dialog = SpotlightDialog.Builder(activity, targetView)
             .spotlightConfigs(
                 RectangleSpotlightConfigs(
-                    width = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_width),
-                    height = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_height),
+                    width = targetView.width,
+                    height = targetView.height,
                     cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_radius)
                 )
             )

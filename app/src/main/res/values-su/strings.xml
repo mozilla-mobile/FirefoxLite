@@ -460,14 +460,8 @@
   <string name="travel_onboarding_save_button">HEUG</string>
   <string name="travel_find_destination_placeholder_2">Asupkeun jugjugeun</string>
   <string name="travel_search_engine_1">Tingali hasil dina %1$s</string>
-  <string name="travel_search_engine_2">Tingali hasil dina sungsian nyaba pinter</string>
-  <string name="travel_search_engine_fxlite">Tingali hasil dina %1$s Travel Discovery</string>
   <string name="travel_dialog_1_title">Panggihan Nu Lianna!</string>
-  <string name="travel_dialog_1_description">Langlang anu kudu disiapkeun, akomodasi, jeung lianna di %1$s Travel Discovery.</string>
-  <string name="travel_dialog_1_action_1">COBAAN TRAVEL DISCOVERY</string>
   <string name="travel_dialog_1_action_2">MOAL, NUHUN</string>
-  <string name="travel_dialog_2_title">Resep Maké Travel Discovery?</string>
-  <string name="travel_dialog_2_description">Anjeun bisa nyetél %1$s Travel Discovery salaku mesin sungsi baku anjeun pikeun nyaba.</string>
   <string name="travel_dialog_2_checkbox">Ulah nanya deui</string>
   <string name="travel_dialog_2_action">SETÉL JADI BAKU</string>
 </resources>

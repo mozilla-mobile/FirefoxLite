@@ -1916,14 +1916,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.DELAY, value = "minutes"),
                 TelemetryExtra(name = Extra.MESSAGE_ID, value = "message_id"),
-                TelemetryExtra(name = Extra.LINK, value = "url|deeplink|null")
+                TelemetryExtra(name = Extra.LINK, value = "url|deeplink|null"),
+                TelemetryExtra(name = Extra.BACKGROUND, value = "true|false")
             ])
     @JvmStatic
-    fun receiveFirstrunConfig(minutes: Long, messageId: String, link: String?) {
+    fun receiveFirstrunConfig(minutes: Long, messageId: String, link: String?, background: Boolean) {
         val builder = EventBuilder(Category.ACTION, Method.GET, Object.FIRSTRUN_PUSH)
                 .extra(Extra.DELAY, minutes.toString())
                 .extra(Extra.MESSAGE_ID, messageId)
                 .extra(Extra.LINK, link ?: "")
+                .extra(Extra.BACKGROUND, background.toString())
         builder.queue()
     }
 
@@ -1936,14 +1938,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.DELAY, value = "minutes"),
                 TelemetryExtra(name = Extra.MESSAGE_ID, value = "message_id"),
-                TelemetryExtra(name = Extra.LINK, value = "url|deeplink|null")
+                TelemetryExtra(name = Extra.LINK, value = "url|deeplink|null"),
+                TelemetryExtra(name = Extra.BACKGROUND, value = "true|false")
             ])
     @JvmStatic
-    fun showFirstrunNotification(minutes: Long, messageId: String, link: String?) {
+    fun showFirstrunNotification(minutes: Long, messageId: String, link: String?, background: Boolean) {
         val builder = EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN_PUSH)
                 .extra(Extra.DELAY, minutes.toString())
                 .extra(Extra.MESSAGE_ID, messageId)
                 .extra(Extra.LINK, link ?: "")
+                .extra(Extra.BACKGROUND, background.toString())
         builder.queue()
     }
 
@@ -2545,13 +2549,15 @@ object TelemetryWrapper {
             value = Value.DISMISS,
             extras = [
                 TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message_id")
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message_id"),
+                TelemetryExtra(name = Extra.BACKGROUND, value = "true|false")
             ])
     @JvmStatic
-    fun dismissFirstrunNotification(link: String?, messageId: String) {
+    fun dismissFirstrunNotification(link: String?, messageId: String, background: Boolean) {
         EventBuilder(Category.ACTION, Method.SWIPE, Object.FIRSTRUN_PUSH, Value.DISMISS)
                 .extra(Extra.LINK, link ?: "null")
                 .extra(Extra.MESSAGE_ID, messageId)
+                .extra(Extra.BACKGROUND, background.toString())
                 .queue()
     }
 
@@ -2583,13 +2589,15 @@ object TelemetryWrapper {
             value = "",
             extras = [
                 TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message_id")
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message_id"),
+                TelemetryExtra(name = Extra.BACKGROUND, value = "true|false")
             ])
     @JvmStatic
-    fun openD1Notification(link: String?, messageId: String) {
+    fun openD1Notification(link: String?, messageId: String, background: Boolean) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.FIRSTRUN_PUSH)
                 .extra(Extra.LINK, link ?: "null")
                 .extra(Extra.MESSAGE_ID, messageId)
+                .extra(Extra.BACKGROUND, background.toString())
                 .queue()
     }
 

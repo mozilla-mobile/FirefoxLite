@@ -306,7 +306,7 @@
   <string name="about_link_terms_of_service">Условия службы</string>
   <string name="shopping_search_onboarding_title">Находите хорошие цены</string>
   <string name="shopping_search_onboarding_body">Сравнивайте цены во множестве интернет-магазинов с помощью умного поиска для шоппинга.</string>
-  <string name="shopping_search_placeholder">Введите название продукта, который вы хотите найти</string>
+  <string name="shopping_search_placeholder">Введите название продукта</string>
   <string name="shopping_search_prompt_message_body">Сравнивайте цены во множестве интернет-магазинов с помощью умного поиска для шоппинга.</string>
   <string name="shopping_search_prompt_message_button">Поиск</string>
   <string name="shopping_switch_ui_onboarding_body">Нажмите на Интернет-магазины ниже, чтобы просмотреть дополнительные результаты, или нажмите на эту кнопку для редактирования.</string>
@@ -459,10 +459,13 @@
   <string name="travel_onboarding_save_button">OK</string>
   <string name="travel_find_destination_placeholder_2">Введите пункт назначения</string>
   <string name="travel_search_engine_1">Посмотреть результаты в %1$s</string>
-  <string name="travel_search_engine_2">Посмотрите результаты в умном поиске мест для путешествий</string>
-  <string name="travel_search_engine_fxlite">Посмотрите результаты в поиске мест для путешествий %1$s</string>
+  <string name="travel_search_engine_fxlite_new">Посмотреть результаты в %1$s %2$s</string>
+  <string name="travel_no_result_state_text">Результатов не найдено.</string>
+  <string name="travel_google_search_button">ПОИСК В %1$s</string>
   <string name="travel_dialog_1_title">Откройте для себя ещё больше!</string>
+  <string name="travel_dialog_1_action_1_new">ПОПРОБУЙТЕ %1$s</string>
   <string name="travel_dialog_1_action_2">НЕТ, СПАСИБО</string>
+  <string name="travel_dialog_2_title_new">Нравиться использовать %1$s?</string>
   <string name="travel_dialog_2_checkbox">Не спрашивать в следующий раз</string>
   <string name="travel_dialog_2_action">УСТАНОВИТЬ ПО УМОЛЧАНИЮ</string>
 </resources>

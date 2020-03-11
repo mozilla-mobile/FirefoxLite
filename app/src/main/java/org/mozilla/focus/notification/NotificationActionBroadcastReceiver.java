@@ -14,6 +14,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationManagerCompat;
 
+import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.InfoActivity;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
@@ -41,6 +42,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             return;
         }
         Intent nexStep = null;
+        boolean isAppInBackground = !((FocusApplication) context.getApplicationContext()).isForeground();
 
         if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_DELETE_NOTIFICATION)) {
             String source = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_NOTIFICATION_SOURCE);
@@ -50,7 +52,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
                 TelemetryWrapper.dismissNotification(link, messageId);
             } else if (IntentUtils.NOTIFICATION_SOURCE_FIRSTRUN.equals(source)) {
                 String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
-                TelemetryWrapper.dismissFirstrunNotification(link, messageId);
+                TelemetryWrapper.dismissFirstrunNotification(link, messageId, isAppInBackground);
             }
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_NOTIFICATION)) {
@@ -67,7 +69,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
                 TelemetryWrapper.openNotification(link, messageId, false);
             } else if (IntentUtils.NOTIFICATION_SOURCE_FIRSTRUN.equals(source)) {
                 String messageId = bundle.getString(IntentUtils.EXTRA_NOTIFICATION_MESSAGE_ID, "");
-                TelemetryWrapper.openD1Notification(link, messageId);
+                TelemetryWrapper.openD1Notification(link, messageId, isAppInBackground);
             }
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_ACTION_RATE_STAR)) {
