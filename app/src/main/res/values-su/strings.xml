@@ -307,7 +307,9 @@
   <string name="about_link_terms_of_service">Katangtuan Layanan</string>
   <string name="shopping_search_onboarding_title">Téangan anu murah</string>
   <string name="shopping_search_onboarding_body">Bandingkeun harga di toko-toko onlén maké Paluruh Balanja Pinter.</string>
-  <string name="shopping_search_placeholder">Ketik barang anu rék dipilari</string>
+  <string name="shopping_search_onboarding_body_A">Babari ngabandingkeun harga di situs balanja populér.</string>
+  <string name="shopping_search_onboarding_body_B">Mitembeyan ngirit ti poé ieu. Paluruh jeung bandingkeun harga di situs populér.</string>
+  <string name="shopping_search_placeholder">Asupkeun ngaran produk</string>
   <string name="shopping_search_prompt_message_body">Bandingkeun harga di toko-toko onlén maké Paluruh Balanja Pinter.</string>
   <string name="shopping_search_prompt_message_button">Paluruh</string>
   <string name="shopping_switch_ui_onboarding_body">Toél loka balanja di handap pikeun maluruh hasil leuwih loba, atawa toél ieu tombol pikeun ngédit.</string>
@@ -460,8 +462,15 @@
   <string name="travel_onboarding_save_button">HEUG</string>
   <string name="travel_find_destination_placeholder_2">Asupkeun jugjugeun</string>
   <string name="travel_search_engine_1">Tingali hasil dina %1$s</string>
+  <string name="travel_search_engine_fxlite_new">Tingali hasil dina %1$s %2$s</string>
+  <string name="travel_no_result_state_text">Euh. Nyamos.</string>
+  <string name="travel_google_search_button">PALURUH DI %1$s</string>
   <string name="travel_dialog_1_title">Panggihan Nu Lianna!</string>
+  <string name="travel_dialog_1_description_new">Langlang anu kudu disiapkeun, akomodasi, jeung lianna di %1$s %2$s.</string>
+  <string name="travel_dialog_1_action_1_new">COBAAN %1$s</string>
   <string name="travel_dialog_1_action_2">MOAL, NUHUN</string>
+  <string name="travel_dialog_2_title_new">Resep maké %1$s?</string>
+  <string name="travel_dialog_2_description_new">Anjeun bisa nyetél %1$s %2$s salaku mesin sungsi baku anjeun pikeun nyanyabaan.</string>
   <string name="travel_dialog_2_checkbox">Ulah nanya deui</string>
   <string name="travel_dialog_2_action">SETÉL JADI BAKU</string>
 </resources>
