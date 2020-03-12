@@ -445,6 +445,8 @@ task updateCustomizedResources(type: Exec) {
     commandLine 'python', '../tools/l10n/update_customized_resources.py'
 }
 
+task updateCustomizedStrings(){}
+
 import org.mozilla.rocket.CheckPermissionsTask
 task checkPermissionsTask(type: CheckPermissionsTask) {
     def PERMISSIONS_FILE_NAME = "acceptable_permissions.txt"
