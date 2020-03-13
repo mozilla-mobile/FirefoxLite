@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -133,21 +133,21 @@ class HomeViewModel(
             }
             showContentServicesOnboardingSpotlight.call()
             // To prevent showing in app message when onboarding
-            FirebaseInAppMessaging.getInstance().setMessagesSuppressed(true)
+            FirebaseHelper.getFirebase().setIamMessagesSuppressed(true)
         } else if (shouldShowShoppingSearchOnboardingUseCase()) {
             setShoppingSearchOnboardingIsShownUseCase()
             showShoppingSearchOnboardingSpotlight.call()
             // To prevent showing in app message when onboarding
-            FirebaseInAppMessaging.getInstance().setMessagesSuppressed(true)
+            FirebaseHelper.getFirebase().setIamMessagesSuppressed(true)
         }
     }
 
     fun onContentServicesOnboardingSpotlightDismiss() {
-        FirebaseInAppMessaging.getInstance().setMessagesSuppressed(false)
+        FirebaseHelper.getFirebase().setIamMessagesSuppressed(false)
     }
 
     fun onShoppingSearchOnboardingSpotlightDismiss() {
-        FirebaseInAppMessaging.getInstance().setMessagesSuppressed(false)
+        FirebaseHelper.getFirebase().setIamMessagesSuppressed(false)
     }
 
     private fun initLogoManData() {

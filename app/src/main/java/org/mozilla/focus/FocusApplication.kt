@@ -13,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -23,6 +22,7 @@ import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
@@ -153,13 +153,13 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
     private fun registerCustomInAppMessagingListener() {
         if (!AppConstants.isBuiltWithFirebase()) return
 
-        FirebaseInAppMessaging.getInstance().addImpressionListener { inAppMessage ->
+        FirebaseHelper.getFirebase().addIamImpressionListener { inAppMessage ->
             val campaignName = inAppMessage.campaignMetadata?.campaignName
             TelemetryWrapper.showInAppMessage(campaignName)
         }
-        FirebaseInAppMessaging.getInstance().addClickListener { inAppMessage, action ->
+        FirebaseHelper.getFirebase().addIamClickListener { inAppMessage, action ->
             val campaignName = inAppMessage.campaignMetadata?.campaignName
-            val buttonText = action.button?.text?.text
+            val buttonText = action.buttonText
             val actionUrl = action.actionUrl
             TelemetryWrapper.clickInAppMessage(campaignName, buttonText, actionUrl)
         }

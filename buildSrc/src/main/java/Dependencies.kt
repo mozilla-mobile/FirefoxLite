@@ -18,6 +18,7 @@ object Versions {
     const val palette = "1.0.0"
     const val arch_core_testing = "2.1.0"
     const val arch_work = "2.3.3"
+    const val guava_android = "28.2-android"
     const val lifecycle = "2.2.0"
     const val viewmodel = "2.2.0"
     const val room = "2.2.4"
