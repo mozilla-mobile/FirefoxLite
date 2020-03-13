@@ -2,3 +2,9 @@ apply from: "$rootProject.projectDir/buildSrc/android-library-base.gradle"
 
 dependencies {
 }
+
+android {
+    lintOptions {
+        abortOnError false
+    }
+}
