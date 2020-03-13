@@ -2,6 +2,7 @@ package org.mozilla.rocket.deeplink
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
@@ -20,16 +21,14 @@ import java.net.URISyntaxException
 enum class DeepLinkType {
 
     GAME_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_GAME == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_GAME, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartGameActivityTask())
         }
     },
     GAME_ITEM {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_GAME_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_GAME_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -41,16 +40,14 @@ enum class DeepLinkType {
     },
 
     NEWS_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_NEWS == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_NEWS, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartNewsActivityTask())
         }
     },
     NEWS_ITEM {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_NEWS_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_NEWS_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -62,16 +59,14 @@ enum class DeepLinkType {
     },
 
     SHOPPING_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_SHOPPING, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartShoppingActivityTask())
         }
     },
     SHOPPING_ITEM {
-        override fun match(uri: URI) =
-                isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_SHOPPING_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -83,16 +78,14 @@ enum class DeepLinkType {
     },
 
     TRAVEL_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_TRAVEL, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartTravelActivityTask())
         }
     },
     TRAVEL_ITEM {
-        override fun match(uri: URI) =
-                isContentLink(uri) && DeepLinkConstants.PATH_TRAVEL_ITEM == uri.path
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_TRAVEL_ITEM, hasQuery = true)
 
         override fun addTasks(uri: URI) {
             val url = uri.getParam("url")
@@ -104,8 +97,7 @@ enum class DeepLinkType {
     },
 
     REWARD_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_REWARD == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_REWARD, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartRewardActivityTask())
@@ -113,11 +105,18 @@ enum class DeepLinkType {
     },
 
     SHOPPING_SEARCH_HOME {
-        override fun match(uri: URI) =
-            isContentLink(uri) && DeepLinkConstants.PATH_SHOPPING_SEARCH == uri.path && uri.query.isNullOrEmpty()
+        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_SHOPPING_SEARCH, hasQuery = false)
 
         override fun addTasks(uri: URI) {
             addTask(StartShoppingSearchActivityTask())
+        }
+    },
+
+    COMMAND_SET_DEFAULT_BROWSER {
+        override fun match(uri: URI) = isCommandUri(uri, DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER)
+
+        override fun addTasks(uri: URI) {
+            addTask(SetDefaultBrowserTask())
         }
     },
 
@@ -172,8 +171,22 @@ enum class DeepLinkType {
             return NOT_SUPPORT
         }
 
+        private fun isContentLink(uri: URI, path: String, hasQuery: Boolean): Boolean {
+            return isContentLink(uri) && path == uri.path && if (hasQuery) {
+                !uri.query.isNullOrEmpty()
+            } else {
+                uri.query.isNullOrEmpty()
+            }
+        }
+
         private fun isContentLink(uri: URI) =
                 isDeepLink(uri) && DeepLinkConstants.HOST_CONTENT == uri.host
+
+        private fun isCommandUri(uri: URI, command: String) = isCommandUri(uri) &&
+                uri.getParam(DeepLinkConstants.COMMAND_PARAM_KEY) == command
+
+        private fun isCommandUri(uri: URI) =
+                isDeepLink(uri) && DeepLinkConstants.HOST_COMMAND == uri.host
 
         fun isDeepLink(uri: URI) = DeepLinkConstants.SCHEMA_ROCKET == uri.scheme
     }
