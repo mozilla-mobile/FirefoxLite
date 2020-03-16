@@ -44,7 +44,7 @@
     <dimen name="first_run_upgrade_title_margin_bottom">16dp</dimen>
     <dimen name="first_run_upgrade_image2_size">76dp</dimen>
 
-    <dimen name="flow_layout_spacing">6dp</dimen>
+    <dimen name="flow_layout_spacing">8dp</dimen>
 
     <dimen name="screenshot_grid_cell_padding">8dp</dimen>
     <dimen name="screenshot_empty_img_size">18dp</dimen>
