@@ -7,7 +7,7 @@
     android:id="@+id/suggestion_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/colorSuggestionBox"
+    android:background="@drawable/bg_search_suggestion_item"
     android:gravity="center_vertical"
     android:minHeight="30dp"
     android:padding="10dp"
