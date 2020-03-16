@@ -6,5 +6,6 @@
     <gradient
         android:angle="90"
         android:endColor="@color/shoppingSearchInputBackgroundGradientStart"
+        android:centerColor="@color/shoppingSearchInputBackgroundGradientCenter"
         android:startColor="@color/shoppingSearchInputBackgroundGradientEnd" />
 </shape>

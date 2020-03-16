@@ -43,14 +43,14 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
         fetchSuggestionsJob = viewModelScope.launch(Dispatchers.Default) {
             val newUiModel: ShoppingSearchKeywordInputUiModel
             if (TextUtils.isEmpty(keyword)) {
-                newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true, hideHintContainer = false)
+                newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true)
             } else {
                 var styledSuggestions: List<CharSequence>? = null
                 val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
                 if (fetchKeywordSuggestionResult is Result.Success) {
                     styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
                 }
-                newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, true, true, true)
+                newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, hideClear = false)
             }
 
             withContext(Dispatchers.Main) {
@@ -103,8 +103,5 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
 
 data class ShoppingSearchKeywordInputUiModel(
     val keywordSuggestions: List<CharSequence>? = null,
-    var hideHintContainer: Boolean = false,
-    val hideLogoMan: Boolean = false,
-    val hideIndication: Boolean = false,
     val hideClear: Boolean = false
 )

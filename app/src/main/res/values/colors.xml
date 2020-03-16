@@ -173,7 +173,8 @@
 
     <!-- Shopping Search -->
     <color name="shoppingSearchInputBackgroundGradientStart">#FF3C61</color>
-    <color name="shoppingSearchInputBackgroundGradientEnd">#FF803E</color>
+    <color name="shoppingSearchInputBackgroundGradientCenter">#FF803E</color>
+    <color name="shoppingSearchInputBackgroundGradientEnd">#FDBC61</color>
     <color name="shoppingSearchIcon">#FF5654</color>
     <color name="shoppingSearchPreferencesToolbarBackground">#212121</color>
 

@@ -4,28 +4,26 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_shopping_search_keyword_input"
     android:clipChildren="false"
     android:clipToPadding="false"
     tools:context="org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@drawable/background_shopping_search_keyword_input"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:elevation="4dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_marginTop="24dp">
 
         <LinearLayout
             android:id="@+id/input_container"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content"
             android:background="@android:color/white"
+            android:minHeight="56dp"
             android:orientation="horizontal"
-            android:transitionName="urlbar">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <EditText
                 android:id="@+id/search_keyword_edit"
@@ -45,15 +43,6 @@
                 android:textColorHint="@android:color/darker_gray"
                 android:textSize="15sp" />
 
-            <ImageView
-                android:id="@+id/indication"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="10dp"
-                app:srcCompat="@drawable/ic_shopping_search" />
-
             <ImageButton
                 android:id="@+id/clear"
                 android:layout_width="40dp"
@@ -66,80 +55,66 @@
                 android:src="@drawable/edit_close"
                 android:visibility="gone"
                 tools:visibility="visible" />
-
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/input_container">
-
-            <ImageView
-                android:id="@+id/logo_man"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.9"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/logo_man_shopping_search" />
-
-            <LinearLayout
-                android:id="@+id/hint_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:tint="@color/paletteWhite100"
-                    app:srcCompat="@drawable/ic_shopping_search" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_horizontal"
-                    android:text="@string/shopping_search_onboarding_title"
-                    android:textColor="@color/paletteWhite100"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_horizontal"
-                    android:letterSpacing="0.01"
-                    android:lineSpacingExtra="4sp"
-                    android:text="@string/shopping_search_onboarding_body"
-                    android:textColor="@color/paletteLightGreyB100"
-                    android:textSize="16sp"
-                    android:textStyle="normal" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <org.mozilla.focus.widget.FlowLayout
-            android:id="@+id/search_suggestion_view"
+        <FrameLayout
+            android:id="@+id/search_suggestion_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/input_container"
-            android:layout_margin="10dp"
-            android:animateLayoutChanges="true"
-            tools:background="#55FF0000" />
+            android:background="@android:color/white"
+            android:paddingStart="@dimen/common_margin_m2"
+            android:paddingTop="@dimen/common_margin_m2"
+            android:paddingEnd="@dimen/common_margin_m2"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/input_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-    </RelativeLayout>
+            <org.mozilla.focus.widget.FlowLayout
+                android:id="@+id/search_suggestion_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/logo_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/search_suggestion_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/logo_man_shopping_search_global" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_horizontal"
+            android:letterSpacing="0.01"
+            android:lineSpacingExtra="4sp"
+            android:text="@string/shopping_search_onboarding_body_A"
+            android:textColor="@color/paletteLightGreyB100"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/logo_man"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/common_margin_m3"
+            android:tint="@color/paletteWhite100"
+            app:layout_constraintBottom_toTopOf="@+id/description"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_shopping_search" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </org.mozilla.focus.widget.ResizableKeyboardLayout>

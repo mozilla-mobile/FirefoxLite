@@ -108,9 +108,6 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setupView(uiModel: ShoppingSearchKeywordInputUiModel) {
-        hint_container.visibility = if (uiModel.hideHintContainer) View.GONE else View.VISIBLE
-        logo_man.visibility = if (uiModel.hideLogoMan) View.GONE else View.VISIBLE
-        indication.visibility = if (uiModel.hideIndication) View.GONE else View.VISIBLE
         clear.visibility = if (uiModel.hideClear) View.GONE else View.VISIBLE
         setSuggestions(uiModel.keywordSuggestions)
     }
@@ -118,9 +115,11 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
     private fun setSuggestions(suggestions: List<CharSequence>?) {
         search_suggestion_view.removeAllViews()
         if (suggestions == null) {
+            search_suggestion_layout.visibility = View.GONE
             return
         }
 
+        search_suggestion_layout.visibility = View.VISIBLE
         for (suggestion in suggestions) {
             val item = View.inflate(context, R.layout.tag_text, null) as TextView
             item.text = suggestion
