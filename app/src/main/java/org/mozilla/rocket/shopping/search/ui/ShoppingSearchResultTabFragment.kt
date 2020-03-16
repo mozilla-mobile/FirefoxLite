@@ -3,6 +3,7 @@ package org.mozilla.rocket.shopping.search.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -236,8 +237,11 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 }
             })
             view_pager.setSwipeable(false)
-            if (tabItems.isNotEmpty()) {
-                selectContentFragment(shoppingSearchTabsAdapter, 0)
+            Looper.myQueue().addIdleHandler {
+                if (!isStateSaved && tabItems.isNotEmpty()) {
+                    selectContentFragment(shoppingSearchTabsAdapter, 0)
+                }
+                false
             }
         })
     }
