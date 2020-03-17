@@ -27,12 +27,7 @@
 
     <string name="shopping_search_onboarding_body_A">เปรียบเทียบราคาสินค้าในเว็บไซต์ซื้อขายยอดนิยมได้อย่างง่ายดาย</string>
     <string name="shopping_search_onboarding_body_B">เริ่มประหยัดวันนี้ ค้นหาและเปรียบเทียบราคาในเว็บไซต์ยอดนิยม</string>
-    <string name="shopping_search_placeholder">ใส่ชื่อสินค้า</string>
-    <string name="travel_search_engine_fxlite_new">ดูผลลัพธ์ใน %1$s %2$s</string>
     <string name="travel_no_result_state_text">อืมม์ ไม่พบผลลัพธ์</string>
-    <string name="travel_google_search_button">ค้นหาใน %1$s</string>
     <string name="travel_dialog_1_description_new">สำรวจกิจกรรม ที่พัก และอื่นๆ ใน %1$s %2$s</string>
-    <string name="travel_dialog_1_action_1_new">ลอง %1$s ดูสิ</string>
-    <string name="travel_dialog_2_title_new">พอใจกับการใช้ %1$s ไหม</string>
     <string name="travel_dialog_2_description_new">คุณสามารถตั้งค่า %1$s %2$s เป็นโปรแกรมค้นหาเริ่มต้นสำหรับการเดินทางได้</string>
 </resources>

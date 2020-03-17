@@ -27,7 +27,6 @@
     
     <string name="shopping_search_onboarding_body_A">Maghambing ng mga presyo nang walang kahirap-hirap sa mga sikat na shopping site.</string>
     <string name="shopping_search_onboarding_body_B">Simulang magtipid ngayon. Maghanap at maghambing ng mga presyo sa mga sikat na site.</string>
-    <string name="shopping_search_placeholder">Maglagay ng pangalan ng produkto</string>
     <string name="travel_search_engine_fxlite_new">Tingnan ang mga resulta sa %1$s %2$s</string>
     <string name="travel_no_result_state_text">Hmm. Walang nahanap na resulta.</string>
     <string name="travel_google_search_button">MAGHANAP SA %1$s</string>

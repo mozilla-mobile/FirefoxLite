@@ -3,14 +3,4 @@
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">Du lịch Khám phá</string>
 
-	<string name="shopping_search_onboarding_body_A">So sánh giá cả dễ dàng trên các trang mua hàng thông dụng.</string>
-	<string name="shopping_search_onboarding_body_B">Bắt đầu tiết kiệm ngay hôm nay. Tìm kiếm và so sánh giá cả trên các trang thông dụng.</string>
-	<string name="shopping_search_placeholder">Nhập một tên sản phẩm</string>
-	<string name="travel_search_engine_fxlite_new">Xem kết quả trong %1$s %2$s</string>
-	<string name="travel_no_result_state_text">Không tìm thấy kết quả nào cả.</string>
-	<string name="travel_google_search_button">TÌM KIẾM TRÊN %1$s</string>
-	<string name="travel_dialog_1_description_new">Khám phá những nơi tham quan, khách sạn và nhiều hơn nữa trong %1$s %2$s.</string>
-	<string name="travel_dialog_1_action_1_new">HÃY THỬ %1$s</string>
-	<string name="travel_dialog_2_title_new">Bạn thích sử dụng %1$s?</string>
-	<string name="travel_dialog_2_description_new">Bạn có thể cài đặt %1$s %2$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
-</resources>
+	</resources>
