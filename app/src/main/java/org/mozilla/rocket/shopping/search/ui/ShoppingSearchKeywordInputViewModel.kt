@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -26,8 +27,10 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
     val navigateToResultTab = SingleLiveEvent<String>()
     private var fetchSuggestionsJob: Job? = null
     private var firstTimeTyping: Boolean = true
+    private var currentUiModel = ShoppingSearchKeywordInputUiModel()
 
     fun onStart() {
+        emitUiModel()
         TelemetryWrapper.showSearchBarFromTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING)
     }
 
@@ -41,20 +44,19 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
         }
 
         fetchSuggestionsJob = viewModelScope.launch(Dispatchers.Default) {
-            val newUiModel: ShoppingSearchKeywordInputUiModel
             if (TextUtils.isEmpty(keyword)) {
-                newUiModel = ShoppingSearchKeywordInputUiModel(hideClear = true)
+                currentUiModel = currentUiModel.copy(keywordSuggestions = null, hideClear = true)
             } else {
                 var styledSuggestions: List<CharSequence>? = null
                 val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
                 if (fetchKeywordSuggestionResult is Result.Success) {
                     styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
                 }
-                newUiModel = ShoppingSearchKeywordInputUiModel(styledSuggestions, hideClear = false)
+                currentUiModel = currentUiModel.copy(keywordSuggestions = styledSuggestions, hideClear = false)
             }
 
             withContext(Dispatchers.Main) {
-                emitUiModel(newUiModel)
+                emitUiModel()
             }
         }
 
@@ -90,8 +92,8 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
         }
     }
 
-    private fun emitUiModel(newUiModel: ShoppingSearchKeywordInputUiModel) {
-        _uiModel.value = newUiModel
+    private fun emitUiModel() {
+        _uiModel.value = currentUiModel
     }
 
     private fun onKeywordSent(keyword: String) {
@@ -103,5 +105,8 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
 
 data class ShoppingSearchKeywordInputUiModel(
     val keywordSuggestions: List<CharSequence>? = null,
-    val hideClear: Boolean = false
+    val hideClear: Boolean = false,
+    val description: String = "",
+    val logoManUrl: String = "",
+    val defaultLogoManResId: Int = R.drawable.logo_man_shopping_search_global
 )

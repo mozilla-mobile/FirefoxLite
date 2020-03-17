@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_keyword_input.*
 import org.mozilla.focus.R
+import org.mozilla.focus.glide.GlideApp
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.content.appComponent
@@ -108,6 +109,14 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setupView(uiModel: ShoppingSearchKeywordInputUiModel) {
+        description.text = uiModel.description
+        if (uiModel.logoManUrl.isNotEmpty()) {
+            GlideApp.with(logo_man.context)
+                    .asBitmap()
+                    .placeholder(uiModel.defaultLogoManResId)
+                    .load(uiModel.logoManUrl)
+                    .into(logo_man)
+        }
         clear.visibility = if (uiModel.hideClear) View.GONE else View.VISIBLE
         setSuggestions(uiModel.keywordSuggestions)
     }
