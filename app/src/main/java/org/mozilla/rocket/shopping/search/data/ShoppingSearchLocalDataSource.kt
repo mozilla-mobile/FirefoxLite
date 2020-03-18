@@ -2,7 +2,9 @@ package org.mozilla.rocket.shopping.search.data
 
 import android.content.Context
 import org.json.JSONArray
+import org.mozilla.focus.R
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingSearchDataSource {
@@ -54,6 +56,15 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
 
     override fun setSearchPromptMessageShowCount(count: Int) =
         preference.edit().putInt(KEY_SEARCH_PROMPT_MESSAGE_SHOW_COUNT, count).apply()
+
+    override fun getSearchDescription(): String {
+        return if (LocalAbTesting.checkAssignedBucket(LocalAbTesting.SMART_SHOPPING_COPY_AB_TESTING)
+                == LocalAbTesting.SMART_SHOPPING_COPY_B) {
+            appContext.getString(R.string.shopping_search_onboarding_body_B)
+        } else {
+            appContext.getString(R.string.shopping_search_onboarding_body_A)
+        }
+    }
 
     companion object {
         const val PREF_NAME = "shopping_search"

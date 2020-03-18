@@ -19,4 +19,6 @@ interface ShoppingSearchDataSource {
     fun getSearchPromptMessageShowCount(): Int
 
     fun setSearchPromptMessageShowCount(count: Int)
+
+    fun getSearchDescription(): String
 }

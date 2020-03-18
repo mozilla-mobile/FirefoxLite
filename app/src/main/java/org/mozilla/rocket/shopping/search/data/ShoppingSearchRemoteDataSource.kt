@@ -46,6 +46,10 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
         throw UnsupportedOperationException("Can't set search prompt message status to server")
     }
 
+    override fun getSearchDescription(): String {
+        throw UnsupportedOperationException("Can't get search description from server")
+    }
+
     companion object {
         const val RC_KEY_ENABLE_SHOPPING_SEARCH = "enable_shopping_search"
         const val RC_KEY_STR_SHOPPING_SEARCH_SITES = "str_shopping_search_sites"
