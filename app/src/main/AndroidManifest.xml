@@ -80,8 +80,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="rocket"
-                    android:host="content" />
+                <data android:scheme="rocket" android:host="content" />
+                <data android:scheme="rocket" android:host="private-mode" />
             </intent-filter>
 
         </activity-alias>
