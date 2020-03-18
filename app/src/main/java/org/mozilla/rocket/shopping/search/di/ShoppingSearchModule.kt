@@ -9,6 +9,7 @@ import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
 import org.mozilla.rocket.shopping.search.domain.GetSearchDescriptionUseCase
+import org.mozilla.rocket.shopping.search.domain.GetSearchLogoManImageUrlUseCase
 import org.mozilla.rocket.shopping.search.domain.GetSearchPromptMessageShowCountUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
@@ -42,9 +43,14 @@ object ShoppingSearchModule {
     @Provides
     fun provideShoppingSearchKeywordInputViewModel(
         fetchKeywordUseCase: FetchKeywordSuggestionUseCase,
-        getSearchDescriptionUseCase: GetSearchDescriptionUseCase
+        getSearchDescriptionUseCase: GetSearchDescriptionUseCase,
+        getSearchLogoManImageUrlUseCase: GetSearchLogoManImageUrlUseCase
     ): ShoppingSearchKeywordInputViewModel =
-        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase, getSearchDescriptionUseCase)
+        ShoppingSearchKeywordInputViewModel(
+            fetchKeywordUseCase,
+            getSearchDescriptionUseCase,
+            getSearchLogoManImageUrlUseCase
+        )
 
     @JvmStatic
     @Singleton
@@ -146,4 +152,10 @@ object ShoppingSearchModule {
     @Provides
     fun provideGetSearchDescriptionUseCase(repo: ShoppingSearchRepository): GetSearchDescriptionUseCase =
         GetSearchDescriptionUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetSearchLogoManImageUrlUseCase(repo: ShoppingSearchRepository): GetSearchLogoManImageUrlUseCase =
+        GetSearchLogoManImageUrlUseCase(repo)
 }

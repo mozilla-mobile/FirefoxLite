@@ -61,6 +61,8 @@ class ShoppingSearchRepository(
 
     fun getSearchDescription() = localDataSource.getSearchDescription()
 
+    fun getSearchLogoManImageUrl() = remoteDataSource.getSearchLogoManImageUrl()
+
     private fun shouldMergeShoppingSites(remoteShoppingSites: List<ShoppingSite>, localShoppingSites: List<ShoppingSite>): Boolean {
         if (remoteShoppingSites.size != localShoppingSites.size) {
             return true
