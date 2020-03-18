@@ -101,8 +101,9 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
             R.id.clear -> search_keyword_edit.text.clear()
             R.id.suggestion_item -> {
                 val searchTerm = (view as TextView).text
+                val isTrendingKeyword = search_keyword_edit.text.isEmpty()
                 search_keyword_edit.text = SpannableStringBuilder(searchTerm)
-                viewModel.onSuggestionKeywordSent(searchTerm.toString())
+                viewModel.onSuggestionKeywordSent(searchTerm.toString(), isTrendingKeyword)
             }
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }

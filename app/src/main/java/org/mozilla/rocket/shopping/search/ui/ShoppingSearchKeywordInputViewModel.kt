@@ -81,9 +81,15 @@ class ShoppingSearchKeywordInputViewModel(
         TelemetryWrapper.searchWithTextInSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
     }
 
-    fun onSuggestionKeywordSent(keyword: String) {
+    fun onSuggestionKeywordSent(keyword: String, isTrendingTerms: Boolean) {
         onKeywordSent(keyword)
-        TelemetryWrapper.useSearchSuggestionInTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING, false, "null")
+
+        val trendingTerms = if (isTrendingTerms) {
+            keyword
+        } else {
+            "null"
+        }
+        TelemetryWrapper.useSearchSuggestionInTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING, isTrendingTerms, trendingTerms)
     }
 
     private fun applyStyle(keyword: String, keywordSuggestions: List<String>): List<CharSequence> {
