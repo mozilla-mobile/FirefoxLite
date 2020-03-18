@@ -35,12 +35,13 @@ class ShoppingSearchKeywordInputViewModel(
     private var firstTimeTyping: Boolean = true
     private var currentUiModel = ShoppingSearchKeywordInputUiModel()
 
-    fun onStart() {
+    fun onStart(searchTerm: String) {
         currentUiModel = currentUiModel.copy(
                 description = getSearchDescription(),
                 logoManUrl = getSearchLogoManImageUrl()
         )
         emitUiModel()
+        onTypingKeyword(searchTerm)
         TelemetryWrapper.showSearchBarFromTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING)
     }
 
@@ -54,23 +55,22 @@ class ShoppingSearchKeywordInputViewModel(
         }
 
         fetchSuggestionsJob = viewModelScope.launch(Dispatchers.Default) {
-            if (TextUtils.isEmpty(keyword)) {
-                currentUiModel = currentUiModel.copy(keywordSuggestions = null, hideClear = true)
-            } else {
-                var styledSuggestions: List<CharSequence>? = null
-                val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
-                if (fetchKeywordSuggestionResult is Result.Success) {
-                    styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
-                }
-                currentUiModel = currentUiModel.copy(keywordSuggestions = styledSuggestions, hideClear = false)
+            var styledSuggestions: List<CharSequence>? = null
+            val fetchKeywordSuggestionResult = fetchKeywordSuggestion(keyword)
+            if (fetchKeywordSuggestionResult is Result.Success) {
+                styledSuggestions = applyStyle(keyword, fetchKeywordSuggestionResult.data)
             }
+            currentUiModel = currentUiModel.copy(
+                    keywordSuggestions = styledSuggestions,
+                    hideClear = TextUtils.isEmpty(keyword)
+            )
 
             withContext(Dispatchers.Main) {
                 emitUiModel()
             }
         }
 
-        if (firstTimeTyping) {
+        if (firstTimeTyping && !TextUtils.isEmpty(keyword)) {
             TelemetryWrapper.startTypingFromTabSwipeSearchBar(TelemetryWrapper.Extra_Value.SHOPPING)
             firstTimeTyping = false
         }

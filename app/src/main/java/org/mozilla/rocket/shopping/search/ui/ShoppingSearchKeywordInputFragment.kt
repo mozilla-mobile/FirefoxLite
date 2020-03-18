@@ -93,7 +93,7 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         search_keyword_edit.requestFocus()
-        viewModel.onStart()
+        viewModel.onStart(search_keyword_edit.text.toString())
     }
 
     override fun onClick(view: View) {
@@ -123,7 +123,7 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
 
     private fun setSuggestions(suggestions: List<CharSequence>?) {
         search_suggestion_view.removeAllViews()
-        if (suggestions == null) {
+        if (suggestions == null || suggestions.isEmpty()) {
             search_suggestion_layout.visibility = View.GONE
             return
         }
