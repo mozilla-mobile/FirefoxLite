@@ -82,6 +82,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="rocket" android:host="content" />
                 <data android:scheme="rocket" android:host="private-mode" />
+                <data android:scheme="rocket" android:host="command" />
             </intent-filter>
 
         </activity-alias>
