@@ -50,8 +50,12 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
         throw UnsupportedOperationException("Can't get search description from server")
     }
 
+    override fun getSearchLogoManImageUrl() =
+            FirebaseHelper.getFirebase().getRcString(RC_KEY_STR_SHOPPING_SEARCH_LOGO_MAN_IMAGE_URL)
+
     companion object {
         const val RC_KEY_ENABLE_SHOPPING_SEARCH = "enable_shopping_search"
         const val RC_KEY_STR_SHOPPING_SEARCH_SITES = "str_shopping_search_sites"
+        const val RC_KEY_STR_SHOPPING_SEARCH_LOGO_MAN_IMAGE_URL = "str_shopping_search_logo_man_image_url"
     }
 }

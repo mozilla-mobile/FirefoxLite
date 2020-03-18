@@ -66,6 +66,10 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
         }
     }
 
+    override fun getSearchLogoManImageUrl(): String {
+        throw UnsupportedOperationException("Always get shopping search logo man url from remote")
+    }
+
     companion object {
         const val PREF_NAME = "shopping_search"
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"

@@ -21,4 +21,6 @@ interface ShoppingSearchDataSource {
     fun setSearchPromptMessageShowCount(count: Int)
 
     fun getSearchDescription(): String
+
+    fun getSearchLogoManImageUrl(): String
 }
