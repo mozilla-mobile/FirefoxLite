@@ -8,6 +8,7 @@ import org.mozilla.rocket.shopping.search.data.ShoppingSearchLocalDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
+import org.mozilla.rocket.shopping.search.domain.GetSearchDescriptionUseCase
 import org.mozilla.rocket.shopping.search.domain.GetSearchPromptMessageShowCountUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSearchSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
@@ -39,8 +40,11 @@ object ShoppingSearchModule {
 
     @JvmStatic
     @Provides
-    fun provideShoppingSearchKeywordInputViewModel(fetchKeywordUseCase: FetchKeywordSuggestionUseCase): ShoppingSearchKeywordInputViewModel =
-        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase)
+    fun provideShoppingSearchKeywordInputViewModel(
+        fetchKeywordUseCase: FetchKeywordSuggestionUseCase,
+        getSearchDescriptionUseCase: GetSearchDescriptionUseCase
+    ): ShoppingSearchKeywordInputViewModel =
+        ShoppingSearchKeywordInputViewModel(fetchKeywordUseCase, getSearchDescriptionUseCase)
 
     @JvmStatic
     @Singleton
@@ -136,4 +140,10 @@ object ShoppingSearchModule {
     @Provides
     fun provideSetSearchPromptMessageShowCountUseCase(repo: ShoppingSearchRepository): SetSearchPromptMessageShowCountUseCase =
         SetSearchPromptMessageShowCountUseCase(repo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGetSearchDescriptionUseCase(repo: ShoppingSearchRepository): GetSearchDescriptionUseCase =
+        GetSearchDescriptionUseCase(repo)
 }

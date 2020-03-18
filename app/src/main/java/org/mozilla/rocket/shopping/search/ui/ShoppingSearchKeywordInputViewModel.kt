@@ -16,9 +16,13 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.shopping.search.domain.FetchKeywordSuggestionUseCase
+import org.mozilla.rocket.shopping.search.domain.GetSearchDescriptionUseCase
 import java.util.Locale
 
-class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase) : ViewModel() {
+class ShoppingSearchKeywordInputViewModel(
+    private val fetchKeywordSuggestion: FetchKeywordSuggestionUseCase,
+    private val getSearchDescription: GetSearchDescriptionUseCase
+) : ViewModel() {
 
     private val _uiModel = MutableLiveData<ShoppingSearchKeywordInputUiModel>()
     val uiModel: LiveData<ShoppingSearchKeywordInputUiModel>
@@ -30,6 +34,7 @@ class ShoppingSearchKeywordInputViewModel(private val fetchKeywordSuggestion: Fe
     private var currentUiModel = ShoppingSearchKeywordInputUiModel()
 
     fun onStart() {
+        currentUiModel = currentUiModel.copy(description = getSearchDescription())
         emitUiModel()
         TelemetryWrapper.showSearchBarFromTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING)
     }

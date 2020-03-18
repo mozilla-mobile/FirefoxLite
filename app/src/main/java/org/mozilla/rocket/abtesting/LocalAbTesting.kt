@@ -14,8 +14,11 @@ object LocalAbTesting {
     // Current AB Testings
     // Content Hub AB Testing
     const val CONTENT_HUB_AB_TESTING = "content_hub_ab_testing"
+    // Smart Shopping Copy AB Testing
+    const val SMART_SHOPPING_COPY_AB_TESTING = "smart_shopping_copy_ab_testing"
     // Testing Groups
     const val CONTENT_POSITION_TOPSITE = "content_position_topsite"
+    const val SMART_SHOPPING_COPY_B = "smart_shopping_copy_b"
 
     private lateinit var appContext: Context
     private var isNewGroupAssigned = false

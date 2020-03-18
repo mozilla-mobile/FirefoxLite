@@ -15,5 +15,27 @@
         "bucket_range_end": 18
       }
     ]
+  },
+  {
+    "name": "smart_shopping_copy_ab_testing",
+    "enabled": true,
+    "newUserOnly": false,
+    "buckets": [
+      {
+        "experiment_name": "smart_shopping_copy_a",
+        "bucket_range_start": 1,
+        "bucket_range_end": 7
+      },
+      {
+        "experiment_name": "smart_shopping_copy_b",
+        "bucket_range_start": 8,
+        "bucket_range_end": 14
+      },
+      {
+        "experiment_name": "smart_shopping_copy_aa",
+        "bucket_range_start": 15,
+        "bucket_range_end": 20
+      }
+    ]
   }
 ]
