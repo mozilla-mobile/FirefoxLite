@@ -7,8 +7,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -23,7 +25,7 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
 import javax.inject.Inject
 
-class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
+class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener, ViewTreeObserver.OnGlobalLayoutListener {
 
     @Inject
     lateinit var viewModelCreator: Lazy<ShoppingSearchKeywordInputViewModel>
@@ -92,8 +94,14 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
+        root_view.viewTreeObserver.addOnGlobalLayoutListener(this)
         search_keyword_edit.requestFocus()
         viewModel.onStart(search_keyword_edit.text.toString())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        root_view.viewTreeObserver.removeOnGlobalLayoutListener(this)
     }
 
     override fun onClick(view: View) {
@@ -107,6 +115,22 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener {
             }
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
+    }
+
+    override fun onGlobalLayout() {
+        val contentLayoutHeight = content_layout.measuredHeight
+        val iconHeight = icon.measuredHeight
+        val descriptionHeight = description.measuredHeight
+        val logoManHeight = logo_man.measuredHeight
+        val searchSuggestionLayoutHeight = search_suggestion_layout.measuredHeight
+        val inputContainerHeight = input_container.measuredHeight
+
+        val extraMargin = (contentLayoutHeight / 10)
+        val expectedBaseContentHeight = descriptionHeight + logoManHeight + searchSuggestionLayoutHeight + inputContainerHeight + extraMargin
+        val expectedContentHeight = iconHeight + expectedBaseContentHeight
+
+        icon.isVisible = (contentLayoutHeight > expectedContentHeight)
+        logo_man.isVisible = (contentLayoutHeight > expectedBaseContentHeight)
     }
 
     private fun setupView(uiModel: ShoppingSearchKeywordInputUiModel) {
