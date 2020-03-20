@@ -26,7 +26,11 @@ class ShoppingSearchResultViewModel(
 
     val uiModel = MediatorLiveData<ShoppingSearchResultUiModel>().apply {
         addSource(shoppingSearchSites) {
-            value = ShoppingSearchResultUiModel(it, shouldEnableTurboMode())
+            val newUiModel = ShoppingSearchResultUiModel(it, shouldEnableTurboMode())
+            if (value == newUiModel) {
+                return@addSource
+            }
+            value = newUiModel
         }
     }
 
