@@ -20,7 +20,6 @@ class ShoppingSearchRepository(
 
         if (localShoppingSites.isEmpty() && remoteShoppingSites.isNotEmpty()) {
             updateShoppingSites(remoteShoppingSites)
-            shoppingSitesData.postValue(remoteShoppingSites)
         } else if (localShoppingSites.isNotEmpty()) {
             val mergedShoppingSites = arrayListOf<ShoppingSite>()
             if (shouldMergeShoppingSites(remoteShoppingSites, localShoppingSites)) {
