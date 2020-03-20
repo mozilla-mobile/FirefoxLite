@@ -119,18 +119,15 @@ class ShoppingSearchKeywordInputFragment : Fragment(), View.OnClickListener, Vie
 
     override fun onGlobalLayout() {
         val contentLayoutHeight = content_layout.measuredHeight
-        val iconHeight = icon.measuredHeight
         val descriptionHeight = description.measuredHeight
         val logoManHeight = logo_man.measuredHeight
         val searchSuggestionLayoutHeight = search_suggestion_layout.measuredHeight
         val inputContainerHeight = input_container.measuredHeight
 
         val extraMargin = (contentLayoutHeight / 10)
-        val expectedBaseContentHeight = descriptionHeight + logoManHeight + searchSuggestionLayoutHeight + inputContainerHeight + extraMargin
-        val expectedContentHeight = iconHeight + expectedBaseContentHeight
+        val expectedContentHeight = descriptionHeight + logoManHeight + searchSuggestionLayoutHeight + inputContainerHeight + extraMargin
 
-        icon.isVisible = (contentLayoutHeight > expectedContentHeight)
-        logo_man.isVisible = (contentLayoutHeight > expectedBaseContentHeight)
+        logo_man.isVisible = (contentLayoutHeight > expectedContentHeight)
     }
 
     private fun setupView(uiModel: ShoppingSearchKeywordInputUiModel) {

@@ -105,17 +105,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="@dimen/common_margin_m3"
-            android:tint="@color/paletteWhite100"
-            app:layout_constraintBottom_toTopOf="@+id/description"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_shopping_search" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </org.mozilla.focus.widget.ResizableKeyboardLayout>
