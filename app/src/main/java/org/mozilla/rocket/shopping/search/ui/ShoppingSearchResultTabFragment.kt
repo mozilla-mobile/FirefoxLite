@@ -240,6 +240,10 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
             Looper.myQueue().addIdleHandler {
                 if (!isStateSaved && tabItems.isNotEmpty()) {
                     selectContentFragment(shoppingSearchTabsAdapter, 0)
+                    // For the shopping search result tabs except the first one, there will be a "currentUrl" changed event to have the initial one url count.
+                    // However, there is no such event for the first tab since the url keeps the same after switching it to the current tab.
+                    // Do manually compensate to the first focus tab. So it won't have zero url opened count in telemetry.
+                    telemetryViewModel.onUrlOpened()
                 }
                 false
             }
