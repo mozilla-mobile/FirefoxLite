@@ -6,5 +6,5 @@
     style="@style/HomeMenuButton"
     android:layout_gravity="center"
     android:clickable="false"
-    android:src="@drawable/shopping"
+    android:src="@drawable/action_search"
     tools:ignore="contentDescription" />
