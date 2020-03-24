@@ -276,10 +276,11 @@
   <string name="news_category_option_nation">Местные</string>
   <string name="logo_text">Услуги предоставлены</string>
   <string name="recommended_news_title">Рекомендованные новости для вас</string>
-  <string name="recommended_news_preference_language">Выберите предпочтительный¶\nязык новостей</string>
+  <string name="recommended_news_content">Нажмите «Да», чтобы начать просматривать новости, рекомендуемые для вас нашим новостным ИИ. Вы сможете отключить рекомендации и контролировать свои настройки в любое время в разделе Новости-&gt;Настройки. %1$s</string>
+  <string name="recommended_news_preference_language">Выберите предпочитаемый\nязык новостей</string>
   <string name="recommended_news_preference_toggle">Персонализированные новости</string>
-  <string name="recommended_news_preference_disable_dialog">Отключить рекомендации новостей? Нажмите “ДА”, чтобы просто показывать новости по порядку.</string>
-  <string name="recommended_news_preference_enable_dialog">Включить рекомендации новостей? Нажмите “ДА”, чтобы смотреть избранную подборку новостей.</string>
+  <string name="recommended_news_preference_disable_dialog">Отключить рекомендации новостей? Нажмите «ДА», чтобы просто показывать последние новости.</string>
+  <string name="recommended_news_preference_enable_dialog">Включить рекомендации новостей? Нажмите «ДА», чтобы смотреть избранную подборку новостей.</string>
   <string name="private_tab">Приватная вкладка</string>
   <string name="private_browsing_title">Приватный просмотр</string>
   <string name="private_browsing_erase_message">Удалить историю приватного просмотра</string>
@@ -306,6 +307,8 @@
   <string name="about_link_terms_of_service">Условия службы</string>
   <string name="shopping_search_onboarding_title">Находите хорошие цены</string>
   <string name="shopping_search_onboarding_body">Сравнивайте цены во множестве интернет-магазинов с помощью умного поиска для шоппинга.</string>
+  <string name="shopping_search_onboarding_body_A">Легко сравнивайте цены в популярных Интернет-магазинах.</string>
+  <string name="shopping_search_onboarding_body_B">Начните экономить сегодня. Находите и сравнивайте цены в популярных Интернет-магазинах.</string>
   <string name="shopping_search_placeholder">Введите название продукта</string>
   <string name="shopping_search_prompt_message_body">Сравнивайте цены во множестве интернет-магазинов с помощью умного поиска для шоппинга.</string>
   <string name="shopping_search_prompt_message_button">Поиск</string>
@@ -463,9 +466,11 @@
   <string name="travel_no_result_state_text">Результатов не найдено.</string>
   <string name="travel_google_search_button">ПОИСК В %1$s</string>
   <string name="travel_dialog_1_title">Откройте для себя ещё больше!</string>
+  <string name="travel_dialog_1_description_new">Узнайте, чем заняться, как найти жилье и многое другое в %1$s %2$s.</string>
   <string name="travel_dialog_1_action_1_new">ПОПРОБУЙТЕ %1$s</string>
   <string name="travel_dialog_1_action_2">НЕТ, СПАСИБО</string>
   <string name="travel_dialog_2_title_new">Нравиться использовать %1$s?</string>
+  <string name="travel_dialog_2_description_new">Вы можете установить %1$s %2$s вашей поисковой системой для путешествий по умолчанию.</string>
   <string name="travel_dialog_2_checkbox">Не спрашивать в следующий раз</string>
   <string name="travel_dialog_2_action">УСТАНОВИТЬ ПО УМОЛЧАНИЮ</string>
 </resources>
