@@ -298,6 +298,15 @@ dependencies {
     implementation "com.google.android.play:core:${Versions.play}"
 }
 
+// There is a issue with Appcompat 1.1.0 which has the WebView crash on Android 5 devices.
+// https://issuetracker.google.com/issues/141132133
+// We downgraded the libraries to 1.1.0-rc1 and need to check and upgrade to 1.2.0 in the future.
+configurations.all {
+    resolutionStrategy {
+        force "androidx.appcompat:appcompat:${Versions.appcompat}"
+    }
+}
+
 // -------------------------------------------------------------------------------------------------
 // Generate blocklists
 // -------------------------------------------------------------------------------------------------
