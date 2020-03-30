@@ -1,15 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="onboarding_2_introduction_description">รวดเร็วและกะทัดรัด เราเพิ่มการค้นหาแบบสมาร์ตชอปปิงและเนื้อหาเพื่อให้การเล่นอินเทอร์เน็ตสนุกและเพลิดเพลินมากขึ้น</string>
-    <string name="onboarding_2_content_services_news_shopping_games">แตะเพื่ออ่านข่าวติดเทรนด์ หาดีลดีๆ หรือเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
-    <string name="onboarding_2_content_services_news_games">แตะเพื่ออ่านข่าวติดเทรนด์ หาดีลดีๆ หรือเล่นเกมฟรีสุดฮอตสนุกๆ!</string>
-    <string name="private_home_description_1">ตอนนี้คุณสามารถค้นดูแบบส่วนตัว ไม่เก็บประวัติ ไม่เก็บรหัสผ่านและคนอื่นที่ใช้อุปกรณ์นี้จะไม่เห็นกิจกรรมของคุณ\n\nการค้นดูแบบส่วนตัวขั้นสูงสามารถแม้แต่ %1$s จากโฆษณาและเว็บไซต์ซึ่งโหมดส่วนตัวส่วนใหญ่ทำไม่ได้</string>
-    <string name="onboarding_2_content_services_news_travel">แตะเพื่ออ่านข่าวที่เป็นกระแส วางแผนเที่ยวครั้งต่อไป และอื่นๆ!</string>
     <string name="travel_search_engine_fxlite">ดูผลลัพธ์ใน เสาะหาสิ่งใหม่จากการเดินทางด้วย %1$s</string>
 
     <!--Dialog-->
     <!--dialog title for introducing Firefox Lite Travel Discovery-->
-    <string name="travel_dialog_1_title">ค้นพบสิ่งต่างๆ มากขึ้น!</string>
     <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
     <string name="travel_dialog_1_description">สำรวจสิ่งต่างๆ ที่ทำได้ ที่พัก และอื่นๆ ใน Travel Discovery จาก %1$s</string>
     <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
@@ -25,9 +19,4 @@
     <string name="travel_discovery">เสาะหาสิ่งใหม่จากการเดินทาง</string>
 
 
-    <string name="shopping_search_onboarding_body_A">เปรียบเทียบราคาสินค้าในเว็บไซต์ซื้อขายยอดนิยมได้อย่างง่ายดาย</string>
-    <string name="shopping_search_onboarding_body_B">เริ่มประหยัดวันนี้ ค้นหาและเปรียบเทียบราคาในเว็บไซต์ยอดนิยม</string>
-    <string name="travel_no_result_state_text">อืมม์ ไม่พบผลลัพธ์</string>
-    <string name="travel_dialog_1_description_new">สำรวจกิจกรรม ที่พัก และอื่นๆ ใน %1$s %2$s</string>
-    <string name="travel_dialog_2_description_new">คุณสามารถตั้งค่า %1$s %2$s เป็นโปรแกรมค้นหาเริ่มต้นสำหรับการเดินทางได้</string>
-</resources>
+    </resources>
