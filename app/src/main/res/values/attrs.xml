@@ -29,4 +29,9 @@
     <declare-styleable name="NightMode">
         <attr name="state_night" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="CollapsingUrlBar">
+        <attr name="title" format="string"/>
+        <attr name="iconResId" format="reference"/>
+    </declare-styleable>
 </resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/title"
+        app:layout_constraintTop_toTopOf="@id/title"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:scaleType="centerInside"
+        tools:src="@drawable/ic_search_black"/>
+
+    <org.mozilla.rocket.nightmode.themed.ThemedTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/paletteBlack100"
+        style="@style/Headline3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/toolbar"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- divider between appbar and web-vew, will be covered by progress bar -->
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="2dp"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/url_bar_divider_default"
+        tools:background="#FF0000" />
+
+    <org.mozilla.focus.widget.AnimatedProgressBar
+        android:id="@+id/progress"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="-1dp"
+        android:importantForAccessibility="yes"
+        android:progressDrawable="@drawable/photon_progressbar"
+        app:shiftDuration="@integer/progress_shift_duration"
+        app:wrapShiftDrawable="true"
+        tools:progress="50" />
+
+</merge>
