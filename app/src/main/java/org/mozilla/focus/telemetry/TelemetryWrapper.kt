@@ -1494,10 +1494,18 @@ object TelemetryWrapper {
             method = Method.SHOW,
             `object` = Object.SEARCH_BAR,
             value = Value.MINI_URLBAR,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
+            ])
     @JvmStatic
-    fun clickUrlbar() {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.MINI_URLBAR).queue()
+    fun clickUrlbar(vertical: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.MINI_URLBAR)
+                .apply {
+                    if (vertical.isNotEmpty()) {
+                        extra(Extra.VERTICAL, vertical)
+                    }
+                }
+                .queue()
     }
 
     @TelemetryDoc(
