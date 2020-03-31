@@ -240,6 +240,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
                 override fun onPageSelected(position: Int) {
                     selectContentFragment(shoppingSearchTabsAdapter, position)
+                    appbar.setExpanded(true)
+                    (bottom_bar.behavior as BottomBar.BottomBarBehavior).setState(bottom_bar, true)
                 }
             })
             view_pager.setSwipeable(false)

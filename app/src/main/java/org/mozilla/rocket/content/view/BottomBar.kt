@@ -21,6 +21,7 @@ class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
     private var onItemClickListener: OnItemClickListener? = null
     private var onItemLongClickListener: OnItemLongClickListener? = null
     private val itemVisibilities = SparseIntArray()
+    private val bottomBarBehavior by lazy { BottomBarBehavior() }
 
     constructor(context: Context) : super(context) {
         init()
@@ -115,9 +116,9 @@ class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
         }
     }
 
-    override fun getBehavior(): CoordinatorLayout.Behavior<*> = BottomBarBehavior()
+    override fun getBehavior(): CoordinatorLayout.Behavior<*> = bottomBarBehavior
 
-    private class BottomBarBehavior : HideBottomViewOnScrollBehavior<BottomBar> {
+    class BottomBarBehavior : HideBottomViewOnScrollBehavior<BottomBar> {
 
         constructor() : super()
 
@@ -129,6 +130,14 @@ class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
             if (currentState != STATE_SCROLLED_DOWN && dyUnconsumed < 0) {
                 slideUp(child)
             } else if (currentState != STATE_SCROLLED_UP && dyUnconsumed > 0) {
+                slideDown(child)
+            }
+        }
+
+        internal fun setState(child: BottomBar, slideUp: Boolean) {
+            if (slideUp) {
+                slideUp(child)
+            } else {
                 slideDown(child)
             }
         }
