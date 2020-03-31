@@ -218,6 +218,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
     private fun initUrlBar() {
         url_bar.setTitle(searchKeyword)
+        url_bar.setOnClickListener { sendNewSearchIntent(requireContext()) }
     }
 
     private fun initViewPager() {
