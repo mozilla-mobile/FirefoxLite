@@ -39,37 +39,45 @@
         app:layout_anchor="@id/bottom_bar"
         app:layout_anchorGravity="top">
 
-        <FrameLayout
-            android:id="@+id/tab_container"
+        <HorizontalScrollView
+            android:id="@+id/tab_layout_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="47dp">
+            android:layout_height="47dp"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@id/bottom_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="48dp"
-                android:background="@color/paletteLightGreyB100"
-                app:tabBackground="@drawable/shopping_search_tab_item_selector"
-                app:tabIndicatorColor="@android:color/transparent"
-                app:tabMode="scrollable"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabTextAppearance="@style/ShoppingSearchTabText"
-                app:tabTextColor="@color/paletteDarkGreyE100"
-                app:tabUnboundedRipple="true" />
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/preferenceButton"
-                android:layout_width="48dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:background="@color/paletteLightGreyB100"
-                android:elevation="2dp"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_arrowhead_up_light_black" />
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/paletteLightGreyB100"
+                    app:tabBackground="@drawable/shopping_search_tab_item_selector"
+                    app:tabIndicatorColor="@android:color/transparent"
+                    app:tabMode="scrollable"
+                    app:tabSelectedTextColor="@android:color/white"
+                    app:tabTextAppearance="@style/ShoppingSearchTabText"
+                    app:tabTextColor="@color/paletteDarkGreyE100"
+                    app:tabUnboundedRipple="true" />
 
-        </FrameLayout>
+                <ImageButton
+                    android:id="@+id/preferenceButton"
+                    android:layout_width="48dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/paletteLightGreyB100"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_shopping_search_preferences" />
+            </LinearLayout>
+
+        </HorizontalScrollView>
 
         <View
             android:layout_width="match_parent"
