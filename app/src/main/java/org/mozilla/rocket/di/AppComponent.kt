@@ -68,7 +68,6 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
-import org.mozilla.rocket.shopping.search.ui.ShoppingSearchContentSwitchOnboardingDialogFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchKeywordInputFragment
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchPreferencesActivity
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment
@@ -133,7 +132,6 @@ interface AppComponent {
     fun inject(challengeListFragment: ChallengeListFragment)
     fun inject(redeemListFragment: RedeemListFragment)
     fun inject(shoppingSearchPreferencesActivity: ShoppingSearchPreferencesActivity)
-    fun inject(shoppingSearchContentSwitchOnboardingDialogFragment: ShoppingSearchContentSwitchOnboardingDialogFragment)
     fun inject(rewardActivity: RewardActivity)
     fun inject(profileActivity: ProfileActivity)
     fun inject(travelActivity: TravelActivity)

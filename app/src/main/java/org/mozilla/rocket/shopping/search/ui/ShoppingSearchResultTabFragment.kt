@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.appbar
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.bottom_bar
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.preferenceButton
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.tab_layout
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.tab_layout_scroll_view
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.url_bar
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.video_container
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.view_pager
@@ -133,10 +134,6 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     }
 
     private fun observeAction() {
-        shoppingSearchResultViewModel.showOnboardingDialog.observe(viewLifecycleOwner, Observer {
-            val dialogFragment = ShoppingSearchContentSwitchOnboardingDialogFragment()
-            dialogFragment.show(childFragmentManager, "onboardingDialogFragment")
-        })
         shoppingSearchResultViewModel.goBackToInputPage.observe(viewLifecycleOwner, Observer {
             goBackToSearchInputPage()
         })
