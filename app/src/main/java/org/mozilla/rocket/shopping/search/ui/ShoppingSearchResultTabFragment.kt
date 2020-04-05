@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -251,6 +252,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
 
                 override fun onPageSelected(position: Int) {
+                    tab_layout_scroll_view.scrollTo(calculateScrollXForTab(position, 1F), 0)
                     selectContentFragment(shoppingSearchTabsAdapter, position)
                     appbar.setExpanded(true)
                     (bottom_bar.behavior as BottomBar.BottomBarBehavior).setState(bottom_bar, true)
@@ -268,6 +270,17 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 false
             }
         })
+    }
+
+    private fun calculateScrollXForTab(position: Int, positionOffset: Float): Int {
+        val slidingTabIndicator = tab_layout.getChildAt(0) as ViewGroup
+        val selectedChild: View = slidingTabIndicator.getChildAt(position)
+        val nextChild: View? = if (position + 1 < slidingTabIndicator.childCount) slidingTabIndicator.getChildAt(position + 1) else null
+        val selectedWidth = selectedChild.width
+        val nextWidth = nextChild?.width ?: 0
+        val scrollBase: Int = selectedChild.left + selectedWidth / 2 - tab_layout_scroll_view.width / 2
+        val scrollOffset = ((selectedWidth + nextWidth).toFloat() * 0.5f * positionOffset).toInt()
+        return if (ViewCompat.getLayoutDirection(tab_layout) == ViewCompat.LAYOUT_DIRECTION_LTR) scrollBase + scrollOffset else scrollBase - scrollOffset
     }
 
     private fun selectContentFragment(adapter: ShoppingSearchTabsAdapter, position: Int) {
