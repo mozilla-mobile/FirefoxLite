@@ -15,6 +15,7 @@
 
     <declare-styleable name="FlowLayout">
         <attr name="spacing" format="integer" />
+        <attr name="maxRows" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="EqualDistributeGrid">

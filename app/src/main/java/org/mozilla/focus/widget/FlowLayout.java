@@ -14,6 +14,7 @@ import org.mozilla.focus.R;
 
 public class FlowLayout extends ViewGroup {
     private int mSpacing;
+    private int mMaxRows;
 
     public FlowLayout(Context context) {
         super(context);
@@ -24,6 +25,7 @@ public class FlowLayout extends ViewGroup {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FlowLayout);
         mSpacing = a.getDimensionPixelSize(R.styleable.FlowLayout_spacing,
                 (int) context.getResources().getDimension(R.dimen.flow_layout_spacing));
+        mMaxRows = a.getInt(R.styleable.FlowLayout_maxRows, Integer.MAX_VALUE);
         a.recycle();
     }
 
@@ -32,6 +34,7 @@ public class FlowLayout extends ViewGroup {
         final int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
         final int childCount = getChildCount();
         int rowWidth = 0;
+        int rowCount = 0;
         int totalWidth = 0;
         int totalHeight = 0;
         boolean firstChild = true;
@@ -49,11 +52,13 @@ public class FlowLayout extends ViewGroup {
 
             if (firstChild || (rowWidth + childWidth > parentWidth)) {
                 rowWidth = 0;
-                totalHeight += childHeight;
-                if (!firstChild) {
-                    totalHeight += mSpacing;
+                if (++rowCount <= mMaxRows) {
+                    totalHeight += childHeight;
+                    if (!firstChild) {
+                        totalHeight += mSpacing;
+                    }
+                    firstChild = false;
                 }
-                firstChild = false;
             }
 
             rowWidth += childWidth;
