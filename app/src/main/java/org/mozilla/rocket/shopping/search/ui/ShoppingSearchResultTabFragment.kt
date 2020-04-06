@@ -17,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
+import kotlinx.android.synthetic.main.layout_collapsing_url_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -92,7 +93,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         view_pager.setOnApplyWindowInsetsListener { v, insets ->
             if (insets.systemWindowInsetBottom == 0) {
                 //  TODO: move this offset to resource, not hard-codeed *2 here
-                v.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.fixed_menu_height) * 2)
+                v.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.fixed_menu_height))
             } else {
                 v.setPadding(0, 0, 0, 0)
             }
@@ -102,6 +103,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        initUrlBar()
         initViewPager()
         initTabLayout()
 
@@ -214,6 +216,10 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
             .observe(viewLifecycleOwner, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
     }
 
+    private fun initUrlBar() {
+        url_bar.setTitle(searchKeyword)
+    }
+
     private fun initViewPager() {
         shoppingSearchResultViewModel.uiModel.observe(viewLifecycleOwner, Observer { uiModel ->
             tabItems.clear()
@@ -234,6 +240,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
                 override fun onPageSelected(position: Int) {
                     selectContentFragment(shoppingSearchTabsAdapter, position)
+                    appbar.setExpanded(true)
+                    (bottom_bar.behavior as BottomBar.BottomBarBehavior).setState(bottom_bar, true)
                 }
             })
             view_pager.setSwipeable(false)

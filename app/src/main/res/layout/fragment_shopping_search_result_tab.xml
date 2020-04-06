@@ -1,75 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="org.mozilla.rocket.shopping.search.ui.ShoppingSearchResultTabFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:clipChildren="false"
+        app:elevation="0dp">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
+        <org.mozilla.rocket.shopping.search.ui.CollapsingUrlBar
+            android:id="@+id/url_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:clipChildren="false"
-            app:elevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:minHeight="25dp"
+            app:iconResId="@drawable/ic_search_black"
+            app:layout_scrollFlags="scroll|enterAlways|snap|exitUntilCollapsed"/>
 
-            <FrameLayout
-                android:id="@+id/urlbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipChildren="false"
-                app:layout_scrollFlags="">
+    </com.google.android.material.appbar.AppBarLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:background="@color/url_bar_divider_default"
-                    tools:background="#FF0000" />
+    <org.mozilla.rocket.widget.LockableViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-                <!-- divider between appbar and web-vew, will be covered by progress bar -->
-                <include layout="@layout/toolbar" />
-
-                <org.mozilla.focus.widget.AnimatedProgressBar
-                    android:id="@+id/progress"
-                    style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="-1dp"
-                    android:importantForAccessibility="yes"
-                    android:progressDrawable="@drawable/photon_progressbar"
-                    app:shiftDuration="@integer/progress_shift_duration"
-                    app:wrapShiftDrawable="true"
-                    tools:progress="50" />
-            </FrameLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <org.mozilla.rocket.widget.LockableViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="top"
+        app:layout_anchor="@id/bottom_bar"
+        app:layout_anchorGravity="top">
 
         <FrameLayout
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
-            app:layout_constraintBottom_toTopOf="@id/bottom_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="47dp">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
@@ -101,21 +74,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/paletteLightGreyC100"
-            app:layout_constraintBottom_toTopOf="@id/bottom_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:background="@color/paletteLightGreyC100" />
 
-        <org.mozilla.rocket.content.view.BottomBar
-            android:id="@+id/bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fixed_menu_height"
-            android:background="@color/paletteLightGreyB100"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <org.mozilla.rocket.content.view.BottomBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fixed_menu_height"
+        android:background="@color/paletteLightGreyB100"
+        android:layout_gravity="bottom"/>
 
     <FrameLayout
         android:id="@+id/video_container"
@@ -124,4 +92,4 @@
         android:background="@android:color/black"
         android:visibility="gone" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
