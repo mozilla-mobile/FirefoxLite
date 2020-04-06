@@ -786,7 +786,9 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private void initialiseNormalBrowserUi() {
         urlView.setOnClickListener(v -> {
             chromeViewModel.getShowUrlInput().setValue(getUrl());
-            TelemetryWrapper.clickUrlbar();
+            // TODO: Needs to confirm with bi that what vertical should be passed into in normal browser using cases
+            // TODO: For now just pass a empty string
+            TelemetryWrapper.clickUrlbar("");
         });
     }
 

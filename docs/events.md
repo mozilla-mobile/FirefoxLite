@@ -66,7 +66,7 @@
 |Clear SearchBar|action|clear|search_bar|""|"version=2," 
 |Dismiss SearchBar|action|cancel|search_bar|""|"version=2," 
 |Show SearchBar from Home|action|show|search_bar|"search_box"|"" 
-|Show SearchBar by clicking MINI_URLBAR|action|show|search_bar|"mini_urlbar"|"" 
+|Show SearchBar by clicking MINI_URLBAR|action|show|search_bar|"mini_urlbar"|"vertical=shopping,game,travel,lifestyle," 
 |Show SearchBar by clicking SEARCH_BUTTON|action|show|search_bar|"search_btn"|"version=2,mode=[webview|menu],position=[0-4]," 
 |Add Tab from Toolbar|action|add|tab|"toolbar"|"version=2,mode=[webview|menu],position=[0-4]," 
 |Add Tab from TabTray|action|add|tab|"tab_tray"|"" 

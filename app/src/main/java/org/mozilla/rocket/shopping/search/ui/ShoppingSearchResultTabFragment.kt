@@ -13,14 +13,22 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.*
-import kotlinx.android.synthetic.main.layout_collapsing_url_bar.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.appbar
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.bottom_bar
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.preferenceButton
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.tab_layout
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.url_bar
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.video_container
+import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.view_pager
+import kotlinx.android.synthetic.main.layout_collapsing_url_bar.progress
+import kotlinx.android.synthetic.main.toolbar.display_url
+import kotlinx.android.synthetic.main.toolbar.site_identity
+import kotlinx.android.synthetic.main.toolbar.toolbar_root
 import org.mozilla.focus.R
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener
@@ -128,6 +136,9 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
             val dialogFragment = ShoppingSearchContentSwitchOnboardingDialogFragment()
             dialogFragment.show(childFragmentManager, "onboardingDialogFragment")
         })
+        shoppingSearchResultViewModel.goBackToInputPage.observe(viewLifecycleOwner, Observer {
+            goBackToSearchInputPage()
+        })
     }
 
     override fun onResume() {
@@ -189,7 +200,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 when (type) {
                     BottomBarItemAdapter.TYPE_HOME -> sendHomeIntent(requireContext())
                     BottomBarItemAdapter.TYPE_REFRESH -> chromeViewModel.refreshOrStop.call()
-                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> sendNewSearchIntent(requireContext())
+                    BottomBarItemAdapter.TYPE_SHOPPING_SEARCH -> shoppingSearchResultViewModel.onShoppingSearchButtonClick()
                     BottomBarItemAdapter.TYPE_NEXT -> chromeViewModel.goNext.call()
                     BottomBarItemAdapter.TYPE_SHARE -> chromeViewModel.share.call()
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
@@ -218,6 +229,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
     private fun initUrlBar() {
         url_bar.setTitle(searchKeyword)
+        url_bar.setOnClickListener { shoppingSearchResultViewModel.onUrlBarClicked() }
     }
 
     private fun initViewPager() {
@@ -339,13 +351,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         startActivity(intent)
     }
 
-    private fun sendNewSearchIntent(context: Context) {
-        startActivity(
-            ShoppingSearchActivity.getStartIntent(context).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            }
-        )
-        TelemetryWrapper.clickToolbarTabSwipe(TelemetryWrapper.Extra_Value.SHOPPING, TelemetryWrapper.Extra_Value.TAB_SWIPE)
+    private fun goBackToSearchInputPage() {
+        findNavController().navigateUp()
     }
 
     private fun goBack() = sessionManager.focusSession?.engineSession?.goBack()
