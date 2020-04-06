@@ -1,5 +1,6 @@
 package org.mozilla.rocket.shopping.search.ui
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +18,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.animation.AnimationUtils
+import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.appbar
 import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.bottom_bar
@@ -75,6 +78,14 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     private lateinit var contentTabHelper: ContentTabHelper
     private lateinit var contentTabObserver: ContentTabHelper.Observer
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
+
+    private val scrollAnimator: ValueAnimator by lazy {
+        ValueAnimator().apply {
+            interpolator = AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR
+            duration = ANIMATION_DURATION
+            addUpdateListener { animator -> tab_layout_scroll_view.scrollTo(animator.animatedValue as Int, 0) }
+        }
+    }
 
     private val safeArgs: ShoppingSearchResultTabFragmentArgs by navArgs()
     private val searchKeyword by lazy { safeArgs.searchKeyword }
@@ -249,7 +260,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
 
                 override fun onPageSelected(position: Int) {
-                    tab_layout_scroll_view.scrollTo(calculateScrollXForTab(position, 1F), 0)
+                    animateToTab(position)
                     selectContentFragment(shoppingSearchTabsAdapter, position)
                     appbar.setExpanded(true)
                     (bottom_bar.behavior as BottomBar.BottomBarBehavior).setState(bottom_bar, true)
@@ -267,6 +278,29 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 false
             }
         })
+    }
+
+    private fun animateToTab(newPosition: Int) {
+        if (newPosition == TabLayout.Tab.INVALID_POSITION) {
+            return
+        }
+
+        if (tab_layout_scroll_view.windowToken == null || !ViewCompat.isLaidOut(tab_layout_scroll_view)) {
+            // If we don't have a window token, or we haven't been laid out yet just draw the new
+            // position now
+            if (scrollAnimator.isRunning) {
+                scrollAnimator.cancel()
+            }
+            tab_layout_scroll_view.scrollTo(calculateScrollXForTab(newPosition, 0F), 0)
+            return
+        }
+
+        val startScrollX: Int = tab_layout_scroll_view.scrollX
+        val targetScrollX = calculateScrollXForTab(newPosition, 0F)
+        if (startScrollX != targetScrollX) {
+            scrollAnimator.setIntValues(startScrollX, targetScrollX)
+            scrollAnimator.start()
+        }
     }
 
     private fun calculateScrollXForTab(position: Int, positionOffset: Float): Int {
@@ -372,4 +406,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
     private fun stop() = sessionManager.focusSession?.engineSession?.stopLoading()
 
     private fun reload() = sessionManager.focusSession?.engineSession?.reload()
+
+    companion object {
+        private const val ANIMATION_DURATION = 300L
+    }
 }
