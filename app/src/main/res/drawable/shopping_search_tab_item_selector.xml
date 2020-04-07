@@ -8,7 +8,7 @@
 
     <!-- drawable for unselected tab -->
     <item
-        android:drawable="@android:color/transparent"
+        android:drawable="@drawable/bg_unselected_tab_item"
         android:state_selected="false"/>
 
 </selector>
