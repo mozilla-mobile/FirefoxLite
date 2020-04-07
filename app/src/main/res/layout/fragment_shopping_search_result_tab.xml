@@ -29,6 +29,7 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/shopping_search_tab_bar_height"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <LinearLayout
@@ -47,7 +48,7 @@
         <HorizontalScrollView
             android:id="@+id/tab_layout_scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
+            android:layout_height="@dimen/shopping_search_tab_bar_height"
             android:fillViewport="true"
             android:scrollbars="none"
             app:layout_constraintBottom_toTopOf="@id/bottom_bar"
