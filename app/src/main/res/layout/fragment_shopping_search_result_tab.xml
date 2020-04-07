@@ -39,6 +39,11 @@
         app:layout_anchor="@id/bottom_bar"
         app:layout_anchorGravity="top">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/paletteLightGreyC100" />
+
         <HorizontalScrollView
             android:id="@+id/tab_layout_scroll_view"
             android:layout_width="match_parent"
@@ -64,8 +69,7 @@
                     app:tabMode="scrollable"
                     app:tabSelectedTextColor="@android:color/white"
                     app:tabTextAppearance="@style/ShoppingSearchTabText"
-                    app:tabTextColor="@color/paletteDarkGreyE100"
-                    app:tabUnboundedRipple="true" />
+                    app:tabTextColor="@color/paletteDarkGreyE100" />
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -85,11 +89,6 @@
             </LinearLayout>
 
         </HorizontalScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/paletteLightGreyC100" />
 
     </LinearLayout>
 
