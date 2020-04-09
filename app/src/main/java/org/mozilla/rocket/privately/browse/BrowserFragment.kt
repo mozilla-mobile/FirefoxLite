@@ -15,8 +15,8 @@ import android.view.ViewGroup
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -143,8 +143,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
         monitorTrackerBlocked { count -> updateTrackerBlockedCount(count) }
 
-        view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
-            (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
+        view.findViewById<View>(R.id.browser_container).setOnApplyWindowInsetsListener { v, insets ->
+            (v.layoutParams as FrameLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
 
