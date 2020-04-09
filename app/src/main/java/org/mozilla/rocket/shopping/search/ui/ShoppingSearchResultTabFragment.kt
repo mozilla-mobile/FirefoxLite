@@ -113,8 +113,8 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         }
         view_pager.setOnApplyWindowInsetsListener { v, insets ->
             if (insets.systemWindowInsetBottom == 0) {
-                //  TODO: move this offset to resource, not hard-codeed *2 here
-                v.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.fixed_menu_height))
+                v.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.fixed_menu_height) +
+                        insets.systemWindowInsetTop)
             } else {
                 v.setPadding(0, 0, 0, 0)
             }
