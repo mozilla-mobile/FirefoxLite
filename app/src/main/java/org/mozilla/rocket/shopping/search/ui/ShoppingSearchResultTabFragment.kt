@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.fragment_shopping_search_result_tab.view_p
 import kotlinx.android.synthetic.main.layout_collapsing_url_bar.progress
 import kotlinx.android.synthetic.main.toolbar.display_url
 import kotlinx.android.synthetic.main.toolbar.site_identity
-import kotlinx.android.synthetic.main.toolbar.toolbar_root
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -180,7 +179,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
     override fun getProgressBar(): ProgressBar? = progress
 
-    override fun getFullScreenGoneViews() = listOf(toolbar_root, bottom_bar, tab_layout)
+    override fun getFullScreenGoneViews() = listOf(appbar, bottom_bar, tab_layout)
 
     override fun getFullScreenInvisibleViews() = listOf(view_pager)
 
