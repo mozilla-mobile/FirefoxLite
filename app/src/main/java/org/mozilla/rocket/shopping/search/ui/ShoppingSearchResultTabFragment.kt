@@ -376,6 +376,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
         })
 
         chromeViewModel.currentUrl.observe(viewLifecycleOwner, Observer {
+            appbar.setExpanded(true)
             telemetryViewModel.onUrlOpened()
         })
     }
