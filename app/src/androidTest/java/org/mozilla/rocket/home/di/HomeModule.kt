@@ -10,7 +10,6 @@ import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
-import org.mozilla.rocket.home.contenthub.domain.GetNonLiveDataContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
@@ -139,11 +138,6 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetContentHubItemsUseCase = GetContentHubItemsUseCase(contentHubRepo)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGetNonLiveDataContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetNonLiveDataContentHubItemsUseCase = GetNonLiveDataContentHubItemsUseCase(contentHubRepo)
 
     @JvmStatic
     @Singleton
