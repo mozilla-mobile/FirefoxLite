@@ -1,6 +1,7 @@
 package org.mozilla.focus.notification
 
 import android.content.Context
+import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_DATA_MSG_BODY
@@ -13,9 +14,14 @@ import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_
 
 class NotificationScheduleWorker(val context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
+    companion object {
+        private const val TAG = "ServerPush"
+    }
+
     override fun doWork(): Result {
         val messageId = inputData.getString(STR_MESSAGE_ID)
         val title = inputData.getString(STR_DATA_MSG_TITLE)
+        Log.d(TAG, "Displaying title[$title] with messageId[$messageId]")
         val body = inputData.getString(STR_DATA_MSG_BODY)
 
         val openUrl = inputData.getString(STR_PUSH_OPEN_URL)

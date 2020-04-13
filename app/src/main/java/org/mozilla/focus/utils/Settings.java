@@ -19,6 +19,7 @@ import org.mozilla.focus.provider.SettingPreferenceWrapper;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.rocket.preference.SharedPreferenceLiveData;
 import org.mozilla.rocket.preference.SharedPreferenceLiveDataKt;
+import org.mozilla.strictmodeviolator.StrictModeViolation;
 
 import java.util.Set;
 
@@ -166,6 +167,17 @@ public class Settings {
 
     public boolean didShowRateAppDialog() {
         return preferences.getBoolean(getPreferenceKey(R.string.pref_key_did_show_rate_app_dialog), DID_SHOW_RATE_APP_DEFAULT);
+    }
+
+    public void setHashedFcmToken(String fcmToken) {
+        preferences.edit()
+                .putInt(getPreferenceKey(R.string.pref_int_fcm_token), fcmToken.hashCode())
+                .apply();
+    }
+
+    public int getHashedFcmToken() {
+        return StrictModeViolation.<Integer>tempGrant(builder -> builder.permitDiskReads().permitDiskWrites(),
+                () -> preferences.getInt(getPreferenceKey(R.string.pref_int_fcm_token), 0));
     }
 
     public void setRateAppDialogDidShow() {
