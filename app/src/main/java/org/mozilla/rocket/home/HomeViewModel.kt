@@ -92,7 +92,6 @@ class HomeViewModel(
     val openBrowser = SingleLiveEvent<String>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
-    val openContentPageTopSite = SingleLiveEvent<Site.ContentItem>()
     val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showToast = SingleLiveEvent<ToastMessage>()
     val openRewardPage = SingleLiveEvent<Unit>()
@@ -296,43 +295,6 @@ class HomeViewModel(
         }
     }
 
-    fun onContentHubItemClicked(item: Site.ContentItem) {
-        val contentHubItem = when (item) {
-            is Site.ContentItem.Travel -> ContentHub.Item.Travel(item.iconResId, item.textResId, item.isUnread)
-            is Site.ContentItem.Games -> ContentHub.Item.Games(item.iconResId, item.textResId, item.isUnread)
-            is Site.ContentItem.News -> ContentHub.Item.News(item.iconResId, item.textResId, item.isUnread)
-            is Site.ContentItem.Shopping -> ContentHub.Item.Shopping(item.iconResId, item.textResId, item.isUnread)
-        }
-        onContentHubItemClicked(contentHubItem)
-    }
-
-    fun onTopSiteContentItemClicked(item: Site.ContentItem) = viewModelScope.launch {
-        openContentPageTopSite.value = item
-        readContentHubItemUseCase(item.getItemType())
-        val checkInResult = checkInMissionUseCase(
-            when (item) {
-                is Site.ContentItem.Travel -> CheckInMissionUseCase.PingType.Travel()
-                is Site.ContentItem.Shopping -> CheckInMissionUseCase.PingType.Shopping()
-                is Site.ContentItem.News -> CheckInMissionUseCase.PingType.Lifestyle()
-                is Site.ContentItem.Games -> CheckInMissionUseCase.PingType.Game()
-            }
-        )
-        checkInResult.data?.let { (mission, hasMissionCompleted) ->
-            val (message, currentDay) = when (val progress = mission.missionProgress) {
-                is MissionProgress.TypeDaily -> progress.message to progress.currentDay
-                null -> error("Unknown MissionProgress type")
-            }
-            if (message.isNotEmpty()) {
-                showToast.value = ToastMessage(message)
-            }
-            if (hasMissionCompleted) {
-                showMissionCompleteDialog.value = mission
-                TelemetryWrapper.showChallengeCompleteMessage()
-            }
-            TelemetryWrapper.endMissionTask(currentDay, hasMissionCompleted)
-        }
-    }
-
     fun onLogoManShown() {
         // Make it only animate once. Remove this when Home Screen doesn't recreate whenever goes back from browser
         val logoManNotification = logoManNotification.value
@@ -445,12 +407,4 @@ private fun ContentHub.Item.getItemType() =
             is ContentHub.Item.Shopping -> ContentHubRepo.SHOPPING
             is ContentHub.Item.News -> ContentHubRepo.NEWS
             is ContentHub.Item.Games -> ContentHubRepo.GAMES
-        }
-
-private fun Site.ContentItem.getItemType() =
-        when (this) {
-            is Site.ContentItem.Travel -> ContentHubRepo.TRAVEL
-            is Site.ContentItem.Shopping -> ContentHubRepo.SHOPPING
-            is Site.ContentItem.News -> ContentHubRepo.NEWS
-            is Site.ContentItem.Games -> ContentHubRepo.GAMES
         }
