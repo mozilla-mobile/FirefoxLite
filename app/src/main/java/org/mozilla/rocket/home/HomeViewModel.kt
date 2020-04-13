@@ -29,7 +29,6 @@ import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
-import org.mozilla.rocket.home.topsites.domain.GetTopSitesWithContentItemUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -50,7 +49,6 @@ import org.mozilla.rocket.util.ToastMessage
 class HomeViewModel(
     private val settings: Settings,
     private val getTopSitesUseCase: GetTopSitesUseCase,
-    private val getTopSitesWithContentItemUseCase: GetTopSitesWithContentItemUseCase,
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,

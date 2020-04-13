@@ -18,10 +18,8 @@ import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
-import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
-import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
-import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
@@ -29,7 +27,6 @@ import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
-import org.mozilla.rocket.home.topsites.domain.GetTopSitesWithContentItemUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -39,6 +36,8 @@ import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
 import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
+import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
+import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRepository
 import javax.inject.Singleton
@@ -51,7 +50,6 @@ object HomeModule {
     fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
-        getTopSitesWithContentItemUseCase: GetTopSitesWithContentItemUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -78,7 +76,6 @@ object HomeModule {
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
-        getTopSitesWithContentItemUseCase,
         topSitesConfigsUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
@@ -108,14 +105,6 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetTopSitesUseCase(topSitesRepo: TopSitesRepo): GetTopSitesUseCase = spy(GetTopSitesUseCase(topSitesRepo))
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGetTopSitesWithContentItemUseCase(
-        getTopSitesUseCase: GetTopSitesUseCase,
-        getNonLiveDataContentHubItemsUseCase: GetNonLiveDataContentHubItemsUseCase
-    ): GetTopSitesWithContentItemUseCase = GetTopSitesWithContentItemUseCase(getTopSitesUseCase, getNonLiveDataContentHubItemsUseCase)
 
     @JvmStatic
     @Singleton
