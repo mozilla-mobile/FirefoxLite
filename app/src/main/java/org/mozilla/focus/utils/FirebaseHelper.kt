@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.mozilla.focus.R
+import org.mozilla.focus.notification.RocketMessagingService
 import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource.Companion.RC_KEY_ENABLE_SHOPPING_SEARCH
@@ -268,6 +269,7 @@ object FirebaseHelper {
     @JvmStatic
     fun initUserState(activity: Activity) {
         firebaseContract.initUserState(activity)
+        RocketMessagingService.checkFcmTokenUploaded(activity.applicationContext)
     }
 
     @JvmStatic
