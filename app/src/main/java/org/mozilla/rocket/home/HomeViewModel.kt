@@ -279,7 +279,7 @@ class HomeViewModel(
     fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
         openContentPage.value = item
         readContentHubItemUseCase(item.getItemType())
-        TelemetryWrapper.clickContentHub(item = item)
+        TelemetryWrapper.clickContentHub(item)
         val checkInResult = checkInMissionUseCase(
             when (item) {
                 is ContentHub.Item.Travel -> CheckInMissionUseCase.PingType.Travel()
@@ -317,7 +317,6 @@ class HomeViewModel(
     fun onTopSiteContentItemClicked(item: Site.ContentItem) = viewModelScope.launch {
         openContentPageTopSite.value = item
         readContentHubItemUseCase(item.getItemType())
-        TelemetryWrapper.clickContentHub(contentItem = item)
         val checkInResult = checkInMissionUseCase(
             when (item) {
                 is Site.ContentItem.Travel -> CheckInMissionUseCase.PingType.Travel()
