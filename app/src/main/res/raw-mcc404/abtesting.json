@@ -1,22 +1,5 @@
 [
   {
-    "name": "content_hub_ab_testing",
-    "enabled": false,
-    "newUserOnly": true,
-    "buckets": [
-      {
-        "experiment_name": "content_position_control",
-        "bucket_range_start": 1,
-        "bucket_range_end": 9
-      },
-      {
-        "experiment_name": "content_position_topsite",
-        "bucket_range_start": 10,
-        "bucket_range_end": 18
-      }
-    ]
-  },
-  {
     "name": "smart_shopping_copy_ab_testing",
     "enabled": true,
     "newUserOnly": false,

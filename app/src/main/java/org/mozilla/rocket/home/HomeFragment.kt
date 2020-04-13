@@ -59,7 +59,6 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
-import org.mozilla.rocket.extension.combineLatest
 import org.mozilla.rocket.extension.showFxToast
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
@@ -257,31 +256,19 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             shouldShowContentHubItemText.observe(viewLifecycleOwner, Observer {
                 content_hub.setShowText(it)
             })
-            // TODO: modify this after the content hub abtesting finished
-            combineLatest(contentHubItems, isContentHubMergeIntoTopSite)
-                    .observe(viewLifecycleOwner, Observer { (items, isMergeIntoTopSite) ->
-                        if (isMergeIntoTopSite) {
-                            content_hub_layout.visibility = View.INVISIBLE
-                            content_hub.setItems(emptyList())
-                            home_fragment_title.apply {
-                                layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
-                                    verticalBias = 0.36f
-                                }
-                            }
-                        } else {
-                            content_hub_layout.visibility = if (items.isEmpty()) {
-                                View.INVISIBLE
-                            } else {
-                                View.VISIBLE
-                            }
-                            content_hub.setItems(items)
-                            home_fragment_title.apply {
-                                layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
-                                    verticalBias = 0.26f
-                                }
-                            }
-                        }
-                    })
+            contentHubItems.observe(viewLifecycleOwner, Observer { items ->
+                content_hub_layout.visibility = if (items.isEmpty()) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+                content_hub.setItems(items)
+                home_fragment_title.apply {
+                    layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
+                        verticalBias = 0.26f
+                    }
+                }
+            })
             openContentPage.observe(viewLifecycleOwner, Observer {
                 val context = requireContext()
                 when (it) {
@@ -442,11 +429,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         content_hub.post {
             if (isAdded) {
                 setOnboardingStatusBarColor()
-                contentServiceSpotlightDialog = if (homeViewModel.isContentHubMergeIntoTopSite.value == true) {
-                    DialogUtils.showContentServiceInTopSitesOnboardingSpotlight(requireActivity(), main_list, dismissListener, clickOkButtonListener)
-                } else {
-                    DialogUtils.showContentServiceOnboardingSpotlight(requireActivity(), content_hub_layout, dismissListener, clickOkButtonListener)
-                }
+                contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(requireActivity(), content_hub_layout, dismissListener, clickOkButtonListener)
             }
         }
     }

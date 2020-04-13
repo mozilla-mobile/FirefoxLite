@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.first
 import org.mozilla.rocket.extension.map
@@ -87,7 +86,6 @@ class HomeViewModel(
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
     val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
-    val isContentHubMergeIntoTopSite: LiveData<Boolean> = MutableLiveData<Boolean>().apply { value = isContentHubAbTestingEnabled() }
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -173,11 +171,7 @@ class HomeViewModel(
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
-        if (isContentHubMergeIntoTopSite.value == true) {
-            sitePages.value = getTopSitesWithContentItemUseCase().toSitePages()
-        } else {
-            sitePages.value = getTopSitesUseCase().toSitePages()
-        }
+        sitePages.value = getTopSitesUseCase().toSitePages()
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
@@ -424,9 +418,6 @@ class HomeViewModel(
         }
         dismissContentServiceOnboardingDialog.call()
     }
-
-    private fun isContentHubAbTestingEnabled(): Boolean =
-            LocalAbTesting.checkAssignedBucket(LocalAbTesting.CONTENT_HUB_AB_TESTING) == LocalAbTesting.CONTENT_POSITION_TOPSITE
 
     data class ShowTopSiteMenuData(
         val site: Site,
