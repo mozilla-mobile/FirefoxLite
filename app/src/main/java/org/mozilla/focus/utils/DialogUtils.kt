@@ -31,8 +31,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
-import kotlinx.android.synthetic.main.content_services_in_top_sites_onboarding_attached_view.view.next
 import kotlinx.android.synthetic.main.myshot_onboarding.view.my_shot_category_learn_more
+import kotlinx.android.synthetic.main.onboarding_spotlight_content_services.view.next
 import kotlinx.android.synthetic.main.onboarding_spotlight_content_services_request_click.view.content_services_plateform_onboarding_message
 import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_message
 import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_title
@@ -357,43 +357,6 @@ object DialogUtils {
                 },
                 AttachedViewConfigs(
                     position = AttachedPosition.BOTTOM,
-                    gravity = AttachedGravity.CENTER_SCREEN
-                )
-            )
-            .cancelOnTouchOutside(false)
-            .dismissListener(dismissListener)
-            .build()
-            .also { it.show() }
-
-    fun showContentServiceInTopSitesOnboardingSpotlight(
-        activity: FragmentActivity,
-        targetView: View,
-        dismissListener: DialogInterface.OnDismissListener,
-        ok: View.OnClickListener?
-    ): Dialog = SpotlightDialog.Builder(activity, targetView)
-            .spotlightConfigs(
-                RectangleSpotlightConfigs(
-                    widthRatio = 0.65f,
-                    heightRatio = 0.53f,
-                    xOffsetRatio = -0.115f,
-                    yOffsetRatio = -0.29f,
-                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
-                )
-            )
-            .addView(
-                activity.inflate(R.layout.onboarding_spotlight_content_services_logo_man),
-                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_END)
-                    addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-                    rightMargin = activity.dpToPx(27.6f)
-                }
-            )
-            .setAttachedView(
-                activity.inflate(R.layout.content_services_in_top_sites_onboarding_attached_view).apply {
-                    next.setOnClickListener(ok)
-                },
-                AttachedViewConfigs(
-                    position = AttachedPosition.TOP,
                     gravity = AttachedGravity.CENTER_SCREEN
                 )
             )
