@@ -37,6 +37,9 @@ object LocalAbTesting {
         appContext = context.applicationContext
     }
 
+    fun isExperimentEnabled(experiment: String): Boolean =
+            assignedBucketMap.containsKey(experiment) || activeExperiments.any { experiment == it.name }
+
     fun checkAssignedBucket(experiment: String): String? {
         return if (assignedBucketMap.containsKey(experiment)) {
             assignedBucketMap[experiment]
