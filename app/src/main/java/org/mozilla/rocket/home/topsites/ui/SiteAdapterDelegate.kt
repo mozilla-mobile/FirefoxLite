@@ -10,7 +10,6 @@ import android.view.View
 import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.item_top_site.content_image
 import kotlinx.android.synthetic.main.item_top_site.pin_indicator
-import kotlinx.android.synthetic.main.item_top_site.red_dot
 import kotlinx.android.synthetic.main.item_top_site.text
 import org.json.JSONException
 import org.json.JSONObject
@@ -74,8 +73,6 @@ class SiteViewHolder(
                     }
                     setPinColor(backgroundColor)
                 }
-                // Red dot
-                red_dot.visibility = View.GONE
 
                 itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
                 if (site is Site.UrlSite.FixedSite) {
@@ -86,23 +83,6 @@ class SiteViewHolder(
                         homeViewModel.onTopSiteLongClicked(site, adapterPosition)
                     }
                 }
-            }
-            is Site.ContentItem -> {
-                text.setText(site.textResId)
-                content_image.visibility = View.VISIBLE
-                content_image.setImageResource(site.iconResId)
-                ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(Color.WHITE))
-                // Pin
-                PinViewWrapper(pin_indicator).visibility = View.GONE
-                // Red dot
-                red_dot.visibility = if (site.isUnread) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-                itemView.setOnClickListener { homeViewModel.onContentHubItemClicked(site) }
-                itemView.setOnLongClickListener(null)
             }
         }
         text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
@@ -197,13 +177,6 @@ sealed class Site : DelegateAdapter.UiModel() {
             val isDefault: Boolean,
             val isPinned: Boolean
         ) : UrlSite(id, title, url, iconUri, viewCount, lastViewTimestamp)
-    }
-
-    sealed class ContentItem(open val iconResId: Int, open val textResId: Int, open var isUnread: Boolean) : Site() {
-        data class Travel(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
-        data class Shopping(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
-        data class News(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
-        data class Games(override val iconResId: Int, override val textResId: Int, override var isUnread: Boolean) : ContentItem(iconResId, textResId, isUnread)
     }
 }
 

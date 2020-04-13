@@ -70,14 +70,4 @@
             android:background="@drawable/notify_pin" />
     </FrameLayout>
 
-    <View
-        android:id="@+id/red_dot"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:background="@drawable/content_hub_red_dot"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="@id/content_image"
-        app:layout_constraintTop_toTopOf="@id/content_image"
-        android:visibility="gone"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
