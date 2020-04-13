@@ -58,8 +58,8 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
         preference.edit().putInt(KEY_SEARCH_PROMPT_MESSAGE_SHOW_COUNT, count).apply()
 
     override fun getSearchDescription(): String {
-        return if (LocalAbTesting.checkAssignedBucket(LocalAbTesting.SMART_SHOPPING_COPY_AB_TESTING)
-                == LocalAbTesting.SMART_SHOPPING_COPY_B) {
+        return if (LocalAbTesting.checkAssignedBucket(SMART_SHOPPING_COPY_AB_TESTING)
+                == SMART_SHOPPING_COPY_B) {
             appContext.getString(R.string.shopping_search_onboarding_body_B)
         } else {
             appContext.getString(R.string.shopping_search_onboarding_body_A)
@@ -75,5 +75,8 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
         const val KEY_SHOPPING_SEARCH_SITE = "shopping_search_site"
         const val KEY_SEARCH_RESULT_ONBOARDING = "shopping_search_result_onboarding"
         const val KEY_SEARCH_PROMPT_MESSAGE_SHOW_COUNT = "shopping_search_prompt_message_show_count"
+
+        private const val SMART_SHOPPING_COPY_AB_TESTING = "smart_shopping_copy_ab_testing"
+        private const val SMART_SHOPPING_COPY_B = "smart_shopping_copy_b"
     }
 }
