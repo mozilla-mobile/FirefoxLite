@@ -49,6 +49,10 @@ class TopSitesRepo(
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
 
+    fun getAbTestingSites(): List<Site>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting_topsites)
+                    ?.jsonStringToSites()
+
     suspend fun getHistorySites(): List<Site> {
         return if (needToCheckDbVersion) {
             needToCheckDbVersion = false
