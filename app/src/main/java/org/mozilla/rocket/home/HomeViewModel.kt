@@ -266,12 +266,14 @@ class HomeViewModel(
         }
     }
 
-    fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
+    fun onRemoveTopSiteClicked(site: Site, position: Int) = viewModelScope.launch {
         when (site) {
             is Site.UrlSite.RemovableSite -> {
                 removeTopSiteUseCase(site)
                 updateTopSitesData()
-                TelemetryWrapper.removeTopSite(site.isDefault)
+                val allowToLogTitle = site.isDefault
+                val title = if (allowToLogTitle) site.title else ""
+                TelemetryWrapper.removeTopSite(site.isDefault, position, title)
             }
         }
     }
