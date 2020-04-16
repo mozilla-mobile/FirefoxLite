@@ -419,10 +419,11 @@ object TelemetryWrapper {
             updateDefaultBrowserStatus(context)
 
             val trackerTokenPrefKey = resources.getString(R.string.pref_key_s_tracker_token)
+            val channel = AppConstants.getChannel()
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
                     .setAppName(TELEMETRY_APP_NAME_ZERDA)
-                    .setUpdateChannel(BuildConfig.BUILD_TYPE)
+                    .setUpdateChannel(channel)
                     .setPreferencesImportantForTelemetry(
                             resources.getString(R.string.pref_key_search_engine),
                             resources.getString(R.string.pref_key_turbo_mode),
