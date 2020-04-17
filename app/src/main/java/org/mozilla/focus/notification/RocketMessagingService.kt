@@ -55,7 +55,7 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
 
         val serverPushEnabled = FirebaseHelper.getFirebase().getRcBoolean(BOOL_IS_SERVER_PUSH_ENABLED)
         val serverPushDebugging = Settings.getInstance(applicationContext).isServerPushDebugging
-        Log.d(TAG, "onDataMessage enabled:$$serverPushEnabled ")
+        Log.d(TAG, "onDataMessage enabled:$serverPushEnabled ")
         if (!serverPushEnabled && !serverPushDebugging) {
             // return early if we pref off this feature in Firebase Remote Config
             return
@@ -277,6 +277,7 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
 
         @WorkerThread
         private fun sendRegistrationToServer(applicationContext: Context, fbUid: String, fcmToken: String) {
+            Log.d(TAG, "sendRegistrationToServer with token")
             val telemetryClientId = TelemetryHolder.get().clientId
             if (telemetryClientId == null) {
                 Log.w(TAG, "telemetryClientId is null")
@@ -308,6 +309,8 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
                             if (it.status == 200) {
                                 Settings.getInstance(applicationContext).setHashedFcmToken(fcmToken)
                                 Log.d(TAG, "FCM Token uploaded: ${fcmToken.hashCode()}")
+                            } else {
+                                Log.d(TAG, "FCM Token uploaded status[${it.status}]: [${it.body}]")
                             }
                         }
             } catch (e: IOException) {
