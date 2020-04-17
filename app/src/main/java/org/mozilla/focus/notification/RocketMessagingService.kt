@@ -138,7 +138,7 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         const val LONG_DATA_MSG_DISPLAY_TIMESTAMP = "display_timestamp"
         const val STR_DATA_MSG_IMAGE_URL = "image_url"
 
-        private const val TAG = "RocketMessagingService"
+        private const val TAG = "FCM_SERVICE"
         private const val STR_USER_TOKEN_API = "str_user_token_api"
         private const val BOOL_IS_SERVER_PUSH_ENABLED = "bool_is_server_push_enabled"
 
