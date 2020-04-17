@@ -25,7 +25,6 @@ import mozilla.components.concept.fetch.Request
 import mozilla.components.concept.fetch.interceptor.withInterceptors
 import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.telemetry.TelemetryWrapper.getNotification
 import org.mozilla.focus.telemetry.TelemetryWrapper.isTelemetryEnabled
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.IntentUtils
@@ -48,6 +47,9 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         val deepLink = parseDeepLink(data)
         Log.d(TAG, "onNotificationMessage messageId:$$messageId ")
 
+        val link = parseLink(openUrl, pushCommand, deepLink)
+        TelemetryWrapper.getNotification(link, messageId)
+
         handlePushMessage(applicationContext, messageId, openUrl, pushCommand, deepLink, title, body, imageUrl)
     }
 
@@ -68,6 +70,9 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         val deepLink = parseDeepLink(data)
         val displayType = parseDisplayType(data)
         val displayTimestamp = parseDisplayTimestamp(data)
+
+        val link = parseLink(openUrl, pushCommand, deepLink)
+        TelemetryWrapper.getNotification(link, messageId)
 
         if (messageId == null || title == null || body == null || displayTimestamp == null || displayType == null) {
             Log.d(TAG, "onDataMessage failed. Required field missing")
@@ -189,8 +194,6 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
             body?.let { builder.setContentText(it) }
 
             val link = parseLink(openUrl, pushCommand, deepLink)
-
-            getNotification(link, messageId)
 
             if (!isTelemetryEnabled(applicationContext)) {
                 return
