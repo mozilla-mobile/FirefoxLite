@@ -53,9 +53,10 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
 
     override fun onDataMessage(data: MutableMap<String, String>) {
 
-        val serverPushDisabled = FirebaseHelper.getFirebase().getRcBoolean(BOOL_IS_SERVER_PUSH_DISABLED)
-        Log.d(TAG, "onDataMessage disabled:$$serverPushDisabled ")
-        if (serverPushDisabled) {
+        val serverPushEnabled = FirebaseHelper.getFirebase().getRcBoolean(BOOL_IS_SERVER_PUSH_ENABLED)
+        val serverPushDebugging = Settings.getInstance(applicationContext).isServerPushDebugging
+        Log.d(TAG, "onDataMessage enabled:$$serverPushEnabled ")
+        if (!serverPushEnabled && !serverPushDebugging) {
             // return early if we pref off this feature in Firebase Remote Config
             return
         }
@@ -139,7 +140,7 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
 
         private const val TAG = "RocketMessagingService"
         private const val STR_USER_TOKEN_API = "str_user_token_api"
-        private const val BOOL_IS_SERVER_PUSH_DISABLED = "bool_is_server_push_disabled"
+        private const val BOOL_IS_SERVER_PUSH_ENABLED = "bool_is_server_push_enabled"
 
         fun scheduleNotification(applicationContext: Context, messageId: String, imageUrl: String?, title: String?, body: String?, openUrl: String?, pushCommand: String?, deepLink: String?, displayTimestamp: Long) {
 

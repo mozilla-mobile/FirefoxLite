@@ -13,16 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.activity_debug.debug_firebase_id
-import kotlinx.android.synthetic.main.activity_debug.debug_firebase_register_token
-import kotlinx.android.synthetic.main.activity_debug.debug_locale_layout
-import kotlinx.android.synthetic.main.activity_debug.debug_locale_text
-import kotlinx.android.synthetic.main.activity_debug.debug_mission_reminder
-import kotlinx.android.synthetic.main.activity_debug.toolbar
+import kotlinx.android.synthetic.main.activity_debug.*
 import org.json.JSONArray
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
-import org.mozilla.rocket.content.appContext
+import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.preference.stringLiveData
 import java.util.concurrent.TimeUnit
 
@@ -39,6 +34,14 @@ class DebugActivity : AppCompatActivity() {
         preference = getSharedPreferences(PREF_NAME_DEBUG, Context.MODE_PRIVATE)
         initDebugLocale()
         initDebugMissionReminderNotification()
+        initDebugServerPush()
+    }
+
+    private fun initDebugServerPush() {
+        switch_disable_server_push.isChecked = Settings.getInstance(this).isServerPushDebugging
+        switch_disable_server_push.setOnCheckedChangeListener { _, isChecked ->
+            Settings.getInstance(this).isServerPushDebugging = isChecked
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

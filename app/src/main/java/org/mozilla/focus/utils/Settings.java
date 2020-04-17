@@ -180,6 +180,17 @@ public class Settings {
                 () -> preferences.getInt(getPreferenceKey(R.string.pref_int_fcm_token), 0));
     }
 
+    public void setServerPushDebugging(boolean enable) {
+        preferences.edit()
+                .putBoolean(getPreferenceKey(R.string.pre_bool_is_server_push_enabled), enable)
+                .apply();
+    }
+
+    public Boolean isServerPushDebugging() {
+        return StrictModeViolation.tempGrant(builder -> builder.permitDiskReads().permitDiskWrites(),
+                () -> preferences.getBoolean(getPreferenceKey(R.string.pre_bool_is_server_push_enabled), false));
+    }
+
     public void setRateAppDialogDidShow() {
         preferences.edit()
                 .putBoolean(getPreferenceKey(R.string.pref_key_did_show_rate_app_dialog), true)
