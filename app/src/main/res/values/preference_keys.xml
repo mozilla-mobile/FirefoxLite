@@ -95,4 +95,7 @@
     <!-- Hashed FCM Token   -->
     <string name="pref_int_fcm_token" translatable="false"><xliff:g id="preference_key">pref_int_fcm_token</xliff:g></string>
 
+    <!-- Server Push Debugging   -->
+    <string name="pre_bool_is_server_push_enabled" translatable="false"><xliff:g id="preference_key">pre_bool_is_server_push_enabled</xliff:g></string>
+
 </resources>

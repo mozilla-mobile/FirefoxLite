@@ -86,4 +86,20 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <Switch
+            android:id="@+id/switch_disable_server_push"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:text="Server Push Debugging"/>
+
+    </LinearLayout>
+
 </LinearLayout>
