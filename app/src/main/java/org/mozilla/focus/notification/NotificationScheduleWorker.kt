@@ -15,7 +15,7 @@ import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_
 class NotificationScheduleWorker(val context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
     companion object {
-        private const val TAG = "ServerPush"
+        private const val TAG = "FCM_WORKER"
     }
 
     override fun doWork(): Result {
