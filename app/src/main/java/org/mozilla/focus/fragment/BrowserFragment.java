@@ -724,6 +724,40 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             updateMainContentBottomMargin(mainContentBottomMargin);
             onLandscapeModeFinish();
         }
+
+        refreshVideoContainer();
+    }
+
+    // Workaround for full-screen WebView issue that the video doesn't fit the viewport
+    // after rotating the device from portrait to landscape and vice versa. It could reduce
+    // the issue happened rate by changing the video view layout size to a slight smaller size
+    // then add to the full screen size again when the device is rotated.
+    private void refreshVideoContainer() {
+        if (videoContainer.getVisibility() == View.VISIBLE) {
+            updateVideoContainerWithLayoutParams(new FrameLayout.LayoutParams(
+                    (int) (videoContainer.getHeight() * 0.99),
+                    (int) (videoContainer.getWidth() * 0.99)
+            ));
+            videoContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (videoContainer.getVisibility() == View.VISIBLE) {
+                        updateVideoContainerWithLayoutParams(new FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                        ));
+                    }
+                }
+            });
+        }
+    }
+
+    private void updateVideoContainerWithLayoutParams(FrameLayout.LayoutParams params) {
+        final View fullscreenContentView = videoContainer.getChildAt(0);
+        if (fullscreenContentView != null) {
+            videoContainer.removeAllViews();
+            videoContainer.addView(fullscreenContentView, params);
+        }
     }
 
     @Nullable
