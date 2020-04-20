@@ -229,6 +229,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     implementation "androidx.room:room-runtime:${Versions.room}"
     kapt "androidx.room:room-compiler:${Versions.room}"
+    implementation "androidx.paging:paging-runtime:${Versions.paging}"
+    implementation "androidx.paging:paging-runtime-ktx:${Versions.paging}"
 
     implementation ("androidx.work:work-runtime:${Versions.arch_work}")
     // to fix dependency conflicts between work-runtime and firebase-inappmessaging-display
