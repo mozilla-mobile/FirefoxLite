@@ -9,10 +9,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.paging.PagedList
+import androidx.recyclerview.widget.DiffUtil
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.fragment_news.news_list
+import kotlinx.android.synthetic.main.fragment_news.news_progress_center
+import kotlinx.android.synthetic.main.fragment_news.no_result_view
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +23,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.adapter.DelegatePagedListAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
@@ -47,12 +50,11 @@ class NewsFragment : Fragment() {
 
     private lateinit var newsViewModel: NewsViewModel
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
-    private lateinit var newsAdapter: DelegateAdapter
+    private lateinit var newsAdapter: DelegatePagedListAdapter
 
     private var isLoading = false
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private var stateLoadingJob: Job? = null
-    private var loadMoreJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -77,40 +79,61 @@ class NewsFragment : Fragment() {
     }
 
     private fun initNewsList() {
-        newsAdapter = DelegateAdapter(
+        newsAdapter = object : DelegatePagedListAdapter(
             AdapterDelegatesManager().apply {
                 add(NewsSourceLogoUiModel::class, R.layout.item_news_source_logo, NewsSourceLogoAdapterDelegate())
                 add(NewsUiModel::class, R.layout.item_news, NewsAdapterDelegate(getCategory(), newsViewModel))
+            },
+            object : DiffUtil.ItemCallback<DelegateAdapter.UiModel>() {
+                override fun areItemsTheSame(oldItem: DelegateAdapter.UiModel, newItem: DelegateAdapter.UiModel): Boolean {
+                    if (oldItem::class != newItem::class) {
+                        return false
+                    }
+                    return when (oldItem) {
+                        is NewsSourceLogoUiModel -> true
+                        is NewsUiModel -> {
+                            newItem as NewsUiModel
+                            oldItem.componentId == newItem.componentId
+                        }
+                        else -> error("unexpected type: ${oldItem.javaClass}")
+                    }
+                }
+
+                override fun areContentsTheSame(oldItem: DelegateAdapter.UiModel, newItem: DelegateAdapter.UiModel): Boolean {
+                    return when (oldItem) {
+                        is NewsSourceLogoUiModel -> true
+                        is NewsUiModel -> {
+                            newItem as NewsUiModel == oldItem
+                        }
+                        else -> error("unexpected type: ${oldItem.javaClass}")
+                    }
+                }
             }
-        )
+        ) {
+            override fun getItemId(position: Int): Long {
+                return when (val item = getItem(position)) {
+                    is NewsSourceLogoUiModel -> item.hashCode().toLong()
+                    is NewsUiModel -> item.componentId.hashCode().toLong()
+                    null -> super.getItemId(position)
+                    else -> error("unexpected type: ${item.javaClass}")
+                }
+            }
+        }.apply {
+            setHasStableIds(true)
+        }
 
         news_list.apply {
             adapter = newsAdapter
-        }
-
-        (news_list.layoutManager as LinearLayoutManager).let {
-            news_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val totalItemCount = it.itemCount
-                    val visibleItemCount = it.childCount
-                    val lastVisibleItem = it.findLastVisibleItemPosition()
-                    if (visibleItemCount + lastVisibleItem + NEWS_THRESHOLD >= totalItemCount) {
-                        loadMore()
-                    }
-                }
-            })
-
-            news_list.monitorScrollImpression(telemetryViewModel)
+            monitorScrollImpression(telemetryViewModel)
         }
     }
 
     private fun bindNewsListData() {
-        val newsLiveData: LiveData<List<DelegateAdapter.UiModel>>? =
+        val newsLiveData: LiveData<PagedList<DelegateAdapter.UiModel>> =
             newsViewModel.startToObserveNews(getCategory(), getLanguage())
-        newsLiveData?.observe(viewLifecycleOwner, Observer { items ->
+        newsLiveData.observe(viewLifecycleOwner, Observer { items ->
             onStatus(items)
-            newsAdapter.setData(items)
+            newsAdapter.submitList(items)
             telemetryViewModel.updateVersionId(getCategory(), newsViewModel.versionId)
             isLoading = false
 
@@ -136,7 +159,8 @@ class NewsFragment : Fragment() {
         no_result_view.setButtonOnClickListener(View.OnClickListener {
             // call onStatus() again with null to display the loading indicator
             onStatus(null)
-            newsViewModel.retry(getCategory(), getLanguage())
+            newsViewModel.remove(getCategory())
+            bindNewsListData()
         })
     }
 
@@ -180,19 +204,6 @@ class NewsFragment : Fragment() {
         news_progress_center.isVisible = true
     }
 
-    private fun loadMore() {
-        if (!isLoading) {
-            isLoading = true
-
-            newsViewModel.loadMore(getCategory())
-
-            loadMoreJob = uiScope.launch {
-                delay(LOAD_MORE_THRESHOLD)
-                isLoading = false
-            }
-        }
-    }
-
     private fun getCategory(): String {
         return arguments?.getString(NewsTabFragment.TYPE_KEY) ?: "top-news"
     }
@@ -202,9 +213,7 @@ class NewsFragment : Fragment() {
     }
 
     companion object {
-        private const val NEWS_THRESHOLD = 10
         private const val TIME_MILLIS_STATE_LOADING_THRESHOLD = 5000L
-        private const val LOAD_MORE_THRESHOLD = 3000L
 
         fun newInstance(category: String, language: String): NewsFragment {
             val args = Bundle().apply {

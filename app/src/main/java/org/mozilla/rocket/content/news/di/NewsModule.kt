@@ -3,7 +3,8 @@ package org.mozilla.rocket.content.news.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import org.mozilla.rocket.content.news.data.NewsRepositoryProvider
+import org.mozilla.rocket.content.news.data.NewsDataSourceFactory
+import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
 import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
 import org.mozilla.rocket.content.news.domain.HasUserEnabledPersonalizedNewsUseCase
@@ -25,6 +26,7 @@ import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
 import org.mozilla.rocket.content.news.ui.NewsTabViewModel
 import org.mozilla.rocket.content.news.ui.NewsViewModel
 import org.mozilla.rocket.content.news.ui.PersonalizedNewsOnboardingViewModel
+import javax.inject.Singleton
 
 @Module
 object NewsModule {
@@ -56,8 +58,9 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideLoadNewsUseCase(newsRepositoryProvider: NewsRepositoryProvider): LoadNewsUseCase =
-        LoadNewsUseCase(newsRepositoryProvider.provideNewsRepository())
+    fun provideLoadNewsUseCase(
+        newsRepository: NewsRepository
+    ): LoadNewsUseCase = LoadNewsUseCase(newsRepository)
 
     @JvmStatic
     @Provides
@@ -101,11 +104,8 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideNewsViewModel(
-        loadNews: LoadNewsUseCase,
-        getAdditionalSourceInfoUseCase: GetAdditionalSourceInfoUseCase
-    ): NewsViewModel =
-        NewsViewModel(loadNews, getAdditionalSourceInfoUseCase)
+    fun provideNewsViewModel(loadNews: LoadNewsUseCase): NewsViewModel =
+        NewsViewModel(loadNews)
 
     @JvmStatic
     @Provides
@@ -165,10 +165,16 @@ object NewsModule {
     ): NewsLanguageSettingViewModel =
         NewsLanguageSettingViewModel(loadRawNewsLanguagesUseCase, setUserPreferenceLanguageUseCase)
 
+    @Singleton // Single instance to persist same dataSourceFactory for LoadNewsUseCase and RefreshNewsUseCase usages
     @JvmStatic
     @Provides
-    fun provideNewsRepositoryProvider(context: Context): NewsRepositoryProvider =
-        NewsRepositoryProvider(context)
+    fun provideNewsRepository(dataSourceFactory: NewsDataSourceFactory): NewsRepository =
+            NewsRepository(dataSourceFactory)
+
+    @JvmStatic
+    @Provides
+    fun provideNewsDataSourceFactory(context: Context): NewsDataSourceFactory =
+            NewsDataSourceFactory(context)
 
     @JvmStatic
     @Provides

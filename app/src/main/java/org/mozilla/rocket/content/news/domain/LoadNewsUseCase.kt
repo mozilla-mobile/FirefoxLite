@@ -16,18 +16,31 @@
 
 package org.mozilla.rocket.content.news.domain
 
-import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.news.data.NewsItem
+import androidx.lifecycle.LiveData
+import androidx.paging.Config
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
+import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.news.data.NewsRepository
+import org.mozilla.rocket.content.news.ui.NewsMapper
 
-class LoadNewsUseCase(private val repository: NewsRepository) {
+class LoadNewsUseCase(
+    private val repository: NewsRepository
+    // TODO: Evan: add source icon item back
+//    private val getAdditionalSourceInfoUseCase: GetAdditionalSourceInfoUseCase
+) {
 
-    suspend operator fun invoke(loadNewsParameter: LoadNewsParameter): Result<List<NewsItem>> {
-        return repository.getNewsItems(
-            loadNewsParameter.topic,
-            loadNewsParameter.language,
-            loadNewsParameter.pages,
-            loadNewsParameter.pageSize
+    operator fun invoke(loadNewsParameter: LoadNewsParameter): LiveData<PagedList<DelegateAdapter.UiModel>> {
+        return repository.getNewsItemsDataSourceFactory().apply {
+            category = loadNewsParameter.topic
+            language = loadNewsParameter.language
+        }.mapByPage { newItems ->
+            newItems.map { NewsMapper.toNewsUiModel(it) as DelegateAdapter.UiModel }
+        }.toLiveData(
+            config = Config(
+                pageSize = loadNewsParameter.pageSize,
+                initialLoadSizeHint = loadNewsParameter.pageSize
+            )
         )
     }
 }
@@ -35,10 +48,5 @@ class LoadNewsUseCase(private val repository: NewsRepository) {
 data class LoadNewsParameter(
     val topic: String,
     val language: String,
-    val pages: Int,
     val pageSize: Int
 )
-
-fun LoadNewsParameter.nextPage(): LoadNewsParameter {
-    return LoadNewsParameter(topic, language, pages + 1, pageSize)
-}

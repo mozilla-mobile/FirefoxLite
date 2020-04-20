@@ -1,44 +1,80 @@
 package org.mozilla.rocket.content.news.data.dailyhunt
 
 import android.content.Context
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import androidx.paging.PageKeyedDataSource
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
-import org.mozilla.rocket.content.news.data.NewsDataSource
 import org.mozilla.rocket.content.news.data.NewsItem
-import org.mozilla.rocket.util.safeApiCall
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.sha256
 import org.mozilla.rocket.util.toJsonObject
 import java.net.URLEncoder
 import java.util.Locale
 
-class DailyHuntNewsRemoteDataSource(private val appContext: Context, private val newsProvider: DailyHuntProvider?) : NewsDataSource {
+class DailyHuntNewsRemoteDataSource(
+    private val appContext: Context,
+    private val newsProvider: DailyHuntProvider?,
+    private val category: String,
+    private val language: String
+) : PageKeyedDataSource<Int, NewsItem>() {
 
-    override suspend fun getNewsItems(category: String, language: String, pages: Int, pageSize: Int): Result<List<NewsItem>> = withContext(Dispatchers.IO) {
-        return@withContext safeApiCall(
-            call = {
-                val partner = newsProvider?.partnerCode ?: ""
-                val timestamp = System.currentTimeMillis().toString()
-                val uid = newsProvider?.userId ?: ""
-                sendHttpRequest(
-                    request = Request(
-                        url = getApiEndpoint(partner, timestamp, uid, category, language, pages, pageSize),
-                        method = Request.Method.GET,
-                        headers = createApiHeaders(partner, timestamp, uid, category, language, pages, pageSize)
-                    ),
-                    onSuccess = {
-                        Result.Success(fromJson(it.body.string()))
-                    },
-                    onError = {
-                        Result.Error(it)
-                    }
-                )
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, NewsItem>) {
+        val pageSize = params.requestedLoadSize
+        val pages = 1
+
+        val result = fetchNewsItems(newsProvider, category, language,
+                pageSize, pages)
+        if (result is Result.Success) {
+            callback.onResult(result.data, null, 2)
+        } // TODO: error handling
+    }
+
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NewsItem>) {
+        val pageSize = params.requestedLoadSize
+        val pages = params.key
+
+        val result = fetchNewsItems(newsProvider, category, language,
+                pageSize, pages)
+        if (result is Result.Success) {
+            callback.onResult(result.data, pages - 1)
+        } // TODO: error handling
+    }
+
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, NewsItem>) {
+        val pageSize = params.requestedLoadSize
+        val pages = params.key
+
+        val result = fetchNewsItems(newsProvider, category, language,
+                pageSize, pages)
+        if (result is Result.Success) {
+            callback.onResult(result.data, pages + 1)
+        } // TODO: error handling
+    }
+
+    private fun fetchNewsItems(
+        newsProvider: DailyHuntProvider?,
+        category: String,
+        language: String,
+        pageSize: Int,
+        pages: Int
+    ): Result<List<NewsItem>> {
+        val partner = newsProvider?.partnerCode ?: ""
+        val timestamp = System.currentTimeMillis().toString()
+        val uid = newsProvider?.userId ?: ""
+        return sendHttpRequest(
+            request = Request(
+                url = getApiEndpoint(partner, timestamp, uid, category, language, pages, pageSize),
+                method = Request.Method.GET,
+                headers = createApiHeaders(partner, timestamp, uid, category, language, pages, pageSize)
+            ),
+            onSuccess = {
+                Result.Success(fromJson(it.body.string()))
             },
-            errorMessage = "Unable to get news items ($category, $language, $pages, $pageSize)"
+            onError = {
+                Result.Error(it)
+            }
         )
     }
 
