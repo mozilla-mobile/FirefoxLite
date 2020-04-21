@@ -54,6 +54,7 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.rocket.home.HomeViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
 import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
@@ -106,6 +107,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private Runnable dismissRunnable = this::dismissAllowingStateLoss;
 
     private TabTrayViewModel tabTrayViewModel = null;
+    private HomeViewModel homeViewModel = null;
 
     private ThemedImageView imgPrivateBrowsing, imgNewTab;
     private ThemedView bottomDivider;
@@ -190,6 +192,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 adapter.setShoppingSearch(showShoppingSearch, uiModel.getKeyword());
             }
         });
+        homeViewModel = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         imgPrivateBrowsing = view.findViewById(R.id.img_private_browsing);
@@ -594,6 +597,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     private void onNewTabClicked() {
         ScreenNavigator.get(getContext()).addHomeScreen(false);
+        homeViewModel.onNewTabButtonClicked();
         TelemetryWrapper.clickAddTabTray();
         postOnNextFrame(dismissRunnable);
     }
