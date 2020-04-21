@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.news.data.dailyhunt
 
 import android.content.Context
+import android.net.Uri
 import androidx.paging.PageKeyedDataSource
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
@@ -12,7 +13,6 @@ import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.sha256
 import org.mozilla.rocket.util.toJsonObject
 import java.net.URLEncoder
-import java.util.Locale
 
 class DailyHuntNewsRemoteDataSource(
     private val appContext: Context,
@@ -61,14 +61,20 @@ class DailyHuntNewsRemoteDataSource(
         pageSize: Int,
         pages: Int
     ): Result<List<NewsItem>> {
-        val partner = newsProvider?.partnerCode ?: ""
-        val timestamp = System.currentTimeMillis().toString()
-        val uid = newsProvider?.userId ?: ""
+        val params = createApiParams(
+            partner = newsProvider?.partnerCode ?: "",
+            timestamp = System.currentTimeMillis().toString(),
+            uid = newsProvider?.userId ?: "",
+            category = category,
+            languageCode = language,
+            pages = pages,
+            pageSize = pageSize
+        )
         return sendHttpRequest(
             request = Request(
-                url = getApiEndpoint(partner, timestamp, uid, category, language, pages, pageSize),
+                url = getApiEndpoint(params),
                 method = Request.Method.GET,
-                headers = createApiHeaders(partner, timestamp, uid, category, language, pages, pageSize)
+                headers = createApiHeaders(params)
             ),
             onSuccess = {
                 Result.Success(fromJson(it.body.string()))
@@ -79,7 +85,7 @@ class DailyHuntNewsRemoteDataSource(
         )
     }
 
-    private fun getApiEndpoint(
+    private fun createApiParams(
         partner: String,
         timestamp: String,
         uid: String,
@@ -87,36 +93,35 @@ class DailyHuntNewsRemoteDataSource(
         languageCode: String,
         pages: Int,
         pageSize: Int
-    ): String {
-        return String.format(Locale.US, DEFAULT_URL, partner, timestamp, uid, category, languageCode, pages, pageSize)
-    }
+    ): Map<String, String> = mapOf(
+        "partner" to partner,
+        "ts" to timestamp,
+        "puid" to uid,
+        "cid" to category,
+        "langCode" to languageCode,
+        "pageNumber" to pages.toString(),
+        "pageSize" to pageSize.toString(),
+        "pfm" to "0",
+        "fm" to "0",
+        "fields" to "none"
+    )
 
-    private fun createApiHeaders(
-        partner: String,
-        timestamp: String,
-        uid: String,
-        category: String,
-        languageCode: String,
-        pages: Int,
-        pageSize: Int
-    ) = MutableHeaders().apply {
+    private fun getApiEndpoint(params: Map<String, String>): String  = Uri.parse(API_URL)
+            .buildUpon()
+            .apply {
+                for ((key, value) in params.entries) {
+                    appendQueryParameter(key, value)
+                }
+            }
+            .build()
+            .toString()
+
+    private fun createApiHeaders(params: Map<String, String>) = MutableHeaders().apply {
         newsProvider?.apiKey?.let {
             set("Authorization", it)
         }
 
         newsProvider?.secretKey?.let {
-            val params = mapOf(
-                "partner" to partner,
-                "ts" to timestamp,
-                "puid" to uid,
-                "cid" to category,
-                "langCode" to languageCode,
-                "pageNumber" to pages.toString(),
-                "pageSize" to pageSize.toString(),
-                "pfm" to "0",
-                "fm" to "0",
-                "fields" to "none"
-            )
             val signature = DailyHuntUtils.generateSignature(it, Request.Method.GET.name, params)
             set("Signature", signature)
         }
@@ -161,6 +166,6 @@ class DailyHuntNewsRemoteDataSource(
     }
 
     companion object {
-        private const val DEFAULT_URL = "http://feed.dailyhunt.in/api/v2/syndication/items?partner=%s&ts=%s&puid=%s&cid=%s&langCode=%s&pageNumber=%d&pageSize=%d&pfm=0&fm=0&fields=none"
+        private const val API_URL = "http://feed.dailyhunt.in/api/v2/syndication/items"
     }
 }
