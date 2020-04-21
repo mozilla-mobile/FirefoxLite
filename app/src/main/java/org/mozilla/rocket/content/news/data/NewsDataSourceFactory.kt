@@ -9,12 +9,12 @@ import org.mozilla.rocket.content.news.data.rss.RssNewsRemoteDataSource
 
 class NewsDataSourceFactory(
     private val appContext: Context
-) : DataSource.Factory<Int, NewsItem>() {
+) : DataSource.Factory<NewsDataSourceFactory.PageKey, NewsItem>() {
 
     lateinit var category: String
     lateinit var language: String
 
-    override fun create(): DataSource<Int, NewsItem> {
+    override fun create(): DataSource<PageKey, NewsItem> {
         val newsProvider = NewsProvider.getNewsProvider()
         return if (newsProvider?.isNewsPoint() == true) {
             val dailyHuntProvider = DailyHuntProvider.getProvider(appContext)
@@ -26,5 +26,10 @@ class NewsDataSourceFactory(
         } else {
             RssNewsRemoteDataSource(newsProvider, category)
         }
+    }
+
+    sealed class PageKey {
+        class PageNumberKey(val number: Int) : PageKey()
+        class PageUrlKey(val url: String) : PageKey()
     }
 }

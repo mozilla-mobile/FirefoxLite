@@ -5,6 +5,7 @@ import mozilla.components.concept.fetch.Request
 import org.json.JSONArray
 import org.mozilla.focus.locale.Locales
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.news.data.NewsDataSourceFactory.PageKey
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.content.news.data.NewsProvider
 import org.mozilla.rocket.util.sendHttpRequest
@@ -16,32 +17,32 @@ import java.util.Locale
 class RssNewsRemoteDataSource(
     private val newsProvider: NewsProvider?,
     private val category: String
-) : PageKeyedDataSource<Int, NewsItem>() {
+) : PageKeyedDataSource<PageKey, NewsItem>() {
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, NewsItem>) {
+    override fun loadInitial(params: LoadInitialParams<PageKey>, callback: LoadInitialCallback<PageKey, NewsItem>) {
         val pages = 1
 
         val result = fetchNewsItems(category, pages)
         if (result is Result.Success) {
-            callback.onResult(result.data, null, 2)
+            callback.onResult(result.data, null, PageKey.PageNumberKey(2))
         } // TODO: error handling
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NewsItem>) {
-        val pages = params.key
+    override fun loadBefore(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
+        val pages = (params.key as PageKey.PageNumberKey).number
 
         val result = fetchNewsItems(category, pages)
         if (result is Result.Success) {
-            callback.onResult(result.data, pages - 1)
+            callback.onResult(result.data, PageKey.PageNumberKey(pages - 1))
         } // TODO: error handling
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, NewsItem>) {
-        val pages = params.key
+    override fun loadAfter(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
+        val pages = (params.key as PageKey.PageNumberKey).number
 
         val result = fetchNewsItems(category, pages)
         if (result is Result.Success) {
-            callback.onResult(result.data, pages + 1)
+            callback.onResult(result.data, PageKey.PageNumberKey(pages + 1))
         } // TODO: error handling
     }
 

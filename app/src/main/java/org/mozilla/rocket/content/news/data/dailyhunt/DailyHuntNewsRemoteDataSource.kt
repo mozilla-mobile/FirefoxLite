@@ -6,6 +6,7 @@ import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
 import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
+import org.mozilla.rocket.content.news.data.NewsDataSourceFactory.PageKey
 import org.mozilla.rocket.content.news.data.NewsItem
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.sha256
@@ -18,38 +19,38 @@ class DailyHuntNewsRemoteDataSource(
     private val newsProvider: DailyHuntProvider?,
     private val category: String,
     private val language: String
-) : PageKeyedDataSource<Int, NewsItem>() {
+) : PageKeyedDataSource<PageKey, NewsItem>() {
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, NewsItem>) {
+    override fun loadInitial(params: LoadInitialParams<PageKey>, callback: LoadInitialCallback<PageKey, NewsItem>) {
         val pageSize = params.requestedLoadSize
         val pages = 1
 
         val result = fetchNewsItems(newsProvider, category, language,
                 pageSize, pages)
         if (result is Result.Success) {
-            callback.onResult(result.data, null, 2)
+            callback.onResult(result.data, null, PageKey.PageNumberKey(2))
         } // TODO: error handling
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, NewsItem>) {
+    override fun loadBefore(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
         val pageSize = params.requestedLoadSize
-        val pages = params.key
+        val pages = (params.key as PageKey.PageNumberKey).number
 
         val result = fetchNewsItems(newsProvider, category, language,
                 pageSize, pages)
         if (result is Result.Success) {
-            callback.onResult(result.data, pages - 1)
+            callback.onResult(result.data, PageKey.PageNumberKey(pages - 1))
         } // TODO: error handling
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, NewsItem>) {
+    override fun loadAfter(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
         val pageSize = params.requestedLoadSize
-        val pages = params.key
+        val pages = (params.key as PageKey.PageNumberKey).number
 
         val result = fetchNewsItems(newsProvider, category, language,
                 pageSize, pages)
         if (result is Result.Success) {
-            callback.onResult(result.data, pages + 1)
+            callback.onResult(result.data, PageKey.PageNumberKey(pages + 1))
         } // TODO: error handling
     }
 
