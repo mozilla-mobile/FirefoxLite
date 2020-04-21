@@ -1,0 +1,58 @@
+[
+  {
+    "id": -1,
+    "url": "https://www.newspointapp.com/?utm_source=mozilla_browser&utm_medium=referral&utm_campaign=np",
+    "title": "NewsPoint",
+    "favicon": "ic_newspointapp.webp",
+    "viewCount": 16
+  },
+  {
+    "id": -2,
+    "url": "https://www.gamezop.com/?id=Pa6YWojZa",
+    "title": "Gamezop",
+    "favicon": "ic_gamezop.webp",
+    "viewCount": 14
+  },
+  {
+    "id": -3,
+    "url": "https://www.booking.com/index.html?aid=1873270;label=mozilla_mainlinkout",
+    "title": "Booking.com",
+    "favicon": "ic_booking.webp",
+    "viewCount": 12
+  },
+  {
+    "id": -4,
+    "url": "https://frvr.com/mozilla/",
+    "title": "FRVR",
+    "favicon": "ic_frvr.webp",
+    "viewCount": 10
+  },
+  {
+    "id": -5,
+    "url": "https://m.youtube.com",
+    "title": "Youtube",
+    "favicon": "ic_youtube.png",
+    "viewCount": 8
+  },
+  {
+    "id": -6,
+    "url": "https://m.facebook.com",
+    "title": "Facebook",
+    "favicon": "ic_facebook.png",
+    "viewCount": 6
+  },
+  {
+    "id": -7,
+    "url": "https://www.wikipedia.org",
+    "title": "Wikipedia",
+    "favicon": "ic_wikipedia.png",
+    "viewCount": 4
+  },
+  {
+    "id": -8,
+    "url": "https://www.indiatimes.com",
+    "title": "Indiatimes",
+    "favicon": "ic_indiatimes.png",
+    "viewCount": 2
+  }
+]

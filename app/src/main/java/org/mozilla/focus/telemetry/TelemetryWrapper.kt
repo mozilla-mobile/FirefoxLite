@@ -1337,12 +1337,17 @@ object TelemetryWrapper {
             method = Method.REMOVE,
             `object` = Object.HOME,
             value = Value.LINK,
-            extras = [TelemetryExtra(name = Extra.DEFAULT, value = "true,false")])
+            extras = [
+                TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
+                TelemetryExtra(name = Extra.ON, value = "Default Top Site Position"),
+                TelemetryExtra(name = Extra.SOURCE, value = "Default Topsite Name")
+            ])
     @JvmStatic
-    fun removeTopSite(isDefault: Boolean) {
+    fun removeTopSite(isDefault: Boolean, position: Int, source: String) {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.HOME, Value.LINK)
                 .extra(Extra.DEFAULT, java.lang.Boolean.toString(isDefault))
-                //  TODO: add index
+                .extra(Extra.ON, position.toString())
+                .extra(Extra.SOURCE, source)
                 .queue()
     }
 

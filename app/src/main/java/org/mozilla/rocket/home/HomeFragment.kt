@@ -357,7 +357,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
                             R.id.pin -> homeViewModel.onPinTopSiteClicked(site, position)
-                            R.id.remove -> homeViewModel.onRemoveTopSiteClicked(site)
+                            R.id.remove -> homeViewModel.onRemoveTopSiteClicked(site, position)
                             else -> throw IllegalStateException("Unhandled menu item")
                         }
 

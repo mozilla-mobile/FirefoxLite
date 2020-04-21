@@ -49,6 +49,10 @@ class TopSitesRepo(
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
 
+    fun getAbTestingSites(): List<Site>? =
+            AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting_topsites)
+                    ?.jsonStringToSites()
+
     suspend fun getHistorySites(): List<Site> {
         return if (needToCheckDbVersion) {
             needToCheckDbVersion = false
@@ -225,7 +229,7 @@ class TopSitesRepo(
 
     companion object {
         const val TOP_SITES_PREF = "topsites_pref"
-        const val TOP_SITES_QUERY_LIMIT = 12
+        const val TOP_SITES_QUERY_LIMIT = 16
         const val TOP_SITES_QUERY_MIN_VIEW_COUNT = 2
         private const val TOP_SITES_V2_PREF = "top_sites_v2_complete"
         private const val MSG_ID_REFRESH = 8269

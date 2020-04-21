@@ -11,12 +11,6 @@ import org.mozilla.rocket.util.getJsonArray
 object LocalAbTesting {
     private val NUMBER_RANGE = (1..20)
 
-    // Current AB Testings
-    // Smart Shopping Copy AB Testing
-    const val SMART_SHOPPING_COPY_AB_TESTING = "smart_shopping_copy_ab_testing"
-    // Testing Groups
-    const val SMART_SHOPPING_COPY_B = "smart_shopping_copy_b"
-
     private lateinit var appContext: Context
     private var isNewGroupAssigned = false
     private val isNewUser: Boolean by lazy {
@@ -42,6 +36,9 @@ object LocalAbTesting {
     fun init(context: Context) {
         appContext = context.applicationContext
     }
+
+    fun isExperimentEnabled(experiment: String): Boolean =
+            assignedBucketMap.containsKey(experiment) || activeExperiments.any { experiment == it.name }
 
     fun checkAssignedBucket(experiment: String): String? {
         return if (assignedBucketMap.containsKey(experiment)) {

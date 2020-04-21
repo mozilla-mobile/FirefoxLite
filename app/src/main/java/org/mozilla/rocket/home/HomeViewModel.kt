@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.first
 import org.mozilla.rocket.extension.map
@@ -28,6 +29,8 @@ import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
+import org.mozilla.rocket.home.topsites.domain.GetTopSitesAbTestingUseCase
+import org.mozilla.rocket.home.topsites.domain.GetTopSitesAbTestingUseCase.Companion.AB_TESTING_EXPERIMENT_NAME_TOP_SITES
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -49,6 +52,7 @@ import org.mozilla.rocket.util.ToastMessage
 class HomeViewModel(
     private val settings: Settings,
     private val getTopSitesUseCase: GetTopSitesUseCase,
+    private val getTopSitesAbTestingUseCase: GetTopSitesAbTestingUseCase,
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -168,7 +172,12 @@ class HomeViewModel(
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
-        sitePages.value = getTopSitesUseCase().toSitePages()
+        if (LocalAbTesting.isExperimentEnabled(AB_TESTING_EXPERIMENT_NAME_TOP_SITES) &&
+                LocalAbTesting.checkAssignedBucket(AB_TESTING_EXPERIMENT_NAME_TOP_SITES) != null) {
+            sitePages.value = getTopSitesAbTestingUseCase().toSitePages()
+        } else {
+            sitePages.value = getTopSitesUseCase().toSitePages()
+        }
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
@@ -257,12 +266,14 @@ class HomeViewModel(
         }
     }
 
-    fun onRemoveTopSiteClicked(site: Site) = viewModelScope.launch {
+    fun onRemoveTopSiteClicked(site: Site, position: Int) = viewModelScope.launch {
         when (site) {
             is Site.UrlSite.RemovableSite -> {
                 removeTopSiteUseCase(site)
                 updateTopSitesData()
-                TelemetryWrapper.removeTopSite(site.isDefault)
+                val allowToLogTitle = site.isDefault
+                val title = if (allowToLogTitle) site.title else ""
+                TelemetryWrapper.removeTopSite(site.isDefault, position, title)
             }
         }
     }
