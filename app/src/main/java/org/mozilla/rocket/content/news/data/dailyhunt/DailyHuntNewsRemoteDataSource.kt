@@ -23,34 +23,26 @@ class DailyHuntNewsRemoteDataSource(
 
     override fun loadInitial(params: LoadInitialParams<PageKey>, callback: LoadInitialCallback<PageKey, NewsItem>) {
         val pageSize = params.requestedLoadSize
-        val pages = 1
 
         val result = fetchNewsItems(newsProvider, category, language,
-                pageSize, pages)
+                pageSize, 0)
         if (result is Result.Success) {
-            callback.onResult(result.data, null, PageKey.PageNumberKey(2))
+            val (nextPageKey, items) = result.data
+            callback.onResult(items, null, nextPageKey)
         } // TODO: error handling
     }
 
     override fun loadBefore(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
-        val pageSize = params.requestedLoadSize
-        val pages = (params.key as PageKey.PageNumberKey).number
-
-        val result = fetchNewsItems(newsProvider, category, language,
-                pageSize, pages)
-        if (result is Result.Success) {
-            callback.onResult(result.data, PageKey.PageNumberKey(pages - 1))
-        } // TODO: error handling
+        // Do nothing
     }
 
     override fun loadAfter(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
-        val pageSize = params.requestedLoadSize
-        val pages = (params.key as PageKey.PageNumberKey).number
+        val pageKey = params.key as PageKey.PageUrlKey
 
-        val result = fetchNewsItems(newsProvider, category, language,
-                pageSize, pages)
+        val result = fetchNewsItemsNextPage(pageKey.url)
         if (result is Result.Success) {
-            callback.onResult(result.data, PageKey.PageNumberKey(pages + 1))
+            val (nextPageKey, items) = result.data
+            callback.onResult(items, nextPageKey)
         } // TODO: error handling
     }
 
@@ -60,7 +52,7 @@ class DailyHuntNewsRemoteDataSource(
         language: String,
         pageSize: Int,
         pages: Int
-    ): Result<List<NewsItem>> {
+    ): Result<Pair<PageKey.PageUrlKey, List<NewsItem>>> {
         val params = createApiParams(
             partner = newsProvider?.partnerCode ?: "",
             timestamp = System.currentTimeMillis().toString(),
@@ -77,7 +69,32 @@ class DailyHuntNewsRemoteDataSource(
                 headers = createApiHeaders(params)
             ),
             onSuccess = {
-                Result.Success(fromJson(it.body.string()))
+                val body = it.body.string()
+                val nextPageKey = PageKey.PageUrlKey(parseNextPageUrl(body))
+                val items = fromJson(body)
+                Result.Success(nextPageKey to items)
+            },
+            onError = {
+                Result.Error(it)
+            }
+        )
+    }
+
+    private fun fetchNewsItemsNextPage(nextPageUrl: String): Result<Pair<PageKey.PageUrlKey, List<NewsItem>>> {
+        val params = parseUrlParams(nextPageUrl).toMutableMap().apply {
+            put("ts", System.currentTimeMillis().toString())
+        }
+        return sendHttpRequest(
+            request = Request(
+                url = getApiEndpoint(params),
+                method = Request.Method.GET,
+                headers = createApiHeaders(params)
+            ),
+            onSuccess = {
+                val body = it.body.string()
+                val nextPageKey = PageKey.PageUrlKey(parseNextPageUrl(body))
+                val items = fromJson(body)
+                Result.Success(nextPageKey to items)
             },
             onError = {
                 Result.Error(it)
@@ -91,8 +108,8 @@ class DailyHuntNewsRemoteDataSource(
         uid: String,
         category: String,
         languageCode: String,
-        pages: Int,
-        pageSize: Int
+        pageSize: Int,
+        pages: Int
     ): Map<String, String> = mapOf(
         "partner" to partner,
         "ts" to timestamp,
@@ -106,7 +123,22 @@ class DailyHuntNewsRemoteDataSource(
         "fields" to "none"
     )
 
-    private fun getApiEndpoint(params: Map<String, String>): String  = Uri.parse(API_URL)
+    private fun parseUrlParams(url: String): Map<String, String> {
+        val map = mutableMapOf<String, String>()
+        try {
+            val uri = Uri.parse(url)
+            val args: Set<String> = uri.queryParameterNames
+            args.forEach { key ->
+                map[key] = uri.getQueryParameter(key) ?: ""
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return map
+    }
+
+    private fun getApiEndpoint(params: Map<String, String>): String = Uri.parse(API_URL)
             .buildUpon()
             .apply {
                 for ((key, value) in params.entries) {
@@ -135,6 +167,10 @@ class DailyHuntNewsRemoteDataSource(
 
         return encodedParams
     }
+
+    private fun parseNextPageUrl(jsonString: String): String = jsonString.toJsonObject()
+            .optJSONObject("data")
+            ?.optString("nextPageUrl") ?: ""
 
     private fun fromJson(jsonString: String): List<NewsItem> {
         val jsonObject = jsonString.toJsonObject()
