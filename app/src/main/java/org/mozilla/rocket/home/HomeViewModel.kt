@@ -107,6 +107,7 @@ class HomeViewModel(
     val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
     val hideLogoManNotification = SingleLiveEvent<Unit>()
     val executeUriAction = SingleLiveEvent<String>()
+    val showKeyboard = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -388,6 +389,10 @@ class HomeViewModel(
             TelemetryWrapper.clickWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
         }
         dismissContentServiceOnboardingDialog.call()
+    }
+
+    fun onNewTabButtonClicked() {
+        showKeyboard.call()
     }
 
     data class ShowTopSiteMenuData(

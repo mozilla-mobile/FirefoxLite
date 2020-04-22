@@ -7,6 +7,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.view.GestureDetector
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -499,6 +500,14 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
         homeViewModel.showContentHubClickOnboarding.observe(viewLifecycleOwner, Observer { couponName ->
             showRequestClickContentHubOnboarding(couponName)
+        })
+        homeViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
+            Looper.myQueue().addIdleHandler {
+                if (!isStateSaved) {
+                    home_fragment_fake_input.performClick()
+                }
+                false
+            }
         })
     }
 

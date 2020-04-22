@@ -7,6 +7,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -126,6 +127,9 @@ public class SaveRestoreTabsTest {
         // wait for tab tray to show up
         Thread.sleep(500);
         onView(withId(R.id.new_tab_button)).perform(click());
+
+        //dismiss url bar and go back to home
+        onView(Matchers.allOf(withId(R.id.dismiss), isDisplayed())).perform(click());
 
         //open first top site
         onView(visibleWithId(R.id.page_list))
