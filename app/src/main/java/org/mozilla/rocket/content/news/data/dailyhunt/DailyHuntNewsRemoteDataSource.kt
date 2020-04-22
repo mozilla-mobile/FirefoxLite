@@ -122,9 +122,18 @@ class DailyHuntNewsRemoteDataSource(
         }
 
         newsProvider?.secretKey?.let {
-            val signature = DailyHuntUtils.generateSignature(it, Request.Method.GET.name, params)
+            val signature = DailyHuntUtils.generateSignature(it, Request.Method.GET.name, urlEncodeParams(params))
             set("Signature", signature)
         }
+    }
+
+    private fun urlEncodeParams(params: Map<String, String>): Map<String, String> {
+        val encodedParams = mutableMapOf<String, String>()
+        params.forEach {
+            encodedParams[it.key] = URLEncoder.encode(it.value, "UTF-8")
+        }
+
+        return encodedParams
     }
 
     private fun fromJson(jsonString: String): List<NewsItem> {
