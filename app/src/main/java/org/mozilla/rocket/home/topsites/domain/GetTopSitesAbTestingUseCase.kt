@@ -96,7 +96,7 @@ open class GetTopSitesAbTestingUseCase(private val topSitesRepo: TopSitesRepo) {
                     .forEach { defaultSite ->
                         // Must be a RemovableSite
                         defaultSite as Site.UrlSite.RemovableSite
-                        topSitesRepo.removeDefaultSite(defaultSite.toSiteModel())
+                        topSitesRepo.removeDefaultSiteAbTesting(defaultSite.toSiteModel())
                     }
         }
     }
