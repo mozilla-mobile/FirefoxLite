@@ -17,6 +17,8 @@ import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.utils.TopSitesUtils
 import org.mozilla.rocket.abtesting.LocalAbTesting
+import org.mozilla.rocket.abtesting.LocalAbTesting.checkAssignedBucket
+import org.mozilla.rocket.abtesting.LocalAbTesting.isExperimentEnabled
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesAbTestingUseCase
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.getJsonArray
@@ -186,7 +188,13 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
     private fun initForNewUser(results: MutableList<Site>, partnerSites: List<Site>) {
         results.addAll(partnerSites)
 
-        val defaultTopSiteJson = TopSitesUtils.loadDefaultSitesFromAssets(context, R.raw.topsites)
+        // TODO: Remove after top site AB testing finished
+        val defaultTopSiteJson = if (isExperimentEnabled(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES) &&
+                checkAssignedBucket(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES) != null) {
+            TopSitesUtils.loadDefaultSitesFromAssets(context, R.raw.abtesting_topsites)
+        } else {
+            TopSitesUtils.loadDefaultSitesFromAssets(context, R.raw.topsites)
+        }
         val defaultTopSites = jsonToSites(JSONArray(defaultTopSiteJson), true).toMutableList()
 
         var remainPinCount = DEFAULT_NEW_USER_PIN_COUNT - partnerSites.size
