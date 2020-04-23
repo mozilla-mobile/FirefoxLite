@@ -197,9 +197,11 @@
   <string name="rate_app_dialog_btn_feedback">பின்னூட்டம் வழங்குங்கள்</string>
   <string name="rate_app_notification_action_feedback">கருத்து</string>
   <string name="share_app_dialog_text_title">%1$s நண்பர்களுடன் பகிருங்கள்!</string>
-  <string name="share_app_dialog_text_content">- வேகமானது இலகுவானது\n- தரவு சிக்கனம் உடையது\n- திறன்வாய்ந்த திரைப்பிடிப்புகள்</string>
+  <string name="share_app_dialog_text_content">- வேகமானது இலகுவானது\n- சிக்கனமான தேடல்\n- இலவச விளையாட்டுகள், முக்கிய செய்திகள்</string>
   <string name="share_app_dialog_btn_share">பகிர்</string>
   <string name="share_app_promotion_text">வணக்கம், %3$s நிறுவனத்தின் வேகமான இலகுவான உலாவியைப் பாவித்துப் பாருங்கள்.%1$s %2$s</string>
+  <string name="update_app_dialog_btn_update_now">இப்பொழுது மேம்படுத்து!</string>
+  <string name="update_app_dialog_btn_later">பிறகு</string>
   <string name="your_rights_content1">%1$s, %2$s மற்றும் பிற பங்களிப்பாளர்களால் உருவாக்கப்பட்ட கட்டற்ற திறந்தமூல மென்பொருள் ஆகும்.</string>
   <string name="your_rights_content2"><![CDATA["%1$s உங்களுக்கு "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">%3$s</a>" மற்றும் பிற திறந்த மூல உரிமங்களின் கீழ் கிடைக்கிறது."]]></string>
   <string name="your_rights_content3"><![CDATA["உங்களுக்கு மொசில்லா அறக்கட்டளை அல்லது பிற தரப்பினரின் வணிகச் சின்னங்களுக்கான உரிமங்கள் அல்லது உரிமைகள் அல்லது வேற எந்த உரிமைகளும் வழங்கப்படவில்லை மேலும் %3$s, %4$sஅல்லது %1$s போன்ற பெயர்களும் அதன் படங்களும் அவ்விதியில் அடங்கும். கூடுதலான தகவல்கள் "<a xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" href="%2$s">&#2951;&#2969;&#3021;&#2965;&#3009; &#2965;&#3007;&#2975;&#3016;&#2965;&#3021;&#2965;&#3009;&#2990;&#3021;</a>.]]></string>
@@ -229,8 +231,8 @@
   <string name="label_menu_news">செய்திகள்</string>
   <string name="label_menu_latest_top_trending_news">சமீபத்திய பிரபலமான செய்திகள்</string>
   <string name="news_update_btn">புதிய புதுப்பிப்பு</string>
-  <string name="title_news_preferences">செய்தி விருப்பத்தேர்வுகள்</string>
-  <string name="news_language_dialog_title">செய்தி மொழி</string>
+  <string name="title_news_preferences">செய்தி அமைவுகள்</string>
+  <string name="news_language_dialog_title">மொழி</string>
   <string name="news_language_dialog_option_english">ஆங்கிலம்</string>
   <string name="news_language_dialog_option_hindi">இந்தி</string>
   <string name="news_language_dialog_option_marathi">மராத்தி</string>
@@ -271,7 +273,9 @@
   <string name="news_category_option_astrology">சோதிடம்</string>
   <string name="news_category_option_science">அறிவியல்</string>
   <string name="news_category_option_jokes">நகைச்சுவை</string>
+  <string name="news_category_option_nation">தேசம்</string>
   <string name="logo_text">சேவை வழங்குநர்</string>
+  <string name="recommended_news_title">உங்களுக்காக பரிந்துரைக்கப்பட்ட செய்திகள்</string>
   <string name="private_tab">தனிப்பட்ட கீற்று</string>
   <string name="private_browsing_title">அந்தரங்க உலாவல்</string>
   <string name="private_browsing_erase_message">அந்தரங்க உலாவல் வரலாற்றை அகற்று</string>
@@ -295,4 +299,15 @@
   <string name="http_auth_dialog_user_name">பயனர்பெயர்</string>
   <string name="http_auth_dialog_password">கடவுச்சொல்</string>
   <string name="low_priority_notification_channel">மறைக்கப்பட்ட அறிவிப்புகள்</string>
+  <string name="about_link_terms_of_service">சேவையின் விதிமுறைகள்</string>
+  <string name="shopping_search_onboarding_title">சிறந்த விலைகளைக் கண்டறியவும்</string>
+  <string name="shopping_search_onboarding_body_A">பிரபலமான அங்காடித் தளங்களில் விலைகளை எளிதாக ஒப்பிடுக.</string>
+  <string name="shopping_search_onboarding_body_B">இன்றே சேமிக்கத் தொடங்குங்கள். பிரபலமான தளங்களில் விலைகளைத் தேடி ஒப்பிடுக.</string>
+  <string name="shopping_search_placeholder">தயாரிப்பு பெயரை உள்ளிடவும்</string>
+  <string name="shopping_search_prompt_message_button">தேடுங்கள்</string>
+  <string name="shopping_switch_ui_onboarding_body">கூடுதல் முடிவுகளை உலவ கீழே உள்ள அங்காடித் தளங்களைத் தட்டுக அல்லது தொகுக்க இப்பொத்தானைத் தட்டவும்.</string>
+  <string name="shopping_switch_ui_onboarding_button">சரி</string>
+  <string name="shopping_switch_ui_preferences_title">அங்காடித் தேடல் அமைவுகள்</string>
+  <string name="shopping_switch_ui_preferences_subtitle">ஒப்பிடவல்ல தளங்கள்</string>
+  <string name="shopping_switch_ui_tabtray_title">அங்காடித் தேடல்: “%1$s”</string>
 </resources>
