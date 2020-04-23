@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebView
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -85,6 +86,9 @@ class BrowserFragment : LocaleAwareFragment(),
 
     private lateinit var browserContainer: ViewGroup
     private lateinit var videoContainer: ViewGroup
+    // For Samsung devices, if we adjust the dimension of full screen video view ,then tap back to leave full screen mode,
+    // we will not receive the "onExitFullScreen" callback as expected. So add an extra hierarchy layer to workaround it.
+    private lateinit var videoContainerInner: ViewGroup
     private lateinit var tabViewSlot: ViewGroup
     private lateinit var displayUrlView: TextView
     private lateinit var progressView: AnimatedProgressBar
@@ -136,6 +140,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
         browserContainer = view.findViewById(R.id.browser_container)
         videoContainer = view.findViewById(R.id.video_container)
+        videoContainerInner = view.findViewById(R.id.video_container_inner)
         tabViewSlot = view.findViewById(R.id.tab_view_slot)
         progressView = view.findViewById(R.id.progress)
 
@@ -253,6 +258,37 @@ class BrowserFragment : LocaleAwareFragment(),
         } else {
             browser_bottom_bar.visibility = View.VISIBLE
             toolbarRoot.visibility = View.VISIBLE
+        }
+
+        refreshVideoContainer()
+    }
+
+    // Workaround for full-screen WebView issue that the video doesn't fit the viewport
+    // after rotating the device from portrait to landscape and vice versa. It could reduce
+    // the issue happened rate by changing the video view layout size to a slight smaller size
+    // then add to the full screen size again when the device is rotated.
+    private fun refreshVideoContainer() {
+        if (videoContainer.visibility == View.VISIBLE) {
+            updateVideoContainerWithLayoutParams(FrameLayout.LayoutParams(
+                (videoContainer.height * 0.99).toInt(),
+                (videoContainer.width * 0.99).toInt()
+            ))
+            videoContainer.post {
+                if (videoContainer.visibility == View.VISIBLE) {
+                    updateVideoContainerWithLayoutParams(FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT
+                    ))
+                }
+            }
+        }
+    }
+
+    private fun updateVideoContainerWithLayoutParams(params: FrameLayout.LayoutParams) {
+        val fullscreenContentView: View? = videoContainerInner.getChildAt(0)
+        if (fullscreenContentView != null) {
+            videoContainerInner.removeAllViews()
+            videoContainerInner.addView(fullscreenContentView, params)
         }
     }
 
@@ -477,7 +513,7 @@ class BrowserFragment : LocaleAwareFragment(),
             with(fragment) {
                 browserContainer.visibility = View.INVISIBLE
                 videoContainer.visibility = View.VISIBLE
-                videoContainer.addView(view)
+                videoContainerInner.addView(view)
 
                 // Switch to immersive mode: Hide system bars other UI controls
                 systemVisibility = ViewUtils.switchToImmersiveMode(activity)
@@ -488,7 +524,7 @@ class BrowserFragment : LocaleAwareFragment(),
             with(fragment) {
                 browserContainer.visibility = View.VISIBLE
                 videoContainer.visibility = View.INVISIBLE
-                videoContainer.removeAllViews()
+                videoContainerInner.removeAllViews()
 
                 if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
                     ViewUtils.exitImmersiveMode(systemVisibility, activity)
