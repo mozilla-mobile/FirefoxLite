@@ -21,6 +21,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -298,6 +299,14 @@ class BrowserFragment : LocaleAwareFragment(),
     override fun onBackPressed(): Boolean {
         val focus = sessionManager.focusSession ?: return false
         val tabView = focus.engineSession?.tabView ?: return false
+
+        // After we apply the full screen rotation workaround - 'refreshVideoContainer',
+        // it may not be able to get 'onExitFullScreen' callback from WebChromeClient. Just call it here
+        // to leave the full screen mode.
+        if (videoContainer.isVisible) {
+            observer.onExitFullScreen()
+            return true
+        }
 
         if (tabView.canGoBack()) {
             goBack()

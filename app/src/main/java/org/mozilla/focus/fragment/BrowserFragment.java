@@ -1099,6 +1099,14 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             return true;
         }
 
+        // After we apply the full screen rotation workaround - 'refreshVideoContainer',
+        // it may not be able to get 'onExitFullScreen' callback from WebChromeClient. Just call it here
+        // to leave the full screen mode.
+        if (videoContainer.getVisibility() == View.VISIBLE) {
+            sessionObserver.onExitFullScreen();
+            return true;
+        }
+
         if (canGoBack()) {
             // Go back in web history
             goBack();
