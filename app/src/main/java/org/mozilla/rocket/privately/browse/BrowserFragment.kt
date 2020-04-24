@@ -486,7 +486,7 @@ class BrowserFragment : LocaleAwareFragment(),
             return false
         }
 
-        var callback: FullscreenCallback? = null
+        var fullscreenCallback: FullscreenCallback? = null
         var session: Session? = null
 
         override fun onSessionAdded(session: Session, arguments: Bundle?) {
@@ -523,12 +523,14 @@ class BrowserFragment : LocaleAwareFragment(),
                 // Switch to immersive mode: Hide system bars other UI controls
                 systemVisibility = ViewUtils.switchToImmersiveMode(activity)
             }
+
+            fullscreenCallback = callback
         }
 
         override fun onExitFullScreen() {
             with(fragment) {
                 browserContainer.visibility = View.VISIBLE
-                videoContainer.visibility = View.INVISIBLE
+                videoContainer.visibility = View.GONE
                 videoContainer.removeAllViews()
 
                 if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
@@ -536,8 +538,8 @@ class BrowserFragment : LocaleAwareFragment(),
                 }
             }
 
-            callback?.fullScreenExited()
-            callback = null
+            fullscreenCallback?.fullScreenExited()
+            fullscreenCallback = null
 
             // WebView gets focus, but unable to open the keyboard after exit Fullscreen for Android 7.0+
             // We guess some component in WebView might lock focus
