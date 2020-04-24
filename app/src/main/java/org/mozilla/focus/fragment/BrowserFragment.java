@@ -184,9 +184,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
      * Container for custom video views shown in fullscreen mode.
      */
     private ViewGroup videoContainer;
-    // For Samsung devices, if we adjust the dimension of full screen video view ,then tap back to leave full screen mode,
-    // we will not receive the "onExitFullScreen" callback as expected. So add an extra hierarchy layer to workaround it.
-    private ViewGroup videoContainerInner;
 
     /**
      * Container containing the browser chrome and web content.
@@ -442,7 +439,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         final View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
         videoContainer = view.findViewById(R.id.video_container);
-        videoContainerInner = view.findViewById(R.id.video_container_inner);
         browserContainer = view.findViewById(R.id.browser_container);
 
         mainContent = view.findViewById(R.id.main_content);
@@ -757,10 +753,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void updateVideoContainerWithLayoutParams(FrameLayout.LayoutParams params) {
-        final View fullscreenContentView = videoContainerInner.getChildAt(0);
+        final View fullscreenContentView = videoContainer.getChildAt(0);
         if (fullscreenContentView != null) {
-            videoContainerInner.removeAllViews();
-            videoContainerInner.addView(fullscreenContentView, params);
+            videoContainer.removeAllViews();
+            videoContainer.addView(fullscreenContentView, params);
         }
     }
 
@@ -1494,7 +1490,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 // Add view to video container and make it visible
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                videoContainerInner.addView(fullscreenContentView, params);
+                videoContainer.addView(fullscreenContentView, params);
                 videoContainer.setVisibility(View.VISIBLE);
 
                 // Switch to immersive mode: Hide system bars other UI controls
@@ -1508,7 +1504,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
                 return;
             }
             // Remove custom video views and hide container
-            videoContainerInner.removeAllViews();
+            videoContainer.removeAllViews();
             videoContainer.setVisibility(View.GONE);
 
             // Show browser UI and web content again
