@@ -9,6 +9,7 @@ import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.getJsonArray
 
 object LocalAbTesting {
+    private const val FIREBASE_USER_PROPERTY_VALUE_MAX_LENGTH = 36
     private val NUMBER_RANGE = (1..20)
 
     private lateinit var appContext: Context
@@ -31,6 +32,11 @@ object LocalAbTesting {
         activeExperiments.flatMap { it.buckets }
                 .filter { it.bucket_range_start <= userGroup && userGroup <= it.bucket_range_end }
                 .map { it.experiment_name }
+                .also { experimentName ->
+                    if (experimentName.any { it.length > FIREBASE_USER_PROPERTY_VALUE_MAX_LENGTH }) {
+                        error("UserProperty values can only be up to 36 characters long.")
+                    }
+                }
     }
 
     fun init(context: Context) {
