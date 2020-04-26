@@ -3,13 +3,4 @@
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">Penemuan Perjalanan</string>
     
-	<string name="shopping_search_onboarding_body_A">Bandingkan harga dengan mudah di situs-situs belanja populer.</string>
-	<string name="shopping_search_onboarding_body_B">Mulai hemat sekarang juga. Cari dan bandingkan harga di situs-situs populer.</string>
-	<string name="travel_search_engine_fxlite_new">Lihat hasilnya di %1$s %2$s</string>
-	<string name="travel_no_result_state_text">Hmm. Hasil tidak ditemukan.</string>
-	<string name="travel_google_search_button">CARI DI %1$s</string>
-	<string name="travel_dialog_1_description_new">Telusuri aktivitas yang bisa dilakukan, akomodasi, dan lainnya di %1$s %2$s.</string>
-	<string name="travel_dialog_1_action_1_new">COBA %1$s</string>
-	<string name="travel_dialog_2_title_new">Suka Menggunakan %1$s?</string>
-	<string name="travel_dialog_2_description_new">Anda bisa mengatur %1$s %2$s sebagai mesin pencari default untuk perjalanan Anda.</string>
-</resources>
+	</resources>

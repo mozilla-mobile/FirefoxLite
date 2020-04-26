@@ -307,6 +307,8 @@
   <string name="about_link_terms_of_service">Ketentuan Layanan</string>
   <string name="shopping_search_onboarding_title">Temukan harga bagus</string>
   <string name="shopping_search_onboarding_body">Bandingkan harga di banyak toko daring dengan Pencarian Belanja Cerdas.</string>
+  <string name="shopping_search_onboarding_body_A">Bandingkan harga dengan mudah di situs belanja populer.</string>
+  <string name="shopping_search_onboarding_body_B">Mulai menghemat hari ini. Cari dan bandingkan harga di situs populer.</string>
   <string name="shopping_search_placeholder">Ketikkan produk yang ingin Anda cari</string>
   <string name="shopping_search_prompt_message_body">Bandingkan harga di banyak toko daring dengan Pencarian Belanja Cerdas.</string>
   <string name="shopping_search_prompt_message_button">Cari</string>
@@ -460,8 +462,15 @@
   <string name="travel_onboarding_save_button">Oke</string>
   <string name="travel_find_destination_placeholder_2">Masukkan tujuan</string>
   <string name="travel_search_engine_1">Lihat hasilnya di %1$s</string>
+  <string name="travel_search_engine_fxlite_new">Lihat hasilnya di %1$s %2$s</string>
+  <string name="travel_no_result_state_text">Hmm. Hasil tidak ditemukan.</string>
+  <string name="travel_google_search_button">CARI DI %1$s</string>
   <string name="travel_dialog_1_title">Temukan Lebih Banyak!</string>
+  <string name="travel_dialog_1_description_new">Temukan berbagai aktivitas, akomodasi, dan masih banyak lagi di %1$s %2$s.</string>
+  <string name="travel_dialog_1_action_1_new">COBA %1$s</string>
   <string name="travel_dialog_1_action_2">TIDAK, TERIMA KASIH</string>
+  <string name="travel_dialog_2_title_new">Puas Menggunakan %1$s?</string>
+  <string name="travel_dialog_2_description_new">Anda dapat mengatur %2$s %1$s sebagai mesin pencari baku untuk perjalanan.</string>
   <string name="travel_dialog_2_checkbox">Jangan tanyakan lagi</string>
   <string name="travel_dialog_2_action">TETAPKAN SEBAGAI BAKU</string>
 </resources>
