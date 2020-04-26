@@ -92,7 +92,7 @@ class NewsPointNewsRemoteDataSource(
                 continue
             }
 
-            newsList.add(NewsItem(title, link, imageUrl, source, publishTime, link.sha256(), feed = "newspoint"))
+            newsList.add(NewsItem.NewsContentItem(title, link, imageUrl, source, publishTime, link.sha256(), feed = "newspoint"))
         }
         return newsList
     }

@@ -9,6 +9,8 @@ import org.mozilla.focus.R
 import org.mozilla.rocket.content.Result
 import org.mozilla.rocket.content.news.data.NewsDataSourceFactory.PageKey
 import org.mozilla.rocket.content.news.data.NewsItem
+import org.mozilla.rocket.content.news.data.NewsSourceInfo
+import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
 import org.mozilla.rocket.util.sendHttpRequest
 import org.mozilla.rocket.util.sha256
 import org.mozilla.rocket.util.toJsonObject
@@ -16,6 +18,7 @@ import java.net.URLEncoder
 
 class DailyHuntNewsRemoteDataSource(
     private val appContext: Context,
+    private val getAdditionalSourceInfo: GetAdditionalSourceInfoUseCase,
     private val newsProvider: DailyHuntProvider?,
     private val category: String,
     private val language: String
@@ -28,8 +31,19 @@ class DailyHuntNewsRemoteDataSource(
                 pageSize, 0)
         if (result is Result.Success) {
             val (nextPageKey, items) = result.data
-            callback.onResult(items, null, nextPageKey)
+            val itemsWithHeader = addHeader(items, getAdditionalSourceInfo())
+            callback.onResult(itemsWithHeader, null, nextPageKey)
         } // TODO: error handling
+    }
+
+    private fun addHeader(
+        firstPageItems: List<NewsItem>,
+        newsSourceInfo: NewsSourceInfo?
+    ): List<NewsItem> = mutableListOf<NewsItem>().apply {
+        newsSourceInfo?.let {
+            add(0, NewsItem.NewsTitleItem(it.resourceId))
+        }
+        addAll(firstPageItems)
     }
 
     override fun loadBefore(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
@@ -198,7 +212,7 @@ class DailyHuntNewsRemoteDataSource(
                     ""
                 }
 
-                NewsItem(
+                NewsItem.NewsContentItem(
                     item.optString("title"),
                     linkUrl,
                     imageUrl,

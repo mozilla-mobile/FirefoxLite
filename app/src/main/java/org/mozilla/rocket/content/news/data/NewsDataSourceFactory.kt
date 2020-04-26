@@ -6,9 +6,11 @@ import org.mozilla.rocket.content.news.data.dailyhunt.DailyHuntNewsRemoteDataSou
 import org.mozilla.rocket.content.news.data.dailyhunt.DailyHuntProvider
 import org.mozilla.rocket.content.news.data.newspoint.NewsPointNewsRemoteDataSource
 import org.mozilla.rocket.content.news.data.rss.RssNewsRemoteDataSource
+import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
 
 class NewsDataSourceFactory(
-    private val appContext: Context
+    private val appContext: Context,
+    private val getAdditionalSourceInfo: GetAdditionalSourceInfoUseCase
 ) : DataSource.Factory<NewsDataSourceFactory.PageKey, NewsItem>() {
 
     lateinit var category: String
@@ -19,7 +21,7 @@ class NewsDataSourceFactory(
         return if (newsProvider?.isNewsPoint() == true) {
             val dailyHuntProvider = DailyHuntProvider.getProvider(appContext)
             if (dailyHuntProvider?.shouldEnable(appContext) == true) {
-                DailyHuntNewsRemoteDataSource(appContext, dailyHuntProvider, category, language)
+                DailyHuntNewsRemoteDataSource(appContext, getAdditionalSourceInfo, dailyHuntProvider, category, language)
             } else {
                 NewsPointNewsRemoteDataSource(newsProvider, category, language)
             }

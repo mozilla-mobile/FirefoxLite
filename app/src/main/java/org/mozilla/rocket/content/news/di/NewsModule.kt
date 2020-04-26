@@ -173,8 +173,10 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideNewsDataSourceFactory(context: Context): NewsDataSourceFactory =
-            NewsDataSourceFactory(context)
+    fun provideNewsDataSourceFactory(
+        context: Context,
+        getAdditionalSourceInfo: GetAdditionalSourceInfoUseCase
+    ): NewsDataSourceFactory = NewsDataSourceFactory(context, getAdditionalSourceInfo)
 
     @JvmStatic
     @Provides

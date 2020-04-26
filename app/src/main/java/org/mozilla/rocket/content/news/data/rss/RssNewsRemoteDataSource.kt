@@ -100,7 +100,7 @@ class RssNewsRemoteDataSource(
                 Long.MIN_VALUE
             }
 
-            newsList.add(NewsItem(title, link, imageUrl, source, publishTime, link.sha256()))
+            newsList.add(NewsItem.NewsContentItem(title, link, imageUrl, source, publishTime, link.sha256()))
         }
         return newsList
     }

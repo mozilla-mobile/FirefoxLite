@@ -24,18 +24,14 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.ui.NewsMapper
 
-class LoadNewsUseCase(
-    private val repository: NewsRepository
-    // TODO: Evan: add source icon item back
-//    private val getAdditionalSourceInfoUseCase: GetAdditionalSourceInfoUseCase
-) {
+class LoadNewsUseCase(private val repository: NewsRepository) {
 
     operator fun invoke(loadNewsParameter: LoadNewsParameter): LiveData<PagedList<DelegateAdapter.UiModel>> {
         return repository.getNewsItemsDataSourceFactory().apply {
             category = loadNewsParameter.topic
             language = loadNewsParameter.language
         }.mapByPage { newItems ->
-            newItems.map { NewsMapper.toNewsUiModel(it) as DelegateAdapter.UiModel }
+            newItems.map { NewsMapper.toUiModel(it) }
         }.toLiveData(
             config = Config(
                 pageSize = loadNewsParameter.pageSize,
