@@ -29,13 +29,14 @@ class DailyHuntNewsRemoteDataSource(
     override fun loadInitial(params: LoadInitialParams<PageKey>, callback: LoadInitialCallback<PageKey, NewsItem>) {
         val pageSize = params.requestedLoadSize
 
-        val result = fetchNewsItems(newsProvider, category, language,
-                pageSize, 0)
-        if (result is Result.Success) {
-            val (nextPageKey, items) = result.data
-            val itemsWithHeader = addHeader(items, getAdditionalSourceInfo())
-            callback.onResult(itemsWithHeader, null, nextPageKey)
-        } // TODO: error handling
+        when (val result = fetchNewsItems(newsProvider, category, language, pageSize, 0)) {
+            is Result.Success -> {
+                val (nextPageKey, items) = result.data
+                val itemsWithHeader = addHeader(items, getAdditionalSourceInfo())
+                callback.onResult(itemsWithHeader, null, nextPageKey)
+            }
+            is Result.Error -> result.exception.printStackTrace()
+        }
     }
 
     private fun addHeader(
@@ -55,11 +56,13 @@ class DailyHuntNewsRemoteDataSource(
     override fun loadAfter(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
         val pageKey = params.key as PageKey.PageUrlKey
 
-        val result = fetchNewsItemsNextPage(pageKey.url)
-        if (result is Result.Success) {
-            val (nextPageKey, items) = result.data
-            callback.onResult(items, nextPageKey)
-        } // TODO: error handling
+        when (val result = fetchNewsItemsNextPage(pageKey.url)) {
+            is Result.Success -> {
+                val (nextPageKey, items) = result.data
+                callback.onResult(items, nextPageKey)
+            }
+            is Result.Error -> result.exception.printStackTrace()
+        }
     }
 
     private fun fetchNewsItems(
@@ -85,11 +88,15 @@ class DailyHuntNewsRemoteDataSource(
                 headers = createApiHeaders(params)
             ),
             onSuccess = {
-                val body = it.body.string()
-                val nextPageKey = PageKey.PageUrlKey(parseNextPageUrl(body))
-                val items = fromJson(body)
-                trackItemsShown(items)
-                Result.Success(nextPageKey to items)
+                try {
+                    val body = it.body.string()
+                    val nextPageKey = PageKey.PageUrlKey(parseNextPageUrl(body))
+                    val items = fromJson(body)
+                    trackItemsShown(items)
+                    Result.Success(nextPageKey to items)
+                } catch (e: Exception) {
+                    Result.Error(e)
+                }
             },
             onError = {
                 Result.Error(it)
@@ -108,11 +115,15 @@ class DailyHuntNewsRemoteDataSource(
                 headers = createApiHeaders(params)
             ),
             onSuccess = {
-                val body = it.body.string()
-                val nextPageKey = PageKey.PageUrlKey(parseNextPageUrl(body))
-                val items = fromJson(body)
-                trackItemsShown(items)
-                Result.Success(nextPageKey to items)
+                try {
+                    val body = it.body.string()
+                    val nextPageKey = PageKey.PageUrlKey(parseNextPageUrl(body))
+                    val items = fromJson(body)
+                    trackItemsShown(items)
+                    Result.Success(nextPageKey to items)
+                } catch (e: Exception) {
+                    Result.Error(e)
+                }
             },
             onError = {
                 Result.Error(it)
