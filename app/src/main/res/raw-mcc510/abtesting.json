@@ -2,7 +2,8 @@
   {
     "name": "smart_shopping_copy_ab_testing",
     "enabled": false,
-    "newUserOnly": false,
+    "newUserEnabled": true,
+    "upgradedUserEnabled": true,
     "buckets": [
       {
         "experiment_name": "smart_shopping_copy_a",
@@ -24,7 +25,8 @@
   {
     "name": "ab_testing_experiment_name_top_sites",
     "enabled": true,
-    "newUserOnly": true,
+    "newUserEnabled": false,
+    "upgradedUserEnabled": false,
     "buckets": [
       {
         "experiment_name": "id_topsite_rr_0429_control",
