@@ -1,7 +1,7 @@
 [
   {
     "name": "smart_shopping_copy_ab_testing",
-    "enabled": true,
+    "enabled": false,
     "newUserOnly": false,
     "buckets": [
       {
