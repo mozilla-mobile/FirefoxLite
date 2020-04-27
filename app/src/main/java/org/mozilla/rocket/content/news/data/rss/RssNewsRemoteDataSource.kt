@@ -22,28 +22,28 @@ class RssNewsRemoteDataSource(
     override fun loadInitial(params: LoadInitialParams<PageKey>, callback: LoadInitialCallback<PageKey, NewsItem>) {
         val pages = 1
 
-        val result = fetchNewsItems(category, pages)
-        if (result is Result.Success) {
-            callback.onResult(result.data, null, PageKey.PageNumberKey(2))
-        } // TODO: error handling
+        when (val result = fetchNewsItems(category, pages)) {
+            is Result.Success -> callback.onResult(result.data, null, PageKey.PageNumberKey(2))
+            is Result.Error -> result.exception.printStackTrace()
+        }
     }
 
     override fun loadBefore(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
         val pages = (params.key as PageKey.PageNumberKey).number
 
-        val result = fetchNewsItems(category, pages)
-        if (result is Result.Success) {
-            callback.onResult(result.data, PageKey.PageNumberKey(pages - 1))
-        } // TODO: error handling
+        when (val result = fetchNewsItems(category, pages)) {
+            is Result.Success -> callback.onResult(result.data, PageKey.PageNumberKey(pages - 1))
+            is Result.Error -> result.exception.printStackTrace()
+        }
     }
 
     override fun loadAfter(params: LoadParams<PageKey>, callback: LoadCallback<PageKey, NewsItem>) {
         val pages = (params.key as PageKey.PageNumberKey).number
 
-        val result = fetchNewsItems(category, pages)
-        if (result is Result.Success) {
-            callback.onResult(result.data, PageKey.PageNumberKey(pages + 1))
-        } // TODO: error handling
+        when (val result = fetchNewsItems(category, pages)) {
+            is Result.Success -> callback.onResult(result.data, PageKey.PageNumberKey(pages + 1))
+            is Result.Error -> result.exception.printStackTrace()
+        }
     }
 
     private fun fetchNewsItems(category: String, pages: Int): Result<List<NewsItem>> {
@@ -53,7 +53,11 @@ class RssNewsRemoteDataSource(
             sendHttpRequest(
                 request = Request(url = getApiEndpoint(category), method = Request.Method.GET),
                 onSuccess = {
-                    Result.Success(fromJson(it.body.string()))
+                    try {
+                        Result.Success(fromJson(it.body.string()))
+                    } catch (e: Exception) {
+                        Result.Error(e)
+                    }
                 },
                 onError = {
                     Result.Error(it)
