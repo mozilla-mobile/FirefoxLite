@@ -3947,7 +3947,7 @@ object TelemetryWrapper {
                 if (LocalAbTesting.assignedBuckets.isEmpty()) {
                     "null"
                 } else {
-                    LocalAbTesting.assignedBuckets.joinToString(separator = ",")
+                    LocalAbTesting.assignedBuckets.first()
                 }
             } else {
                 FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_EXPERIMENT_NAME)
