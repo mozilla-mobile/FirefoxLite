@@ -28,6 +28,7 @@ object Versions {
     const val ktx = "1.2.0"
     const val gms = "11.8.0"
     const val navigation = "2.2.1"
+    const val paging = "2.1.2"
     const val findbugs = "3.0.1"
     const val lottie = "3.4.0"
     const val leakcanary = "2.0-beta-3"
