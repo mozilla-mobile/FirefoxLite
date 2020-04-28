@@ -269,10 +269,7 @@ object FirebaseHelper {
     @JvmStatic
     fun initUserState(activity: Activity) {
         firebaseContract.initUserState(activity)
-        // we only upload Push Token in below channel
-        if (AppConstants.isNightlyBuild() || AppConstants.isDevBuild() || AppConstants.isFirebaseBuild()) {
-            RocketMessagingService.checkFcmTokenUploaded(activity.applicationContext)
-        }
+        RocketMessagingService.checkFcmTokenUploaded(activity.applicationContext)
     }
 
     @JvmStatic
