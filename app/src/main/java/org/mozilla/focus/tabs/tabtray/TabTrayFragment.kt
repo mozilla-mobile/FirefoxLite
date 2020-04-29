@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import dagger.Lazy
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -54,6 +55,8 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.privateModeTray
 import org.mozilla.focus.telemetry.TelemetryWrapper.swipeTabFromTabTray
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.nightmode.themed.ThemedImageView
 import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView
@@ -64,6 +67,7 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity.Companion.getStartIntent
 import org.mozilla.rocket.tabs.Session
 import org.mozilla.rocket.tabs.TabsSessionProvider
+import javax.inject.Inject
 
 private const val ENABLE_BACKGROUND_ALPHA_TRANSITION = true
 private const val ENABLE_SWIPE_TO_DISMISS = true
@@ -113,6 +117,8 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View,
     private var tabTrayViewModel: TabTrayViewModel? = null
     private var homeViewModel: HomeViewModel? = null
 
+    @Inject
+    lateinit var homeViewModelCreator: Lazy<HomeViewModel>
 
     private var imgPrivateBrowsing: ThemedImageView? = null
     private var imgNewTab: ThemedImageView? = null
@@ -124,7 +130,9 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View,
     private var onDismissListener: DialogInterface.OnDismissListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        homeViewModel = getActivityViewModel(homeViewModelCreator)
         setStyle(STYLE_NO_TITLE, R.style.TabTrayTheme)
         adapter = TabTrayAdapter(Glide.with(this))
         val sessionManager = TabsSessionProvider.getOrThrow(activity)
@@ -187,7 +195,6 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View,
                 adapter!!.setShoppingSearch(showShoppingSearch, keyword)
             }
         })
-        homeViewModel = ViewModelProvider(activity!!, ViewModelProvider.NewInstanceFactory()).get(HomeViewModel::class.java)
         backgroundView = view.findViewById(R.id.root_layout)
         logoMan = backgroundView?.findViewById(R.id.logo_man)
         imgPrivateBrowsing = view.findViewById(R.id.img_private_browsing)
