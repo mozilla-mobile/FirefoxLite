@@ -300,7 +300,7 @@ class MainActivity : BaseActivity(),
             showTabTray.observe(this@MainActivity, Observer {
                 val tabTray = TabTray.show(supportFragmentManager)
                 if (tabTray != null) {
-                    tabTray.setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.TabTray) }
+                    tabTray.setOnDismissListener(DialogInterface.OnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.TabTray) })
                     portraitStateModel.request(PortraitComponent.TabTray)
                 }
             })

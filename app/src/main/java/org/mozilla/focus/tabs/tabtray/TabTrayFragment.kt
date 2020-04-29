@@ -2,847 +2,721 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+package org.mozilla.focus.tabs.tabtray
 
-package org.mozilla.focus.tabs.tabtray;
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.view.Window
+import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.Interpolator
+import androidx.annotation.StyleRes
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
+import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.R
+import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.tabs.tabtray.TabTrayAdapter.ShoppingSearchViewHolder
+import org.mozilla.focus.tabs.tabtray.TabTrayAdapter.TabViewHolder
+import org.mozilla.focus.telemetry.TelemetryWrapper.clickAddTabTray
+import org.mozilla.focus.telemetry.TelemetryWrapper.clickTabFromTabTray
+import org.mozilla.focus.telemetry.TelemetryWrapper.closeAllTabFromTabTray
+import org.mozilla.focus.telemetry.TelemetryWrapper.closeTabFromTabTray
+import org.mozilla.focus.telemetry.TelemetryWrapper.privateModeTray
+import org.mozilla.focus.telemetry.TelemetryWrapper.swipeTabFromTabTray
+import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.rocket.home.HomeViewModel
+import org.mozilla.rocket.nightmode.themed.ThemedImageView
+import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView
+import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout
+import org.mozilla.rocket.nightmode.themed.ThemedView
+import org.mozilla.rocket.privately.PrivateMode.Companion.getInstance
+import org.mozilla.rocket.privately.PrivateModeActivity
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity.Companion.getStartIntent
+import org.mozilla.rocket.tabs.Session
+import org.mozilla.rocket.tabs.TabsSessionProvider
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Interpolator;
+private const val ENABLE_BACKGROUND_ALPHA_TRANSITION = true
+private const val ENABLE_SWIPE_TO_DISMISS = true
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GestureDetectorCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
+private const val OVERLAY_ALPHA_FULL_EXPANDED = 0.50f
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
-
-import org.mozilla.focus.BuildConfig;
-import org.mozilla.focus.R;
-import org.mozilla.focus.navigation.ScreenNavigator;
-import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.Settings;
-import org.mozilla.focus.utils.ViewUtils;
-import org.mozilla.rocket.home.HomeViewModel;
-import org.mozilla.rocket.nightmode.themed.ThemedImageView;
-import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
-import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
-import org.mozilla.rocket.nightmode.themed.ThemedView;
-import org.mozilla.rocket.privately.PrivateMode;
-import org.mozilla.rocket.privately.PrivateModeActivity;
-import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity;
-import org.mozilla.rocket.tabs.Session;
-import org.mozilla.rocket.tabs.SessionManager;
-import org.mozilla.rocket.tabs.TabsSessionProvider;
-
-import java.util.List;
-
-public class TabTrayFragment extends DialogFragment implements TabTrayContract.View,
+class TabTrayFragment : DialogFragment(), TabTrayContract.View,
         View.OnClickListener, TabTrayAdapter.TabClickListener {
 
-    public static final String FRAGMENT_TAG = "tab_tray";
+    companion object {
+        const val FRAGMENT_TAG = "tab_tray"
 
-    private static final boolean ENABLE_BACKGROUND_ALPHA_TRANSITION = true;
-    private static final boolean ENABLE_SWIPE_TO_DISMISS = true;
-
-    private static final float OVERLAY_ALPHA_FULL_EXPANDED = 0.50f;
-
-    private TabTrayContract.Presenter presenter;
-
-    private ThemedRelativeLayout newTabBtn;
-    private View logoMan;
-    private View closeTabsBtn;
-    private View privateModeBtn;
-    private View privateModeBadge;
-
-    private AlertDialog closeShoppingSearchDialog;
-    private AlertDialog closeTabsDialog;
-
-    private View backgroundView;
-    private Drawable backgroundDrawable;
-    private Drawable backgroundOverlay;
-
-    private ThemedRecyclerView recyclerView;
-    private LinearLayoutManager layoutManager;
-
-    private boolean playEnterAnimation = true;
-
-    private TabTrayAdapter adapter;
-
-    private Handler uiHandler = new Handler(Looper.getMainLooper());
-
-    private SlideAnimationCoordinator slideCoordinator = new SlideAnimationCoordinator(this);
-
-    private Runnable dismissRunnable = this::dismissAllowingStateLoss;
-
-    private TabTrayViewModel tabTrayViewModel = null;
-    private HomeViewModel homeViewModel = null;
-
-    private ThemedImageView imgPrivateBrowsing, imgNewTab;
-    private ThemedView bottomDivider;
-
-    private ShoppingSearchItemDecoration itemDecoration;
-    private boolean showShoppingSearch;
-
-    @Nullable
-    private DialogInterface.OnDismissListener onDismissListener;
-
-    public static TabTrayFragment newInstance() {
-        return new TabTrayFragment();
+        @JvmStatic
+        fun newInstance(): TabTrayFragment? {
+            return TabTrayFragment()
+        }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
+    private var presenter: TabTrayContract.Presenter? = null
 
-        adapter = new TabTrayAdapter(Glide.with(this));
+    private var newTabBtn: ThemedRelativeLayout? = null
+    private var logoMan: View? = null
+    private var closeTabsBtn: View? = null
+    private var privateModeBtn: View? = null
+    private var privateModeBadge: View? = null
 
-        SessionManager sessionManager = TabsSessionProvider.getOrThrow(getActivity());
-        presenter = new TabTrayPresenter(this, new TabsSessionModel(sessionManager));
+    private var closeShoppingSearchDialog: AlertDialog? = null
+    private var closeTabsDialog: AlertDialog? = null
 
-        itemDecoration = new ShoppingSearchItemDecoration(
-            ContextCompat.getDrawable(getContext(), R.drawable.tab_tray_item_divider),
-            ContextCompat.getDrawable(getContext(), R.drawable.tab_tray_item_divider_night));
+    private var backgroundView: View? = null
+    private var backgroundDrawable: Drawable? = null
+    private var backgroundOverlay: Drawable? = null
+
+    private var recyclerView: ThemedRecyclerView? = null
+    private var layoutManager: LinearLayoutManager? = null
+
+    private var playEnterAnimation = true
+
+    private var adapter: TabTrayAdapter? = null
+
+    private val uiHandler = Handler(Looper.getMainLooper())
+
+    private val slideCoordinator: SlideAnimationCoordinator = SlideAnimationCoordinator(this)
+
+    private val dismissRunnable = Runnable { dismissAllowingStateLoss() }
+
+    private var tabTrayViewModel: TabTrayViewModel? = null
+    private var homeViewModel: HomeViewModel? = null
+
+
+    private var imgPrivateBrowsing: ThemedImageView? = null
+    private var imgNewTab: ThemedImageView? = null
+    private var bottomDivider: ThemedView? = null
+
+    private var itemDecoration: ShoppingSearchItemDecoration? = null
+    private var showShoppingSearch = false
+
+    private var onDismissListener: DialogInterface.OnDismissListener? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.TabTrayTheme)
+        adapter = TabTrayAdapter(Glide.with(this))
+        val sessionManager = TabsSessionProvider.getOrThrow(activity)
+        presenter = TabTrayPresenter(this, TabsSessionModel(sessionManager))
+        itemDecoration = ShoppingSearchItemDecoration(
+                ContextCompat.getDrawable(context!!, R.drawable.tab_tray_item_divider)!!,
+                ContextCompat.getDrawable(context!!, R.drawable.tab_tray_item_divider_night)!!)
     }
 
-    @Override
-    public void onStart() {
+    override fun onStart() {
         if (playEnterAnimation) {
-            playEnterAnimation = false;
-            setDialogAnimation(R.style.TabTrayDialogEnterExit);
-
+            playEnterAnimation = false
+            setDialogAnimation(R.style.TabTrayDialogEnterExit)
         } else {
-            setDialogAnimation(R.style.TabTrayDialogExit);
+            setDialogAnimation(R.style.TabTrayDialogExit)
         }
-        super.onStart();
+        super.onStart()
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (closeShoppingSearchDialog != null && closeShoppingSearchDialog.isShowing()) {
-            closeShoppingSearchDialog.dismiss();
+    override fun onStop() {
+        super.onStop()
+        if (closeShoppingSearchDialog != null && closeShoppingSearchDialog?.isShowing == true) {
+            closeShoppingSearchDialog?.dismiss()
         }
-        if (closeTabsDialog != null && closeTabsDialog.isShowing()) {
-            closeTabsDialog.dismiss();
+        if (closeTabsDialog != null && closeTabsDialog?.isShowing == true) {
+            closeTabsDialog?.dismiss()
         }
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tab_tray, container, false);
-        recyclerView = view.findViewById(R.id.tab_tray);
-        newTabBtn = view.findViewById(R.id.new_tab_button);
-        closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn);
-        privateModeBtn = view.findViewById(R.id.btn_private_browsing);
-        privateModeBadge = view.findViewById(R.id.badge_in_private_mode);
-        tabTrayViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory()).get(TabTrayViewModel.class);
-        tabTrayViewModel.hasPrivateTab().observe(getViewLifecycleOwner(), hasPrivateTab -> {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_tab_tray, container, false)
+        recyclerView = view.findViewById(R.id.tab_tray)
+        newTabBtn = view.findViewById(R.id.new_tab_button)
+        closeTabsBtn = view.findViewById(R.id.close_all_tabs_btn)
+        privateModeBtn = view.findViewById(R.id.btn_private_browsing)
+        privateModeBadge = view.findViewById(R.id.badge_in_private_mode)
+        tabTrayViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(TabTrayViewModel::class.java)
+        tabTrayViewModel?.hasPrivateTab()?.observe(viewLifecycleOwner, Observer { hasPrivateTab: Boolean ->
             // Update the UI, in this case, a TextView.
             if (privateModeBadge != null) {
-                privateModeBadge.setVisibility(hasPrivateTab ? View.VISIBLE : View.INVISIBLE);
+                privateModeBadge?.setVisibility(if (hasPrivateTab) View.VISIBLE else View.INVISIBLE)
             }
-        });
-        tabTrayViewModel.getUiModel().observe(getViewLifecycleOwner(), uiModel -> {
-            boolean isDiff = showShoppingSearch ^ uiModel.getShowShoppingSearch();
+        })
+        tabTrayViewModel?.uiModel?.observe(viewLifecycleOwner, Observer { (showShoppingSearch1, keyword) ->
+            val isDiff = showShoppingSearch xor showShoppingSearch1
             if (isDiff) {
-                showShoppingSearch = uiModel.getShowShoppingSearch();
-                presenter.setShoppingSearch(showShoppingSearch);
+                showShoppingSearch = showShoppingSearch1
+                presenter!!.setShoppingSearch(showShoppingSearch)
                 if (showShoppingSearch) {
-                    recyclerView.addItemDecoration(itemDecoration);
-                    adapter.notifyItemInserted(0);
+                    itemDecoration?.let { recyclerView?.addItemDecoration(it) }
+                    adapter!!.notifyItemInserted(0)
                 } else {
-                    recyclerView.removeItemDecoration(itemDecoration);
-                    adapter.notifyItemRemoved(0);
+                    itemDecoration?.let { recyclerView?.removeItemDecoration(it) }
+                    adapter!!.notifyItemRemoved(0)
                 }
-                adapter.setShoppingSearch(showShoppingSearch, uiModel.getKeyword());
+                adapter!!.setShoppingSearch(showShoppingSearch, keyword)
             }
-        });
-        homeViewModel = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
-        backgroundView = view.findViewById(R.id.root_layout);
-        logoMan = backgroundView.findViewById(R.id.logo_man);
-        imgPrivateBrowsing = view.findViewById(R.id.img_private_browsing);
-        imgNewTab = view.findViewById(R.id.plus_sign);
-        bottomDivider = view.findViewById(R.id.bottom_divider);
-        view.findViewById(R.id.star_background).setVisibility(Settings.getInstance(getContext()).isNightModeEnable() ? View.VISIBLE : View.GONE);
-        return view;
+        })
+        homeViewModel = ViewModelProvider(activity!!, ViewModelProvider.NewInstanceFactory()).get(HomeViewModel::class.java)
+        backgroundView = view.findViewById(R.id.root_layout)
+        logoMan = backgroundView?.findViewById(R.id.logo_man)
+        imgPrivateBrowsing = view.findViewById(R.id.img_private_browsing)
+        imgNewTab = view.findViewById(R.id.plus_sign)
+        bottomDivider = view.findViewById(R.id.bottom_divider)
+        view.findViewById<View>(R.id.star_background).visibility = if (Settings.getInstance(context).isNightModeEnable) View.VISIBLE else View.GONE
+        return view
     }
 
-    @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setNightModeEnabled(Settings.getInstance(view.context).isNightModeEnable)
+        initWindowBackground(view.context)
+        setupBottomSheetCallback()
+        prepareExpandAnimation()
+        initRecyclerView()
+        newTabBtn!!.setOnClickListener(this)
+        closeTabsBtn!!.setOnClickListener(this)
+        privateModeBtn!!.setOnClickListener(this)
+        setupTapBackgroundToExpand()
+        view.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener {
 
-        setNightModeEnabled(Settings.getInstance(view.getContext()).isNightModeEnable());
-
-        initWindowBackground(view.getContext());
-
-        setupBottomSheetCallback();
-
-        prepareExpandAnimation();
-
-        initRecyclerView();
-
-        newTabBtn.setOnClickListener(this);
-        closeTabsBtn.setOnClickListener(this);
-        privateModeBtn.setOnClickListener(this);
-        setupTapBackgroundToExpand();
-
-        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                view.getViewTreeObserver().removeOnPreDrawListener(this);
-                startExpandAnimation();
-                presenter.viewReady();
-                return false;
+            override fun onPreDraw(): Boolean {
+                view.viewTreeObserver.removeOnPreDrawListener(this)
+                startExpandAnimation()
+                presenter?.viewReady()
+                return false
             }
-        });
+        })
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.getInstance(getContext()).hasPrivateSession());
-        tabTrayViewModel.checkShoppingSearchMode(getContext());
+    override fun onResume() {
+        super.onResume()
+        tabTrayViewModel!!.hasPrivateTab().value = getInstance(context!!).hasPrivateSession()
+        tabTrayViewModel!!.checkShoppingSearchMode(context!!)
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.new_tab_button:
-                onNewTabClicked();
-                break;
-
-            case R.id.close_all_tabs_btn:
-                onCloseAllTabsClicked();
-                break;
-
-            case R.id.btn_private_browsing:
-                TelemetryWrapper.privateModeTray();
-                startActivity(new Intent(getContext(), PrivateModeActivity.class));
-                getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
-                break;
-
-            default:
-                break;
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.new_tab_button -> onNewTabClicked()
+            R.id.close_all_tabs_btn -> onCloseAllTabsClicked()
+            R.id.btn_private_browsing -> {
+                privateModeTray()
+                startActivity(Intent(context, PrivateModeActivity::class.java))
+                activity!!.overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit)
+            }
+            else -> {
+            }
         }
     }
 
-    @Override
-    public void onShoppingSearchClick() {
-        presenter.shoppingSearchClicked();
+    override fun onShoppingSearchClick() {
+        presenter!!.shoppingSearchClicked()
     }
 
-    @Override
-    public void onShoppingSearchCloseClick() {
+    override fun onShoppingSearchCloseClick() {
         if (closeShoppingSearchDialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            closeShoppingSearchDialog = builder.setMessage(R.string.shopping_closing_dialog_body)
-                    .setPositiveButton(R.string.shopping_closing_dialog_close, (dialog, which) -> {
-                        tabTrayViewModel.finishShoppingSearchMode(getContext());
-                        presenter.shoppingSearchCloseClicked();
-                    })
-                    .setNegativeButton(R.string.shopping_closing_dialog_cancel, (dialog, which) -> {
-                        dialog.dismiss();
-                    })
-                    .show();
+            val builder = AlertDialog.Builder(activity)
+            closeShoppingSearchDialog = builder.setMessage(R.string.shopping_closing_dialog_body).setPositiveButton(R.string.shopping_closing_dialog_close) { _: DialogInterface, _: Int ->
+                tabTrayViewModel!!.finishShoppingSearchMode(context!!)
+                presenter!!.shoppingSearchCloseClicked()
+            }.setNegativeButton(R.string.shopping_closing_dialog_cancel) { _: DialogInterface, _: Int ->
+                dialog?.dismiss()
+            }.show()
         } else {
-            closeShoppingSearchDialog.show();
+            closeShoppingSearchDialog?.show()
         }
     }
 
-    @Override
-    public void onTabClick(int tabPosition) {
-        presenter.tabClicked(tabPosition);
-        TelemetryWrapper.clickTabFromTabTray();
+    override fun onTabClick(tabPosition: Int) {
+        presenter!!.tabClicked(tabPosition)
+        clickTabFromTabTray()
     }
 
-    @Override
-    public void onTabCloseClick(int tabPosition) {
-        presenter.tabCloseClicked(tabPosition);
-        TelemetryWrapper.closeTabFromTabTray();
+    override fun onTabCloseClick(tabPosition: Int) {
+        presenter!!.tabCloseClicked(tabPosition)
+        closeTabFromTabTray()
     }
 
-    @Override
-    public void initData(List<Session> newTabs, Session newFocusedTab) {
-        adapter.setData(newTabs);
-        adapter.setFocusedTab(newFocusedTab);
+    override fun initData(newTabs: List<Session?>?, newFocusedTab: Session?) {
+        adapter!!.data = newTabs
+        adapter!!.focusedTab = newFocusedTab
     }
 
-    @Override
-    public void refreshData(final List<Session> newTabs, final Session newFocusedTab) {
-        final List<Session> oldTabs = adapter.getData();
-        DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return showShoppingSearch ? oldTabs.size() + 1 : oldTabs.size();
+    override fun refreshData(newTabs: List<Session>, newFocusedTab: Session?) {
+        val oldTabs = adapter!!.data
+        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int {
+                return if (showShoppingSearch) oldTabs.size + 1 else oldTabs.size
             }
 
-            @Override
-            public int getNewListSize() {
-                return showShoppingSearch ? newTabs.size() + 1 : newTabs.size();
+            override fun getNewListSize(): Int {
+                return if (showShoppingSearch) newTabs.size + 1 else newTabs.size
             }
 
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                if (showShoppingSearch) {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return if (showShoppingSearch) {
                     if (oldItemPosition == 0 && newItemPosition == 0) {
-                        return true;
+                        true
                     } else if (oldItemPosition == 0 && newItemPosition != 0 ||
                             oldItemPosition != 0 && newItemPosition == 0) {
-                        return false;
+                        false
                     } else {
-                        return newTabs.get(newItemPosition - 1).getId().equals(oldTabs.get(oldItemPosition - 1).getId());
+                        newTabs[newItemPosition - 1].id == oldTabs[oldItemPosition - 1].id
                     }
                 } else {
-                    return newTabs.get(newItemPosition).getId().equals(oldTabs.get(oldItemPosition).getId());
+                    newTabs[newItemPosition].id == oldTabs[oldItemPosition].id
                 }
             }
 
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                return true;
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return true
             }
-        }, false).dispatchUpdatesTo(adapter);
-        adapter.setData(newTabs);
-
-        waitItemAnimation(() -> {
-            Session oldFocused = adapter.getFocusedTab();
-            List<Session> oldTabs1 = adapter.getData();
-            int oldFocusedPosition = oldTabs1.indexOf(oldFocused);
-            adapter.notifyItemChanged(showShoppingSearch ? oldFocusedPosition + 1 : oldFocusedPosition);
-
-            adapter.setFocusedTab(newFocusedTab);
-            int newFocusedPosition = oldTabs1.indexOf(newFocusedTab);
-            adapter.notifyItemChanged(showShoppingSearch ? newFocusedPosition + 1 : newFocusedPosition);
-        });
+        }, false).dispatchUpdatesTo(adapter!!)
+        adapter!!.data = newTabs
+        waitItemAnimation(Runnable {
+            val oldFocused = adapter!!.focusedTab
+            val oldTabs1 = adapter!!.data
+            val oldFocusedPosition = oldTabs1.indexOf(oldFocused)
+            adapter!!.notifyItemChanged(if (showShoppingSearch) oldFocusedPosition + 1 else oldFocusedPosition)
+            adapter!!.focusedTab = newFocusedTab
+            val newFocusedPosition = oldTabs1.indexOf(newFocusedTab)
+            adapter!!.notifyItemChanged(if (showShoppingSearch) newFocusedPosition + 1 else newFocusedPosition)
+        })
     }
 
-    @Override
-    public void refreshTabData(Session tab) {
-        List<Session> tabs = adapter.getData();
-        int position = tabs.indexOf(tab);
-        if (position >= 0 && position < tabs.size()) {
-            adapter.notifyItemChanged(showShoppingSearch ? position + 1 : position);
+    override fun refreshTabData(tab: Session?) {
+        val tabs = adapter!!.data
+        val position = tabs.indexOf(tab)
+        if (position >= 0 && position < tabs.size) {
+            adapter!!.notifyItemChanged(if (showShoppingSearch) position + 1 else position)
         }
     }
 
-    @Override
-    public void showFocusedTab(int tabPosition) {
-        layoutManager.scrollToPositionWithOffset(tabPosition,
-                recyclerView.getMeasuredHeight() / 2);
+    override fun showFocusedTab(tabPosition: Int) {
+        layoutManager!!.scrollToPositionWithOffset(tabPosition,
+                recyclerView!!.measuredHeight / 2)
     }
 
-    @Override
-    public void tabSwitched(int tabPosition) {
-        ScreenNavigator.get(getContext()).raiseBrowserScreen(false);
-        postOnNextFrame(dismissRunnable);
+    override fun tabSwitched(tabPosition: Int) {
+        ScreenNavigator.get(context).raiseBrowserScreen(false)
+        postOnNextFrame(dismissRunnable)
     }
 
-    @Override
-    public void closeTabTray() {
-        postOnNextFrame(dismissRunnable);
+    override fun closeTabTray() {
+        postOnNextFrame(dismissRunnable)
     }
 
-    @Override
-    public void navigateToHome() {
-        ScreenNavigator.get(getContext()).popToHomeScreen(false);
+    override fun navigateToHome() {
+        ScreenNavigator.get(context).popToHomeScreen(false)
     }
 
-    @Override
-    public void navigateToShoppingSearch() {
-        startActivity(ShoppingSearchActivity.Companion.getStartIntent(getContext()));
+    override fun navigateToShoppingSearch() {
+        startActivity(getStartIntent(context!!))
     }
 
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (onDismissListener != null) {
-            onDismissListener.onDismiss(dialog);
-        }
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onDismissListener?.onDismiss(dialog)
         if (presenter != null) {
-            presenter.tabTrayClosed();
+            presenter!!.tabTrayClosed()
         }
     }
 
-    public void setOnDismissListener(DialogInterface.OnDismissListener listener) {
-        this.onDismissListener = listener;
+    fun setOnDismissListener(listener: DialogInterface.OnDismissListener) {
+        onDismissListener = listener
     }
 
-    private void setupBottomSheetCallback() {
-        BottomSheetBehavior behavior = getBehavior(recyclerView);
-        if (behavior == null) {
-            return;
-        }
-
-        behavior.setBottomSheetCallback(new BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+    private fun setupBottomSheetCallback() {
+        val behavior: BottomSheetBehavior<*> = recyclerView?.let { getBehavior(it) } ?: return
+        behavior.setBottomSheetCallback(object : BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    dismissAllowingStateLoss();
+                    dismissAllowingStateLoss()
                 }
             }
 
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                slideCoordinator.onSlide(slideOffset);
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                slideCoordinator.onSlide(slideOffset)
             }
-        });
+        })
     }
 
-    private void initRecyclerView() {
-        initRecyclerViewStyle(recyclerView);
-        setupSwipeToDismiss(recyclerView);
-
-        adapter.setTabClickListener(this);
-        recyclerView.setAdapter(adapter);
+    private fun initRecyclerView() {
+        initRecyclerViewStyle(recyclerView!!)
+        setupSwipeToDismiss(recyclerView!!)
+        adapter!!.setTabClickListener(this)
+        recyclerView!!.adapter = adapter
     }
 
-    private void setupSwipeToDismiss(RecyclerView recyclerView) {
-        int swipeFlag = ENABLE_SWIPE_TO_DISMISS ? ItemTouchHelper.START | ItemTouchHelper.END : 0;
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, swipeFlag) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
-                return false;
+    private fun setupSwipeToDismiss(recyclerView: RecyclerView) {
+        val swipeFlag = if (ENABLE_SWIPE_TO_DISMISS) ItemTouchHelper.START or ItemTouchHelper.END else 0
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, swipeFlag) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
             }
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (viewHolder instanceof TabTrayAdapter.ShoppingSearchViewHolder) {
-                    tabTrayViewModel.finishShoppingSearchMode(getContext());
-                    presenter.shoppingSearchCloseClicked();
-                } else if (viewHolder instanceof TabTrayAdapter.TabViewHolder) {
-                    presenter.tabCloseClicked(((TabTrayAdapter.TabViewHolder) viewHolder).getOriginPosition());
-                    TelemetryWrapper.swipeTabFromTabTray();
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if (viewHolder is ShoppingSearchViewHolder) {
+                    tabTrayViewModel!!.finishShoppingSearchMode(context!!)
+                    presenter!!.shoppingSearchCloseClicked()
+                } else if (viewHolder is TabViewHolder) {
+                    presenter!!.tabCloseClicked(viewHolder.originPosition)
+                    swipeTabFromTabTray()
                 }
             }
 
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                                    RecyclerView.ViewHolder viewHolder,
-                                    float dX, float dY,
-                                    int actionState,
-                                    boolean isCurrentlyActive) {
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    float alpha = 1f - (Math.abs(dX) / (recyclerView.getWidth() / 2f));
-                    viewHolder.itemView.setAlpha(alpha);
+                    val alpha = 1f - Math.abs(dX) / (recyclerView.width / 2f)
+                    viewHolder.itemView.alpha = alpha
                 }
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
-        }).attachToRecyclerView(recyclerView);
+        }).attachToRecyclerView(recyclerView)
     }
 
-    private void prepareExpandAnimation() {
-        setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN);
-
+    private fun prepareExpandAnimation() {
+        setBottomSheetState(BottomSheetBehavior.STATE_HIDDEN)
         // update logo-man and background alpha state
-        slideCoordinator.onSlide(-1);
-        logoMan.setVisibility(View.INVISIBLE);
+        slideCoordinator.onSlide(-1f)
+        logoMan!!.visibility = View.INVISIBLE
     }
 
-    private void startExpandAnimation() {
-        List<Session> tabs = adapter.getData();
-        int focusedPosition = tabs.indexOf(adapter.getFocusedTab());
-        final boolean shouldExpand = isPositionVisibleWhenCollapse(showShoppingSearch ? focusedPosition + 1 : focusedPosition);
-        uiHandler.postDelayed(() -> {
+    private fun startExpandAnimation() {
+        val tabs = adapter!!.data
+        val focusedPosition = tabs.indexOf(adapter!!.focusedTab)
+        val shouldExpand = isPositionVisibleWhenCollapse(if (showShoppingSearch) focusedPosition + 1 else focusedPosition)
+        uiHandler.postDelayed({
             if (shouldExpand) {
-                setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED);
-                logoMan.setVisibility(View.VISIBLE);
-                setIntercept(false);
+                setBottomSheetState(BottomSheetBehavior.STATE_COLLAPSED)
+                logoMan!!.visibility = View.VISIBLE
+                setIntercept(false)
             } else {
-                setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
-                setIntercept(true);
+                setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
+                setIntercept(true)
             }
-        }, getResources().getInteger(R.integer.tab_tray_transition_time));
+        }, resources.getInteger(R.integer.tab_tray_transition_time).toLong())
     }
 
-    private boolean isPositionVisibleWhenCollapse(int focusedPosition) {
-        Resources res = getResources();
-        int visiblePanelHeight = res.getDimensionPixelSize(R.dimen.tab_tray_peekHeight) -
-                res.getDimensionPixelSize(R.dimen.tab_tray_new_tab_btn_height);
-        int itemHeightWithDivider = res.getDimensionPixelSize(R.dimen.tab_tray_item_height) +
-                res.getDimensionPixelSize(R.dimen.tab_tray_item_space);
-        final int visibleItemCount = visiblePanelHeight / itemHeightWithDivider;
-
-        return focusedPosition < visibleItemCount;
+    private fun isPositionVisibleWhenCollapse(focusedPosition: Int): Boolean {
+        val res = resources
+        val visiblePanelHeight = res.getDimensionPixelSize(R.dimen.tab_tray_peekHeight) -
+                res.getDimensionPixelSize(R.dimen.tab_tray_new_tab_btn_height)
+        val itemHeightWithDivider = res.getDimensionPixelSize(R.dimen.tab_tray_item_height) +
+                res.getDimensionPixelSize(R.dimen.tab_tray_item_space)
+        val visibleItemCount = visiblePanelHeight / itemHeightWithDivider
+        return focusedPosition < visibleItemCount
     }
 
-    private void waitItemAnimation(final Runnable onAnimationEnd) {
-        uiHandler.post(() -> {
-            RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
-            if (animator == null) {
-                return;
-            }
-
-            animator.isRunning(() -> uiHandler.post(onAnimationEnd));
-        });
-    }
-
-    @Nullable
-    private InterceptBehavior getBehavior(View view) {
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        if (!(params instanceof CoordinatorLayout.LayoutParams)) {
-            return null;
+    private fun waitItemAnimation(onAnimationEnd: Runnable) {
+        uiHandler.post {
+            val animator = recyclerView!!.itemAnimator ?: return@post
+            animator.isRunning { uiHandler.post(onAnimationEnd) }
         }
-
-        CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) params).getBehavior();
-        if (behavior == null) {
-            return null;
-        }
-
-        if (behavior instanceof InterceptBehavior) {
-            return (InterceptBehavior) behavior;
-        }
-        return null;
     }
 
-    private void setBottomSheetState(@BottomSheetBehavior.State int state) {
-        BottomSheetBehavior behavior = getBehavior(recyclerView);
+    private fun getBehavior(view: View): InterceptBehavior<*>? {
+        val params = view.layoutParams as? CoordinatorLayout.LayoutParams ?: return null
+        val behavior = params.behavior ?: return null
+        return if (behavior is InterceptBehavior<*>) {
+            behavior
+        } else null
+    }
+
+    private fun setBottomSheetState(@BottomSheetBehavior.State state: Int) {
+        val behavior: BottomSheetBehavior<*>? = getBehavior(recyclerView!!)
         if (behavior != null) {
-            behavior.setState(state);
+            behavior.state = state
         }
     }
 
-    private int getBottomSheetState() {
-        BottomSheetBehavior behavior = getBehavior(recyclerView);
-        if (behavior != null) {
-            return behavior.getState();
-        }
-        return -1;
+    private fun getBottomSheetState(): Int {
+        val behavior: BottomSheetBehavior<*>? = getBehavior(recyclerView!!)
+        return behavior?.state ?: -1
     }
 
-    private int getCollapseHeight() {
-        BottomSheetBehavior behavior = getBehavior(recyclerView);
-        if (behavior != null) {
-            return behavior.getPeekHeight();
-        }
-        return 0;
+    internal fun getCollapseHeight(): Int {
+        val behavior: BottomSheetBehavior<*>? = getBehavior(recyclerView!!)
+        return behavior?.peekHeight ?: 0
     }
 
-    private void setIntercept(boolean intercept) {
-        InterceptBehavior behavior = getBehavior(recyclerView);
-        if (behavior != null) {
-            behavior.setIntercept(intercept);
-        }
+    private fun setIntercept(intercept: Boolean) {
+        val behavior = getBehavior(recyclerView!!)
+        behavior?.setIntercept(intercept)
     }
 
-    private void initRecyclerViewStyle(RecyclerView recyclerView) {
-        Context context = recyclerView.getContext();
-        recyclerView.setLayoutManager(layoutManager = new LinearLayoutManager(context,
-                RecyclerView.VERTICAL, false));
-
-        RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
-        if (animator instanceof SimpleItemAnimator) {
-            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
+    private fun initRecyclerViewStyle(recyclerView: RecyclerView) {
+        val context = recyclerView.context
+        recyclerView.layoutManager = LinearLayoutManager(context,
+                RecyclerView.VERTICAL, false).also { layoutManager = it }
+        val animator = recyclerView.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
         }
     }
 
-    private void setupTapBackgroundToExpand() {
-        final GestureDetectorCompat detector = new GestureDetectorCompat(getContext(),
-                new SimpleOnGestureListener() {
-                    @Override
-                    public boolean onSingleTapUp(MotionEvent e) {
-                        setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED);
-                        return true;
+    private fun setupTapBackgroundToExpand() {
+        val detector = GestureDetectorCompat(context,
+                object : SimpleOnGestureListener() {
+                    override fun onSingleTapUp(e: MotionEvent): Boolean {
+                        setBottomSheetState(BottomSheetBehavior.STATE_EXPANDED)
+                        return true
                     }
 
-                    @Override
-                    public boolean onDown(MotionEvent e) {
-                        return true;
+                    override fun onDown(e: MotionEvent): Boolean {
+                        return true
                     }
-                });
-
-        backgroundView.setOnTouchListener((v, event) -> {
-            boolean result = detector.onTouchEvent(event);
+                })
+        backgroundView!!.setOnTouchListener { v: View, event: MotionEvent? ->
+            val result = detector.onTouchEvent(event)
             if (result) {
-                v.performClick();
+                v.performClick()
             }
-            return result;
-        });
-    }
-
-    private void onNewTabClicked() {
-        ScreenNavigator.get(getContext()).addHomeScreen(false);
-        homeViewModel.onNewTabButtonClicked();
-        TelemetryWrapper.clickAddTabTray();
-        postOnNextFrame(dismissRunnable);
-    }
-
-    private void onCloseAllTabsClicked() {
-        if (closeTabsDialog == null) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
-                    .setPositiveButton(R.string.action_ok, (dialog, which) -> {
-                        presenter.closeAllTabs();
-                        TelemetryWrapper.closeAllTabFromTabTray();
-                    })
-                    .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
-                    .show();
-        } else {
-            closeTabsDialog.show();
+            result
         }
     }
 
-    private void initWindowBackground(Context context) {
-        Drawable drawable = context.getDrawable(R.drawable.tab_tray_background);
+    private fun onNewTabClicked() {
+        ScreenNavigator.get(context).addHomeScreen(false)
+        homeViewModel!!.onNewTabButtonClicked()
+        clickAddTabTray()
+        postOnNextFrame(dismissRunnable)
+    }
+
+    private fun onCloseAllTabsClicked() {
+        if (closeTabsDialog == null) {
+            val builder = AlertDialog.Builder(activity)
+            closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
+                    .setPositiveButton(R.string.action_ok) { _: DialogInterface, _: Int ->
+                        presenter?.closeAllTabs()
+                        closeAllTabFromTabTray()
+                    }.setNegativeButton(R.string.action_cancel) { _: DialogInterface, _: Int ->
+                        dialog?.dismiss()
+                    }.show()
+        } else {
+            closeTabsDialog?.show()
+        }
+    }
+
+    private fun initWindowBackground(context: Context) {
+        val drawable = context.getDrawable(R.drawable.tab_tray_background)
         if (drawable == null) {
             if (BuildConfig.DEBUG) {
-                throw new RuntimeException("fail to resolve background drawable");
+                throw RuntimeException("fail to resolve background drawable")
             }
-            return;
+            return
         }
-
-        if (drawable instanceof LayerDrawable) {
-            LayerDrawable layerDrawable = (LayerDrawable) drawable;
-            if (Settings.getInstance(getContext()).isNightModeEnable()) {
-                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background_night);
+        if (drawable is LayerDrawable) {
+            val layerDrawable = drawable
+            if (Settings.getInstance(getContext()).isNightModeEnable) {
+                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background_night)
                 // set alpha = 0 to let this layer invisible
-                layerDrawable.findDrawableByLayerId(R.id.gradient_background).setAlpha(0);
+                layerDrawable.findDrawableByLayerId(R.id.gradient_background).alpha = 0
             } else {
-                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background);
-                layerDrawable.findDrawableByLayerId(R.id.gradient_background_night).setAlpha(0);
+                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background)
+                layerDrawable.findDrawableByLayerId(R.id.gradient_background_night).alpha = 0
             }
-            backgroundOverlay = layerDrawable.findDrawableByLayerId(R.id.background_overlay);
-            int alpha = validateBackgroundAlpha(0xff);
-            backgroundDrawable.setAlpha(alpha);
-            backgroundOverlay.setAlpha(getBottomSheetState() == BottomSheetBehavior.STATE_COLLAPSED ? 0 : (int) (alpha * OVERLAY_ALPHA_FULL_EXPANDED));
-
+            backgroundOverlay = layerDrawable.findDrawableByLayerId(R.id.background_overlay)
+            val alpha: Int = validateBackgroundAlpha(0xff)
+            backgroundDrawable?.alpha = alpha
+            backgroundOverlay?.alpha = if (getBottomSheetState() == BottomSheetBehavior.STATE_COLLAPSED) 0 else (alpha * OVERLAY_ALPHA_FULL_EXPANDED).toInt()
         } else {
-            backgroundDrawable = drawable;
+            backgroundDrawable = drawable
         }
-
-        Window window = getDialog().getWindow();
-        if (window == null) {
-            return;
-        }
-        window.setBackgroundDrawable(drawable);
+        val window = dialog!!.window ?: return
+        window.setBackgroundDrawable(drawable)
     }
 
-    private int validateBackgroundAlpha(int alpha) {
-        return Math.max(Math.min(alpha, 0xfe), 0x01);
+    private fun validateBackgroundAlpha(alpha: Int): Int {
+        return Math.max(Math.min(alpha, 0xfe), 0x01)
     }
 
-    private void setDialogAnimation(@StyleRes int resId) {
-        Dialog dialog = getDialog();
-        if (dialog == null) {
-            return;
-        }
-
-        Window window = dialog.getWindow();
+    private fun setDialogAnimation(@StyleRes resId: Int) {
+        val dialog = dialog ?: return
+        val window = dialog.window
         if (window != null) {
-            window.getAttributes().windowAnimations = resId;
-            updateWindowAttrs(window);
+            window.attributes.windowAnimations = resId
+            updateWindowAttrs(window)
         }
     }
 
-    private void updateWindowAttrs(@NonNull Window window) {
-        Context context = getContext();
-        if (context == null) {
-            return;
-        }
-
-        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (manager == null) {
-            return;
-        }
-
-        View decor = window.getDecorView();
-        if (decor.isAttachedToWindow()) {
-            manager.updateViewLayout(decor, window.getAttributes());
+    private fun updateWindowAttrs(window: Window) {
+        val context = context ?: return
+        val manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val decor = window.decorView
+        if (decor.isAttachedToWindow) {
+            manager.updateViewLayout(decor, window.attributes)
         }
     }
 
-    private void onTranslateToHidden(float translationY) {
-        newTabBtn.setTranslationY(translationY);
-        logoMan.setTranslationY(translationY);
+    private fun onTranslateToHidden(translationY: Float) {
+        newTabBtn!!.translationY = translationY
+        logoMan!!.translationY = translationY
     }
 
-    private void updateWindowBackground(float backgroundAlpha) {
-        backgroundView.setAlpha(backgroundAlpha);
-
+    private fun updateWindowBackground(backgroundAlpha: Float) {
+        backgroundView!!.alpha = backgroundAlpha
         if (backgroundDrawable != null) {
-            backgroundDrawable.setAlpha(validateBackgroundAlpha((int) (backgroundAlpha * 0xff)));
+            backgroundDrawable!!.alpha = validateBackgroundAlpha((backgroundAlpha * 0xff).toInt())
         }
     }
 
-    private void updateWindowOverlay(float overlayAlpha) {
+    private fun updateWindowOverlay(overlayAlpha: Float) {
         if (backgroundOverlay != null) {
-            backgroundOverlay.setAlpha(validateBackgroundAlpha((int) (overlayAlpha * 0xff)));
+            backgroundOverlay!!.alpha = validateBackgroundAlpha((overlayAlpha * 0xff).toInt())
         }
     }
 
-    private void onFullyExpanded() {
-        if (logoMan.getVisibility() != View.VISIBLE) {
-            // We don't want to show logo-man during fully expand animation (too complex visually).
-            // In this case, we hide logo-man at first, and make sure it become visible after tab
-            // tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
-            logoMan.setVisibility(View.VISIBLE);
+    private fun onFullyExpanded() {
+        if (logoMan!!.visibility != View.VISIBLE) { // We don't want to show logo-man during fully expand animation (too complex visually).
+// In this case, we hide logo-man at first, and make sure it become visible after tab
+// tray is fully expanded (slideOffset >= 1). See prepareExpandAnimation()
+            logoMan!!.visibility = View.VISIBLE
         }
-        setIntercept(false);
+        setIntercept(false)
     }
 
-    private void postOnNextFrame(final Runnable runnable) {
-        uiHandler.post(() -> uiHandler.post(runnable));
+    private fun postOnNextFrame(runnable: Runnable) {
+        uiHandler.post { uiHandler.post(runnable) }
     }
 
-    private static class SlideAnimationCoordinator {
-        private Interpolator backgroundInterpolator = new AccelerateInterpolator();
-        private Interpolator overlayInterpolator = new AccelerateDecelerateInterpolator();
-        private int collapseHeight = -1;
-
-        private float translationY = Integer.MIN_VALUE;
-        private float backgroundAlpha = -1;
-        private float overlayAlpha = -1;
-
-        private TabTrayFragment fragment;
-
-        SlideAnimationCoordinator(TabTrayFragment fragment) {
-            this.fragment = fragment;
+    private class ShoppingSearchItemDecoration internal constructor(private val divierDefault: Drawable, private val divierNight: Drawable) : RecyclerView.ItemDecoration() {
+        private val bounds = Rect()
+        private var isNight = false
+        override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+            val divider = if (isNight) divierNight else divierDefault
+            if (parent.layoutManager == null) {
+                return
+            }
+            c.save()
+            val left: Int
+            val right: Int
+            if (parent.clipToPadding) {
+                left = parent.paddingLeft
+                right = parent.width - parent.paddingRight
+                c.clipRect(left, parent.paddingTop, right,
+                        parent.height - parent.paddingBottom)
+            } else {
+                left = 0
+                right = parent.width
+            }
+            val childCount = parent.childCount
+            for (i in 0 until childCount) {
+                val child = parent.getChildAt(0)
+                if (parent.getChildAdapterPosition(child) == 0) {
+                    parent.getDecoratedBoundsWithMargins(child, bounds)
+                    val bottom = bounds.bottom + Math.round(child.translationY)
+                    val top = bottom - divider.intrinsicHeight
+                    divider.setBounds(left, top, right, bottom)
+                    divider.draw(c)
+                }
+            }
+            c.restore()
         }
 
-        private void onSlide(float slideOffset) {
-            float backgroundAlpha = 1f;
-            float overlayAlpha = 0f;
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            if (parent.getChildAdapterPosition(view) == 1) {
+                outRect.top = view.resources.getDimensionPixelOffset(R.dimen.tab_tray_padding)
+            }
+        }
 
-            float translationY = 0;
+        fun setNightMode(enable: Boolean) {
+            isNight = enable
+        }
+    }
 
+    private fun setNightModeEnabled(enable: Boolean) {
+        newTabBtn?.setNightMode(enable)
+        imgPrivateBrowsing?.setNightMode(enable)
+        imgNewTab?.setNightMode(enable)
+        bottomDivider?.setNightMode(enable)
+        itemDecoration?.setNightMode(enable)
+        recyclerView?.setNightMode(enable)
+        ViewUtils.updateStatusBarStyle(!enable, dialog?.window)
+    }
+
+    class SlideAnimationCoordinator internal constructor(private val fragment: TabTrayFragment) {
+        private val backgroundInterpolator: Interpolator = AccelerateInterpolator()
+        private val overlayInterpolator: Interpolator = AccelerateDecelerateInterpolator()
+        private var collapseHeight = -1
+        private var translationY = Int.MIN_VALUE.toFloat()
+        private var backgroundAlpha = -1f
+        private var overlayAlpha = -1f
+        internal fun onSlide(slideOffset: Float) {
+            var backgroundAlpha = 1f
+            var overlayAlpha = 0f
+            var translationY = 0f
             if (slideOffset < 0) {
                 if (collapseHeight < 0) {
-                    collapseHeight = fragment.getCollapseHeight();
+                    collapseHeight = fragment.getCollapseHeight()
                 }
-                translationY = collapseHeight * -slideOffset;
-
+                translationY = collapseHeight * -slideOffset
                 if (ENABLE_BACKGROUND_ALPHA_TRANSITION) {
-                    float interpolated = backgroundInterpolator.getInterpolation(-slideOffset);
-                    backgroundAlpha = Math.max(0, 1 - interpolated);
+                    val interpolated = backgroundInterpolator.getInterpolation(-slideOffset)
+                    backgroundAlpha = Math.max(0f, 1 - interpolated)
                 }
             } else {
-                float interpolated = overlayInterpolator.getInterpolation(1 - slideOffset);
-                overlayAlpha = -(interpolated * OVERLAY_ALPHA_FULL_EXPANDED) + OVERLAY_ALPHA_FULL_EXPANDED;
+                val interpolated = overlayInterpolator.getInterpolation(1 - slideOffset)
+                overlayAlpha = -(interpolated * OVERLAY_ALPHA_FULL_EXPANDED) + OVERLAY_ALPHA_FULL_EXPANDED
             }
-
             if (slideOffset >= 1) {
-                fragment.onFullyExpanded();
+                fragment.onFullyExpanded()
             }
-
-            if (Float.compare(this.translationY, translationY) != 0) {
-                this.translationY = translationY;
-                fragment.onTranslateToHidden(translationY);
+            if (java.lang.Float.compare(this.translationY, translationY) != 0) {
+                this.translationY = translationY
+                fragment.onTranslateToHidden(translationY)
             }
-
-            if (Float.compare(this.backgroundAlpha, backgroundAlpha) != 0) {
-                this.backgroundAlpha = backgroundAlpha;
-                fragment.updateWindowBackground(backgroundAlpha);
+            if (java.lang.Float.compare(this.backgroundAlpha, backgroundAlpha) != 0) {
+                this.backgroundAlpha = backgroundAlpha
+                fragment.updateWindowBackground(backgroundAlpha)
             }
-
-            if (Float.compare(this.overlayAlpha, overlayAlpha) != 0) {
-                this.overlayAlpha = overlayAlpha;
-                fragment.updateWindowOverlay(overlayAlpha);
+            if (java.lang.Float.compare(this.overlayAlpha, overlayAlpha) != 0) {
+                this.overlayAlpha = overlayAlpha
+                fragment.updateWindowOverlay(overlayAlpha)
             }
         }
-    }
-
-    private static class ShoppingSearchItemDecoration extends RecyclerView.ItemDecoration {
-        private Drawable divierDefault;
-        private Drawable divierNight;
-        private final Rect bounds = new Rect();
-        private boolean isNight = false;
-
-        ShoppingSearchItemDecoration(Drawable dividerDefault, Drawable dividerNight) {
-            this.divierDefault = dividerDefault;
-            this.divierNight = dividerNight;
-        }
-
-        @Override
-        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            Drawable divider = isNight ? divierNight : divierDefault;
-
-            if (parent.getLayoutManager() == null || divider == null) {
-                return;
-            }
-
-            c.save();
-            final int left;
-            final int right;
-            //noinspection AndroidLintNewApi - NewApi lint fails to handle overrides.
-            if (parent.getClipToPadding()) {
-                left = parent.getPaddingLeft();
-                right = parent.getWidth() - parent.getPaddingRight();
-                c.clipRect(left, parent.getPaddingTop(), right,
-                        parent.getHeight() - parent.getPaddingBottom());
-            } else {
-                left = 0;
-                right = parent.getWidth();
-            }
-
-            final int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                final View child = parent.getChildAt(0);
-                if (parent.getChildAdapterPosition(child) == 0) {
-                    parent.getDecoratedBoundsWithMargins(child, bounds);
-                    final int bottom = bounds.bottom + Math.round(child.getTranslationY());
-                    final int top = bottom - divider.getIntrinsicHeight();
-                    divider.setBounds(left, top, right, bottom);
-                    divider.draw(c);
-                }
-            }
-            c.restore();
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            if (parent.getChildAdapterPosition(view) == 1) {
-                outRect.top = view.getResources().getDimensionPixelOffset(R.dimen.tab_tray_padding);
-            }
-        }
-
-        public void setNightMode(boolean enable) {
-            isNight = enable;
-        }
-    }
-
-    private void setNightModeEnabled(boolean enable) {
-        newTabBtn.setNightMode(enable);
-        imgPrivateBrowsing.setNightMode(enable);
-        imgNewTab.setNightMode(enable);
-        bottomDivider.setNightMode(enable);
-        itemDecoration.setNightMode(enable);
-        recyclerView.setNightMode(enable);
-
-        ViewUtils.updateStatusBarStyle(!enable, getDialog().getWindow());
     }
 }
