@@ -437,6 +437,7 @@
   <string name="msrp_activitykilled_snackbar_body">Bạn đã giành được một phiếu mua sắm!</string>
   <string name="travel_vertical_title">Du lịch</string>
   <string name="travel_vertical_category_1">Khám phá</string>
+  <string name="travel_vertical_category_2">Danh sách đích</string>
   <string name="travel_destination_subcategory_1">Du lịch trên một ngân sách</string>
   <string name="travel_destination_subcategory_2">Thành phố tốt nhất cho kỳ nghỉ đông</string>
   <string name="travel_find_destination_title">Bạn muốn đi đâu?</string>
@@ -454,8 +455,10 @@
   <string name="travel_hotel_price_from">Từ</string>
   <string name="travel_empty_state_text">“Tôi chưa từng đến những nơi này, nhưng nó ở trong danh sách của tôi.”</string>
   <string name="travel_empty_state_button">Khám phá một thành phố</string>
+  <string name="travel_snack_bar_saved_message">Đã lưu vào danh sách đích của bạn.</string>
   <string name="travel_snack_bar_button">XEM</string>
   <string name="travel_onboarding_save_title">Thích ứng dụng %1$s?</string>
+  <string name="travel_onboarding_save_description">Lưu %1$s vào danh sách đích, để bạn có thể nhanh chóng nhận được hướng dẫn du lịch và giá tốt nhất.</string>
   <string name="travel_onboarding_save_button">OK</string>
   <string name="travel_find_destination_placeholder_2">Nhập một điểm đến</string>
   <string name="travel_search_engine_1">Xem kết quả trong %1$s</string>
