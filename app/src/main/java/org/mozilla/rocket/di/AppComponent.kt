@@ -27,6 +27,7 @@ import org.mozilla.focus.fragment.DownloadsFragment
 import org.mozilla.focus.history.BrowsingHistoryFragment
 import org.mozilla.focus.persistence.TabsDatabase
 import org.mozilla.focus.persistence.di.TabsModule
+import org.mozilla.focus.tabs.tabtray.TabTrayFragment
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.di.ChromeModule
@@ -107,6 +108,7 @@ interface AppComponent {
     fun inject(browserFragment: org.mozilla.rocket.privately.browse.BrowserFragment)
     fun inject(downloadsFragment: DownloadsFragment)
     fun inject(homeFragment: HomeFragment)
+    fun inject(tabTrayFragment: TabTrayFragment)
     fun inject(privateHomeFragment: PrivateHomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
     fun inject(menuDialog: MenuDialog)

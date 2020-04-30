@@ -54,6 +54,8 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.ViewUtils;
+import org.mozilla.rocket.content.BaseViewModelFactory;
+import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.home.HomeViewModel;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedRecyclerView;
@@ -67,6 +69,10 @@ import org.mozilla.rocket.tabs.SessionManager;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.Lazy;
 
 public class TabTrayFragment extends DialogFragment implements TabTrayContract.View,
         View.OnClickListener, TabTrayAdapter.TabClickListener {
@@ -107,6 +113,8 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private Runnable dismissRunnable = this::dismissAllowingStateLoss;
 
     private TabTrayViewModel tabTrayViewModel = null;
+    @Inject
+    Lazy<HomeViewModel> homeViewModelCreator;
     private HomeViewModel homeViewModel = null;
 
     private ThemedImageView imgPrivateBrowsing, imgNewTab;
@@ -124,6 +132,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.TabTrayTheme);
 
@@ -192,7 +201,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 adapter.setShoppingSearch(showShoppingSearch, uiModel.getKeyword());
             }
         });
-        homeViewModel = new ViewModelProvider(getActivity(), new ViewModelProvider.NewInstanceFactory()).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(homeViewModelCreator::get)).get(HomeViewModel.class);
         backgroundView = view.findViewById(R.id.root_layout);
         logoMan = backgroundView.findViewById(R.id.logo_man);
         imgPrivateBrowsing = view.findViewById(R.id.img_private_browsing);
