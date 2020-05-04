@@ -21,7 +21,8 @@ object LocalAbTesting {
     private val activeExperiments: List<Experiment> by lazy {
         AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting)!!
                 .getJsonArray { it.toExperiment() }
-                .filter { it.enabled && it.matchNewUserCondition(isNewUser) }
+                .filter { it.enabled && (isAlreadyInExperiment(it.name) ||
+                        it.matchNewUserCondition(isNewUser) || it.matchUpgradedUserCondition(isNewUser)) }
                 .also { updateActiveExperiments(it) }
     }
     private val assignedBucketMap = ArrayMap<String, String?>()
@@ -75,8 +76,13 @@ object LocalAbTesting {
         return userGroup
     }
 
-    private fun Experiment.matchNewUserCondition(isNewUser: Boolean?): Boolean =
-            (!this.newUserOnly || this.newUserOnly && isNewUser == true) || isActiveExperiment(name)
+    private fun Experiment.matchNewUserCondition(isNewUser: Boolean): Boolean =
+            isNewUser && this.newUserEnabled
+
+    private fun Experiment.matchUpgradedUserCondition(isNewUser: Boolean): Boolean =
+            !isNewUser && this.upgradedUserEnabled
+
+    private fun isAlreadyInExperiment(name: String): Boolean = isActiveExperiment(name)
 
     private fun isActiveExperiment(name: String): Boolean {
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(appContext)
@@ -96,7 +102,8 @@ object LocalAbTesting {
     private data class Experiment(
         val name: String,
         val enabled: Boolean,
-        val newUserOnly: Boolean,
+        val newUserEnabled: Boolean,
+        val upgradedUserEnabled: Boolean,
         val buckets: List<Bucket>
     )
 
@@ -109,7 +116,8 @@ object LocalAbTesting {
     private fun JSONObject.toExperiment() = Experiment(
         name = getString("name"),
         enabled = getBoolean("enabled"),
-        newUserOnly = getBoolean("newUserOnly"),
+        newUserEnabled = getBoolean("newUserEnabled"),
+        upgradedUserEnabled = getBoolean("upgradedUserEnabled"),
         buckets = getJsonArray("buckets") { it.toBucket() }
     )
 
