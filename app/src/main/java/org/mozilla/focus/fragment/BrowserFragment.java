@@ -39,7 +39,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,6 +52,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -93,9 +93,11 @@ import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.extension.LiveDataExtensionKt;
 import org.mozilla.rocket.landing.PortraitComponent;
 import org.mozilla.rocket.landing.PortraitStateModel;
+import org.mozilla.rocket.nightmode.themed.ThemedBottomBar;
+import org.mozilla.rocket.nightmode.themed.ThemedCoordinatorLayout;
+import org.mozilla.rocket.nightmode.themed.ThemedFrameLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedImageView;
 import org.mozilla.rocket.nightmode.themed.ThemedLinearLayout;
-import org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout;
 import org.mozilla.rocket.nightmode.themed.ThemedTextView;
 import org.mozilla.rocket.nightmode.themed.ThemedView;
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity;
@@ -162,18 +164,21 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     private static final int BUNDLE_MAX_SIZE = 300 * 1000; // 300K
 
     private ViewGroup webViewSlot;
+    private ViewGroup webViewContainer;
     private SessionManager sessionManager;
 
-    private ThemedRelativeLayout backgroundView;
+    private ThemedView insetCover;
     private TransitionDrawable backgroundTransition;
+    private ThemedFrameLayout urlBar;
     private ThemedTextView urlView;
     private AnimatedProgressBar progressView;
     private ThemedImageView siteIdentity;
     private Dialog webContextMenu;
 
+    private ThemedCoordinatorLayout browserRoot;
+    private AppBarLayout appBar;
     private View mainContent;
-    private int mainContentBottomMargin;
-    private BottomBar bottomBar;
+    private ThemedBottomBar bottomBar;
 
     //GeoLocationPermission
     private String geolocationOrigin;
@@ -184,11 +189,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
      * Container for custom video views shown in fullscreen mode.
      */
     private ViewGroup videoContainer;
-
-    /**
-     * Container containing the browser chrome and web content.
-     */
-    private ThemedLinearLayout browserContainer;
 
     private TabView.FullscreenCallback fullscreenCallback;
 
@@ -437,23 +437,25 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_browser, container, false);
 
+        browserRoot = view.findViewById(R.id.browser_root_view);
         videoContainer = view.findViewById(R.id.video_container);
-        browserContainer = view.findViewById(R.id.browser_container);
 
         mainContent = view.findViewById(R.id.main_content);
-        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(mainContent);
-        if (params != null) {
-            mainContentBottomMargin = params.bottomMargin;
-        }
-
+        urlBar = view.findViewById(R.id.urlbar);
         urlView = view.findViewById(R.id.display_url);
 
-        backgroundView = view.findViewById(R.id.background);
-        view.findViewById(R.id.appbar).setOnApplyWindowInsetsListener((v, insets) -> {
-            ((RelativeLayout.LayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+        insetCover = view.findViewById(R.id.inset_cover);
+        appBar = view.findViewById(R.id.appbar);
+        appBar.setOnApplyWindowInsetsListener((v, insets) -> {
+            ((ViewGroup.MarginLayoutParams) v.getLayoutParams()).topMargin = insets.getSystemWindowInsetTop();
+            insetCover.getLayoutParams().height = insets.getSystemWindowInsetTop();
             return insets;
         });
-        backgroundTransition = (TransitionDrawable) backgroundView.getBackground();
+        mainContent.setOnApplyWindowInsetsListener((v, insets) -> {
+            v.setPadding(0, 0, 0, insets.getSystemWindowInsetTop());
+            return insets;
+        });
+        backgroundTransition = (TransitionDrawable) urlBar.getBackground();
 
         observeChromeAction();
         setupBottomBar(view);
@@ -467,6 +469,7 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         progressView = view.findViewById(R.id.progress);
         initialiseNormalBrowserUi();
 
+        webViewContainer = view.findViewById(R.id.webview_container);
         webViewSlot = view.findViewById(R.id.webview_slot);
 
         sessionManager = TabsSessionProvider.getOrThrow(getActivity());
@@ -638,12 +641,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         LiveDataExtensionKt.switchFrom(chromeViewModel.isCurrentUrlBookmarked(), bottomBarViewModel.getItems())
                 .observe(getViewLifecycleOwner(), bottomBarItemAdapter::setBookmark);
 
-        setupDownloadIndicator(rootView);
+        setupDownloadIndicator();
     }
 
-    private void setupDownloadIndicator(View rootView) {
-        final ViewGroup browserRoot = rootView.findViewById(R.id.browser_root_view);
-
+    private void setupDownloadIndicator() {
         DownloadIndicatorViewModel downloadIndicatorViewModel =
                 new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(downloadIndicatorViewModelCreator::get)).get(DownloadIndicatorViewModel.class);
         LiveDataExtensionKt.switchFrom(downloadIndicatorViewModel.getDownloadIndicatorObservable(), bottomBarViewModel.getItems())
@@ -712,12 +713,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbarRoot.setVisibility(View.GONE);
             bottomBar.setVisibility(View.GONE);
-            updateMainContentBottomMargin(0);
             onLandscapeModeStart();
         } else {
             toolbarRoot.setVisibility(View.VISIBLE);
             bottomBar.setVisibility(View.VISIBLE);
-            updateMainContentBottomMargin(mainContentBottomMargin);
             onLandscapeModeFinish();
         }
 
@@ -753,22 +752,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         if (fullscreenContentView != null) {
             videoContainer.removeAllViews();
             videoContainer.addView(fullscreenContentView, params);
-        }
-    }
-
-    @Nullable
-    private ViewGroup.MarginLayoutParams getMarginLayoutParams(View view) {
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        if (params instanceof ViewGroup.MarginLayoutParams) {
-            return (ViewGroup.MarginLayoutParams) params;
-        }
-        return null;
-    }
-
-    private void updateMainContentBottomMargin(int marginBottom) {
-        ViewGroup.MarginLayoutParams params = getMarginLayoutParams(mainContent);
-        if (params != null) {
-            params.bottomMargin = marginBottom;
         }
     }
 
@@ -1290,14 +1273,17 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     public void showFindInPage() {
         final Session focusTab = sessionManager.getFocusSession();
         if (focusTab != null) {
-            PortraitStateModel portraitState = getPortraitStateModel();
-            if (portraitState != null) {
-                portraitState.request(PortraitComponent.FindInPage.INSTANCE);
-                findInPage.setOnDismissListener(view -> {
-                    portraitState.cancelRequest(PortraitComponent.FindInPage.INSTANCE);
-                    return null;
-                });
-            }
+            appBar.setExpanded(false);
+            bottomBar.setVisibility(View.INVISIBLE);
+            shoppingSearchViewStub.setVisibility(View.INVISIBLE);
+            browserRoot.setActivated(false);
+            findInPage.setOnDismissListener(view -> {
+                browserRoot.setActivated(true);
+                appBar.setExpanded(true);
+                bottomBar.setVisibility(View.VISIBLE);
+                shoppingSearchViewStub.setVisibility(View.VISIBLE);
+                return null;
+            });
 
             findInPage.show(focusTab);
             TelemetryWrapper.findInPage(TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU);
@@ -1489,7 +1475,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
 
             if (session.getEngineSession().getTabView() != null && fullscreenContentView != null) {
                 // Hide browser UI and web content
-                browserContainer.setVisibility(View.INVISIBLE);
+                appBar.setVisibility(View.INVISIBLE);
+                webViewContainer.setVisibility(View.INVISIBLE);
+                shoppingSearchViewStub.setVisibility(View.INVISIBLE);
+                bottomBar.setVisibility(View.INVISIBLE);
 
                 // Add view to video container and make it visible
                 final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -1512,7 +1501,10 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
             videoContainer.setVisibility(View.GONE);
 
             // Show browser UI and web content again
-            browserContainer.setVisibility(View.VISIBLE);
+            appBar.setVisibility(View.VISIBLE);
+            webViewContainer.setVisibility(View.VISIBLE);
+            shoppingSearchViewStub.setVisibility(View.VISIBLE);
+            bottomBar.setVisibility(View.VISIBLE);
 
             if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
                 ViewUtils.exitImmersiveMode(systemVisibility, getActivity());
@@ -1881,13 +1873,15 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     }
 
     private void setNightModeEnabled(boolean enable) {
-        browserContainer.setNightMode(enable);
+        browserRoot.setNightMode(enable);
+        bottomBar.setNightMode(enable);
 
+        insetCover.setNightMode(enable);
         toolbarRoot.setNightMode(enable);
         urlView.setNightMode(enable);
         siteIdentity.setNightMode(enable);
 
-        backgroundView.setNightMode(enable);
+        urlBar.setNightMode(enable);
         urlBarDivider.setNightMode(enable);
 
         ViewUtils.updateStatusBarStyle(!enable, getActivity().getWindow());
