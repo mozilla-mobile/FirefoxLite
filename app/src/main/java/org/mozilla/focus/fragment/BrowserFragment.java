@@ -216,7 +216,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
     final SessionManager.Observer managerObserver = new SessionManagerObserver(sessionObserver);
 
     private ThemedLinearLayout toolbarRoot;
-    private ThemedView bottomMenuDivider;
     private ThemedView urlBarDivider;
     private View downloadIndicatorIntro;
     private ChromeViewModel chromeViewModel;
@@ -460,7 +459,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         setupBottomBar(view);
 
         toolbarRoot = view.findViewById(R.id.toolbar_root);
-        bottomMenuDivider = view.findViewById(R.id.bottom_menu_divider);
         urlBarDivider = view.findViewById(R.id.url_bar_divider);
 
         siteIdentity = view.findViewById(R.id.site_identity);
@@ -714,13 +712,11 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbarRoot.setVisibility(View.GONE);
             bottomBar.setVisibility(View.GONE);
-            bottomMenuDivider.setVisibility(View.GONE);
             updateMainContentBottomMargin(0);
             onLandscapeModeStart();
         } else {
             toolbarRoot.setVisibility(View.VISIBLE);
             bottomBar.setVisibility(View.VISIBLE);
-            bottomMenuDivider.setVisibility(View.VISIBLE);
             updateMainContentBottomMargin(mainContentBottomMargin);
             onLandscapeModeFinish();
         }
@@ -1891,7 +1887,6 @@ public class BrowserFragment extends LocaleAwareFragment implements ScreenNaviga
         urlView.setNightMode(enable);
         siteIdentity.setNightMode(enable);
 
-        bottomMenuDivider.setNightMode(enable);
         backgroundView.setNightMode(enable);
         urlBarDivider.setNightMode(enable);
 

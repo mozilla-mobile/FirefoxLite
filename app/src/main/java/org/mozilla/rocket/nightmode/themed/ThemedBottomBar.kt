@@ -9,8 +9,11 @@ class ThemedBottomBar : BottomBar {
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
     private var isNight: Boolean = false
+
+    override fun createDividerView() = ThemedView(context)
 
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
@@ -28,5 +31,6 @@ class ThemedBottomBar : BottomBar {
             refreshDrawableState()
             invalidate()
         }
+        (dividerView as ThemedView).setNightMode(isNight)
     }
 }
