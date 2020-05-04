@@ -115,7 +115,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                 v.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.fixed_menu_height) +
                         insets.systemWindowInsetTop)
             } else {
-                v.setPadding(0, 0, 0, 0)
+                v.setPadding(0, 0, 0, insets.systemWindowInsetTop)
             }
             insets
         }
