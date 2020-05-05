@@ -15,7 +15,7 @@ public class ScreenshotIdlingResource implements IdlingResource, CaptureRunnable
     private boolean completed;
 
     public ScreenshotIdlingResource(MainActivity activity) {
-        activity.getBrowserFragment().setCaptureStateListener(this);
+        activity.getBrowserFragment().captureStateListener = this;
     }
 
     @Override
