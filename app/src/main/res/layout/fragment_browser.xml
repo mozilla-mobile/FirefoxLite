@@ -57,7 +57,7 @@
         android:id="@+id/inset_cover"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/browser_background"/>
+        android:background="@drawable/animated_background"/>
 
     <org.mozilla.focus.widget.ResizableKeyboardLayout
         android:id="@+id/webview_container"
