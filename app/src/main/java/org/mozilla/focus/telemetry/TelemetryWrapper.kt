@@ -16,6 +16,8 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.webkit.PermissionRequest
 import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
+import mozilla.components.service.glean.Glean
+import mozilla.components.service.glean.config.Configuration
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.provider.ScreenshotContract
@@ -402,7 +404,7 @@ object TelemetryWrapper {
         ThreadUtils.postToBackgroundThread {
             // We want to queue this ping and send asap.
             TelemetryWrapper.settingsEvent(key, enabled.toString(), true)
-
+            Glean.setUploadEnabled(enabled)
             // If there are things already collected, we'll still upload them.
             TelemetryHolder.get()
                     .configuration
@@ -422,6 +424,9 @@ object TelemetryWrapper {
 
             val trackerTokenPrefKey = resources.getString(R.string.pref_key_s_tracker_token)
             val channel = AppConstants.getChannel()
+
+            Glean.initialize(context, telemetryEnabled, Configuration(channel = channel))
+
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
                     .setAppName(TELEMETRY_APP_NAME_ZERDA)
