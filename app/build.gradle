@@ -1,3 +1,7 @@
+plugins {
+    id "com.jetbrains.python.envs" version "0.0.26"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -184,6 +188,9 @@ repositories {
     mavenCentral()
 }
 
+ext.gleanGenerateMarkdownDocs = true
+ext.gleanDocsDirectory = "$rootDir/docs"
+apply plugin: "org.mozilla.telemetry.glean-gradle-plugin"
 
 dependencies {
     implementation project(':telemetry-annotation')
@@ -252,6 +259,7 @@ dependencies {
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
     implementation "org.mozilla.components:lib-fetch-httpurlconnection:${Versions.android_components}"
     implementation "org.mozilla.components:concept-fetch:${Versions.android_components}"
+    implementation "org.mozilla.components:service-glean:${Versions.mozilla_android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.android.installreferrer:installreferrer:${Versions.android_installreferrer}"
