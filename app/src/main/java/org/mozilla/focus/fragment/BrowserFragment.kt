@@ -589,13 +589,9 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         super.onConfigurationChanged(newConfig)
         updateBottomBarHeight()
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            toolbar_root.visibility = View.GONE
-            browser_bottom_bar.visibility = View.GONE
             bottomBarViewModel.onScreenRotatedToLandscape(true)
             onLandscapeModeStart()
         } else {
-            toolbar_root.visibility = View.VISIBLE
-            browser_bottom_bar.visibility = View.VISIBLE
             bottomBarViewModel.onScreenRotatedToLandscape(false)
             onLandscapeModeFinish()
         }
