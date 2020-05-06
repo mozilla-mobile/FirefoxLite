@@ -587,6 +587,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        updateBottomBarHeight()
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             toolbar_root.visibility = View.GONE
             browser_bottom_bar.visibility = View.GONE
@@ -599,6 +600,11 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
             onLandscapeModeFinish()
         }
         refreshVideoContainer()
+    }
+
+    private fun updateBottomBarHeight() {
+        val bottomBarHeight: Int = browser_bottom_bar.resources.getDimensionPixelOffset(R.dimen.fixed_menu_height)
+        browser_bottom_bar.layoutParams.height = bottomBarHeight
     }
 
     // Workaround for full-screen WebView issue that the video doesn't fit the viewport
