@@ -298,11 +298,7 @@ class MainActivity : BaseActivity(),
                 screenNavigator.showBrowserScreen(action.url, action.withNewTab, action.isFromExternal)
             }
             showTabTray.observe(this@MainActivity, Observer {
-                val tabTray = TabTray.show(supportFragmentManager)
-                if (tabTray != null) {
-                    tabTray.setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.TabTray) }
-                    portraitStateModel.request(PortraitComponent.TabTray)
-                }
+                TabTray.show(supportFragmentManager)
             })
             showMenu.observe(this@MainActivity, Observer { menu.show() })
             showNewTab.observe(this@MainActivity, Observer {

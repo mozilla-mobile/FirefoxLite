@@ -11,7 +11,6 @@ package org.mozilla.rocket.landing
 sealed class PortraitComponent {
     object BottomMenu : PortraitComponent()
     object ListPanelDialog : PortraitComponent()
-    object TabTray : PortraitComponent()
     object FindInPage : PortraitComponent()
     object ScreenCapture : PortraitComponent()
 }
