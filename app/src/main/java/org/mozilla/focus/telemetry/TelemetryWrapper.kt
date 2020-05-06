@@ -308,6 +308,7 @@ object TelemetryWrapper {
         const val PERSONALIZATION = "personalization"
         const val LANGUAGE = "language"
         const val KEYWORD = "keyword"
+        const val ORIENTATION = "orientation"
     }
 
     object Extra_Value {
@@ -363,6 +364,8 @@ object TelemetryWrapper {
         const val TRAVEL_DISCOVERY = "travel_discovery"
         const val GOOGLE_SEARCH = "google_search"
         const val SET_DEFAULT = "setdefault"
+        const val PORTRAIT = "portrait"
+        const val LANDSCAPE = "landscape"
     }
 
     enum class FIND_IN_PAGE {
@@ -969,14 +972,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERSION, value = "2"),
                 TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
+                TelemetryExtra(name = Extra.POSITION, value = "[0-4]"),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
-    fun showTabTrayToolbar(mode: String, position: Int) {
+    fun showTabTrayToolbar(mode: String, position: Int, isInLandscape: Boolean = false) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.TABTRAY, Value.TOOLBAR)
                 .extra(Extra.VERSION, "2")
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
@@ -1203,14 +1208,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERSION, value = "2"),
                 TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
+                TelemetryExtra(name = Extra.POSITION, value = "[0-4]"),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
-    fun clickToolbarReload(mode: String, position: Int) {
+    fun clickToolbarReload(mode: String, position: Int, isInLandscape: Boolean = false) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.RELOAD)
                 .extra(Extra.VERSION, "2")
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
@@ -1223,14 +1230,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERSION, value = "2"),
                 TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
+                TelemetryExtra(name = Extra.POSITION, value = "[0-4]"),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
-    fun clickToolbarShare(mode: String, position: Int) {
+    fun clickToolbarShare(mode: String, position: Int, isInLandscape: Boolean = false) {
         EventBuilder(Category.ACTION, Method.SHARE, Object.TOOLBAR, Value.LINK)
                 .extra(Extra.VERSION, "2")
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
@@ -1522,14 +1531,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERSION, value = "2"),
                 TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
+                TelemetryExtra(name = Extra.POSITION, value = "[0-4]"),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
-    fun clickToolbarSearch(mode: String, position: Int) {
+    fun clickToolbarSearch(mode: String, position: Int, isInLandscape: Boolean = false) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.SEARCH_BUTTON)
                 .extra(Extra.VERSION, "2")
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
@@ -1542,14 +1553,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.VERSION, value = "2"),
                 TelemetryExtra(name = Extra.MODE, value = "[webview|menu]"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
+                TelemetryExtra(name = Extra.POSITION, value = "[0-4]"),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
-    fun clickAddTabToolbar(mode: String, position: Int) {
+    fun clickAddTabToolbar(mode: String, position: Int, isInLandscape: Boolean = false) {
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOOLBAR)
                 .extra(Extra.VERSION, "2")
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
