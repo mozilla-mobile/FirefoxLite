@@ -33,7 +33,7 @@ object Versions {
     const val lottie = "3.4.0"
     const val leakcanary = "2.0-beta-3"
     const val android_components = "0.52.0"
-    const val mozilla_android_components = "30.0.0"
+    const val mozilla_android_components = "0.52.0"
     const val adjust = "4.20.0"
     const val android_installreferrer = "1.1.2"
     const val annotation = "1.1.0"
