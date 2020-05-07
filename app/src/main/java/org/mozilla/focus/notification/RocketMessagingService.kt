@@ -30,7 +30,6 @@ import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.msrp.data.LoggingInterceptor
-import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.threadutils.ThreadUtils
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -281,12 +280,11 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         @WorkerThread
         private fun sendRegistrationToServer(applicationContext: Context, fbUid: String, fcmToken: String) {
             Log.d(TAG, "sendRegistrationToServer with token")
-            val telemetryClientId = TelemetryHolder.get().clientId
-            if (telemetryClientId == null) {
-                Log.w(TAG, "telemetryClientId is null")
-                return
-            }
-
+//            val telemetryClientId = TelemetryHolder.get().clientId
+//            if (telemetryClientId == null) {
+//                Log.w(TAG, "telemetryClientId is null")
+//                return
+//            }
             // something like //"http://10.0.2.2:8080/api/v1/user/token"
             val userTokenApiUrl = FirebaseHelper.getFirebase().getRcString(STR_USER_TOKEN_API)
             if (userTokenApiUrl.isEmpty()) {
@@ -300,7 +298,7 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
                             "Authorization" to "Bearer $fbUid"
                     ),
                     body = Request.Body.fromParamsForFormUrlEncoded(
-                            "telemetry_client_id" to telemetryClientId,
+                            "telemetry_client_id" to "da",
                             "fcm_token" to fcmToken
                     )
             )

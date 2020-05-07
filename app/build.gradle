@@ -254,7 +254,7 @@ dependencies {
     })
 
     implementation "org.mozilla.components:browser-session:${Versions.android_components}"
-    implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
+//    implementation "org.mozilla.components:service-telemetry:${Versions.android_components}"
     implementation "org.mozilla.components:browser-domains:${Versions.android_components}"
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
     implementation "org.mozilla.components:lib-fetch-httpurlconnection:${Versions.android_components}"
@@ -431,7 +431,7 @@ tasks.whenTaskAdded { task ->
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
-        kotlinOptions.allWarningsAsErrors = true
+//        kotlinOptions.allWarningsAsErrors = true
     }
 }
 
