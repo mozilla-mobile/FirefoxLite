@@ -272,7 +272,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                 break;
 
             case R.id.btn_private_browsing:
-                TelemetryWrapper.privateModeTray();
+                TelemetryWrapper.privateModeTray(isInLandscape());
                 startActivity(new Intent(getContext(), PrivateModeActivity.class));
                 getActivity().overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit);
                 break;
@@ -280,6 +280,10 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             default:
                 break;
         }
+    }
+
+    private boolean isInLandscape() {
+        return (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -308,13 +312,13 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     @Override
     public void onTabClick(int tabPosition) {
         presenter.tabClicked(tabPosition);
-        TelemetryWrapper.clickTabFromTabTray();
+        TelemetryWrapper.clickTabFromTabTray(isInLandscape());
     }
 
     @Override
     public void onTabCloseClick(int tabPosition) {
         presenter.tabCloseClicked(tabPosition);
-        TelemetryWrapper.closeTabFromTabTray();
+        TelemetryWrapper.closeTabFromTabTray(isInLandscape());
     }
 
     @Override
@@ -468,7 +472,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
                     presenter.shoppingSearchCloseClicked();
                 } else if (viewHolder instanceof TabTrayAdapter.TabViewHolder) {
                     presenter.tabCloseClicked(((TabTrayAdapter.TabViewHolder) viewHolder).getOriginPosition());
-                    TelemetryWrapper.swipeTabFromTabTray();
+                    TelemetryWrapper.swipeTabFromTabTray(isInLandscape());
                 }
             }
 
@@ -619,7 +623,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
     private void onNewTabClicked() {
         ScreenNavigator.get(getContext()).addHomeScreen(false);
         homeViewModel.onNewTabButtonClicked();
-        TelemetryWrapper.clickAddTabTray();
+        TelemetryWrapper.clickAddTabTray(isInLandscape());
         postOnNextFrame(dismissRunnable);
     }
 
@@ -629,7 +633,7 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
             closeTabsDialog = builder.setMessage(R.string.tab_tray_close_tabs_dialog_msg)
                     .setPositiveButton(R.string.action_ok, (dialog, which) -> {
                         presenter.closeAllTabs();
-                        TelemetryWrapper.closeAllTabFromTabTray();
+                        TelemetryWrapper.closeAllTabFromTabTray(isInLandscape());
                     })
                     .setNegativeButton(R.string.action_cancel, (dialog, which) -> dialog.dismiss())
                     .show();

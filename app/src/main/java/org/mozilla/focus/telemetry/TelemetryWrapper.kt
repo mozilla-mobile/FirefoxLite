@@ -1572,10 +1572,14 @@ object TelemetryWrapper {
             method = Method.ADD,
             `object` = Object.TAB,
             value = Value.TABTRAY,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun clickAddTabTray() {
-        EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TABTRAY).queue()
+    fun clickAddTabTray(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TABTRAY)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
@@ -1584,10 +1588,14 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.PRIVATE_MODE,
             value = Value.TABTRAY,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun privateModeTray() {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.PRIVATE_MODE, Value.TABTRAY).queue()
+    fun privateModeTray(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PRIVATE_MODE, Value.TABTRAY)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
@@ -1596,10 +1604,14 @@ object TelemetryWrapper {
             method = Method.CHANGE,
             `object` = Object.TAB,
             value = Value.TABTRAY,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun clickTabFromTabTray() {
-        EventBuilder(Category.ACTION, Method.CHANGE, Object.TAB, Value.TABTRAY).queue()
+    fun clickTabFromTabTray(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.TAB, Value.TABTRAY)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
@@ -1608,10 +1620,14 @@ object TelemetryWrapper {
             method = Method.REMOVE,
             `object` = Object.TAB,
             value = Value.TABTRAY,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun closeTabFromTabTray() {
-        EventBuilder(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY).queue()
+    fun closeTabFromTabTray(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.REMOVE, Object.TAB, Value.TABTRAY)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
@@ -1620,10 +1636,14 @@ object TelemetryWrapper {
             method = Method.SWIPE,
             `object` = Object.TAB,
             value = Value.TABTRAY,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun swipeTabFromTabTray() {
-        EventBuilder(Category.ACTION, Method.SWIPE, Object.TAB, Value.TABTRAY).queue()
+    fun swipeTabFromTabTray(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.SWIPE, Object.TAB, Value.TABTRAY)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
@@ -1632,10 +1652,14 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.CLOSE_ALL,
             value = Value.TABTRAY,
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun closeAllTabFromTabTray() {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.CLOSE_ALL, Value.TABTRAY).queue()
+    fun closeAllTabFromTabTray(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.CLOSE_ALL, Value.TABTRAY)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
