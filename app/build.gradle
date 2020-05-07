@@ -39,7 +39,7 @@ android {
             generatedDensities = []
         }
 
-        def bitrise_build_number = System.getenv("BITRISE_BUILD_NUMBER")
+        def bitrise_build_number = getEnvOrLocalProperty("BITRISE_BUILD_NUMBER")
         if (bitrise_build_number?.trim()) {
             versionCode bitrise_build_number.toInteger()
             versionNameSuffix "(" + bitrise_build_number + ")"
@@ -346,6 +346,29 @@ tasks.whenTaskAdded { task ->
     }
 }
 
+def getEnvOrLocalProperty(propName) {
+    // Attempt to read from the environment first.
+    def valueFromEnv = System.getenv(propName)
+    if (valueFromEnv != null) {
+        return valueFromEnv
+    }
+
+    // Fall back to the local.properties file.
+    Properties properties = new Properties()
+    if (project.rootProject.file('local.properties').canRead()) {
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+    }
+
+    def localProperty = properties.getProperty(propName)
+    if (localProperty != null) {
+        logger.info("Found " + propName + " in local.properties")
+        return localProperty
+    }
+
+    logger.error("Could not find " + propName + " in environment or local.properties")
+    return null
+}
+
 // -------------------------------------------------------------------------------------------------
 // Adjust: Read token from environment variable (Only release builds)
 // -------------------------------------------------------------------------------------------------
@@ -357,7 +380,7 @@ android.applicationVariants.all { variant ->
 
     // release and nightly will have Adjust. just nightly will use sandbox environment.
     if (variantName.contains("Release")) {
-        def token = System.getenv("ADJUST_TOKEN_FOCUS") ?: null
+        def token = getEnvOrLocalProperty("ADJUST_TOKEN_FOCUS") ?: null
 
         if (token != null) {
             buildConfigField 'String', 'ADJUST_TOKEN', '"' + token + '"'
@@ -370,7 +393,7 @@ android.applicationVariants.all { variant ->
             }
             println "Added adjust token set from environment variable"
 
-            def tracker = System.getenv("ADJUST_SIDELOAD_TRACKER") ?: null
+            def tracker = getEnvOrLocalProperty("ADJUST_SIDELOAD_TRACKER") ?: null
             if (tracker != null) {
                 buildConfigField 'String', 'ADJUST_DEFAULT_TRACKER', '"' + tracker + '"'
             } else {
@@ -406,10 +429,10 @@ android.applicationVariants.all { variant ->
     }
 
     // setup FxA end point
-    def fxaClientId = System.getenv("FXA_CLIENT_ID")
-    def fxaApiUrl = System.getenv("FXA_API_URL")
-    def fxaEmailVerifyUrl = System.getenv("FXA_EMAIL_VERIFY_URL")
-    def fxaSettingsUrl = System.getenv("FXA_SETTINGS_URL")
+    def fxaClientId = getEnvOrLocalProperty("FXA_CLIENT_ID")
+    def fxaApiUrl = getEnvOrLocalProperty("FXA_API_URL")
+    def fxaEmailVerifyUrl = getEnvOrLocalProperty("FXA_EMAIL_VERIFY_URL")
+    def fxaSettingsUrl = getEnvOrLocalProperty("FXA_SETTINGS_URL")
     def isRelease = variantName.contains("Release")
     // fxa related info is required in release build
     if (isRelease && (fxaClientId == null || fxaApiUrl == null || fxaEmailVerifyUrl == null)) {
