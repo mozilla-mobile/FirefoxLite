@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fixed_menu_height">40dp</dimen>
+    <dimen name="tab_tray_new_tab_btn_height">40dp</dimen>
 </resources>
