@@ -3,16 +3,17 @@ package org.mozilla.rocket.nightmode.themed
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import org.mozilla.rocket.content.view.BottomBar
 
-class ThemedView : View {
+class ThemedBottomBar : BottomBar {
 
     constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
     private var isNight: Boolean = false
+
+    override fun createDividerView() = ThemedView(context)
 
     public override fun onCreateDrawableState(extraSpace: Int): IntArray {
         return if (isNight) {
@@ -30,5 +31,6 @@ class ThemedView : View {
             refreshDrawableState()
             invalidate()
         }
+        (dividerView as ThemedView).setNightMode(isNight)
     }
 }

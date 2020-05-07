@@ -35,4 +35,8 @@
         <attr name="title" format="string"/>
         <attr name="iconResId" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="BottomBar">
+        <attr name="dividerDrawable" format="reference"/>
+    </declare-styleable>
 </resources>

@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.view
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.view.ContextThemeWrapper
@@ -14,9 +15,11 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import org.mozilla.focus.R
 import org.mozilla.focus.widget.EqualDistributeGrid
+import org.mozilla.rocket.extension.dpToPx
 import org.mozilla.rocket.nightmode.themed.ThemedImageButton
 
-class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
+open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
+    protected lateinit var dividerView: View
     private lateinit var grid: EqualDistributeGrid
     private var onItemClickListener: OnItemClickListener? = null
     private var onItemLongClickListener: OnItemLongClickListener? = null
@@ -27,28 +30,47 @@ class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
         init()
     }
 
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
         init()
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BottomBar, defStyle, 0)
+        val dividerDrawable = typedArray.getDrawable(R.styleable.BottomBar_dividerDrawable)
+        typedArray.recycle()
+        if (dividerDrawable != null) {
+            setDividerDrawable(dividerDrawable)
+        }
     }
 
     private fun init() {
-        initPadding()
+        addDividerView()
         addItemContainer()
     }
 
-    private fun initPadding() {
-        val horizontalPadding = resources.getDimensionPixelSize(R.dimen.browser_fixed_menu_horizontal_padding)
-        setPadding(horizontalPadding, paddingTop, horizontalPadding, paddingBottom)
+    private fun addDividerView() {
+        dividerView = createDividerView()
+        addView(dividerView, LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(1f)))
     }
+
+    protected open fun createDividerView(): View = View(context)
 
     private fun addItemContainer() {
         EqualDistributeGrid(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                 gravity = Gravity.CENTER_VERTICAL
+                val horizontalPadding = resources.getDimensionPixelSize(R.dimen.browser_fixed_menu_horizontal_padding)
+                marginStart = horizontalPadding
+                marginEnd = horizontalPadding
             }
         }.let {
             grid = it
             addView(it)
+        }
+    }
+
+    fun setDividerDrawable(dividerDrawable: Drawable) {
+        dividerView.apply {
+            background = dividerDrawable
         }
     }
 

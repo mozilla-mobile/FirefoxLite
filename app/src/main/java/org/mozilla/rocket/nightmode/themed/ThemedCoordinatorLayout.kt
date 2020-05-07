@@ -3,14 +3,13 @@ package org.mozilla.rocket.nightmode.themed
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import org.mozilla.rocket.view.DisableableCoordinatorLayout
 
-class ThemedView : View {
+class ThemedCoordinatorLayout : DisableableCoordinatorLayout {
 
     constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private var isNight: Boolean = false
 
