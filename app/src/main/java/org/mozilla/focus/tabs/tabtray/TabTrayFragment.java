@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -246,6 +247,17 @@ public class TabTrayFragment extends DialogFragment implements TabTrayContract.V
         super.onResume();
         tabTrayViewModel.hasPrivateTab().setValue(PrivateMode.getInstance(getContext()).hasPrivateSession());
         tabTrayViewModel.checkShoppingSearchMode(getContext());
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        updateBottomBarHeight();
+    }
+
+    private void updateBottomBarHeight() {
+        int bottomBarHeight = newTabBtn.getResources().getDimensionPixelOffset(R.dimen.tab_tray_new_tab_btn_height);
+        newTabBtn.getLayoutParams().height = bottomBarHeight;
     }
 
     @Override
