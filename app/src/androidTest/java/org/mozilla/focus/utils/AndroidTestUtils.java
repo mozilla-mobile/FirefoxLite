@@ -75,7 +75,7 @@ public final class AndroidTestUtils {
 
     public static void removeNewAddedTab() {
         onView(withId(R.id.counter_box)).perform(click());
-        onView(withId(R.id.tab_tray)).perform(
+        onView(withId(R.id.tab_tray_recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, clickChildViewWithId(R.id.close_button)));
     }
 

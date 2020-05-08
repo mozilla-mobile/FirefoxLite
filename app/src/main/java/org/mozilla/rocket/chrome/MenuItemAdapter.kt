@@ -32,7 +32,7 @@ class MenuItemAdapter(
             TYPE_HISTORY -> MenuItem.TextImageItem(type, R.id.menu_history, R.string.label_menu_history, R.drawable.menu_history, theme.tintResId)
             TYPE_SCREENSHOTS -> MenuItem.TextImageItem(type, R.id.menu_screenshots, R.string.label_menu_my_shots, R.drawable.menu_my_shots_states, null)
             TYPE_TURBO_MODE -> MenuItem.TextImageItem(type, R.id.menu_turbomode, R.string.label_menu_turbo_mode, R.drawable.menu_speedmode, theme.tintResId)
-            TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.id.btn_private_browsing, R.string.private_tab, R.drawable.private_browsing_mask_states, null)
+            TYPE_PRIVATE_BROWSING -> MenuItem.TextImageItem(type, R.id.private_browsing_btn, R.string.private_tab, R.drawable.private_browsing_mask_states, null)
             TYPE_NIGHT_MODE -> MenuItem.TextImageItem(type, R.id.menu_night_mode, R.string.label_menu_night_mode, R.drawable.icon_night_mode, theme.tintResId)
             TYPE_BLOCK_IMAGE -> MenuItem.TextImageItem(type, R.id.menu_blockimg, R.string.label_menu_block_image, R.drawable.menu_blockimg, theme.tintResId)
             TYPE_FIND_IN_PAGE -> MenuItem.TextImageItem(type, R.id.menu_find_in_page, R.string.label_menu_find_in_page, R.drawable.ic_menu_find_in_page, theme.tintResId)
