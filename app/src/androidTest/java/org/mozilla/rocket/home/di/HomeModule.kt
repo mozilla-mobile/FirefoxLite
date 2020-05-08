@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mockito.Mockito.spy
+import org.mozilla.focus.tabs.tabtray.TabTrayViewModel
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
@@ -242,4 +243,9 @@ object HomeModule {
     @Provides
     fun provideIsNewUserUseCase(newFeatureNotice: NewFeatureNotice): IsNewUserUseCase =
             IsNewUserUseCase(newFeatureNotice)
+
+    @JvmStatic
+    @Provides
+    fun provideTabTrayViewModel(): TabTrayViewModel =
+            TabTrayViewModel()
 }

@@ -77,7 +77,7 @@ public class MenuTest {
         onView(withId(R.id.menu_turbomode)).check(matches(isDisplayed()));
 
         // check private mode displayed
-        onView(withId(R.id.btn_private_browsing)).check(matches(isDisplayed()));
+        onView(withId(R.id.private_browsing_btn)).check(matches(isDisplayed()));
 
         // check night mode displayed
         onView(withId(R.id.menu_night_mode)).check(matches(isDisplayed()));

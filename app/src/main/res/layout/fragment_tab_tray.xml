@@ -32,7 +32,7 @@
         android:layout_height="match_parent">
 
         <org.mozilla.rocket.nightmode.themed.ThemedRecyclerView
-            android:id="@+id/tab_tray"
+            android:id="@+id/tab_tray_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background_tab_tray"
@@ -53,7 +53,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/btn_private_browsing"
+                android:id="@+id/private_browsing_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/tab_tray_bottom_sheet_start_margin"
@@ -63,15 +63,15 @@
                     android:id="@+id/badge_in_private_mode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/img_private_browsing"
-                    android:layout_alignTop="@+id/img_private_browsing"
+                    android:layout_alignEnd="@+id/private_browsing_img"
+                    android:layout_alignTop="@+id/private_browsing_img"
                     android:paddingEnd="-10dp"
                     android:paddingTop="6dp"
                     android:visibility="invisible"
                     android:src="@drawable/ic_menu_private_mode" />
 
                 <org.mozilla.rocket.nightmode.themed.ThemedImageView
-                    android:id="@+id/img_private_browsing"
+                    android:id="@+id/private_browsing_img"
                     style="@style/MainMenuButton"
                     android:layout_centerInParent="true"
                     android:padding="8dp"

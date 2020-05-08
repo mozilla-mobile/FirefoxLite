@@ -92,7 +92,7 @@ public class SaveRestoreTabsTest {
         checkHomeTabCounterText("1");
         onView(withId(R.id.home_fragment_tab_counter)).perform(click());
 
-        onView(withId(R.id.tab_tray)).check(matches(isDisplayed()));
+        onView(withId(R.id.tab_tray_recycler_view)).check(matches(isDisplayed()));
 
         onView(withId(R.id.close_button)).check(matches(isDisplayed()));
 
@@ -169,7 +169,7 @@ public class SaveRestoreTabsTest {
         onView(withText(R.string.action_cancel)).perform(click());
 
         // Check tab tray count is 2
-        assertThat(RecyclerViewTestUtils.getCountFromRecyclerView(R.id.tab_tray), is(2));
+        assertThat(RecyclerViewTestUtils.getCountFromRecyclerView(R.id.tab_tray_recycler_view), is(2));
 
         // Tap Close All -> Tap Ok
         onView(allOf(withId(R.id.close_all_tabs_btn), isDisplayed())).perform(click());
