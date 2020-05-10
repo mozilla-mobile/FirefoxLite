@@ -369,7 +369,7 @@
   <string name="content_home_context_menu_share_link">分享链接</string>
   <string name="content_home_error_message">哎呀！\n某处出错了</string>
   <string name="private_home_title">高级隐私浏览</string>
-  <string name="private_home_description_1">现在起，您可以私密地浏览，不会留下历史记录、登录密码，其他使用这台设备的人也不会知道您曾打开过哪些网站。\n\n我们的高级隐私浏览功能，甚至可以%1$s，这是其他大部分隐私模式做不到的。</string>
+  <string name="private_home_description_1">现在起，您可以私密地上网，不会留下历史记录、登录密码，其他使用这台设备的人也不会知道您曾打开过哪些网站。\n\n我们的高级隐私浏览功能，甚至可以%1$s，这是其他大部分隐私模式做不到的。</string>
   <string name="private_home_description_2">杜绝跟踪</string>
   <string name="msrp_logoman_message">赢取 %1$s</string>
   <string name="msrp_home_hint">每天使用购物、新闻、游戏功能，即可赢取 %1$s</string>
