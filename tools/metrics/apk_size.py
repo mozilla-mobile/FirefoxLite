@@ -8,7 +8,7 @@ from os import path, listdir, stat
 from sys import exit
 import argparse
 
-SIZE_LIMIT = 6.0 * 1024 * 1024
+SIZE_LIMIT = 6.0 * 1024 * 1024 + 2861397 # exclude the APK size impact from Glean 59
 parser = argparse.ArgumentParser(description='Determine Path')
 parser.add_argument('product', choices=['focus', 'preview'], default='focus')
 parser.add_argument('engine', choices=['webkit'], default='webkit')
