@@ -22,7 +22,7 @@ import org.mozilla.focus.navigation.TransactionHelper.EntryData.EntryType
 
 internal class TransactionHelper(private val activity: HostActivity) : DefaultLifecycleObserver {
     private var backStackListener: BackStackListener? = null
-    private val topFragmentState = MutableLiveData<String>()
+    private val topFragmentState = MutableLiveData<TopFragmentState>()
 
     init {
         registerBackStackListener()
@@ -128,7 +128,7 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
             return manager.findFragmentByTag(tag)
         }
 
-    fun getTopFragmentState(): LiveData<String> {
+    fun getTopFragmentState(): LiveData<TopFragmentState> {
         return topFragmentState
     }
 
@@ -202,8 +202,8 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
     private val isStateSaved: Boolean
         get() = activity.getSupportFragmentManager().isStateSaved
 
-    private fun onFragmentBroughtToFront(fragmentTag: String) {
-        topFragmentState.value = fragmentTag
+    private fun onFragmentBroughtToFront(fragmentTag: String, parentFragmentTag: String) {
+        topFragmentState.value = TopFragmentState(fragmentTag, parentFragmentTag)
     }
 
     private fun registerBackStackListener() {
@@ -305,7 +305,14 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
                     fragmentTag = it.getEntryTag(entry)
                 }
             }
-            helper?.onFragmentBroughtToFront(fragmentTag)
+            var parentFragmentTag = ""
+            if (entryCount > 1) {
+                val entry = manager.getBackStackEntryAt(entryCount - 2)
+                helper?.let {
+                    parentFragmentTag = it.getEntryTag(entry)
+                }
+            }
+            helper?.onFragmentBroughtToFront(fragmentTag, parentFragmentTag)
         }
 
         fun getTopAnimationAccessibleFragment(helper: TransactionHelper): FragmentAnimationAccessor? {
@@ -338,6 +345,8 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
         @IntDef(TYPE_ROOT, TYPE_ATTACHED, TYPE_FLOATING)
         internal annotation class EntryType
     }
+
+    data class TopFragmentState(val topFragmentTag: String, val parentFragmentTag: String)
 
     companion object {
         private const val ENTRY_TAG_SEPARATOR = "#"
