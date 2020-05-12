@@ -253,6 +253,9 @@ import org.mozilla.urlutils.UrlUtils;
 
     @Override
     public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+        if (viewClient != null) {
+            viewClient.onURLChanged(url);
+        }
         super.doUpdateVisitedHistory(view, url, isReload);
         this.debugOverlay.updateHistory();
     }

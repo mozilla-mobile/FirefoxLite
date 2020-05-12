@@ -419,6 +419,9 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                 showFindInPage()
             }
         })
+        chromeViewModel.currentUrl.observe(viewLifecycleOwner, Observer {
+            appbar.setExpanded(true)
+        })
     }
 
     private fun observeNightMode() {
