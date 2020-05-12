@@ -176,8 +176,18 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
 
     val navigationState: LiveData<NavigationState>
         get() = transactionHelper?.let {
-            Transformations.map(it.getTopFragmentState()) { fragmentTag: String ->
-                NavigationState(if (fragmentTag.isEmpty()) BROWSER_FRAGMENT_TAG else fragmentTag)
+            Transformations.map(it.getTopFragmentState()) { topFragmentState ->
+                NavigationState(
+                    if (topFragmentState.topFragmentTag.isEmpty()) {
+                        BROWSER_FRAGMENT_TAG
+                    } else {
+                        if (topFragmentState.parentFragmentTag.isNotEmpty()) {
+                            "${topFragmentState.topFragmentTag};${topFragmentState.parentFragmentTag}"
+                        } else {
+                            topFragmentState.topFragmentTag
+                        }
+                    }
+                )
             }
         } ?: MutableLiveData()
 
@@ -248,6 +258,7 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
      * Contract class for ScreenNavigator, to present an UrlInputFragment
      */
     interface UrlInputScreen : Screen
+
     class NavigationState internal constructor(val tag: String) {
 
         val isHome: Boolean
@@ -255,6 +266,9 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
 
         val isBrowser: Boolean
             get() = tag == BROWSER_FRAGMENT_TAG
+
+        val isBrowserUrlInput: Boolean
+            get() = tag == URL_INPUT_FRAGMENT_TAG
 
         override fun hashCode(): Int {
             return tag.hashCode()

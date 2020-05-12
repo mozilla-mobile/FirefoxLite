@@ -38,7 +38,7 @@ class OrientationState(
 
     private fun checkOrientation() {
         val navigationState = navigationState ?: return
-        val orientation = if (navigationState.isBrowser && !isPortraitRequested) {
+        val orientation = if ((navigationState.isBrowser || navigationState.isBrowserUrlInput) && !isPortraitRequested) {
             ActivityInfo.SCREEN_ORIENTATION_USER
         } else {
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
