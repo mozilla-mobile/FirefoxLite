@@ -928,7 +928,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         url: String,
         openNewTab: Boolean,
         isFromExternal: Boolean,
-        onViewReadyCallback: Runnable
+        onViewReadyCallback: Runnable?
     ) {
         updateURL(url)
         if (SupportUtils.isUrl(url)) {
@@ -944,7 +944,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                 val currentTab = sessionManager.focusSession
                 if (currentTab?.engineSession?.tabView != null) {
                     currentTab.engineSession?.tabView?.loadUrl(url)
-                    onViewReadyCallback.run()
+                    onViewReadyCallback?.run()
                 } else {
                     sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true))
                     ThreadUtils.postToMainThread(onViewReadyCallback)

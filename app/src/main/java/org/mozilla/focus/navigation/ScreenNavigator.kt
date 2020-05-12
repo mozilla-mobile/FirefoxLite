@@ -21,33 +21,41 @@ import java.util.Arrays
  * This class only manages the relation between fragments, and the detail of transaction was
  * handled by TransactionHelper
  */
-open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
-    private val transactionHelper: TransactionHelper
-    private val activity: HostActivity?
+open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecycleObserver {
+    private var transactionHelper: TransactionHelper? = null
     private val lifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks = object : FragmentManager.FragmentLifecycleCallbacks() {
         override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
             super.onFragmentStarted(fm, f)
             if (f is UrlInputScreen) {
-                transactionHelper.onUrlInputScreenVisible(true)
+                transactionHelper?.onUrlInputScreenVisible(true)
             }
         }
 
         override fun onFragmentStopped(fm: FragmentManager, f: Fragment) {
             super.onFragmentStopped(fm, f)
             if (f is UrlInputScreen) {
-                transactionHelper.onUrlInputScreenVisible(false)
+                transactionHelper?.onUrlInputScreenVisible(false)
             }
         }
     }
 
+    init {
+        activity?.let {
+            transactionHelper = TransactionHelper(it).also { transactionHelper ->
+                it.lifecycle.addObserver(transactionHelper)
+            }
+            it.lifecycle.addObserver(this)
+        }
+    }
+
     override fun onStart(owner: LifecycleOwner) {
-        activity!!.supportFragmentManager
-            .registerFragmentLifecycleCallbacks(lifecycleCallbacks, false)
+        activity?.getSupportFragmentManager()
+            ?.registerFragmentLifecycleCallbacks(lifecycleCallbacks, false)
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        activity!!.supportFragmentManager
-            .unregisterFragmentLifecycleCallbacks(lifecycleCallbacks)
+        activity?.getSupportFragmentManager()
+            ?.unregisterFragmentLifecycleCallbacks(lifecycleCallbacks)
     }
 
     /**
@@ -57,24 +65,24 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
      */
     open fun raiseBrowserScreen(animate: Boolean) {
         logMethod()
-        transactionHelper.popAllScreens()
+        transactionHelper?.popAllScreens()
     }
 
     /**
      * Load target url on current/new tab and clear every thing above browser fragment
      *
-     * @param url            target url
-     * @param withNewTab     whether to open and load target url in a new tab
+     * @param url target url
+     * @param withNewTab whether to open and load target url in a new tab
      * @param isFromExternal if this url is started from external VIEW intent, if true, the app will finish when the user click back key
      */
     open fun showBrowserScreen(url: String, withNewTab: Boolean, isFromExternal: Boolean) {
         logMethod(url, withNewTab)
-        browserScreen.loadUrl(url, withNewTab, isFromExternal, Runnable { raiseBrowserScreen(true) })
+        browserScreen?.loadUrl(url, withNewTab, isFromExternal, Runnable { raiseBrowserScreen(true) })
     }
 
     fun restoreBrowserScreen(tabId: String) {
         logMethod()
-        browserScreen.switchToTab(tabId)
+        browserScreen?.switchToTab(tabId)
     }
 
     /**
@@ -83,7 +91,7 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
     // TODO: Make geo dialog a view in browser fragment, so we can remove this method
     val isBrowserInForeground: Boolean
         get() {
-            val result = activity!!.supportFragmentManager.backStackEntryCount == 0
+            val result = activity?.getSupportFragmentManager()?.backStackEntryCount == 0
             log("isBrowserInForeground: $result")
             return result
         }
@@ -94,16 +102,16 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
      */
     open fun addHomeScreen(animate: Boolean) {
         logMethod()
-        val found = transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
+        val found = transactionHelper?.popScreensUntil(HOME_FRAGMENT_TAG,
             TransactionHelper.EntryData.TYPE_ATTACHED,
-            false)
+            false) ?: false
         log("found exist home: $found")
         if (!found) {
-            transactionHelper.showHomeScreen(animate,
+            transactionHelper?.showHomeScreen(animate,
                 TransactionHelper.EntryData.TYPE_ATTACHED,
                 false)
         }
-        transactionHelper.executePendingTransaction()
+        transactionHelper?.executePendingTransaction()
     }
 
     /**
@@ -111,18 +119,18 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
      */
     open fun popToHomeScreen(animate: Boolean) {
         logMethod()
-        val found = transactionHelper.popScreensUntil(HOME_FRAGMENT_TAG,
-            TransactionHelper.EntryData.TYPE_ROOT, false)
+        val found = transactionHelper?.popScreensUntil(HOME_FRAGMENT_TAG,
+            TransactionHelper.EntryData.TYPE_ROOT, false) ?: false
         log("found exist home: $found")
         if (!found) {
-            transactionHelper.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT, false)
+            transactionHelper?.showHomeScreen(animate, TransactionHelper.EntryData.TYPE_ROOT, false)
         }
-        transactionHelper.executePendingTransaction()
+        transactionHelper?.executePendingTransaction()
     }
 
     fun addFirstRunScreen() {
         logMethod()
-        transactionHelper.showFirstRun()
+        transactionHelper?.showFirstRun()
     }
 
     fun addUrlScreen(url: String?) {
@@ -136,37 +144,37 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
         } else if (BuildConfig.DEBUG) {
             throw RuntimeException("unexpected caller of UrlInputScreen")
         }
-        transactionHelper.showUrlInput(url, tag)
+        transactionHelper?.showUrlInput(url, tag)
     }
 
     fun popUrlScreen() {
         logMethod()
         val top = topFragment
         if (top is UrlInputScreen) {
-            transactionHelper.dismissUrlInput()
+            transactionHelper?.dismissUrlInput()
         }
     }
 
-    val topFragment: Fragment?
+    private val topFragment: Fragment?
         get() {
-            val latest = transactionHelper.latestCommitFragment
-            return latest ?: browserScreen.fragment
+            val latest = transactionHelper?.latestCommitFragment
+            return latest ?: browserScreen?.getFragment()
         }
 
     val visibleBrowserScreen: BrowserScreen?
         get() = if (isBrowserInForeground) browserScreen else null
 
-    private val browserScreen: BrowserScreen
-        private get() = activity!!.getBrowserScreen()
+    private val browserScreen: BrowserScreen?
+        get() = activity?.getBrowserScreen()
 
     fun canGoBack(): Boolean {
-        val result = !transactionHelper.shouldFinish()
+        val result = transactionHelper?.shouldFinish() == false
         log("canGoBack: $result")
         return result
     }
 
     val navigationState: LiveData<NavigationState>
-        get() = Transformations.map(transactionHelper.topFragmentState
+        get() = Transformations.map(transactionHelper?.topFragmentState!!
         ) { fragmentTag: String -> NavigationState(if (fragmentTag.isEmpty()) BROWSER_FRAGMENT_TAG else fragmentTag) }
 
     private fun logMethod(vararg args: Any) {
@@ -192,18 +200,18 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
     }
 
     interface Provider {
-        val screenNavigator: ScreenNavigator
+        fun getScreenNavigator(): ScreenNavigator
     }
 
     /**
      * Contract class for ScreenNavigator
      */
     interface HostActivity : LifecycleOwner {
-        val supportFragmentManager: FragmentManager
-        fun createFirstRunScreen(): Screen?
+        fun getSupportFragmentManager(): FragmentManager
+        fun createFirstRunScreen(): Screen
         fun getBrowserScreen(): BrowserScreen
-        fun createHomeScreen(): HomeScreen?
-        fun createUrlInputScreen(url: String?, parentFragmentTag: String?): UrlInputScreen?
+        fun createHomeScreen(): HomeScreen
+        fun createUrlInputScreen(url: String?, parentFragmentTag: String): UrlInputScreen
     }
 
     /**
@@ -211,19 +219,15 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
      */
     // TODO: make this interface protected and fix FirstRunFragment
     interface Screen {
-        val fragment: Fragment?
+        fun getFragment(): Fragment
     }
 
     /**
      * Contract class for ScreenNavigator, to present a BrowserFragment
      */
     interface BrowserScreen : Screen, BackKeyHandleable {
-        fun loadUrl(url: String,
-                    openNewTab: Boolean,
-                    isFromExternal: Boolean,
-                    onViewReadyCallback: Runnable?)
-
-        fun switchToTab(tabId: String?)
+        fun loadUrl(url: String, openNewTab: Boolean, isFromExternal: Boolean, onViewReadyCallback: Runnable?)
+        fun switchToTab(tabId: String)
         fun goForeground()
         fun goBackground()
     }
@@ -252,12 +256,11 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
             return tag.hashCode()
         }
 
-        override fun equals(obj: Any?): Boolean {
-            return if (obj is NavigationState) {
-                tag == obj.tag
+        override fun equals(other: Any?): Boolean {
+            return if (other is NavigationState) {
+                tag == other.tag
             } else false
         }
-
     }
 
     companion object {
@@ -267,10 +270,11 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
         const val URL_INPUT_FRAGMENT_TAG = "url_input_sceen"
         private const val LOG_TAG = "ScreenNavigator"
         private const val LOG_NAVIGATION = false
+
         @JvmStatic
         operator fun get(context: Context?): ScreenNavigator {
             if (context is Provider) {
-                return (context as Provider).screenNavigator
+                return (context as Provider).getScreenNavigator()
             }
             return if (BuildConfig.DEBUG) {
                 throw RuntimeException("the given context should implement ScreenNavigator.Provider")
@@ -278,15 +282,5 @@ open class ScreenNavigator(activity: HostActivity?) : DefaultLifecycleObserver {
                 NothingNavigated()
             }
         }
-    }
-
-    init {
-        if (activity == null) {
-            return
-        }
-        this.activity = activity
-        transactionHelper = TransactionHelper(activity!!)
-        this.activity!!.lifecycle.addObserver(transactionHelper)
-        this.activity.lifecycle.addObserver(this)
     }
 }
