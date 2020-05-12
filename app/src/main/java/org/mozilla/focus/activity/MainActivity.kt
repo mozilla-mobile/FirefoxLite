@@ -126,6 +126,7 @@ class MainActivity : BaseActivity(),
     private var themeManager: ThemeManager? = null
     private var sessionManager: SessionManager? = null
     private val dialogQueue = DialogQueue()
+    private var exitToast: Toast? = null
 
     private val downloadObserver = object : ContentObserver(null) {
         override fun onChange(selfChange: Boolean) {
@@ -446,9 +447,27 @@ class MainActivity : BaseActivity(),
         when {
             supportFragmentManager.isStateSaved -> return
             screenNavigator.visibleBrowserScreen?.onBackPressed() == true -> return
-            !screenNavigator.canGoBack() -> finish()
+            !screenNavigator.canGoBack() -> {
+                if (consumeByExitToast().not()) {
+                    exitToast?.cancel()
+                    finish()
+                }
+            }
             else -> super.onBackPressed()
         }
+    }
+
+    private fun consumeByExitToast(): Boolean {
+        var handled = false
+        val isToastShowing = exitToast?.view?.windowToken != null
+        if (!isToastShowing) {
+            Toast.makeText(this, R.string.message_exit_app, Toast.LENGTH_LONG)
+                    .also { exitToast = it }
+                    .show()
+            handled = true
+        }
+
+        return handled
     }
 
     private fun saveTabsToPersistence() {
