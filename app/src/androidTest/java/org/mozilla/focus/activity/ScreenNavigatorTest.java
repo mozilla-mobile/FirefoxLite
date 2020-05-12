@@ -111,6 +111,8 @@ public class ScreenNavigatorTest {
         navigator.popToHomeScreen();
 
         // Back should cause exception
+        // Press back button twice to exit
+        Espresso.pressBack();
         Espresso.pressBack();
     }
 
