@@ -613,12 +613,12 @@ class MainActivity : BaseActivity(),
         screenNavigator.popToHomeScreen(false)
     }
 
-    override fun getScreenNavigator(): ScreenNavigator? = screenNavigator
+    override fun getScreenNavigator(): ScreenNavigator = screenNavigator
 
     override fun createFirstRunScreen(): FirstrunFragment = FirstrunFragment.create()
 
-    override fun getBrowserScreen(): BrowserFragment? =
-            supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment?
+    override fun getBrowserScreen(): BrowserFragment =
+            supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment
 
     override fun createUrlInputScreen(url: String?, parentFragmentTag: String): UrlInputFragment =
             UrlInputFragment.create(url, parentFragmentTag, true)

@@ -323,9 +323,9 @@ class BrowserFragment : LocaleAwareFragment(),
         return this
     }
 
-    override fun switchToTab(tabId: String?) {
+    override fun switchToTab(tabId: String) {
         if (!TextUtils.isEmpty(tabId)) {
-            sessionManager.switchToTab(tabId!!)
+            sessionManager.switchToTab(tabId)
         }
     }
 
