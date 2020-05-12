@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.widget.BackKeyHandleable
@@ -174,8 +175,11 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
     }
 
     val navigationState: LiveData<NavigationState>
-        get() = Transformations.map(transactionHelper?.topFragmentState!!
-        ) { fragmentTag: String -> NavigationState(if (fragmentTag.isEmpty()) BROWSER_FRAGMENT_TAG else fragmentTag) }
+        get() = transactionHelper?.let {
+            Transformations.map(it.getTopFragmentState()) { fragmentTag: String ->
+                NavigationState(if (fragmentTag.isEmpty()) BROWSER_FRAGMENT_TAG else fragmentTag)
+            }
+        } ?: MutableLiveData()
 
     private fun logMethod(vararg args: Any) {
         if (LOG_NAVIGATION) {
