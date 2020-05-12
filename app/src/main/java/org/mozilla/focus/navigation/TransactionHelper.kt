@@ -23,6 +23,11 @@ import org.mozilla.focus.navigation.TransactionHelper.EntryData.EntryType
 internal class TransactionHelper(private val activity: HostActivity) : DefaultLifecycleObserver {
     private var backStackListener: BackStackListener? = null
     private val topFragmentState = MutableLiveData<String>()
+
+    init {
+        registerBackStackListener()
+    }
+
     override fun onStart(owner: LifecycleOwner) {
         registerBackStackListener()
     }
@@ -92,17 +97,14 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
         manager.executePendingTransactions()
     }
 
-    fun popScreensUntil(targetEntryName: String?, @EntryType type: Int,
-                        executeImmediately: Boolean): Boolean {
+    fun popScreensUntil(targetEntryName: String?, @EntryType type: Int, executeImmediately: Boolean): Boolean {
         val clearAll = targetEntryName == null
         val manager = activity.getSupportFragmentManager()
         var entryCount = manager.backStackEntryCount
         var found = false
         while (entryCount > 0) {
             val entry = manager.getBackStackEntryAt(entryCount - 1)
-            if (!clearAll
-                && TextUtils.equals(targetEntryName, getEntryTag(entry))
-                && type == getEntryType(entry)) {
+            if (!clearAll && TextUtils.equals(targetEntryName, getEntryTag(entry)) && type == getEntryType(entry)) {
                 found = true
                 break
             }
@@ -139,7 +141,7 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
         val screen = activity.createFirstRunScreen()
         val transaction = fragmentManager.beginTransaction()
         if (fragmentManager.findFragmentByTag(ScreenNavigator.FIRST_RUN_FRAGMENT_TAG) == null) {
-            transaction.replace(R.id.container, screen!!.getFragment(), ScreenNavigator.FIRST_RUN_FRAGMENT_TAG)
+            transaction.replace(R.id.container, screen.getFragment(), ScreenNavigator.FIRST_RUN_FRAGMENT_TAG)
                 .addToBackStack(makeEntryTag(ScreenNavigator.FIRST_RUN_FRAGMENT_TAG, EntryData.TYPE_ROOT))
         }
         return transaction
@@ -152,7 +154,7 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
         val enterAnim = if (animated) R.anim.tab_transition_fade_in else 0
         val exitAnim = if (type == EntryData.TYPE_ROOT) 0 else R.anim.tab_transition_fade_out
         transaction.setCustomAnimations(enterAnim, 0, 0, exitAnim)
-        transaction.add(R.id.container, homeScreen!!.getFragment(), ScreenNavigator.HOME_FRAGMENT_TAG)
+        transaction.add(R.id.container, homeScreen.getFragment(), ScreenNavigator.HOME_FRAGMENT_TAG)
         transaction.addToBackStack(makeEntryTag(ScreenNavigator.HOME_FRAGMENT_TAG, type))
         return transaction
     }
@@ -181,14 +183,16 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
     }
 
     private fun getEntryTag(entry: FragmentManager.BackStackEntry): String {
-        val result = entry.name!!.split(ENTRY_TAG_SEPARATOR).toTypedArray()
-        return result[0]
+        return entry.name?.let {
+            it.split(ENTRY_TAG_SEPARATOR).toTypedArray()[0]
+        } ?: ""
     }
 
     @EntryType
     private fun getEntryType(entry: FragmentManager.BackStackEntry): Int {
-        val result = entry.name!!.split(ENTRY_TAG_SEPARATOR).toTypedArray()
-        return result[1].toInt()
+        return entry.name?.let {
+            it.split(ENTRY_TAG_SEPARATOR).toTypedArray()[1].toInt()
+        } ?: EntryData.TYPE_ROOT
     }
 
     private fun makeEntryTag(tag: String, @EntryType type: Int): String {
@@ -196,10 +200,7 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
     }
 
     private val isStateSaved: Boolean
-        private get() {
-            val manager = activity.getSupportFragmentManager()
-            return manager == null || manager.isStateSaved
-        }
+        get() = activity.getSupportFragmentManager().isStateSaved
 
     private fun onFragmentBroughtToFront(fragmentTag: String) {
         topFragmentState.value = fragmentTag
@@ -208,32 +209,38 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
     private fun registerBackStackListener() {
         if (backStackListener == null) {
             backStackListener = BackStackListener(this)
-            activity.getSupportFragmentManager().addOnBackStackChangedListener(
-                backStackListener!!)
+            backStackListener?.let {
+                activity.getSupportFragmentManager().addOnBackStackChangedListener(it)
+            }
         }
     }
 
     private fun unregisterBackStackListener() {
-        if (backStackListener != null) {
-            activity.getSupportFragmentManager().removeOnBackStackChangedListener(
-                backStackListener!!)
-            backStackListener!!.onStop()
-            backStackListener = null
+        backStackListener?.let {
+            activity.getSupportFragmentManager().removeOnBackStackChangedListener(it)
+            it.onStop()
         }
+        backStackListener = null
     }
 
     private class BackStackListener internal constructor(helper: TransactionHelper) : FragmentManager.OnBackStackChangedListener {
         private var stateRunnable: Runnable? = null
         private var helper: TransactionHelper?
+
+        init {
+            this.helper = helper
+            // set up initial states
+            notifyTopFragment(helper.activity.getSupportFragmentManager())
+        }
+
         override fun onBackStackChanged() {
-            if (helper == null) {
-                return
-            }
-            val manager = helper!!.activity.getSupportFragmentManager()
-            val fragment = manager.findFragmentById(R.id.browser)
-            notifyTopFragment(manager)
-            if (fragment is BrowserScreen) {
-                setBrowserState(shouldKeepBrowserRunning(helper!!), helper!!)
+            helper?.let {
+                val manager = it.activity.getSupportFragmentManager()
+                val fragment = manager.findFragmentById(R.id.browser)
+                notifyTopFragment(manager)
+                if (fragment is BrowserScreen) {
+                    setBrowserState(shouldKeepBrowserRunning(it), it)
+                }
             }
         }
 
@@ -257,12 +264,11 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
         private fun setBrowserState(isForeground: Boolean, helper: TransactionHelper) {
             stateRunnable = Runnable { setBrowserForegroundState(isForeground) }
             val actor = getTopAnimationAccessibleFragment(helper)
-            var anim: Animation
-            if (actor == null || actor.customEnterTransition.also { anim = it } == null
-                || anim.hasEnded()) {
+            var anim: Animation? = null
+            if (actor == null || actor.customEnterTransition.also { anim = it } == null || anim?.hasEnded() == true) {
                 executeStateRunnable()
             } else {
-                anim.setAnimationListener(object : Animation.AnimationListener {
+                anim?.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationStart(animation: Animation) {}
                     override fun onAnimationEnd(animation: Animation) {
                         executeStateRunnable()
@@ -274,23 +280,20 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
         }
 
         private fun setBrowserForegroundState(isForeground: Boolean) {
-            if (helper == null) {
-                return
-            }
-            val manager = helper!!.activity.getSupportFragmentManager()
-            val browserFragment = manager.findFragmentById(R.id.browser) as BrowserScreen?
-            if (isForeground) {
-                browserFragment!!.goForeground()
-            } else {
-                browserFragment!!.goBackground()
+            helper?.let {
+                val manager = it.activity.getSupportFragmentManager()
+                val browserFragment = manager.findFragmentById(R.id.browser) as BrowserScreen
+                if (isForeground) {
+                    browserFragment.goForeground()
+                } else {
+                    browserFragment.goBackground()
+                }
             }
         }
 
         private fun executeStateRunnable() {
-            if (stateRunnable != null) {
-                stateRunnable!!.run()
-                stateRunnable = null
-            }
+            stateRunnable?.run()
+            stateRunnable = null
         }
 
         private fun notifyTopFragment(manager: FragmentManager) {
@@ -298,9 +301,11 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
             var fragmentTag = ""
             if (entryCount > 0) {
                 val entry = manager.getBackStackEntryAt(entryCount - 1)
-                fragmentTag = helper!!.getEntryTag(entry)
+                helper?.let {
+                    fragmentTag = it.getEntryTag(entry)
+                }
             }
-            helper!!.onFragmentBroughtToFront(fragmentTag)
+            helper?.onFragmentBroughtToFront(fragmentTag)
         }
 
         fun getTopAnimationAccessibleFragment(helper: TransactionHelper): FragmentAnimationAccessor? {
@@ -308,12 +313,6 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
             return if (top != null && top is FragmentAnimationAccessor) {
                 top
             } else null
-        }
-
-        init {
-            this.helper = helper
-            // set up initial states
-            notifyTopFragment(helper.activity.getSupportFragmentManager())
         }
     }
 
@@ -342,9 +341,5 @@ internal class TransactionHelper(private val activity: HostActivity) : DefaultLi
 
     companion object {
         private const val ENTRY_TAG_SEPARATOR = "#"
-    }
-
-    init {
-        registerBackStackListener()
     }
 }
