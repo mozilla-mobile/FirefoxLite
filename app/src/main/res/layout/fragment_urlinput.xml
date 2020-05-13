@@ -23,7 +23,7 @@
         <LinearLayout
             android:id="@+id/input_container"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="@dimen/search_url_input_height"
             android:layout_alignParentBottom="true"
             android:background="@android:color/white"
             android:orientation="horizontal"

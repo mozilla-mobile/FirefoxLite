@@ -70,6 +70,7 @@
     <dimen name="home_fixed_menu_horizontal_margin">36dp</dimen>
     <dimen name="browser_fixed_menu_horizontal_padding">40dp</dimen>
     <dimen name="browser_tracker_popup_bottom_margin">40dp</dimen>
+    <dimen name="search_url_input_height">56dp</dimen>
 
     <!-- Tab Tray -->
     <dimen name="tab_tray_peekHeight">300dp</dimen>

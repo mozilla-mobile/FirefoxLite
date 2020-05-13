@@ -2,4 +2,5 @@
 <resources>
     <dimen name="fixed_menu_height">40dp</dimen>
     <dimen name="tab_tray_new_tab_btn_height">40dp</dimen>
+    <dimen name="search_url_input_height">48dp</dimen>
 </resources>
