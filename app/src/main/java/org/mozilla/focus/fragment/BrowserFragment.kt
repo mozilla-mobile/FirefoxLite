@@ -432,11 +432,10 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
     private fun setupBottomBar() {
         browser_bottom_bar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
-                val isInLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
                 when (type) {
                     BottomBarItemAdapter.TYPE_TAB_COUNTER -> {
                         chromeViewModel.showTabTray.call()
-                        TelemetryWrapper.showTabTrayToolbar(Extra_Value.WEBVIEW, position, isInLandscape)
+                        TelemetryWrapper.showTabTrayToolbar(Extra_Value.WEBVIEW, position, isInLandscape())
                     }
                     BottomBarItemAdapter.TYPE_MENU -> {
                         chromeViewModel.showMenu.call()
@@ -444,11 +443,11 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                     }
                     BottomBarItemAdapter.TYPE_HOME -> {
                         chromeViewModel.showNewTab.call()
-                        TelemetryWrapper.clickAddTabToolbar(Extra_Value.WEBVIEW, position, isInLandscape)
+                        TelemetryWrapper.clickAddTabToolbar(Extra_Value.WEBVIEW, position, isInLandscape())
                     }
                     BottomBarItemAdapter.TYPE_SEARCH -> {
                         chromeViewModel.showUrlInput.value = url
-                        TelemetryWrapper.clickToolbarSearch(Extra_Value.WEBVIEW, position, isInLandscape)
+                        TelemetryWrapper.clickToolbarSearch(Extra_Value.WEBVIEW, position, isInLandscape())
                     }
                     BottomBarItemAdapter.TYPE_CAPTURE -> chromeViewModel.onDoScreenshot(ScreenCaptureTelemetryData(Extra_Value.WEBVIEW, position))
                     BottomBarItemAdapter.TYPE_PIN_SHORTCUT -> {
@@ -462,11 +461,11 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                     }
                     BottomBarItemAdapter.TYPE_REFRESH -> {
                         chromeViewModel.refreshOrStop.call()
-                        TelemetryWrapper.clickToolbarReload(Extra_Value.WEBVIEW, position, isInLandscape)
+                        TelemetryWrapper.clickToolbarReload(Extra_Value.WEBVIEW, position, isInLandscape())
                     }
                     BottomBarItemAdapter.TYPE_SHARE -> {
                         chromeViewModel.share.call()
-                        TelemetryWrapper.clickToolbarShare(Extra_Value.WEBVIEW, position, isInLandscape)
+                        TelemetryWrapper.clickToolbarShare(Extra_Value.WEBVIEW, position, isInLandscape())
                     }
                     BottomBarItemAdapter.TYPE_NEXT -> {
                         chromeViewModel.goNext.call()
@@ -512,6 +511,10 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                     bottomBarItemAdapter.setBookmark(isBookmark)
                 })
         setupDownloadIndicator()
+    }
+
+    private fun isInLandscape(): Boolean {
+        return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
     private fun setupDownloadIndicator() {
@@ -682,7 +685,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
             chromeViewModel.showUrlInput.value = url
             // TODO: Needs to confirm with bi that what vertical should be passed into in normal browser using cases
             // TODO: For now just pass a empty string
-            TelemetryWrapper.clickUrlbar("")
+            TelemetryWrapper.clickUrlbar("", isInLandscape())
         }
     }
 

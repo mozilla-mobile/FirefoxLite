@@ -176,15 +176,19 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             R.id.clear -> {
                 urlView.setText("")
                 urlView.requestFocus()
-                TelemetryWrapper.searchClear()
+                TelemetryWrapper.searchClear(isInLandscape())
             }
             R.id.dismiss -> {
                 dismiss()
-                TelemetryWrapper.searchDismiss()
+                TelemetryWrapper.searchDismiss(isInLandscape())
             }
             R.id.suggestion_item -> onSuggestionClicked((view as TextView).text)
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
+    }
+
+    private fun isInLandscape(): Boolean {
+        return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
     private fun initByArguments() {
@@ -201,8 +205,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     private fun onSuggestionClicked(tag: CharSequence) {
+        val isInLandscape = isInLandscape()
         search(tag.toString())
-        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(tag.toString()), true)
+        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(tag.toString()), true, isInLandscape)
     }
 
     private fun dismiss() {
@@ -215,6 +220,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     private fun onCommit() {
+        val isInLandscape = isInLandscape()
         val input = urlView.autocompleteResult?.let { result ->
             if (result.text.isEmpty() || !URLUtil.isValidUrl(urlView.text.toString())) {
                 urlView.text.toString()
@@ -223,7 +229,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             }
         } ?: urlView.text.toString()
         search(input)
-        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false)
+        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false, isInLandscape)
     }
 
     private fun search(input: String) {
