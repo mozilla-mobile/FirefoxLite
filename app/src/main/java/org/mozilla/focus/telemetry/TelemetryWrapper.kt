@@ -1373,13 +1373,13 @@ object TelemetryWrapper {
     }
 
     @JvmStatic
-    fun urlBarEvent(isUrl: Boolean, isSuggestion: Boolean) {
+    fun urlBarEvent(isUrl: Boolean, isSuggestion: Boolean, isInLandscape: Boolean) {
         if (isUrl) {
-            TelemetryWrapper.browseEvent()
+            TelemetryWrapper.browseEvent(isInLandscape)
         } else if (isSuggestion) {
-            TelemetryWrapper.searchSelectEvent()
+            TelemetryWrapper.searchSelectEvent(isInLandscape)
         } else {
-            TelemetryWrapper.searchEnterEvent()
+            TelemetryWrapper.searchEnterEvent(isInLandscape)
         }
     }
 
@@ -1389,9 +1389,13 @@ object TelemetryWrapper {
             method = Method.OPEN,
             `object` = Object.SEARCH_BAR,
             value = Value.LINK,
-            extras = [])
-    private fun browseEvent() {
-        EventBuilder(Category.ACTION, Method.OPEN, Object.SEARCH_BAR, Value.LINK).queue()
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
+    private fun browseEvent(isInLandscape: Boolean) {
+        EventBuilder(Category.ACTION, Method.OPEN, Object.SEARCH_BAR, Value.LINK)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
     }
 
     @TelemetryDoc(
@@ -1400,12 +1404,16 @@ object TelemetryWrapper {
             method = Method.TYPE_SELECT_QUERY,
             `object` = Object.SEARCH_BAR,
             value = "",
-            extras = [])
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun searchSelectEvent() {
+    fun searchSelectEvent(isInLandscape: Boolean) {
         val telemetry = TelemetryHolder.get()
 
-        EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR).queue()
+        EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
 
         val searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
                 telemetry.configuration.context)
@@ -1421,11 +1429,15 @@ object TelemetryWrapper {
             method = Method.TYPE_QUERY,
             `object` = Object.SEARCH_BAR,
             value = "",
-            extras = [])
-    private fun searchEnterEvent() {
+            extras = [
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
+    private fun searchEnterEvent(isInLandscape: Boolean) {
         val telemetry = TelemetryHolder.get()
 
-        EventBuilder(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR).queue()
+        EventBuilder(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
+                .queue()
 
         val searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
                 telemetry.configuration.context)
@@ -1468,11 +1480,15 @@ object TelemetryWrapper {
             method = Method.CLEAR,
             `object` = Object.SEARCH_BAR,
             value = "",
-            extras = [TelemetryExtra(name = Extra.VERSION, value = SEARCHCLEAR_TELEMETRY_VERSION)])
+            extras = [
+                TelemetryExtra(name = Extra.VERSION, value = SEARCHCLEAR_TELEMETRY_VERSION),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun searchClear() {
+    fun searchClear(isInLandscape: Boolean) {
         EventBuilder(Category.ACTION, Method.CLEAR, Object.SEARCH_BAR)
                 .extra(Extra.VERSION, SEARCHCLEAR_TELEMETRY_VERSION)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
@@ -1482,11 +1498,15 @@ object TelemetryWrapper {
             method = Method.CANCEL,
             `object` = Object.SEARCH_BAR,
             value = "",
-            extras = [TelemetryExtra(name = Extra.VERSION, value = SEARCHDISMISS_TELEMETRY_VERSION)])
+            extras = [
+                TelemetryExtra(name = Extra.VERSION, value = SEARCHDISMISS_TELEMETRY_VERSION),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+            ])
     @JvmStatic
-    fun searchDismiss() {
+    fun searchDismiss(isInLandscape: Boolean) {
         EventBuilder(Category.ACTION, Method.CANCEL, Object.SEARCH_BAR)
                 .extra(Extra.VERSION, SEARCHDISMISS_TELEMETRY_VERSION)
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 
@@ -1509,16 +1529,18 @@ object TelemetryWrapper {
             `object` = Object.SEARCH_BAR,
             value = Value.MINI_URLBAR,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
-    fun clickUrlbar(vertical: String) {
+    fun clickUrlbar(vertical: String, isInLandscape: Boolean) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.SEARCH_BAR, Value.MINI_URLBAR)
                 .apply {
                     if (vertical.isNotEmpty()) {
                         extra(Extra.VERTICAL, vertical)
                     }
                 }
+                .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
     }
 

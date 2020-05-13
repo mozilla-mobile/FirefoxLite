@@ -37,7 +37,7 @@ class ShoppingSearchResultViewModel(
 
     fun onUrlBarClicked() {
         goBackToInputPage.call()
-        TelemetryWrapper.clickUrlbar(TelemetryWrapper.Extra_Value.SHOPPING)
+        TelemetryWrapper.clickUrlbar(TelemetryWrapper.Extra_Value.SHOPPING, false)
     }
 
     fun onShoppingSearchButtonClick() {
