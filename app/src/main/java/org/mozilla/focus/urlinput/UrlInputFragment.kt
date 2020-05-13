@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.urlinput
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -19,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.Lazy
+import kotlinx.android.synthetic.main.fragment_urlinput.input_container
 import mozilla.components.browser.domains.autocomplete.ShippedDomainsProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
@@ -146,6 +148,16 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     override fun onStop() {
         super.onStop()
         presenter.setView(null)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateUrlInputHeight()
+    }
+
+    private fun updateUrlInputHeight() {
+        val urlInputHeight = input_container.resources.getDimensionPixelOffset(R.dimen.search_url_input_height)
+        input_container.layoutParams.height = urlInputHeight
     }
 
     override fun onLongClick(view: View): Boolean {
