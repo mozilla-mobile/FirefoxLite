@@ -101,6 +101,17 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
         onItemLongClickListener = listener
     }
 
+    fun onScreenRotated() {
+        if (childCount > 0) {
+            val itemContainer = getChildAt(childCount - 1) as ViewGroup
+            (itemContainer.layoutParams as MarginLayoutParams).apply {
+                val horizontalPadding = resources.getDimensionPixelSize(R.dimen.browser_fixed_menu_horizontal_padding)
+                marginStart = horizontalPadding
+                marginEnd = horizontalPadding
+            }
+        }
+    }
+
     interface OnItemClickListener {
         fun onItemClick(type: Int, position: Int)
     }
