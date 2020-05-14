@@ -197,3 +197,4 @@
 |Click Travel Search Result Message|action|click|message|"travel_search_result"|"action=dismiss,travel_discovery,google_search," 
 |Show Set-default Travel Search Message|action|show|message|"setdefault_travel_search"|"" 
 |Click Set-default Travel Search Message|action|click|message|"setdefault_travel_search"|"action=setdefault,close," 
+|Show Exit Warning Toast|action|show|toast|"exit_warning"|"" 

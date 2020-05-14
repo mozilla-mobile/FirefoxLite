@@ -464,6 +464,7 @@ class MainActivity : BaseActivity(),
             Toast.makeText(this, R.string.message_exit_app, Toast.LENGTH_LONG)
                     .also { exitToast = it }
                     .show()
+            TelemetryWrapper.showExitToast()
             handled = true
         }
 

@@ -168,6 +168,7 @@ object TelemetryWrapper {
         const val REDEEM_PAGE = "redeem_page"
         const val PROFILE = "profile"
         const val DETAIL_PAGE = "detail_page"
+        const val TOAST = "toast"
     }
 
     object Value {
@@ -257,6 +258,7 @@ object TelemetryWrapper {
         internal const val LANGUAGE = "language"
         internal const val LIFESTYLE = "lifestyle"
         internal const val CATEGORY = "category"
+        internal const val EXIT_WARNING = "exit_warning"
     }
 
     internal object Extra {
@@ -3734,6 +3736,18 @@ object TelemetryWrapper {
     fun clickSetDefaultTravelSearchMessage(action: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.SET_DEFAULT_TRAVEL_SEARCH)
                 .extra(Extra.ACTION, action)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Exit Warning Toast",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.TOAST,
+            value = Value.EXIT_WARNING,
+            extras = [])
+    fun showExitToast() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.TOAST, Value.EXIT_WARNING)
                 .queue()
     }
 
