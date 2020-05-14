@@ -425,7 +425,9 @@ object TelemetryWrapper {
             val trackerTokenPrefKey = resources.getString(R.string.pref_key_s_tracker_token)
             val channel = AppConstants.getChannel()
 
-            Glean.initialize(context, telemetryEnabled, Configuration(channel = channel))
+            if (AppConstants.isNightlyBuild() || AppConstants.isDevBuild() || AppConstants.isFirebaseBuild()) {
+                Glean.initialize(context, telemetryEnabled, Configuration(channel = channel))
+            }
 
             val configuration = TelemetryConfiguration(context)
                     .setServerEndpoint("https://incoming.telemetry.mozilla.org")
