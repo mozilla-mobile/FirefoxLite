@@ -433,6 +433,7 @@ object TelemetryWrapper {
                             resources.getString(R.string.pref_key_turbo_mode),
                             resources.getString(R.string.pref_key_performance_block_images),
                             resources.getString(R.string.pref_key_default_browser),
+                            resources.getString(R.string.pref_key_default_browser_name),
                             resources.getString(R.string.pref_key_storage_save_downloads_to),
                             resources.getString(R.string.pref_key_webview_version),
                             resources.getString(R.string.pref_key_locale),
@@ -479,15 +480,21 @@ object TelemetryWrapper {
     }
 
     private fun convertToPropertyKey(context: Context, key: String): String {
-        return if (key == context.getString(R.string.pref_key_s_tracker_token)) {
-            FirebaseHelper.USER_PROPERTY_TRACKER
-        } else {
-            key
+        return when (key) {
+            context.getString(R.string.pref_key_s_tracker_token) -> {
+                FirebaseHelper.USER_PROPERTY_TRACKER
+            }
+            context.getString(R.string.pref_key_default_browser_name) -> {
+                FirebaseHelper.USER_PROPERTY_DEFAULT_BROWSER_NAME
+            }
+            else -> {
+                key
+            }
         }
     }
 
     private fun updateDefaultBrowserStatus(context: Context) {
-        Settings.updatePrefDefaultBrowserIfNeeded(context, Browsers.isDefaultBrowser(context))
+        Settings.updatePrefDefaultBrowserIfNeeded(context, Browsers.isDefaultBrowser(context), Browsers.hasDefaultBrowser(context))
     }
 
     private fun createDefaultSearchProvider(context: Context): DefaultSearchMeasurement.DefaultSearchEngineProvider {
