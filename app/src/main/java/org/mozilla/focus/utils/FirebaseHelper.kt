@@ -32,6 +32,7 @@ object FirebaseHelper {
     // keys for user properties
     const val USER_PROPERTY_TRACKER = "tracker"
     const val USER_PROPERTY_EXPERIMENT_BUCKET = "experiment_bucket"
+    const val USER_PROPERTY_DEFAULT_BROWSER_NAME = "default_browser_name"
 
     // keys for remote config default value
     const val RATE_APP_DIALOG_TEXT_TITLE = "rate_app_dialog_text_title"

@@ -286,7 +286,7 @@ public class Settings {
                 .apply();
     }
 
-    public static void updatePrefDefaultBrowserIfNeeded(Context context, boolean isDefaultBrowser) {
+    public static void updatePrefDefaultBrowserIfNeeded(Context context, boolean isDefaultBrowser, boolean hasDefaultBrowser) {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         final Set<String> keySet = sharedPreferences.getAll().keySet();
         final String prefDefaultBrowser = context.getResources().getString(R.string.pref_key_default_browser);
@@ -294,6 +294,10 @@ public class Settings {
         if (keySet.contains(prefDefaultBrowser) || isDefaultBrowser) {
             sharedPreferences.edit().putBoolean(prefDefaultBrowser, isDefaultBrowser).apply();
         }
+
+        final String prefDefaultBrowserName = context.getResources().getString(R.string.pref_key_default_browser_name);
+        final String defaultBrowserName = isDefaultBrowser ? "firefox_lite" : (hasDefaultBrowser ? "others" : "not_set");
+        sharedPreferences.edit().putString(prefDefaultBrowserName, defaultBrowserName).apply();
     }
 
     public static void updatePrefString(Context context, String key, String value) {

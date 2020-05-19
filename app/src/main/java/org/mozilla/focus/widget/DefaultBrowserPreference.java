@@ -63,6 +63,7 @@ public class DefaultBrowserPreference extends Preference {
     public void update() {
         if (switchView != null) {
             final boolean isDefaultBrowser = Browsers.isDefaultBrowser(getContext());
+            final boolean hasDefaultBrowser = Browsers.hasDefaultBrowser(getContext());
 
             switchView.setChecked(isDefaultBrowser);
             if (ComponentToggleService.isAlive(getContext())) {
@@ -73,7 +74,7 @@ public class DefaultBrowserPreference extends Preference {
                 setSummary(null);
             }
 
-            Settings.updatePrefDefaultBrowserIfNeeded(getContext(), isDefaultBrowser);
+            Settings.updatePrefDefaultBrowserIfNeeded(getContext(), isDefaultBrowser, hasDefaultBrowser);
         }
     }
 
