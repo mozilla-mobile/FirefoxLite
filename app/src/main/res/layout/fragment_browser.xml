@@ -99,9 +99,11 @@
         android:id="@+id/browser_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fixed_menu_height"
-        android:background="@drawable/bg_bottom_bar"
         android:layout_gravity="bottom"
-        app:dividerDrawable="@drawable/browser_menu_divider"/>
+        android:background="@drawable/bg_bottom_bar"
+        android:clickable="true"
+        android:focusable="true"
+        app:dividerDrawable="@drawable/browser_menu_divider" />
 
     <FrameLayout
         android:id="@+id/video_container"
