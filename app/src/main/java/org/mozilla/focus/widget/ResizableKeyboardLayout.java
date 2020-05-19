@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import org.mozilla.focus.R;
+import org.mozilla.rocket.extension.ViewExtensionKt;
 
 /**
  * A CoordinatorLayout implementation that resizes dynamically (by adding padding to the bottom)
@@ -27,6 +28,8 @@ import org.mozilla.focus.R;
  * is showing. That can be useful for things like FABs that you don't need when someone is typing.
  */
 public class ResizableKeyboardLayout extends CoordinatorLayout {
+
+    private final static int BOTTOM_INSET_THRESHOLD_IN_DP = 150;
 
     private final int idOfViewToHide;
 
@@ -57,10 +60,11 @@ public class ResizableKeyboardLayout extends CoordinatorLayout {
         } finally {
             styleAttributeArray.recycle();
         }
+        int bottomInsetThreshold = ViewExtensionKt.dpToPx(this, BOTTOM_INSET_THRESHOLD_IN_DP);
         this.setOnApplyWindowInsetsListener((v, insets) -> {
             int difference = insets.getSystemWindowInsetBottom();
 
-            if (difference != 0) {
+            if (difference != 0 && difference > bottomInsetThreshold) {
                 // Keyboard showing -> Set difference has bottom padding.
                 if (getPaddingBottom() != difference) {
                     setPadding(0, 0, 0, difference);
