@@ -55,13 +55,6 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
 
     override fun onDataMessage(data: MutableMap<String, String>) {
 
-        val serverPushEnabled = FirebaseHelper.getFirebase().getRcBoolean(BOOL_IS_SERVER_PUSH_ENABLED)
-        val serverPushDebugging = Settings.getInstance(applicationContext).isServerPushDebugging
-        Log.d(TAG, "onDataMessage enabled:$serverPushEnabled ")
-        if (!serverPushEnabled && !serverPushDebugging) {
-            // return early if we pref off this feature in Firebase Remote Config
-            return
-        }
         val messageId = parseMessageId(data)
         val title = parseTitle(data)
         val body = parseBody(data)
@@ -76,6 +69,14 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
 
         if (messageId == null || title == null || body == null || displayTimestamp == null || displayType == null) {
             Log.d(TAG, "onDataMessage failed. Required field missing")
+            return
+        }
+
+        val serverPushEnabled = FirebaseHelper.getFirebase().getRcBoolean(BOOL_IS_SERVER_PUSH_ENABLED)
+        val serverPushDebugging = Settings.getInstance(applicationContext).isServerPushDebugging
+        Log.d(TAG, "onDataMessage enabled:$serverPushEnabled ")
+        if (!serverPushEnabled && !serverPushDebugging) {
+            // return early if we pref off this feature in Firebase Remote Config
             return
         }
 
