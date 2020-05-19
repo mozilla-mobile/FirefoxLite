@@ -75,8 +75,10 @@
         android:id="@+id/browser_bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fixed_menu_height"
+        android:layout_alignParentBottom="true"
         android:background="@color/privateBackground"
-        android:layout_alignParentBottom="true"/>
+        android:clickable="true"
+        android:focusable="true" />
 
     <FrameLayout
         android:id="@+id/video_container"
