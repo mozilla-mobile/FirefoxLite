@@ -350,4 +350,8 @@ class PrivateModeActivity : BaseActivity(),
                     continuation()
                 })
     }
+
+    companion object {
+        fun getStartIntent(context: Context): Intent = Intent(context, PrivateModeActivity::class.java)
+    }
 }

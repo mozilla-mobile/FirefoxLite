@@ -7,7 +7,6 @@ package org.mozilla.focus.tabs.tabtray
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Rect
@@ -184,7 +183,7 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
             R.id.close_all_tabs_btn -> onCloseAllTabsClicked()
             R.id.private_browsing_btn -> {
                 privateModeTray(isInLandscape)
-                startActivity(Intent(context, PrivateModeActivity::class.java))
+                startActivity(PrivateModeActivity.getStartIntent(requireContext()))
                 activity?.overridePendingTransition(R.anim.pb_enter, R.anim.pb_exit)
             }
             else -> {
