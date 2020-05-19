@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -47,18 +48,23 @@ import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.privately.browse.BrowserFragment
+import org.mozilla.rocket.privately.browse.BrowserFragmentLegacy
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
+import org.mozilla.rocket.tabs.TabsSessionProvider
 import javax.inject.Inject
 
 class PrivateModeActivity : BaseActivity(),
         ScreenNavigator.Provider,
-        ScreenNavigator.HostActivity {
+        ScreenNavigator.HostActivity,
+        TabsSessionProvider.SessionHost {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
     private val LOG_TAG = "PrivateModeActivity"
     private lateinit var sessionManager: SessionManager
+    // TODO: remove after AC browser engine is stable
+    private var sessionManagerLegacy: org.mozilla.rocket.tabs.SessionManager? = null
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewProvider: PrivateTabViewProvider
     private lateinit var screenNavigator: ScreenNavigator
@@ -73,7 +79,9 @@ class PrivateModeActivity : BaseActivity(),
         super.onCreate(null)
 
         chromeViewModel = getViewModel(chromeViewModelCreator)
-        sessionManager = app().sessionManager
+        if (isAcBrowserEngineEnabled()) {
+            sessionManager = app().sessionManager
+        }
         tabViewProvider = PrivateTabViewProvider(this)
         screenNavigator = ScreenNavigator(this)
 
@@ -85,7 +93,11 @@ class PrivateModeActivity : BaseActivity(),
 
         handleIntent(intent)
 
-        setContentView(R.layout.activity_private_mode)
+        if (isAcBrowserEngineEnabled()) {
+            setContentView(R.layout.activity_private_mode)
+        } else {
+            setContentView(R.layout.activity_private_mode_legacy)
+        }
 
         snackBarContainer = findViewById(R.id.container)
         makeStatusBarTransparent()
@@ -116,6 +128,7 @@ class PrivateModeActivity : BaseActivity(),
     override fun onDestroy() {
         super.onDestroy()
         stopPrivateMode()
+        sessionManagerLegacy?.destroy()
     }
 
     override fun applyLocale() {}
@@ -154,22 +167,36 @@ class PrivateModeActivity : BaseActivity(),
     }
 
     private fun onAddToHomeClicked() {
-        val selectedSession = sessionManager.selectedSession ?: return
-        val url = selectedSession.url
+        var sessionUrl: String = ""
+        var sessionIcon: Bitmap? = null
+        var sessionTitle: String = ""
+        if (isAcBrowserEngineEnabled()) {
+            sessionManager.selectedSession?.let {
+                sessionUrl = it.url
+                sessionIcon = it.icon
+                sessionTitle = it.title
+            }
+        } else {
+            getSessionManager().focusSession?.let {
+                sessionUrl = it.url ?: ""
+                sessionIcon = it.favicon
+                sessionTitle = it.title
+            }
+        } ?: return
+
         // If we pin an invalid url as shortcut, the app will not function properly.
         // TODO: only enable the bottom menu item if the page is valid and loaded.
-        if (!SupportUtils.isUrl(url)) {
+        if (!SupportUtils.isUrl(sessionUrl)) {
             return
         }
-        val bitmap = selectedSession.icon
         val shortcut = Intent(Intent.ACTION_VIEW)
         // Use activity-alias name here so we can start whoever want to control launching behavior
         // Besides, RocketLauncherActivity not exported so using the alias-name is required.
         shortcut.setClassName(this, AppConstants.LAUNCHER_ACTIVITY_ALIAS)
-        shortcut.data = Uri.parse(url)
+        shortcut.data = Uri.parse(sessionUrl)
         shortcut.putExtra(LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_HOME_SCREEN_SHORTCUT.value, true)
 
-        ShortcutUtils.requestPinShortcut(this, shortcut, selectedSession.title, url, bitmap)
+        ShortcutUtils.requestPinShortcut(this, shortcut, sessionTitle, sessionUrl, sessionIcon)
     }
 
     private fun onShareClicked(url: String) {
@@ -198,6 +225,15 @@ class PrivateModeActivity : BaseActivity(),
         }
 
         super.onBackPressed()
+    }
+
+    override fun getSessionManager(): org.mozilla.rocket.tabs.SessionManager {
+        if (sessionManagerLegacy == null) {
+            sessionManagerLegacy = org.mozilla.rocket.tabs.SessionManager(tabViewProvider)
+        }
+
+        // we just created it, it definitely not null
+        return sessionManagerLegacy!!
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -233,7 +269,11 @@ class PrivateModeActivity : BaseActivity(),
     override fun getScreenNavigator(): ScreenNavigator = screenNavigator
 
     override fun getBrowserScreen(): BrowserScreen {
-        return supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment
+        return if (isAcBrowserEngineEnabled()) {
+            supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment
+        } else {
+            supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragmentLegacy
+        }
     }
 
     override fun createFirstRunScreen(): Screen {
@@ -274,7 +314,9 @@ class PrivateModeActivity : BaseActivity(),
     }
 
     private fun stopPrivateMode() {
-        sessionManager.removeAll()
+        if (isAcBrowserEngineEnabled()) {
+            sessionManager.removeAll()
+        }
         PrivateSessionNotificationService.stop(this)
         PrivateMode.getInstance(this).sanitize()
         tabViewProvider.purify(this)
@@ -344,5 +386,8 @@ class PrivateModeActivity : BaseActivity(),
 
     companion object {
         fun getStartIntent(context: Context): Intent = Intent(context, PrivateModeActivity::class.java)
+
+        // TODO: remove after AC browser engine is stable
+        private fun isAcBrowserEngineEnabled() = AppConstants.isNightlyBuild() || AppConstants.isDevBuild() || AppConstants.isFirebaseBuild()
     }
 }

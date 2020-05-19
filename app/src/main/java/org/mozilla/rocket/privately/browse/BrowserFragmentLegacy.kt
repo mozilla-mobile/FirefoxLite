@@ -70,6 +70,7 @@ private const val SITE_GLOBE = 0
 private const val SITE_LOCK = 1
 private const val ACTION_DOWNLOAD = 0
 
+// TODO: remove after AC browser engine is stable
 class BrowserFragmentLegacy : LocaleAwareFragment(),
         ScreenNavigator.BrowserScreen,
         BackKeyHandleable {
