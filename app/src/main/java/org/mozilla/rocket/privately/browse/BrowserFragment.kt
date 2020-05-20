@@ -530,6 +530,9 @@ class BrowserFragment : LocaleAwareFragment(),
                     ACTION_DOWNLOAD,
                     d
             )
+            // Workaround to fix the failure on the second download
+            chromeViewModel.refreshOrStop.call()
+
             return true
         }
 
