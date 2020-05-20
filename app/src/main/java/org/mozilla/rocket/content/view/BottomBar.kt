@@ -104,7 +104,7 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
     fun onScreenRotated() {
         if (childCount > 0) {
             val itemContainer = getChildAt(childCount - 1) as ViewGroup
-            (itemContainer.layoutParams as MarginLayoutParams).apply {
+            itemContainer.layoutParams = (itemContainer.layoutParams as MarginLayoutParams).apply {
                 val horizontalPadding = resources.getDimensionPixelSize(R.dimen.browser_fixed_menu_horizontal_padding)
                 marginStart = horizontalPadding
                 marginEnd = horizontalPadding

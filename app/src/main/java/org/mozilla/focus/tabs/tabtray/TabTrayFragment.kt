@@ -170,12 +170,22 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-        updateBottomBarHeight()
+        updateBottomBarLayout()
     }
 
-    private fun updateBottomBarHeight() {
+    private fun updateBottomBarLayout() {
         val bottomBarHeight = new_tab_button.resources.getDimensionPixelOffset(R.dimen.tab_tray_new_tab_btn_height)
-        new_tab_button.layoutParams.height = bottomBarHeight
+        new_tab_button.layoutParams = new_tab_button.layoutParams.apply {
+            height = bottomBarHeight
+        }
+        val bottomBarMarginStart = private_browsing_btn.resources.getDimensionPixelOffset(R.dimen.tab_tray_bottom_sheet_start_margin)
+        private_browsing_btn.layoutParams = (private_browsing_btn.layoutParams as ViewGroup.MarginLayoutParams).apply {
+            marginStart = bottomBarMarginStart
+        }
+        val bottomBarMarginEnd = close_all_tabs_btn.resources.getDimensionPixelOffset(R.dimen.tab_tray_bottom_sheet_end_margin)
+        close_all_tabs_btn.layoutParams = (close_all_tabs_btn.layoutParams as ViewGroup.MarginLayoutParams).apply {
+            marginEnd = bottomBarMarginEnd
+        }
     }
 
     override fun onClick(v: View) {

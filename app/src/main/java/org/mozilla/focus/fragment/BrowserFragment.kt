@@ -607,7 +607,9 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
 
     private fun updateBottomBarLayout() {
         val bottomBarHeight: Int = browser_bottom_bar.resources.getDimensionPixelOffset(R.dimen.fixed_menu_height)
-        browser_bottom_bar.layoutParams.height = bottomBarHeight
+        browser_bottom_bar.layoutParams = browser_bottom_bar.layoutParams.apply {
+            height = bottomBarHeight
+        }
         browser_bottom_bar.onScreenRotated()
     }
 
