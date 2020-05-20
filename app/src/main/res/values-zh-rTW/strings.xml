@@ -178,6 +178,7 @@
   <string name="message_disable_block_image">現在起將顯示圖片</string>
   <string name="message_clear_cache_fail">無法清除快取</string>
   <string name="message_storage_unavailable_cancel_download">無法存取儲存空間，已取消下載。</string>
+  <string name="message_exit_app">再按一次返回即可結束應用程式</string>
   <string name="message_cleared_cached">已清除 %1$s 快取</string>
   <string name="message_cleared_browsing_data">已清除瀏覽資料</string>
   <string name="message_deleted_screenshot">已刪除擷圖</string>

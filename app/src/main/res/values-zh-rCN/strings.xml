@@ -178,6 +178,7 @@
   <string name="message_disable_block_image">无图模式已禁用</string>
   <string name="message_clear_cache_fail">无法清除缓存</string>
   <string name="message_storage_unavailable_cancel_download">无法访问存储空间。下载已取消。</string>
+  <string name="message_exit_app">再按一次返回键退出程序</string>
   <string name="message_cleared_cached">%1$s 缓存已清除</string>
   <string name="message_cleared_browsing_data">浏览数据已清除</string>
   <string name="message_deleted_screenshot">截图已删除</string>
