@@ -110,6 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/tab_tray_bottom_sheet_end_margin"
                     android:paddingStart="@dimen/tab_tray_close_all_btn_margin_end"
                     android:paddingEnd="@dimen/tab_tray_close_all_btn_margin_end"
                     android:textAllCaps="true"

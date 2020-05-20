@@ -157,7 +157,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     private fun updateUrlInputHeight() {
         val urlInputHeight = input_container.resources.getDimensionPixelOffset(R.dimen.search_url_input_height)
-        input_container.layoutParams.height = urlInputHeight
+        input_container.layoutParams = input_container.layoutParams.apply {
+            height = urlInputHeight
+        }
     }
 
     override fun onLongClick(view: View): Boolean {
