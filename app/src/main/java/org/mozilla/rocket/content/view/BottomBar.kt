@@ -167,14 +167,6 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
             }
         }
 
-        internal fun setState(child: BottomBar, slideUp: Boolean) {
-            if (slideUp) {
-                slideUp(child)
-            } else {
-                slideDown(child)
-            }
-        }
-
         override fun slideUp(child: BottomBar) {
             super.slideUp(child)
             currentState = STATE_SCROLLED_DOWN
@@ -188,6 +180,14 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
         companion object {
             private const val STATE_SCROLLED_DOWN = 1
             private const val STATE_SCROLLED_UP = 2
+
+            fun BottomBar.slideUp() {
+                (behavior as BottomBarBehavior).slideUp(this)
+            }
+
+            fun BottomBar.slideDown() {
+                (behavior as BottomBarBehavior).slideDown(this)
+            }
         }
     }
 }

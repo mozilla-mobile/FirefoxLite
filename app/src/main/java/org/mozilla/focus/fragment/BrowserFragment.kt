@@ -101,6 +101,7 @@ import org.mozilla.rocket.chrome.ChromeViewModel.ScreenCaptureTelemetryData
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.content.view.BottomBar.BottomBarBehavior.Companion.slideUp
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper.OnViewInflated
 import org.mozilla.rocket.download.DownloadIndicatorIntroViewHelper.initDownloadIndicatorIntroView
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
@@ -421,6 +422,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         })
         chromeViewModel.currentUrl.observe(viewLifecycleOwner, Observer {
             appbar.setExpanded(true)
+            browser_bottom_bar.slideUp()
         })
     }
 
