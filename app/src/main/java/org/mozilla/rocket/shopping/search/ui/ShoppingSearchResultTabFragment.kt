@@ -46,6 +46,7 @@ import org.mozilla.rocket.content.common.ui.TabSwipeTelemetryViewModel
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.content.view.BottomBar.BottomBarBehavior.Companion.slideUp
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.shopping.search.data.ShoppingSearchMode
@@ -262,7 +263,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
                     animateToTab(position)
                     selectContentFragment(shoppingSearchTabsAdapter, position)
                     appbar.setExpanded(true)
-                    (bottom_bar.behavior as BottomBar.BottomBarBehavior).setState(bottom_bar, true)
+                    bottom_bar.slideUp()
                 }
             })
             view_pager.setSwipeable(false)
@@ -377,6 +378,7 @@ class ShoppingSearchResultTabFragment : Fragment(), ContentTabViewContract, Back
 
         chromeViewModel.currentUrl.observe(viewLifecycleOwner, Observer {
             appbar.setExpanded(true)
+            bottom_bar.slideUp()
             telemetryViewModel.onUrlOpened()
         })
     }
