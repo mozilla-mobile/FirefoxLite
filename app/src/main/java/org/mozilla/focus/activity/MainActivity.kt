@@ -547,7 +547,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun openPrivateMode() {
-        startActivity(Intent(this, PrivateModeActivity::class.java))
+        startActivity(PrivateModeActivity.getStartIntent(this))
         overridePendingTransition(R.anim.tab_transition_fade_in, R.anim.tab_transition_fade_out)
     }
 

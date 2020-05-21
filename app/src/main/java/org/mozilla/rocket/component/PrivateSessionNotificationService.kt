@@ -89,7 +89,7 @@ class PrivateSessionNotificationService : Service() {
 
         @JvmStatic
         fun buildIntent(applicationContext: Context, sanitize: Boolean): Intent {
-            val intent = Intent(applicationContext, PrivateModeActivity::class.java)
+            val intent = PrivateModeActivity.getStartIntent(applicationContext)
             if (sanitize) {
                 intent.action = PrivateMode.INTENT_EXTRA_SANITIZE
             }
