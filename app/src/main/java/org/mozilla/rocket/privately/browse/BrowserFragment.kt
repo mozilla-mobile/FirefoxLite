@@ -561,6 +561,7 @@ class BrowserFragment : LocaleAwareFragment(),
         override fun onLoadingStateChanged(session: Session, loading: Boolean) {
             if (loading) {
                 chromeViewModel.onPageLoadingStarted()
+                BrowsingSession.getInstance().resetTrackerCount()
             } else {
                 chromeViewModel.onPageLoadingStopped()
             }
