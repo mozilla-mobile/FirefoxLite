@@ -636,6 +636,12 @@ private fun HitResult.toHitTarget(): PrivateWebContextMenu.HitTarget {
     var isImage = false
     var imageURL: String? = null
     when (this) {
+        is HitResult.IMAGE -> {
+            isLink = false
+            linkURL = src
+            isImage = true
+            imageURL = src
+        }
         is HitResult.IMAGE_SRC -> {
             isLink = true
             linkURL = uri
