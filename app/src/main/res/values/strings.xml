@@ -419,6 +419,25 @@
     <string name="privacy_policy_update_notification_title">Product Update Notice</string>
     <string name="privacy_policy_update_notification_action">To make Firefox Lite better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
 
+
+    <!--In-app Promotion, Set default browser-->
+    <!--Show a toast message when user set Firefox Lite as default browser successfully. The %1$s is Firefox Lite.-->
+    <string name="message_set_default_success">Thanks for choosing %1$s!</string>
+    <!--Message shown after user tried to set Firefox Lite as default browser, and be directed to system settings then back, but we detect the default browser is still not Firefox Lite. The %1$s is Firefox Lite.-->
+    <string name="message_set_default_incomplet">Would you like to finish setting %1$s as your default browser?</string>
+    <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they be direct to system settings page to complete the settings.-->
+    <string name="setting_default_browser_instruction_system_settings">Set Firefox Lite as your default browser in 30 seconds</string>
+    <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they need to choose Firefox Lite and check Always.-->
+    <string name="setting_default_browser_instruction_open_external_link">How to always browse with Firefox Lite?</string>
+    <!--Text shown in the setting default browser instruction, the %1$s will be replace with the following strings for indentifying some text to be set as Bold, i.e. Browser app-->
+    <string name="instruction_select">Select %1$s</string>
+    <string name="browser_app">Browser app</string>
+    <!--Text shown in the setting default browser instruction, the %1$s will be replace with the following strings for indentifying some text to be set as Bold, i.e. Always-->
+    <string name="instruction_tap">Tap %1$s</string>
+    <string name="always">Always</string>
+    <!--Button on the dialog of setting default browser. Tap this button will go to system settings-->
+    <string name="setting_default_browser_instruction_button">Go to settings</string>
+   
     <!--In-app Promotion, Rate the App-->
     <!-- The title of the Message to prompt users to rate Rocket on Play Store, %1$s is the App name i.e. Rocket. -->
     <string name="rate_app_dialog_text_title">Love %1$s?</string>
