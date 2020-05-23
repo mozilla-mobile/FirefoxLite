@@ -178,6 +178,7 @@
   <string name="message_disable_block_image">ขณะนี้กำลังแสดงภาพ</string>
   <string name="message_clear_cache_fail">ไม่สามารถล้างแคช</string>
   <string name="message_storage_unavailable_cancel_download">ไม่สามารถเข้าถึงที่เก็บข้อมูล ยกเลิกการดาวน์โหลดแล้ว</string>
+  <string name="message_exit_app">กด กลับ อีกครั้งเพื่อออก</string>
   <string name="message_cleared_cached">ล้างแคชแล้ว %1$s</string>
   <string name="message_cleared_browsing_data">ล้างข้อมูลการเรียกดูแล้ว</string>
   <string name="message_deleted_screenshot">ลบภาพหน้าจอแล้ว</string>
