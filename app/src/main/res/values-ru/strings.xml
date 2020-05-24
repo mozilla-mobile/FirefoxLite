@@ -178,6 +178,7 @@
   <string name="message_disable_block_image">Блокировка изображений отключена</string>
   <string name="message_clear_cache_fail">Не удалось очистить кэш</string>
   <string name="message_storage_unavailable_cancel_download">Хранилище недоступно. Загрузка отменена.</string>
+  <string name="message_exit_app">Нажмите НАЗАД ещё раз, чтобы выйти</string>
   <string name="message_cleared_cached">Удалено %1$s кэша</string>
   <string name="message_cleared_browsing_data">Данные веб-сёрфинга удалены</string>
   <string name="message_deleted_screenshot">Скриншот удалён</string>
