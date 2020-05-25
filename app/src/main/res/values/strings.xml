@@ -246,7 +246,7 @@
     <string name="label_menu_clear_cache">Clear cache</string>
     <string name="label_menu_history">History</string>
     <string name="label_menu_share">Share</string>
-    <string name="label_menu_my_shots">My shots</string>
+    <string name="label_menu_my_shots">Screenshots</string>
     <string name="label_menu_capture_page">Capture page</string>
     <string name="label_menu_turbo_mode">Turbo mode</string>
     <!-- Menu text for night mode. -->
@@ -255,6 +255,8 @@
     <string name="label_menu_block_image">Block images</string>
     <string name="label_menu_settings">Settings</string>
     <string name="label_menu_exit">Exit</string>
+    <!-- Menu text for adding websites to users' home screen. -->
+    <string name="label_menu_add_to_home_screen">Add to home screen</string>
 
     <!-- Message shown after user denied location permission prompt. -->
     <string name="permission_toast_location_deny">Location permission is denied.</string>
