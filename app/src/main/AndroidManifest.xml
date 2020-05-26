@@ -114,10 +114,7 @@
             android:configChanges="orientation|screenSize"
             android:taskAffinity=""
             android:theme="@style/PrivateModeTheme"
-            android:windowSoftInputMode="adjustResize">
-
-
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
 
         <activity-alias
             android:name="org.mozilla.rocket.activity.PrivateModeActivity"
@@ -257,41 +254,15 @@
             android:exported="false" />
 
         <service
-            android:name="org.mozilla.focus.components.ComponentToggleService"
-            android:enabled="true"
-            android:exported="false">
-            <!-- The enabled state should be converted to resource value and diff in 21~23 and 24~ -->
-        </service>
-
-        <service
             android:name="org.mozilla.rocket.component.PrivateSessionNotificationService"
             android:process=":private_mode" />
-
-        <activity
-            android:enabled="false"
-            android:exported="true"
-            android:name="org.mozilla.rocket.component.ConfigActivity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:icon="@drawable/menu_settings"
-            android:label="@string/menu_settings">
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".activity.EditBookmarkActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_edit_bookmark" />
+
         <activity
             android:name="org.mozilla.rocket.nightmode.AdjustBrightnessDialog"
             android:theme="@style/TransparentTheme"

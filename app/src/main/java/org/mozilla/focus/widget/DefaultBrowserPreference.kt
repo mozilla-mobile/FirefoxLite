@@ -5,8 +5,6 @@
 package org.mozilla.focus.widget
 
 import android.annotation.TargetApi
-import android.content.BroadcastReceiver
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -15,12 +13,8 @@ import android.preference.Preference
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Switch
-import androidx.core.app.NotificationManagerCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
-import org.mozilla.focus.components.ComponentToggleService
-import org.mozilla.focus.telemetry.TelemetryWrapper.onDefaultBrowserServiceFailed
 import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.Settings
@@ -54,13 +48,6 @@ class DefaultBrowserPreference : Preference {
             val isDefaultBrowser = Browsers.isDefaultBrowser(context)
             val hasDefaultBrowser = Browsers.hasDefaultBrowser(context)
             it.isChecked = isDefaultBrowser
-            if (ComponentToggleService.isAlive(context)) {
-                isEnabled = false
-                setSummary(R.string.preference_default_browser_is_setting)
-            } else {
-                isEnabled = true
-                summary = null
-            }
             Settings.updatePrefDefaultBrowserIfNeeded(context, isDefaultBrowser, hasDefaultBrowser)
         }
     }
@@ -94,12 +81,6 @@ class DefaultBrowserPreference : Preference {
         val uri = Uri.fromParts("package", context.packageName, null)
         intent.data = uri
         context.startActivity(intent)
-    }
-
-    private fun clearDefaultBrowser(context: Context) {
-        val intent = Intent()
-        intent.component = ComponentName(context, ComponentToggleService::class.java)
-        context.startService(intent)
     }
 
     private fun openSumoPage(context: Context) {
@@ -141,7 +122,6 @@ class DefaultBrowserPreference : Preference {
      * For android sdk version older than N
      */
     private class LowSdkAction internal constructor(var pref: DefaultBrowserPreference) : DefaultBrowserAction {
-        var receiver: BroadcastReceiver = ServiceReceiver(pref)
         override fun onPrefClicked() {
             val context = pref.context
             val isDefaultBrowser = Browsers.isDefaultBrowser(context)
@@ -149,49 +129,16 @@ class DefaultBrowserPreference : Preference {
             if (isDefaultBrowser) {
                 pref.openAppDetailSettings(context)
             } else if (hasDefaultBrowser) {
-                pref.isEnabled = false
-                pref.setSummary(R.string.preference_default_browser_is_setting)
-                pref.clearDefaultBrowser(context)
+                // TODO: Change to the flow #4 in SPEC
+                pref.openSumoPage(context)
             } else {
                 pref.triggerWebOpen()
             }
         }
 
-        override fun onFragmentResume() {
-            LocalBroadcastManager.getInstance(pref.context)
-                .registerReceiver(receiver, ComponentToggleService.SERVICE_STOP_INTENT_FILTER)
-        }
+        override fun onFragmentResume() {}
 
-        override fun onFragmentPause() {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                LocalBroadcastManager.getInstance(pref.context)
-                    .unregisterReceiver(receiver)
-            }
-        }
-    }
-
-    private class ServiceReceiver internal constructor(var pref: DefaultBrowserPreference) : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            // update UI
-            pref.update()
-
-            // SettingsActivity is in foreground(because this BroadcastReceiver is working),
-            // to remove notification which created by Service
-            NotificationManagerCompat.from(context).cancel(ComponentToggleService.NOTIFICATION_ID)
-            val isDefaultBrowser = Browsers.isDefaultBrowser(context)
-            val hasDefaultBrowser = Browsers.hasDefaultBrowser(context)
-
-            // The default-browser-config should be cleared, if the service finished its job.
-            // if not been cleared, we regards it as 'fail'
-            if (hasDefaultBrowser && !isDefaultBrowser) {
-                onDefaultBrowserServiceFailed()
-            }
-
-            // if service finished its job, lets fire an intent to choose myself as default browser
-            if (!isDefaultBrowser && !hasDefaultBrowser) {
-                pref.triggerWebOpen()
-            }
-        }
+        override fun onFragmentPause() {}
     }
 
     companion object {
