@@ -29,7 +29,7 @@ import org.mozilla.focus.utils.SupportUtils
 @TargetApi(Build.VERSION_CODES.N)
 class DefaultBrowserPreference : Preference {
     private var switchView: Switch? = null
-    private var action: DefaultBrowserAction? = null
+    private lateinit var action: DefaultBrowserAction
 
     // Instantiated from XML
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -45,15 +45,15 @@ class DefaultBrowserPreference : Preference {
 
     override fun onBindView(view: View) {
         super.onBindView(view)
-        switchView = view.findViewById<View>(R.id.switch_widget) as Switch
+        switchView = view.findViewById<View>(R.id.switch_widget) as Switch?
         update()
     }
 
     fun update() {
-        if (switchView != null) {
+        switchView?.let {
             val isDefaultBrowser = Browsers.isDefaultBrowser(context)
             val hasDefaultBrowser = Browsers.hasDefaultBrowser(context)
-            switchView!!.isChecked = isDefaultBrowser
+            it.isChecked = isDefaultBrowser
             if (ComponentToggleService.isAlive(context)) {
                 isEnabled = false
                 setSummary(R.string.preference_default_browser_is_setting)
@@ -66,21 +66,23 @@ class DefaultBrowserPreference : Preference {
     }
 
     override fun onClick() {
-        action!!.onPrefClicked()
+        action.onPrefClicked()
     }
 
     fun onFragmentResume() {
         update()
-        action!!.onFragmentResume()
+        action.onFragmentResume()
     }
 
     fun onFragmentPause() {
-        action!!.onFragmentPause()
+        action.onFragmentPause()
     }
 
     private fun init() {
-        if (action == null) {
-            action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) DefaultAction(this) else LowSdkAction(this)
+        action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            DefaultAction(this)
+        } else {
+            LowSdkAction(this)
         }
     }
 
@@ -133,14 +135,13 @@ class DefaultBrowserPreference : Preference {
 
         override fun onFragmentResume() {}
         override fun onFragmentPause() {}
-
     }
 
     /**
      * For android sdk version older than N
      */
     private class LowSdkAction internal constructor(var pref: DefaultBrowserPreference) : DefaultBrowserAction {
-        var receiver: BroadcastReceiver
+        var receiver: BroadcastReceiver = ServiceReceiver(pref)
         override fun onPrefClicked() {
             val context = pref.context
             val isDefaultBrowser = Browsers.isDefaultBrowser(context)
@@ -167,10 +168,6 @@ class DefaultBrowserPreference : Preference {
                     .unregisterReceiver(receiver)
             }
         }
-
-        init {
-            receiver = ServiceReceiver(pref)
-        }
     }
 
     private class ServiceReceiver internal constructor(var pref: DefaultBrowserPreference) : BroadcastReceiver() {
@@ -195,7 +192,6 @@ class DefaultBrowserPreference : Preference {
                 pref.triggerWebOpen()
             }
         }
-
     }
 
     companion object {
