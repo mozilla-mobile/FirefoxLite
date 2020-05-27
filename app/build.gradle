@@ -252,6 +252,8 @@ dependencies {
     implementation "org.mozilla.components:ui-autocomplete:${Versions.android_components}"
     implementation "org.mozilla.components:lib-fetch-httpurlconnection:${Versions.android_components}"
     implementation "org.mozilla.components:concept-fetch:${Versions.android_components}"
+    implementation "org.mozilla.components:concept-engine:${Versions.android_components}"
+    implementation "org.mozilla.components:browser-engine-system:${Versions.android_components}"
 
     implementation "com.adjust.sdk:adjust-android:${Versions.adjust}"
     implementation "com.android.installreferrer:installreferrer:${Versions.android_installreferrer}"

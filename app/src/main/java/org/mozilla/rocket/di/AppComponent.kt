@@ -45,9 +45,9 @@ import org.mozilla.rocket.content.game.ui.InstantGameFragment
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
 import org.mozilla.rocket.content.news.ui.NewsLanguageSettingFragment
-import org.mozilla.rocket.content.news.ui.PersonalizedNewsOnboardingFragment
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
+import org.mozilla.rocket.content.news.ui.PersonalizedNewsOnboardingFragment
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
 import org.mozilla.rocket.content.travel.ui.TravelCityActivity
@@ -106,6 +106,7 @@ interface AppComponent {
     fun inject(bookmarksFragment: BookmarksFragment)
     fun inject(browserFragment: BrowserFragment)
     fun inject(browserFragment: org.mozilla.rocket.privately.browse.BrowserFragment)
+    fun inject(browserFragmentLegacy: org.mozilla.rocket.privately.browse.BrowserFragmentLegacy)
     fun inject(downloadsFragment: DownloadsFragment)
     fun inject(homeFragment: HomeFragment)
     fun inject(tabTrayFragment: TabTrayFragment)

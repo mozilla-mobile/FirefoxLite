@@ -28,11 +28,17 @@ public class BrowsingSession {
     private MutableLiveData<Integer> blockedCountData = new MutableLiveData<>();
 
     private BrowsingSession() {
+        blockedCountData.postValue(0);
     }
 
     public void countBlockedTracker() {
         blockedTrackers++;
         blockedCountData.postValue(blockedTrackers);
+    }
+
+    public void setBlockedTrackerCount(int count) {
+        blockedTrackers = count;
+        blockedCountData.postValue(count);
     }
 
     public void resetTrackerCount() {

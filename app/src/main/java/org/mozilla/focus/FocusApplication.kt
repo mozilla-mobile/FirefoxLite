@@ -13,6 +13,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import mozilla.components.browser.engine.system.SystemEngine
+import mozilla.components.browser.session.SessionManager
+import mozilla.components.concept.engine.DefaultSettings
+import mozilla.components.concept.engine.Engine
+import mozilla.components.concept.engine.EngineSession
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.history.BrowsingHistoryManager
 import org.mozilla.focus.locale.LocaleAwareApplication
@@ -23,6 +28,8 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.FirebaseHelper
+import org.mozilla.focus.utils.Settings
+import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
@@ -45,6 +52,30 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
     val settings by lazy {
         SettingsProvider(this)
     }
+    val engine: Engine by lazy {
+        SystemEngine(this, engineSettings)
+    }
+    val engineSettings: DefaultSettings by lazy {
+        DefaultSettings(
+            trackingProtectionPolicy = createTrackingProtectionPolicy(isInPrivateProcess),
+            displayZoomControls = false,
+            // To respect the html viewport:
+            loadWithOverviewMode = true,
+            // Disable access to arbitrary local files by webpages - assets can still be loaded
+            // via file:///android_asset/res, so at least error page images won't be blocked.
+            allowFileAccess = false,
+            allowFileAccessFromFileURLs = false,
+            allowUniversalAccessFromFileURLs = false,
+            userAgentString = WebViewProvider.getUserAgentString(this),
+            // Right now I do not know why we should allow loading content from a content provider
+            allowContentAccess = false,
+            // The default for those settings should be "false" - But we want to be explicit.
+            domStorageEnabled = true
+        )
+    }
+    val sessionManager: SessionManager by lazy {
+        SessionManager(engine)
+    }
 
     fun getAppComponent(): AppComponent {
         if (appComponent == null) {
@@ -62,6 +93,22 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
     fun resetAppComponent() {
         appComponent = null
+    }
+
+    private fun createTrackingProtectionPolicy(isPrivateMode: Boolean): EngineSession.TrackingProtectionPolicy? {
+        return if (isPrivateMode) {
+            if (settings.privateBrowsingSettings.shouldUseTurboMode()) {
+                EngineSession.TrackingProtectionPolicy.all()
+            } else {
+                null
+            }
+        } else {
+            if (Settings.getInstance(this).shouldUseTurboMode()) {
+                EngineSession.TrackingProtectionPolicy.all()
+            } else {
+                null
+            }
+        }
     }
 
     // Override getCacheDir cause when we create a WebView, it'll asked the application's
