@@ -19,6 +19,9 @@ import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.privately.PrivateMode
+import org.mozilla.rocket.settings.defaultbrowser.data.DefaultBrowserLocalDataSource
+import org.mozilla.rocket.settings.defaultbrowser.data.DefaultBrowserRepository
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
 import org.mozilla.rocket.shopping.search.domain.GetSearchPromptMessageShowCountUseCase
 import org.mozilla.rocket.shopping.search.domain.GetShoppingSitesUseCase
 import org.mozilla.rocket.shopping.search.domain.SetSearchPromptMessageShowCountUseCase
@@ -132,4 +135,21 @@ object ChromeModule {
             getSearchPromptMessageShowCountUseCase,
             setSearchPromptMessageShowCountUseCase
         )
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideDefaultBrowserLocalDataSource(appContext: Context): DefaultBrowserLocalDataSource =
+        DefaultBrowserLocalDataSource(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideDefaultBrowserRepository(defaultBrowserLocalDataSource: DefaultBrowserLocalDataSource): DefaultBrowserRepository =
+        DefaultBrowserRepository(defaultBrowserLocalDataSource)
+
+    @JvmStatic
+    @Provides
+    fun provideDefaultBrowserPreferenceViewModel(defaultBrowserRepository: DefaultBrowserRepository): DefaultBrowserPreferenceViewModel =
+        DefaultBrowserPreferenceViewModel(defaultBrowserRepository)
 }

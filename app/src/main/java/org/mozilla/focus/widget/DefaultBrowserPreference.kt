@@ -13,17 +13,28 @@ import android.preference.Preference
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Switch
+import androidx.lifecycle.Observer
+import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
-import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.SupportUtils
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.getActivityViewModel
+import org.mozilla.rocket.extension.toFragmentActivity
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel.DefaultBrowserPreferenceUiModel
+import javax.inject.Inject
 
 @TargetApi(Build.VERSION_CODES.N)
 class DefaultBrowserPreference : Preference {
+    @Inject
+    lateinit var viewModelCreator: Lazy<DefaultBrowserPreferenceViewModel>
+
+    private lateinit var viewModel: DefaultBrowserPreferenceViewModel
+
     private var switchView: Switch? = null
-    private lateinit var action: DefaultBrowserAction
 
     // Instantiated from XML
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
@@ -37,43 +48,52 @@ class DefaultBrowserPreference : Preference {
         init()
     }
 
+    private fun init() {
+        appComponent().inject(this)
+    }
+
+    override fun onAttachedToActivity() {
+        super.onAttachedToActivity()
+        viewModel = getActivityViewModel(viewModelCreator)
+    }
+
     override fun onBindView(view: View) {
         super.onBindView(view)
         switchView = view.findViewById<View>(R.id.switch_widget) as Switch?
-        update()
+
+        viewModel.uiModel.observe(context.toFragmentActivity(), Observer { update(it) })
+        viewModel.openDefaultAppsSettings.observe(context.toFragmentActivity(), Observer { openDefaultAppsSettings() })
+        viewModel.openAppDetailSettings.observe(context.toFragmentActivity(), Observer { openAppDetailSettings() })
+        viewModel.openSumoPage.observe(context.toFragmentActivity(), Observer { openSumoPage() })
+        viewModel.triggerWebOpen.observe(context.toFragmentActivity(), Observer { triggerWebOpen() })
     }
 
-    fun update() {
+    fun update(uiModel: DefaultBrowserPreferenceUiModel) {
         switchView?.let {
-            val isDefaultBrowser = Browsers.isDefaultBrowser(context)
-            val hasDefaultBrowser = Browsers.hasDefaultBrowser(context)
-            it.isChecked = isDefaultBrowser
-            Settings.updatePrefDefaultBrowserIfNeeded(context, isDefaultBrowser, hasDefaultBrowser)
+            it.isChecked = uiModel.isDefaultBrowser
+            Settings.updatePrefDefaultBrowserIfNeeded(context, uiModel.isDefaultBrowser, uiModel.hasDefaultBrowser)
         }
     }
 
     override fun onClick() {
-        action.onPrefClicked()
+        viewModel.performAction()
     }
 
     fun onFragmentResume() {
-        update()
-        action.onFragmentResume()
+        viewModel.onResume()
     }
 
     fun onFragmentPause() {
-        action.onFragmentPause()
+        viewModel.onPause()
     }
 
-    private fun init() {
-        action = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            DefaultAction(this)
-        } else {
-            LowSdkAction(this)
+    private fun openDefaultAppsSettings() {
+        if (!IntentUtils.openDefaultAppsSettings(context)) {
+            openSumoPage()
         }
     }
 
-    private fun openAppDetailSettings(context: Context) {
+    private fun openAppDetailSettings() {
         //  TODO: extract this to util module
         val intent = Intent()
         intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -83,7 +103,7 @@ class DefaultBrowserPreference : Preference {
         context.startActivity(intent)
     }
 
-    private fun openSumoPage(context: Context) {
+    private fun openSumoPage() {
         val intent = InfoActivity.getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "rocket-default"), title.toString())
         context.startActivity(intent)
     }
@@ -95,50 +115,6 @@ class DefaultBrowserPreference : Preference {
         //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
         viewIntent.putExtra(EXTRA_RESOLVE_BROWSER, true)
         context.startActivity(viewIntent)
-    }
-
-    /**
-     * To define necessary actions for setting default-browser.
-     */
-    private interface DefaultBrowserAction {
-        fun onPrefClicked()
-        fun onFragmentResume()
-        fun onFragmentPause()
-    }
-
-    private class DefaultAction internal constructor(var pref: DefaultBrowserPreference) : DefaultBrowserAction {
-        override fun onPrefClicked() {
-            // fire an intent and start related activity immediately
-            if (!IntentUtils.openDefaultAppsSettings(pref.context)) {
-                pref.openSumoPage(pref.context)
-            }
-        }
-
-        override fun onFragmentResume() {}
-        override fun onFragmentPause() {}
-    }
-
-    /**
-     * For android sdk version older than N
-     */
-    private class LowSdkAction internal constructor(var pref: DefaultBrowserPreference) : DefaultBrowserAction {
-        override fun onPrefClicked() {
-            val context = pref.context
-            val isDefaultBrowser = Browsers.isDefaultBrowser(context)
-            val hasDefaultBrowser = Browsers.hasDefaultBrowser(context)
-            if (isDefaultBrowser) {
-                pref.openAppDetailSettings(context)
-            } else if (hasDefaultBrowser) {
-                // TODO: Change to the flow #4 in SPEC
-                pref.openSumoPage(context)
-            } else {
-                pref.triggerWebOpen()
-            }
-        }
-
-        override fun onFragmentResume() {}
-
-        override fun onFragmentPause() {}
     }
 
     companion object {
