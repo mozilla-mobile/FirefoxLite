@@ -29,6 +29,7 @@ import org.mozilla.focus.persistence.TabsDatabase
 import org.mozilla.focus.persistence.di.TabsModule
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment
 import org.mozilla.focus.urlinput.UrlInputFragment
+import org.mozilla.focus.widget.DefaultBrowserPreference
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
@@ -141,6 +142,7 @@ interface AppComponent {
     fun inject(travelExploreFragment: TravelExploreFragment)
     fun inject(travelCitySearchActivity: TravelCitySearchActivity)
     fun inject(travelBucketListFragment: TravelBucketListFragment)
+    fun inject(defaultBrowserPreference: DefaultBrowserPreference)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
