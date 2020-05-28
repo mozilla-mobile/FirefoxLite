@@ -29,20 +29,24 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     }
 
     fun performAction() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            openDefaultAppsSettings.call()
-        } else {
-            when {
-                isDefaultBrowser -> {
+        when {
+            isDefaultBrowser -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    openDefaultAppsSettings.call()
+                } else {
                     openAppDetailSettings.call()
                 }
-                hasDefaultBrowser -> {
+            }
+            hasDefaultBrowser -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    openDefaultAppsSettings.call()
+                } else {
                     // TODO: Change to the flow #4 in SPEC
                     openSumoPage.call()
                 }
-                else -> {
-                    triggerWebOpen.call()
-                }
+            }
+            else -> {
+                triggerWebOpen.call()
             }
         }
     }

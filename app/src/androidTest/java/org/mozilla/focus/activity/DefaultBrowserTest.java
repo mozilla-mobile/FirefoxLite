@@ -74,7 +74,6 @@ public class DefaultBrowserTest {
      */
     @Test
     public void changeDefaultBrowser_whenChromeIsDefault() {
-
         // Start MainActivity
         mainActivity.launchActivity(new Intent());
         final MainActivity activity = mainActivity.getActivity();
@@ -123,9 +122,7 @@ public class DefaultBrowserTest {
                 withKey(prefName))).
                 onChildView(withClassName(is(Switch.class.getName()))).check(matches(not(isChecked())));
 
-
         // 2. Set Firefox Lite as default browser
-
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
 
@@ -158,7 +155,6 @@ public class DefaultBrowserTest {
      */
     @Test
     public void changeDefaultBrowser_whenNoDefault() {
-
         mainActivity.launchActivity(new Intent());
         final MainActivity activity = mainActivity.getActivity();
         if (activity == null) {
@@ -178,15 +174,8 @@ public class DefaultBrowserTest {
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
 
-        // 2. Set Firefox Lite as default browser
-        // Open default browser setting
-        final UiObject allAppsButton = uiDevice
-                .findObject(new UiSelector().text(SETTING_DEFAULT_BROWSER));
-
-        openDefaultBrowserAndroidSetting(allAppsButton);
-
-        // Choose Firefox Lite browser
-        chooseLiteAsDefaultBrowser(activity);
+        // Set Firefox Lite as default browser in 'Open with' panel
+        chooseAsDefaultBrowserViaOpenLink(activity.getString(R.string.app_name));
 
         // Now launch Firefox Lite's setting activity
         settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
@@ -196,7 +185,24 @@ public class DefaultBrowserTest {
                 is(instanceOf(Preference.class)),
                 withKey(prefName))).
                 onChildView(withClassName(is(Switch.class.getName()))).check(matches(isChecked()));
+    }
 
+    private void chooseAsDefaultBrowserViaOpenLink(String appName) {
+        final UiScrollable browserList = new UiScrollable(new UiSelector());
+
+        final UiSelector browserView = new UiSelector().text(appName);
+        try {
+            browserList.scrollIntoView(browserView);
+            final UiObject browserCandidate = uiDevice.findObject(browserView);
+            browserCandidate.click();
+
+            final UiObject alwaysButton = uiDevice
+                    .findObject(new UiSelector().text("ALWAYS"));
+            alwaysButton.click();
+
+        } catch (UiObjectNotFoundException e) {
+            throw new AssertionError("Could find the " + appName + " in 'Open with' browser panel", e);
+        }
     }
 
     private void chooseLiteAsDefaultBrowser(MainActivity activity) {
