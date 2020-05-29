@@ -404,13 +404,15 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
         val focusedPosition = tabs.indexOf(adapter.focusedTab)
         val shouldExpand = isPositionVisibleWhenCollapse(if (showShoppingSearch) focusedPosition + 1 else focusedPosition)
         uiHandler.postDelayed({
-            if (shouldExpand) {
-                bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED
-                logo_man.visibility = View.VISIBLE
-                setIntercept(false)
-            } else {
-                bottomSheetState = BottomSheetBehavior.STATE_EXPANDED
-                setIntercept(true)
+            if (isVisible) {
+                if (shouldExpand) {
+                    bottomSheetState = BottomSheetBehavior.STATE_COLLAPSED
+                    logo_man.visibility = View.VISIBLE
+                    setIntercept(false)
+                } else {
+                    bottomSheetState = BottomSheetBehavior.STATE_EXPANDED
+                    setIntercept(true)
+                }
             }
         }, resources.getInteger(R.integer.tab_tray_transition_time).toLong())
     }
@@ -427,8 +429,10 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
 
     private fun waitItemAnimation(onAnimationEnd: Runnable) {
         uiHandler.post {
-            val animator = tab_tray_recycler_view.itemAnimator ?: return@post
-            animator.isRunning { uiHandler.post(onAnimationEnd) }
+            if (isVisible) {
+                val animator = tab_tray_recycler_view.itemAnimator ?: return@post
+                animator.isRunning { uiHandler.post(onAnimationEnd) }
+            }
         }
     }
 
@@ -602,6 +606,9 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
         private var backgroundAlpha = -1f
         private var overlayAlpha = -1f
         fun onSlide(slideOffset: Float) {
+            if (!fragment.isVisible) {
+                return
+            }
             var backgroundAlpha = 1f
             var overlayAlpha = 0f
             var translationY = 0f
