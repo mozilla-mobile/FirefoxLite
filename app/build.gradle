@@ -8,6 +8,7 @@ apply from: '../buildSrc/pmd.gradle'
 apply from: '../buildSrc/checkstyle.gradle'
 apply from: '../buildSrc/findbugs.gradle'
 apply from: 'buildscripts/l10n.gradle'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion Versions.compile_sdk
