@@ -105,6 +105,7 @@
   <string name="label_menu_block_image">封鎖圖片</string>
   <string name="label_menu_settings">設定</string>
   <string name="label_menu_exit">結束</string>
+  <string name="label_menu_add_to_home_screen">新增至裝置主畫面</string>
   <string name="permission_toast_location_deny">定位權限被拒絕。</string>
   <string name="permission_toast_storage_deny">儲存空間權限被拒絕。</string>
   <string name="permission_handler_permission_dialog_setting">設定</string>
@@ -191,6 +192,12 @@
   <string name="update_to_latest_app_snack_bar_update">更新</string>
   <string name="privacy_policy_update_notification_title">產品更新公告</string>
   <string name="privacy_policy_update_notification_action">為了讓 Firefox Lite 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
+  <string name="message_set_default_success">感謝使用 %1$s！</string>
+  <string name="instruction_select">選擇 %1$s</string>
+  <string name="browser_app">瀏覽器應用程式</string>
+  <string name="instruction_tap">點擊 %1$s</string>
+  <string name="always">總是</string>
+  <string name="setting_default_browser_instruction_button">開啟設定</string>
   <string name="rate_app_dialog_text_title">喜歡 %1$s 嗎？</string>
   <string name="rate_app_dialog_text_content">感謝您選用我們的產品，您的意見相當重要。</string>
   <string name="rate_app_dialog_btn_go_rate">幫我們打分數</string>

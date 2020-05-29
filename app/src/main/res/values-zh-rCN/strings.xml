@@ -105,6 +105,7 @@
   <string name="label_menu_block_image">无图模式</string>
   <string name="label_menu_settings">设置</string>
   <string name="label_menu_exit">退出</string>
+  <string name="label_menu_add_to_home_screen">添加到主屏幕</string>
   <string name="permission_toast_location_deny">已拒绝位置权限。</string>
   <string name="permission_toast_storage_deny">已拒绝存储权限。</string>
   <string name="permission_handler_permission_dialog_setting">设置</string>
@@ -191,6 +192,15 @@
   <string name="update_to_latest_app_snack_bar_update">更新</string>
   <string name="privacy_policy_update_notification_title">产品更新通知</string>
   <string name="privacy_policy_update_notification_action">为了让 Firefox Lite 更适合您和每个人，我们对隐私政策进行了一些修改。点按以了解更多信息。</string>
+  <string name="message_set_default_success">感谢您选择 %1$s！</string>
+  <string name="message_set_default_incomplet">您是否想要将 %1$s 设为默认浏览器？</string>
+  <string name="setting_default_browser_instruction_system_settings">只需 30 秒，将 %1$s 设为默认浏览器</string>
+  <string name="setting_default_browser_instruction_open_external_link">如何始终使用 %1$s 浏览？</string>
+  <string name="instruction_select">选择 %1$s</string>
+  <string name="browser_app">浏览器应用</string>
+  <string name="instruction_tap">点按 %1$s</string>
+  <string name="always">始终</string>
+  <string name="setting_default_browser_instruction_button">转至设置</string>
   <string name="rate_app_dialog_text_title">喜欢 %1$s 吗？</string>
   <string name="rate_app_dialog_text_content">感谢您选择我们的产品。您的反馈有助于我们的改进。</string>
   <string name="rate_app_dialog_btn_go_rate">为我们打分</string>
