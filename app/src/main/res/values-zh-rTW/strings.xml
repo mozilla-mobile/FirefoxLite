@@ -193,6 +193,9 @@
   <string name="privacy_policy_update_notification_title">產品更新公告</string>
   <string name="privacy_policy_update_notification_action">為了讓 Firefox Lite 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
   <string name="message_set_default_success">感謝使用 %1$s！</string>
+  <string name="message_set_default_incomplet">您想要完成將 %1$s 設為預設瀏覽器的過程嗎？</string>
+  <string name="setting_default_browser_instruction_system_settings">只要 30 秒，即可將 %1$s 設為預設瀏覽器</string>
+  <string name="setting_default_browser_instruction_open_external_link">要如何一直使用 %1$s 上網？</string>
   <string name="instruction_select">選擇 %1$s</string>
   <string name="browser_app">瀏覽器應用程式</string>
   <string name="instruction_tap">點擊 %1$s</string>
