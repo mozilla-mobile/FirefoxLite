@@ -32,7 +32,7 @@
   <string name="preference_data_saving_block_images">Blokir gambar</string>
   <string name="preference_privacy_storage_clear_browsing_data">Bersihkan data penjelajahan</string>
   <string name="preference_privacy_storage_save_downloads_to">Simpan unduhan ke</string>
-  <string name="preference_default_browser">Jadikan peramban utama</string>
+  <string name="preference_default_browser">Setel sebagai peramban baku</string>
   <string name="preference_default_browser_is_setting">Mengubah setelan…</string>
   <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirim data penggunaan</string>
@@ -97,7 +97,7 @@
   <string name="label_menu_clear_cache">Bersihkan tembolok</string>
   <string name="label_menu_history">Riwayat</string>
   <string name="label_menu_share">Bagikan</string>
-  <string name="label_menu_my_shots">Cuplikan saya</string>
+  <string name="label_menu_my_shots">Tangkapan Layar</string>
   <string name="label_menu_capture_page">Cuplik laman</string>
   <string name="label_menu_turbo_mode">Mode turbo</string>
   <string name="label_menu_night_mode">Mode malam</string>
@@ -320,7 +320,7 @@
   <string name="shopping_search_onboarding_body">Bandingkan harga di banyak toko daring dengan Pencarian Belanja Cerdas.</string>
   <string name="shopping_search_onboarding_body_A">Bandingkan harga dengan mudah di situs belanja populer.</string>
   <string name="shopping_search_onboarding_body_B">Mulai menghemat hari ini. Cari dan bandingkan harga di situs populer.</string>
-  <string name="shopping_search_placeholder">Ketikkan produk yang ingin Anda cari</string>
+  <string name="shopping_search_placeholder">Masukkan nama produk</string>
   <string name="shopping_search_prompt_message_body">Bandingkan harga di banyak toko daring dengan Pencarian Belanja Cerdas.</string>
   <string name="shopping_search_prompt_message_button">Cari</string>
   <string name="shopping_switch_ui_onboarding_body">Ketuk situs belanja di bawah ini untuk menelusuri lebih banyak hasil, atau ketuk tombol ini untuk mengubah.</string>
