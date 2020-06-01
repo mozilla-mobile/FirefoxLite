@@ -19,6 +19,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     val triggerWebOpen = SingleLiveEvent<Unit>()
 
     val openDefaultAppsSettingsTutorialDialog = SingleLiveEvent<Unit>()
+    val openUrlTutorialDialog = SingleLiveEvent<Unit>()
 
     val successToSetDefaultBrowser = SingleLiveEvent<Unit>()
     val failToSetDefaultBrowser = SingleLiveEvent<Unit>()
@@ -53,7 +54,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
                 }
             }
             else -> {
-                triggerWebOpen.call()
+                openUrlTutorialDialog.call()
             }
         }
     }
@@ -79,6 +80,14 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     }
 
     fun cancelGoToSystemDefaultAppsSettings() {
+    }
+
+    fun clickOpenUrl() {
+        tryToSetDefaultBrowser = true
+        triggerWebOpen.call()
+    }
+
+    fun cancelOpenUrl() {
     }
 
     data class DefaultBrowserPreferenceUiModel(

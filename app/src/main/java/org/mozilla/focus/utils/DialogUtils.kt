@@ -652,4 +652,34 @@ object DialogUtils {
         highlightSpan.setSpan(styleSpan, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         return highlightSpan
     }
+
+    fun showOpenUrlDialog(context: Context, viewModel: DefaultBrowserPreferenceViewModel) {
+        val title = context.getString(
+            R.string.setting_default_browser_instruction_open_external_link,
+            context.getString(R.string.app_name)
+        )
+        val styleSpan = StyleSpan(Typeface.BOLD)
+        val firstStepDescription = context.getString(R.string.instruction_select)
+            .highlightPlaceholder(context.getString(R.string.browser_app), styleSpan)
+        val secondStepDescription = context.getString(R.string.instruction_tap)
+            .highlightPlaceholder(context.getString(R.string.always), styleSpan)
+
+        val data = DefaultBrowserTutorialDialogData(
+            title = title,
+            firstStepDescription = firstStepDescription,
+            firstStepImageDefaultResId = 0,
+            secondStepDescription = secondStepDescription,
+            secondStepImageDefaultResId = R.drawable.open_external_step,
+            positiveText = context.getString(R.string.firstrun_close_button),
+            negativeText = context.getString(R.string.action_cancel)
+        )
+        val dialog = DefaultBrowserTutorialDialog(context, data)
+            .onPositive {
+                viewModel.clickOpenUrl()
+            }
+            .onClose {
+                viewModel.cancelOpenUrl()
+            }
+        dialog.show()
+    }
 }

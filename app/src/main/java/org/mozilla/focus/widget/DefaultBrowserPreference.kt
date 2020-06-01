@@ -69,6 +69,7 @@ class DefaultBrowserPreference : Preference {
         viewModel.openSumoPage.observe(context.toFragmentActivity(), Observer { openSumoPage() })
         viewModel.triggerWebOpen.observe(context.toFragmentActivity(), Observer { triggerWebOpen() })
         viewModel.openDefaultAppsSettingsTutorialDialog.observe(context.toFragmentActivity(), Observer { DialogUtils.showGoToSystemAppsSettingsDialog(context, viewModel) })
+        viewModel.openUrlTutorialDialog.observe(context.toFragmentActivity(), Observer { DialogUtils.showOpenUrlDialog(context, viewModel) })
         viewModel.successToSetDefaultBrowser.observe(context.toFragmentActivity(), Observer { showSuccessMessage() })
     }
 
