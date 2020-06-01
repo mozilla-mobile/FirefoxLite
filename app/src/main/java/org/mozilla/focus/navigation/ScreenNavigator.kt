@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import org.mozilla.focus.BuildConfig
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.widget.BackKeyHandleable
 import java.util.Arrays
 
@@ -102,6 +103,9 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
      * fragment. Use this when you want to start a new tab.
      */
     open fun addHomeScreen(animate: Boolean) {
+        val trace = FirebaseHelper.newTrace("addHomeScreen")
+        trace.start()
+
         logMethod()
         val found = transactionHelper?.popScreensUntil(HOME_FRAGMENT_TAG,
             TransactionHelper.EntryData.TYPE_ATTACHED,
@@ -113,6 +117,7 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
                 false)
         }
         transactionHelper?.executePendingTransaction()
+        trace.stop()
     }
 
     /**
