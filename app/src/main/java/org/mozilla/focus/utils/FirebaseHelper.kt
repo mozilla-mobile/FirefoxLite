@@ -304,7 +304,7 @@ object FirebaseHelper {
         firebaseContract.refreshRemoteConfig(callback)
     }
 
-    fun newTrace(key: String): FirebaseContract.TraceHelper {
+    fun newTrace(key: String): FirebaseContract.FirebaseTrace {
         return firebaseContract.newTrace(key)
     }
 }
