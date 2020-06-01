@@ -330,7 +330,6 @@ class MainActivity : BaseActivity(),
                     this@MainActivity.showMyShotOnBoarding()
                 }
             }
-            showNightModeOnBoarding.observe(this@MainActivity, Observer { showNightModeOnBoarding() })
             isNightMode.nonNullObserve(this@MainActivity) { nightModeSettings ->
                 onNightModeEnabled(nightModeSettings.brightness, nightModeSettings.isEnabled)
             }
@@ -672,16 +671,6 @@ class MainActivity : BaseActivity(),
 
         // Reset extra after dialog displayed.
         intent.extras?.putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false)
-    }
-
-    private fun showNightModeOnBoarding() {
-        val view = menu.findViewById<View>(R.id.menu_night_mode)
-        view?.post {
-            DialogUtils.showNightModeBrightnessSpotlight(
-                    this@MainActivity,
-                    view,
-                    DialogInterface.OnCancelListener {})
-        }
     }
 
     @VisibleForTesting

@@ -67,7 +67,6 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
                 startActivity(intent)
             }
             resources.getString(R.string.pref_key_night_mode_brightness) -> {
-                Settings.getInstance(preference.context).setNightModeSpotlight(true)
                 startActivity(getStartIntentFromSetting(preference.context))
             }
             resources.getString(R.string.pref_key_default_browser) -> {
