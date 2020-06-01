@@ -10,6 +10,8 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_private_mode
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_bookmark
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_download
@@ -59,7 +61,12 @@ class HomeMenuDialog : BottomSheetDialog {
     }
 
     private fun initMenuTabs(contentLayout: View) {
+        val activity = context.toFragmentActivity()
         contentLayout.apply {
+            chromeViewModel.hasUnreadScreenshot.observe(activity, Observer {
+                img_screenshots.isActivated = it
+            })
+
             menu_screenshots.setOnClickListener {
                 cancel()
                 chromeViewModel.showScreenshots()
@@ -87,6 +94,9 @@ class HomeMenuDialog : BottomSheetDialog {
         contentLayout.apply {
             chromeViewModel.isNightMode.observe(activity, Observer { nightModeSettings ->
                 night_mode_switch.isChecked = nightModeSettings.isEnabled
+            })
+            chromeViewModel.isPrivateBrowsingActive.observe(activity, Observer {
+                img_private_mode.isActivated = it
             })
 
             btn_private_browsing.setOnClickListener {

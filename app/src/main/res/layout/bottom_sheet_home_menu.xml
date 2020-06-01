@@ -36,6 +36,7 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
+                    android:id="@+id/img_screenshots"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/menu_my_shots_states"/>
@@ -138,6 +139,7 @@
             android:background="?android:attr/selectableItemBackground">
 
             <ImageView
+                android:id="@+id/img_private_mode"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:scaleType="centerInside"
