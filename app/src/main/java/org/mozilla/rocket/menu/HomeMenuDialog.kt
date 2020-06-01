@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_history
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_night_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.night_mode_switch
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -82,7 +83,12 @@ class HomeMenuDialog : BottomSheetDialog {
     }
 
     private fun initMenuItems(contentLayout: View) {
+        val activity = context.toFragmentActivity()
         contentLayout.apply {
+            chromeViewModel.isNightMode.observe(activity, Observer { nightModeSettings ->
+                night_mode_switch.isChecked = nightModeSettings.isEnabled
+            })
+
             btn_private_browsing.setOnClickListener {
                 cancel()
                 chromeViewModel.togglePrivateMode.call()
@@ -90,6 +96,12 @@ class HomeMenuDialog : BottomSheetDialog {
             }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
+            }
+            night_mode_switch.setOnCheckedChangeListener { _, isChecked ->
+                val needToUpdate = isChecked != (chromeViewModel.isNightMode.value?.isEnabled == true)
+                if (needToUpdate) {
+                    chromeViewModel.onNightModeToggled()
+                }
             }
             menu_preferences.setOnClickListener {
                 cancel()
