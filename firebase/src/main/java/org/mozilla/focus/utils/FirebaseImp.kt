@@ -17,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
+import com.google.firebase.perf.FirebasePerformance
+import com.google.firebase.perf.metrics.Trace
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import org.mozilla.focus.inappmessage.InAppMessage
@@ -241,5 +243,20 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         FirebaseInAppMessaging.getInstance().addClickListener { inAppMessage, action ->
             clickListener(InAppMessage(inAppMessage), InAppMessage.Action(action))
         }
+    }
+
+    override fun newTrace(key: String): TraceHelper {
+        return TraceWrapper(FirebasePerformance.getInstance().newTrace(key))
+    }
+}
+
+class TraceWrapper(private val trace: Trace) : FirebaseContract.TraceHelper {
+
+    override fun start() {
+        trace.start()
+    }
+
+    override fun stop() {
+        trace.stop()
     }
 }
