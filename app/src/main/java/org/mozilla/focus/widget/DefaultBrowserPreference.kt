@@ -13,10 +13,12 @@ import android.preference.Preference
 import android.util.AttributeSet
 import android.view.View
 import android.widget.Switch
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
+import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.SupportUtils
@@ -66,6 +68,8 @@ class DefaultBrowserPreference : Preference {
         viewModel.openAppDetailSettings.observe(context.toFragmentActivity(), Observer { openAppDetailSettings() })
         viewModel.openSumoPage.observe(context.toFragmentActivity(), Observer { openSumoPage() })
         viewModel.triggerWebOpen.observe(context.toFragmentActivity(), Observer { triggerWebOpen() })
+        viewModel.openDefaultAppsSettingsTutorialDialog.observe(context.toFragmentActivity(), Observer { DialogUtils.showGoToSystemAppsSettingsDialog(context, viewModel) })
+        viewModel.successToSetDefaultBrowser.observe(context.toFragmentActivity(), Observer { showSuccessMessage() })
     }
 
     fun update(uiModel: DefaultBrowserPreferenceUiModel) {
@@ -76,7 +80,7 @@ class DefaultBrowserPreference : Preference {
     }
 
     override fun onClick() {
-        viewModel.performAction()
+        viewModel.performSettingDefaultBrowserAction()
     }
 
     fun onFragmentResume() {
@@ -115,6 +119,11 @@ class DefaultBrowserPreference : Preference {
         //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
         viewIntent.putExtra(EXTRA_RESOLVE_BROWSER, true)
         context.startActivity(viewIntent)
+    }
+
+    private fun showSuccessMessage() {
+        val successMessageText = context.getString(R.string.message_set_default_success, context.getString(R.string.app_name))
+        Toast.makeText(context, successMessageText, Toast.LENGTH_LONG).show()
     }
 
     companion object {

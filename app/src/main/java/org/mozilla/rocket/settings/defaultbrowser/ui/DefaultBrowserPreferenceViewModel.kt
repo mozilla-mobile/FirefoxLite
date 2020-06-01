@@ -18,8 +18,15 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     val openSumoPage = SingleLiveEvent<Unit>()
     val triggerWebOpen = SingleLiveEvent<Unit>()
 
+    val openDefaultAppsSettingsTutorialDialog = SingleLiveEvent<Unit>()
+
+    val successToSetDefaultBrowser = SingleLiveEvent<Unit>()
+    val failToSetDefaultBrowser = SingleLiveEvent<Unit>()
+
     private var isDefaultBrowser: Boolean = false
     private var hasDefaultBrowser: Boolean = false
+
+    private var tryToSetDefaultBrowser: Boolean = false
 
     fun refreshSettings() {
         isDefaultBrowser = defaultBrowserRepository.isDefaultBrowser()
@@ -28,7 +35,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
         _uiModel.value = DefaultBrowserPreferenceUiModel(isDefaultBrowser, hasDefaultBrowser)
     }
 
-    fun performAction() {
+    fun performSettingDefaultBrowserAction() {
         when {
             isDefaultBrowser -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -39,7 +46,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             }
             hasDefaultBrowser -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    openDefaultAppsSettings.call()
+                    openDefaultAppsSettingsTutorialDialog.call()
                 } else {
                     // TODO: Change to the flow #4 in SPEC
                     openSumoPage.call()
@@ -53,9 +60,25 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
 
     fun onResume() {
         refreshSettings()
+        if (tryToSetDefaultBrowser) {
+            if (isDefaultBrowser) {
+                successToSetDefaultBrowser.call()
+            } else {
+                failToSetDefaultBrowser.call()
+            }
+            tryToSetDefaultBrowser = false
+        }
     }
 
     fun onPause() {
+    }
+
+    fun clickGoToSystemDefaultAppsSettings() {
+        tryToSetDefaultBrowser = true
+        openDefaultAppsSettings.call()
+    }
+
+    fun cancelGoToSystemDefaultAppsSettings() {
     }
 
     data class DefaultBrowserPreferenceUiModel(

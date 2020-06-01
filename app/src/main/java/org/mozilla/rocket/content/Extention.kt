@@ -1,7 +1,10 @@
+@file:Suppress("DEPRECATION")
+
 package org.mozilla.rocket.content
 
 import android.content.Context
 import android.preference.Preference
+import android.preference.PreferenceFragment
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatDialog
 import androidx.fragment.app.Fragment
@@ -16,10 +19,12 @@ import org.mozilla.rocket.extension.toFragmentActivity
 fun Fragment.app(): FocusApplication = context?.applicationContext as FocusApplication
 fun FragmentActivity.app(): FocusApplication = applicationContext as FocusApplication
 fun AppCompatDialog.app(): FocusApplication = context.applicationContext as FocusApplication
+fun PreferenceFragment.app(): FocusApplication = activity.applicationContext as FocusApplication
 fun Preference.app(): FocusApplication = context.applicationContext as FocusApplication
 fun Fragment.appComponent(): AppComponent = app().getAppComponent()
 fun FragmentActivity.appComponent(): AppComponent = app().getAppComponent()
 fun AppCompatDialog.appComponent(): AppComponent = app().getAppComponent()
+fun PreferenceFragment.appComponent(): AppComponent = app().getAppComponent()
 fun Preference.appComponent(): AppComponent = app().getAppComponent()
 fun Fragment.appContext(): Context = appComponent().appContext()
 
@@ -64,6 +69,16 @@ inline fun <reified T : ViewModel> AppCompatDialog.getActivityViewModel(creator:
         ViewModelProvider(context.toFragmentActivity()).get(T::class.java)
     else
         ViewModelProvider(context.toFragmentActivity(), BaseViewModelFactory { creator.get() }).get(T::class.java)
+}
+
+/**
+ * Like [Fragment.viewModelProvider] for Fragments that want a [ViewModel] scoped to the Activity.
+ */
+inline fun <reified T : ViewModel> PreferenceFragment.getActivityViewModel(creator: Lazy<T>? = null): T {
+    return if (creator == null)
+        ViewModelProvider(activity.toFragmentActivity()).get(T::class.java)
+    else
+        ViewModelProvider(activity.toFragmentActivity(), BaseViewModelFactory { creator.get() }).get(T::class.java)
 }
 
 /**

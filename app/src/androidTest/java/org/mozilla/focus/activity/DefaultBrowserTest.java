@@ -126,6 +126,11 @@ public class DefaultBrowserTest {
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
 
+        // Click on the positive button of the tutorial dialog to continue
+        onView(withId(android.R.id.button1))
+                .inRoot(RootMatchers.isDialog())
+                .perform(click());
+
         // Open default browser setting
         openDefaultBrowserAndroidSetting(allAppsButton);
 
