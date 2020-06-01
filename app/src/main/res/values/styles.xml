@@ -106,6 +106,16 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <style name="TutorialDialogPositiveButtonStyle">
+        <item name="android:textColor">@color/paletteDarkBlueC100</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TutorialDialogNegativeButtonStyle">
+        <item name="android:textColor">@color/paletteDarkGreyE100</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:dialogTheme">@style/CustomDialogStyle</item>
         <item name="android:alertDialogTheme">@style/AlertDialogStyle</item>
