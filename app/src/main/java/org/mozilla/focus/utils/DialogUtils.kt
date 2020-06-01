@@ -15,8 +15,12 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
+import android.text.style.StyleSpan
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -54,6 +58,9 @@ import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import org.mozilla.rocket.extension.dpToPx
 import org.mozilla.rocket.extension.inflate
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserTutorialDialog
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserTutorialDialogData
 import org.mozilla.rocket.widget.CustomViewDialogData
 import org.mozilla.rocket.widget.PromotionDialog
 
@@ -605,5 +612,44 @@ object DialogUtils {
             }
         }
         return dialog
+    }
+
+    fun showGoToSystemAppsSettingsDialog(context: Context, viewModel: DefaultBrowserPreferenceViewModel) {
+        val title = context.getString(
+            R.string.setting_default_browser_instruction_system_settings,
+            context.getString(R.string.app_name)
+        )
+        val styleSpan = StyleSpan(Typeface.BOLD)
+        val firstStepDescription = context.getString(R.string.instruction_select)
+            .highlightPlaceholder(context.getString(R.string.browser_app), styleSpan)
+        val secondStepDescription = context.getString(R.string.instruction_select)
+            .highlightPlaceholder(context.getString(R.string.app_name), styleSpan)
+
+        val data = DefaultBrowserTutorialDialogData(
+            title = title,
+            firstStepDescription = firstStepDescription,
+            firstStepImageDefaultResId = R.drawable.go_to_system_default_apps_step_1,
+            secondStepDescription = secondStepDescription,
+            secondStepImageDefaultResId = R.drawable.go_to_system_default_apps_step_2,
+            positiveText = context.getString(R.string.setting_default_browser_instruction_button),
+            negativeText = context.getString(R.string.action_cancel)
+        )
+        val dialog = DefaultBrowserTutorialDialog(context, data)
+            .onPositive {
+                viewModel.clickGoToSystemDefaultAppsSettings()
+            }
+            .onClose {
+                viewModel.cancelGoToSystemDefaultAppsSettings()
+            }
+        dialog.show()
+    }
+
+    private fun String.highlightPlaceholder(highlight: String, styleSpan: StyleSpan): Spannable {
+        val content = String.format(this, highlight)
+        val start = content.indexOf(highlight)
+        val end = start + highlight.length
+        val highlightSpan = SpannableStringBuilder(content)
+        highlightSpan.setSpan(styleSpan, start, end, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        return highlightSpan
     }
 }
