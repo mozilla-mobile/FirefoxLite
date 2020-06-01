@@ -27,6 +27,7 @@
             android:layout_marginEnd="16dp">
 
             <LinearLayout
+                android:id="@+id/menu_screenshots"
                 android:layout_width="74dp"
                 android:layout_height="71dp"
                 android:orientation="vertical"
@@ -49,6 +50,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/menu_bookmark"
                 android:layout_width="74dp"
                 android:layout_height="71dp"
                 android:orientation="vertical"
@@ -71,6 +73,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/menu_history"
                 android:layout_width="74dp"
                 android:layout_height="71dp"
                 android:orientation="vertical"
@@ -93,6 +96,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/menu_download"
                 android:layout_width="74dp"
                 android:layout_height="71dp"
                 android:orientation="vertical"
