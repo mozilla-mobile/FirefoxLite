@@ -139,4 +139,9 @@
     <!-- Shopping Search -->
     <dimen name="shopping_search_tab_bar_height">47dp</dimen>
 
+    <!-- Set default browser tutorial dialog -->
+    <dimen name="set_default_browser_tutorial_image_width">256dp</dimen>
+    <dimen name="set_default_browser_tutorial_flow_1_step_1_image_height">104dp</dimen>
+    <dimen name="set_default_browser_tutorial_flow_1_step_2_image_height">108dp</dimen>
+    <dimen name="set_default_browser_tutorial_flow_2_step_2_image_height">208dp</dimen>
 </resources>
