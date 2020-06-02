@@ -49,7 +49,7 @@ class ChromeViewModel(
     val isTurboModeEnabled: LiveData<Boolean> = settings.shouldUseTurboModeLiveData()
     val isBlockImageEnabled: LiveData<Boolean> = settings.shouldBlockImagesLiveData()
     val isBlockJavaScriptEnabled: LiveData<Boolean> = settings.shouldBlockJavaScriptLiveData()
-    val hasUnreadScreenshot: LiveData<Boolean> = settings.hasUnreadMyShotLiveData().map { AppConfigWrapper.getMyshotUnreadEnabled() && it }
+    val hasUnreadScreenshot: LiveData<Boolean> = settings.hasUnreadMyShotLiveData()
     val isPrivateBrowsingActive = MutableLiveData<Boolean>()
 
     val shouldShowFirstrun: Boolean

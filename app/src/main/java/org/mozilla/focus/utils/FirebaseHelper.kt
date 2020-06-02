@@ -46,7 +46,6 @@ object FirebaseHelper {
     internal const val RATE_APP_DIALOG_THRESHOLD = "rate_app_dialog_threshold"
     internal const val RATE_APP_NOTIFICATION_THRESHOLD = "rate_app_notification_threshold"
     internal const val SHARE_APP_DIALOG_THRESHOLD = "share_app_dialog_threshold"
-    internal const val ENABLE_MY_SHOT_UNREAD = "enable_my_shot_unread"
     internal const val SCREENSHOT_CATEGORY_MANIFEST = "screenshot_category_manifest"
     internal const val FIRST_LAUNCH_TIMER_MINUTES = "first_launch_timer_minutes"
     internal const val FIRST_LAUNCH_NOTIFICATION = "first_launch_notification"
@@ -254,7 +253,6 @@ object FirebaseHelper {
         map[RATE_APP_DIALOG_THRESHOLD] = DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_DIALOG
         map[RATE_APP_NOTIFICATION_THRESHOLD] = DialogUtils.APP_CREATE_THRESHOLD_FOR_RATE_NOTIFICATION
         map[SHARE_APP_DIALOG_THRESHOLD] = DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG
-        map[ENABLE_MY_SHOT_UNREAD] = AppConfigWrapper.ENABLE_MY_SHOT_UNREAD_DEFAULT
         map[SCREENSHOT_CATEGORY_MANIFEST] = ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT
         map[FIRST_LAUNCH_TIMER_MINUTES] = FirstLaunchWorker.TIMER_DISABLED
         map[RC_KEY_ENABLE_SHOPPING_SEARCH] = AppConfigWrapper.RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT
