@@ -9,8 +9,9 @@ from sys import exit
 import argparse
 
 AC_SYS_ENGINE = 0.13 * 1024 * 1024
+SET_DEFAULT_BROWSER = 30 * 1024
 
-SIZE_LIMIT = 6.0 * 1024 * 1024 + AC_SYS_ENGINE
+SIZE_LIMIT = 6.0 * 1024 * 1024 + AC_SYS_ENGINE + SET_DEFAULT_BROWSER
 parser = argparse.ArgumentParser(description='Determine Path')
 parser.add_argument('product', choices=['focus', 'preview'], default='focus')
 parser.add_argument('engine', choices=['webkit'], default='webkit')
