@@ -26,6 +26,10 @@ public class SettingsActivity extends BaseActivity {
         return new Intent(context, SettingsActivity.class).putExtra(EXTRA_ACTION, action);
     }
 
+    public static Intent getStartIntent(final Context context) {
+        return new Intent(context, SettingsActivity.class);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
