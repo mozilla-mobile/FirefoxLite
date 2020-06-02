@@ -182,6 +182,7 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         Snackbar.make(rootView, failMessageText, Snackbar.LENGTH_INDEFINITE)
             .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
                 defaultBrowserPreferenceViewModel.performSettingDefaultBrowserAction()
+                TelemetryWrapper.clickSetDefaultTryAgainSnackBar(TelemetryWrapper.Extra_Value.TRY_AGAIN)
             }.show()
     }
 

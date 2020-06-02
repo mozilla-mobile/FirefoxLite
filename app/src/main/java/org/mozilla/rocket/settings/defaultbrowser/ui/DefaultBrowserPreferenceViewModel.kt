@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.settings.defaultbrowser.data.DefaultBrowserRepository
 
@@ -55,6 +56,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             hasDefaultBrowser -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     openDefaultAppsSettingsTutorialDialog.call()
+                    TelemetryWrapper.showSetDefaultBySettingsMessage()
                 } else {
                     // TODO: Change to the flow #4 in SPEC
                     openSumoPage.call()
@@ -62,6 +64,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             }
             else -> {
                 openUrlTutorialDialog.call()
+                TelemetryWrapper.showSetDefaultBySettingsMessage()
             }
         }
     }
@@ -71,8 +74,10 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
         if (tryToSetDefaultBrowser) {
             if (isDefaultBrowser) {
                 successToSetDefaultBrowser.call()
+                TelemetryWrapper.showSetDefaultSuccessToast()
             } else {
                 failToSetDefaultBrowser.call()
+                TelemetryWrapper.showSetDefaultTryAgainSnackbar()
             }
             tryToSetDefaultBrowser = false
         }
@@ -84,17 +89,21 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     fun clickGoToSystemDefaultAppsSettings() {
         tryToSetDefaultBrowser = true
         openDefaultAppsSettings.call()
+        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
     }
 
     fun cancelGoToSystemDefaultAppsSettings() {
+        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
     }
 
     fun clickOpenUrl() {
         tryToSetDefaultBrowser = true
         triggerWebOpen.call()
+        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
     }
 
     fun cancelOpenUrl() {
+        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
     }
 
     data class DefaultBrowserPreferenceUiModel(
