@@ -77,8 +77,8 @@ import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitComponent
 import org.mozilla.rocket.landing.PortraitStateModel
+import org.mozilla.rocket.menu.BrowserMenuDialog
 import org.mozilla.rocket.menu.HomeMenuDialog
-import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
 import org.mozilla.rocket.privately.PrivateMode
@@ -120,7 +120,7 @@ class MainActivity : BaseActivity(),
     private var promotionModel: PromotionModel? = null
 
     private lateinit var homeMenu: HomeMenuDialog
-    private lateinit var menu: MenuDialog
+    private lateinit var browserMenu: BrowserMenuDialog
     private var mDialogFragment: DialogFragment? = null
     private var myshotOnBoardingDialog: Dialog? = null
 
@@ -229,7 +229,7 @@ class MainActivity : BaseActivity(),
             setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
             setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.BottomMenu) }
         }
-        menu = MenuDialog(this, R.style.BottomSheetTheme).apply {
+        browserMenu = BrowserMenuDialog(this, R.style.BottomSheetTheme).apply {
             setCanceledOnTouchOutside(true)
             setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
             setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.BottomMenu) }
@@ -314,7 +314,7 @@ class MainActivity : BaseActivity(),
                 TabTray.show(supportFragmentManager)
             })
             showHomeMenu.observe(this@MainActivity, Observer { homeMenu.show() })
-            showMenu.observe(this@MainActivity, Observer { menu.show() })
+            showBrowserMenu.observe(this@MainActivity, Observer { browserMenu.show() })
             showNewTab.observe(this@MainActivity, Observer {
                 screenNavigator.addHomeScreen(true)
             })
@@ -561,7 +561,7 @@ class MainActivity : BaseActivity(),
 
     private fun dismissAllMenus() {
         homeMenu.dismiss()
-        menu.dismiss()
+        browserMenu.dismiss()
         visibleBrowserFragment?.run {
             dismissWebContextMenu()
             dismissGeoDialog()
@@ -700,7 +700,7 @@ class MainActivity : BaseActivity(),
     @VisibleForTesting
     @UiThread
     fun showMyShotOnBoarding() {
-        val view = menu.findViewById<View>(R.id.menu_screenshots)
+        val view = browserMenu.findViewById<View>(R.id.menu_screenshots)
         view?.post {
             myshotOnBoardingDialog = DialogUtils.showMyShotOnBoarding(
                     this@MainActivity,
@@ -713,7 +713,7 @@ class MainActivity : BaseActivity(),
                     })
             chromeViewModel.onMyShotOnBoardingDisplayed()
         }
-        menu.show()
+        browserMenu.show()
     }
 
     private fun checkInAppUpdate() {

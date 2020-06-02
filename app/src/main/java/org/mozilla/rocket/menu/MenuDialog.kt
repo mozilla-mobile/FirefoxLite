@@ -166,7 +166,7 @@ class MenuDialog : BottomSheetDialog {
                         TelemetryWrapper.showTabTrayToolbar(MENU, position)
                     }
                     BottomBarItemAdapter.TYPE_MENU -> {
-                        chromeViewModel.showMenu.call()
+                        chromeViewModel.showBrowserMenu.call()
                         TelemetryWrapper.showMenuToolbar(MENU, position)
                     }
                     BottomBarItemAdapter.TYPE_HOME -> {
