@@ -7,6 +7,7 @@ package org.mozilla.focus.activity;
 
 import android.Manifest;
 import android.content.Intent;
+
 import androidx.annotation.Keep;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
@@ -14,6 +15,8 @@ import androidx.test.espresso.IdlingRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import android.net.Uri;
 import android.text.TextUtils;
 
 import org.junit.After;
@@ -74,7 +77,8 @@ public class SwitchSearchEngineTest {
      * 4. Change a different search engine
      * 5. Back to home and search for something
      * 6. Search result is provided by selected search engine
-     * 7. Repeat 2~6 for different search engines */
+     * 7. Repeat 2~6 for different search engines
+     */
 
     @Test
     public void switchSearchEngine_searchViaSearchEngineAccordingly() {
@@ -82,9 +86,7 @@ public class SwitchSearchEngineTest {
         final SearchEngine defaultSearchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(InstrumentationRegistry.getInstrumentation().getTargetContext());
         loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
 
-        for (SearchEngine searchEngine: searchEngines) {
-            final String[] searchEngineName = searchEngine.getName().split(" ");
-
+        for (SearchEngine searchEngine : searchEngines) {
             switchSearchEngine(searchEngine);
 
             // Tap search field
@@ -98,8 +100,8 @@ public class SwitchSearchEngineTest {
             // Check is url contains search keyword
             AndroidTestUtils.urlBarContainsText(SEARCH_KEYWORD);
 
-            // Check is url contains search engine name
-            AndroidTestUtils.urlBarContainsText(searchEngineName[0].toLowerCase());
+            // Check is url contains search engine host name
+            AndroidTestUtils.urlBarContainsText(getHostName(searchEngine.getSearchForm()));
 
             IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
@@ -142,4 +144,15 @@ public class SwitchSearchEngineTest {
         Espresso.pressBack();
     }
 
+    private String getHostName(String searchForm) {
+        Uri uri = Uri.parse(searchForm);
+
+        if (uri.getHost() == null) {
+            throw new AssertionError("The given searchForm doesn't contains a valid host " + searchForm);
+        }
+
+        String hostname = uri.getHost();
+        // return only hostname, without www.
+        return hostname.startsWith("www.") ? hostname.substring(4) : hostname;
+    }
 }
