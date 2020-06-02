@@ -20,7 +20,6 @@ import java.util.List;
 
 public class AppConfigWrapper {
     static final int SURVEY_NOTIFICATION_POST_THRESHOLD = 3;
-    static final boolean ENABLE_MY_SHOT_UNREAD_DEFAULT = false;
     static final boolean RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT = true;
 
 
@@ -51,10 +50,6 @@ public class AppConfigWrapper {
 
     public static int getDriveDefaultBrowserFromMenuSettingThreshold() {
         return DRIVE_DEFAULT_BROWSER_FROM_MENU_SETTING_THRESHOLD;
-    }
-
-    public static boolean getMyshotUnreadEnabled() {
-        return FirebaseHelper.getFirebase().getRcBoolean(FirebaseHelper.ENABLE_MY_SHOT_UNREAD);
     }
 
     public static boolean isSurveyNotificationEnabled() {
