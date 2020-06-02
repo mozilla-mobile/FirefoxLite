@@ -268,11 +268,13 @@ object DialogUtils {
                         }
                     )
                     .setAttachedView(
-                        activity.inflate(R.layout.spotlight_hand_pointer),
+                        (activity.inflate(R.layout.spotlight_hand_pointer) as ImageView).apply {
+                            scaleX = -1f
+                        },
                         AttachedViewConfigs(
                             position = AttachedPosition.TOP,
-                            gravity = AttachedGravity.END_ALIGN_START,
-                            marginEnd = activity.dpToPx(-42f),
+                            gravity = AttachedGravity.START_ALIGN_END,
+                            marginStart = activity.dpToPx(-42f),
                             marginBottom = activity.dpToPx(-42f)
                         )
                     )
