@@ -169,6 +169,7 @@ object TelemetryWrapper {
         const val PROFILE = "profile"
         const val DETAIL_PAGE = "detail_page"
         const val TOAST = "toast"
+        const val SNACKBAR = "snackbar"
     }
 
     object Value {
@@ -259,6 +260,10 @@ object TelemetryWrapper {
         internal const val LIFESTYLE = "lifestyle"
         internal const val CATEGORY = "category"
         internal const val EXIT_WARNING = "exit_warning"
+        internal const val SET_DEFAULT_BY_SETTINGS = "set_default_by_settings"
+        internal const val SET_DEFAULT_BY_LINK = "set_default_by_link"
+        internal const val SET_DEFAULT_SUCCESS = "set_default_success"
+        internal const val SET_DEFAULT_TRY_AGAIN = "set_default_try_again"
     }
 
     internal object Extra {
@@ -368,6 +373,9 @@ object TelemetryWrapper {
         const val SET_DEFAULT = "setdefault"
         const val PORTRAIT = "portrait"
         const val LANDSCAPE = "landscape"
+        const val OK = "ok"
+        const val CANCEL = "cancel"
+        const val TRY_AGAIN = "try_again"
     }
 
     enum class FIND_IN_PAGE {
@@ -3777,6 +3785,99 @@ object TelemetryWrapper {
             extras = [])
     fun showExitToast() {
         EventBuilder(Category.ACTION, Method.SHOW, Object.TOAST, Value.EXIT_WARNING)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Set-Default by Settings Message",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.MESSAGE,
+            value = Value.SET_DEFAULT_BY_SETTINGS,
+            extras = [])
+    fun showSetDefaultBySettingsMessage() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.SET_DEFAULT_BY_SETTINGS)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Set-Default by Link Message",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.MESSAGE,
+            value = Value.SET_DEFAULT_BY_LINK,
+            extras = [])
+    fun showSetDefaultByLinkMessage() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.SET_DEFAULT_BY_LINK)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Set-Default by Settings Message",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MESSAGE,
+            value = Value.SET_DEFAULT_BY_SETTINGS,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.OK},${Extra_Value.CANCEL}")
+            ])
+    fun clickSetDefaultBySettingsMessage(action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.SET_DEFAULT_BY_SETTINGS)
+                .extra(Extra.ACTION, action)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Set-Default by Link Message",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MESSAGE,
+            value = Value.SET_DEFAULT_BY_LINK,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.OK},${Extra_Value.CANCEL}")
+            ])
+    fun clickSetDefaultByLinkMessage(action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.SET_DEFAULT_BY_LINK)
+                .extra(Extra.ACTION, action)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Set-Default Success Toast",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.TOAST,
+            value = Value.SET_DEFAULT_SUCCESS,
+            extras = [])
+    fun showSetDefaultSuccessToast() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.TOAST, Value.SET_DEFAULT_SUCCESS)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Set-Default Try-again Snackbar",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.SNACKBAR,
+            value = Value.SET_DEFAULT_TRY_AGAIN,
+            extras = [])
+    fun showSetDefaultTryAgainSnackbar() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.SNACKBAR, Value.SET_DEFAULT_TRY_AGAIN)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Set-Default Try-again Snackbar",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.SNACKBAR,
+            value = Value.SET_DEFAULT_TRY_AGAIN,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS},${Extra_Value.TRY_AGAIN}")
+            ])
+    fun clickSetDefaultTryAgainSnackBar(action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.SNACKBAR, Value.SET_DEFAULT_TRY_AGAIN)
+                .extra(Extra.ACTION, action)
                 .queue()
     }
 
