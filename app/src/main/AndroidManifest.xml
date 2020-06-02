@@ -83,6 +83,7 @@
                 <data android:scheme="rocket" android:host="content" />
                 <data android:scheme="rocket" android:host="private-mode" />
                 <data android:scheme="rocket" android:host="command" />
+                <data android:scheme="rocket" android:host="settings" />
             </intent-filter>
 
         </activity-alias>

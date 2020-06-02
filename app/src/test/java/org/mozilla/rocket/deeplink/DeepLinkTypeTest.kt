@@ -1,5 +1,6 @@
 package org.mozilla.rocket.deeplink
 
+import java.net.URLEncoder
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -10,12 +11,12 @@ import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
+import org.mozilla.rocket.deeplink.task.StartSettingsActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingSearchActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
-import java.net.URLEncoder
 
 class DeepLinkTypeTest {
 
@@ -145,5 +146,13 @@ class DeepLinkTypeTest {
 
         assertEquals(DeepLinkType.COMMAND_SET_DEFAULT_BROWSER, deepLinkType)
         assertTrue(deepLinkType.getTaskList()[0] is SetDefaultBrowserTask)
+    }
+
+    @Test
+    fun `When settings uri is matched, launch settings activity`() {
+        val deepLinkType = DeepLinkType.parse("rocket://settings")
+
+        assertEquals(DeepLinkType.SETTINGS, deepLinkType)
+        assertTrue(deepLinkType.getTaskList()[0] is StartSettingsActivityTask)
     }
 }

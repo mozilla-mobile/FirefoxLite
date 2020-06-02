@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,10 @@ import org.mozilla.rocket.content.news.ui.NewsTabFragment;
 
 public class SettingsActivity extends BaseActivity {
     public static final int ACTIVITY_RESULT_LOCALE_CHANGED = 1;
+
+    public static Intent getStartIntent(final Context context) {
+        return new Intent(context, SettingsActivity.class);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

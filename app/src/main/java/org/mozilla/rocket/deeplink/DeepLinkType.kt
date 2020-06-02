@@ -2,6 +2,8 @@ package org.mozilla.rocket.deeplink
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
+import java.net.URI
+import java.net.URISyntaxException
 import org.mozilla.rocket.deeplink.task.OpenPrivateModeTask
 import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
@@ -9,6 +11,7 @@ import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
+import org.mozilla.rocket.deeplink.task.StartSettingsActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingSearchActivityTask
@@ -16,8 +19,6 @@ import org.mozilla.rocket.deeplink.task.StartTravelActivityTask
 import org.mozilla.rocket.deeplink.task.StartTravelItemActivityTask
 import org.mozilla.rocket.deeplink.task.Task
 import org.mozilla.rocket.extension.getParam
-import java.net.URI
-import java.net.URISyntaxException
 
 enum class DeepLinkType {
 
@@ -129,6 +130,14 @@ enum class DeepLinkType {
         }
     },
 
+    SETTINGS {
+        override fun match(uri: URI): Boolean = isSettingsUri(uri) && DeepLinkConstants.HOST_SETTINGS == uri.host && uri.path.isNullOrEmpty()
+
+        override fun addTasks(uri: URI) {
+            addTask(StartSettingsActivityTask())
+        }
+    },
+
     NOT_SUPPORT {
         override fun match(uri: URI) = false
 
@@ -196,6 +205,9 @@ enum class DeepLinkType {
 
         private fun isCommandUri(uri: URI) =
                 isDeepLink(uri) && DeepLinkConstants.HOST_COMMAND == uri.host
+
+        private fun isSettingsUri(uri: URI) =
+                isDeepLink(uri) && DeepLinkConstants.HOST_SETTINGS == uri.host
 
         fun isDeepLink(uri: URI) = DeepLinkConstants.SCHEMA_ROCKET == uri.scheme
     }
