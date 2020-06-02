@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.layout_default_browser_tutorial_dialog.vie
 import kotlinx.android.synthetic.main.layout_default_browser_tutorial_dialog.view.second_step_image
 import kotlinx.android.synthetic.main.layout_default_browser_tutorial_dialog.view.title
 import org.mozilla.focus.R
+import org.mozilla.focus.glide.GlideApp
 
 class DefaultBrowserTutorialDialog(
     private val context: Context,
@@ -89,10 +90,29 @@ class DefaultBrowserTutorialDialog(
         }
 
         with(view.first_step_image) {
-            if (data.firstStepImageDefaultResId != 0) {
-                setImageResource(data.firstStepImageDefaultResId)
-            } else {
-                visibility = View.GONE
+            val width = data.firstStepImageWidth
+            val height = data.firstStepImageHeight
+            if (width != 0 && height != 0) {
+                layoutParams.apply {
+                    this.width = width
+                    this.height = height
+                }
+            }
+
+            when {
+                data.firstStepImageUrl.isNotEmpty() -> {
+                    GlideApp.with(context)
+                        .asBitmap()
+                        .placeholder(data.firstStepImageDefaultResId)
+                        .load(data.firstStepImageUrl)
+                        .into(this)
+                }
+                data.firstStepImageDefaultResId != 0 -> {
+                    setImageResource(data.firstStepImageDefaultResId)
+                }
+                else -> {
+                    visibility = View.GONE
+                }
             }
         }
 
@@ -101,10 +121,29 @@ class DefaultBrowserTutorialDialog(
         }
 
         with(view.second_step_image) {
-            if (data.secondStepImageDefaultResId != 0) {
-                setImageResource(data.secondStepImageDefaultResId)
-            } else {
-                visibility = View.GONE
+            val width = data.secondStepImageWidth
+            val height = data.secondStepImageHeight
+            if (width != 0 && height != 0) {
+                layoutParams.apply {
+                    this.width = width
+                    this.height = height
+                }
+            }
+
+            when {
+                data.secondStepImageUrl.isNotEmpty() -> {
+                    GlideApp.with(context)
+                        .asBitmap()
+                        .placeholder(data.secondStepImageDefaultResId)
+                        .load(data.secondStepImageUrl)
+                        .into(this)
+                }
+                data.secondStepImageDefaultResId != 0 -> {
+                    setImageResource(data.secondStepImageDefaultResId)
+                }
+                else -> {
+                    visibility = View.GONE
+                }
             }
         }
     }

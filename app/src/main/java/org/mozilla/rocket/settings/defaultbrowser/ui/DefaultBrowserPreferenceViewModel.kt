@@ -32,8 +32,15 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     fun refreshSettings() {
         isDefaultBrowser = defaultBrowserRepository.isDefaultBrowser()
         hasDefaultBrowser = defaultBrowserRepository.hasDefaultBrowser()
+        val tutorialImagesUrl = defaultBrowserRepository.getTutorialImagesUrl()
 
-        _uiModel.value = DefaultBrowserPreferenceUiModel(isDefaultBrowser, hasDefaultBrowser)
+        _uiModel.value = DefaultBrowserPreferenceUiModel(
+            isDefaultBrowser,
+            hasDefaultBrowser,
+            tutorialImagesUrl.flow1TutorialStep1ImageUrl,
+            tutorialImagesUrl.flow1TutorialStep2ImageUrl,
+            tutorialImagesUrl.flow2TutorialStep2ImageUrl
+        )
     }
 
     fun performSettingDefaultBrowserAction() {
@@ -92,6 +99,9 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
 
     data class DefaultBrowserPreferenceUiModel(
         val isDefaultBrowser: Boolean,
-        val hasDefaultBrowser: Boolean
+        val hasDefaultBrowser: Boolean,
+        val flow1TutorialStep1ImageUrl: String,
+        val flow1TutorialStep2ImageUrl: String,
+        val flow2TutorialStep2ImageUrl: String
     )
 }

@@ -629,8 +629,14 @@ object DialogUtils {
             title = title,
             firstStepDescription = firstStepDescription,
             firstStepImageDefaultResId = R.drawable.go_to_system_default_apps_step_1,
+            firstStepImageUrl = viewModel.uiModel.value?.flow1TutorialStep1ImageUrl ?: "",
+            firstStepImageWidth = context.resources.getDimensionPixelSize(R.dimen.set_default_browser_tutorial_image_width),
+            firstStepImageHeight = context.resources.getDimensionPixelSize(R.dimen.set_default_browser_tutorial_flow_1_step_1_image_height),
             secondStepDescription = secondStepDescription,
             secondStepImageDefaultResId = R.drawable.go_to_system_default_apps_step_2,
+            secondStepImageUrl = viewModel.uiModel.value?.flow1TutorialStep2ImageUrl ?: "",
+            secondStepImageWidth = context.resources.getDimensionPixelSize(R.dimen.set_default_browser_tutorial_image_width),
+            secondStepImageHeight = context.resources.getDimensionPixelSize(R.dimen.set_default_browser_tutorial_flow_1_step_2_image_height),
             positiveText = context.getString(R.string.setting_default_browser_instruction_button),
             negativeText = context.getString(R.string.action_cancel)
         )
@@ -668,8 +674,14 @@ object DialogUtils {
             title = title,
             firstStepDescription = firstStepDescription,
             firstStepImageDefaultResId = 0,
+            firstStepImageUrl = "",
+            firstStepImageWidth = 0,
+            firstStepImageHeight = 0,
             secondStepDescription = secondStepDescription,
             secondStepImageDefaultResId = R.drawable.open_external_step,
+            secondStepImageUrl = viewModel.uiModel.value?.flow2TutorialStep2ImageUrl ?: "",
+            secondStepImageWidth = context.resources.getDimensionPixelSize(R.dimen.set_default_browser_tutorial_image_width),
+            secondStepImageHeight = context.resources.getDimensionPixelSize(R.dimen.set_default_browser_tutorial_flow_2_step_2_image_height),
             positiveText = context.getString(R.string.firstrun_close_button),
             negativeText = context.getString(R.string.action_cancel)
         )
