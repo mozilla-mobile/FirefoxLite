@@ -99,8 +99,7 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
     private var SCREENSHOT_ONBOARDING_EVENT_DELAY: Long = 0
 
     fun checkNoScreenshotOnBoarding() {
-        onView(withId(R.id.my_shot_img_hand)).check(doesNotExist())
-        onView(withId(R.id.my_shot_category_learn_more)).check(doesNotExist())
+        onView(withId(R.id.spotlight_placeholder)).check(doesNotExist())
     }
 
     fun firstTimeClickCaptureScreen() {
@@ -115,8 +114,7 @@ class SessionRobot(menuAutomation: MenuAutomation = MenuRobot()) : MenuAutomatio
         // As Espresso failed on CI owing to intermittent, uiautomator is applied
         // TODO: check this, it will pass even the tutorial view doesn't show
         val uiDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-        uiDevice.findObject(UiSelector().resourceId("my_shot_category_learn_more"))
-        uiDevice.findObject(UiSelector().resourceId("my_shot_img_hand"))
+        uiDevice.findObject(UiSelector().resourceId("spotlight_placeholder"))
     }
 
     fun longClickOnWebViewContent(activity: MainActivity) {
