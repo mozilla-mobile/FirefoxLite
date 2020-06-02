@@ -4,6 +4,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.rocket.content.news.data.NewsDataSourceFactory
+import org.mozilla.rocket.content.news.data.NewsMonitorDataSourceFactory
 import org.mozilla.rocket.content.news.data.NewsRepository
 import org.mozilla.rocket.content.news.data.NewsSettingsRepositoryProvider
 import org.mozilla.rocket.content.news.domain.GetAdditionalSourceInfoUseCase
@@ -168,8 +169,10 @@ object NewsModule {
     @Singleton // Single instance to persist same dataSourceFactory for LoadNewsUseCase and RefreshNewsUseCase usages
     @JvmStatic
     @Provides
-    fun provideNewsRepository(dataSourceFactory: NewsDataSourceFactory): NewsRepository =
-            NewsRepository(dataSourceFactory)
+    fun provideNewsRepository(
+        dataSourceFactory: NewsDataSourceFactory,
+        monitorDataSourceFactory: NewsMonitorDataSourceFactory
+    ): NewsRepository = NewsRepository(dataSourceFactory, monitorDataSourceFactory)
 
     @JvmStatic
     @Provides
@@ -177,6 +180,11 @@ object NewsModule {
         context: Context,
         getAdditionalSourceInfo: GetAdditionalSourceInfoUseCase
     ): NewsDataSourceFactory = NewsDataSourceFactory(context, getAdditionalSourceInfo)
+
+    @JvmStatic
+    @Provides
+    fun provideNewsMonitorDataSourceFactory(context: Context): NewsMonitorDataSourceFactory =
+        NewsMonitorDataSourceFactory(context)
 
     @JvmStatic
     @Provides
