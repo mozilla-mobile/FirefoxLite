@@ -10,18 +10,20 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.block_images_switch
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.img_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_bookmark
-import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_download
-import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_history
-import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_delete
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_download
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_exit
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_find_in_page
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_history
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_night_mode
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_pin_shortcut
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_preferences
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.night_mode_switch
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.turbomode_switch
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -104,6 +106,12 @@ class BrowserMenuDialog : BottomSheetDialog {
     private fun initMenuItems(contentLayout: View) {
         val activity = context.toFragmentActivity()
         contentLayout.apply {
+            chromeViewModel.isTurboModeEnabled.observe(activity, Observer {
+                turbomode_switch.isChecked = it
+            })
+            chromeViewModel.isBlockImageEnabled.observe(activity, Observer {
+                block_images_switch.isChecked = it
+            })
             chromeViewModel.isNightMode.observe(activity, Observer { nightModeSettings ->
                 night_mode_switch.isChecked = nightModeSettings.isEnabled
             })
@@ -119,6 +127,18 @@ class BrowserMenuDialog : BottomSheetDialog {
             }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
+            }
+            turbomode_switch.setOnCheckedChangeListener { _, isChecked ->
+                val needToUpdate = isChecked != (chromeViewModel.isTurboModeEnabled.value == true)
+                if (needToUpdate) {
+                    chromeViewModel.onTurboModeToggled()
+                }
+            }
+            block_images_switch.setOnCheckedChangeListener { _, isChecked ->
+                val needToUpdate = isChecked != (chromeViewModel.isBlockImageEnabled.value == true)
+                if (needToUpdate) {
+                    chromeViewModel.onBlockImageToggled()
+                }
             }
             night_mode_switch.setOnCheckedChangeListener { _, isChecked ->
                 val needToUpdate = isChecked != (chromeViewModel.isNightMode.value?.isEnabled == true)
