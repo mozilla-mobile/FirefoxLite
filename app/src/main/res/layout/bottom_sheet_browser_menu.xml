@@ -446,6 +446,14 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <org.mozilla.rocket.content.view.BottomBar
+            android:id="@+id/menu_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:dividerColor="@color/paletteLightGreyA100"
+            android:paddingStart="21dp"
+            android:paddingEnd="21dp"/>
+
     </LinearLayout>
 
 </FrameLayout>
