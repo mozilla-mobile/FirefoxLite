@@ -1,6 +1,7 @@
 package org.mozilla.rocket.content.view
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.SparseIntArray
@@ -35,9 +36,12 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
     constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
         init()
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.BottomBar, defStyle, 0)
+        val dividerColor = typedArray.getColor(R.styleable.BottomBar_dividerColor, Color.TRANSPARENT)
         val dividerDrawable = typedArray.getDrawable(R.styleable.BottomBar_dividerDrawable)
         typedArray.recycle()
-        if (dividerDrawable != null) {
+        if (dividerColor != Color.TRANSPARENT) {
+            setDividerColor(dividerColor)
+        } else if (dividerDrawable != null) {
             setDividerDrawable(dividerDrawable)
         }
     }
@@ -59,8 +63,16 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT).apply {
                 gravity = Gravity.CENTER_VERTICAL
                 val horizontalPadding = resources.getDimensionPixelSize(R.dimen.browser_fixed_menu_horizontal_padding)
-                marginStart = horizontalPadding
-                marginEnd = horizontalPadding
+                if (this@BottomBar.paddingStart != 0 || this@BottomBar.paddingEnd != 0) {
+                    marginStart = this@BottomBar.paddingStart
+                    marginEnd = this@BottomBar.paddingEnd
+                    this@BottomBar.apply {
+                        setPadding(0, paddingTop, 0, paddingBottom)
+                    }
+                } else {
+                    marginStart = horizontalPadding
+                    marginEnd = horizontalPadding
+                }
             }
         }.let {
             grid = it
@@ -71,6 +83,12 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
     fun setDividerDrawable(dividerDrawable: Drawable) {
         dividerView.apply {
             background = dividerDrawable
+        }
+    }
+
+    fun setDividerColor(dividerColor: Int) {
+        dividerView.apply {
+            setBackgroundColor(dividerColor)
         }
     }
 
@@ -106,8 +124,16 @@ open class BottomBar : FrameLayout, CoordinatorLayout.AttachedBehavior {
             val itemContainer = getChildAt(childCount - 1) as ViewGroup
             itemContainer.layoutParams = (itemContainer.layoutParams as MarginLayoutParams).apply {
                 val horizontalPadding = resources.getDimensionPixelSize(R.dimen.browser_fixed_menu_horizontal_padding)
-                marginStart = horizontalPadding
-                marginEnd = horizontalPadding
+                if (this@BottomBar.paddingStart != 0 || this@BottomBar.paddingEnd != 0) {
+                    marginStart = this@BottomBar.paddingStart
+                    marginEnd = this@BottomBar.paddingEnd
+                    this@BottomBar.apply {
+                        setPadding(0, paddingTop, 0, paddingBottom)
+                    }
+                } else {
+                    marginStart = horizontalPadding
+                    marginEnd = horizontalPadding
+                }
             }
         }
     }

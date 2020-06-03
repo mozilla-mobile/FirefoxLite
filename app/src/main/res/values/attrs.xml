@@ -37,6 +37,7 @@
     </declare-styleable>
 
     <declare-styleable name="BottomBar">
+        <attr name="dividerColor" format="color"/>
         <attr name="dividerDrawable" format="reference"/>
     </declare-styleable>
 </resources>
