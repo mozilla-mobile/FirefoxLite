@@ -96,6 +96,10 @@ class DefaultBrowserPreference : Preference {
         viewModel.onPause()
     }
 
+    fun performClick() {
+        viewModel.performSettingDefaultBrowserAction()
+    }
+
     private fun openDefaultAppsSettings() {
         if (!IntentUtils.openDefaultAppsSettings(context)) {
             openSumoPage()

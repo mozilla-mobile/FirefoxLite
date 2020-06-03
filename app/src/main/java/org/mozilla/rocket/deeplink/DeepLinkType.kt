@@ -3,12 +3,12 @@ package org.mozilla.rocket.deeplink
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import org.mozilla.rocket.deeplink.task.OpenPrivateModeTask
-import org.mozilla.rocket.deeplink.task.SetDefaultBrowserTask
 import org.mozilla.rocket.deeplink.task.StartGameActivityTask
 import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
+import org.mozilla.rocket.deeplink.task.StartSettingsActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartShoppingSearchActivityTask
@@ -125,7 +125,7 @@ enum class DeepLinkType {
         override fun match(uri: URI) = isCommandUri(uri, DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER)
 
         override fun addTasks(uri: URI) {
-            addTask(SetDefaultBrowserTask())
+            addTask(StartSettingsActivityTask(DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER))
         }
     },
 

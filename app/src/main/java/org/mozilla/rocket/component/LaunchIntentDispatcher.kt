@@ -14,9 +14,10 @@ import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_
 import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_OPEN_URL
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
-import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.widget.DefaultBrowserPreference
+import org.mozilla.rocket.deeplink.DeepLinkConstants
 import org.mozilla.rocket.deeplink.DeepLinkType
+import org.mozilla.rocket.deeplink.task.StartSettingsActivityTask
 import java.net.URI
 import java.net.URISyntaxException
 
@@ -108,13 +109,8 @@ class LaunchIntentDispatcher {
             intent.getStringExtra(STR_PUSH_COMMAND)?.apply {
                 when (this) {
                     Command.SET_DEFAULT.value -> {
-                        if (!IntentUtils.openDefaultAppsSettings(context)) {
-                            intent.action = Intent.ACTION_VIEW
-                            intent.data = Uri.parse(SupportUtils.getSumoURLForTopic(context, "rocket-default"))
-                            return Action.NORMAL
-                        } else {
-                            return Action.HANDLED
-                        }
+                        StartSettingsActivityTask(DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER).execute(context)
+                        return Action.HANDLED
                     }
                 }
             }
