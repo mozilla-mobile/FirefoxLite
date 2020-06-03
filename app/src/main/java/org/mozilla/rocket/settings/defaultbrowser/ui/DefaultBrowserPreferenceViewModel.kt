@@ -30,6 +30,8 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
 
     private var tryToSetDefaultBrowser: Boolean = false
 
+    private var actionFromNotification: Boolean = false
+
     fun refreshSettings() {
         isDefaultBrowser = defaultBrowserRepository.isDefaultBrowser()
         hasDefaultBrowser = defaultBrowserRepository.hasDefaultBrowser()
@@ -44,7 +46,17 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
         )
     }
 
-    fun performSettingDefaultBrowserAction() {
+    fun performAction() {
+        actionFromNotification = false
+        performSettingDefaultBrowserAction()
+    }
+
+    fun performActionFromNotification() {
+        actionFromNotification = true
+        performSettingDefaultBrowserAction()
+    }
+
+    private fun performSettingDefaultBrowserAction() {
         when {
             isDefaultBrowser -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -56,7 +68,11 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             hasDefaultBrowser -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     openDefaultAppsSettingsTutorialDialog.call()
-                    TelemetryWrapper.showSetDefaultBySettingsMessage()
+                    if (actionFromNotification) {
+                        TelemetryWrapper.showSetDefaultByLinkMessage()
+                    } else {
+                        TelemetryWrapper.showSetDefaultBySettingsMessage()
+                    }
                 } else {
                     // TODO: Change to the flow #4 in SPEC
                     openSumoPage.call()
@@ -64,7 +80,11 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             }
             else -> {
                 openUrlTutorialDialog.call()
-                TelemetryWrapper.showSetDefaultBySettingsMessage()
+                if (actionFromNotification) {
+                    TelemetryWrapper.showSetDefaultByLinkMessage()
+                } else {
+                    TelemetryWrapper.showSetDefaultBySettingsMessage()
+                }
             }
         }
     }
@@ -89,21 +109,37 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     fun clickGoToSystemDefaultAppsSettings() {
         tryToSetDefaultBrowser = true
         openDefaultAppsSettings.call()
-        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
+        if (actionFromNotification) {
+            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.OK)
+        } else {
+            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
+        }
     }
 
     fun cancelGoToSystemDefaultAppsSettings() {
-        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
+        if (actionFromNotification) {
+            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.CANCEL)
+        } else {
+            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
+        }
     }
 
     fun clickOpenUrl() {
         tryToSetDefaultBrowser = true
         triggerWebOpen.call()
-        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
+        if (actionFromNotification) {
+            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.OK)
+        } else {
+            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
+        }
     }
 
     fun cancelOpenUrl() {
-        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
+        if (actionFromNotification) {
+            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.CANCEL)
+        } else {
+            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
+        }
     }
 
     data class DefaultBrowserPreferenceUiModel(

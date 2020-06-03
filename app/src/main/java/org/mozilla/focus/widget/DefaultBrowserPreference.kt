@@ -85,7 +85,7 @@ class DefaultBrowserPreference : Preference {
     }
 
     override fun onClick() {
-        viewModel.performSettingDefaultBrowserAction()
+        viewModel.performAction()
     }
 
     fun onFragmentResume() {
@@ -97,7 +97,7 @@ class DefaultBrowserPreference : Preference {
     }
 
     fun performClick() {
-        viewModel.performSettingDefaultBrowserAction()
+        viewModel.performActionFromNotification()
     }
 
     private fun openDefaultAppsSettings() {
@@ -140,7 +140,7 @@ class DefaultBrowserPreference : Preference {
             val failMessageText = context.getString(R.string.message_set_default_incomplet, context.getString(R.string.app_name))
             Snackbar.make(it, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
                 .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
-                    viewModel.performSettingDefaultBrowserAction()
+                    viewModel.performAction()
                     TelemetryWrapper.clickSetDefaultTryAgainSnackBar(TelemetryWrapper.Extra_Value.TRY_AGAIN)
                 }.show()
         }
