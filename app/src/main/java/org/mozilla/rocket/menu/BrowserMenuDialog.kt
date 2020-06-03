@@ -8,6 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
@@ -16,7 +17,10 @@ class BrowserMenuDialog : BottomSheetDialog {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
+    @Inject
+    lateinit var menuViewModelCreator: Lazy<MenuViewModel>
 
+    private lateinit var menuViewModel: MenuViewModel
     private lateinit var chromeViewModel: ChromeViewModel
 
     private lateinit var contentLayout: View
@@ -28,6 +32,7 @@ class BrowserMenuDialog : BottomSheetDialog {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
+        menuViewModel = getActivityViewModel(menuViewModelCreator)
 
         initLayout()
     }
