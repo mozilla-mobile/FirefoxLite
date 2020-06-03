@@ -17,7 +17,9 @@ import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_histor
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_exit
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_find_in_page
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_night_mode
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_pin_shortcut
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.night_mode_switch
 import org.mozilla.fileutils.FileUtils
@@ -106,6 +108,15 @@ class BrowserMenuDialog : BottomSheetDialog {
                 night_mode_switch.isChecked = nightModeSettings.isEnabled
             })
 
+            menu_find_in_page.setOnClickListener {
+                cancel()
+                chromeViewModel.showFindInPage.call()
+            }
+            menu_pin_shortcut.setOnClickListener {
+                cancel()
+                chromeViewModel.pinShortcut.call()
+                TelemetryWrapper.clickAddToHome(TelemetryWrapper.Extra_Value.MENU, 1)
+            }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
             }
