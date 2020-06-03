@@ -3,7 +3,9 @@ package org.mozilla.rocket.menu
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StyleRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -13,8 +15,15 @@ import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_bookma
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_download
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_history
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_delete
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_exit
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_night_mode
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_preferences
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.night_mode_switch
+import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.FormatUtils
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.MenuViewModel
@@ -24,6 +33,7 @@ import org.mozilla.rocket.content.view.BottomBar
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.extension.toFragmentActivity
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import javax.inject.Inject
 
 class BrowserMenuDialog : BottomSheetDialog {
@@ -49,11 +59,13 @@ class BrowserMenuDialog : BottomSheetDialog {
         menuViewModel = getActivityViewModel(menuViewModelCreator)
 
         initLayout()
+        observeChromeAction()
     }
 
     private fun initLayout() {
         contentLayout = layoutInflater.inflate(R.layout.bottom_sheet_browser_menu, null)
         initMenuTabs(contentLayout)
+        initMenuItems(contentLayout)
         initBottomBar()
         setContentView(contentLayout)
     }
@@ -85,6 +97,57 @@ class BrowserMenuDialog : BottomSheetDialog {
                 TelemetryWrapper.clickMenuDownload()
             }
         }
+    }
+
+    private fun initMenuItems(contentLayout: View) {
+        val activity = context.toFragmentActivity()
+        contentLayout.apply {
+            chromeViewModel.isNightMode.observe(activity, Observer { nightModeSettings ->
+                night_mode_switch.isChecked = nightModeSettings.isEnabled
+            })
+
+            menu_night_mode.setOnClickListener {
+                chromeViewModel.adjustNightMode()
+            }
+            night_mode_switch.setOnCheckedChangeListener { _, isChecked ->
+                val needToUpdate = isChecked != (chromeViewModel.isNightMode.value?.isEnabled == true)
+                if (needToUpdate) {
+                    chromeViewModel.onNightModeToggled()
+                }
+            }
+            menu_preferences.setOnClickListener {
+                cancel()
+                chromeViewModel.checkToDriveDefaultBrowser()
+                chromeViewModel.openPreference.call()
+                TelemetryWrapper.clickMenuSettings()
+            }
+            menu_delete.setOnClickListener {
+                cancel()
+                onDeleteClicked()
+                TelemetryWrapper.clickMenuClearCache()
+            }
+            menu_exit.setOnClickListener {
+                cancel()
+                chromeViewModel.exitApp.call()
+                TelemetryWrapper.clickMenuExit()
+            }
+        }
+    }
+
+    private fun onDeleteClicked() {
+        val diff = FileUtils.clearCache(context)
+        val stringId = if (diff < 0) R.string.message_clear_cache_fail else R.string.message_cleared_cached
+        val msg = context.getString(stringId, FormatUtils.getReadableStringFromFileSize(diff))
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun observeChromeAction() {
+        val activity = context.toFragmentActivity()
+        chromeViewModel.showAdjustBrightness.observe(activity, Observer { showAdjustBrightness() })
+    }
+
+    private fun showAdjustBrightness() {
+        ContextCompat.startActivity(context, AdjustBrightnessDialog.Intents.getStartIntentFromMenu(context), null)
     }
 
     private fun initBottomBar() {
