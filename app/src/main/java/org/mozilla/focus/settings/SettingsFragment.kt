@@ -10,6 +10,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
+import android.os.Looper
 import android.preference.ListPreference
 import android.preference.Preference
 import android.preference.PreferenceFragment
@@ -28,6 +29,7 @@ import org.mozilla.focus.utils.FirebaseHelper.getFirebase
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.DefaultBrowserPreference
 import org.mozilla.rocket.debugging.DebugActivity.Companion.getStartIntent
+import org.mozilla.rocket.deeplink.DeepLinkConstants
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog.Intents.getStartIntentFromSetting
 import org.mozilla.rocket.privately.ShortcutUtils.Companion.createShortcut
 import org.mozilla.telemetry.TelemetryHolder
@@ -47,6 +49,10 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         }
         val preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness))
         preferenceNightMode?.isEnabled = Settings.getInstance(activity).isNightModeEnable
+
+        if (DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER == arguments.getString(SettingsActivity.EXTRA_ACTION)) {
+            triggerSetDefaultBrowserAction()
+        }
     }
 
     override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen, preference: Preference): Boolean {
@@ -96,6 +102,22 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
             return true
         }
         return false
+    }
+
+    fun onNewIntent(intent: Intent) {
+        if (DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER == intent.getStringExtra(SettingsActivity.EXTRA_ACTION)) {
+            triggerSetDefaultBrowserAction()
+        }
+    }
+
+    private fun triggerSetDefaultBrowserAction() {
+        Looper.myQueue().addIdleHandler {
+            if (!activity.isFinishing && !activity.isDestroyed) {
+                val preference = findPreference(getString(R.string.pref_key_default_browser)) as DefaultBrowserPreference?
+                preference?.performClick()
+            }
+            false
+        }
     }
 
     override fun onResume() {
@@ -162,5 +184,16 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         private var debugClicks = 0
         private const val DEBUG_CLICKS_THRESHOLD = 19
         private const val PREF_KEY_ROOT = "root_preferences"
+        const val TAG = "SettingsFragment"
+
+        @JvmStatic
+        fun newInstance(action: String): SettingsFragment {
+            val args = Bundle().apply {
+                putString(SettingsActivity.EXTRA_ACTION, action)
+            }
+            return SettingsFragment().apply {
+                arguments = args
+            }
+        }
     }
 }

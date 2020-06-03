@@ -4,6 +4,7 @@
 
 package org.mozilla.focus.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,11 @@ import org.mozilla.rocket.content.news.ui.NewsTabFragment;
 
 public class SettingsActivity extends BaseActivity {
     public static final int ACTIVITY_RESULT_LOCALE_CHANGED = 1;
+    public static final String EXTRA_ACTION = "action";
+
+    public static Intent getStartIntent(final Context context, final String action) {
+        return new Intent(context, SettingsActivity.class).putExtra(EXTRA_ACTION, action);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,8 +52,11 @@ public class SettingsActivity extends BaseActivity {
                     .replace(R.id.container, new NewsSettingFragment())
                     .commit();
         } else {
+            String action = (intent != null && intent.getStringExtra(EXTRA_ACTION) != null) ?
+                    intent.getStringExtra(EXTRA_ACTION) : "";
+
             getFragmentManager().beginTransaction()
-                    .replace(R.id.container, new SettingsFragment())
+                    .replace(R.id.container, SettingsFragment.newInstance(action), SettingsFragment.TAG)
                     .commit();
         }
 
@@ -55,6 +64,18 @@ public class SettingsActivity extends BaseActivity {
         // anywhere before now (the title can only be set via AndroidManifest, and ensuring
         // that that loads the correct locale string is tricky).
         applyLocale();
+    }
+
+    // Need to pass the new intent which may trigger from the deep-link to the SettingsFragment
+    // or it won't be acted as expected when the settings page is already in foreground.
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        android.app.Fragment fragment = getFragmentManager().findFragmentByTag(SettingsFragment.TAG);
+        if (fragment instanceof SettingsFragment) {
+            ((SettingsFragment) fragment).onNewIntent(intent);
+        }
     }
 
     @Override
