@@ -15,9 +15,11 @@ import android.view.View
 import android.widget.Switch
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.Settings
@@ -27,6 +29,7 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel.DefaultBrowserPreferenceUiModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @TargetApi(Build.VERSION_CODES.N)
@@ -71,6 +74,7 @@ class DefaultBrowserPreference : Preference {
         viewModel.openDefaultAppsSettingsTutorialDialog.observe(context.toFragmentActivity(), Observer { DialogUtils.showGoToSystemAppsSettingsDialog(context, viewModel) })
         viewModel.openUrlTutorialDialog.observe(context.toFragmentActivity(), Observer { DialogUtils.showOpenUrlDialog(context, viewModel) })
         viewModel.successToSetDefaultBrowser.observe(context.toFragmentActivity(), Observer { showSuccessMessage() })
+        viewModel.failToSetDefaultBrowser.observe(context.toFragmentActivity(), Observer { showFailMessage() })
     }
 
     fun update(uiModel: DefaultBrowserPreferenceUiModel) {
@@ -115,7 +119,7 @@ class DefaultBrowserPreference : Preference {
 
     private fun triggerWebOpen() {
         val viewIntent = Intent(Intent.ACTION_VIEW)
-        viewIntent.data = Uri.parse("http://mozilla.org")
+        viewIntent.data = Uri.parse(SupportUtils.getSumoURLForTopic(context, "rocket-default"))
 
         //  Put a mojo to force MainActivity finish it's self, we probably need an intent flag to handle the task problem (reorder/parent/top)
         viewIntent.putExtra(EXTRA_RESOLVE_BROWSER, true)
@@ -125,6 +129,17 @@ class DefaultBrowserPreference : Preference {
     private fun showSuccessMessage() {
         val successMessageText = context.getString(R.string.message_set_default_success, context.getString(R.string.app_name))
         Toast.makeText(context, successMessageText, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showFailMessage() {
+        switchView?.let {
+            val failMessageText = context.getString(R.string.message_set_default_incomplet, context.getString(R.string.app_name))
+            Snackbar.make(it, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
+                .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
+                    viewModel.performSettingDefaultBrowserAction()
+                    TelemetryWrapper.clickSetDefaultTryAgainSnackBar(TelemetryWrapper.Extra_Value.TRY_AGAIN)
+                }.show()
+        }
     }
 
     companion object {

@@ -27,7 +27,6 @@ import org.mozilla.focus.fragment.DownloadsFragment
 import org.mozilla.focus.history.BrowsingHistoryFragment
 import org.mozilla.focus.persistence.TabsDatabase
 import org.mozilla.focus.persistence.di.TabsModule
-import org.mozilla.focus.settings.SettingsFragment
 import org.mozilla.focus.tabs.tabtray.TabTrayFragment
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.widget.DefaultBrowserPreference
@@ -144,7 +143,6 @@ interface AppComponent {
     fun inject(travelExploreFragment: TravelExploreFragment)
     fun inject(travelCitySearchActivity: TravelCitySearchActivity)
     fun inject(travelBucketListFragment: TravelBucketListFragment)
-    fun inject(settingFragment: SettingsFragment)
     fun inject(defaultBrowserPreference: DefaultBrowserPreference)
 
     @VisibleForTesting

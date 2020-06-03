@@ -15,10 +15,6 @@ import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.PreferenceScreen
 import android.text.TextUtils
-import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
-import dagger.Lazy
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
 import org.mozilla.focus.activity.SettingsActivity
@@ -31,26 +27,15 @@ import org.mozilla.focus.utils.DialogUtils.createShareAppDialog
 import org.mozilla.focus.utils.FirebaseHelper.getFirebase
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.widget.DefaultBrowserPreference
-import org.mozilla.rocket.content.appComponent
-import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.debugging.DebugActivity.Companion.getStartIntent
-import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog.Intents.getStartIntentFromSetting
 import org.mozilla.rocket.privately.ShortcutUtils.Companion.createShortcut
-import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
 import org.mozilla.telemetry.TelemetryHolder
 import java.util.Locale
-import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener {
-    @Inject
-    lateinit var defaultBrowserPreferenceViewModelCreator: Lazy<DefaultBrowserPreferenceViewModel>
-
-    private lateinit var defaultBrowserPreferenceViewModel: DefaultBrowserPreferenceViewModel
-
     private var localeUpdated = false
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent().inject(this)
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.settings)
         val rootPreferences = findPreference(PREF_KEY_ROOT) as PreferenceScreen?
@@ -62,9 +47,6 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         }
         val preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness))
         preferenceNightMode?.isEnabled = Settings.getInstance(activity).isNightModeEnable
-
-        defaultBrowserPreferenceViewModel = getActivityViewModel(defaultBrowserPreferenceViewModelCreator)
-        defaultBrowserPreferenceViewModel.failToSetDefaultBrowser.observe(activity.toFragmentActivity(), Observer { showFailMessage() })
     }
 
     override fun onPreferenceTreeClick(preferenceScreen: PreferenceScreen, preference: Preference): Boolean {
@@ -174,16 +156,6 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
             // For other events, we handle them here.
             TelemetryWrapper.settingsEvent(key, sharedPreferences.all[key].toString(), false)
         }
-    }
-
-    private fun showFailMessage() {
-        val rootView = (activity.findViewById(android.R.id.content) as ViewGroup).getChildAt(0) as ViewGroup
-        val failMessageText = getString(R.string.message_set_default_incomplet, getString(R.string.app_name))
-        Snackbar.make(rootView, failMessageText, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
-                defaultBrowserPreferenceViewModel.performSettingDefaultBrowserAction()
-                TelemetryWrapper.clickSetDefaultTryAgainSnackBar(TelemetryWrapper.Extra_Value.TRY_AGAIN)
-            }.show()
     }
 
     companion object {
