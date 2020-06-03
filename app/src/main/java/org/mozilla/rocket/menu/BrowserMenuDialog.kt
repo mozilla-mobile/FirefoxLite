@@ -8,6 +8,11 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.img_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_bookmark
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_download
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_history
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.chrome.BottomBarItemAdapter
@@ -48,8 +53,38 @@ class BrowserMenuDialog : BottomSheetDialog {
 
     private fun initLayout() {
         contentLayout = layoutInflater.inflate(R.layout.bottom_sheet_browser_menu, null)
+        initMenuTabs(contentLayout)
         initBottomBar()
         setContentView(contentLayout)
+    }
+
+    private fun initMenuTabs(contentLayout: View) {
+        val activity = context.toFragmentActivity()
+        contentLayout.apply {
+            chromeViewModel.hasUnreadScreenshot.observe(activity, Observer {
+                img_screenshots.isActivated = it
+            })
+
+            menu_screenshots.setOnClickListener {
+                cancel()
+                chromeViewModel.showScreenshots()
+            }
+            menu_bookmark.setOnClickListener {
+                cancel()
+                chromeViewModel.showBookmarks.call()
+                TelemetryWrapper.clickMenuBookmark()
+            }
+            menu_history.setOnClickListener {
+                cancel()
+                chromeViewModel.showHistory.call()
+                TelemetryWrapper.clickMenuHistory()
+            }
+            menu_download.setOnClickListener {
+                cancel()
+                chromeViewModel.showDownloadPanel.call()
+                TelemetryWrapper.clickMenuDownload()
+            }
+        }
     }
 
     private fun initBottomBar() {
