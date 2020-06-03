@@ -3,6 +3,7 @@ package org.mozilla.rocket.menu
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_pin_sh
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.night_mode_switch
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.scroll_view
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.turbomode_switch
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
@@ -64,6 +66,10 @@ class BrowserMenuDialog : BottomSheetDialog {
 
         initLayout()
         observeChromeAction()
+
+        setOnDismissListener {
+            contentLayout.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+        }
     }
 
     private fun initLayout() {
