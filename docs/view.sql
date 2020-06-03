@@ -222,6 +222,13 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('message') ) AND (event_value IN ('setdefault_travel_search') ) THEN 'Rocket -  Show Set-default Travel Search Message' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('message') ) AND (event_value IN ('setdefault_travel_search') ) THEN 'Rocket -  Click Set-default Travel Search Message' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('toast') ) AND (event_value IN ('exit_warning') ) THEN 'Rocket -  Show Exit Warning Toast' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('message') ) AND (event_value IN ('set_default_by_settings') ) THEN 'Rocket -  Show Set-Default by Settings Message' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('message') ) AND (event_value IN ('set_default_by_link') ) THEN 'Rocket -  Show Set-Default by Link Message' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('message') ) AND (event_value IN ('set_default_by_settings') ) THEN 'Rocket -  Click Set-Default by Settings Message' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('message') ) AND (event_value IN ('set_default_by_link') ) THEN 'Rocket -  Click Set-Default by Link Message' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('toast') ) AND (event_value IN ('set_default_success') ) THEN 'Rocket -  Show Set-Default Success Toast' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('snackbar') ) AND (event_value IN ('set_default_try_again') ) THEN 'Rocket -  Show Set-Default Try-again Snackbar' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('snackbar') ) AND (event_value IN ('set_default_try_again') ) THEN 'Rocket -  Click Set-Default Try-again Snackbar' 
 
     END AS event_name,
     event_timestamp AS timestamp,
