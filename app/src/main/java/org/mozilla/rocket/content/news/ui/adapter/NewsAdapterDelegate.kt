@@ -56,5 +56,9 @@ data class NewsUiModel(
     val publishTime: Long,
     val componentId: String,
     val feed: String,
-    val subCategoryId: String
+    val subCategoryId: String,
+    val trackingUrl: String = "",
+    val trackingId: String = "",
+    val trackingData: String = "",
+    val attributionUrl: String = ""
 ) : DelegateAdapter.UiModel()

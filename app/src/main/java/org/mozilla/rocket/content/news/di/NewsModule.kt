@@ -21,6 +21,7 @@ import org.mozilla.rocket.content.news.domain.SetUserPreferenceLanguageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldEnablePersonalizedNewsUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowNewsLanguageSettingPageUseCase
 import org.mozilla.rocket.content.news.domain.ShouldShowPersonalizedNewsOnboardingUseCase
+import org.mozilla.rocket.content.news.domain.TrackNewsItemsShownUseCase
 import org.mozilla.rocket.content.news.ui.NewsLanguageSettingViewModel
 import org.mozilla.rocket.content.news.ui.NewsPageStateViewModel
 import org.mozilla.rocket.content.news.ui.NewsSettingsViewModel
@@ -65,6 +66,12 @@ object NewsModule {
 
     @JvmStatic
     @Provides
+    fun provideTrackNewsItemsShownUseCase(
+        newsRepository: NewsRepository
+    ): TrackNewsItemsShownUseCase = TrackNewsItemsShownUseCase(newsRepository)
+
+    @JvmStatic
+    @Provides
     fun provideGetAdditonalSourceInfoUseCase(newsSettingsRepositoryProvider: NewsSettingsRepositoryProvider): GetAdditionalSourceInfoUseCase =
         GetAdditionalSourceInfoUseCase(newsSettingsRepositoryProvider.provideNewsSettingsRepository())
 
@@ -105,8 +112,10 @@ object NewsModule {
 
     @JvmStatic
     @Provides
-    fun provideNewsViewModel(loadNews: LoadNewsUseCase): NewsViewModel =
-        NewsViewModel(loadNews)
+    fun provideNewsViewModel(
+        loadNews: LoadNewsUseCase,
+        trackNewsItemsShown: TrackNewsItemsShownUseCase
+    ): NewsViewModel = NewsViewModel(loadNews, trackNewsItemsShown)
 
     @JvmStatic
     @Provides

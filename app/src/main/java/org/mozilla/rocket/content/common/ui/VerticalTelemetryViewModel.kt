@@ -1,6 +1,8 @@
 package org.mozilla.rocket.content.common.ui
 
 import android.os.Looper
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,10 @@ class VerticalTelemetryViewModel : ViewModel() {
     private var category: String = ""
     private var versionIdMap = HashMap<String, Long>()
     private val impressionMap = HashMap<String, HashMap<String, Int>>()
+
+    private val _impression = MutableLiveData<Impression>()
+    val impression: LiveData<Impression>
+        get() = _impression
 
     fun onSessionStarted(vertical: String) {
         this.vertical = vertical
@@ -27,8 +33,16 @@ class VerticalTelemetryViewModel : ViewModel() {
 
     fun onCategorySelected(newCategory: String) {
         triggerCategoryImpressionTelemetryEvent()
+        if (category.isNotEmpty()) {
+            impressionMap[category]?.let {
+                _impression.value = Impression(category, it, true)
+            }
+        }
 
         category = newCategory
+        impressionMap[category]?.let {
+            _impression.value = Impression(category, it, true)
+        }
         TelemetryWrapper.openCategory(vertical, newCategory)
     }
 
@@ -46,10 +60,17 @@ class VerticalTelemetryViewModel : ViewModel() {
     fun updateImpression(category: String, subCategoryId: String, maxIndex: Int) {
         val index = impressionMap[category]?.get(subCategoryId) ?: 0
         if (index < maxIndex) {
+            val isFirstImpression = (impressionMap[category] == null)
             if (impressionMap[category] == null) {
                 impressionMap[category] = hashMapOf((subCategoryId to maxIndex))
             } else {
                 impressionMap[category]?.set(subCategoryId, maxIndex)
+            }
+
+            if (this.category == category) {
+                impressionMap[category]?.let {
+                    _impression.value = Impression(category, it, isFirstImpression)
+                }
             }
         }
     }
@@ -106,3 +127,9 @@ private fun RecyclerView.updateImpression(telemetryViewModel: VerticalTelemetryV
         )
     }
 }
+
+data class Impression(
+    val category: String,
+    val positionMap: HashMap<String, Int>,
+    val significant: Boolean = false // is it the first or last impression?
+)
