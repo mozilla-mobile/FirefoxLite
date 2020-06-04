@@ -71,22 +71,12 @@ public class MenuTest {
         // check my shots
         onView(withId(R.id.menu_screenshots)).check(matches(isDisplayed()));
 
-        // check turbo mode displayed, enabled
-        onView(withId(R.id.menu_turbomode)).check(matches(isEnabled()));
-
-        onView(withId(R.id.menu_turbomode)).check(matches(isDisplayed()));
-
         // check private mode displayed
-        onView(withId(R.id.private_browsing_btn)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_private_browsing)).check(matches(isDisplayed()));
 
         // check night mode displayed
         onView(withId(R.id.menu_night_mode)).check(matches(isDisplayed()));
-
-        // check block img displayed
-        onView(withId(R.id.menu_blockimg)).check(matches(isDisplayed()));
-
-        // check find in page displayed
-        onView(withId(R.id.menu_find_in_page)).check(matches(isDisplayed()));
+        onView(withId(R.id.night_mode_switch)).check(matches(isDisplayed()));
 
         // check clear cached displayed
         onView(withId(R.id.menu_delete)).check(matches(isDisplayed()));
