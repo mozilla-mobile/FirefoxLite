@@ -415,6 +415,11 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                 goForward()
             }
         })
+        chromeViewModel.goBack.observe(viewLifecycleOwner, Observer {
+            if (canGoBack()) {
+                goBack()
+            }
+        })
         chromeViewModel.showFindInPage.observe(viewLifecycleOwner, Observer {
             if (chromeViewModel.navigationState.value?.isBrowser == true) {
                 showFindInPage()

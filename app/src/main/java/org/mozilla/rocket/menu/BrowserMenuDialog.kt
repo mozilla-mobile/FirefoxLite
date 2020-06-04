@@ -231,6 +231,10 @@ class BrowserMenuDialog : BottomSheetDialog {
                         chromeViewModel.goNext.call()
                         TelemetryWrapper.clickToolbarForward(TelemetryWrapper.Extra_Value.MENU, position)
                     }
+                    BottomBarItemAdapter.TYPE_BACK -> {
+                        chromeViewModel.goBack.call()
+                        TelemetryWrapper.clickToolbarBack(position)
+                    }
                     else -> throw IllegalArgumentException("Unhandled bottom bar item, type: $type")
                 } // move Telemetry to ScreenCaptureTask doInBackground() cause we need to init category first.
             }
@@ -250,6 +254,8 @@ class BrowserMenuDialog : BottomSheetDialog {
                 .observe(activity, Observer { bottomBarItemAdapter.setRefreshing(it == true) })
         chromeViewModel.canGoForward.switchFrom(menuViewModel.bottomItems)
                 .observe(activity, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
+        chromeViewModel.canGoBack.switchFrom(menuViewModel.bottomItems)
+                .observe(activity, Observer { bottomBarItemAdapter.setCanGoBack(it == true) })
         chromeViewModel.isCurrentUrlBookmarked.switchFrom(menuViewModel.bottomItems)
                 .observe(activity, Observer { bottomBarItemAdapter.setBookmark(it == true) })
     }
