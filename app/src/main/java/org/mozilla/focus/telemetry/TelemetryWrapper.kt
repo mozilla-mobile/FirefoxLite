@@ -2057,20 +2057,6 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Default Browser Service Failed",
-            category = Category.ACTION,
-            method = Method.CHANGE,
-            `object` = Object.DEFAULT_BROWSER,
-            value = "",
-            extras = [TelemetryExtra(name = Extra.SUCCESS, value = "true,false")])
-    @JvmStatic
-    fun onDefaultBrowserServiceFailed() {
-        EventBuilder(Category.ACTION, Method.CHANGE, Object.DEFAULT_BROWSER)
-                .extra(Extra.SUCCESS, java.lang.Boolean.toString(false))
-                .queue()
-    }
-
-    @TelemetryDoc(
             name = "Promote Share Dialog Clicked",
             category = Category.ACTION,
             method = Method.CLICK,
