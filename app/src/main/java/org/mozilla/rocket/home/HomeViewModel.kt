@@ -260,9 +260,15 @@ class HomeViewModel(
             is Site.UrlSite -> {
                 pinTopSiteUseCase(site)
                 updateTopSitesData()
+                val allowToLogTitle = if (site is Site.UrlSite.RemovableSite) {
+                    site.isDefault
+                } else {
+                    false
+                }
+                val title = if (allowToLogTitle) site.title else ""
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-                TelemetryWrapper.pinTopSite(site.title, topSitePosition)
+                TelemetryWrapper.pinTopSite(title, topSitePosition)
             }
         }
     }
