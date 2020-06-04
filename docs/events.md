@@ -203,4 +203,4 @@
 |Click Set-Default by Link Message|action|click|message|"set_default_by_link"|"action=ok,cancel," 
 |Show Set-Default Success Toast|action|show|toast|"set_default_success"|"" 
 |Show Set-Default Try-again Snackbar|action|show|snackbar|"set_default_try_again"|"" 
-|Click Set-Default Try-again Snackbar|action|click|snackbar|"set_default_try_again"|"action=dismiss,try_again," 
+|Click Set-Default Try-again Snackbar|action|click|snackbar|"set_default_try_again"|"action=try_again," 
