@@ -1217,6 +1217,22 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Click Toolbar - Back",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.TOOLBAR,
+            value = Value.BACK,
+            extras = [
+                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
+            ])
+    @JvmStatic
+    fun clickToolbarBack(position: Int) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.BACK)
+                .extra(Extra.POSITION, position.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Click Toolbar - Reload",
             category = Category.ACTION,
             method = Method.CLICK,
