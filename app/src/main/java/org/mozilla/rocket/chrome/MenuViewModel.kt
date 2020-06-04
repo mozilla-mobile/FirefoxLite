@@ -76,10 +76,10 @@ class MenuViewModel : ViewModel() {
         )
         @JvmStatic
         val DEFAULT_MENU_BOTTOM_ITEMS: List<BottomBarItemAdapter.ItemData> = listOf(
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_BACK),
             BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_NEXT),
-            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
             BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_BOOKMARK),
-            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_PIN_SHORTCUT),
+            BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_CAPTURE),
             BottomBarItemAdapter.ItemData(BottomBarItemAdapter.TYPE_SHARE)
         )
     }
