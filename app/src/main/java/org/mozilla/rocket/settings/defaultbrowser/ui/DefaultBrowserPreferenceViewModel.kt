@@ -28,7 +28,11 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     private var isDefaultBrowser: Boolean = false
     private var hasDefaultBrowser: Boolean = false
 
-    private var tryToSetDefaultBrowser: Boolean = false
+    private var tryToSetDefaultBrowser: Boolean
+        get() = defaultBrowserRepository.hasSetDefaultBrowserInProgress()
+        set(value) {
+            defaultBrowserRepository.setDefaultBrowserInProgress(value)
+        }
 
     fun refreshSettings() {
         isDefaultBrowser = defaultBrowserRepository.isDefaultBrowser()
