@@ -30,8 +30,6 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
 
     private var tryToSetDefaultBrowser: Boolean = false
 
-    private var actionFromNotification: Boolean = false
-
     fun refreshSettings() {
         isDefaultBrowser = defaultBrowserRepository.isDefaultBrowser()
         hasDefaultBrowser = defaultBrowserRepository.hasDefaultBrowser()
@@ -47,12 +45,10 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     }
 
     fun performAction() {
-        actionFromNotification = false
         performSettingDefaultBrowserAction()
     }
 
     fun performActionFromNotification() {
-        actionFromNotification = true
         performSettingDefaultBrowserAction()
     }
 
@@ -68,11 +64,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             hasDefaultBrowser -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     openDefaultAppsSettingsTutorialDialog.call()
-                    if (actionFromNotification) {
-                        TelemetryWrapper.showSetDefaultByLinkMessage()
-                    } else {
-                        TelemetryWrapper.showSetDefaultBySettingsMessage()
-                    }
+                    TelemetryWrapper.showSetDefaultBySettingsMessage()
                 } else {
                     // TODO: Change to the flow #4 in SPEC
                     openSumoPage.call()
@@ -80,11 +72,7 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
             }
             else -> {
                 openUrlTutorialDialog.call()
-                if (actionFromNotification) {
-                    TelemetryWrapper.showSetDefaultByLinkMessage()
-                } else {
-                    TelemetryWrapper.showSetDefaultBySettingsMessage()
-                }
+                TelemetryWrapper.showSetDefaultByLinkMessage()
             }
         }
     }
@@ -109,37 +97,21 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     fun clickGoToSystemDefaultAppsSettings() {
         tryToSetDefaultBrowser = true
         openDefaultAppsSettings.call()
-        if (actionFromNotification) {
-            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.OK)
-        } else {
-            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
-        }
+        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
     }
 
     fun cancelGoToSystemDefaultAppsSettings() {
-        if (actionFromNotification) {
-            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.CANCEL)
-        } else {
-            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
-        }
+        TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
     }
 
     fun clickOpenUrl() {
         tryToSetDefaultBrowser = true
         triggerWebOpen.call()
-        if (actionFromNotification) {
-            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.OK)
-        } else {
-            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.OK)
-        }
+        TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.OK)
     }
 
     fun cancelOpenUrl() {
-        if (actionFromNotification) {
-            TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.CANCEL)
-        } else {
-            TelemetryWrapper.clickSetDefaultBySettingsMessage(TelemetryWrapper.Extra_Value.CANCEL)
-        }
+        TelemetryWrapper.clickSetDefaultByLinkMessage(TelemetryWrapper.Extra_Value.CANCEL)
     }
 
     data class DefaultBrowserPreferenceUiModel(

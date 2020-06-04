@@ -141,7 +141,7 @@ class DefaultBrowserPreference : Preference {
             Snackbar.make(it, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
                 .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
                     viewModel.performAction()
-                    TelemetryWrapper.clickSetDefaultTryAgainSnackBar(TelemetryWrapper.Extra_Value.TRY_AGAIN)
+                    TelemetryWrapper.clickSetDefaultTryAgainSnackBar()
                 }.show()
         }
     }

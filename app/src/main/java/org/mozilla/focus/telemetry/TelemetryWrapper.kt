@@ -3859,11 +3859,11 @@ object TelemetryWrapper {
             `object` = Object.SNACKBAR,
             value = Value.SET_DEFAULT_TRY_AGAIN,
             extras = [
-                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.DISMISS},${Extra_Value.TRY_AGAIN}")
+                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.TRY_AGAIN}")
             ])
-    fun clickSetDefaultTryAgainSnackBar(action: String) {
+    fun clickSetDefaultTryAgainSnackBar() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.SNACKBAR, Value.SET_DEFAULT_TRY_AGAIN)
-                .extra(Extra.ACTION, action)
+                .extra(Extra.ACTION, Extra_Value.TRY_AGAIN)
                 .queue()
     }
 
