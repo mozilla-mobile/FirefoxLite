@@ -24,6 +24,8 @@ import org.mozilla.focus.BuildConfig;
 import org.mozilla.focus.R;
 import org.mozilla.focus.activity.MainActivity;
 import org.mozilla.focus.notification.NotificationActionBroadcastReceiver;
+import org.mozilla.focus.notification.RocketMessagingService;
+import org.mozilla.rocket.deeplink.DeepLinkConstants;
 import org.mozilla.rocket.tabs.TabView;
 
 import java.io.File;
@@ -210,6 +212,13 @@ public class IntentUtils {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(IntentUtils.EXTRA_IS_INTERNAL_REQUEST, true);
         intent.putExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, openInNewTab);
+        return intent;
+    }
+
+    public static Intent createSetDefaultBrowserIntent(Context context) {
+        Intent intent = new Intent();
+        intent.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
+        intent.putExtra(RocketMessagingService.STR_PUSH_DEEP_LINK, "rocket://command?command=" + DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER);
         return intent;
     }
 
