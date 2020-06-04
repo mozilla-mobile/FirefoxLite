@@ -123,7 +123,6 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('get') ) AND (event_object IN ('firstrun_push') ) AND event_value IS NULL THEN 'Rocket -  Receive Firstrun Push config' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('firstrun_push') ) AND event_value IS NULL THEN 'Rocket -  Firstrun Push notification shown' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('default_browser') ) AND event_value IS NULL THEN 'Rocket -  Default Browser Notification Clicked' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('default_browser') ) AND event_value IS NULL THEN 'Rocket -  Default Browser Service Failed' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('promote_share') ) AND (event_value IN ('dismiss', 'share') ) THEN 'Rocket -  Promote Share Dialog Clicked' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('promote_share') ) AND event_value IS NULL THEN 'Rocket -  Promote Share Dialog shown' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('themetoy') ) AND event_value IS NULL THEN 'Rocket -  Change Theme To' 

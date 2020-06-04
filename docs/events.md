@@ -99,7 +99,6 @@
 |Receive Firstrun Push config|action|get|firstrun_push|""|"delay=minutes,message_id=message_id,link=url|deeplink|null,background=true|false," 
 |Firstrun Push notification shown|action|show|firstrun_push|""|"delay=minutes,message_id=message_id,link=url|deeplink|null,background=true|false," 
 |Default Browser Notification Clicked|action|click|default_browser|""|"source=notification,version=version," 
-|Default Browser Service Failed|action|change|default_browser|""|"success=true,false," 
 |Promote Share Dialog Clicked|action|click|promote_share|"dismiss,share"|"source=contextual_hints,settings," 
 |Promote Share Dialog shown|action|show|promote_share|""|"" 
 |Change Theme To|action|change|themetoy|""|"to=theme name," 

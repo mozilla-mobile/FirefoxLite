@@ -644,7 +644,7 @@ object DialogUtils {
             .onPositive {
                 viewModel.clickGoToSystemDefaultAppsSettings()
             }
-            .onClose {
+            .onNegative {
                 viewModel.cancelGoToSystemDefaultAppsSettings()
             }
         dialog.show()
@@ -689,7 +689,7 @@ object DialogUtils {
             .onPositive {
                 viewModel.clickOpenUrl()
             }
-            .onClose {
+            .onNegative {
                 viewModel.cancelOpenUrl()
             }
         dialog.show()
