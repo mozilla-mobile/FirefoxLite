@@ -20,7 +20,6 @@ import org.mozilla.focus.utils.AppConstants;
 import org.mozilla.focus.utils.IntentUtils;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.SupportUtils;
-import org.mozilla.rocket.deeplink.DeepLinkConstants;
 
 import static org.mozilla.focus.notification.RocketMessagingService.STR_PUSH_COMMAND;
 import static org.mozilla.focus.notification.RocketMessagingService.STR_PUSH_DEEP_LINK;
@@ -96,9 +95,7 @@ public class NotificationActionBroadcastReceiver extends BroadcastReceiver {
             NotificationManagerCompat.from(context).cancel(NotificationId.LOVE_FIREFOX);
 
         } else if (bundle.getBoolean(IntentUtils.EXTRA_NOTIFICATION_CLICK_DEFAULT_BROWSER)) {
-            nexStep = new Intent();
-            nexStep.setClassName(context, AppConstants.LAUNCHER_ACTIVITY_ALIAS);
-            nexStep.putExtra(STR_PUSH_DEEP_LINK, "rocket://command?command=" + DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER);
+            nexStep = IntentUtils.createSetDefaultBrowserIntent(context);
 
             TelemetryWrapper.clickDefaultSettingNotification();
 

@@ -18,6 +18,7 @@ import android.database.ContentObserver
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import android.widget.Toast
@@ -84,6 +85,7 @@ import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.promotion.PromotionModel
 import org.mozilla.rocket.promotion.PromotionPresenter
 import org.mozilla.rocket.promotion.PromotionViewContract
+import org.mozilla.rocket.settings.defaultbrowser.data.DefaultBrowserRepository
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabView
 import org.mozilla.rocket.tabs.TabViewProvider
@@ -91,6 +93,7 @@ import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.widget.enqueue
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(),
@@ -107,6 +110,8 @@ class MainActivity : BaseActivity(),
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
     @Inject
     lateinit var tabModelStore: TabModelStore
+    @Inject
+    lateinit var defaultBrowserRepository: DefaultBrowserRepository
 
     val portraitStateModel = PortraitStateModel()
     private lateinit var chromeViewModel: ChromeViewModel
@@ -354,6 +359,22 @@ class MainActivity : BaseActivity(),
         downloadIndicatorViewModel.updateIndicator()
         chromeViewModel.checkIfPrivateBrowsingActive()
         chromeViewModel.onSessionStarted()
+
+        checkHasSetDefaultBrowserInProgress()
+    }
+
+    private fun checkHasSetDefaultBrowserInProgress() {
+        if (defaultBrowserRepository.hasSetDefaultBrowserInProgress()) {
+            defaultBrowserRepository.setDefaultBrowserInProgress(false)
+            val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0) as ViewGroup
+            val failMessageText = getString(R.string.message_set_default_incomplet, getString(R.string.app_name))
+            Snackbar.make(rootView, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
+                .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
+                    startActivity(IntentUtils.createSetDefaultBrowserIntent(this))
+                    TelemetryWrapper.clickSetDefaultTryAgainSnackBar()
+                }.show()
+            TelemetryWrapper.showSetDefaultTryAgainSnackbar()
+        }
     }
 
     override fun onPause() {
