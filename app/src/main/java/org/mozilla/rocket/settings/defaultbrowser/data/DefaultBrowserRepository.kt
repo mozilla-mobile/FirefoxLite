@@ -6,5 +6,9 @@ class DefaultBrowserRepository(private val defaultBrowserDataSource: DefaultBrow
 
     fun hasDefaultBrowser() = defaultBrowserDataSource.hasDefaultBrowser()
 
+    fun hasSetDefaultBrowserInProgress() = defaultBrowserDataSource.hasSetDefaultBrowserInProgress()
+
+    fun setDefaultBrowserInProgress(isInProgress: Boolean) = defaultBrowserDataSource.setDefaultBrowserInProgress(isInProgress)
+
     fun getTutorialImagesUrl(): TutorialImagesUrl = defaultBrowserDataSource.getTutorialImagesUrl()
 }
