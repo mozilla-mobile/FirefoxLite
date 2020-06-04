@@ -142,6 +142,12 @@ class NewsFragment : Fragment() {
                 getCategory(),
                 NewsItem.DEFAULT_SUB_CATEGORY_ID
             )
+
+            telemetryViewModel.impression.observe(viewLifecycleOwner, Observer { impression ->
+                if (getCategory() == impression.category) {
+                    newsViewModel.onNewsItemsShown(impression)
+                }
+            })
         })
     }
 
