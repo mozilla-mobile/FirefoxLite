@@ -49,7 +49,9 @@ class DefaultBrowserPreferenceViewModel(private val defaultBrowserRepository: De
     }
 
     fun performActionFromNotification() {
-        performSettingDefaultBrowserAction()
+        if (!isDefaultBrowser) {
+            performSettingDefaultBrowserAction()
+        }
     }
 
     private fun performSettingDefaultBrowserAction() {
