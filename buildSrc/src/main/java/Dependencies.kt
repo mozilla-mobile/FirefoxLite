@@ -50,7 +50,7 @@ object Versions {
     const val firebase_config = "19.0.3"
     const val firebase_auth = "19.2.0"
     const val firebase_iam = "19.0.3"
-    const val fcm = "20.2.0"
+    const val fcm = "20.0.1"
     const val crashlytics = "2.10.1"
     const val google_services_plugin = "3.1.1"
     const val fabric_plugin = "1.25.1"
