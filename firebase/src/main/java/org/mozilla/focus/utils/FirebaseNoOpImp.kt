@@ -104,14 +104,4 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit) {
     }
-
-    override fun newTrace(key: String): TraceHelper {
-        return object : TraceHelper {
-            override fun start() {
-            }
-
-            override fun stop() {
-            }
-        }
-    }
 }
