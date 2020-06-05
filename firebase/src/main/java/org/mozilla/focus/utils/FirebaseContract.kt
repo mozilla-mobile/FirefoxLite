@@ -78,9 +78,9 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit)
 
-    abstract fun newTrace(key: String): FirebaseTrace
+    abstract fun newTrace(key: String): TraceHelper
 
-    interface FirebaseTrace {
+    interface TraceHelper {
         fun start()
         fun stop()
     }

@@ -47,23 +47,6 @@ android {
             resValue "string", "com.crashlytics.android.build_id", UUID.randomUUID().toString()
         }
     }
-    flavorDimensions "product", "engine"
-
-    productFlavors {
-        focus {
-            dimension "product"
-        }
-
-        preview {
-            dimension "product"
-        }
-
-        // We can build with two engines: webkit or gecko
-        webkit {
-            dimension "engine"
-        }
-
-    }
 }
 
 dependencies {
@@ -75,8 +58,7 @@ dependencies {
     api "com.google.firebase:firebase-messaging:${Versions.fcm}"
     implementation "com.crashlytics.sdk.android:crashlytics:${Versions.crashlytics}"
     implementation "com.google.firebase:firebase-auth:${Versions.firebase_auth}"
-    previewImplementation 'com.google.firebase:firebase-perf:19.0.7'
-    debugImplementation 'com.google.firebase:firebase-perf:19.0.7'
+    implementation 'com.google.firebase:firebase-perf:19.0.7'
     implementation ("com.google.firebase:firebase-inappmessaging-display:${Versions.firebase_iam}") {
         // TODO: need to check if it can be moved to firebase module after this or worker manager libraries upgraded
         // has conflicts with existing library
