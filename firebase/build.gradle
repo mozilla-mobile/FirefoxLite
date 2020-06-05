@@ -64,14 +64,6 @@ android {
         }
 
     }
-
-    variantFilter { variant ->
-        def flavors = variant.flavors*.name
-        // We only need a nightly release for now
-        if (flavors.contains("preview") && variant.buildType.name != "release") {
-            setIgnore(true)
-        }
-    }
 }
 
 dependencies {
