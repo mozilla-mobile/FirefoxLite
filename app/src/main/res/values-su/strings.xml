@@ -97,7 +97,7 @@
   <string name="label_menu_clear_cache">Beresihan telih</string>
   <string name="label_menu_history">Jujutan</string>
   <string name="label_menu_share">Bagikeun</string>
-  <string name="label_menu_my_shots">Téwakan kuring</string>
+  <string name="label_menu_my_shots">Téwakan layar</string>
   <string name="label_menu_capture_page">Téwak kaca</string>
   <string name="label_menu_turbo_mode">Modeu turbo</string>
   <string name="label_menu_night_mode">Modeu peuting</string>
@@ -105,6 +105,7 @@
   <string name="label_menu_block_image">Peungpeuk gambar</string>
   <string name="label_menu_settings">Setélan</string>
   <string name="label_menu_exit">Kaluar</string>
+  <string name="label_menu_add_to_home_screen">Tambahkeun ka layar tepas</string>
   <string name="permission_toast_location_deny">Idin lokasi ditolak.</string>
   <string name="permission_toast_storage_deny">Idin teundeunan ditolak.</string>
   <string name="permission_handler_permission_dialog_setting">setélan</string>
@@ -178,6 +179,7 @@
   <string name="message_disable_block_image">Ayeuna gambar ditémbongkeun</string>
   <string name="message_clear_cache_fail">Teu bisa meresihan telih</string>
   <string name="message_storage_unavailable_cancel_download">Paneundeunan teu bisa diaksés. Undeuran dibolaykeun.</string>
+  <string name="message_exit_app">Pencét BALIK deui pikeun kaluar</string>
   <string name="message_cleared_cached">%1$s telih diberesihan</string>
   <string name="message_cleared_browsing_data">Data langlangan diberesihan</string>
   <string name="message_deleted_screenshot">Téwakan layar dipupus</string>
@@ -190,6 +192,15 @@
   <string name="update_to_latest_app_snack_bar_update">MUTAHIRKEUN</string>
   <string name="privacy_policy_update_notification_title">Wawar Apdétan Prodak</string>
   <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
+  <string name="message_set_default_success">Nuhun geus milih %1$s!</string>
+  <string name="message_set_default_incomplet">Badé nganggeuskeun setélan %1$s salaku panyungsi baku anjeun?</string>
+  <string name="setting_default_browser_instruction_system_settings">Setél %1$s salaku panyungsi baku anjeun dina 30 detik</string>
+  <string name="setting_default_browser_instruction_open_external_link">Cara pikeun salawasna nyungsi maké %1$s?</string>
+  <string name="instruction_select">Pilih %1$s</string>
+  <string name="browser_app">Aplikasi panyungsi</string>
+  <string name="instruction_tap">Toél %1$s</string>
+  <string name="always">Matuh</string>
+  <string name="setting_default_browser_instruction_button">Buka setélan</string>
   <string name="rate_app_dialog_text_title">Bogoh %1$s?</string>
   <string name="rate_app_dialog_text_content">Hatur nuhun geus milih prodak kami. Pangdeudeul anjeun kacida utama pikeun kami.</string>
   <string name="rate_app_dialog_btn_go_rate">Peunteun Kami</string>
