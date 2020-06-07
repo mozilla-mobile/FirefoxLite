@@ -32,7 +32,7 @@
   <string name="preference_data_saving_block_images">ปิดกั้นภาพ</string>
   <string name="preference_privacy_storage_clear_browsing_data">ล้างข้อมูลการเรียกดู</string>
   <string name="preference_privacy_storage_save_downloads_to">บันทึกการดาวน์โหลดไปยัง</string>
-  <string name="preference_default_browser">ทำให้เป็นเบราว์เซอร์เริ่มต้น</string>
+  <string name="preference_default_browser">ตั้งเป็นเบราว์เซอร์เริ่มต้น</string>
   <string name="preference_default_browser_is_setting">กำลังเปลี่ยนการตั้งค่า…</string>
   <string name="preference_turbo_mode">โหมดเทอร์โบ</string>
   <string name="preference_mozilla_telemetry">ส่งข้อมูลการใช้งาน</string>
@@ -97,7 +97,7 @@
   <string name="label_menu_clear_cache">ล้างแคช</string>
   <string name="label_menu_history">ประวัติ</string>
   <string name="label_menu_share">แบ่งปัน</string>
-  <string name="label_menu_my_shots">ภาพหน้าจอของฉัน</string>
+  <string name="label_menu_my_shots">ภาพหน้าจอ</string>
   <string name="label_menu_capture_page">จับภาพหน้า</string>
   <string name="label_menu_turbo_mode">โหมดเทอร์โบ</string>
   <string name="label_menu_night_mode">โหมดกลางคืน</string>
@@ -105,6 +105,7 @@
   <string name="label_menu_block_image">ปิดกั้นภาพ</string>
   <string name="label_menu_settings">การตั้งค่า</string>
   <string name="label_menu_exit">ออก</string>
+  <string name="label_menu_add_to_home_screen">เพิ่มไปยังหน้าจอหลัก</string>
   <string name="permission_toast_location_deny">ปฏิเสธสิทธิอนุญาตตำแหน่งที่ตั้งแล้ว</string>
   <string name="permission_toast_storage_deny">ปฏิเสธสิทธิอนุญาตที่เก็บข้อมูลแล้ว</string>
   <string name="permission_handler_permission_dialog_setting">การตั้งค่า</string>
@@ -191,6 +192,15 @@
   <string name="update_to_latest_app_snack_bar_update">อัปเดต</string>
   <string name="privacy_policy_update_notification_title">ประกาศการอัปเดตผลิตภัณฑ์</string>
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Lite ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
+  <string name="message_set_default_success">ขอบคุณที่เลือก %1$s!</string>
+  <string name="message_set_default_incomplet">คุณต้องการตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณหรือไม่?</string>
+  <string name="setting_default_browser_instruction_system_settings">ตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณใน 30 วินาที</string>
+  <string name="setting_default_browser_instruction_open_external_link">จะเรียกดูด้วย %1$s เสมอได้อย่างไร?</string>
+  <string name="instruction_select">เลือก %1$s</string>
+  <string name="browser_app">แอปเบราว์เซอร์</string>
+  <string name="instruction_tap">แตะ %1$s</string>
+  <string name="always">เสมอ</string>
+  <string name="setting_default_browser_instruction_button">ไปยังการตั้งค่า</string>
   <string name="rate_app_dialog_text_title">รัก %1$s?</string>
   <string name="rate_app_dialog_text_content">ขอบคุณที่เลือกผลิตภัณฑ์ของเรา ข้อคิดเห็นของคุณเป็นสิ่งสำคัญสำหรับเรา</string>
   <string name="rate_app_dialog_btn_go_rate">ให้คะแนนเรา</string>
