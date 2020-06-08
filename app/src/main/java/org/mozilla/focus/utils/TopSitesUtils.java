@@ -15,14 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.rocket.abtesting.LocalAbTesting;
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo;
-import org.mozilla.rocket.home.topsites.domain.GetTopSitesAbTestingUseCase;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ylai on 2017/8/14.
@@ -48,20 +44,7 @@ public class TopSitesUtils {
     public static JSONArray getDefaultSitesJsonArrayFromAssets(Context context) {
         JSONArray obj = null;
         try {
-            // TODO: Remove after top site AB testing finished
-            if (LocalAbTesting.INSTANCE.isExperimentEnabled(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES) &&
-                    LocalAbTesting.INSTANCE.checkAssignedBucket(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES) != null) {
-                obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.abtesting_topsites));
-                String bucket = LocalAbTesting.INSTANCE.checkAssignedBucket(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES);
-                int fixedSiteCount = GetTopSitesAbTestingUseCase.Companion.getFixedSiteCount(bucket);
-                int defaultPinCount = GetTopSitesAbTestingUseCase.Companion.getDefaultPinCount(bucket);
-                for (int i = 0; i < fixedSiteCount + defaultPinCount; i++) {
-                    obj.remove(0);
-                }
-            } else {
-                obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.topsites));
-            }
-
+            obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.topsites));
             long lastViewTimestampSystem = System.currentTimeMillis();
             for (int i = 0; i < obj.length(); i++) {
                 ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
