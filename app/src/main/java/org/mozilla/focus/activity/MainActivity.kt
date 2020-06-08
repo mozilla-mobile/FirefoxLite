@@ -366,6 +366,9 @@ class MainActivity : BaseActivity(),
     private fun checkHasSetDefaultBrowserInProgress() {
         if (defaultBrowserRepository.hasSetDefaultBrowserInProgress()) {
             defaultBrowserRepository.setDefaultBrowserInProgress(false)
+            if (defaultBrowserRepository.isDefaultBrowser()) {
+                return
+            }
             val rootView = findViewById<ViewGroup>(android.R.id.content).getChildAt(0) as ViewGroup
             val failMessageText = getString(R.string.message_set_default_incomplet, getString(R.string.app_name))
             Snackbar.make(rootView, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
