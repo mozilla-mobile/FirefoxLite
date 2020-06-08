@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +43,7 @@ public class SearchEngine {
     // moving into memory - hence we probably want to keep this field for now:
     @SuppressFBWarnings(value = "URF_UNREAD_FIELD", justification = "Needed for future versions, reflects on-disk format")
     /* package */ Uri suggestUri;
+    /* package */ String searchForm;
 
     /* package */ SearchEngine(String identifier) {
         this.identifier = identifier;
@@ -57,6 +60,11 @@ public class SearchEngine {
 
     public Bitmap getIcon() {
         return icon;
+    }
+
+    @VisibleForTesting
+    public String getSearchForm() {
+        return searchForm;
     }
 
     public String buildSearchUrl(final String searchTerm) {

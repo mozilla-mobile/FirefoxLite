@@ -8,7 +8,9 @@ package org.mozilla.focus.search;
 import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+
 import androidx.annotation.VisibleForTesting;
+
 import android.util.Base64;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -75,6 +77,8 @@ import java.nio.charset.StandardCharsets;
                 readUrl(parser, searchEngine);
             } else if (tag.equals("Image")) {
                 readImage(parser, searchEngine);
+            } else if (tag.equals("SearchForm")) {
+                readSearchForm(parser, searchEngine);
             } else {
                 skip(parser);
             }
@@ -163,5 +167,13 @@ import java.nio.charset.StandardCharsets;
         searchEngine.icon = BitmapFactory.decodeByteArray(raw, 0, raw.length);
 
         parser.nextTag();
+    }
+
+    private static void readSearchForm(XmlPullParser parser, SearchEngine searchEngine) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, null, "SearchForm");
+        if (parser.next() == XmlPullParser.TEXT) {
+            searchEngine.searchForm = parser.getText();
+            parser.nextTag();
+        }
     }
 }
