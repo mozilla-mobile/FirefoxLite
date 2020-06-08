@@ -49,10 +49,6 @@ class TopSitesRepo(
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
 
-    fun getAbTestingSites(): List<Site>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting_topsites)
-                    ?.jsonStringToSites()
-
     suspend fun getHistorySites(): List<Site> {
         return if (needToCheckDbVersion) {
             needToCheckDbVersion = false
@@ -121,16 +117,6 @@ class TopSitesRepo(
         }
     }
 
-    suspend fun removeAbTesting(site: Site) {
-        pinSiteManager.unpinned(site)
-        if (site.isDefault) {
-            removeDefaultSiteAbTesting(site)
-        }
-        withContext(Dispatchers.IO) {
-            updateTopSiteToDb(site.apply { viewCount = 1 })
-        }
-    }
-
     private suspend fun updateTopSiteToDb(site: Site) {
         suspendCoroutine<Unit> { continuation ->
             BrowsingHistoryManager.getInstance().updateLastEntry(site) { continuation.resume(Unit) }
@@ -158,36 +144,6 @@ class TopSitesRepo(
                 e.printStackTrace()
             }
         }
-    }
-
-    // TODO: Remove after top site AB testing finished
-    fun removeDefaultSiteAbTesting(site: Site) {
-        // TODO: To be removed
-//        val defaultSitesJsonArray = getDefaultTopSitesJsonString()?.toJsonArray()
-//                ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting_topsites)?.toJsonArray()?.apply {
-//                    val bucket = LocalAbTesting.checkAssignedBucket(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES)
-//                    val fixedSiteCount = GetTopSitesAbTestingUseCase.getFixedSiteCount(bucket)
-//                    val defaultPinCount = GetTopSitesAbTestingUseCase.getDefaultPinCount(bucket)
-//                    repeat(fixedSiteCount + defaultPinCount) {
-//                        this.remove(0)
-//                    }
-//                }
-//        if (defaultSitesJsonArray != null) {
-//            try {
-//                defaultSitesJsonArray.apply {
-//                    for (i in 0 until this.length()) {
-//                        val jsonObject = this.get(i) as JSONObject
-//                        if (site.id == jsonObject.getLong("id")) {
-//                            this.remove(i)
-//                            break
-//                        }
-//                    }
-//                }
-//                TopSitesUtils.saveDefaultSites(appContext, defaultSitesJsonArray)
-//            } catch (e: JSONException) {
-//                e.printStackTrace()
-//            }
-//        }
     }
 
     fun isPinned(site: Site): Boolean = pinSiteManager.isPinned(site)

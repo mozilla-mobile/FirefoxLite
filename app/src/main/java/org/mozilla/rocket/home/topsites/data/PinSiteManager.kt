@@ -16,8 +16,6 @@ import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.utils.TopSitesUtils
-import org.mozilla.rocket.util.AssetsUtils
-import org.mozilla.rocket.util.getJsonArray
 
 class PinSiteManager(
     private val pinSiteDelegate: PinSiteDelegate
@@ -150,21 +148,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         if (isFirstInit) {
             log("init finished")
             onFirstInitComplete()
-        }
-    }
-
-    // TODO: Remove after top site AB testing finished
-    private fun getAbTestingSites(): List<Site>? =
-            AssetsUtils.loadStringFromRawResource(context, R.raw.abtesting_topsites)
-                    ?.jsonStringToSites()
-
-    // TODO: Remove after top site AB testing finished
-    private fun String.jsonStringToSites(): List<Site>? {
-        return try {
-            this.getJsonArray { TopSitesUtils.paresSite(it) }
-        } catch (e: JSONException) {
-            e.printStackTrace()
-            null
         }
     }
 
