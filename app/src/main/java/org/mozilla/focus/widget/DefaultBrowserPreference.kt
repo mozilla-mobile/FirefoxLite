@@ -5,6 +5,7 @@
 package org.mozilla.focus.widget
 
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.os.Build
 import android.preference.Preference
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -136,14 +138,13 @@ class DefaultBrowserPreference : Preference {
     }
 
     private fun showFailMessage() {
-        switchView?.let {
-            val failMessageText = context.getString(R.string.message_set_default_incomplet, context.getString(R.string.app_name))
-            Snackbar.make(it, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
-                .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
-                    viewModel.performAction()
-                    TelemetryWrapper.clickSetDefaultTryAgainSnackBar()
-                }.show()
-        }
+        val rootView = (context as Activity).findViewById<ViewGroup>(android.R.id.content).getChildAt(0) as ViewGroup
+        val failMessageText = context.getString(R.string.message_set_default_incomplet, context.getString(R.string.app_name))
+        Snackbar.make(rootView, failMessageText, TimeUnit.SECONDS.toMillis(8).toInt())
+            .setAction(R.string.private_browsing_dialog_add_shortcut_yes) {
+                viewModel.performAction()
+                TelemetryWrapper.clickSetDefaultTryAgainSnackBar()
+            }.show()
     }
 
     companion object {
