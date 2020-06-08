@@ -21,38 +21,5 @@
         "bucket_range_end": 20
       }
     ]
-  },
-  {
-    "name": "ab_testing_experiment_name_top_sites",
-    "enabled": true,
-    "newUserEnabled": false,
-    "upgradedUserEnabled": false,
-    "buckets": [
-      {
-        "experiment_name": "id_topsite_rr_0429_control",
-        "bucket_range_start": 1,
-        "bucket_range_end": 4
-      },
-      {
-        "experiment_name": "id_topsite_rr_0429_2pinned",
-        "bucket_range_start": 5,
-        "bucket_range_end": 8
-      },
-      {
-        "experiment_name": "id_topsite_rr_0429_2unpinable",
-        "bucket_range_start": 9,
-        "bucket_range_end": 12
-      },
-      {
-        "experiment_name": "id_topsite_rr_0429_0pinned",
-        "bucket_range_start": 13,
-        "bucket_range_end": 16
-      },
-      {
-        "experiment_name": "id_topsite_rr_0429_4unpinable",
-        "bucket_range_start": 17,
-        "bucket_range_end": 20
-      }
-    ]
   }
 ]
