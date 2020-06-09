@@ -15,18 +15,13 @@ import android.webkit.CookieManager;
 import android.webkit.WebViewDatabase;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryManager;
-import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.component.PrivateSessionNotificationService;
 import org.mozilla.rocket.privately.PrivateMode;
-
-import java.util.Set;
+import org.mozilla.threadutils.ThreadUtils;
 
 /**
  * Created by ylai on 2017/8/3.
@@ -56,13 +51,9 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
             //  On click positive callback here get current value by getValues();
             for (String value : getValues()) {
                 if (resources.getString(R.string.pref_value_clear_browsing_history).equals(value)) {
+                    final Runnable runnable = new FileUtils.DeleteFolderRunnable(FileUtils.getFaviconFolder(getContext()));
+                    ThreadUtils.postToBackgroundThread(runnable);
                     BrowsingHistoryManager.getInstance().deleteAll(null);
-                    TopSitesUtils.clearTopSiteData(getContext());
-
-                    /*  TODO: Use interface (PinSiteManager) instead of implementation
-                        (SharedPreferencePinSiteDelegate) */
-                    SharedPreferencePinSiteDelegate.Companion.resetPinSiteData(getContext());
-
                 } else if (resources.getString(R.string.pref_value_clear_cookies).equals(value)) {
                     CookieManager.getInstance().removeAllCookies(null);
                     // Also clear cookies in private mode process if the process exist
@@ -89,28 +80,4 @@ public class CleanBrowsingDataPreference extends MultiSelectListPreference {
             }
         }
     }
-
-    private Object flattenToJsonObject(Set<String> values) {
-        final JSONObject object = new JSONObject();
-
-        final String[] preferenceKeys = getContext().getResources().getStringArray(R.array.clean_browsing_data_values);
-        if (preferenceKeys.length <= 0) {
-            return object;
-        }
-
-        for (String key : preferenceKeys) {
-            try {
-                if (values.contains(key)) {
-                    object.put(key, Boolean.TRUE.toString());
-                } else {
-                    object.put(key, JSONObject.NULL);
-                }
-            } catch (JSONException e) {
-                throw new AssertionError("Preference value can't be serialized to JSON", e);
-            }
-        }
-
-        return object;
-    }
-
 }
