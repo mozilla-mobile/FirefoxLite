@@ -45,12 +45,6 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
 
         private const val JSON_KEY_BOOLEAN_IS_ENABLED = "isEnabled"
         private const val JSON_KEY_STRING_PARTNER = "partner"
-
-        fun resetPinSiteData(context: Context) {
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).apply {
-                edit().putBoolean(KEY_BOOLEAN_FIRST_INIT, true).putString(KEY_STRING_JSON, "").apply()
-            }
-        }
     }
 
     private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
