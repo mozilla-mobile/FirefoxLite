@@ -276,6 +276,10 @@ class HomeViewModel(
         }
     }
 
+    fun onClearBrowsingHistory() {
+        updateTopSitesData()
+    }
+
     fun onContentHubItemClicked(item: ContentHub.Item) = viewModelScope.launch {
         openContentPage.value = item
         readContentHubItemUseCase(item.getItemType())
