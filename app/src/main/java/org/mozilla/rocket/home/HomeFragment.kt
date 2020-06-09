@@ -247,6 +247,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 showTopSiteMenu(anchorView, allowToPin, site, position)
             })
         }
+        chromeViewModel.clearBrowsingHistory.observe(viewLifecycleOwner, Observer {
+            homeViewModel.onClearBrowsingHistory()
+        })
     }
 
     private fun initContentHub() {

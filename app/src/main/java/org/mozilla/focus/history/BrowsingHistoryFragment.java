@@ -22,7 +22,6 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.focus.utils.TopSitesUtils;
 import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
@@ -87,7 +86,6 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                             return;
                         }
                         mAdapter.clear();
-                        TopSitesUtils.getDefaultSitesJsonArrayFromAssets(ctx);
                         ChromeViewModel chromeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
                         chromeViewModel.getClearBrowsingHistory().call();
                         TelemetryWrapper.clearHistory();
