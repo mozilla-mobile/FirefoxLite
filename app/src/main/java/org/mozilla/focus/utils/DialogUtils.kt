@@ -666,7 +666,7 @@ object DialogUtils {
         )
         val styleSpan = StyleSpan(Typeface.BOLD)
         val firstStepDescription = context.getString(R.string.instruction_select)
-            .highlightPlaceholder(context.getString(R.string.browser_app), styleSpan)
+            .highlightPlaceholder(context.getString(R.string.app_name), styleSpan)
         val secondStepDescription = context.getString(R.string.instruction_tap)
             .highlightPlaceholder(context.getString(R.string.always), styleSpan)
 
