@@ -257,6 +257,31 @@
     <string name="label_menu_exit">Exit</string>
     <!-- Menu text for adding websites to users' home screen. -->
     <string name="label_menu_add_to_home_screen">Add to home screen</string>
+    <!-- Menu text for turning content & services on/off -->
+    <string name="label_menu_content_services">Show Content &amp; Services</string>
+    <!-- Menu text for adding new top sites -->
+    <string name="label_menu_add_top_sites">Add top sites</string>
+    <!-- Menu text for setting themes -->
+    <string name="label_menu_themes">Themes</string>
+   
+    <!-- Add top sites -->
+    <!-- top sites categories on the top sites list -->
+    <string name="top_site_category_1">Popular Websites</string>
+    <string name="top_site_category_2">Social Media</string>
+    <string name="top_site_category_3">Entertainment</string>
+    <string name="top_site_category_4">Others</string>
+   
+    <!-- Message shown after the user added a top site on Home successfully-->
+    <string name="add_top_site_snackbar_1">Top site added</string>
+    <!-- Message shown after the user added an existing top site on Home -->
+    <string name="add_top_site_snackbar_2">The site has been added</string>
+    <!-- Error message shown when the user has no spaces to add new top sites -->
+    <string name="add_top_site_toast">Please remove a top site beforehand</string>
+    <!-- a button for adding more top sites -->
+    <string name="add_top_site_button">ADD MORE</string>
+    <!-- a placeholder for adding more top sites -->
+    <string name="add_top_site_placeholder">Add</string>
+   
 
     <!-- Message shown after user denied location permission prompt. -->
     <string name="permission_toast_location_deny">Location permission is denied.</string>
@@ -428,7 +453,7 @@
     <!--Message shown after user tried to set Firefox Lite as default browser, and be directed to system settings then back, but we detect the default browser is still not Firefox Lite. The %1$s is Firefox Lite.-->
     <string name="message_set_default_incomplet">Would you like to finish setting %1$s as your default browser?</string>
     <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they be directed to system settings page to complete the settings. The %1$s is Firefox Lite.-->
-    <string name="setting_default_browser_instruction_system_settings">Set %1$s as your default browser in 30 seconds</string>
+    <string name="setting_default_browser_instruction_system_settings">Set %1$s as your default browser</string>
     <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they need to choose Firefox Lite and check Always. The %1$s is Firefox Lite.-->
     <string name="setting_default_browser_instruction_open_external_link">How to always browse with %1$s?</string>
     <!--Text shown in the setting default browser instruction, the complete sentence is "Select Browser app", but we separate the sentences for code implementing purpose. "Browser app" is replaced with %1$s, so that we can identify the text of placeholder and show it as Bold font.-->
