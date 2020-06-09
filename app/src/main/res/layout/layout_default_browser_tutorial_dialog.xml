@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingStart="30dp"
-    android:paddingEnd="30dp">
+    android:paddingStart="28dp"
+    android:paddingEnd="28dp">
 
     <TextView
         android:id="@+id/title"
