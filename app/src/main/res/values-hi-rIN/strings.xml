@@ -32,7 +32,7 @@
   <string name="preference_data_saving_block_images">चित्र ब्लॉक करें</string>
   <string name="preference_privacy_storage_clear_browsing_data">ब्राउज़िंग डेटा मिटाएं</string>
   <string name="preference_privacy_storage_save_downloads_to">डाउनलोड्स को सहेजें</string>
-  <string name="preference_default_browser">तयशुदा ब्राउज़र बनाएं</string>
+  <string name="preference_default_browser">तयशुदा ब्राउज़र के रूप में सेट करें</string>
   <string name="preference_default_browser_is_setting">सेटिंग बदले जा रहे हैं…</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">उपयोग डेटा भेजें</string>
@@ -105,6 +105,7 @@
   <string name="label_menu_block_image">चित्र ब्लॉक करें</string>
   <string name="label_menu_settings">सेटिंग</string>
   <string name="label_menu_exit">निकास</string>
+  <string name="label_menu_add_to_home_screen">मुख्य पृष्ठ में जोड़ें</string>
   <string name="permission_toast_location_deny">स्थान की अनुमति ख़ारिज कर दी गयी।</string>
   <string name="permission_toast_storage_deny">स्टोरेज की अनुमति ख़ारिज कर दी गयी।</string>
   <string name="permission_handler_permission_dialog_setting">सेटिंग</string>
@@ -178,6 +179,7 @@
   <string name="message_disable_block_image">अब चित्र दिख रहे हैं</string>
   <string name="message_clear_cache_fail">कैशे मिटाने में अक्षम</string>
   <string name="message_storage_unavailable_cancel_download">संग्रहण पहुंच से बाहर। डाउनलोड रद्द किया गया।</string>
+  <string name="message_exit_app">बाहर निकलने के लिए वापस जाएं को फिर से दबाएं</string>
   <string name="message_cleared_cached">%1$s कैशे मिटा दिया गया</string>
   <string name="message_cleared_browsing_data">ब्राउज़िंग डेटा मिटा दिया गया</string>
   <string name="message_deleted_screenshot">स्क्रीनशॉट मिटा दिया गया</string>
@@ -190,6 +192,15 @@
   <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">प्रोडक्ट अद्यतन सूचना</string>
   <string name="privacy_policy_update_notification_action">Firefox Lite को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएं।</string>
+  <string name="message_set_default_success">%1$s को चुनने के लिए धन्यवाद!</string>
+  <string name="message_set_default_incomplet">क्या आप अपने तयशुदा ब्राउज़र के रूप में %1$s की सेटिंग समाप्त करना चाहेंगे?</string>
+  <string name="setting_default_browser_instruction_system_settings">30 सेकंड में %1$s को अपने तयशुदा ब्राउज़र के रूप में सेट करें</string>
+  <string name="setting_default_browser_instruction_open_external_link">हमेशा %1$s के साथ कैसे ब्राउज़ करें?</string>
+  <string name="instruction_select">%1$s चुनें</string>
+  <string name="browser_app">ब्राउज़र ऐप</string>
+  <string name="instruction_tap">%1$s को दबाएं</string>
+  <string name="always">हमेशा</string>
+  <string name="setting_default_browser_instruction_button">सेटिंग में जाएं</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद आया?</string>
   <string name="rate_app_dialog_text_content">हमारे प्रोडक्ट को चुनने के लिए धन्यवाद। आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</string>
   <string name="rate_app_dialog_btn_go_rate">हमें रेट करें</string>
