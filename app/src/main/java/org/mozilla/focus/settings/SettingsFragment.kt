@@ -50,7 +50,7 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         val preferenceNightMode = findPreference(getString(R.string.pref_key_night_mode_brightness))
         preferenceNightMode?.isEnabled = Settings.getInstance(activity).isNightModeEnable
 
-        if (DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER == arguments.getString(SettingsActivity.EXTRA_ACTION)) {
+        if (DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER == arguments?.getString(SettingsActivity.EXTRA_ACTION)) {
             triggerSetDefaultBrowserAction()
         }
     }
