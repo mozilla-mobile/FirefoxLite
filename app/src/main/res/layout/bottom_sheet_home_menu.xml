@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
-        android:layout_height="315dp"
+        android:layout_height="336dp"
         android:paddingBottom="12dp"
         android:orientation="vertical"
         android:background="@drawable/background_menu">
