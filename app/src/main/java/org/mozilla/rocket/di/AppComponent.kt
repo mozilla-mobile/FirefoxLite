@@ -58,6 +58,7 @@ import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.menu.HomeMenuDialog
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.msrp.ui.ChallengeListFragment
@@ -114,6 +115,7 @@ interface AppComponent {
     fun inject(privateHomeFragment: PrivateHomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
     fun inject(menuDialog: MenuDialog)
+    fun inject(homeMenuDialog: HomeMenuDialog)
     fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
     fun inject(privateModeActivity: PrivateModeActivity)
     fun inject(gameActivity: GameActivity)

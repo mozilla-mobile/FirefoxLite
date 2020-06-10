@@ -132,26 +132,6 @@ public class MenuShareLinkTest {
         intended(allOf(hasAction(Intent.ACTION_CHOOSER), hasExtra(is(Intent.EXTRA_INTENT), allOf(hasAction(Intent.ACTION_SEND), hasExtra(Intent.EXTRA_TEXT, getLinkUrl())))));
     }
 
-    /**
-     * Test case no: TC0037
-     * Test case name: Share btn disabled on home page
-     * Steps:
-     * 1. Launch app
-     * 2. Tap menu
-     * 3. Check share btn disabled
-     */
-    @Test
-    public void shareLinkDisabledOnHomePage() {
-
-        // Tap menu
-        AndroidTestUtils.tapHomeMenuButton();
-
-        // Check share btn disabled
-        onView(new BottomBarRobot().menuBottomBarItemView(R.id.bottom_bar_share))
-                .inRoot(RootMatchers.isDialog())
-                .check(matches(not(isEnabled())));
-    }
-
 
     private void loadTestWebsiteAndShareLinkInMenu() {
         sessionLoadedIdlingResource = new SessionLoadedIdlingResource(intentsTestRule.getActivity());

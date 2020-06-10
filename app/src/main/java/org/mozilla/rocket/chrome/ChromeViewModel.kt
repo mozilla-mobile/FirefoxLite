@@ -58,6 +58,7 @@ class ChromeViewModel(
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
     val showTabTray = SingleLiveEvent<Unit>()
+    val showHomeMenu = SingleLiveEvent<Unit>()
     val showMenu = SingleLiveEvent<Unit>()
     val showNewTab = SingleLiveEvent<Unit>()
     val showUrlInput = SingleLiveEvent<String?>()
@@ -83,7 +84,6 @@ class ChromeViewModel(
     val openPreference = SingleLiveEvent<Unit>()
     val showFindInPage = SingleLiveEvent<Unit>()
     val showAdjustBrightness = SingleLiveEvent<Unit>()
-    val showNightModeOnBoarding = SingleLiveEvent<Unit>()
 
     private var lastUrlLoadStart = 0L
     private var lastUrlLoadTime = 0L
@@ -108,12 +108,18 @@ class ChromeViewModel(
 
     fun adjustNightMode() {
         updateNightMode(true)
+        if (isFirstTimeEnableNightMode()) {
+            settings.nightModeBrightnessValue = AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS
+        }
         showAdjustBrightness.call()
     }
 
     fun onNightModeToggled() {
         updateNightMode(!settings.isNightModeEnable)
-        showAdjustBrightnessIfNeeded()
+        if (isFirstTimeEnableNightMode()) {
+            settings.nightModeBrightnessValue = AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS
+            showAdjustBrightness.call()
+        }
     }
 
     private fun updateNightMode(isEnabled: Boolean) {
@@ -121,15 +127,7 @@ class ChromeViewModel(
         TelemetryWrapper.menuNightModeChangeTo(isEnabled)
     }
 
-    private fun showAdjustBrightnessIfNeeded() {
-        val currentBrightness = settings.nightModeBrightnessValue
-        if (currentBrightness == BRIGHTNESS_OVERRIDE_NONE) {
-            // First time turn on
-            settings.nightModeBrightnessValue = AdjustBrightnessDialog.Constants.DEFAULT_BRIGHTNESS
-            showAdjustBrightness.call()
-            settings.setNightModeSpotlight(true)
-        }
-    }
+    private fun isFirstTimeEnableNightMode(): Boolean = settings.nightModeBrightnessValue == BRIGHTNESS_OVERRIDE_NONE
 
     fun onRestoreTabCountStarted() {
         isTabRestoredComplete.value = false
@@ -181,14 +179,6 @@ class ChromeViewModel(
 
     private fun updateMenu() {
         updateMenu.call()
-        checkIfShowPrivateBrowsingOnBoarding()
-    }
-
-    private fun checkIfShowPrivateBrowsingOnBoarding() {
-        if (settings.showNightModeSpotlight()) {
-            settings.setNightModeSpotlight(false)
-            showNightModeOnBoarding.call()
-        }
     }
 
     fun checkIfPrivateBrowsingActive() {
@@ -225,7 +215,6 @@ class ChromeViewModel(
     }
 
     fun onMyShotOnBoardingDisplayed() {
-        settings.setNightModeSpotlight(false)
         if (isMyShotOnBoardingPending.value != false) {
             isMyShotOnBoardingPending.value = false
         }

@@ -145,12 +145,14 @@
     <style name="MenuButtonText">
         <item name="android:paddingEnd">@dimen/menu_text_padding</item>
         <item name="android:paddingStart">@dimen/menu_text_padding</item>
-        <item name="android:textSize" tools:ignore="SpUsage">12dp</item>
+        <item name="android:textSize" tools:ignore="SpUsage">13dp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/paletteLightBlack100</item>
     </style>
 

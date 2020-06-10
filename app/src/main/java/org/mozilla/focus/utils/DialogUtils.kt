@@ -258,35 +258,6 @@ object DialogUtils {
         NewFeatureNotice.getInstance(context).setPrivacyPolicyUpdateNoticeDidShow()
     }
 
-    fun showNightModeBrightnessSpotlight(activity: Activity, targetView: View, onCancelListener: DialogInterface.OnCancelListener): Dialog =
-            SpotlightDialog.Builder(activity, targetView)
-                    .spotlightConfigs(
-                        CircleSpotlightConfigs(
-                            radius = activity.resources.getDimensionPixelSize(R.dimen.myshot_focus_view_radius),
-                            backgroundDimColor = ContextCompat.getColor(activity, R.color.myShotOnBoardingBackground)
-                        )
-                    )
-                    .setAttachedView(
-                        activity.inflate(R.layout.spotlight_hand_pointer),
-                        AttachedViewConfigs(
-                            position = AttachedPosition.TOP,
-                            gravity = AttachedGravity.END_ALIGN_START,
-                            marginEnd = activity.dpToPx(-42f),
-                            marginBottom = activity.dpToPx(-42f)
-                        )
-                    )
-                    .addView(
-                        activity.inflate(R.layout.spotlight_message).apply {
-                            spotlight_message.setText(R.string.night_mode_on_boarding_message)
-                        }, RelativeLayout.LayoutParams(RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                            addRule(RelativeLayout.ABOVE, R.id.spotlight_hand_pointer)
-                            addRule(RelativeLayout.CENTER_HORIZONTAL)
-                        })
-                    )
-                    .cancelListener(onCancelListener)
-                    .build()
-                    .also { it.show() }
-
     fun showMyShotOnBoarding(activity: Activity, targetView: View, cancelListener: DialogInterface.OnCancelListener, learnMore: View.OnClickListener?): Dialog =
             SpotlightDialog.Builder(activity, targetView)
                     .spotlightConfigs(
@@ -304,11 +275,13 @@ object DialogUtils {
                         }
                     )
                     .setAttachedView(
-                        activity.inflate(R.layout.spotlight_hand_pointer),
+                        (activity.inflate(R.layout.spotlight_hand_pointer) as ImageView).apply {
+                            scaleX = -1f
+                        },
                         AttachedViewConfigs(
                             position = AttachedPosition.TOP,
-                            gravity = AttachedGravity.END_ALIGN_START,
-                            marginEnd = activity.dpToPx(-42f),
+                            gravity = AttachedGravity.START_ALIGN_END,
+                            marginStart = activity.dpToPx(-42f),
                             marginBottom = activity.dpToPx(-42f)
                         )
                     )

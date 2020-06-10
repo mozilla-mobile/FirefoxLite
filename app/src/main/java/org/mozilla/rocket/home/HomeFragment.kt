@@ -142,7 +142,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
         home_fragment_menu_button.apply {
             setOnClickListener {
-                chromeViewModel.showMenu.call()
+                chromeViewModel.showHomeMenu.call()
                 TelemetryWrapper.showMenuHome()
             }
             setOnLongClickListener {

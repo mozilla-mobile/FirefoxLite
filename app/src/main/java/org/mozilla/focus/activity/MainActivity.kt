@@ -77,6 +77,7 @@ import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitComponent
 import org.mozilla.rocket.landing.PortraitStateModel
+import org.mozilla.rocket.menu.HomeMenuDialog
 import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
@@ -118,6 +119,7 @@ class MainActivity : BaseActivity(),
     private lateinit var downloadIndicatorViewModel: DownloadIndicatorViewModel
     private var promotionModel: PromotionModel? = null
 
+    private lateinit var homeMenu: HomeMenuDialog
     private lateinit var menu: MenuDialog
     private var mDialogFragment: DialogFragment? = null
     private var myshotOnBoardingDialog: Dialog? = null
@@ -222,6 +224,11 @@ class MainActivity : BaseActivity(),
     }
 
     private fun setUpMenu() {
+        homeMenu = HomeMenuDialog(this, R.style.BottomSheetTheme).apply {
+            setCanceledOnTouchOutside(true)
+            setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
+            setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.BottomMenu) }
+        }
         menu = MenuDialog(this, R.style.BottomSheetTheme).apply {
             setCanceledOnTouchOutside(true)
             setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
@@ -306,6 +313,7 @@ class MainActivity : BaseActivity(),
             showTabTray.observe(this@MainActivity, Observer {
                 TabTray.show(supportFragmentManager)
             })
+            showHomeMenu.observe(this@MainActivity, Observer { homeMenu.show() })
             showMenu.observe(this@MainActivity, Observer { menu.show() })
             showNewTab.observe(this@MainActivity, Observer {
                 screenNavigator.addHomeScreen(true)
@@ -327,7 +335,6 @@ class MainActivity : BaseActivity(),
                     this@MainActivity.showMyShotOnBoarding()
                 }
             }
-            showNightModeOnBoarding.observe(this@MainActivity, Observer { showNightModeOnBoarding() })
             isNightMode.nonNullObserve(this@MainActivity) { nightModeSettings ->
                 onNightModeEnabled(nightModeSettings.brightness, nightModeSettings.isEnabled)
             }
@@ -553,6 +560,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun dismissAllMenus() {
+        homeMenu.dismiss()
         menu.dismiss()
         visibleBrowserFragment?.run {
             dismissWebContextMenu()
@@ -687,16 +695,6 @@ class MainActivity : BaseActivity(),
 
         // Reset extra after dialog displayed.
         intent.extras?.putBoolean(IntentUtils.EXTRA_SHOW_RATE_DIALOG, false)
-    }
-
-    private fun showNightModeOnBoarding() {
-        val view = menu.findViewById<View>(R.id.menu_night_mode)
-        view?.post {
-            DialogUtils.showNightModeBrightnessSpotlight(
-                    this@MainActivity,
-                    view,
-                    DialogInterface.OnCancelListener {})
-        }
     }
 
     @VisibleForTesting
