@@ -50,6 +50,7 @@
 |Click Menu - Exit|action|click|menu|"exit"|"" 
 |Click Menu - Bookmarks|action|click|menu|"bookmark"|"" 
 |Click Toolbar - Forward|action|click|toolbar|"forward"|"version=2,mode=[webview|menu],position=[0-4]," 
+|Click Toolbar - Back|action|click|toolbar|"back"|"position=[0-4]," 
 |Click Toolbar - Reload|action|click|toolbar|"reload"|"version=2,mode=[webview|menu],position=[0-4],orientation=portrait,landscape," 
 |Click Toolbar - Share Link|action|share|toolbar|"link"|"version=2,mode=[webview|menu],position=[0-4],orientation=portrait,landscape," 
 |Click Toolbar - Add bookmark|action|share|toolbar|"bookmark"|"version=2,to=true,false,mode=[webview|menu],position=[0-4]," 

@@ -74,6 +74,7 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('menu') ) AND (event_value IN ('exit') ) THEN 'Rocket -  Click Menu - Exit' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('menu') ) AND (event_value IN ('bookmark') ) THEN 'Rocket -  Click Menu - Bookmarks' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('forward') ) THEN 'Rocket -  Click Toolbar - Forward' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('back') ) THEN 'Rocket -  Click Toolbar - Back' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('reload') ) THEN 'Rocket -  Click Toolbar - Reload' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Share Link' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('bookmark') ) THEN 'Rocket -  Click Toolbar - Add bookmark' 

@@ -54,7 +54,7 @@ class BottomBarRobot : BottomBarAutomation {
     override fun mockMenuBottomBarItems(items: List<BottomBarItemAdapter.ItemData>) {
         val firebase = FirebaseHelper.getFirebase()
         val spyFirebase = spy(firebase)
-        doReturn(items.toJsonString()).`when`(spyFirebase).getRcString(FirebaseHelper.STR_MENU_BOTTOM_BAR_ITEMS)
+        doReturn(items.toJsonString()).`when`(spyFirebase).getRcString(FirebaseHelper.STR_MENU_BOTTOM_BAR_ITEMS_V2_5)
         FirebaseHelper.replaceContract(spyFirebase)
     }
 

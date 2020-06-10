@@ -173,6 +173,12 @@ class BottomBarItemAdapter(
         }
     }
 
+    fun setCanGoBack(canGoBack: Boolean) {
+        getItem(TYPE_BACK)?.view?.apply {
+            isEnabled = canGoBack
+        }
+    }
+
     fun animatePrivateHome() {
         getItem(TYPE_PRIVATE_HOME)?.view?.apply {
             findViewById<LottieAnimationView>(R.id.pm_home_mask).playAnimation()

@@ -63,7 +63,7 @@ object FirebaseHelper {
 
     const val STR_BOTTOM_BAR_ITEMS_V2 = "str_bottom_bar_items_v2"
     const val STR_MENU_ITEMS = "str_menu_items"
-    const val STR_MENU_BOTTOM_BAR_ITEMS = "str_menu_bottom_bar_items"
+    const val STR_MENU_BOTTOM_BAR_ITEMS_V2_5 = "str_menu_bottom_bar_items_v2_5"
     const val STR_PRIVATE_BOTTOM_BAR_ITEMS = "str_private_bottom_bar_items"
 
     const val BOOL_IN_APP_UPDATE_SHOW_INTRO = "bool_in_app_update_show_intro"
