@@ -440,7 +440,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
                         TelemetryWrapper.showTabTrayToolbar(Extra_Value.WEBVIEW, position, isInLandscape())
                     }
                     BottomBarItemAdapter.TYPE_MENU -> {
-                        chromeViewModel.showMenu.call()
+                        chromeViewModel.showBrowserMenu.call()
                         TelemetryWrapper.showMenuToolbar(Extra_Value.WEBVIEW, position)
                     }
                     BottomBarItemAdapter.TYPE_HOME -> {

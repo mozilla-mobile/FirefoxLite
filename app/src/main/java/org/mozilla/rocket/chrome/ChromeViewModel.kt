@@ -59,7 +59,7 @@ class ChromeViewModel(
     val openUrl = SingleLiveEvent<OpenUrlAction>()
     val showTabTray = SingleLiveEvent<Unit>()
     val showHomeMenu = SingleLiveEvent<Unit>()
-    val showMenu = SingleLiveEvent<Unit>()
+    val showBrowserMenu = SingleLiveEvent<Unit>()
     val showNewTab = SingleLiveEvent<Unit>()
     val showUrlInput = SingleLiveEvent<String?>()
     val dismissUrlInput = SingleLiveEvent<Unit>()

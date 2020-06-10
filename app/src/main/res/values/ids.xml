@@ -35,6 +35,7 @@
     <item name="menu_delete" type="id"/>
     <item name="menu_preferences" type="id"/>
     <item name="menu_exit" type="id"/>
+    <item name="menu_pin_shortcut" type="id"/>
 
     <!-- Bottom Bar Items -->
     <item name="bottom_bar_tab_counter" type="id"/>

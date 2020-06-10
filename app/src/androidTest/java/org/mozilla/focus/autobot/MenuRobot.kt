@@ -3,10 +3,12 @@ package org.mozilla.focus.autobot
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.AndroidTestUtils
+import org.mozilla.focus.utils.NestedScrollViewExtension
 import tools.fastlane.screengrab.Screengrab
 
 interface MenuAutomation {
@@ -21,11 +23,11 @@ interface MenuAutomation {
     fun clickMenuDownloads()
     fun clickMenuHistory()
     fun clickMenuMyShots()
-    fun clickMenuTurboMode()
-    fun clickMenuBlockImages()
-    fun clickMenuClearCache()
-    fun clickMenuSettings()
-    fun clickExitApp()
+    fun clickMenuTurboMode(scrollTo: Boolean = false)
+    fun clickMenuBlockImages(scrollTo: Boolean = false)
+    fun clickMenuClearCache(scrollTo: Boolean = false)
+    fun clickMenuSettings(scrollTo: Boolean = false)
+    fun clickExitApp(scrollTo: Boolean = false)
 
     /** Click panel item **/
     fun clickPanelDownload()
@@ -71,33 +73,58 @@ open class MenuRobot : MenuAutomation {
                 .perform(click())
     }
 
-    override fun clickMenuTurboMode() {
+    override fun clickMenuTurboMode(scrollTo: Boolean) {
         onView(withId(R.id.menu_turbomode))
                 .inRoot(RootMatchers.isDialog())
+                .also {
+                    if (scrollTo) {
+                        it.perform(NestedScrollViewExtension(scrollTo()))
+                    }
+                }
                 .perform(click())
     }
 
-    override fun clickMenuBlockImages() {
+    override fun clickMenuBlockImages(scrollTo: Boolean) {
         onView(withId(R.id.menu_blockimg))
                 .inRoot(RootMatchers.isDialog())
+                .also {
+                    if (scrollTo) {
+                        it.perform(NestedScrollViewExtension(scrollTo()))
+                    }
+                }
                 .perform(click())
     }
 
-    override fun clickMenuClearCache() {
+    override fun clickMenuClearCache(scrollTo: Boolean) {
         onView(withId(R.id.menu_delete))
                 .inRoot(RootMatchers.isDialog())
+                .also {
+                    if (scrollTo) {
+                        it.perform(NestedScrollViewExtension(scrollTo()))
+                    }
+                }
                 .perform(click())
     }
 
-    override fun clickMenuSettings() {
+    override fun clickMenuSettings(scrollTo: Boolean) {
         onView(withId(R.id.menu_preferences))
                 .inRoot(RootMatchers.isDialog())
+                .also {
+                    if (scrollTo) {
+                        it.perform(NestedScrollViewExtension(scrollTo()))
+                    }
+                }
                 .perform(click())
     }
 
-    override fun clickExitApp() {
+    override fun clickExitApp(scrollTo: Boolean) {
         onView(withId(R.id.menu_exit))
                 .inRoot(RootMatchers.isDialog())
+                .also {
+                    if (scrollTo) {
+                        it.perform(NestedScrollViewExtension(scrollTo()))
+                    }
+                }
                 .perform(click())
     }
 

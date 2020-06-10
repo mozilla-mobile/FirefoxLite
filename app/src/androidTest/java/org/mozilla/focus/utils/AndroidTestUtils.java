@@ -120,7 +120,7 @@ public final class AndroidTestUtils {
             mainActivity.runOnUiThread(() -> {
                 ChromeViewModel chromeViewModelCreator = ExtentionKt.appComponent(mainActivity).chromeViewModel();
                 ChromeViewModel chromeViewModel = new ViewModelProvider(mainActivity, new BaseViewModelFactory<>(() -> chromeViewModelCreator)).get(ChromeViewModel.class);
-                chromeViewModel.getShowMenu().call();
+                chromeViewModel.getShowBrowserMenu().call();
             });
         }
     }
