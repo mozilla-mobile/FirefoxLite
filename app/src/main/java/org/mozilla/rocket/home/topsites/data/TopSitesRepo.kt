@@ -23,12 +23,10 @@ import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.TopSitesUtils
 import org.mozilla.icon.FavIconUtils
-import org.mozilla.rocket.abtesting.LocalAbTesting
-import org.mozilla.rocket.home.topsites.domain.GetTopSitesAbTestingUseCase
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import org.mozilla.rocket.util.AssetsUtils
-import org.mozilla.rocket.util.toJsonArray
 import org.mozilla.rocket.util.getJsonArray
+import org.mozilla.rocket.util.toJsonArray
 import java.util.ArrayList
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -50,10 +48,6 @@ class TopSitesRepo(
                     ?.jsonStringToSites()
 
     fun getPinnedSites(): List<Site> = pinSiteManager.getPinSites()
-
-    fun getAbTestingSites(): List<Site>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting_topsites)
-                    ?.jsonStringToSites()
 
     suspend fun getHistorySites(): List<Site> {
         return if (needToCheckDbVersion) {
@@ -123,16 +117,6 @@ class TopSitesRepo(
         }
     }
 
-    suspend fun removeAbTesting(site: Site) {
-        pinSiteManager.unpinned(site)
-        if (site.isDefault) {
-            removeDefaultSiteAbTesting(site)
-        }
-        withContext(Dispatchers.IO) {
-            updateTopSiteToDb(site.apply { viewCount = 1 })
-        }
-    }
-
     private suspend fun updateTopSiteToDb(site: Site) {
         suspendCoroutine<Unit> { continuation ->
             BrowsingHistoryManager.getInstance().updateLastEntry(site) { continuation.resume(Unit) }
@@ -144,35 +128,6 @@ class TopSitesRepo(
                 ?: FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS).takeIf { it.isNotEmpty() }
                 ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites)
         val defaultSitesJsonArray = defaultSitesString?.toJsonArray()
-        if (defaultSitesJsonArray != null) {
-            try {
-                defaultSitesJsonArray.apply {
-                    for (i in 0 until this.length()) {
-                        val jsonObject = this.get(i) as JSONObject
-                        if (site.id == jsonObject.getLong("id")) {
-                            this.remove(i)
-                            break
-                        }
-                    }
-                }
-                TopSitesUtils.saveDefaultSites(appContext, defaultSitesJsonArray)
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    // TODO: Remove after top site AB testing finished
-    fun removeDefaultSiteAbTesting(site: Site) {
-        val defaultSitesJsonArray = getDefaultTopSitesJsonString()?.toJsonArray()
-                ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.abtesting_topsites)?.toJsonArray()?.apply {
-                    val bucket = LocalAbTesting.checkAssignedBucket(GetTopSitesAbTestingUseCase.AB_TESTING_EXPERIMENT_NAME_TOP_SITES)
-                    val fixedSiteCount = GetTopSitesAbTestingUseCase.getFixedSiteCount(bucket)
-                    val defaultPinCount = GetTopSitesAbTestingUseCase.getDefaultPinCount(bucket)
-                    repeat(fixedSiteCount + defaultPinCount) {
-                        this.remove(0)
-                    }
-                }
         if (defaultSitesJsonArray != null) {
             try {
                 defaultSitesJsonArray.apply {

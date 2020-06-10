@@ -25,7 +25,6 @@ import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboard
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
-import org.mozilla.rocket.home.topsites.domain.GetTopSitesAbTestingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -53,7 +52,6 @@ object HomeModule {
     fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
-        getTopSitesAbTestingUseCase: GetTopSitesAbTestingUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -80,7 +78,6 @@ object HomeModule {
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
-        getTopSitesAbTestingUseCase,
         topSitesConfigsUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
@@ -110,11 +107,6 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetTopSitesUseCase(topSitesRepo: TopSitesRepo): GetTopSitesUseCase = GetTopSitesUseCase(topSitesRepo)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGetTopSitesAbTestingUseCase(topSitesRepo: TopSitesRepo): GetTopSitesAbTestingUseCase = GetTopSitesAbTestingUseCase(topSitesRepo)
 
     @JvmStatic
     @Singleton
