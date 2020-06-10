@@ -131,12 +131,21 @@ android {
         focus {
             resConfigs Localization.KEPT_LOCALE
             dimension "product"
+            FirebasePerformance {
+                // Set this flag to 'false' to disable @AddTrace annotation processing and
+                // automatic HTTP/S network request monitoring
+                // for a specific build variant at compile time.
+                instrumentationEnabled false
+            }
         }
 
         preview {
             dimension "product"
             applicationIdSuffix ".beta"
             versionNameSuffix ".beta"
+            FirebasePerformance {
+                instrumentationEnabled true
+            }
         }
 
         // We can build with two engines: webkit or gecko
