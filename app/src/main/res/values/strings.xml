@@ -453,7 +453,7 @@
     <!--Message shown after user tried to set Firefox Lite as default browser, and be directed to system settings then back, but we detect the default browser is still not Firefox Lite. The %1$s is Firefox Lite.-->
     <string name="message_set_default_incomplet">Would you like to finish setting %1$s as your default browser?</string>
     <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they be directed to system settings page to complete the settings. The %1$s is Firefox Lite.-->
-    <string name="setting_default_browser_instruction_system_settings">Set %1$s as your default browser</string>
+    <string name="setting_default_browser_instruction_system_settings">2 steps to set %1$s as your default browser</string>
     <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they need to choose Firefox Lite and check Always. The %1$s is Firefox Lite.-->
     <string name="setting_default_browser_instruction_open_external_link">How to always browse with %1$s?</string>
     <!--Text shown in the setting default browser instruction, the complete sentence is "Select Browser app", but we separate the sentences for code implementing purpose. "Browser app" is replaced with %1$s, so that we can identify the text of placeholder and show it as Bold font.-->
