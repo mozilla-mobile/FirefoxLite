@@ -67,7 +67,7 @@ class NewsViewModel(
         itemsLiveData?.value?.let {
             val newPosition = impression.positionMap[NewsItem.DEFAULT_SUB_CATEGORY_ID] ?: 0
             val lastPosition = categoryItemsShownMap[impression.category] ?: 0
-            if (newPosition != 0 && newPosition > lastPosition && (((newPosition - lastPosition) > DEFAULT_PAGE_SIZE) || impression.significant)) {
+            if (newPosition != 0 && newPosition > lastPosition && newPosition <= it.size && (((newPosition - lastPosition) > DEFAULT_PAGE_SIZE) || impression.significant)) {
                 trackNewsItemsShown(it.subList(lastPosition, newPosition))
                 categoryItemsShownMap[impression.category] = newPosition
             }
