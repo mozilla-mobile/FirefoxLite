@@ -35,12 +35,10 @@ public class ListPanelDialog extends DialogFragment {
 
     private NestedScrollView scrollView;
     private static final String TYPE = "TYPE";
-    private View bookmarksTouchArea;
-    private View downloadsTouchArea;
-    private View historyTouchArea;
-    private View screenshotsTouchArea;
-    private View divider;
-    private View panelBottom;
+    private View bookmarksIcon;
+    private View downloadsIcon;
+    private View historyIcon;
+    private View screenshotsIcon;
     private TextView title;
     private boolean firstLaunch = true;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -133,9 +131,6 @@ public class ListPanelDialog extends DialogFragment {
                 if (Float.compare(this.translationY, translationY) != 0) {
                     this.translationY = translationY;
 
-                    divider.setTranslationY(translationY);
-                    panelBottom.setTranslationY(translationY);
-
                     if (Math.abs(translationY) <= maxTranslationY) {
                         v.setTranslationY(translationY);
                     } else if (translationY > maxTranslationY && v.getTranslationY() < maxTranslationY) {
@@ -151,34 +146,32 @@ public class ListPanelDialog extends DialogFragment {
                 dismissAllowingStateLoss();
             }
         });
-        divider = v.findViewById(R.id.divider);
-        panelBottom = v.findViewById(R.id.panel_bottom);
-        bookmarksTouchArea = v.findViewById(R.id.bookmarks);
-        bookmarksTouchArea.setOnClickListener(new View.OnClickListener() {
+        bookmarksIcon = v.findViewById(R.id.img_bookmarks);
+        v.findViewById(R.id.bookmarks).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_BOOKMARKS);
                 TelemetryWrapper.showPanelBookmark();
             }
         });
-        downloadsTouchArea = v.findViewById(R.id.downloads);
-        downloadsTouchArea.setOnClickListener(new View.OnClickListener() {
+        downloadsIcon = v.findViewById(R.id.img_downloads);
+        v.findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_DOWNLOADS);
                 TelemetryWrapper.showPanelDownload();
             }
         });
-        historyTouchArea = v.findViewById(R.id.history);
-        historyTouchArea.setOnClickListener(new View.OnClickListener() {
+        historyIcon = v.findViewById(R.id.img_history);
+        v.findViewById(R.id.history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_HISTORY);
                 TelemetryWrapper.showPanelHistory();
             }
         });
-        screenshotsTouchArea = v.findViewById(R.id.screenshots);
-        screenshotsTouchArea.setOnClickListener(new View.OnClickListener() {
+        screenshotsIcon = v.findViewById(R.id.img_screenshots);
+        v.findViewById(R.id.screenshots).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_SCREENSHOTS);
@@ -247,22 +240,22 @@ public class ListPanelDialog extends DialogFragment {
 
     private void toggleSelectedItem() {
         firstLaunch = false;
-        bookmarksTouchArea.setSelected(false);
-        downloadsTouchArea.setSelected(false);
-        historyTouchArea.setSelected(false);
-        screenshotsTouchArea.setSelected(false);
+        bookmarksIcon.setSelected(false);
+        downloadsIcon.setSelected(false);
+        historyIcon.setSelected(false);
+        screenshotsIcon.setSelected(false);
         switch (getArguments().getInt(TYPE)) {
             case TYPE_BOOKMARKS:
-                bookmarksTouchArea.setSelected(true);
+                bookmarksIcon.setSelected(true);
                 break;
             case TYPE_DOWNLOADS:
-                downloadsTouchArea.setSelected(true);
+                downloadsIcon.setSelected(true);
                 break;
             case TYPE_HISTORY:
-                historyTouchArea.setSelected(true);
+                historyIcon.setSelected(true);
                 break;
             case TYPE_SCREENSHOTS:
-                screenshotsTouchArea.setSelected(true);
+                screenshotsIcon.setSelected(true);
                 break;
             default:
                 throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));

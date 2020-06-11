@@ -24,10 +24,89 @@
             app:behavior_hideable="true"
             app:behavior_peekHeight="336dp">
 
+            <org.mozilla.focus.widget.EqualDistributeGrid
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+                <FrameLayout
+                    android:id="@+id/screenshots"
+                    android:layout_width="74dp"
+                    android:layout_height="50dp"
+                    android:paddingBottom="12dp"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/img_screenshots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:src="@drawable/menu_my_shots_states"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/bookmarks"
+                    android:layout_width="74dp"
+                    android:layout_height="50dp"
+                    android:paddingBottom="12dp"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/img_bookmarks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:src="@drawable/ic_bookmarks"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/history"
+                    android:layout_width="74dp"
+                    android:layout_height="50dp"
+                    android:paddingBottom="12dp"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/img_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:src="@drawable/menu_history"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/downloads"
+                    android:layout_width="74dp"
+                    android:layout_height="50dp"
+                    android:paddingBottom="12dp"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/img_downloads"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:src="@drawable/menu_download"/>
+
+                </FrameLayout>
+
+            </org.mozilla.focus.widget.EqualDistributeGrid>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/paletteLightGreyA100"
+                android:layout_marginTop="53dp"
+                android:layout_marginBottom="8dp"/>
+
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/main_content"
                 android:paddingBottom="49dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="102dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -37,55 +116,12 @@
                 android:textSize="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="74dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top" />
 
         </FrameLayout>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="48dp"
-            android:layout_gravity="bottom"
-            android:background="@color/colorListPanelBottomDivider"/>
-
-        <org.mozilla.focus.widget.EqualDistributeGrid
-            android:id="@+id/panel_bottom"
-            android:background="@color/colorMenuBackground"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:paddingStart="50dp"
-            android:paddingEnd="50dp">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                style="@style/ListPanelDrawable"
-                android:id="@+id/bookmarks"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/ic_bookmarks" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                style="@style/ListPanelDrawable"
-                android:id="@+id/downloads"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/menu_download" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/history"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                style="@style/ListPanelDrawable"
-                app:srcCompat="@drawable/menu_history" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/screenshots"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                style="@style/ListPanelDrawable"
-                app:srcCompat="@drawable/menu_my_shots" />
-
-        </org.mozilla.focus.widget.EqualDistributeGrid>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
