@@ -19,6 +19,7 @@
     <dimen name="common_font_size_btn_text2">14sp</dimen>
 
     <dimen name="menu_elevation">8dp</dimen>
+    <dimen name="menu_corner_radius">16dp</dimen>
 
     <dimen name="floating_action_button_elevation">4dp</dimen>
     <dimen name="floating_action_button_margin">16dp</dimen>

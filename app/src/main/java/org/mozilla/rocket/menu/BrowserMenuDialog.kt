@@ -1,8 +1,10 @@
 package org.mozilla.rocket.menu
 
 import android.content.Context
+import android.graphics.Outline
 import android.os.Bundle
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.annotation.StyleRes
@@ -12,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.block_images_switch
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.content_layout
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.img_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_bookmark
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_delete
@@ -53,7 +56,7 @@ class BrowserMenuDialog : BottomSheetDialog {
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var bottomBarItemAdapter: BottomBarItemAdapter
 
-    private lateinit var contentLayout: View
+    private lateinit var rootView: View
 
     constructor(context: Context) : super(context)
     constructor(context: Context, @StyleRes theme: Int) : super(context, theme)
@@ -68,16 +71,24 @@ class BrowserMenuDialog : BottomSheetDialog {
         observeChromeAction()
 
         setOnDismissListener {
-            contentLayout.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+            rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
         }
     }
 
     private fun initLayout() {
-        contentLayout = layoutInflater.inflate(R.layout.bottom_sheet_browser_menu, null)
-        initMenuTabs(contentLayout)
-        initMenuItems(contentLayout)
+        rootView = layoutInflater.inflate(R.layout.bottom_sheet_browser_menu, null)
+        rootView.content_layout.apply {
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    outline.setRoundRect(0, 0, view.width, view.height, resources.getDimension(R.dimen.menu_corner_radius))
+                }
+            }
+            clipToOutline = true
+        }
+        initMenuTabs(rootView)
+        initMenuItems(rootView)
         initBottomBar()
-        setContentView(contentLayout)
+        setContentView(rootView)
     }
 
     private fun initMenuTabs(contentLayout: View) {
@@ -188,7 +199,7 @@ class BrowserMenuDialog : BottomSheetDialog {
     }
 
     private fun initBottomBar() {
-        val bottomBar = contentLayout.findViewById<BottomBar>(R.id.menu_bottom_bar)
+        val bottomBar = rootView.findViewById<BottomBar>(R.id.menu_bottom_bar)
         bottomBar.setOnItemClickListener(object : BottomBar.OnItemClickListener {
             override fun onItemClick(type: Int, position: Int) {
                 cancel()
