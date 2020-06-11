@@ -7,9 +7,9 @@
     android:id="@+id/menu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="12dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
+    android:paddingBottom="@dimen/menu_bottom_margin"
+    android:paddingStart="@dimen/menu_horizontal_margin"
+    android:paddingEnd="@dimen/menu_horizontal_margin"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
