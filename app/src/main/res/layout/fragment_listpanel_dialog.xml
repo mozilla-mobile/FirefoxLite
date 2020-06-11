@@ -2,11 +2,19 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container">
+    android:paddingBottom="@dimen/menu_bottom_margin"
+    android:paddingStart="@dimen/menu_horizontal_margin"
+    android:paddingEnd="@dimen/menu_horizontal_margin" >
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container">
+
         <FrameLayout
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
@@ -14,13 +22,15 @@
             android:background="@drawable/background_menu"
             app:layout_behavior="@string/bottom_sheet_behavior"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="300dp">
+            app:behavior_peekHeight="336dp">
+
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/main_content"
                 android:paddingBottom="49dp"
                 android:layout_marginTop="48dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
             <TextView
                 android:id="@+id/title"
                 android:textColor="@color/paletteLightBlack100"
@@ -31,7 +41,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top" />
+
         </FrameLayout>
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
@@ -39,6 +51,7 @@
             android:layout_marginBottom="48dp"
             android:layout_gravity="bottom"
             android:background="@color/colorListPanelBottomDivider"/>
+
         <org.mozilla.focus.widget.EqualDistributeGrid
             android:id="@+id/panel_bottom"
             android:background="@color/colorMenuBackground"
@@ -47,25 +60,33 @@
             android:layout_height="48dp"
             android:paddingStart="50dp"
             android:paddingEnd="50dp">
+
             <androidx.appcompat.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
                 android:id="@+id/bookmarks"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/ic_bookmarks" />
+
             <androidx.appcompat.widget.AppCompatImageView
                 style="@style/ListPanelDrawable"
                 android:id="@+id/downloads"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/menu_download" />
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/history"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 style="@style/ListPanelDrawable"
                 app:srcCompat="@drawable/menu_history" />
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/screenshots"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 style="@style/ListPanelDrawable"
                 app:srcCompat="@drawable/menu_my_shots" />
+
         </org.mozilla.focus.widget.EqualDistributeGrid>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>

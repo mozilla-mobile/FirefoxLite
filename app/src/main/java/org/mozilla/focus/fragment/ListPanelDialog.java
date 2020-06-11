@@ -6,16 +6,20 @@
 package org.mozilla.focus.fragment;
 
 import android.content.DialogInterface;
+import android.graphics.Outline;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import androidx.fragment.app.DialogFragment;
-import androidx.core.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
@@ -68,6 +72,15 @@ public class ListPanelDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listpanel_dialog, container, false);
         title = v.findViewById(R.id.title);
+        View contentLayout = v.findViewById(R.id.container);
+        final float cornerRadius = getResources().getDimension(R.dimen.menu_corner_radius);
+        contentLayout.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), cornerRadius);
+            }
+        });
+        contentLayout.setClipToOutline(true);
         View bottomsheet = v.findViewById(R.id.bottom_sheet);
         scrollView = (NestedScrollView) v.findViewById(R.id.main_content);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -90,12 +103,14 @@ public class ListPanelDialog extends DialogFragment {
                 }
             }
         });
+        final float menuBottomMargin = getResources().getDimension(R.dimen.menu_bottom_margin);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
 
             private float translationY = Integer.MIN_VALUE;
             private int collapseHeight = -1;
+            private final float maxTranslationY = menuBottomMargin + cornerRadius;
 
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -117,8 +132,16 @@ public class ListPanelDialog extends DialogFragment {
 
                 if (Float.compare(this.translationY, translationY) != 0) {
                     this.translationY = translationY;
+
                     divider.setTranslationY(translationY);
                     panelBottom.setTranslationY(translationY);
+
+                    if (Math.abs(translationY) <= maxTranslationY) {
+                        v.setTranslationY(translationY);
+                    } else if (translationY > maxTranslationY && v.getTranslationY() < maxTranslationY) {
+                        // In case of fast changing
+                        v.setTranslationY(maxTranslationY);
+                    }
                 }
             }
         });
