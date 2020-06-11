@@ -39,6 +39,10 @@ public class ListPanelDialog extends DialogFragment {
     private View downloadsIcon;
     private View historyIcon;
     private View screenshotsIcon;
+    private View bookmarksSelectedIcon;
+    private View downloadsSelectedIcon;
+    private View historySelectedIcon;
+    private View screenshotsSelectedIcon;
     private TextView title;
     private boolean firstLaunch = true;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -147,6 +151,7 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         bookmarksIcon = v.findViewById(R.id.img_bookmarks);
+        bookmarksSelectedIcon = v.findViewById(R.id.img_bookmarks_selected);
         v.findViewById(R.id.bookmarks).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,6 +160,7 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         downloadsIcon = v.findViewById(R.id.img_downloads);
+        downloadsSelectedIcon = v.findViewById(R.id.img_downloads_selected);
         v.findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +169,7 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         historyIcon = v.findViewById(R.id.img_history);
+        historySelectedIcon = v.findViewById(R.id.img_history_selected);
         v.findViewById(R.id.history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +178,7 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         screenshotsIcon = v.findViewById(R.id.img_screenshots);
+        screenshotsSelectedIcon = v.findViewById(R.id.img_screenshots_selected);
         v.findViewById(R.id.screenshots).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -240,22 +248,32 @@ public class ListPanelDialog extends DialogFragment {
 
     private void toggleSelectedItem() {
         firstLaunch = false;
+
         bookmarksIcon.setSelected(false);
         downloadsIcon.setSelected(false);
         historyIcon.setSelected(false);
         screenshotsIcon.setSelected(false);
+        bookmarksSelectedIcon.setVisibility(View.INVISIBLE);
+        downloadsSelectedIcon.setVisibility(View.INVISIBLE);
+        historySelectedIcon.setVisibility(View.INVISIBLE);
+        screenshotsSelectedIcon.setVisibility(View.INVISIBLE);
+
         switch (getArguments().getInt(TYPE)) {
             case TYPE_BOOKMARKS:
                 bookmarksIcon.setSelected(true);
+                bookmarksSelectedIcon.setVisibility(View.VISIBLE);
                 break;
             case TYPE_DOWNLOADS:
                 downloadsIcon.setSelected(true);
+                downloadsSelectedIcon.setVisibility(View.VISIBLE);
                 break;
             case TYPE_HISTORY:
                 historyIcon.setSelected(true);
+                historySelectedIcon.setVisibility(View.VISIBLE);
                 break;
             case TYPE_SCREENSHOTS:
                 screenshotsIcon.setSelected(true);
+                screenshotsSelectedIcon.setVisibility(View.VISIBLE);
                 break;
             default:
                 throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
