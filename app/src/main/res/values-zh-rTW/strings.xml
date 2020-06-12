@@ -106,6 +106,18 @@
   <string name="label_menu_settings">設定</string>
   <string name="label_menu_exit">結束</string>
   <string name="label_menu_add_to_home_screen">新增至裝置主畫面</string>
+  <string name="label_menu_content_services">顯示內容與服務</string>
+  <string name="label_menu_add_top_sites">新增熱門網站</string>
+  <string name="label_menu_themes">佈景主題</string>
+  <string name="top_site_category_1">熱門網站</string>
+  <string name="top_site_category_2">社群網路</string>
+  <string name="top_site_category_3">娛樂</string>
+  <string name="top_site_category_4">其他</string>
+  <string name="add_top_site_snackbar_1">已新增熱門網站</string>
+  <string name="add_top_site_snackbar_2">已新增網站</string>
+  <string name="add_top_site_toast">請先移除熱門網站</string>
+  <string name="add_top_site_button">新增更多</string>
+  <string name="add_top_site_placeholder">新增</string>
   <string name="permission_toast_location_deny">定位權限被拒絕。</string>
   <string name="permission_toast_storage_deny">儲存空間權限被拒絕。</string>
   <string name="permission_handler_permission_dialog_setting">設定</string>
@@ -194,7 +206,7 @@
   <string name="privacy_policy_update_notification_action">為了讓 Firefox Lite 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
   <string name="message_set_default_success">感謝使用 %1$s！</string>
   <string name="message_set_default_incomplet">您想要完成將 %1$s 設為預設瀏覽器的過程嗎？</string>
-  <string name="setting_default_browser_instruction_system_settings">只要 30 秒，即可將 %1$s 設為預設瀏覽器</string>
+  <string name="setting_default_browser_instruction_system_settings">只要兩個步驟即可將 %1$s 設為預設瀏覽器</string>
   <string name="setting_default_browser_instruction_open_external_link">要如何一直使用 %1$s 上網？</string>
   <string name="instruction_select">選擇 %1$s</string>
   <string name="browser_app">瀏覽器應用程式</string>
