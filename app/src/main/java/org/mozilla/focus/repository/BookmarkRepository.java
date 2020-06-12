@@ -2,6 +2,7 @@ package org.mozilla.focus.repository;
 
 import androidx.lifecycle.LiveData;
 
+import org.jetbrains.annotations.NotNull;
 import org.mozilla.focus.persistence.BookmarkModel;
 import org.mozilla.focus.persistence.BookmarksDatabase;
 import org.mozilla.threadutils.ThreadUtils;
@@ -58,5 +59,10 @@ public class BookmarkRepository {
 
     public void deleteBookmarksByUrl(String url) {
         ThreadUtils.postToBackgroundThread(() -> bookmarksDatabase.bookmarkDao().deleteBookmarksByUrl(url));
+    }
+
+    @NotNull
+    public List<BookmarkModel>  searchBookmarks(@NotNull String text, int bookmarksSuggestionLimit) {
+        return bookmarksDatabase.bookmarkDao().queryBookmarksByText(text, bookmarksSuggestionLimit);
     }
 }
