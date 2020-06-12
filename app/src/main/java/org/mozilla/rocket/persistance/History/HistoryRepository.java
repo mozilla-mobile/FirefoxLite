@@ -6,23 +6,11 @@ import org.mozilla.focus.history.model.Site;
 import java.util.List;
 
 public class HistoryRepository {
-    private static volatile HistoryRepository instance;
 
     private HistoryDatabase historyDatabase;
 
-    private HistoryRepository(final HistoryDatabase database) {
+    public HistoryRepository(final HistoryDatabase database) {
         historyDatabase = database;
-    }
-
-    public static HistoryRepository getInstance(final HistoryDatabase database) {
-        if (instance == null) {
-            synchronized (HistoryRepository.class) {
-                if (instance == null) {
-                    instance = new HistoryRepository(database);
-                }
-            }
-        }
-        return instance;
     }
 
     @NotNull

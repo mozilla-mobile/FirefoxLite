@@ -6,6 +6,8 @@
 package org.mozilla.focus.urlinput
 
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -13,14 +15,20 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.webkit.URLUtil
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_urlinput.input_container
+import kotlinx.android.synthetic.main.fragment_urlinput.awesomeBar
+import kotlinx.android.synthetic.main.fragment_urlinput.search_suggestion_block
 import mozilla.components.browser.domains.autocomplete.ShippedDomainsProvider
 import mozilla.components.ui.autocomplete.InlineAutocompleteEditText
 import org.mozilla.focus.R
@@ -32,10 +40,16 @@ import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
+import org.mozilla.rocket.awesomebar.BookmarkSuggestionProvider
+import org.mozilla.rocket.awesomebar.ClipboardSuggestionProvider
+import org.mozilla.rocket.awesomebar.HistorySuggestionProvider
+import org.mozilla.rocket.awesomebar.SessionSuggestionProvider
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
+import org.mozilla.rocket.tabs.SessionManager
+import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.urlinput.QuickSearch
 import org.mozilla.rocket.urlinput.QuickSearchAdapter
 import org.mozilla.rocket.urlinput.QuickSearchViewModel
@@ -116,6 +130,51 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         return view
     }
 
+    private fun toAwesomeBarIcon(res: Int): Bitmap? {
+        return AppCompatResources.getDrawable(requireContext(), res)?.also {
+            DrawableCompat.setTint(it, Color.WHITE)
+        }?.toBitmap()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val ctx = context ?: return
+        val bookmarkRepo = chromeViewModel.bookmarkRepo
+        val historyRepo = chromeViewModel.historyRepo
+        val iconBookmark = toAwesomeBarIcon(R.drawable.ic_illustration_no_bookmarks)
+        val iconHistory = toAwesomeBarIcon(R.drawable.history_empty)
+        val iconTab = toAwesomeBarIcon(R.drawable.ic_current_tab)
+
+        awesomeBar.setOnApplyWindowInsetsListener { v: View, insets: WindowInsets ->
+            (v.layoutParams as ViewGroup.MarginLayoutParams).topMargin = insets.systemWindowInsetTop
+            insets
+        }
+        awesomeBar.addProviders(
+                HistorySuggestionProvider(iconHistory, historyRepo) {
+                    onSuggestionClicked(it)
+                },
+                BookmarkSuggestionProvider(iconBookmark, bookmarkRepo) {
+                    onSuggestionClicked(it)
+                },
+                SessionSuggestionProvider(iconTab, TabsSessionProvider.getOrThrow(activity)) { sm: SessionManager, id: String ->
+                    sm.switchToTab(id)
+                    ScreenNavigator[context].raiseBrowserScreen(false)
+                },
+                ClipboardSuggestionProvider(ctx) {
+                    onSuggestionClicked(it)
+                }
+        )
+
+        awesomeBar.onInputStarted() // if something is in the clipboard, it'll be the first and show directly
+        awesomeBar.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                recyclerView.requestFocus()
+                ViewUtils.hideKeyboard(recyclerView)
+            }
+        })
+    }
+
     private fun initQuickSearch(view: View) {
         quickSearchView = view.findViewById(R.id.quick_search_container)
         quickSearchRecyclerView = view.findViewById(R.id.quick_search_recycler_view)
@@ -178,6 +237,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             R.id.clear -> {
                 urlView.setText("")
                 urlView.requestFocus()
+                awesomeBar.onInputCancelled()
                 TelemetryWrapper.searchClear(isInLandscape())
             }
             R.id.dismiss -> {
@@ -278,11 +338,15 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     override fun setSuggestions(texts: List<CharSequence>?) {
         this.suggestionView.removeAllViews()
+        search_suggestion_block.visibility = View.GONE
         if (texts == null) {
             return
         }
 
         val searchKey = urlView.originalText.trim { it <= ' ' }.toLowerCase(Locale.getDefault())
+        if (texts.isNotEmpty()) {
+            search_suggestion_block.visibility = View.VISIBLE
+        }
         for (i in texts.indices) {
             val item = View.inflate(context, R.layout.tag_text, null) as TextView
             val str = texts[i].toString()
@@ -305,11 +369,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     override fun setQuickSearchVisible(visible: Boolean) {
-        if (visible) {
-            quickSearchView.visibility = View.VISIBLE
-        } else {
-            quickSearchView.visibility = View.GONE
-        }
     }
 
     private fun onFilter(searchText: String) {
@@ -337,6 +396,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             return
         }
         if (allowSuggestion) {
+            awesomeBar.onInputChanged(originalText)
             this@UrlInputFragment.presenter.onInput(originalText, detectThrottle())
         }
         val visibility = if (TextUtils.isEmpty(originalText)) View.GONE else View.VISIBLE

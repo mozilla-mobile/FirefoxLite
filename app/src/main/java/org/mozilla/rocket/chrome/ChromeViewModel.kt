@@ -20,6 +20,7 @@ import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
+import org.mozilla.rocket.persistance.History.HistoryRepository
 import org.mozilla.rocket.privately.PrivateMode
 import org.mozilla.rocket.util.ToastMessage
 import org.mozilla.rocket.util.ToastMessage.Companion.LENGTH_LONG
@@ -29,7 +30,8 @@ import kotlin.concurrent.thread
 class ChromeViewModel(
     private val settings: Settings,
     private var newFeatureNotice: NewFeatureNotice,
-    private val bookmarkRepo: BookmarkRepository,
+    val bookmarkRepo: BookmarkRepository,
+    val historyRepo: HistoryRepository,
     private val privateMode: PrivateMode,
     private val browsers: Browsers,
     private val storageHelper: StorageHelper
