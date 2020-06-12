@@ -33,7 +33,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal|bottom"
                 android:paddingTop="7dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:id="@+id/img_screenshots"
@@ -57,7 +57,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal|bottom"
                 android:paddingTop="7dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal|bottom"
                 android:paddingTop="7dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal|bottom"
                 android:paddingTop="7dp"
-                android:background="?android:attr/selectableItemBackground">
+                android:background="?android:attr/selectableItemBackgroundBorderless">
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -35,7 +35,7 @@
                     android:layout_width="74dp"
                     android:layout_height="50dp"
                     android:paddingBottom="5dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_screenshots_selected"
@@ -60,7 +60,7 @@
                     android:layout_width="74dp"
                     android:layout_height="50dp"
                     android:paddingBottom="5dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_bookmarks_selected"
@@ -85,7 +85,7 @@
                     android:layout_width="74dp"
                     android:layout_height="50dp"
                     android:paddingBottom="5dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_history_selected"
@@ -110,7 +110,7 @@
                     android:layout_width="74dp"
                     android:layout_height="50dp"
                     android:paddingBottom="5dp"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_downloads_selected"
