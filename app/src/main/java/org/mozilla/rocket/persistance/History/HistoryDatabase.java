@@ -33,6 +33,8 @@ public abstract class HistoryDatabase extends RoomDatabase {
 
     private static volatile HistoryDatabase instance;
 
+    public abstract HistoryDao historyDao();
+
     public static HistoryDatabase getInstance(@NonNull Context context) {
         if (instance == null) {
             synchronized (HistoryDatabase.class) {
