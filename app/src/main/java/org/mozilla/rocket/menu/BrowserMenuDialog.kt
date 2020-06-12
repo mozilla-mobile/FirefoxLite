@@ -13,6 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.block_images_switch
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.img_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_blockimg
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_bookmark
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_download
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_night_
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_pin_shortcut
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.menu_turbomode
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.night_mode_switch
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.scroll_view
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.turbomode_switch
@@ -134,12 +136,14 @@ class BrowserMenuDialog : BottomSheetDialog {
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
             }
+            menu_turbomode.setOnClickListener { turbomode_switch.toggle() }
             turbomode_switch.setOnCheckedChangeListener { _, isChecked ->
                 val needToUpdate = isChecked != (chromeViewModel.isTurboModeEnabled.value == true)
                 if (needToUpdate) {
                     chromeViewModel.onTurboModeToggled()
                 }
             }
+            menu_blockimg.setOnClickListener { block_images_switch.toggle() }
             block_images_switch.setOnCheckedChangeListener { _, isChecked ->
                 val needToUpdate = isChecked != (chromeViewModel.isBlockImageEnabled.value == true)
                 if (needToUpdate) {
