@@ -30,7 +30,7 @@
         android:id="@+id/red_dot"
         android:layout_width="8dp"
         android:layout_height="8dp"
-        android:background="@drawable/msrp_red_dot"
+        android:background="@drawable/ic_red_dot"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
