@@ -5,6 +5,7 @@ import android.graphics.Outline
 import android.os.Bundle
 import android.view.View
 import android.view.ViewOutlineProvider
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_night_mod
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.night_mode_switch
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.scroll_view
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -54,6 +56,10 @@ class HomeMenuDialog : BottomSheetDialog {
 
         initLayout()
         observeChromeAction()
+
+        setOnDismissListener {
+            rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+        }
     }
 
     private fun initLayout() {
