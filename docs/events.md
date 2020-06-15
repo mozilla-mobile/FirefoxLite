@@ -55,6 +55,7 @@
 |Click Toolbar - Share Link|action|share|toolbar|"link"|"version=2,mode=[webview|menu],position=[0-4],orientation=portrait,landscape," 
 |Click Toolbar - Add bookmark|action|share|toolbar|"bookmark"|"version=2,to=true,false,mode=[webview|menu],position=[0-4]," 
 |Click Toolbar - Pin shortcut|action|pin_shortcut|toolbar|"link"|"version=2,mode=[webview|menu],position=[0-4]," 
+|Click Toolbar - Pin shortcut|action|pin_shortcut|menu|"link"|"" 
 |Click Toolbar - Take Screenshot|action|click|toolbar|"capture"|"version=4,category=category name,category_versio=category version,mode=[webview|menu],position=0-4," 
 |Click Top Site|action|open|home|"link"|"on=Top Site Position,source=Preset Top Site like **,version=2," 
 |Remove Top Site|action|remove|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name," 

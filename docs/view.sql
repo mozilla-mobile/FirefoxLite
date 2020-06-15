@@ -79,6 +79,7 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Share Link' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('bookmark') ) THEN 'Rocket -  Click Toolbar - Add bookmark' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('pin_shortcut') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Pin shortcut' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('pin_shortcut') ) AND (event_object IN ('menu') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Pin shortcut' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('capture') ) THEN 'Rocket -  Click Toolbar - Take Screenshot' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Top Site' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('remove') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Remove Top Site' 

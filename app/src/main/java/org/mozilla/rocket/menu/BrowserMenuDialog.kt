@@ -142,7 +142,7 @@ class BrowserMenuDialog : BottomSheetDialog {
             menu_pin_shortcut.setOnClickListener {
                 cancel()
                 chromeViewModel.pinShortcut.call()
-                TelemetryWrapper.clickAddToHome(TelemetryWrapper.Extra_Value.MENU, 1)
+                TelemetryWrapper.clickMenuPinShortcut()
             }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()

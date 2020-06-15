@@ -1323,6 +1323,20 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Click Toolbar - Pin shortcut",
+            category = Category.ACTION,
+            method = Method.PIN_SHORTCUT,
+            `object` = Object.MENU,
+            value = Value.LINK,
+            extras = [])
+    @JvmStatic
+    fun clickMenuPinShortcut() {
+        EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.MENU, Value.LINK)
+                .queue()
+        AdjustHelper.trackEvent(EVENT_ADD_TO_HOMESCREEN)
+    }
+
+    @TelemetryDoc(
             name = "Click Toolbar - Take Screenshot",
             category = Category.ACTION,
             method = Method.CLICK,
