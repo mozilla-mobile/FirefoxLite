@@ -134,14 +134,6 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
-    <!-- for bottom sheet menu -->
-    <style name="MenuSheetRow">
-        <item name="android:layout_marginEnd">@dimen/menu_layout_horizontal_margin</item>
-        <item name="android:layout_marginStart">@dimen/menu_layout_horizontal_margin</item>
-        <item name="android:layout_marginTop">@dimen/menu_layout_top_margin</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-
     <style name="MenuButtonText">
         <item name="android:paddingEnd">@dimen/menu_text_padding</item>
         <item name="android:paddingStart">@dimen/menu_text_padding</item>
@@ -154,13 +146,6 @@
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textColor">@color/paletteLightBlack100</item>
-    </style>
-
-    <style name="ListPanelDrawable">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">12dp</item>
-        <item name="tint">@color/listpanel_icon_color</item>
     </style>
 
     <style name="ScreenshotViewBottomToolbar" parent="@style/Widget.AppCompat.Toolbar">

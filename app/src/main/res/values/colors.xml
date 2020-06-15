@@ -112,8 +112,6 @@
     <color name="colorMenuBackground">@color/paletteWhite100</color>
     <color name="colorMenuIconForeground">@color/paletteLightBlack100</color>
     <color name="colorMenuIconDarkForeground">@color/paletteWhite100</color>
-    <color name="colorMenuLabelDefault">@color/paletteDarkGreyD100</color>
-    <color name="colorMenuLabelActive">@color/sharedColorAppPaletteMain3</color>
 
     <color name="url_bg_inactive_default">#EEEEEE</color>
     <color name="url_bar_divider_default">#EEEEEE</color>
