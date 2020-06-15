@@ -35,6 +35,11 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_BOOKMARK
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_CLIPBOARD
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_USER_INPUT
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_HISTORY
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_TABTRAY
 import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
@@ -151,17 +156,27 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
         awesomeBar.addProviders(
                 HistorySuggestionProvider(iconHistory, historyRepo) {
-                    onSuggestionClicked(it)
+                    onSuggestionClicked(it, AWESOMEBAR_TYPE_HISTORY)
                 },
                 BookmarkSuggestionProvider(iconBookmark, bookmarkRepo) {
-                    onSuggestionClicked(it)
+                    onSuggestionClicked(it, AWESOMEBAR_TYPE_BOOKMARK)
                 },
-                SessionSuggestionProvider(iconTab, TabsSessionProvider.getOrThrow(activity)) { sm: SessionManager, id: String ->
+                SessionSuggestionProvider(
+                    iconTab,
+                    TabsSessionProvider.getOrThrow(activity)
+                ) { sm: SessionManager, id: String ->
                     sm.switchToTab(id)
                     ScreenNavigator[context].raiseBrowserScreen(false)
+                    val isInLandscape = isInLandscape()
+                    TelemetryWrapper.urlBarEvent(
+                        isUrl = true,
+                        isSuggestion = true,
+                        isInLandscape = isInLandscape,
+                        type = AWESOMEBAR_TYPE_TABTRAY
+                    )
                 },
                 ClipboardSuggestionProvider(ctx) {
-                    onSuggestionClicked(it)
+                    onSuggestionClicked(it, AWESOMEBAR_TYPE_CLIPBOARD)
                 }
         )
 
@@ -244,7 +259,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
                 dismiss()
                 TelemetryWrapper.searchDismiss(isInLandscape())
             }
-            R.id.suggestion_item -> onSuggestionClicked((view as TextView).text)
+            R.id.suggestion_item -> onSuggestionClicked((view as TextView).text, AWESOMEBAR_TYPE_USER_INPUT)
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
     }
@@ -266,10 +281,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
     }
 
-    private fun onSuggestionClicked(tag: CharSequence) {
+    private fun onSuggestionClicked(tag: CharSequence, type: String) {
         val isInLandscape = isInLandscape()
         search(tag.toString())
-        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(tag.toString()), true, isInLandscape)
+        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(tag.toString()), true, isInLandscape, type)
     }
 
     private fun dismiss() {
