@@ -2,7 +2,9 @@ package org.mozilla.focus.persistence;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -155,13 +157,15 @@ public class TabModelStore {
             final List<File> updateFileList = new ArrayList<>();
 
             for (Session session : sessionList) {
-                if (session != null
-                        && session.getEngineSession() != null
-                        && session.getEngineSession().getWebViewState() != null) {
+                final String sessionId = (session != null) ? session.getId() : null;
+                final TabViewEngineSession engineSession = (session != null) ? session.getEngineSession() : null;
+                final Bundle webViewState = (engineSession != null) ? engineSession.getWebViewState() : null;
+
+                if (sessionId != null && webViewState != null) {
                     FileUtils.writeBundleToStorage(cacheDir,
-                            session.getId(),
-                            session.getEngineSession().getWebViewState());
-                    updateFileList.add(new File(cacheDir, session.getId()));
+                            sessionId,
+                            webViewState);
+                    updateFileList.add(new File(cacheDir, sessionId));
                 }
             }
 
