@@ -204,12 +204,14 @@
                     android:layout_marginBottom="8dp"/>
 
                 <LinearLayout
+                    android:id="@+id/menu_turbomode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="0dp"
                     android:paddingEnd="24dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -218,8 +220,7 @@
                         android:paddingStart="18dp"
                         android:paddingEnd="0dp"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
+                        android:gravity="center_vertical">
 
                         <ImageView
                             android:layout_width="38dp"
@@ -248,13 +249,15 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/menu_blockimg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="0dp"
                     android:paddingEnd="24dp"
                     android:layout_marginTop="4dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -263,8 +266,7 @@
                         android:paddingStart="18dp"
                         android:paddingEnd="0dp"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
+                        android:gravity="center_vertical">
 
                         <ImageView
                             android:layout_width="38dp"
