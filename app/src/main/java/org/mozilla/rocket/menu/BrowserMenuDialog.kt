@@ -261,8 +261,6 @@ class BrowserMenuDialog : BottomSheetDialog {
             hidePinShortcutButtonIfNotSupported()
         }
 
-        menuViewModel.isBottomBarEnabled.switchFrom(menuViewModel.bottomItems)
-                .observe(activity, Observer { bottomBarItemAdapter.setEnabled(it == true) })
         chromeViewModel.tabCount.switchFrom(menuViewModel.bottomItems)
                 .observe(activity, Observer { bottomBarItemAdapter.setTabCount(it ?: 0) })
         chromeViewModel.isRefreshing.switchFrom(menuViewModel.bottomItems)
