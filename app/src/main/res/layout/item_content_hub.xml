@@ -36,7 +36,7 @@
         android:id="@+id/red_dot"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:background="@drawable/content_hub_red_dot"
+        android:background="@drawable/ic_red_dot"
         android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
