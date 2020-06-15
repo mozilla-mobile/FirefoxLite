@@ -239,11 +239,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingStart="18dp"
+                    android:paddingStart="12dp"
                     android:paddingEnd="0dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground">
+
+                    <View
+                        android:id="@+id/content_services_red_dot"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:background="@drawable/ic_red_dot"/>
 
                     <ImageView
                         android:layout_width="38dp"
@@ -275,12 +281,18 @@
                 android:id="@+id/menu_add_top_sites"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="18dp"
+                android:paddingStart="12dp"
                 android:paddingEnd="24dp"
                 android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="?android:attr/selectableItemBackground">
+
+                <View
+                    android:id="@+id/add_top_sites_red_dot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/ic_red_dot"/>
 
                 <ImageView
                     android:layout_width="38dp"
@@ -310,12 +322,18 @@
                 android:id="@+id/menu_themes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="18dp"
+                android:paddingStart="12dp"
                 android:paddingEnd="24dp"
                 android:layout_marginTop="4dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="?android:attr/selectableItemBackground">
+
+                <View
+                    android:id="@+id/themes_red_dot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/ic_red_dot"/>
 
                 <ImageView
                     android:layout_width="38dp"
