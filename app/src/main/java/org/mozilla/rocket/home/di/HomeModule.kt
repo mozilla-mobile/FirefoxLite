@@ -29,6 +29,7 @@ import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
+import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesViewModel
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
@@ -242,4 +243,9 @@ object HomeModule {
     @Provides
     fun provideTabTrayViewModel(): TabTrayViewModel =
             TabTrayViewModel()
+
+    @JvmStatic
+    @Provides
+    fun provideAddNewTopSitesViewModel(getTopSitesUseCase: GetTopSitesUseCase): AddNewTopSitesViewModel =
+            AddNewTopSitesViewModel(getTopSitesUseCase)
 }

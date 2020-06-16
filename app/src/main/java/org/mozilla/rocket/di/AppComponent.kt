@@ -58,6 +58,7 @@ import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesFragment
 import org.mozilla.rocket.menu.BrowserMenuDialog
 import org.mozilla.rocket.menu.HomeMenuDialog
 import org.mozilla.rocket.msrp.di.MissionModule
@@ -146,6 +147,7 @@ interface AppComponent {
     fun inject(travelCitySearchActivity: TravelCitySearchActivity)
     fun inject(travelBucketListFragment: TravelBucketListFragment)
     fun inject(defaultBrowserPreference: DefaultBrowserPreference)
+    fun inject(addNewTopSitesFragment: AddNewTopSitesFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
