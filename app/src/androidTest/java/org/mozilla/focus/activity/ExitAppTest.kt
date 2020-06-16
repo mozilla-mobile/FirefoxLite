@@ -56,7 +56,7 @@ class ExitAppTest {
         session {
             loadPageFromHomeSearchField(activityTestRule.activity, TARGET_URL_SITE)
             clickBrowserMenu()
-            clickExitApp(true)
+            clickExitApp()
         }
 
         // Check activity finishing or destroyed
