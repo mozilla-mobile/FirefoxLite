@@ -7,9 +7,9 @@
     android:id="@+id/menu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="12dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
+    android:paddingBottom="@dimen/menu_bottom_margin"
+    android:paddingStart="@dimen/menu_horizontal_margin"
+    android:paddingEnd="@dimen/menu_horizontal_margin"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <LinearLayout
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="336dp"
         android:orientation="vertical"
-        android:background="@drawable/background_menu">
+        android:background="@color/colorMenuBackground">
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -44,7 +44,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal|bottom"
                         android:paddingTop="7dp"
-                        android:background="?android:attr/selectableItemBackground">
+                        android:background="?android:attr/selectableItemBackgroundBorderless">
 
                         <ImageView
                             android:id="@+id/img_screenshots"
@@ -68,7 +68,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal|bottom"
                         android:paddingTop="7dp"
-                        android:background="?android:attr/selectableItemBackground">
+                        android:background="?android:attr/selectableItemBackgroundBorderless">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal|bottom"
                         android:paddingTop="7dp"
-                        android:background="?android:attr/selectableItemBackground">
+                        android:background="?android:attr/selectableItemBackgroundBorderless">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -114,7 +114,7 @@
                         android:orientation="vertical"
                         android:gravity="center_horizontal|bottom"
                         android:paddingTop="7dp"
-                        android:background="?android:attr/selectableItemBackground">
+                        android:background="?android:attr/selectableItemBackgroundBorderless">
 
                         <ImageView
                             android:layout_width="wrap_content"

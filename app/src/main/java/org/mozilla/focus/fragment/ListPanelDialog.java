@@ -6,16 +6,20 @@
 package org.mozilla.focus.fragment;
 
 import android.content.DialogInterface;
+import android.graphics.Outline;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import androidx.fragment.app.DialogFragment;
-import androidx.core.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.DialogFragment;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
@@ -31,12 +35,14 @@ public class ListPanelDialog extends DialogFragment {
 
     private NestedScrollView scrollView;
     private static final String TYPE = "TYPE";
-    private View bookmarksTouchArea;
-    private View downloadsTouchArea;
-    private View historyTouchArea;
-    private View screenshotsTouchArea;
-    private View divider;
-    private View panelBottom;
+    private View bookmarksIcon;
+    private View downloadsIcon;
+    private View historyIcon;
+    private View screenshotsIcon;
+    private View bookmarksSelectedIcon;
+    private View downloadsSelectedIcon;
+    private View historySelectedIcon;
+    private View screenshotsSelectedIcon;
     private TextView title;
     private boolean firstLaunch = true;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -68,6 +74,15 @@ public class ListPanelDialog extends DialogFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_listpanel_dialog, container, false);
         title = v.findViewById(R.id.title);
+        View contentLayout = v.findViewById(R.id.container);
+        final float cornerRadius = getResources().getDimension(R.dimen.menu_corner_radius);
+        contentLayout.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+                outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), cornerRadius);
+            }
+        });
+        contentLayout.setClipToOutline(true);
         View bottomsheet = v.findViewById(R.id.bottom_sheet);
         scrollView = (NestedScrollView) v.findViewById(R.id.main_content);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
@@ -90,12 +105,14 @@ public class ListPanelDialog extends DialogFragment {
                 }
             }
         });
+        final float menuBottomMargin = getResources().getDimension(R.dimen.menu_bottom_margin);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
 
             private float translationY = Integer.MIN_VALUE;
             private int collapseHeight = -1;
+            private final float maxTranslationY = menuBottomMargin + cornerRadius;
 
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -117,8 +134,13 @@ public class ListPanelDialog extends DialogFragment {
 
                 if (Float.compare(this.translationY, translationY) != 0) {
                     this.translationY = translationY;
-                    divider.setTranslationY(translationY);
-                    panelBottom.setTranslationY(translationY);
+
+                    if (Math.abs(translationY) <= maxTranslationY) {
+                        v.setTranslationY(translationY);
+                    } else if (translationY > maxTranslationY && v.getTranslationY() < maxTranslationY) {
+                        // In case of fast changing
+                        v.setTranslationY(maxTranslationY);
+                    }
                 }
             }
         });
@@ -128,34 +150,36 @@ public class ListPanelDialog extends DialogFragment {
                 dismissAllowingStateLoss();
             }
         });
-        divider = v.findViewById(R.id.divider);
-        panelBottom = v.findViewById(R.id.panel_bottom);
-        bookmarksTouchArea = v.findViewById(R.id.bookmarks);
-        bookmarksTouchArea.setOnClickListener(new View.OnClickListener() {
+        bookmarksIcon = v.findViewById(R.id.img_bookmarks);
+        bookmarksSelectedIcon = v.findViewById(R.id.img_bookmarks_selected);
+        v.findViewById(R.id.bookmarks).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_BOOKMARKS);
                 TelemetryWrapper.showPanelBookmark();
             }
         });
-        downloadsTouchArea = v.findViewById(R.id.downloads);
-        downloadsTouchArea.setOnClickListener(new View.OnClickListener() {
+        downloadsIcon = v.findViewById(R.id.img_downloads);
+        downloadsSelectedIcon = v.findViewById(R.id.img_downloads_selected);
+        v.findViewById(R.id.downloads).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_DOWNLOADS);
                 TelemetryWrapper.showPanelDownload();
             }
         });
-        historyTouchArea = v.findViewById(R.id.history);
-        historyTouchArea.setOnClickListener(new View.OnClickListener() {
+        historyIcon = v.findViewById(R.id.img_history);
+        historySelectedIcon = v.findViewById(R.id.img_history_selected);
+        v.findViewById(R.id.history).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_HISTORY);
                 TelemetryWrapper.showPanelHistory();
             }
         });
-        screenshotsTouchArea = v.findViewById(R.id.screenshots);
-        screenshotsTouchArea.setOnClickListener(new View.OnClickListener() {
+        screenshotsIcon = v.findViewById(R.id.img_screenshots);
+        screenshotsSelectedIcon = v.findViewById(R.id.img_screenshots_selected);
+        v.findViewById(R.id.screenshots).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showItem(TYPE_SCREENSHOTS);
@@ -224,22 +248,32 @@ public class ListPanelDialog extends DialogFragment {
 
     private void toggleSelectedItem() {
         firstLaunch = false;
-        bookmarksTouchArea.setSelected(false);
-        downloadsTouchArea.setSelected(false);
-        historyTouchArea.setSelected(false);
-        screenshotsTouchArea.setSelected(false);
+
+        bookmarksIcon.setSelected(false);
+        downloadsIcon.setSelected(false);
+        historyIcon.setSelected(false);
+        screenshotsIcon.setSelected(false);
+        bookmarksSelectedIcon.setVisibility(View.INVISIBLE);
+        downloadsSelectedIcon.setVisibility(View.INVISIBLE);
+        historySelectedIcon.setVisibility(View.INVISIBLE);
+        screenshotsSelectedIcon.setVisibility(View.INVISIBLE);
+
         switch (getArguments().getInt(TYPE)) {
             case TYPE_BOOKMARKS:
-                bookmarksTouchArea.setSelected(true);
+                bookmarksIcon.setSelected(true);
+                bookmarksSelectedIcon.setVisibility(View.VISIBLE);
                 break;
             case TYPE_DOWNLOADS:
-                downloadsTouchArea.setSelected(true);
+                downloadsIcon.setSelected(true);
+                downloadsSelectedIcon.setVisibility(View.VISIBLE);
                 break;
             case TYPE_HISTORY:
-                historyTouchArea.setSelected(true);
+                historyIcon.setSelected(true);
+                historySelectedIcon.setVisibility(View.VISIBLE);
                 break;
             case TYPE_SCREENSHOTS:
-                screenshotsTouchArea.setSelected(true);
+                screenshotsIcon.setSelected(true);
+                screenshotsSelectedIcon.setVisibility(View.VISIBLE);
                 break;
             default:
                 throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
