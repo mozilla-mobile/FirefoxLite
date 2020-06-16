@@ -60,7 +60,6 @@ import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.menu.BrowserMenuDialog
 import org.mozilla.rocket.menu.HomeMenuDialog
-import org.mozilla.rocket.menu.MenuDialog
 import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.msrp.ui.ChallengeListFragment
 import org.mozilla.rocket.msrp.ui.MissionCouponFragment
@@ -115,7 +114,6 @@ interface AppComponent {
     fun inject(tabTrayFragment: TabTrayFragment)
     fun inject(privateHomeFragment: PrivateHomeFragment)
     fun inject(urlInputFragment: UrlInputFragment)
-    fun inject(menuDialog: MenuDialog)
     fun inject(homeMenuDialog: HomeMenuDialog)
     fun inject(browserMenuDialog: BrowserMenuDialog)
     fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
