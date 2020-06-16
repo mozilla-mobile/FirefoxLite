@@ -3,24 +3,26 @@ package org.mozilla.focus.activity;
 
 import android.content.Intent;
 import android.preference.Preference;
+import android.widget.Switch;
+
 import androidx.annotation.NonNull;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.matcher.RootMatchers;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiScrollable;
 import androidx.test.uiautomator.UiSelector;
-import android.widget.Switch;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.MenuRobot;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
@@ -83,14 +85,13 @@ public class DefaultBrowserTest {
 
         final String prefName = activity.getString(R.string.pref_key_default_browser);
 
+        MenuRobot menuRobot = new MenuRobot();
         // 1. Set Chrome as a default browser
         // Click on the menu item
-        AndroidTestUtils.tapHomeMenuButton();
+        menuRobot.clickHomeMenu();
 
         // Click on Settings
-        onView(withId(R.id.menu_preferences))
-                .inRoot(RootMatchers.isDialog())
-                .perform(click());
+        menuRobot.clickMenuSettings();
 
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
@@ -168,13 +169,12 @@ public class DefaultBrowserTest {
 
         final String prefName = activity.getString(R.string.pref_key_default_browser);
 
+        MenuRobot menuRobot = new MenuRobot();
         // Click on the menu item
-        AndroidTestUtils.tapHomeMenuButton();
+        menuRobot.clickHomeMenu();
 
         // Click on Settings
-        onView(withId(R.id.menu_preferences))
-                .inRoot(RootMatchers.isDialog())
-                .perform(click());
+        menuRobot.clickMenuSettings();
 
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
