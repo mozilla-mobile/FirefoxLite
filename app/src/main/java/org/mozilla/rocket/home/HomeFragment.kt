@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import dagger.Lazy
+import kotlinx.android.synthetic.main.button_menu.menu_red_dot
 import kotlinx.android.synthetic.main.fragment_home.account_layout
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
@@ -183,6 +184,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     else -> setDownloadState(DOWNLOAD_STATE_DEFAULT)
                 }
             }
+        })
+        homeViewModel.shouldShowNewMenuItemHint.observe(viewLifecycleOwner, Observer {
+            menu_red_dot.isVisible = it
         })
     }
 

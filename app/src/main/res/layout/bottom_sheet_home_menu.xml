@@ -249,7 +249,8 @@
                         android:id="@+id/content_services_red_dot"
                         android:layout_width="6dp"
                         android:layout_height="6dp"
-                        android:background="@drawable/ic_red_dot"/>
+                        android:background="@drawable/ic_red_dot"
+                        android:visibility="invisible" />
 
                     <ImageView
                         android:layout_width="38dp"
@@ -292,7 +293,8 @@
                     android:id="@+id/add_top_sites_red_dot"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:background="@drawable/ic_red_dot"/>
+                    android:background="@drawable/ic_red_dot"
+                    android:visibility="invisible" />
 
                 <ImageView
                     android:layout_width="38dp"
@@ -333,7 +335,8 @@
                     android:id="@+id/themes_red_dot"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:background="@drawable/ic_red_dot"/>
+                    android:background="@drawable/ic_red_dot"
+                    android:visibility="invisible" />
 
                 <ImageView
                     android:layout_width="38dp"

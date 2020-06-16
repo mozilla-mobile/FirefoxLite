@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.extension.first
 import org.mozilla.rocket.extension.map
@@ -72,7 +73,8 @@ class HomeViewModel(
     getIsFxAccountUseCase: GetIsFxAccountUseCase,
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
-    isNewUserUseCase: IsNewUserUseCase
+    isNewUserUseCase: IsNewUserUseCase,
+    shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase
 ) : ViewModel(), TopSiteClickListener {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -85,6 +87,7 @@ class HomeViewModel(
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
     val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
+    val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()

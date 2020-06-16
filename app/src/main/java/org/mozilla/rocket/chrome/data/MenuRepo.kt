@@ -1,6 +1,8 @@
 package org.mozilla.rocket.chrome.data
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import org.mozilla.rocket.preference.intLiveData
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
 class MenuRepo(appContext: Context) {
@@ -11,11 +13,11 @@ class MenuRepo(appContext: Context) {
         appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     })
 
-    fun getReadMenuItemVersion(): Int =
-            preference.getInt(SHARED_PREF_KEY_MENU_NEW_ITEM_VERSION, -1)
+    fun getReadMenuItemVersionLiveData(): LiveData<Int> =
+            preference.intLiveData(SHARED_PREF_KEY_MENU_NEW_ITEM_VERSION, -1)
 
     fun saveReadMenuItemVersion(version: Int) {
-        preference.edit().putString(SHARED_PREF_KEY_MENU_NEW_ITEM_VERSION, version.toString()).apply()
+        preference.edit().putInt(SHARED_PREF_KEY_MENU_NEW_ITEM_VERSION, version).apply()
     }
 
     companion object {
