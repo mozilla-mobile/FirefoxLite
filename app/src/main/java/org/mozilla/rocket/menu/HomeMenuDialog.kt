@@ -16,8 +16,10 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.add_top_sites_
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_layout
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_red_dot
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_switch
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_private_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_add_top_sites
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_bookmark
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_download
@@ -26,6 +28,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_history
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_night_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_themes
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.night_mode_switch
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.scroll_view
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.themes_red_dot
@@ -148,6 +151,15 @@ class HomeMenuDialog : BottomSheetDialog {
                 if (needToUpdate) {
                     chromeViewModel.onNightModeToggled()
                 }
+            }
+            content_services_switch.setOnCheckedChangeListener { _, isChecked ->
+                TelemetryWrapper.clickMenuVerticalToggle(isChecked)
+            }
+            menu_add_top_sites.setOnClickListener {
+                TelemetryWrapper.clickMenuAddTopsite()
+            }
+            menu_themes.setOnClickListener {
+                TelemetryWrapper.clickMenuTheme()
             }
             menu_preferences.setOnClickListener {
                 cancel()

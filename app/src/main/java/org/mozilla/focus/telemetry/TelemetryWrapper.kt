@@ -190,6 +190,8 @@ object TelemetryWrapper {
         internal const val CAPTURE = "capture"
         internal const val BOOKMARK = "bookmark"
         internal const val FIND_IN_PAGE = "find_in_page"
+        internal const val THEME = "theme"
+        internal const val ADD_TOPSITE = "add_topsite"
 
         internal const val SEARCH_BUTTON = "search_btn"
         internal const val SEARCH_BOX = "search_box"
@@ -1194,6 +1196,46 @@ object TelemetryWrapper {
     @JvmStatic
     fun clickMenuBookmark() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.BOOKMARK).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Menu - Theme",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MENU,
+            value = Value.THEME,
+            extras = [])
+    @JvmStatic
+    fun clickMenuTheme() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.THEME).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Menu - Add Topsite",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MENU,
+            value = Value.ADD_TOPSITE,
+            extras = [])
+    @JvmStatic
+    fun clickMenuAddTopsite() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.ADD_TOPSITE).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Menu - Vertical Toggle",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MENU,
+            value = Value.VERTICAL,
+            extras = [
+                TelemetryExtra(name = Extra.TO, value = "true|false")
+            ])
+    @JvmStatic
+    fun clickMenuVerticalToggle(isOn: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.VERTICAL)
+                .extra(Extra.TO, isOn.toString())
+                .queue()
     }
 
     @TelemetryDoc(

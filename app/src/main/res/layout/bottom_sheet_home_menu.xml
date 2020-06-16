@@ -227,6 +227,7 @@
                 android:layout_marginBottom="8dp"/>
 
             <LinearLayout
+                android:id="@+id/menu_content_services"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="0dp"
@@ -235,7 +236,6 @@
                 android:gravity="center_vertical">
 
                 <LinearLayout
-                    android:id="@+id/menu_content_services"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
