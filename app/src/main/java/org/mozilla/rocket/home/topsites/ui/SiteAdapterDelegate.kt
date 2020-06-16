@@ -19,7 +19,6 @@ import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.getJsonArray
 import org.mozilla.strictmodeviolator.StrictModeViolation
@@ -27,17 +26,17 @@ import java.net.URI
 import java.net.URISyntaxException
 
 class SiteAdapterDelegate(
-    private val homeViewModel: HomeViewModel,
+    private val topSiteClickListener: TopSiteClickListener,
     private val chromeViewModel: ChromeViewModel,
     private val specifiedFaviconBgColors: List<FaviconBgColor>?
 ) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            SiteViewHolder(view, homeViewModel, chromeViewModel, specifiedFaviconBgColors)
+            SiteViewHolder(view, topSiteClickListener, chromeViewModel, specifiedFaviconBgColors)
 }
 
 class SiteViewHolder(
     override val containerView: View,
-    private val homeViewModel: HomeViewModel,
+    private val topSiteClickListener: TopSiteClickListener,
     private val chromeViewModel: ChromeViewModel,
     private val specifiedFaviconBgColors: List<FaviconBgColor>?
 ) : DelegateAdapter.ViewHolder(containerView) {
@@ -74,13 +73,13 @@ class SiteViewHolder(
                     setPinColor(backgroundColor)
                 }
 
-                itemView.setOnClickListener { homeViewModel.onTopSiteClicked(site, adapterPosition) }
+                itemView.setOnClickListener { topSiteClickListener.onTopSiteClicked(site, adapterPosition) }
                 if (site is Site.UrlSite.FixedSite) {
                     itemView.setOnLongClickListener(null)
                 } else {
                     itemView.setOnLongClickListener {
                         it.tag = TOP_SITE_LONG_CLICK_TARGET
-                        homeViewModel.onTopSiteLongClicked(site, adapterPosition)
+                        topSiteClickListener.onTopSiteLongClicked(site, adapterPosition)
                     }
                 }
             }
@@ -225,4 +224,9 @@ private fun paresFaviconBgColor(jsonObject: JSONObject): FaviconBgColor {
     val bgColor = java.lang.Long.parseLong(bgColorStr, 16).toInt()
 
     return FaviconBgColor(host, bgColor)
+}
+
+interface TopSiteClickListener {
+    fun onTopSiteClicked(site: Site, position: Int)
+    fun onTopSiteLongClicked(site: Site, position: Int): Boolean
 }

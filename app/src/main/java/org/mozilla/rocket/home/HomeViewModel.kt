@@ -34,6 +34,7 @@ import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
+import org.mozilla.rocket.home.topsites.ui.TopSiteClickListener
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.data.MissionProgress
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
@@ -72,7 +73,7 @@ class HomeViewModel(
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
     isNewUserUseCase: IsNewUserUseCase
-) : ViewModel() {
+) : ViewModel(), TopSiteClickListener {
 
     val sitePages = MutableLiveData<List<SitePage>>()
     val topSitesPageIndex = MutableLiveData<Int>()
@@ -219,7 +220,7 @@ class HomeViewModel(
         TelemetryWrapper.togglePrivateMode(true)
     }
 
-    fun onTopSiteClicked(site: Site, position: Int) {
+    override fun onTopSiteClicked(site: Site, position: Int) {
         when (site) {
             is Site.UrlSite -> {
                 openBrowser.value = site.url
@@ -236,7 +237,7 @@ class HomeViewModel(
         }
     }
 
-    fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
+    override fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
             if (site is Site.UrlSite.RemovableSite) {
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
