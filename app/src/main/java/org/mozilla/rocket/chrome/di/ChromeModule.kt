@@ -14,6 +14,9 @@ import org.mozilla.rocket.chrome.BottomBarViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.chrome.PrivateBottomBarViewModel
+import org.mozilla.rocket.chrome.data.MenuRepo
+import org.mozilla.rocket.chrome.domain.ReadNewMenuItemsUseCase
+import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadInfoRepository
 import org.mozilla.rocket.download.DownloadInfoViewModel
@@ -71,7 +74,25 @@ object ChromeModule {
 
     @JvmStatic
     @Provides
-    fun provideMenuViewModel(): MenuViewModel = MenuViewModel()
+    fun provideMenuViewModel(
+        shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
+        readNewMenuItemsUseCase: ReadNewMenuItemsUseCase
+    ): MenuViewModel = MenuViewModel(
+        shouldShowNewMenuItemHintUseCase,
+        readNewMenuItemsUseCase
+    )
+
+    @JvmStatic
+    @Provides
+    fun provideReadNewMenuItemsUseCase(menuRepo: MenuRepo): ReadNewMenuItemsUseCase = ReadNewMenuItemsUseCase(menuRepo)
+
+    @JvmStatic
+    @Provides
+    fun provideShouldShowNewMenuItemHintUseCase(menuRepo: MenuRepo): ShouldShowNewMenuItemHintUseCase = ShouldShowNewMenuItemHintUseCase(menuRepo)
+
+    @JvmStatic
+    @Provides
+    fun provideMenuRepo(appContext: Context): MenuRepo = MenuRepo(appContext)
 
     @JvmStatic
     @Provides
