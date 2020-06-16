@@ -7,17 +7,16 @@ package org.mozilla.focus.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
+import android.text.TextUtils;
 
 import androidx.annotation.Keep;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import android.net.Uri;
-import android.text.TextUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -25,6 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.MenuRobot;
 import org.mozilla.focus.helper.SessionLoadedIdlingResource;
 import org.mozilla.focus.search.SearchEngine;
 import org.mozilla.focus.search.SearchEngineManager;
@@ -125,11 +125,12 @@ public class SwitchSearchEngineTest {
 
         final String[] searchEngineName = engine.getName().split(" ");
 
+        MenuRobot menuRobot = new MenuRobot();
         // Open menu
-        AndroidTestUtils.tapHomeMenuButton();
+        menuRobot.clickHomeMenu();
 
         // Open settings
-        AndroidTestUtils.tapSettingButton();
+        menuRobot.clickMenuSettings();
 
         // Open default search engine setting
         onView(withText(R.string.preference_search_engine_default)).check(matches(isDisplayed())).perform(click());

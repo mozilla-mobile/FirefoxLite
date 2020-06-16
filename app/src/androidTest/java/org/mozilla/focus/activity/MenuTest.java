@@ -17,13 +17,14 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.MenuRobot;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.mozilla.focus.utils.AndroidTestExtensionKt.nestedScrollTo;
 
 @Keep
 @RunWith(AndroidJUnit4.class)
@@ -54,8 +55,9 @@ public class MenuTest {
 
         activityRule.launchActivity(new Intent());
 
+        MenuRobot menuRobot = new MenuRobot();
         // Open menu
-        AndroidTestUtils.tapHomeMenuButton();
+        menuRobot.clickHomeMenu();
 
         // check downloads,
         onView(withId(R.id.menu_download))
@@ -72,19 +74,31 @@ public class MenuTest {
         onView(withId(R.id.menu_screenshots)).check(matches(isDisplayed()));
 
         // check private mode displayed
-        onView(withId(R.id.btn_private_browsing)).check(matches(isDisplayed()));
+        onView(withId(R.id.btn_private_browsing))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()));
 
         // check night mode displayed
-        onView(withId(R.id.menu_night_mode)).check(matches(isDisplayed()));
-        onView(withId(R.id.night_mode_switch)).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_night_mode))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()));
+        onView(withId(R.id.night_mode_switch))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()));
 
         // check clear cached displayed
-        onView(withId(R.id.menu_delete)).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_delete))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()));
 
         // check settings displayed
-        onView(withId(R.id.menu_preferences)).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_preferences))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()));
 
         // check exit displayed
-        onView(withId(R.id.menu_exit)).check(matches(isDisplayed()));
+        onView(withId(R.id.menu_exit))
+                .perform(nestedScrollTo())
+                .check(matches(isDisplayed()));
     }
 }
