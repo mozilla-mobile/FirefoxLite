@@ -46,8 +46,3 @@ private fun RecommendedSitesResult.toUiModel(): RecommendedSitesUiResult {
 class RecommendedSitesUiResult(
     val items: List<DelegateAdapter.UiModel>
 )
-
-data class RecommendedSitesUiCategory(
-    val categoryId: String,
-    val categoryName: String
-) : DelegateAdapter.UiModel()
