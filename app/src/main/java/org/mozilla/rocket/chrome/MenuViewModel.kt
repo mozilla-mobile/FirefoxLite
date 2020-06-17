@@ -6,16 +6,21 @@ import androidx.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.chrome.domain.ReadNewMenuItemsUseCase
 import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
+import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
+import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 
 class MenuViewModel(
     shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
     private val readNewMenuItemsUseCase: ReadNewMenuItemsUseCase,
-    private val isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase
+    private val isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
+    shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
+    private val setContentHubEnabledUseCase: SetContentHubEnabledUseCase
 ) : ViewModel() {
     val bottomItems = MutableLiveData<List<BottomBarItemAdapter.ItemData>>()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
     val isHomeScreenShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isHomeScreenShoppingButtonEnabledUseCase() }
+    val isContentHubEnabled: LiveData<Boolean> = shouldShowContentHubUseCase()
 
     init {
         refresh()
@@ -34,6 +39,10 @@ class MenuViewModel(
 
     fun onNewMenuItemDisplayed() {
         readNewMenuItemsUseCase()
+    }
+
+    fun onContentHubSwitchToggled(on: Boolean) {
+        setContentHubEnabledUseCase(on)
     }
 
     companion object {
