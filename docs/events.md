@@ -61,7 +61,7 @@
 |Remove Top Site|action|remove|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name," 
 |Add Topsite|action|add|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name,from=context_menu,empty_hint," 
 |Search in Home and add a tab|action|add|tab|"home"|"" 
-|Enter an url in SearchBar|action|open|search_bar|"link"|"orientation=portrait,landscape," 
+|Enter an url in SearchBar|action|open|search_bar|"link"|"orientation=portrait,landscape,type=history,bookmark,clipboard,suggestion,tabtray,manualcomplete,autocomplete," 
 |Use SearchSuggestion SearchBar|action|select_query|search_bar|""|"orientation=portrait,landscape," 
 |Search with text in SearchBar|action|type_query|search_bar|""|"orientation=portrait,landscape," 
 |Toggle Private Mode|action|change|private_mode|"enter,exit"|"" 
