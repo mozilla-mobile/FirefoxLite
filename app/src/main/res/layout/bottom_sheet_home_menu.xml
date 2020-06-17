@@ -268,7 +268,8 @@
                 android:paddingStart="0dp"
                 android:paddingEnd="24dp"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -277,8 +278,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="0dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground">
+                    android:gravity="center_vertical">
 
                     <View
                         android:id="@+id/content_services_red_dot"
