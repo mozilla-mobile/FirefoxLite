@@ -101,10 +101,10 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
     }
 }
 
-private fun List<org.mozilla.focus.history.model.Site>.toFixedSite(): List<Site.UrlSite> =
+fun List<org.mozilla.focus.history.model.Site>.toFixedSite(): List<Site.UrlSite> =
         map { it.toFixedSite() }
 
-private fun org.mozilla.focus.history.model.Site.toFixedSite(): Site.UrlSite =
+fun org.mozilla.focus.history.model.Site.toFixedSite(): Site.UrlSite =
         Site.UrlSite.FixedSite(
             id = id,
             title = title,

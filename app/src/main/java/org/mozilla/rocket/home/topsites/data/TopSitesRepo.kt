@@ -101,6 +101,17 @@ class TopSitesRepo(
                 .getString(TOP_SITES_PREF, null)
     }
 
+    suspend fun getConfiguredRecommendedSites(): RecommendedSitesResult? = withContext(Dispatchers.IO) {
+        FirebaseHelper.getFirebase().getRcString(STR_RECOMMENDED_SITES)
+            .takeIf { it.isNotEmpty() }
+            ?.jsonStringToRecommendedSitesResult()
+    }
+
+    suspend fun getRecommendedSites(): RecommendedSitesResult? = withContext(Dispatchers.IO) {
+        AssetsUtils.loadStringFromRawResource(appContext, R.raw.recommended_sites)
+            ?.jsonStringToRecommendedSitesResult()
+    }
+
     fun isPinEnabled(): Boolean = pinSiteManager.isEnabled()
 
     fun pin(site: Site) {
@@ -228,6 +239,7 @@ class TopSitesRepo(
         const val TOP_SITES_QUERY_LIMIT = 16
         const val TOP_SITES_QUERY_MIN_VIEW_COUNT = 2
         private const val TOP_SITES_V2_PREF = "top_sites_v2_complete"
+        private const val STR_RECOMMENDED_SITES = "str_recommended_sites"
         private const val MSG_ID_REFRESH = 8269
     }
 }
@@ -235,6 +247,24 @@ class TopSitesRepo(
 private fun String.jsonStringToSites(): List<Site>? {
     return try {
         this.getJsonArray { TopSitesUtils.paresSite(it) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun String.jsonStringToRecommendedSitesResult(): RecommendedSitesResult? {
+    return try {
+        val categoryList =
+            this.getJsonArray {
+                val categoryId = it.optString("categoryId")
+                val categoryName = it.optString("categoryName")
+                val sites = it.getJsonArray("sites") { sites ->
+                    TopSitesUtils.paresSite(sites)
+                }
+                RecommendedSitesCategory(categoryId, categoryName, sites)
+            }
+        RecommendedSitesResult(categoryList)
     } catch (e: JSONException) {
         e.printStackTrace()
         null
