@@ -35,10 +35,12 @@ import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_AUTOCOMPLETE
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_BOOKMARK
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_CLIPBOARD
-import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_USER_INPUT
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_HISTORY
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_MANUALCOMPLETE
+import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_SUGGESTION
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_TABTRAY
 import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.focus.utils.SupportUtils
@@ -47,6 +49,7 @@ import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.rocket.awesomebar.BookmarkSuggestionProvider
 import org.mozilla.rocket.awesomebar.ClipboardSuggestionProvider
+import org.mozilla.rocket.awesomebar.CompleteAwareInlineAutocompleteEditText
 import org.mozilla.rocket.awesomebar.HistorySuggestionProvider
 import org.mozilla.rocket.awesomebar.SessionSuggestionProvider
 import org.mozilla.rocket.chrome.ChromeViewModel
@@ -76,7 +79,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private lateinit var presenter: UrlInputContract.Presenter
     private lateinit var chromeViewModel: ChromeViewModel
 
-    private lateinit var urlView: InlineAutocompleteEditText
+    private lateinit var urlView: CompleteAwareInlineAutocompleteEditText
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
     private lateinit var dismissView: View
@@ -114,7 +117,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
         suggestionView = view.findViewById<View>(R.id.search_suggestion) as FlowLayout
 
-        urlView = view.findViewById<View>(R.id.url_edit) as InlineAutocompleteEditText
+        urlView = view.findViewById<View>(R.id.url_edit) as CompleteAwareInlineAutocompleteEditText
         urlView.setOnTextChangeListener(::onTextChange)
         urlView.setOnCommitListener(::onCommit)
         urlView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -259,7 +262,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
                 dismiss()
                 TelemetryWrapper.searchDismiss(isInLandscape())
             }
-            R.id.suggestion_item -> onSuggestionClicked((view as TextView).text, AWESOMEBAR_TYPE_USER_INPUT)
+            R.id.suggestion_item -> onSuggestionClicked((view as TextView).text, AWESOMEBAR_TYPE_SUGGESTION)
             else -> throw IllegalStateException("Unhandled view in onClick()")
         }
     }
@@ -306,7 +309,12 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             }
         } ?: urlView.text.toString()
         search(input)
-        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false, isInLandscape)
+        val type = if (urlView.isUserInput) {
+            AWESOMEBAR_TYPE_MANUALCOMPLETE
+        } else {
+            AWESOMEBAR_TYPE_AUTOCOMPLETE
+        }
+        TelemetryWrapper.urlBarEvent(SupportUtils.isUrl(input), false, isInLandscape, type)
     }
 
     private fun search(input: String) {

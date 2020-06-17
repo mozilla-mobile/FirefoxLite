@@ -383,6 +383,9 @@ object TelemetryWrapper {
         const val AWESOMEBAR_TYPE_BOOKMARK = "bookmark"
         const val AWESOMEBAR_TYPE_TABTRAY = "tabtray"
         const val AWESOMEBAR_TYPE_CLIPBOARD = "clipboard"
+        const val AWESOMEBAR_TYPE_MANUALCOMPLETE = "manualcomplete"
+        const val AWESOMEBAR_TYPE_AUTOCOMPLETE = "autocomplete"
+        const val AWESOMEBAR_TYPE_SUGGESTION = "suggestion"
     }
 
     enum class FIND_IN_PAGE {
@@ -1453,7 +1456,7 @@ object TelemetryWrapper {
         isUrl: Boolean,
         isSuggestion: Boolean,
         isInLandscape: Boolean,
-        type: String = Extra_Value.AWESOMEBAR_TYPE_USER_INPUT
+        type: String
     ) {
         if (isUrl) {
             TelemetryWrapper.browseEvent(isInLandscape, type)
@@ -1471,7 +1474,11 @@ object TelemetryWrapper {
             `object` = Object.SEARCH_BAR,
             value = Value.LINK,
             extras = [
-                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
+                TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape"),
+                TelemetryExtra(
+                    name = Extra.TYPE,
+                    value = "history,bookmark,clipboard,suggestion,tabtray,manualcomplete,autocomplete"
+                )
             ])
     private fun browseEvent(isInLandscape: Boolean, type: String) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.SEARCH_BAR, Value.LINK)

@@ -104,7 +104,7 @@
             android:orientation="horizontal"
             android:transitionName="urlbar">
 
-            <mozilla.components.ui.autocomplete.InlineAutocompleteEditText
+            <org.mozilla.rocket.awesomebar.CompleteAwareInlineAutocompleteEditText
                 android:id="@+id/url_edit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
