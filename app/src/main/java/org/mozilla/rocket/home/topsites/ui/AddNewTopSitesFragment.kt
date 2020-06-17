@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_add_new_top_sites.recycler_view
 import org.mozilla.focus.R
@@ -51,19 +52,36 @@ class AddNewTopSitesFragment : Fragment() {
         val specifiedFaviconBgColors = getFaviconBgColorsFromResource(recycler_view.context.applicationContext)
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
+                add(RecommendedSitesUiCategory::class, R.layout.item_recommended_sites_category, RecommendedSitesCategoryAdapterDelegate())
                 add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(addNewTopSitesViewModel, chromeViewModel, specifiedFaviconBgColors))
             }
         )
         recycler_view.apply {
             adapter = this@AddNewTopSitesFragment.adapter
         }
+
+        initSpanSizeLookup()
     }
 
     private fun bindListData() {
         addNewTopSitesViewModel.recommendedSitesItems.observe(viewLifecycleOwner, Observer {
-            // TODO: Support category item
-            adapter.setData(it.items.filterIsInstance<Site.UrlSite>())
+            adapter.setData(it.items)
         })
+    }
+
+    private fun initSpanSizeLookup() {
+        val layoutManager = recycler_view.layoutManager as GridLayoutManager
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return recycler_view.adapter?.let {
+                    when (it.getItemViewType(position)) {
+                        R.layout.item_recommended_sites_category -> 4
+                        else -> 1
+                    }
+                } ?: 0
+            }
+        }
+        layoutManager.spanSizeLookup.isSpanIndexCacheEnabled = true
     }
 
     companion object {
