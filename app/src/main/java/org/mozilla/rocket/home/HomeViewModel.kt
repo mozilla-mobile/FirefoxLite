@@ -19,7 +19,7 @@ import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
-import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
+import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
@@ -61,7 +61,7 @@ class HomeViewModel(
     private val lastReadMissionIdUseCase: LastReadMissionIdUseCase,
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
-    private val isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
+    private val isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
     isNeedToShowHomeOnboardingUseCase: IsNeedToShowHomeOnboardingUseCase,
     completeHomeOnboardingUseCase: CompleteHomeOnboardingUseCase,
     private val checkInMissionUseCase: CheckInMissionUseCase,
@@ -83,7 +83,7 @@ class HomeViewModel(
     val shouldShowContentHubItemText = MutableLiveData<Boolean>().apply { value = shouldShowContentHubItemTextUseCase() }
     val logoManNotification = MediatorLiveData<StateNotification?>()
     val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
-    val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isShoppingButtonEnabledUseCase() }
+    val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isHomeScreenShoppingButtonEnabledUseCase() }
     val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
