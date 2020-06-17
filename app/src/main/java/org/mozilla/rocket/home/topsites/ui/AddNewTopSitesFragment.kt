@@ -34,7 +34,7 @@ class AddNewTopSitesFragment : Fragment() {
         addNewTopSitesViewModel = getActivityViewModel(addNewTopSitesViewModelCreator)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
 
-        addNewTopSitesViewModel.requestTopSitesList()
+        addNewTopSitesViewModel.requestRecommendedSitesList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,7 +52,6 @@ class AddNewTopSitesFragment : Fragment() {
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(addNewTopSitesViewModel, chromeViewModel, specifiedFaviconBgColors))
-                add(Site.UrlSite.RemovableSite::class, R.layout.item_top_site, SiteAdapterDelegate(addNewTopSitesViewModel, chromeViewModel, specifiedFaviconBgColors))
             }
         )
         recycler_view.apply {
@@ -61,8 +60,9 @@ class AddNewTopSitesFragment : Fragment() {
     }
 
     private fun bindListData() {
-        addNewTopSitesViewModel.topSitesItems.observe(viewLifecycleOwner, Observer {
-            adapter.setData(it)
+        addNewTopSitesViewModel.recommendedSitesItems.observe(viewLifecycleOwner, Observer {
+            // TODO: Support category item
+            adapter.setData(it.items.filterIsInstance<Site.UrlSite>())
         })
     }
 

@@ -25,6 +25,7 @@ import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboard
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
+import org.mozilla.rocket.home.topsites.domain.GetRecommendedSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
@@ -245,7 +246,13 @@ object HomeModule {
             TabTrayViewModel()
 
     @JvmStatic
+    @Singleton
     @Provides
-    fun provideAddNewTopSitesViewModel(getTopSitesUseCase: GetTopSitesUseCase): AddNewTopSitesViewModel =
-            AddNewTopSitesViewModel(getTopSitesUseCase)
+    fun provideGetRecommendedSitesUseCase(topSitesRepo: TopSitesRepo): GetRecommendedSitesUseCase =
+            GetRecommendedSitesUseCase(topSitesRepo)
+
+    @JvmStatic
+    @Provides
+    fun provideAddNewTopSitesViewModel(getRecommendedSitesUseCase: GetRecommendedSitesUseCase): AddNewTopSitesViewModel =
+            AddNewTopSitesViewModel(getRecommendedSitesUseCase)
 }
