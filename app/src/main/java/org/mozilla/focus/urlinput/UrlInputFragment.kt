@@ -49,7 +49,6 @@ import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
 import org.mozilla.rocket.awesomebar.BookmarkSuggestionProvider
 import org.mozilla.rocket.awesomebar.ClipboardSuggestionProvider
-import org.mozilla.rocket.awesomebar.CompleteAwareInlineAutocompleteEditText
 import org.mozilla.rocket.awesomebar.HistorySuggestionProvider
 import org.mozilla.rocket.awesomebar.SessionSuggestionProvider
 import org.mozilla.rocket.chrome.ChromeViewModel
@@ -79,7 +78,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private lateinit var presenter: UrlInputContract.Presenter
     private lateinit var chromeViewModel: ChromeViewModel
 
-    private lateinit var urlView: CompleteAwareInlineAutocompleteEditText
+    private lateinit var urlView: InlineAutocompleteEditText
     private lateinit var suggestionView: FlowLayout
     private lateinit var clearView: View
     private lateinit var dismissView: View
@@ -88,6 +87,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private var lastRequestTime: Long = 0
     private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
+    private var isUserInput = true
 
     override fun onCreate(bundle: Bundle?) {
         appComponent().inject(this)
@@ -117,7 +117,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
         suggestionView = view.findViewById<View>(R.id.search_suggestion) as FlowLayout
 
-        urlView = view.findViewById<View>(R.id.url_edit) as CompleteAwareInlineAutocompleteEditText
+        urlView = view.findViewById<View>(R.id.url_edit) as InlineAutocompleteEditText
         urlView.setOnTextChangeListener(::onTextChange)
         urlView.setOnCommitListener(::onCommit)
         urlView.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
@@ -309,7 +309,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             }
         } ?: urlView.text.toString()
         search(input)
-        val type = if (urlView.isUserInput) {
+        val type = if (isUserInput) {
             AWESOMEBAR_TYPE_MANUALCOMPLETE
         } else {
             AWESOMEBAR_TYPE_AUTOCOMPLETE
@@ -404,8 +404,10 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
         autoCompleteInProgress = true
         autoCompleteProvider.getAutocompleteSuggestion(searchText)?.let { result ->
+            isUserInput = result.text == urlView.text.toString() || result.totalItems == 0
             urlView.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.totalItems) { result.url })
         } ?: run {
+            isUserInput = true
             urlView.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(searchText, "", 0))
         }
         autoCompleteInProgress = false
