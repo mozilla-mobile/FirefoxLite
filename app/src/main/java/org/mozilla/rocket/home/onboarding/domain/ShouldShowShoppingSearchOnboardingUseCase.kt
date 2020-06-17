@@ -8,6 +8,6 @@ class ShouldShowShoppingSearchOnboardingUseCase(
     private val newFeatureNotice: NewFeatureNotice
 ) {
     operator fun invoke(): Boolean {
-        return shoppingSearchRepository.isShoppingSearchEnabled() && !newFeatureNotice.hasHomeShoppingSearchOnboardingShown()
+        return shoppingSearchRepository.isHomeScreenShoppingSearchEnabled() && !newFeatureNotice.hasHomeShoppingSearchOnboardingShown()
     }
 }

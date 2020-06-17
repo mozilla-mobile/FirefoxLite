@@ -35,7 +35,7 @@ class ShoppingSearchRepository(
         }
     }
 
-    fun isShoppingSearchEnabled() = remoteDataSource.isShoppingSearchEnabled()
+    fun isHomeScreenShoppingSearchEnabled() = remoteDataSource.isHomeScreenShoppingSearchEnabled()
 
     fun getShoppingSitesData(): LiveData<List<ShoppingSite>> = shoppingSitesData
 

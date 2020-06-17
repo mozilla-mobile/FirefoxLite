@@ -13,7 +13,7 @@ import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
-import org.mozilla.rocket.home.domain.IsShoppingButtonEnabledUseCase
+import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
@@ -66,7 +66,7 @@ object HomeModule {
         lastReadMissionIdUseCase: LastReadMissionIdUseCase,
         dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
-        isShoppingButtonEnabledUseCase: IsShoppingButtonEnabledUseCase,
+        isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
         isNeedToShowHomeOnboardingUseCase: IsNeedToShowHomeOnboardingUseCase,
         completeHomeOnboardingUseCase: CompleteHomeOnboardingUseCase,
         checkInMissionUseCase: CheckInMissionUseCase,
@@ -93,7 +93,7 @@ object HomeModule {
         lastReadMissionIdUseCase,
         dismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase,
-        isShoppingButtonEnabledUseCase,
+        isHomeScreenShoppingButtonEnabledUseCase,
         isNeedToShowHomeOnboardingUseCase,
         completeHomeOnboardingUseCase,
         checkInMissionUseCase,
@@ -207,8 +207,8 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideIsShoppingButtonEnabledUseCase(shoppingSearchRepository: ShoppingSearchRepository): IsShoppingButtonEnabledUseCase =
-            IsShoppingButtonEnabledUseCase(shoppingSearchRepository)
+    fun provideIsShoppingButtonEnabledUseCase(shoppingSearchRepository: ShoppingSearchRepository): IsHomeScreenShoppingButtonEnabledUseCase =
+            IsHomeScreenShoppingButtonEnabledUseCase(shoppingSearchRepository)
 
     @JvmStatic
     @Singleton
