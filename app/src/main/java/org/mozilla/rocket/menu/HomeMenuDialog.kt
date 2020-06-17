@@ -9,6 +9,7 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_history
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_night_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_smart_shopping_search
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_themes
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.night_mode_switch
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.scroll_view
@@ -42,6 +44,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
+import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import javax.inject.Inject
 
 class HomeMenuDialog : BottomSheetDialog {
@@ -128,6 +131,10 @@ class HomeMenuDialog : BottomSheetDialog {
             chromeViewModel.isNightMode.observe(activity, Observer { nightModeSettings ->
                 night_mode_switch.isChecked = nightModeSettings.isEnabled
             })
+            menuViewModel.isHomeScreenShoppingSearchEnabled.observe(activity, Observer {
+                btn_private_browsing.isVisible = it
+                menu_smart_shopping_search.isVisible = !it
+            })
             chromeViewModel.isPrivateBrowsingActive.observe(activity, Observer {
                 img_private_mode.isActivated = it
             })
@@ -142,6 +149,10 @@ class HomeMenuDialog : BottomSheetDialog {
                 cancel()
                 chromeViewModel.togglePrivateMode.call()
                 TelemetryWrapper.togglePrivateMode(true)
+            }
+            menu_smart_shopping_search.setOnClickListener {
+                cancel()
+                showShoppingSearch()
             }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
@@ -206,5 +217,10 @@ class HomeMenuDialog : BottomSheetDialog {
 
     private fun showAdjustBrightness() {
         ContextCompat.startActivity(context, AdjustBrightnessDialog.Intents.getStartIntentFromMenu(context), null)
+    }
+
+    private fun showShoppingSearch() {
+        val context: Context = this.context ?: return
+        context.startActivity(ShoppingSearchActivity.getStartIntent(context))
     }
 }

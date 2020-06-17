@@ -205,7 +205,7 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideIsShoppingButtonEnabledUseCase(shoppingSearchRepository: ShoppingSearchRepository): IsHomeScreenShoppingButtonEnabledUseCase =
+    fun provideIsHomeScreenShoppingButtonEnabledUseCase(shoppingSearchRepository: ShoppingSearchRepository): IsHomeScreenShoppingButtonEnabledUseCase =
             IsHomeScreenShoppingButtonEnabledUseCase(shoppingSearchRepository)
 
     @JvmStatic
