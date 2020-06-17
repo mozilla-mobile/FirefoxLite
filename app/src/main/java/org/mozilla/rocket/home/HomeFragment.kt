@@ -80,6 +80,7 @@ import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.ui.RewardActivity
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
+import org.mozilla.rocket.util.ResourceUtils.getVisibility
 import org.mozilla.rocket.util.ToastMessage
 import javax.inject.Inject
 
@@ -272,18 +273,25 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             shouldShowContentHubItemText.observe(viewLifecycleOwner, Observer {
                 content_hub.setShowText(it)
             })
-            contentHubItems.observe(viewLifecycleOwner, Observer { items ->
-                content_hub_layout.visibility = if (items.isEmpty()) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
-                }
-                content_hub.setItems(items)
+            isContentHubEnabled.observe(viewLifecycleOwner, Observer { isEnabled ->
+                content_hub_layout.isVisible = isEnabled
                 home_fragment_title.apply {
+                    visibility = if (isEnabled) {
+                        resources.getVisibility(R.integer.home_firefox_logo_visibility)
+                    } else {
+                        View.VISIBLE
+                    }
                     layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
-                        verticalBias = 0.26f
+                        verticalBias = if (isEnabled) {
+                            TITLE_VERTICAL_BIAS_WITH_CONTENT_HUB
+                        } else {
+                            TITLE_VERTICAL_BIAS
+                        }
                     }
                 }
+            })
+            contentHubItems.observe(viewLifecycleOwner, Observer { items ->
+                content_hub.setItems(items)
             })
             openContentPage.observe(viewLifecycleOwner, Observer {
                 val context = requireContext()
@@ -564,5 +572,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun openMissionDetailPage(mission: Mission) {
         startActivity(RewardActivity.getStartIntent(requireContext(), RewardActivity.DeepLink.MissionDetailPage(mission)))
+    }
+
+    companion object {
+        private const val TITLE_VERTICAL_BIAS = 0.45f
+        private const val TITLE_VERTICAL_BIAS_WITH_CONTENT_HUB = 0.26f
     }
 }

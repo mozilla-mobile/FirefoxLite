@@ -13,6 +13,7 @@ import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.JSON_KEY
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.NEWS
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.SHOPPING
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.TRAVEL
+import org.mozilla.rocket.preference.booleanLiveData
 import org.mozilla.rocket.preference.stringLiveData
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.toJsonArray
@@ -25,6 +26,13 @@ class ContentHubRepo(private val appContext: Context) {
     }, {
         appContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
     })
+
+    fun isContentHubEnabled(): LiveData<Boolean> =
+            preference.booleanLiveData(SHARED_PREF_KEY_ENABLE_CONTENT_HUB, true)
+
+    fun setContentHubEnabled(enabled: Boolean) {
+        preference.edit().putBoolean(SHARED_PREF_KEY_ENABLE_CONTENT_HUB, enabled).apply()
+    }
 
     fun getConfiguredContentHubItemsLive(): LiveData<List<ContentHubItem>?> {
         val readTypes = getReadTypesLive()
@@ -73,6 +81,7 @@ class ContentHubRepo(private val appContext: Context) {
 
         private const val PREF_NAME = "content_hub"
         private const val SHARED_PREF_KEY_READ_CONTENT_HUB = "shared_pref_key_read_content_hub"
+        private const val SHARED_PREF_KEY_ENABLE_CONTENT_HUB = "shared_pref_key_enable_content_hub"
         const val JSON_KEY_TYPE = "type"
     }
 }

@@ -18,6 +18,7 @@ import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
+import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -73,7 +74,8 @@ class HomeViewModel(
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
     isNewUserUseCase: IsNewUserUseCase,
-    shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase
+    shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
+    shouldShowContentHubUseCase: ShouldShowContentHubUseCase
 ) : ViewModel() {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -87,6 +89,7 @@ class HomeViewModel(
     val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
+    val isContentHubEnabled: LiveData<Boolean> = shouldShowContentHubUseCase()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
