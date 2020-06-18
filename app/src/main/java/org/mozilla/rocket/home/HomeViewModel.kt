@@ -105,6 +105,7 @@ class HomeViewModel(
     val hideLogoManNotification = SingleLiveEvent<Unit>()
     val executeUriAction = SingleLiveEvent<String>()
     val showKeyboard = SingleLiveEvent<Unit>()
+    val openAddNewTopSitesPage = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -273,6 +274,17 @@ class HomeViewModel(
                 val allowToLogTitle = site.isDefault
                 val title = if (allowToLogTitle) site.title else ""
                 TelemetryWrapper.removeTopSite(site.isDefault, position, title)
+            }
+        }
+    }
+
+    fun onAddTopSiteClicked(site: Site, position: Int) = viewModelScope.launch {
+        when (site) {
+            is Site.UrlSite.RemovableSite -> {
+                openAddNewTopSitesPage.call()
+                val allowToLogTitle = site.isDefault
+                val title = if (allowToLogTitle) site.title else ""
+                TelemetryWrapper.addTopSite(site.isDefault, position, title, TelemetryWrapper.Extra_Value.CONTEXT_MENU)
             }
         }
     }

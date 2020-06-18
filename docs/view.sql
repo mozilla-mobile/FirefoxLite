@@ -83,6 +83,7 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('capture') ) THEN 'Rocket -  Click Toolbar - Take Screenshot' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Top Site' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('remove') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Remove Top Site' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('add') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Add Topsite' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('add') ) AND (event_object IN ('tab') ) AND (event_value IN ('home') ) THEN 'Rocket -  Search in Home and add a tab' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('search_bar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Enter an url in SearchBar' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('select_query') ) AND (event_object IN ('search_bar') ) AND event_value IS NULL THEN 'Rocket -  Use SearchSuggestion SearchBar' 
