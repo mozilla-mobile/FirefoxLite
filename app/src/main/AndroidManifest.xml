@@ -344,6 +344,13 @@
             android:screenOrientation="portrait"
             android:taskAffinity=".content.travel" />
 
+        <activity
+            android:name="org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/SettingsTheme" />
+
     </application>
 
 </manifest>
