@@ -2,6 +2,7 @@ package org.mozilla.focus.activity
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.autobot.setting
@@ -25,6 +26,7 @@ class TurboModeSwitcherTest {
      * 4. Tap turbo mode
      * 5. Check turbo mode is not checked
      */
+    @Ignore
     @Test
     fun turboMode() {
 

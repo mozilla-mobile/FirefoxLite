@@ -29,6 +29,7 @@ import androidx.test.rule.ActivityTestRule
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -55,6 +56,7 @@ class HomeTest {
         AndroidTestUtils.beforeTest()
     }
 
+    @Ignore
     @Test
     fun clickTopSite_loadTopSite() {
         val getTopSitesUseCase = (getApplicationContext() as Context).appComponent().getTopSitesUseCase()
@@ -94,6 +96,7 @@ class HomeTest {
      * 1. Launch Rocket
      * 2. check visible - project name, search bar, top sites, tab tray
      */
+    @Ignore
     @Test
     fun checkBasicHomeComponents_allAreVisible() {
         activityRule.launchActivity(Intent())
@@ -123,6 +126,7 @@ class HomeTest {
      * 6. Tap on blank space above menu or
      * 7. Check menu panel not exist
      */
+    @Ignore
     @FlakyTest
     @Test
     fun dismissMenu() {

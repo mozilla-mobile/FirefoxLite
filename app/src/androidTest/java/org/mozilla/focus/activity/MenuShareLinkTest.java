@@ -18,6 +18,7 @@ import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -118,6 +119,7 @@ public class MenuShareLinkTest {
      * 1. Launch app, visit a website, and tap menu -> share link
      * 2. Check intent sent
      */
+    @Ignore
     @Test
     public void shareLinkInMenu() {
 

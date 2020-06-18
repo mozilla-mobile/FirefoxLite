@@ -9,6 +9,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,7 @@ public class SaveRestoreTabsTest {
      * 1. Launch Rocket with no tab
      * 2. tab number is zero
      */
+    @Ignore
     @Test
     public void restoreEmptyTab() {
         activityRule.launchActivity(new Intent());
@@ -76,6 +78,7 @@ public class SaveRestoreTabsTest {
      * 5. check tab number is 1
      * 6. open tab tray to check url, icon, website title, website subtitle, close button displayed
      */
+    @Ignore
     @Test
     public void restoreEmptyTab_addNewTabThenRelaunch() {
         activityRule.launchActivity(new Intent());
@@ -113,6 +116,7 @@ public class SaveRestoreTabsTest {
      * 4. relaunch activity
      * 5. check tab number is 3
      */
+    @Ignore
     @Test
     public void restorePreviousTabs_addNewTabThenRelaunch() throws InterruptedException {
         tabsDatabase.tabDao().insertTabs(TAB, TAB_2);
@@ -150,6 +154,7 @@ public class SaveRestoreTabsTest {
      * 5. Tap Close All -> Ok
      * 6. Check tab tray number is 0
      */
+    @Ignore
     @Test
     public void tabTray_closeAllTab() throws InterruptedException {
 

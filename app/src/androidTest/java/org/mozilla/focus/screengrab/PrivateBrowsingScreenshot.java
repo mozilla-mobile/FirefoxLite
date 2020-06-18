@@ -20,6 +20,7 @@ import androidx.test.uiautomator.UiSelector;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +76,7 @@ public class PrivateBrowsingScreenshot extends BaseScreenshot {
         }
     }
 
+    @Ignore
     @Test
     public void screenshotPrivateBrowsing() {
 

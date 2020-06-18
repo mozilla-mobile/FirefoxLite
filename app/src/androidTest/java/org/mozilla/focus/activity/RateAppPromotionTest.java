@@ -17,6 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -86,6 +87,7 @@ public class RateAppPromotionTest {
      * 2. Press feedback button
      * 3. check feedback page url matches expectation */
 
+    @Ignore
     @Test
     public void showRateAppPromotionAndClickRate_intendedToOpenGooglePlay() {
         // By default Espresso Intents does not stub any Intents. Stubbing needs to be setup before
@@ -111,6 +113,7 @@ public class RateAppPromotionTest {
      * 2. Press feedback button
      * 3. check feedback page url matches expectation */
 
+    @Ignore
     @Test
     public void showRateAppPromotionAndClickFeedback_openFeedbackUrl() {
         sessionLoadedIdlingResource = new SessionLoadedIdlingResource(intentTestRule.getActivity());
@@ -137,6 +140,7 @@ public class RateAppPromotionTest {
      * 2. Press back button
      * 3. back to home page */
 
+    @Ignore
     @Test
     public void showRateAppPromotionAndClickClose_backToHome() {
         // Check share app dialog is displayed and click the close button

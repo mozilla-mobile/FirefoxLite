@@ -15,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,6 +66,7 @@ public class SearchSuggestionTest {
      * 4. tap first suggestion
      * 5. check current url is matched with defaultSearchEngine.buildSearchUrl()
      */
+    @Ignore
     @Test
     public void clickSearchSuggestion_browseByDefaultSearchEngine() throws UiObjectNotFoundException, UnsupportedEncodingException {
         activityTestRule.launchActivity(new Intent());

@@ -17,6 +17,7 @@ import androidx.test.rule.ActivityTestRule;
 import junit.framework.Assert;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,7 @@ public class ScreenNavigatorTest {
     /**
      * Test whether showBrowserScreen() can load and bring browser screen to foreground properly
      */
+    @Ignore
     @Test
     public void launch_showBrowserScreen_browserScreenDisplayed() {
         ScreenNavigatorWrapper navigator = new ScreenNavigatorWrapper(activity);
@@ -67,6 +69,7 @@ public class ScreenNavigatorTest {
      * 6. Press back
      * 7. There should be only 1 home screen, and pressing back will lead to previous browsing page
      */
+    @Ignore
     @Test
     public void browsing_addHomeAndBack_backToBrowsing() {
         ScreenNavigatorWrapper navigator = new ScreenNavigatorWrapper(activity);
@@ -96,6 +99,7 @@ public class ScreenNavigatorTest {
      * 4. Close all tab (this will call ScreenNavigator#popToHome())
      * 7. There should be only 1 home screen, and pressing back will finish the app
      */
+    @Ignore
     @Test(expected = NoActivityResumedException.class)
     public void addHome_popToHomeAndBack_activityFinished() {
         ScreenNavigatorWrapper navigator = new ScreenNavigatorWrapper(activity);

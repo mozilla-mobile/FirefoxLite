@@ -18,6 +18,7 @@ import androidx.test.uiautomator.UiScrollable;
 import androidx.test.uiautomator.UiSelector;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,6 +75,7 @@ public class DefaultBrowserTest {
      * 5. Go back to Firefox Lite's settings
      * 6. Check it correctly set default browser to Firefox Lite
      */
+    @Ignore
     @Test
     public void changeDefaultBrowser_whenChromeIsDefault() {
         // Start MainActivity
@@ -159,6 +161,7 @@ public class DefaultBrowserTest {
      * 4. Go back to app's settings
      * 5. Check it correctly set default browser to Firefox Lite
      */
+    @Ignore
     @Test
     public void changeDefaultBrowser_whenNoDefault() {
         mainActivity.launchActivity(new Intent());

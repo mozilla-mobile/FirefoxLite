@@ -62,6 +62,7 @@ class ScreenOrientationTest {
         }
     }
 
+    @Ignore
     @Test
     fun testBrowserScreen() {
         // Prepare
@@ -71,6 +72,7 @@ class ScreenOrientationTest {
         assertEquals(ActivityInfo.SCREEN_ORIENTATION_USER, activityTestRule.activity.requestedOrientation)
     }
 
+    @Ignore
     @Test
     fun testFirstLevelMenu() {
         // Prepare
@@ -87,6 +89,7 @@ class ScreenOrientationTest {
         assertBackToHomeOrientation()
     }
 
+    @Ignore
     @Test
     fun testSecondLevelMenu() {
         // Prepare
@@ -105,6 +108,7 @@ class ScreenOrientationTest {
         assertBackToHomeOrientation()
     }
 
+    @Ignore
     @Test
     fun testFindInPage() {
         // Prepare
@@ -123,6 +127,7 @@ class ScreenOrientationTest {
         assertBackToHomeOrientation()
     }
 
+    @Ignore
     @Test
     fun testTabTray() {
         // Prepare
@@ -141,6 +146,7 @@ class ScreenOrientationTest {
         assertBackToHomeOrientation()
     }
 
+    @Ignore
     @Test
     fun testUrlInput() {
         // Prepare

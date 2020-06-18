@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,7 @@ public class ClearBrowsingDataTest {
      * 6. Tap clear data button
      * 7. Check toast message "browsing data cleared" displayed
      */
+    @Ignore
     @Test
     public void clearBrowsingData() {
         MenuRobot menuRobot = new MenuRobot();

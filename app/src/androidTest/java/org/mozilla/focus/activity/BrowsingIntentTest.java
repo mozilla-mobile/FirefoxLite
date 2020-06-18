@@ -17,6 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +65,7 @@ public class BrowsingIntentTest {
         }
     }
 
+    @Ignore
     @Test
     public void receivedBrowsingIntent_tabIsCreated() {
         activityTestRule.launchActivity(new Intent());
@@ -101,6 +103,7 @@ public class BrowsingIntentTest {
     }
 
 
+    @Ignore
     @Test
     public void appHasOneTabAndReceiveBrowsingIntent_tabIncreasedAndBrowse() {
 

@@ -20,6 +20,7 @@ import android.util.Log;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -140,6 +141,7 @@ public class DownloadTest {
      * 4. Check [Downloading] toast message displayed
      * 5. Check file is shown in download list
      */
+    @Ignore
     @Test
     public void triggerDownload_showToast() throws InterruptedException, UiObjectNotFoundException, IOException {
 
@@ -181,6 +183,7 @@ public class DownloadTest {
      * 5. Tap remove from list
      * 6. Check file is not in the list
      */
+    @Ignore
     @Test
     public void triggerDownload_FileRemoveFromList() throws InterruptedException, UiObjectNotFoundException, IOException {
 

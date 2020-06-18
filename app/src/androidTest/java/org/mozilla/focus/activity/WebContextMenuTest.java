@@ -25,6 +25,7 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -142,6 +143,7 @@ public class WebContextMenuTest {
      * 4. Click switch
      * 5. Check tab count is 2
      */
+    @Ignore
     @Test
     public void openLinkInNewTab() {
 
@@ -172,6 +174,7 @@ public class WebContextMenuTest {
      * 3. Tap on the "Share link" on the prompt dialog.
      * 5. Check intent sent
      */
+    @Ignore
     @Test
     public void shareLink_sendShareIntent() {
 
@@ -197,6 +200,7 @@ public class WebContextMenuTest {
      * 3. Tap on "Copy link address"
      * 5. Check copied url matches as expected
      */
+    @Ignore
     @Test
     public void copyLinkAddress() {
 
@@ -228,6 +232,7 @@ public class WebContextMenuTest {
      * 4. Tap on the "Gmail"
      * 5. Check intent sent
      */
+    @Ignore
     @Test
     public void shareImage_sendShareIntent() {
 
@@ -253,6 +258,7 @@ public class WebContextMenuTest {
      * 3. Tap on "Copy image address"
      * 5. Check copied url matches as expected
      */
+    @Ignore
     @Test
     public void copyImageAddress() {
 
@@ -285,6 +291,7 @@ public class WebContextMenuTest {
      * 6. Click download manager
      * 7. Check download item matches as expected
      */
+    @Ignore
     @FlakyTest
     @Test
     public void saveImageThenDelete_imageSaveAndDeleteSuccessfully() {

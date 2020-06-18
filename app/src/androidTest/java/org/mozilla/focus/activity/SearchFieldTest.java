@@ -16,6 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.hamcrest.core.AllOf;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -84,6 +85,7 @@ public class SearchFieldTest {
      * 11. click outside search field
      * 12. check we are on homepage
      */
+    @Ignore
     @Test
     public void typeTextInSearchFieldAndClear_textIsClearedAndBackToHome() {
 
@@ -139,6 +141,7 @@ public class SearchFieldTest {
      * 11. Wait for the page is loaded
      * 12. Check if current url is matched with SearchEngine.buildSearchUrl()
      */
+    @Ignore
     @Test
     public void typeSpecialCharactersInSearchField_searchIsPerformingAccordingly() {
 

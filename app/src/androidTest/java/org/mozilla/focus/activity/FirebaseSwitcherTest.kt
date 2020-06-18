@@ -3,6 +3,7 @@ package org.mozilla.focus.activity
 import androidx.test.filters.SdkSuppress
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.autobot.setting
@@ -18,6 +19,7 @@ class FirebaseSwitcherTest {
         AndroidTestUtils.beforeTest()
     }
 
+    @Ignore
     @Test
     fun disableFirebase_makeSureSwitchIsOffAfterClick() {
 
@@ -32,6 +34,7 @@ class FirebaseSwitcherTest {
         }
     }
 
+    @Ignore
     @Test
     fun flipPrefCrazily_TheStateIsSynced() {
 

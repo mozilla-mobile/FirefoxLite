@@ -29,6 +29,7 @@ import org.hamcrest.Matchers.not
 import org.json.JSONException
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -67,6 +68,7 @@ class RemoveTopSitesTest {
      * 1. Launch app
      * 2. long click to delete top site
      */
+    @Ignore
     @Test
     fun deleteTopSite_deleteSuccessfully() {
 
@@ -105,6 +107,7 @@ class RemoveTopSitesTest {
      * 2. Long click to remove one top site
      * 3. Press back key
      */
+    @Ignore
     @Test
     fun deleteTopSiteAndCancel_topSiteIsStillThere() {
 

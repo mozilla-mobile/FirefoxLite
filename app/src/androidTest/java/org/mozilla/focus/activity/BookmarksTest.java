@@ -111,6 +111,7 @@ public class BookmarksTest {
      * 3. Tap Bookmark button
      * 4. Show "No Bookmarks" in bookmarks panel
      */
+    @Ignore
     @Test
     public void openBookmarksPanel_showEmptyBookmarksView() {
         // Tap menu
@@ -141,6 +142,7 @@ public class BookmarksTest {
      * 12. Tap bookmark button
      * 13. Show bookmark removed toast
      */
+    @Ignore
     @Test
     public void addAndRemoveBookmarks_bookmarkIsAddedAndRemoved() {
         final String targetUrl = browsingPageAndBookmarkPage();
@@ -191,6 +193,7 @@ public class BookmarksTest {
      * 3. Tap remove button
      * 4. Show "No Bookmarks" in bookmarks panel
      */
+    @Ignore
     @Test
     public void removeBookmarkFromBookmarkList_bookmarkIsRemoved() {
         tapBookmarkItemActionMenu();
@@ -217,6 +220,7 @@ public class BookmarksTest {
      * 5. Tap save button
      * 6. Bookmark item is updated
      */
+    @Ignore
     @Test
     public void editBookmarkWithChangingContent_bookmarkIsUpdated() {
         tapBookmarkItemActionMenu();
@@ -254,6 +258,7 @@ public class BookmarksTest {
      * 4. Do not change name and location field
      * 5. Save button is disabled
      */
+    @Ignore
     @Test
     public void editBookmarkWithoutChangingContent_saveButtonIsDisabled() {
         tapBookmarkItemActionMenu();
@@ -278,6 +283,7 @@ public class BookmarksTest {
      * 4. Clear the location field
      * 5. Save button is disabled
      */
+    @Ignore
     @Test
     public void editBookmarkWithClearingLocationContent_saveButtonIsDisabled() {
         tapBookmarkItemActionMenu();
@@ -305,6 +311,7 @@ public class BookmarksTest {
      * 4. Tap save button
      * 5. Check the item in bookmark list if we update it successfully
      */
+    @Ignore
     @Test
     public void addBookmarkAndEdit_bookmarkIsUpdated() {
         browsingPageAndBookmarkPage();
@@ -343,6 +350,7 @@ public class BookmarksTest {
      * 4. Tap save button
      * 5. Check the item in bookmark list if we update it successfully
      */
+    @Ignore
     @Test
     public void editBookmarkWithVariousWords_bookmarkIsUpdated() {
         tapBookmarkItemActionMenu();

@@ -15,6 +15,7 @@ import androidx.test.uiautomator.UiScrollable;
 import androidx.test.uiautomator.UiSelector;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mozilla.focus.R;
@@ -73,6 +74,7 @@ public class ChangeLanguageTest {
      * 7. Tap language and choose Indonesian
      * 8. Check Indonesian displayed
      */
+    @Ignore
     @Test
     public void changeDisplayLang() {
         // To do : we hard code the language may apply getPackagedLocaleTags(getContext()) later

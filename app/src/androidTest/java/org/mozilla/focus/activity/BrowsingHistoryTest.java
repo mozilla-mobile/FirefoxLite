@@ -16,6 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -122,6 +123,7 @@ public class BrowsingHistoryTest {
      * 8. Tap the second item in history panel
      * 9. Check the opened tab url is site_1
      */
+    @Ignore
     @Test
     public void browsingTwoWebSites_sitesAreDisplayedInOrderInHistoryPanel() {
 
@@ -180,6 +182,7 @@ public class BrowsingHistoryTest {
      * 4. Tap on delete
      * 5. History is deleted
      */
+    @Ignore
     @Test
     public void browsingWebsiteAndDeleteItsHistoryItem_deleteSuccessfully() {
 
@@ -217,6 +220,7 @@ public class BrowsingHistoryTest {
      * 8. Tap "CLEAR"
      * 9. History cleared
      */
+    @Ignore
     @Test
     public void clearBrowsingHistory_cancelAndClearWorkCorrectly() {
 

@@ -18,6 +18,7 @@ import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.Until;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,7 @@ public class AaHomeScreenshot extends BaseScreenshot {
 
     }
 
+    @Ignore
     @Test
     public void screenshotHomeFragment() {
 

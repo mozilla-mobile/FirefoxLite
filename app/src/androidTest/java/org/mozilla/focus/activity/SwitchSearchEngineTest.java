@@ -20,6 +20,7 @@ import androidx.test.rule.GrantPermissionRule;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,6 +81,7 @@ public class SwitchSearchEngineTest {
      * 7. Repeat 2~6 for different search engines
      */
 
+    @Ignore
     @Test
     public void switchSearchEngine_searchViaSearchEngineAccordingly() {
         activityTestRule.launchActivity(new Intent());

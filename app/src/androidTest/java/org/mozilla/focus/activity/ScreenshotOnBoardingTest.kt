@@ -15,6 +15,7 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiSelector
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -61,6 +62,7 @@ class ScreenshotOnBoardingTest {
      * 4. Tap Lite
      * 4. Check screenshot onboarding displayed
      * */
+    @Ignore
     @Test
     fun showScreenshotOnboarding_whenBackFromRecentApp() {
         val appName = context.getResources().getString(R.string.app_name)
@@ -85,6 +87,7 @@ class ScreenshotOnBoardingTest {
      * 4. Launch Lite
      * 5. Check no screenshot onboarding displayed
      * */
+    @Ignore
     @Test
     fun showScreenshotOnboarding_whenBackFromHome() {
 
@@ -108,6 +111,7 @@ class ScreenshotOnBoardingTest {
      * 5. Tap screenshot capture button
      * 6. Check toast msg displayed but no screenshot on-boarding
      * */
+    @Ignore
     @Test
     fun closeScreenshotOnboarding_WhenScreenshotRepeatedly() {
 
@@ -132,6 +136,7 @@ class ScreenshotOnBoardingTest {
      * 7. Tap menu
      * 8. Check no screenshot on-boarding
      * */
+    @Ignore
     @Test
     fun closeScreenshotOnboarding_WhenOpenMyShotsFromMenu() {
 
@@ -159,6 +164,7 @@ class ScreenshotOnBoardingTest {
      * 5. Tap menu
      * 4. Check no screenshot on-boarding
      * */
+    @Ignore
     @Test
     fun closeScreenshotOnboarding_WhenOpenMyshotsFromHistory() {
 

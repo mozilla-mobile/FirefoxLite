@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,6 +129,7 @@ public class DownloadScreenshot extends BaseScreenshot {
         }
     }
 
+    @Ignore
     @Test
     public void screenshotDownload() {
 

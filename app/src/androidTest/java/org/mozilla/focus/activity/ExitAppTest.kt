@@ -13,6 +13,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import junit.framework.TestCase.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,6 +51,7 @@ class ExitAppTest {
      * 3. Tap on Menu and then Exit
      * 4. Check activity finishing or destroyed
      * */
+    @Ignore
     @Test
     fun exitAppWhenViewWebsite() {
 
@@ -71,6 +73,7 @@ class ExitAppTest {
      * 2. Tap settings -> exit
      * 3. Check activity finishing or destroyed
      */
+    @Ignore
     @Test
     fun exitAppWhenInHomePage() {
 
