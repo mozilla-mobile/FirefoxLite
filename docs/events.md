@@ -51,7 +51,7 @@
 |Click Menu - Bookmarks|action|click|menu|"bookmark"|"" 
 |Click Menu - Theme|action|click|menu|"theme"|"" 
 |Click Menu - Add Topsite|action|click|menu|"add_topsite"|"" 
-|Click Menu - Vertical Toggle|action|click|menu|"vertical"|"to=true|false," 
+|Click Menu - Vertical Toggle|action|change|menu|"vertical"|"to=true|false," 
 |Click Toolbar - Forward|action|click|toolbar|"forward"|"version=2,mode=[webview|menu],position=[0-4]," 
 |Click Toolbar - Back|action|click|toolbar|"back"|"position=[0-4]," 
 |Click Toolbar - Reload|action|click|toolbar|"reload"|"version=2,mode=[webview|menu],position=[0-4],orientation=portrait,landscape," 

@@ -1225,15 +1225,15 @@ object TelemetryWrapper {
     @TelemetryDoc(
             name = "Click Menu - Vertical Toggle",
             category = Category.ACTION,
-            method = Method.CLICK,
+            method = Method.CHANGE,
             `object` = Object.MENU,
             value = Value.VERTICAL,
             extras = [
                 TelemetryExtra(name = Extra.TO, value = "true|false")
             ])
     @JvmStatic
-    fun clickMenuVerticalToggle(isOn: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.VERTICAL)
+    fun changeMenuVerticalToggle(isOn: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.MENU, Value.VERTICAL)
                 .extra(Extra.TO, isOn.toString())
                 .queue()
     }

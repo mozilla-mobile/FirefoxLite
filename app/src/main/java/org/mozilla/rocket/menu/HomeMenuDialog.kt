@@ -174,7 +174,7 @@ class HomeMenuDialog : BottomSheetDialog {
             }
             content_services_switch.setOnCheckedChangeListener { _, isChecked ->
                 menuViewModel.onContentHubSwitchToggled(isChecked)
-                TelemetryWrapper.clickMenuVerticalToggle(isChecked)
+                TelemetryWrapper.changeMenuVerticalToggle(isChecked)
             }
             menu_add_top_sites.setOnClickListener {
                 TelemetryWrapper.clickMenuAddTopsite()
