@@ -34,7 +34,7 @@
   <string name="preference_privacy_storage_save_downloads_to">Lưu các bản tải xuống vào</string>
   <string name="preference_default_browser">Đặt làm trình duyệt mặc định</string>
   <string name="preference_default_browser_is_setting">Đang thay đổi cài đặt…</string>
-  <string name="preference_turbo_mode">Chế độ Turbo</string>
+  <string name="preference_turbo_mode">Chế độ tăng tốc</string>
   <string name="preference_mozilla_telemetry">Gửi dữ liệu sử dụng</string>
   <string name="preference_mozilla_telemetry_summary">%2$s cố gắng chỉ thu thập những gì chúng tôi cần cung cấp và cải thiện %1$s cho mọi người.</string>
   <string name="preference_learn_more">Tìm hiểu thêm</string>
@@ -71,7 +71,7 @@
   <string name="first_run_page1_title">Cảm ơn bạn đã chọn %1$s</string>
   <string name="first_run_page1_text">Một trình duyệt được tạo bởi %1$s, phi lợi nhuận đã cam kết với một trang web mở và miễn phí.</string>
   <string name="first_run_page2_title">Duyệt nhanh hơn bao giờ hết</string>
-  <string name="first_run_page2_text">Sử dụng chế độ turbo để chặn quảng cáo theo dõi để bạn và có thể duyệt ở tốc độ nhanh. Nếu các trang web có vẻ bị hỏng, chỉ cần nhấn vào công tắc của chế độ turbo trong menu.</string>
+  <string name="first_run_page2_text">Sử dụng chế độ tăng tốc để chặn quảng cáo theo dõi để bạn và có thể duyệt ở tốc độ nhanh. Nếu các trang web có vẻ bị hỏng, chỉ cần chạm vào công tắc của chế độ tăng tốc trong menu.</string>
   <string name="first_run_page3_title">Lưu dữ liệu = Tiết kiệm tiền</string>
   <string name="first_run_page3_text">Tiết kiệm chi phí dữ liệu bằng cách chặn quảng cáo. Tiết kiệm hơn nữa khi bạn kích hoạt chặn hình ảnh.</string>
   <string name="first_run_page4_title">Ảnh chụp màn hình toàn bộ trang</string>
@@ -99,13 +99,25 @@
   <string name="label_menu_share">Chia sẻ</string>
   <string name="label_menu_my_shots">Ảnh chụp màn hình</string>
   <string name="label_menu_capture_page">Chụp trang</string>
-  <string name="label_menu_turbo_mode">Chế độ Turbo</string>
+  <string name="label_menu_turbo_mode">Chế độ tăng tốc</string>
   <string name="label_menu_night_mode">Chế độ ban đêm</string>
   <string name="label_menu_block_ads">Chặn quảng cáo</string>
   <string name="label_menu_block_image">Chặn hình ảnh</string>
   <string name="label_menu_settings">Cài đặt</string>
   <string name="label_menu_exit">Thoát</string>
   <string name="label_menu_add_to_home_screen">Thêm vào màn hình chính</string>
+  <string name="label_menu_content_services">Hiển thị nội dung &amp; dịch vụ</string>
+  <string name="label_menu_add_top_sites">Thêm trang web hàng đầu</string>
+  <string name="label_menu_themes">Chủ đề</string>
+  <string name="top_site_category_1">Trang web phổ biến</string>
+  <string name="top_site_category_2">Truyền thông xã hội</string>
+  <string name="top_site_category_3">Giải trí</string>
+  <string name="top_site_category_4">Khác</string>
+  <string name="add_top_site_snackbar_1">Đã thêm trang web hàng đầu</string>
+  <string name="add_top_site_snackbar_2">Đã thêm trang web</string>
+  <string name="add_top_site_toast">Vui lòng xóa một trang web hàng đầu trước</string>
+  <string name="add_top_site_button">THÊM NỮA</string>
+  <string name="add_top_site_placeholder">Thêm</string>
   <string name="permission_toast_location_deny">Quyền truy cập địa điểm bị từ chối.</string>
   <string name="permission_toast_storage_deny">Quyền lưu trữ bị từ chối.</string>
   <string name="permission_handler_permission_dialog_setting">cài đặt</string>
@@ -173,8 +185,8 @@
   <string name="screenshot_image_viewer_dialog_info_url1">URL: %1$s</string>
   <string name="screenshot_image_viewer_dialog_delete_msg">Xóa hình ảnh này?</string>
   <string name="file_picker_title">Chọn một tệp để tải lên</string>
-  <string name="message_enable_turbo_mode">Chế độ Turbo được kích hoạt</string>
-  <string name="message_disable_turbo_mode">Chế độ Turbo bị vô hiệu hóa</string>
+  <string name="message_enable_turbo_mode">Đã bật chế độ tăng tốc</string>
+  <string name="message_disable_turbo_mode">Đã tắt chế độ tăng tốc</string>
   <string name="message_enable_block_image">Hình ảnh đang bị chặn</string>
   <string name="message_disable_block_image">Hình ảnh đang được hiển thị</string>
   <string name="message_clear_cache_fail">Không thể xóa bộ nhớ đệm</string>
@@ -194,7 +206,7 @@
   <string name="privacy_policy_update_notification_action">Để làm cho Firefox Lite tốt hơn cho bạn và mọi người, chúng tôi đã thực hiện một số thay đổi đối với chính sách quyền riêng tư của mình. Nhấn để tìm hiểu thêm.</string>
   <string name="message_set_default_success">Cảm ơn bạn đã chọn %1$s!</string>
   <string name="message_set_default_incomplet">Bạn có muốn hoàn thành cài đặt %1$s bằng cách đặt làm trình duyệt mặc định của mình không?</string>
-  <string name="setting_default_browser_instruction_system_settings">Đặt %1$s làm trình duyệt mặc định của bạn trong 30 giây</string>
+  <string name="setting_default_browser_instruction_system_settings">2 bước để đặt %1$s làm trình duyệt mặc định của bạn</string>
   <string name="setting_default_browser_instruction_open_external_link">Làm cách nào để luôn duyệt với %1$s?</string>
   <string name="instruction_select">Chọn %1$s</string>
   <string name="browser_app">Ứng dụng trình duyệt</string>
