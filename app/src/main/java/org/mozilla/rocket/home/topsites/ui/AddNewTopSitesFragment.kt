@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.fragment_add_new_top_sites.recycler_view
 import org.mozilla.focus.R
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
-import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import javax.inject.Inject
@@ -24,20 +23,13 @@ class AddNewTopSitesFragment : Fragment() {
     @Inject
     lateinit var addNewTopSitesViewModelCreator: Lazy<AddNewTopSitesViewModel>
 
-    @Inject
-    lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
-
     private lateinit var addNewTopSitesViewModel: AddNewTopSitesViewModel
-    private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var adapter: DelegateAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         addNewTopSitesViewModel = getActivityViewModel(addNewTopSitesViewModelCreator)
-        chromeViewModel = getActivityViewModel(chromeViewModelCreator)
-
-        addNewTopSitesViewModel.requestRecommendedSitesList()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,11 +43,10 @@ class AddNewTopSitesFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        val specifiedFaviconBgColors = getFaviconBgColorsFromResource(recycler_view.context.applicationContext)
         adapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
                 add(RecommendedSitesUiCategory::class, R.layout.item_recommended_sites_category, RecommendedSitesCategoryAdapterDelegate())
-                add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(addNewTopSitesViewModel, chromeViewModel, specifiedFaviconBgColors))
+                add(Site.UrlSite.FixedSite::class, R.layout.item_recommended_site, RecommendedSitesAdapterDelegate(addNewTopSitesViewModel))
             }
         )
         recycler_view.apply {

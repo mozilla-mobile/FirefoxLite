@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:paddingStart="4dp"
+    android:paddingTop="5dp"
+    android:paddingEnd="4dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/content_image"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@drawable/background_recommended_site"
+        android:elevation="4dp"
+        android:padding="11.5dp"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher" />
+
+    <org.mozilla.rocket.nightmode.themed.ThemedTextView
+        android:id="@+id/text"
+        style="@style/Body5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_margin_m1"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="1dp"
+        android:lines="2"
+        android:textAlignment="center"
+        android:textColor="@color/paletteLightBlack100"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content_image"
+        tools:text="Foobar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
