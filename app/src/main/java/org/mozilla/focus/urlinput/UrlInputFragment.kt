@@ -404,10 +404,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
         autoCompleteInProgress = true
         autoCompleteProvider.getAutocompleteSuggestion(searchText)?.let { result ->
-            isUserInput = result.text == urlView.text.toString() || result.totalItems == 0
             urlView.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(result.text, result.source, result.totalItems) { result.url })
         } ?: run {
-            isUserInput = true
             urlView.applyAutocompleteResult(InlineAutocompleteEditText.AutocompleteResult(searchText, "", 0))
         }
         autoCompleteInProgress = false
@@ -426,6 +424,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
         }
         val visibility = if (TextUtils.isEmpty(originalText)) View.GONE else View.VISIBLE
         this@UrlInputFragment.clearView.visibility = visibility
+        isUserInput = originalText == autocompleteText
     }
 
     private fun detectThrottle(): Boolean {
