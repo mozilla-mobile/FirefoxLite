@@ -106,6 +106,18 @@
   <string name="label_menu_settings">Setélan</string>
   <string name="label_menu_exit">Kaluar</string>
   <string name="label_menu_add_to_home_screen">Tambahkeun ka layar tepas</string>
+  <string name="label_menu_content_services">Témbongkeun Kontén &amp; Layanan</string>
+  <string name="label_menu_add_top_sites">Tambahkeun loka-loka kawentar</string>
+  <string name="label_menu_themes">Téma</string>
+  <string name="top_site_category_1">Raramatloka Kawentar</string>
+  <string name="top_site_category_2">Média Sosial</string>
+  <string name="top_site_category_3">Hiburan</string>
+  <string name="top_site_category_4">Lianna</string>
+  <string name="add_top_site_snackbar_1">Loka onjoy ditambahkeun</string>
+  <string name="add_top_site_snackbar_2">Ieu loka geus ditambahkeun</string>
+  <string name="add_top_site_toast">Punten piceun hiji loka nu geus aya</string>
+  <string name="add_top_site_button">TAMBAHAN DEUI</string>
+  <string name="add_top_site_placeholder">Tambah</string>
   <string name="permission_toast_location_deny">Idin lokasi ditolak.</string>
   <string name="permission_toast_storage_deny">Idin teundeunan ditolak.</string>
   <string name="permission_handler_permission_dialog_setting">setélan</string>
@@ -194,7 +206,7 @@
   <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
   <string name="message_set_default_success">Nuhun geus milih %1$s!</string>
   <string name="message_set_default_incomplet">Badé nganggeuskeun setélan %1$s salaku panyungsi baku anjeun?</string>
-  <string name="setting_default_browser_instruction_system_settings">Setél %1$s salaku panyungsi baku anjeun dina 30 detik</string>
+  <string name="setting_default_browser_instruction_system_settings">2 léngkah pikeun nyetél %1$s jadi panyungsi baku anjeun</string>
   <string name="setting_default_browser_instruction_open_external_link">Cara pikeun salawasna nyungsi maké %1$s?</string>
   <string name="instruction_select">Pilih %1$s</string>
   <string name="browser_app">Aplikasi panyungsi</string>

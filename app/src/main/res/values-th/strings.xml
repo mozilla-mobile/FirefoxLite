@@ -106,6 +106,8 @@
   <string name="label_menu_settings">การตั้งค่า</string>
   <string name="label_menu_exit">ออก</string>
   <string name="label_menu_add_to_home_screen">เพิ่มไปยังหน้าจอหลัก</string>
+  <string name="label_menu_add_top_sites">เพิ่มไซต์เด่น</string>
+  <string name="add_top_site_placeholder">เพิ่ม</string>
   <string name="permission_toast_location_deny">ปฏิเสธสิทธิอนุญาตตำแหน่งที่ตั้งแล้ว</string>
   <string name="permission_toast_storage_deny">ปฏิเสธสิทธิอนุญาตที่เก็บข้อมูลแล้ว</string>
   <string name="permission_handler_permission_dialog_setting">การตั้งค่า</string>
