@@ -17,7 +17,7 @@ class AddNewTopSitesViewModel(
     private val _recommendedSitesResult = MutableLiveData<RecommendedSitesUiResult>()
     val recommendedSitesItems: LiveData<RecommendedSitesUiResult> = _recommendedSitesResult
 
-    fun requestRecommendedSitesList() {
+    init {
         getRecommendedSitesList()
     }
 
