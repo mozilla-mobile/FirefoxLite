@@ -106,6 +106,7 @@
   <string name="label_menu_settings">सेटिंग</string>
   <string name="label_menu_exit">निकास</string>
   <string name="label_menu_add_to_home_screen">मुख्य पृष्ठ में जोड़ें</string>
+  <string name="label_menu_content_services">सामग्री और सेवाएं दिखाएं</string>
   <string name="label_menu_themes">थीम</string>
   <string name="top_site_category_1">लोकप्रिय वेबसाइटें</string>
   <string name="top_site_category_2">सोशल मीडिया</string>
