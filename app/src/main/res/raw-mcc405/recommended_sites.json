@@ -1,0 +1,319 @@
+[
+  {
+    "categoryId": "1",
+    "categoryName": "Popular Websites",
+    "sites": [
+      {
+        "id": -1001,
+        "url": "https://m.youtube.com",
+        "title": "YouTube",
+        "favicon": "ic_youtube.png",
+        "viewCount": 0
+      },
+      {
+        "id": -1002,
+        "url": "https://m.facebook.com",
+        "title": "Facebook",
+        "favicon": "ic_facebook.png",
+        "viewCount": 0
+      },
+      {
+        "id": -1003,
+        "url": "https://www.instagram.com",
+        "title": "Instagram",
+        "favicon": "ic_instagram.png",
+        "viewCount": 0
+      },
+      {
+        "id": -1004,
+        "url": "https://mozilla.dailyhunt.in/?mode=pwa&s=Mozilla&ss=Browser-Feed&utm_source=Mozilla&utm_medium=Browser-Feed&utm_campaign=Mozilla-Browser-Top-Sites&partnerRef=%7B%22pid%22%3A%22mozilla1%22%7D&da=true&dpg=true",
+        "title": "Dailyhunt",
+        "favicon": "ic_dailyhunt.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -1005,
+        "url": "https://www.newspointapp.com/?utm_source=mozilla_browser&utm_medium=referral&utm_campaign=np",
+        "title": "NewsPoint",
+        "favicon": "ic_newspointapp.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -1006,
+        "url": "https://www.amazon.in/?&_encoding=UTF8&tag=firefoxlite-21&linkCode=ur2&linkId=09ca5ea2db9731b4b066a6e089641661&camp=3638&creative=24630",
+        "title": "Amazon.in",
+        "favicon": "ic_amazon_in.png",
+        "viewCount": 0
+      },
+      {
+        "id": -1007,
+        "url": "https://www.flipkart.com/?affid=fxlite",
+        "title": "Flipkart",
+        "favicon": "ic_flipkart.png",
+        "viewCount": 0
+      },
+      {
+        "id": -1008,
+        "url": "https://frvr.com/mozilla/",
+        "title": "FRVR",
+        "favicon": "ic_frvr.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -1009,
+        "url": "https://www.cricbuzz.com/",
+        "title": "Cricbuzz",
+        "favicon": "ic_cricbuzz.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -1010,
+        "url": "https://www.wikipedia.org",
+        "title": "Wikipedia",
+        "favicon": "ic_wikipedia.png",
+        "viewCount": 0
+      },
+      {
+        "id": -1011,
+        "url": "https://mail.google.com/",
+        "title": "Gmail",
+        "favicon": "ic_gmail.webp",
+        "viewCount": 0
+      }
+    ]
+  },
+  {
+    "categoryId": "2",
+    "categoryName": "News",
+    "sites": [
+      {
+        "id": -2001,
+        "url": "https://khabar.ndtv.com/",
+        "title": "NDTV",
+        "favicon": "ic_ndtv.png",
+        "viewCount": 0
+      },
+      {
+        "id": -2002,
+        "url": "https://www.indiatimes.com",
+        "title": "Indiatimes",
+        "favicon": "ic_indiatimes.png",
+        "viewCount": 0
+      },
+      {
+        "id": -2003,
+        "url": "https://www.news18.com/",
+        "title": "News18.com",
+        "favicon": "ic_news18.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -2004,
+        "url": "https://www.indiatoday.in/",
+        "title": "India Today",
+        "favicon": "ic_indiatoday.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -2005,
+        "url": "https://thewire.in/",
+        "title": "The Wire",
+        "favicon": "ic_thewire.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -2006,
+        "url": "https://theprint.in/",
+        "title": "The Print",
+        "favicon": "ic_theprint.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -2007,
+        "url": "https://www.accuweather.com/",
+        "title": "AccuWeather",
+        "favicon": "ic_accuweather.webp",
+        "viewCount": 0
+      }
+    ]
+  },
+  {
+    "categoryId": "3",
+    "categoryName": "Shopping & Travel",
+    "sites": [
+      {
+        "id": -3001,
+        "url": "https://paytm.com/",
+        "title": "Paytm",
+        "favicon": "ic_paytm.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -3002,
+        "url": "https://www.snapdeal.com/",
+        "title": "Snapdeal",
+        "favicon": "ic_snapdeal.png",
+        "viewCount": 0
+      },
+      {
+        "id": -3003,
+        "url": "https://www.indiamart.com/",
+        "title": "IndiaMART",
+        "favicon": "ic_Indiamart.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -3004,
+        "url": "https://www.olx.in/",
+        "title": "OLX",
+        "favicon": "ic_olx.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -3005,
+        "url": "https://www.oyorooms.com/",
+        "title": "OYO",
+        "favicon": "ic_oyo.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -3006,
+        "url": "https://www.makemytrip.com/",
+        "title": "MakeMyTrip",
+        "favicon": "ic_makemytrip.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -3007,
+        "url": "https://www.goibibo.com/",
+        "title": "Goibibo",
+        "favicon": "ic_goibibo.webp",
+        "viewCount": 0
+      }
+    ]
+  },
+  {
+    "categoryId": "4",
+    "categoryName": "Entertainment",
+    "sites": [
+      {
+        "id": -4001,
+        "url": "https://www.gamezop.com/?id=Pa6YWojZa",
+        "title": "Gamezop",
+        "favicon": "ic_gamezop.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4002,
+        "url": "http://wapshop.gameloft.com/buyfull/tdc.php?mozilla=true&adid=434816",
+        "title": "Gameloft",
+        "favicon": "ic_gameloft.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4003,
+        "url": "https://www.sportskeeda.com/",
+        "title": "Sportskeeda",
+        "favicon": "ic_sportskeeda.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4004,
+        "url": "https://www.espn.com/",
+        "title": "ESPN",
+        "favicon": "ic_espn.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4005,
+        "url": "https://www.imdb.com/",
+        "title": "IMDb",
+        "favicon": "ic_imdb.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4006,
+        "url": "https://vimeo.com/watch",
+        "title": "Vimeo",
+        "favicon": "ic_vimeo.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4007,
+        "url": "https://www.netflix.com/",
+        "title": "Netflix",
+        "favicon": "ic_netflix.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -4008,
+        "url": "https://www.hotstar.com",
+        "title": "Hotstar",
+        "favicon": "ic_hotstar.png",
+        "viewCount": 0
+      }
+    ]
+  },
+  {
+    "categoryId": "5",
+    "categoryName": "Others",
+    "sites": [
+      {
+        "id": -5001,
+        "url": "https://mobile.twitter.com",
+        "title": "Twitter",
+        "favicon": "ic_twitter.png",
+        "viewCount": 0
+      },
+      {
+        "id": -5002,
+        "url": "https://www.pinterest.com/",
+        "title": "Pinterest",
+        "favicon": "ic_pinterest.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -5003,
+        "url": "https://www.reddit.com/",
+        "title": "Reddit",
+        "favicon": "ic_reddit.png",
+        "viewCount": 0
+      },
+      {
+        "id": -5004,
+        "url": "https://www.linkedin.com",
+        "title": "LinkedIn",
+        "favicon": "ic_linkedin.png",
+        "viewCount": 0
+      },
+      {
+        "id": -5005,
+        "url": "https://hi5.com/",
+        "title": "Hi5",
+        "favicon": "ic_hi5.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -5006,
+        "url": "https://www.tumblr.com/",
+        "title": "Tumblr",
+        "favicon": "ic_tumblr.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -5007,
+        "url": "https://www.quora.com/",
+        "title": "Quora",
+        "favicon": "ic_quora.webp",
+        "viewCount": 0
+      },
+      {
+        "id": -5008,
+        "url": "https://www.justdial.com/",
+        "title": "Just Dial",
+        "favicon": "ic_justdail.webp",
+        "viewCount": 0
+      }
+    ]
+  }
+]
