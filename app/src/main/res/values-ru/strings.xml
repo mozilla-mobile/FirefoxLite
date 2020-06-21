@@ -106,6 +106,18 @@
   <string name="label_menu_settings">Параметры</string>
   <string name="label_menu_exit">Выход</string>
   <string name="label_menu_add_to_home_screen">Добавить на домашний экран</string>
+  <string name="label_menu_content_services">Показать содержимое и службы</string>
+  <string name="label_menu_add_top_sites">Добавить топ сайтов</string>
+  <string name="label_menu_themes">Темы</string>
+  <string name="top_site_category_1">Популярные сайты</string>
+  <string name="top_site_category_2">Социальные медиа</string>
+  <string name="top_site_category_3">Развлекательная сфера</string>
+  <string name="top_site_category_4">Другие</string>
+  <string name="add_top_site_snackbar_1">Топ сайт добавлен</string>
+  <string name="add_top_site_snackbar_2">Сайт был добавлен</string>
+  <string name="add_top_site_toast">Пожалуйста, сначала удалите топ сайт</string>
+  <string name="add_top_site_button">ДОБАВИТЬ ЕЩЁ</string>
+  <string name="add_top_site_placeholder">Добавить</string>
   <string name="permission_toast_location_deny">Запрос на доступ к местоположению отклонен.</string>
   <string name="permission_toast_storage_deny">Запрос на использование хранилища отклонен.</string>
   <string name="permission_handler_permission_dialog_setting">параметры</string>
@@ -194,7 +206,7 @@
   <string name="privacy_policy_update_notification_action">Чтобы сделать Firefox Lite лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
   <string name="message_set_default_success">Спасибо, что выбрали %1$s!</string>
   <string name="message_set_default_incomplet">Вы хотите завершить установку %1$s в качестве браузера по умолчанию?</string>
-  <string name="setting_default_browser_instruction_system_settings">Установите %1$s в качестве браузера по умолчанию за 30 секунд</string>
+  <string name="setting_default_browser_instruction_system_settings">2 шага для установки %1$s как браузера по умолчанию</string>
   <string name="setting_default_browser_instruction_open_external_link">Как всегда заходить в Интернет через %1$s?</string>
   <string name="instruction_select">Выберите %1$s</string>
   <string name="browser_app">Приложение Браузер</string>

@@ -206,7 +206,7 @@
   <string name="privacy_policy_update_notification_action">Untuk membuat Firefox Lite lebih baik untuk Anda dan setiap orang, kami membuat beberapa perubahan pada kebijakan privasi kami. Ketuk untuk mempelajari lebih lanjut.</string>
   <string name="message_set_default_success">Terima kasih telah memilih %1$s!</string>
   <string name="message_set_default_incomplet">Apakah Anda ingin tetapkan %1$s sebagai peramban baku Anda?</string>
-  <string name="setting_default_browser_instruction_system_settings">Atur %1$s sebagai peramban baku Anda dalam 30 detik</string>
+  <string name="setting_default_browser_instruction_system_settings">2 langkah untuk membuat %1$s sebagai peramban baku Anda</string>
   <string name="setting_default_browser_instruction_open_external_link">Bagaimana agar selalu menjelajah dengan %1$s?</string>
   <string name="instruction_select">Pilih %1$s</string>
   <string name="browser_app">Aplikasi peramban</string>
