@@ -419,8 +419,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun showAddNewTopSitesPage() {
-        context?.let {
-            startActivity(AddNewTopSitesActivity.getStartIntent(it))
+        activity?.let {
+            it.startActivityForResult(AddNewTopSitesActivity.getStartIntent(it), AddNewTopSitesActivity.REQUEST_CODE_ADD_NEW_TOP_SITES)
         }
     }
 

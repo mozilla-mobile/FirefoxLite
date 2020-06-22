@@ -36,6 +36,10 @@ class AddNewTopSitesActivity : BaseActivity() {
     }
 
     companion object {
+        const val REQUEST_CODE_ADD_NEW_TOP_SITES = 2000
+        const val RESULT_CODE_ADD_NEW_TOP_SITES = 100
+        const val ADD_NEW_TOP_SITES_EXTRA = "ADD_NEW_TOP_SITES_RESULT_EXTRA"
+
         fun getStartIntent(context: Context): Intent {
             return Intent(context, AddNewTopSitesActivity::class.java)
         }
