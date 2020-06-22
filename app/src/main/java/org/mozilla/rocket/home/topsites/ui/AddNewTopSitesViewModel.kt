@@ -6,22 +6,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.mozilla.rocket.adapter.DelegateAdapter
+import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.home.topsites.data.RecommendedSitesResult
 import org.mozilla.rocket.home.topsites.domain.GetRecommendedSitesUseCase
+import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
+import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase.PinTopSiteResult
 import org.mozilla.rocket.home.topsites.domain.toFixedSite
 
 class AddNewTopSitesViewModel(
-    private val getRecommendedSites: GetRecommendedSitesUseCase
+    private val getRecommendedSites: GetRecommendedSitesUseCase,
+    private val pinTopSite: PinTopSiteUseCase
 ) : ViewModel(), TopSiteClickListener {
 
     private val _recommendedSitesResult = MutableLiveData<RecommendedSitesUiResult>()
     val recommendedSitesItems: LiveData<RecommendedSitesUiResult> = _recommendedSitesResult
 
+    val pinTopSiteResult = SingleLiveEvent<PinTopSiteResult>()
+
     init {
         getRecommendedSitesList()
     }
 
-    override fun onTopSiteClicked(site: Site, position: Int) = Unit
+    override fun onTopSiteClicked(site: Site, position: Int) {
+        when (site) {
+            is Site.UrlSite -> {
+                viewModelScope.launch {
+                    pinTopSiteResult.value = pinTopSite(site)
+                }
+            }
+        }
+    }
 
     override fun onTopSiteLongClicked(site: Site, position: Int): Boolean = false
 

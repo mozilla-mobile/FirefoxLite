@@ -270,6 +270,9 @@ object HomeModule {
 
     @JvmStatic
     @Provides
-    fun provideAddNewTopSitesViewModel(getRecommendedSitesUseCase: GetRecommendedSitesUseCase): AddNewTopSitesViewModel =
-            AddNewTopSitesViewModel(getRecommendedSitesUseCase)
+    fun provideAddNewTopSitesViewModel(
+        getRecommendedSitesUseCase: GetRecommendedSitesUseCase,
+        pinTopSiteUseCase: PinTopSiteUseCase
+    ): AddNewTopSitesViewModel =
+            AddNewTopSitesViewModel(getRecommendedSitesUseCase, pinTopSiteUseCase)
 }

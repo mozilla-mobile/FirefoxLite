@@ -1,5 +1,6 @@
 package org.mozilla.rocket.home.topsites.ui
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
+import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity.Companion.ADD_NEW_TOP_SITES_EXTRA
+import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity.Companion.RESULT_CODE_ADD_NEW_TOP_SITES
 import javax.inject.Inject
 
 class AddNewTopSitesFragment : Fragment() {
@@ -40,6 +43,7 @@ class AddNewTopSitesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         bindListData()
+        observeActions()
     }
 
     private fun initRecyclerView() {
@@ -60,6 +64,15 @@ class AddNewTopSitesFragment : Fragment() {
     private fun bindListData() {
         addNewTopSitesViewModel.recommendedSitesItems.observe(viewLifecycleOwner, Observer {
             adapter.setData(it.items)
+        })
+    }
+
+    private fun observeActions() {
+        addNewTopSitesViewModel.pinTopSiteResult.observe(viewLifecycleOwner, Observer { pinTopSiteResult ->
+            pinTopSiteResult?.let {
+                activity?.setResult(RESULT_CODE_ADD_NEW_TOP_SITES, Intent().apply { putExtra(ADD_NEW_TOP_SITES_EXTRA, it) })
+            }
+            activity?.finish()
         })
     }
 
@@ -89,8 +102,6 @@ class AddNewTopSitesFragment : Fragment() {
     }
 
     companion object {
-        const val TAG = "AddNewTopSitesFragment"
-
         fun newInstance() = AddNewTopSitesFragment()
     }
 

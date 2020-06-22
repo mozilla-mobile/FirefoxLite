@@ -254,7 +254,7 @@ class HomeViewModel(
                 false
             }
 
-    fun onPinTopSiteClicked(site: Site, position: Int) {
+    fun onPinTopSiteClicked(site: Site, position: Int) = viewModelScope.launch {
         when (site) {
             is Site.UrlSite -> {
                 pinTopSiteUseCase(site)
@@ -284,7 +284,7 @@ class HomeViewModel(
         }
     }
 
-    fun onAddTopSiteClicked(site: Site, position: Int) = viewModelScope.launch {
+    fun onAddTopSiteClicked(site: Site, position: Int) {
         when (site) {
             is Site.UrlSite.RemovableSite -> {
                 openAddNewTopSitesPage.call()
