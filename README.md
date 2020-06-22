@@ -45,12 +45,17 @@ To mimimize the chance you are blocked by our build checks, you can self check t
 
 ktlint
 ----
-Run `ktlint --install-git-pre-commit-hook` or `ktlint --install-git-pre-push-hook` for hooks
-Run `./gradlew ktlint` or `ktlint` to run check
-Run `./gradlew ktlintformat -F` or `ktlint -F` to fix format
-Run `ktlint applyToIDEAProject` to make your IDE align with ktlint
-If you want to go extreme,run `ktlint -a -F`. This will use Android rule and gives you a lot of complains about max length, but we are not using right now.
-See https://ktlint.github.io/ for details.
+- Download ktlint
+```
+curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.30.0/ktlint &&
+  chmod a+x ktlint &&
+  sudo mv ktlint /usr/local/bin/
+```
+- Run `ktlint --install-git-pre-commit-hook` for hooks
+- Run `./gradlew ktlint` or `ktlint` to run check
+- Run `ktlint applyToIDEAProject` to make your IDE align with ktlint
+- If you want to go extreme,run `ktlint -a -F`. This will use Android rule and gives you a lot of complains about max length, but we are not using it right now.
+- See https://ktlint.github.io/ for details.
 
 Docs
 ----
