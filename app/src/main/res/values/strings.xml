@@ -304,7 +304,8 @@
     <string name="top_site_category_2">Shopping &amp; travel</string>
     <string name="top_site_category_3">Entertainment</string>
     <string name="top_site_category_4">Others</string>
-   
+    <string name="top_site_category_5">News</string>
+
     <!-- Message shown after the user added a top site on Home successfully-->
     <string name="add_top_site_snackbar_1">Top site added</string>
     <!-- Message shown after the user added an existing top site on Home -->
