@@ -8,6 +8,7 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
+import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
 import android.view.KeyEvent;
 
@@ -55,6 +56,7 @@ public class NavigationTest {
      * 6. open menu to click next button
      * 7. check website_2 is displayed
      */
+    @FlakyTest
     @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
