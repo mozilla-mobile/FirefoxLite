@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_private_mo
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_add_top_sites
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_bookmark
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_content_services
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_download
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_exit
@@ -144,6 +145,11 @@ class HomeMenuDialog : BottomSheetDialog {
                     menuViewModel.onNewMenuItemDisplayed()
                 }
             })
+            menuViewModel.isContentHubEnabled.observe(activity, Observer {
+                if (content_services_switch.isChecked != it) {
+                    content_services_switch.isChecked = it
+                }
+            })
 
             btn_private_browsing.setOnClickListener {
                 cancel()
@@ -163,8 +169,12 @@ class HomeMenuDialog : BottomSheetDialog {
                     chromeViewModel.onNightModeToggled()
                 }
             }
+            menu_content_services.setOnClickListener {
+                content_services_switch.toggle()
+            }
             content_services_switch.setOnCheckedChangeListener { _, isChecked ->
-                TelemetryWrapper.clickMenuVerticalToggle(isChecked)
+                menuViewModel.onContentHubSwitchToggled(isChecked)
+                TelemetryWrapper.changeMenuVerticalToggle(isChecked)
             }
             menu_add_top_sites.setOnClickListener {
                 TelemetryWrapper.clickMenuAddTopsite()

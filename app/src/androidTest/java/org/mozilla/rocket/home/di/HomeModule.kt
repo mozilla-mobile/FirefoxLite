@@ -13,7 +13,9 @@ import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
+import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
+import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -74,7 +76,8 @@ object HomeModule {
         shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
         isNewUserUseCase: IsNewUserUseCase,
-        shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase
+        shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
+        shouldShowContentHubUseCase: ShouldShowContentHubUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -101,7 +104,8 @@ object HomeModule {
         shouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase,
         isNewUserUseCase,
-        shouldShowNewMenuItemHintUseCase
+        shouldShowNewMenuItemHintUseCase,
+        shouldShowContentHubUseCase
     )
 
     @JvmStatic
@@ -153,6 +157,16 @@ object HomeModule {
     @Provides
     fun provideShouldShowContentHubItemTextUseCase(): ShouldShowContentHubItemTextUseCase =
             ShouldShowContentHubItemTextUseCase(FirebaseHelper.getFirebase())
+
+    @JvmStatic
+    @Provides
+    fun provideSetContentHubEnabledUseCase(contentHubRepo: ContentHubRepo): SetContentHubEnabledUseCase =
+            SetContentHubEnabledUseCase(contentHubRepo)
+
+    @JvmStatic
+    @Provides
+    fun provideShouldShowContentHubUseCase(contentHubRepo: ContentHubRepo): ShouldShowContentHubUseCase =
+            ShouldShowContentHubUseCase(contentHubRepo)
 
     @JvmStatic
     @Singleton
