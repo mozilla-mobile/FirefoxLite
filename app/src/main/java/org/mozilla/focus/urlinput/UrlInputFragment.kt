@@ -255,7 +255,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             R.id.clear -> {
                 urlView.setText("")
                 urlView.requestFocus()
-                awesomeBar.onInputCancelled()
+                awesomeBar.onInputChanged("")
                 TelemetryWrapper.searchClear(isInLandscape())
             }
             R.id.dismiss -> {
