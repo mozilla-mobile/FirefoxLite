@@ -19,9 +19,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import dagger.Lazy
+import kotlinx.android.synthetic.main.button_menu.menu_red_dot
 import kotlinx.android.synthetic.main.fragment_home.account_layout
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
@@ -61,6 +63,7 @@ import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.showFxToast
+import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification
@@ -174,7 +177,13 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.openPrivateMode.observe(viewLifecycleOwner, Observer {
             chromeViewModel.togglePrivateMode.call()
         })
-        downloadIndicatorViewModel.downloadIndicatorObservable.observe(viewLifecycleOwner, Observer {
+        homeViewModel.shouldShowNewMenuItemHint.switchMap {
+            if (it) {
+                MutableLiveData<DownloadIndicatorViewModel.Status>().apply { DownloadIndicatorViewModel.Status.DEFAULT }
+            } else {
+                downloadIndicatorViewModel.downloadIndicatorObservable
+            }
+        }.observe(viewLifecycleOwner, Observer {
             home_fragment_menu_button.apply {
                 when (it) {
                     DownloadIndicatorViewModel.Status.DOWNLOADING -> setDownloadState(DOWNLOAD_STATE_DOWNLOADING)
@@ -183,6 +192,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                     else -> setDownloadState(DOWNLOAD_STATE_DEFAULT)
                 }
             }
+        })
+        homeViewModel.shouldShowNewMenuItemHint.observe(viewLifecycleOwner, Observer {
+            menu_red_dot.isVisible = it
         })
     }
 

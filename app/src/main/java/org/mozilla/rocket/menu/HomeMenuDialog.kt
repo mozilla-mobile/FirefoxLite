@@ -5,16 +5,21 @@ import android.graphics.Outline
 import android.os.Bundle
 import android.view.View
 import android.view.ViewOutlineProvider
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.add_top_sites_red_dot
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_layout
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_red_dot
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_switch
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_private_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_add_top_sites
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_bookmark
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_download
@@ -23,12 +28,16 @@ import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_history
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_night_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_preferences
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_screenshots
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_themes
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.night_mode_switch
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.scroll_view
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.themes_red_dot
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.FormatUtils
 import org.mozilla.rocket.chrome.ChromeViewModel
+import org.mozilla.rocket.chrome.MenuViewModel
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.extension.toFragmentActivity
@@ -39,8 +48,11 @@ class HomeMenuDialog : BottomSheetDialog {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
+    @Inject
+    lateinit var menuViewModelCreator: Lazy<MenuViewModel>
 
     private lateinit var chromeViewModel: ChromeViewModel
+    private lateinit var menuViewModel: MenuViewModel
 
     private lateinit var rootView: View
 
@@ -51,9 +63,19 @@ class HomeMenuDialog : BottomSheetDialog {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
+        menuViewModel = getActivityViewModel(menuViewModelCreator)
 
         initLayout()
         observeChromeAction()
+
+        setOnDismissListener {
+            resetStates()
+        }
+    }
+
+    private fun resetStates() {
+        rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+        hideNewItemHint()
     }
 
     private fun initLayout() {
@@ -109,6 +131,12 @@ class HomeMenuDialog : BottomSheetDialog {
             chromeViewModel.isPrivateBrowsingActive.observe(activity, Observer {
                 img_private_mode.isActivated = it
             })
+            menuViewModel.shouldShowNewMenuItemHint.observe(activity, Observer {
+                if (it) {
+                    showNewItemHint()
+                    menuViewModel.onNewMenuItemDisplayed()
+                }
+            })
 
             btn_private_browsing.setOnClickListener {
                 cancel()
@@ -123,6 +151,15 @@ class HomeMenuDialog : BottomSheetDialog {
                 if (needToUpdate) {
                     chromeViewModel.onNightModeToggled()
                 }
+            }
+            content_services_switch.setOnCheckedChangeListener { _, isChecked ->
+                TelemetryWrapper.clickMenuVerticalToggle(isChecked)
+            }
+            menu_add_top_sites.setOnClickListener {
+                TelemetryWrapper.clickMenuAddTopsite()
+            }
+            menu_themes.setOnClickListener {
+                TelemetryWrapper.clickMenuTheme()
             }
             menu_preferences.setOnClickListener {
                 cancel()
@@ -141,6 +178,18 @@ class HomeMenuDialog : BottomSheetDialog {
                 TelemetryWrapper.clickMenuExit()
             }
         }
+    }
+
+    private fun showNewItemHint() {
+        rootView.content_services_red_dot.visibility = View.VISIBLE
+        rootView.add_top_sites_red_dot.visibility = View.VISIBLE
+        rootView.themes_red_dot.visibility = View.VISIBLE
+    }
+
+    private fun hideNewItemHint() {
+        rootView.content_services_red_dot.visibility = View.INVISIBLE
+        rootView.add_top_sites_red_dot.visibility = View.INVISIBLE
+        rootView.themes_red_dot.visibility = View.INVISIBLE
     }
 
     private fun onDeleteClicked() {

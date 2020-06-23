@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.MenuRobot;
 import org.mozilla.focus.helper.BeforeTestTask;
-import org.mozilla.focus.utils.AndroidTestUtils;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -57,9 +57,10 @@ public class ShareWithFriendTest {
             throw new AssertionError("Could start activity");
         }
 
+        MenuRobot menuRobot = new MenuRobot();
         // Tap menu -> settings
-        AndroidTestUtils.tapHomeMenuButton();
-        AndroidTestUtils.tapSettingButton();
+        menuRobot.clickHomeMenu();
+        menuRobot.clickMenuSettings();
 
         // Tap share with friends -> close
         onData(withKey(activity.getResources().getString(R.string.pref_key_share_with_friends))).perform(click());

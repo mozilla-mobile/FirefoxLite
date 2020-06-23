@@ -1,11 +1,18 @@
 package org.mozilla.rocket.chrome
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
+import org.mozilla.rocket.chrome.domain.ReadNewMenuItemsUseCase
+import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 
-class MenuViewModel : ViewModel() {
+class MenuViewModel(
+    shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
+    private val readNewMenuItemsUseCase: ReadNewMenuItemsUseCase
+) : ViewModel() {
     val bottomItems = MutableLiveData<List<BottomBarItemAdapter.ItemData>>()
+    val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
 
     init {
         refresh()
@@ -21,6 +28,10 @@ class MenuViewModel : ViewModel() {
     }
 
     private fun getConfiguredBottomBarItems(): List<BottomBarItemAdapter.ItemData>? = AppConfigWrapper.getMenuBottomBarItems()
+
+    fun onNewMenuItemDisplayed() {
+        readNewMenuItemsUseCase()
+    }
 
     companion object {
         @JvmStatic

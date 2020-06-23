@@ -7,6 +7,7 @@ import org.mozilla.focus.tabs.tabtray.TabTrayViewModel
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
+import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
@@ -76,7 +77,8 @@ object HomeModule {
         getIsFxAccountUseCase: GetIsFxAccountUseCase,
         shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
-        isNewUserUseCase: IsNewUserUseCase
+        isNewUserUseCase: IsNewUserUseCase,
+        shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -102,7 +104,8 @@ object HomeModule {
         getIsFxAccountUseCase,
         shouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase,
-        isNewUserUseCase
+        isNewUserUseCase,
+        shouldShowNewMenuItemHintUseCase
     )
 
     @JvmStatic

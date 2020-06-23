@@ -1,16 +1,17 @@
 package org.mozilla.focus.activity;
 
 import android.content.Intent;
+
 import androidx.annotation.Keep;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.R;
+import org.mozilla.focus.autobot.MenuRobot;
 import org.mozilla.focus.helper.BeforeTestTask;
 import org.mozilla.focus.utils.AndroidTestUtils;
 
@@ -53,10 +54,11 @@ public class ClearBrowsingDataTest {
      */
     @Test
     public void clearBrowsingData() {
+        MenuRobot menuRobot = new MenuRobot();
 
         //Tap menu -> settings
-        AndroidTestUtils.tapHomeMenuButton();
-        AndroidTestUtils.tapSettingButton();
+        menuRobot.clickHomeMenu();
+        menuRobot.clickMenuSettings();
 
         // Tap clear browsing data
         onView(withText(R.string.preference_privacy_storage_clear_browsing_data)).perform(click());
