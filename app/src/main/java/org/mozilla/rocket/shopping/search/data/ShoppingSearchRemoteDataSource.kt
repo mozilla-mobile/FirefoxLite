@@ -6,7 +6,7 @@ class ShoppingSearchRemoteDataSource : ShoppingSearchDataSource {
 
     private val defaultShoppingSiteListJson = "[{\"title\":\"Google\",\"searchUrl\":\"https://www.google.com/search?q=\",\"displayUrl\":\"google.com\",\"showPrompt\":false},{\"title\":\"eBay\",\"searchUrl\":\"https://www.ebay.com/sch/i.html?_nkw=\",\"displayUrl\":\"ebay.com\"},{\"title\":\"Aliexpress\",\"searchUrl\":\"https://www.aliexpress.com/wholesale?SearchText=\",\"displayUrl\":\"aliexpress.com\"}]"
 
-    override fun isShoppingSearchEnabled() =
+    override fun isHomeScreenShoppingSearchEnabled() =
         FirebaseHelper.getFirebase().getRcBoolean(RC_KEY_ENABLE_SHOPPING_SEARCH)
 
     override fun getShoppingSites(): List<ShoppingSite> {

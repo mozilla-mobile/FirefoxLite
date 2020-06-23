@@ -6,13 +6,16 @@ import androidx.lifecycle.ViewModel
 import org.mozilla.focus.utils.AppConfigWrapper
 import org.mozilla.rocket.chrome.domain.ReadNewMenuItemsUseCase
 import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
+import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 
 class MenuViewModel(
     shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
-    private val readNewMenuItemsUseCase: ReadNewMenuItemsUseCase
+    private val readNewMenuItemsUseCase: ReadNewMenuItemsUseCase,
+    private val isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase
 ) : ViewModel() {
     val bottomItems = MutableLiveData<List<BottomBarItemAdapter.ItemData>>()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
+    val isHomeScreenShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isHomeScreenShoppingButtonEnabledUseCase() }
 
     init {
         refresh()

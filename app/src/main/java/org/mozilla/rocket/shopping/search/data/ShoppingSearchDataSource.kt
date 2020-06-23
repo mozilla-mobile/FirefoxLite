@@ -2,7 +2,7 @@ package org.mozilla.rocket.shopping.search.data
 
 interface ShoppingSearchDataSource {
 
-    fun isShoppingSearchEnabled(): Boolean
+    fun isHomeScreenShoppingSearchEnabled(): Boolean
 
     fun getShoppingSites(): List<ShoppingSite>
 
