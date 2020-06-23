@@ -12,6 +12,10 @@
 
     <!-- This text is shown in the URL bar when it's empty -->
     <string name="urlbar_hint">Search or enter address</string>
+    <!-- If the user has a URL copied in his/her clipboard, the search bar will offer a button for users to visit the website by a single tap. -->
+    <string name="awesomebar_open_copied_link">Open Copied Link</string>
+    <!-- A search suggestion for users to tap and switch to the opened tab. -->
+    <string name="awesomebar_switch_to_tab">Switch to Tab</string>
 
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About</string>
