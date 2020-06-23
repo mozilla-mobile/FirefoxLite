@@ -268,7 +268,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     }
 
     private fun isInLandscape(): Boolean {
-        return resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        return activity?.resources?.configuration?.orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
     private fun initByArguments() {
