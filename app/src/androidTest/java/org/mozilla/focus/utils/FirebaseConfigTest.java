@@ -1,6 +1,8 @@
 package org.mozilla.focus.utils;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -10,6 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class FirebaseConfigTest {
 
     @Test
+    @Ignore
     public void validateFirebaseSetting() {
         final long rateAppDialog = AppConfigWrapper.getRateDialogLaunchTimeThreshold();
         final long rateAppNotification = AppConfigWrapper.getRateAppNotificationLaunchTimeThreshold();

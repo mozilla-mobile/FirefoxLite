@@ -107,11 +107,11 @@ public class NavigationTest {
         IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Press back and check if site 1 is loading again
-        Espresso.pressBack();
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
-        onView(withId(R.id.display_url)).check(matches(isDisplayed()))
-                .check(matches(withText(TARGET_URL_SITE_1)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+//        Espresso.pressBack();
+//        IdlingRegistry.getInstance().register(loadingIdlingResource);
+//        onView(withId(R.id.display_url)).check(matches(isDisplayed()))
+//                .check(matches(withText(TARGET_URL_SITE_1)));
+//        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
     }
 
