@@ -1086,8 +1086,12 @@
     <!--Action button for setting Travel Discovery as default search engine-->
     <string name="travel_dialog_2_action">SET AS DEFAULT</string>
 
-    <!-- If the user had a url in his/her clipboard, the user  will see the URL in the first of the Awesome Bar suggestion -->
+    <!-- !NOT USE! -->
     <string name="awesomebar_open_link_clipboard">Open Link in your Clipboard</string>
 
+    <!-- If the user had a url in his/her clipboard, the user  will see the URL in the first of the Awesome Bar suggestion. -->
+    <string name="awesomebar_open_copied_link">Open Copied Link</string>
 
+    <!-- If the awesomebar suggestion is from an opened tab, clicking the item will bring the user to the opened tab. -->
+    <string name="awesomebar_switch_to_tab">Switch to Tab</string>
 </resources>
