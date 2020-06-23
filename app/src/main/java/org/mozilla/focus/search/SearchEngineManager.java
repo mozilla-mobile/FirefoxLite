@@ -10,8 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
+
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
+
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -159,6 +161,18 @@ public class SearchEngineManager extends BroadcastReceiver {
                 if (defaultSearch.equals(searchEngine.getName())) {
                     return searchEngine;
                 }
+            }
+        }
+
+        return searchEngines.get(0);
+    }
+
+    public synchronized SearchEngine getSearchEngineWithName(String searchEngineName) {
+        awaitLoadingSearchEnginesLocked();
+
+        for (SearchEngine searchEngine : searchEngines) {
+            if (searchEngine.name.equals(searchEngineName)) {
+                return searchEngine;
             }
         }
 
