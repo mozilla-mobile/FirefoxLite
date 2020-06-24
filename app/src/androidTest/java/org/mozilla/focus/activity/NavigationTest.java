@@ -12,6 +12,7 @@ import androidx.test.filters.FlakyTest;
 import androidx.test.rule.ActivityTestRule;
 import android.view.KeyEvent;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,10 +39,21 @@ public class NavigationTest {
     private static final String TARGET_URL_SITE_1 = "file:///android_asset/gpl.html";
     private static final String TARGET_URL_SITE_2 = "file:///android_asset/licenses.html";
 
+    private SessionLoadedIdlingResource loadingIdlingResource;
+
     @Before
     public void setUp() {
         AndroidTestUtils.beforeTest();
         activityTestRule.launchActivity(new Intent());
+
+        loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
+        IdlingRegistry.getInstance().register(loadingIdlingResource);
+    }
+
+    @After
+    public void tearDown() {
+        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
+        loadingIdlingResource = null;
     }
 
     /**
@@ -60,8 +72,6 @@ public class NavigationTest {
     @Test
     public void browsingWebsiteBackAndForward_backAndFrowardToWebsite() {
 
-        final SessionLoadedIdlingResource loadingIdlingResource = new SessionLoadedIdlingResource(activityTestRule.getActivity());
-
         // Click search field
         onView(withId(R.id.home_fragment_fake_input))
                 .perform(click());
@@ -72,10 +82,8 @@ public class NavigationTest {
         onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
 
         // Check if site 1 url is loaded
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_1)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Click search button and clear existing text in search field
         onView(withId(R.id.bottom_bar_search)).perform(click());
@@ -86,34 +94,26 @@ public class NavigationTest {
         onView(withId(R.id.url_edit)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
 
         // Check if site 2 url is loaded
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_2)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Press back and check if go back to site 1
         Espresso.pressBack();
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_1)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Open menu and click next button
         AndroidTestUtils.tapBrowserMenuButton();
         new BottomBarRobot().clickMenuBottomBarItem(R.id.bottom_bar_next);
 
         // Check if site 2 is loaded again
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_2)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
         // Press back and check if site 1 is loading again
         Espresso.pressBack();
-        IdlingRegistry.getInstance().register(loadingIdlingResource);
         onView(withId(R.id.display_url)).check(matches(isDisplayed()))
                 .check(matches(withText(TARGET_URL_SITE_1)));
-        IdlingRegistry.getInstance().unregister(loadingIdlingResource);
 
     }
 

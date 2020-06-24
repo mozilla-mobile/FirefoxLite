@@ -22,6 +22,8 @@ import org.mozilla.rocket.tabs.TabViewClient;
 import org.mozilla.rocket.tabs.TabViewEngineSession;
 import org.mozilla.rocket.tabs.TabsSessionProvider;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import mozilla.components.browser.session.Download;
 
 
@@ -31,7 +33,7 @@ import mozilla.components.browser.session.Download;
  */
 public class SessionLoadedIdlingResource implements IdlingResource {
     private ResourceCallback resourceCallback;
-    private boolean isCompleted;
+    private AtomicBoolean isCompleted = new AtomicBoolean(true);
     private Observer observer = new Observer();
 
     public SessionLoadedIdlingResource(TabsSessionProvider.SessionHost activity) {
@@ -46,7 +48,7 @@ public class SessionLoadedIdlingResource implements IdlingResource {
 
     @Override
     public boolean isIdleNow() {
-        return isCompleted;
+        return isCompleted.get();
     }
 
     private void invokeCallback() {
@@ -80,8 +82,8 @@ public class SessionLoadedIdlingResource implements IdlingResource {
 
         @Override
         public void onLoadingStateChanged(@NotNull Session session, boolean loading) {
-            isCompleted = !loading;
-            if (isCompleted) {
+            isCompleted.set(!loading);
+            if (!loading) {
                 invokeCallback();
             }
         }
