@@ -48,10 +48,8 @@ import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.focus.widget.FlowLayout
-import org.mozilla.rocket.awesomebar.BookmarkSuggestionProvider
 import org.mozilla.rocket.awesomebar.ClipboardSuggestionProvider
-import org.mozilla.rocket.awesomebar.HistorySuggestionProvider
-import org.mozilla.rocket.awesomebar.SessionSuggestionProvider
+import org.mozilla.rocket.awesomebar.FrecensySuggestionProvider
 import org.mozilla.rocket.chrome.ChromeViewModel
 import org.mozilla.rocket.chrome.ChromeViewModel.OpenUrlAction
 import org.mozilla.rocket.content.appComponent
@@ -148,11 +146,9 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val ctx = context ?: return
+        val ctx = activity ?: return
         val bookmarkRepo = chromeViewModel.bookmarkRepo
         val historyRepo = chromeViewModel.historyRepo
-        val iconBookmark = toAwesomeBarIcon(R.drawable.ic_illustration_no_bookmarks)
-        val iconHistory = toAwesomeBarIcon(R.drawable.history_empty)
         val iconTab = toAwesomeBarIcon(R.drawable.ic_current_tab)
 
         awesomeBar.setOnApplyWindowInsetsListener { v: View, insets: WindowInsets ->
@@ -160,16 +156,14 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             insets
         }
         awesomeBar.addProviders(
-                HistorySuggestionProvider(iconHistory, historyRepo) {
-                    onSuggestionClicked(it, AWESOMEBAR_TYPE_HISTORY)
-                },
-                BookmarkSuggestionProvider(iconBookmark, bookmarkRepo) {
-                    onSuggestionClicked(it, AWESOMEBAR_TYPE_BOOKMARK)
-                },
-                SessionSuggestionProvider(
-                    iconTab,
-                    TabsSessionProvider.getOrThrow(activity)
-                ) { sm: SessionManager, id: String ->
+
+            FrecensySuggestionProvider(
+                context = activity!!.applicationContext,
+                switchToTabIcon = iconTab,
+                bookmarkRepository = bookmarkRepo,
+                historyRepository = historyRepo,
+                sessionManager = TabsSessionProvider.getOrThrow(activity),
+                onSwitchTabAction = { sm: SessionManager, id: String ->
                     sm.switchToTab(id)
                     ScreenNavigator[context].raiseBrowserScreen(false)
                     val isInLandscape = isInLandscape()
@@ -180,9 +174,16 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
                         type = AWESOMEBAR_TYPE_TABTRAY
                     )
                 },
-                ClipboardSuggestionProvider(ctx) {
-                    onSuggestionClicked(it, AWESOMEBAR_TYPE_CLIPBOARD)
+                onBookmarkAction = {
+                    onSuggestionClicked(it, AWESOMEBAR_TYPE_BOOKMARK)
+                },
+                onHistoryAction = {
+                    onSuggestionClicked(it, AWESOMEBAR_TYPE_HISTORY)
                 }
+            ),
+            ClipboardSuggestionProvider(ctx) {
+                onSuggestionClicked(it, AWESOMEBAR_TYPE_CLIPBOARD)
+            }
         )
 
         awesomeBar.onInputStarted() // if something is in the clipboard, it'll be the first and show directly
@@ -426,7 +427,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             return
         }
         if (allowSuggestion) {
-            awesomeBar.onInputChanged(originalText)
+            awesomeBar.onInputChanged(originalText.toLowerCase(Locale.getDefault()))
             this@UrlInputFragment.presenter.onInput(originalText, detectThrottle())
         }
         val visibility = if (TextUtils.isEmpty(originalText)) View.GONE else View.VISIBLE
