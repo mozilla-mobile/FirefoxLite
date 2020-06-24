@@ -6,7 +6,7 @@ import org.mozilla.focus.history.model.Site
 
 @Dao
 interface HistoryDao {
-    @Query("SELECT * FROM browsing_history WHERE title LIKE :text LIMIT :suggestionLimit")
+    @Query("SELECT * FROM browsing_history WHERE LOWER(title) LIKE :text OR url LIKE :text LIMIT :suggestionLimit")
     fun queryHistoryByText(
         text: String?,
         suggestionLimit: Int

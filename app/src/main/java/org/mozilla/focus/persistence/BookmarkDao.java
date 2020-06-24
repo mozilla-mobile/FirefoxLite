@@ -37,6 +37,6 @@ public interface BookmarkDao {
     @Query("DELETE FROM bookmarks")
     void deleteAllBookmarks();
 
-    @Query("SELECT * FROM bookmarks WHERE title LIKE :text LIMIT :bookmarksSuggestionLimit")
+    @Query("SELECT * FROM bookmarks WHERE LOWER(title) LIKE :text LIMIT :bookmarksSuggestionLimit")
     List<BookmarkModel> queryBookmarksByText(String text, int bookmarksSuggestionLimit);
 }
