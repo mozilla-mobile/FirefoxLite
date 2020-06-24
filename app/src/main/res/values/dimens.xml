@@ -115,7 +115,6 @@
     <dimen name="shopping_focus_view_radius">51dp</dimen>
     <dimen name="content_service_focus_view_width">320dp</dimen>
     <dimen name="content_service_focus_view_radius">12dp</dimen>
-    <dimen name="recommended_sites_spacing">10dp</dimen>
 
     <!--  MissionDetailFragment  -->
     <item name="msrp_mission_detail_button_height" type="dimen">40dp</item>

@@ -81,9 +81,9 @@ class AddNewTopSitesFragment : Fragment() {
     private fun initItemDecoration() {
         recycler_view.addItemDecoration(
             DefaultGridSpacingItemDecoration(
-                recycler_view.context.resources.getDimensionPixelOffset(R.dimen.recommended_sites_spacing),
                 recycler_view.context.resources.getDimensionPixelOffset(R.dimen.common_margin_m1),
-                recycler_view.context.resources.getDimensionPixelOffset(R.dimen.common_margin_m2)
+                recycler_view.context.resources.getDimensionPixelOffset(R.dimen.common_margin_m2),
+                recycler_view.context.resources.getDimensionPixelOffset(R.dimen.common_margin_m5)
             )
         )
     }
@@ -95,9 +95,9 @@ class AddNewTopSitesFragment : Fragment() {
     }
 
     private class DefaultGridSpacingItemDecoration(
-        private val colSpacing: Int,
         private val rowSpacing: Int,
-        private val edgePadding: Int
+        private val edgePadding: Int,
+        private val bottomPadding: Int
     ) : RecyclerView.ItemDecoration() {
 
         private var spanCount = -1
@@ -113,6 +113,7 @@ class AddNewTopSitesFragment : Fragment() {
             val colSpans = layoutManager.spanSizeLookup.getSpanSize(position)
             val colSpanIndex = layoutManager.spanSizeLookup.getSpanIndex(position, spanCount)
             val rowSpanIndex = layoutManager.spanSizeLookup.getSpanGroupIndex(position, spanCount)
+            val dataSize = state.itemCount
 
             if (colSpans > 1) {
                 return
@@ -128,22 +129,14 @@ class AddNewTopSitesFragment : Fragment() {
                 outRect.right = edgePadding
             }
 
-            // row contains more than 1 column
-            if (colSpans != spanCount) {
-                // not the rightmost one in row -> set right padding as (column spacing)/2
-                if (colSpanIndex + colSpans != spanCount) {
-                    outRect.right = colSpacing / 2
-                }
-
-                // not the leftmost one in row -> set left padding as (column spacing)/2
-                if (colSpanIndex != 0) {
-                    outRect.left = colSpacing / 2
-                }
-            }
-
             // adjust top
             if (rowSpanIndex != 0) {
                 outRect.top = rowSpacing
+            }
+
+            // add bottom padding to recyclerview
+            if (position == dataSize - 1) {
+                outRect.bottom = bottomPadding
             }
         }
     }
