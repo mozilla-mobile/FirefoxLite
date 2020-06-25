@@ -91,6 +91,13 @@
   <string name="firstrun_close_button">好，知道了！</string>
   <string name="firstrun_skip_button">略過</string>
   <string name="firstrun_next_button">下一個</string>
+  <string name="firstrun_fxlite_2.5_title_1">哈囉！</string>
+  <string name="firstrun_fxlite_2.5_title_2">從哪裡聽說 %1$s 的？</string>
+  <string name="content_theme_1">上網滑到</string>
+  <string name="content_theme_2">想要找優惠折扣</string>
+  <string name="content_theme_3">想玩遊戲看影片</string>
+  <string name="content_theme_4">想讀最新新聞</string>
+  <string name="button_done">完成</string>
   <string name="label_menu_bookmark">書籤</string>
   <string name="label_menu_download">下載項目</string>
   <string name="label_menu_find_in_page">在頁面中搜尋</string>
@@ -109,10 +116,15 @@
   <string name="label_menu_content_services">顯示內容與服務</string>
   <string name="label_menu_add_top_sites">新增熱門網站</string>
   <string name="label_menu_themes">佈景主題</string>
+  <string name="theme_settings_title">選擇佈景主題</string>
+  <string name="theme_settings_subtitle">使用深色佈景主題節省電力。</string>
+  <string name="set_as_default_dialog_title">做得好！</string>
+  <string name="set_as_default_dialog_subtitle">您的 %1$s 很不錯！想要設為預設瀏覽器嗎？</string>
   <string name="top_site_category_1">熱門網站</string>
-  <string name="top_site_category_2">社群網路</string>
+  <string name="top_site_category_2">購物與旅遊</string>
   <string name="top_site_category_3">娛樂</string>
   <string name="top_site_category_4">其他</string>
+  <string name="top_site_category_5">新聞</string>
   <string name="add_top_site_snackbar_1">已新增熱門網站</string>
   <string name="add_top_site_snackbar_2">已新增網站</string>
   <string name="add_top_site_toast">請先移除熱門網站</string>
@@ -496,4 +508,5 @@
   <string name="travel_dialog_2_description_new">您可以將 %1$s %2$s 設為預設旅遊搜尋引擎。</string>
   <string name="travel_dialog_2_checkbox">不要再問我</string>
   <string name="travel_dialog_2_action">設為預設值</string>
+  <string name="awesomebar_open_link_clipboard">開啟剪貼簿當中的鏈結</string>
 </resources>

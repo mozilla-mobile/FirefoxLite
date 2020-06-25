@@ -91,6 +91,13 @@
   <string name="firstrun_close_button">Đã hiểu!</string>
   <string name="firstrun_skip_button">Bỏ qua</string>
   <string name="firstrun_next_button">Tiếp</string>
+  <string name="firstrun_fxlite_2.5_title_1">Xin chào!</string>
+  <string name="firstrun_fxlite_2.5_title_2">Điều gì đưa bạn đến %1$s?</string>
+  <string name="content_theme_1">Duyệt web</string>
+  <string name="content_theme_2">Tìm ưu đãi tốt</string>
+  <string name="content_theme_3">Chơi trò chơi và video</string>
+  <string name="content_theme_4">Đọc tin tức xu hướng</string>
+  <string name="button_done">Xong</string>
   <string name="label_menu_bookmark">Dấu trang</string>
   <string name="label_menu_download">Tải xuống</string>
   <string name="label_menu_find_in_page">Tìm trong trang</string>
@@ -109,10 +116,15 @@
   <string name="label_menu_content_services">Hiển thị nội dung &amp; dịch vụ</string>
   <string name="label_menu_add_top_sites">Thêm trang web hàng đầu</string>
   <string name="label_menu_themes">Chủ đề</string>
+  <string name="theme_settings_title">Chọn chủ đề của bạn</string>
+  <string name="theme_settings_subtitle">Tiết kiệm pin bằng cách chọn chủ đề tối.</string>
+  <string name="set_as_default_dialog_title">Đã xong!</string>
+  <string name="set_as_default_dialog_subtitle">%1$s của bạn trông thật tuyệt! Bạn có muốn đặt nó làm trình duyệt mặc định của mình không?</string>
   <string name="top_site_category_1">Trang web phổ biến</string>
-  <string name="top_site_category_2">Truyền thông xã hội</string>
+  <string name="top_site_category_2">Mua sắm &amp; du lịch</string>
   <string name="top_site_category_3">Giải trí</string>
   <string name="top_site_category_4">Khác</string>
+  <string name="top_site_category_5">Tin tức</string>
   <string name="add_top_site_snackbar_1">Đã thêm trang web hàng đầu</string>
   <string name="add_top_site_snackbar_2">Đã thêm trang web</string>
   <string name="add_top_site_toast">Vui lòng xóa một trang web hàng đầu trước</string>
@@ -496,4 +508,5 @@
   <string name="travel_dialog_2_description_new">Bạn có thể đặt %1$s %2$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
   <string name="travel_dialog_2_checkbox">Đừng hỏi lại tôi nữa</string>
   <string name="travel_dialog_2_action">ĐẶT LÀM MẶC ĐỊNH</string>
+  <string name="awesomebar_open_link_clipboard">Mở liên kế trong clipboard của bạn</string>
 </resources>
