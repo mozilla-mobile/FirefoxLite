@@ -91,6 +91,13 @@
   <string name="firstrun_close_button">Okéh, ngarti!</string>
   <string name="firstrun_skip_button">Liwat</string>
   <string name="firstrun_next_button">Tuluy</string>
+  <string name="firstrun_fxlite_2.5_title_1">Euy!</string>
+  <string name="firstrun_fxlite_2.5_title_2">Aya pikersaeun naon ka %1$s?</string>
+  <string name="content_theme_1">Nyungsi Raramat</string>
+  <string name="content_theme_2">Néang Kortingan</string>
+  <string name="content_theme_3">Maén Kaulinan jeung Pidéo</string>
+  <string name="content_theme_4">Maca Warta Sabiwir Hiji</string>
+  <string name="button_done">Anggeus</string>
   <string name="label_menu_bookmark">Markah</string>
   <string name="label_menu_download">Undeuran</string>
   <string name="label_menu_find_in_page">Téangan dina kaca</string>
@@ -109,10 +116,15 @@
   <string name="label_menu_content_services">Témbongkeun Kontén &amp; Layanan</string>
   <string name="label_menu_add_top_sites">Tambahkeun loka-loka kawentar</string>
   <string name="label_menu_themes">Téma</string>
+  <string name="theme_settings_title">Pilih téma anjeun</string>
+  <string name="theme_settings_subtitle">Irit batré ku milih téma poék.</string>
+  <string name="set_as_default_dialog_title">Hadé!</string>
+  <string name="set_as_default_dialog_subtitle">%1$s anjeun katémbong hadé! Badé dijadikeun panyungsi baku?</string>
   <string name="top_site_category_1">Raramatloka Kawentar</string>
-  <string name="top_site_category_2">Média Sosial</string>
+  <string name="top_site_category_2">Balanja &amp; nyaba</string>
   <string name="top_site_category_3">Hiburan</string>
   <string name="top_site_category_4">Lianna</string>
+  <string name="top_site_category_5">Warta</string>
   <string name="add_top_site_snackbar_1">Loka onjoy ditambahkeun</string>
   <string name="add_top_site_snackbar_2">Ieu loka geus ditambahkeun</string>
   <string name="add_top_site_toast">Punten piceun hiji loka nu geus aya</string>
@@ -496,4 +508,5 @@
   <string name="travel_dialog_2_description_new">Anjeun bisa nyetél %1$s %2$s salaku mesin sungsi baku anjeun pikeun nyanyabaan.</string>
   <string name="travel_dialog_2_checkbox">Ulah nanya deui</string>
   <string name="travel_dialog_2_action">SETÉL JADI BAKU</string>
+  <string name="awesomebar_open_link_clipboard">Buka Tutumbu dina Papan Klip anjeun</string>
 </resources>
