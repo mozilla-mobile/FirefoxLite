@@ -136,8 +136,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="7dp"/>
 
                 <LinearLayout
                     android:id="@+id/menu_turbomode"
@@ -285,8 +285,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"/>
 
                 <LinearLayout
                     android:id="@+id/menu_find_in_page"
@@ -349,8 +349,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"/>
 
 
                 <LinearLayout
