@@ -13,4 +13,11 @@ public class SearchUtils {
 
         return searchEngine.buildSearchUrl(searchTerm);
     }
+
+    public static String createSearchUrlWithSpecificSearchEngine(String searchEngineName, String searchTerm) {
+        final SearchEngine searchEngine = SearchEngineManager.getInstance()
+                .getSearchEngineWithName(searchEngineName);
+
+        return searchEngine.buildSearchUrl(searchTerm);
+    }
 }

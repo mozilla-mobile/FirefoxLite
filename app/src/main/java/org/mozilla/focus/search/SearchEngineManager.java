@@ -165,6 +165,18 @@ public class SearchEngineManager extends BroadcastReceiver {
         return searchEngines.get(0);
     }
 
+    public synchronized SearchEngine getSearchEngineWithName(String searchEngineName) {
+        awaitLoadingSearchEnginesLocked();
+
+        for (SearchEngine searchEngine : searchEngines) {
+            if (searchEngine.name.equals(searchEngineName)) {
+                return searchEngine;
+            }
+        }
+
+        return searchEngines.get(0);
+    }
+
     // Our (searchEngines == null) check is deemed to be an unsynchronised access. Similarly loadHasBeenTriggered
     // also doesn't need synchronisation:
     @SuppressFBWarnings(value = "IS2_INCONSISTENT_SYNC", justification = "Variable is not being accessed, it is merely being tested for existence")
