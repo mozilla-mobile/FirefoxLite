@@ -42,6 +42,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_MANUALCOMPLETE
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_SUGGESTION
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_TABTRAY
+import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
@@ -88,6 +89,7 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
     private var autoCompleteInProgress: Boolean = false
     private var allowSuggestion: Boolean = false
     private var isUserInput = true
+    private var privateMode: Boolean = false
 
     override fun onCreate(bundle: Bundle?) {
         appComponent().inject(this)
@@ -279,7 +281,8 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
             clearView.visibility = if (TextUtils.isEmpty(url)) View.GONE else View.VISIBLE
         }
         allowSuggestion = args?.getBoolean(ARGUMENT_ALLOW_SUGGESTION, true) ?: false
-        if (args?.getBoolean(ARGUMENT_BOOLEAN_PRIVATE_MODE, false) == true) {
+        privateMode = args?.getBoolean(ARGUMENT_BOOLEAN_PRIVATE_MODE, false) ?: false
+        if (privateMode) {
             urlView.imeOptions = urlView.imeOptions or ViewUtils.IME_FLAG_NO_PERSONALIZED_LEARNING
         }
     }
@@ -323,10 +326,14 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
             val isUrl = SupportUtils.isUrl(input)
 
-            val url = if (isUrl)
+            val url = if (isUrl) {
                 SupportUtils.normalize(input)
-            else
+            } else if (AppConstants.isNightlyBuild() && privateMode) {
+                // set giggle as default search engine when in private mode and preview flavor
+                SearchUtils.createSearchUrlWithSpecificSearchEngine("Giggle", input)
+            } else {
                 SearchUtils.createSearchUrl(context, input)
+            }
 
             val isOpenInNewTab = openUrl(url)
 

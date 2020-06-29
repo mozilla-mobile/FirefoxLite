@@ -10,10 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetManager;
-
 import androidx.annotation.VisibleForTesting;
 import androidx.annotation.WorkerThread;
-
 import android.util.Log;
 
 import org.json.JSONArray;
