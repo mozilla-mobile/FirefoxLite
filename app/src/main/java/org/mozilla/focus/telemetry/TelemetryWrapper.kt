@@ -1482,6 +1482,26 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Select to Add Topsite",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.PANEL,
+            value = Value.ADD_TOPSITE,
+            extras = [
+                TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
+                TelemetryExtra(name = Extra.ON, value = "Default Top Site Position"),
+                TelemetryExtra(name = Extra.SOURCE, value = "Default Topsite Name")
+            ])
+    @JvmStatic
+    fun selectToAddTopSite(isDefault: Boolean, position: Int, source: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.PANEL, Value.ADD_TOPSITE)
+                .extra(Extra.DEFAULT, java.lang.Boolean.toString(isDefault))
+                .extra(Extra.ON, position.toString())
+                .extra(Extra.SOURCE, source)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Search in Home and add a tab",
             category = Category.ACTION,
             method = Method.ADD,
