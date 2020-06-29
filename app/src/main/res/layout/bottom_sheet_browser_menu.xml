@@ -159,8 +159,8 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/menu_speedmode"/>
 
@@ -205,8 +205,8 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/menu_blockimg"/>
 
@@ -251,8 +251,8 @@
                         android:background="?android:attr/selectableItemBackground">
 
                         <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/icon_night_mode"/>
 
@@ -299,8 +299,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/action_search"/>
 
@@ -328,8 +328,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/action_add_to_home"/>
 
@@ -364,8 +364,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_settings"/>
 
@@ -399,8 +399,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_delete"/>
 
@@ -428,8 +428,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_exit"/>
 

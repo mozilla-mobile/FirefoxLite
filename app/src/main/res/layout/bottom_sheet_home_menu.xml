@@ -144,8 +144,8 @@
 
                 <ImageView
                     android:id="@+id/img_private_mode"
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/private_browsing_mask_states"/>
 
@@ -179,8 +179,8 @@
                 android:visibility="gone" >
 
                 <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_shopping_search"/>
 
@@ -223,8 +223,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/icon_night_mode"/>
 
@@ -252,7 +252,7 @@
                     android:layout_marginStart="12dp"/>
 
             </LinearLayout>
-
+            
             <LinearLayout
                 android:id="@+id/menu_themes"
                 android:layout_width="match_parent"
@@ -272,8 +272,8 @@
                     android:visibility="invisible" />
 
                 <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/menu_theme"/>
 
@@ -314,8 +314,8 @@
                     android:visibility="invisible" />
 
                 <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/menu_add_top_sites"/>
 
@@ -364,8 +364,8 @@
                         android:visibility="invisible" />
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_content_services"/>
 
@@ -407,8 +407,8 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/menu_settings"/>
 
@@ -442,8 +442,8 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/menu_delete"/>
 
@@ -472,8 +472,8 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/menu_exit"/>
 
