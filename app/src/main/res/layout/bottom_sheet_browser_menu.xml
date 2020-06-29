@@ -140,70 +140,6 @@
                     android:layout_marginBottom="8dp"/>
 
                 <LinearLayout
-                    android:id="@+id/menu_find_in_page"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="18dp"
-                    android:paddingEnd="24dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/action_search"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
-                        android:fontFamily="sans-serif"
-                        android:textColor="@color/paletteLightBlack100"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/label_menu_find_in_page"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/menu_pin_shortcut"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="18dp"
-                    android:paddingEnd="24dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/action_add_to_home"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
-                        android:fontFamily="sans-serif"
-                        android:textColor="@color/paletteLightBlack100"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/label_menu_add_to_home_screen"/>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
-
-                <LinearLayout
                     android:id="@+id/menu_turbomode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -342,6 +278,70 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/paletteLightGreyA100"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <LinearLayout
+                    android:id="@+id/menu_find_in_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="24dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/action_search"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="13sp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/paletteLightBlack100"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/label_menu_find_in_page"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/menu_pin_shortcut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="24dp"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/action_add_to_home"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="13sp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="@color/paletteLightBlack100"
+                        android:layout_marginStart="4dp"
+                        android:text="@string/label_menu_add_to_home_screen"/>
 
                 </LinearLayout>
 
