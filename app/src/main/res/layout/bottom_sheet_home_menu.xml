@@ -254,12 +254,89 @@
 
             </LinearLayout>
 
-            <View
+            <LinearLayout
+                android:id="@+id/menu_themes"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/paletteLightGreyA100"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="24dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <View
+                    android:id="@+id/themes_red_dot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/ic_red_dot"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/menu_theme"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="13sp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/paletteLightBlack100"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/label_menu_themes"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_right"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_add_top_sites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingEnd="24dp"
+                android:layout_marginTop="4dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
+
+                <View
+                    android:id="@+id/add_top_sites_red_dot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/ic_red_dot"
+                    android:visibility="invisible" />
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/menu_add_top_sites"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="13sp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/paletteLightBlack100"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/label_menu_add_top_sites"/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_arrow_right"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/menu_content_services"
@@ -310,90 +387,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/menu_add_top_sites"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="12dp"
-                android:paddingEnd="24dp"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground">
-
-                <View
-                    android:id="@+id/add_top_sites_red_dot"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:background="@drawable/ic_red_dot"
-                    android:visibility="invisible" />
-
-                <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/menu_add_top_sites"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="13sp"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/paletteLightBlack100"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/label_menu_add_top_sites"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/menu_themes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="12dp"
-                android:paddingEnd="24dp"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground">
-
-                <View
-                    android:id="@+id/themes_red_dot"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:background="@drawable/ic_red_dot"
-                    android:visibility="invisible" />
-
-                <ImageView
-                    android:layout_width="38dp"
-                    android:layout_height="38dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/menu_theme"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="13sp"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/paletteLightBlack100"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/label_menu_themes"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"/>
 
             </LinearLayout>
 
