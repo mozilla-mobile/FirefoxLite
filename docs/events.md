@@ -63,6 +63,7 @@
 |Click Top Site|action|open|home|"link"|"on=Top Site Position,source=Preset Top Site like **,version=2," 
 |Remove Top Site|action|remove|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name," 
 |Add Topsite|action|add|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name,from=context_menu,empty_hint," 
+|Select to Add Topsite|action|click|panel|"add_topsite"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name," 
 |Search in Home and add a tab|action|add|tab|"home"|"" 
 |Enter an url in SearchBar|action|open|search_bar|"link"|"orientation=portrait,landscape,type=history,bookmark,clipboard,suggestion,tabtray,manualcomplete,autocomplete," 
 |Use SearchSuggestion SearchBar|action|select_query|search_bar|""|"orientation=portrait,landscape," 

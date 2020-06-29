@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.home.topsites.data.RecommendedSitesResult
@@ -32,6 +33,7 @@ class AddNewTopSitesViewModel(
             is Site.UrlSite -> {
                 viewModelScope.launch {
                     pinTopSiteResult.value = pinTopSite(site)
+                    TelemetryWrapper.selectToAddTopSite(true, position, site.title)
                 }
             }
         }
