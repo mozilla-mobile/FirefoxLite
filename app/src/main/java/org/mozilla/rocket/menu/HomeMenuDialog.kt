@@ -70,10 +70,11 @@ class HomeMenuDialog : BottomSheetDialog {
 
         initLayout()
         observeChromeAction()
+    }
 
-        setOnDismissListener {
-            resetStates()
-        }
+    override fun dismiss() {
+        resetStates()
+        super.dismiss()
     }
 
     private fun resetStates() {

@@ -71,10 +71,11 @@ class BrowserMenuDialog : BottomSheetDialog {
 
         initLayout()
         observeChromeAction()
+    }
 
-        setOnDismissListener {
-            rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
-        }
+    override fun dismiss() {
+        rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+        super.dismiss()
     }
 
     private fun initLayout() {
