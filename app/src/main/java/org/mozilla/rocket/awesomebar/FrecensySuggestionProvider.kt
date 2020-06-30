@@ -9,6 +9,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import mozilla.components.concept.awesomebar.AwesomeBar
+import org.mozilla.focus.R
 import org.mozilla.focus.history.model.Site
 import org.mozilla.focus.repository.BookmarkRepository
 import org.mozilla.focus.utils.DimenUtils
@@ -123,9 +124,10 @@ class FrecensySuggestionProvider(
             ) {
                 return@forEach
             }
+            val desc = context.resources.getString(R.string.awesomebar_switch_to_tab)
             if (candidate[url] == null) {
                 candidate[url] = AwesomeBarSite(
-                    site = Site(idSeq--, it.title, url, DEFAULT_SITE_VIEW_COUNT, now, ""),
+                    site = Site(idSeq--, it.title, desc, DEFAULT_SITE_VIEW_COUNT, now, ""),
                     weight = FRECENCY_WEIGHT_5 * DEFAULT_SITE_VIEW_COUNT,
                     tabId = it.id
                 )
@@ -133,6 +135,7 @@ class FrecensySuggestionProvider(
                 candidate[url]?.weight =
                     candidate[url]?.weight?.times(SUGGESTION_MULTIPLIER) ?: DEFAULT_SITE_WEIGHT
                 candidate[url]?.tabId = it.id
+                candidate[url]?.site?.url = desc
             }
         }
 
