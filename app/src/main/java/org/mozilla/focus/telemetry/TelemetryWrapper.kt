@@ -1482,6 +1482,19 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
+            name = "Click Add Topsite Snackbar",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.SNACKBAR,
+            value = Value.ADD_TOPSITE,
+            extras = [])
+    @JvmStatic
+    fun clickAddTopSiteFromSnackBar() {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.SNACKBAR, Value.ADD_TOPSITE)
+                .queue()
+    }
+
+    @TelemetryDoc(
             name = "Select to Add Topsite",
             category = Category.ACTION,
             method = Method.CLICK,
