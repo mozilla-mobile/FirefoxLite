@@ -179,6 +179,8 @@ class HomeMenuDialog : BottomSheetDialog {
                 TelemetryWrapper.changeMenuVerticalToggle(isChecked)
             }
             menu_add_top_sites.setOnClickListener {
+                cancel()
+                chromeViewModel.onAddNewTopSiteMenuClicked()
                 TelemetryWrapper.clickMenuAddTopsite()
             }
             menu_themes.setOnClickListener {

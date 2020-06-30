@@ -266,9 +266,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         chromeViewModel.clearBrowsingHistory.observe(viewLifecycleOwner, Observer {
             homeViewModel.onClearBrowsingHistory()
         })
-        homeViewModel.openAddNewTopSitesPage.observe(viewLifecycleOwner, Observer {
-            showAddNewTopSitesPage()
-        })
     }
 
     private fun initContentHub() {
@@ -392,7 +389,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                         when (item.itemId) {
                             R.id.pin -> homeViewModel.onPinTopSiteClicked(site, position)
                             R.id.remove -> homeViewModel.onRemoveTopSiteClicked(site, position)
-                            R.id.add_top_sites -> homeViewModel.onAddTopSiteClicked(site, position)
+                            R.id.add_top_sites -> homeViewModel.onAddTopSiteContextMenuClicked(site, position)
                             else -> throw IllegalStateException("Unhandled menu item")
                         }
 
@@ -522,6 +519,12 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun observeAddNewTopSites() {
+        homeViewModel.openAddNewTopSitesPage.observe(viewLifecycleOwner, Observer {
+            showAddNewTopSitesPage()
+        })
+        chromeViewModel.addNewTopSiteMenuClicked.observe(viewLifecycleOwner, Observer {
+            homeViewModel.onAddTopSiteMenuClicked()
+        })
         homeViewModel.addNewTopSiteSuccess.observe(viewLifecycleOwner, Observer {
             Snackbar.make(main_list, getText(R.string.add_top_site_snackbar_1), Snackbar.LENGTH_LONG)
                 .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }

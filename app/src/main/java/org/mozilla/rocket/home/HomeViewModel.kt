@@ -291,10 +291,10 @@ class HomeViewModel(
         }
     }
 
-    fun onAddTopSiteClicked(site: Site, position: Int) {
+    fun onAddTopSiteContextMenuClicked(site: Site, position: Int) {
         when (site) {
             is Site.UrlSite.RemovableSite -> {
-                openAddNewTopSitesPage.call()
+                openAddNewTopSitesPage()
                 val allowToLogTitle = site.isDefault
                 val title = if (allowToLogTitle) site.title else ""
                 TelemetryWrapper.addTopSite(site.isDefault, position, title, TelemetryWrapper.Extra_Value.CONTEXT_MENU)
@@ -302,8 +302,16 @@ class HomeViewModel(
         }
     }
 
-    fun onAddMoreTopSiteSnackBarClicked() {
+    private fun openAddNewTopSitesPage() {
         openAddNewTopSitesPage.call()
+    }
+
+    fun onAddTopSiteMenuClicked() {
+        openAddNewTopSitesPage()
+    }
+
+    fun onAddMoreTopSiteSnackBarClicked() {
+        openAddNewTopSitesPage()
         TelemetryWrapper.clickAddTopSiteFromSnackBar()
     }
 

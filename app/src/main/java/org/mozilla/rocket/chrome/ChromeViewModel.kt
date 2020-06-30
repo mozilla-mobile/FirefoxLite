@@ -86,6 +86,7 @@ class ChromeViewModel(
     val openPreference = SingleLiveEvent<Unit>()
     val showFindInPage = SingleLiveEvent<Unit>()
     val showAdjustBrightness = SingleLiveEvent<Unit>()
+    val addNewTopSiteMenuClicked = SingleLiveEvent<Unit>()
 
     private var lastUrlLoadStart = 0L
     private var lastUrlLoadTime = 0L
@@ -293,6 +294,10 @@ class ChromeViewModel(
         if (count == threshold && !browsers.isDefaultBrowser) {
             driveDefaultBrowser.call()
         }
+    }
+
+    fun onAddNewTopSiteMenuClicked() {
+        addNewTopSiteMenuClicked.call()
     }
 
     fun onSessionStarted() {
