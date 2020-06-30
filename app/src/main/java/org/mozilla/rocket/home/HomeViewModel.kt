@@ -304,6 +304,7 @@ class HomeViewModel(
 
     fun onAddMoreTopSiteSnackBarClicked() {
         openAddNewTopSitesPage.call()
+        TelemetryWrapper.clickAddTopSiteFromSnackBar()
     }
 
     fun onClearBrowsingHistory() {
