@@ -73,7 +73,9 @@ class HomeMenuDialog : BottomSheetDialog {
     }
 
     override fun dismiss() {
-        resetStates()
+        if (::rootView.isInitialized) {
+            resetStates()
+        }
         super.dismiss()
     }
 

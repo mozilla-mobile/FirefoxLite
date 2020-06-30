@@ -74,7 +74,9 @@ class BrowserMenuDialog : BottomSheetDialog {
     }
 
     override fun dismiss() {
-        rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+        if (::rootView.isInitialized) {
+            rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
+        }
         super.dismiss()
     }
 
