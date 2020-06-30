@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.button_menu.menu_red_dot
 import kotlinx.android.synthetic.main.fragment_home.account_layout
@@ -67,6 +68,7 @@ import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification
+import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
@@ -136,7 +138,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initLogoManNotification()
         observeNightMode()
         initOnboardingSpotlight()
-
+        observeAddNewTopSites()
         observeActions()
     }
 
@@ -375,6 +377,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         home_fragment_fake_input_text.text = getString(R.string.home_search_bar_text)
     }
 
+    fun notifyAddNewTopSiteResult(pinTopSiteResult: PinTopSiteUseCase.PinTopSiteResult) {
+        homeViewModel.onAddNewTopSiteResult(pinTopSiteResult)
+    }
+
     private fun showTopSiteMenu(anchorView: View, pinEnabled: Boolean, site: Site, position: Int) {
         PopupMenu(anchorView.context, anchorView, Gravity.CLIP_HORIZONTAL)
                 .apply {
@@ -512,6 +518,14 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             shopping_button.isVisible = true
             private_mode_button.isVisible = false
             showShoppingSearchSpotlight()
+        })
+    }
+
+    private fun observeAddNewTopSites() {
+        homeViewModel.addNewTopSiteSuccess.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(main_list, getText(R.string.add_top_site_snackbar_1), Snackbar.LENGTH_LONG)
+                .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }
+                .show()
         })
     }
 

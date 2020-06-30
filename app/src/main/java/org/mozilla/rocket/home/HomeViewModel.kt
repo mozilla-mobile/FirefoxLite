@@ -112,6 +112,7 @@ class HomeViewModel(
     val executeUriAction = SingleLiveEvent<String>()
     val showKeyboard = SingleLiveEvent<Unit>()
     val openAddNewTopSitesPage = SingleLiveEvent<Unit>()
+    val addNewTopSiteSuccess = SingleLiveEvent<Int>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -284,6 +285,12 @@ class HomeViewModel(
         }
     }
 
+    fun onAddNewTopSiteResult(pinTopSiteResult: PinTopSiteUseCase.PinTopSiteResult) {
+        when (pinTopSiteResult) {
+            is PinTopSiteUseCase.PinTopSiteResult.Success -> addNewTopSiteSuccess.value = pinTopSiteResult.position
+        }
+    }
+
     fun onAddTopSiteClicked(site: Site, position: Int) {
         when (site) {
             is Site.UrlSite.RemovableSite -> {
@@ -293,6 +300,10 @@ class HomeViewModel(
                 TelemetryWrapper.addTopSite(site.isDefault, position, title, TelemetryWrapper.Extra_Value.CONTEXT_MENU)
             }
         }
+    }
+
+    fun onAddMoreTopSiteSnackBarClicked() {
+        openAddNewTopSitesPage.call()
     }
 
     fun onClearBrowsingHistory() {
