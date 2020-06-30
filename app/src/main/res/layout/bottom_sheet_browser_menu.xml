@@ -136,8 +136,58 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="7dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="24dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:id="@+id/menu_night_mode"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="18dp"
+                        android:paddingEnd="0dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="?android:attr/selectableItemBackground">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/icon_night_mode"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/paletteLightBlack100"
+                            android:layout_marginStart="4dp"
+                            android:text="@string/label_menu_night_mode"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="24dp"
+                        android:background="@color/paletteLightGreyA100"/>
+
+                    <Switch
+                        android:id="@+id/night_mode_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"/>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/menu_turbomode"
@@ -159,8 +209,8 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/menu_speedmode"/>
 
@@ -168,7 +218,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:fontFamily="sans-serif"
                             android:textColor="@color/paletteLightBlack100"
                             android:layout_marginStart="4dp"
@@ -190,7 +240,6 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="0dp"
                     android:paddingEnd="24dp"
-                    android:layout_marginTop="4dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground">
@@ -205,8 +254,8 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/menu_blockimg"/>
 
@@ -214,7 +263,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:fontFamily="sans-serif"
                             android:textColor="@color/paletteLightBlack100"
                             android:layout_marginStart="4dp"
@@ -230,63 +279,12 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="24dp"
-                    android:layout_marginTop="4dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <LinearLayout
-                        android:id="@+id/menu_night_mode"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingStart="18dp"
-                        android:paddingEnd="0dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:background="?android:attr/selectableItemBackground">
-
-                        <ImageView
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/icon_night_mode"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:textSize="13sp"
-                            android:fontFamily="sans-serif"
-                            android:textColor="@color/paletteLightBlack100"
-                            android:layout_marginStart="4dp"
-                            android:text="@string/label_menu_night_mode"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="24dp"
-                        android:background="@color/paletteLightGreyA100"/>
-
-                    <Switch
-                        android:id="@+id/night_mode_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"/>
-
-                </LinearLayout>
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"/>
 
                 <LinearLayout
                     android:id="@+id/menu_find_in_page"
@@ -299,8 +297,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/action_search"/>
 
@@ -308,7 +306,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/paletteLightBlack100"
                         android:layout_marginStart="4dp"
@@ -322,14 +320,13 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="18dp"
                     android:paddingEnd="24dp"
-                    android:layout_marginTop="4dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/action_add_to_home"/>
 
@@ -337,7 +334,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/paletteLightBlack100"
                         android:layout_marginStart="4dp"
@@ -349,8 +346,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/paletteLightGreyA100"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginTop="7dp"
+                    android:layout_marginBottom="7dp"/>
 
 
                 <LinearLayout
@@ -364,8 +361,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_settings"/>
 
@@ -374,7 +371,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/paletteLightBlack100"
                         android:layout_marginStart="4dp"
@@ -393,14 +390,13 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="18dp"
                     android:paddingEnd="24dp"
-                    android:layout_marginTop="4dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_delete"/>
 
@@ -408,7 +404,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/paletteLightBlack100"
                         android:layout_marginStart="4dp"
@@ -422,14 +418,13 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="18dp"
                     android:paddingEnd="24dp"
-                    android:layout_marginTop="4dp"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_exit"/>
 
@@ -437,7 +432,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/paletteLightBlack100"
                         android:layout_marginStart="4dp"
