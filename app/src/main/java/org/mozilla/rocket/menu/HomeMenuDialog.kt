@@ -70,10 +70,13 @@ class HomeMenuDialog : BottomSheetDialog {
 
         initLayout()
         observeChromeAction()
+    }
 
-        setOnDismissListener {
+    override fun dismiss() {
+        if (::rootView.isInitialized) {
             resetStates()
         }
+        super.dismiss()
     }
 
     private fun resetStates() {
