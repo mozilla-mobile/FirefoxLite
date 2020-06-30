@@ -15,7 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.add_top_sites_red_dot
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
-import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_layout
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_red_dot
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_switch
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_private_mode
@@ -84,7 +83,7 @@ class HomeMenuDialog : BottomSheetDialog {
 
     private fun initLayout() {
         rootView = layoutInflater.inflate(R.layout.bottom_sheet_home_menu, null)
-        rootView.content_layout.apply {
+        rootView.scroll_view.apply {
             outlineProvider = object : ViewOutlineProvider() {
                 override fun getOutline(view: View, outline: Outline) {
                     outline.setRoundRect(0, 0, view.width, view.height, resources.getDimension(R.dimen.menu_corner_radius))
