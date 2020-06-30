@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -521,6 +522,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private fun observeAddNewTopSites() {
         homeViewModel.openAddNewTopSitesPage.observe(viewLifecycleOwner, Observer {
             showAddNewTopSitesPage()
+        })
+        homeViewModel.addNewTopSiteFullyPinned.observe(viewLifecycleOwner, Observer {
+            context?.let {
+                Toast.makeText(it, R.string.add_top_site_toast, Toast.LENGTH_LONG).show()
+            }
         })
         chromeViewModel.addNewTopSiteMenuClicked.observe(viewLifecycleOwner, Observer {
             homeViewModel.onAddTopSiteMenuClicked()

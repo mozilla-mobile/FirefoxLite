@@ -31,6 +31,7 @@ import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.home.topsites.domain.IsTopSiteFullyPinnedUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -53,6 +54,7 @@ class HomeViewModel(
     private val settings: Settings,
     private val getTopSitesUseCase: GetTopSitesUseCase,
     topSitesConfigsUseCase: TopSitesConfigsUseCase,
+    private val isTopSiteFullyPinnedUseCase: IsTopSiteFullyPinnedUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
     getContentHubItemsUseCase: GetContentHubItemsUseCase,
@@ -113,6 +115,7 @@ class HomeViewModel(
     val showKeyboard = SingleLiveEvent<Unit>()
     val openAddNewTopSitesPage = SingleLiveEvent<Unit>()
     val addNewTopSiteSuccess = SingleLiveEvent<Int>()
+    val addNewTopSiteFullyPinned = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -302,8 +305,13 @@ class HomeViewModel(
         }
     }
 
-    private fun openAddNewTopSitesPage() {
-        openAddNewTopSitesPage.call()
+    private fun openAddNewTopSitesPage() = viewModelScope.launch {
+        val fullyPinned = isTopSiteFullyPinnedUseCase()
+        if (fullyPinned) {
+            addNewTopSiteFullyPinned.call()
+        } else {
+            openAddNewTopSitesPage.call()
+        }
     }
 
     fun onAddTopSiteMenuClicked() {
