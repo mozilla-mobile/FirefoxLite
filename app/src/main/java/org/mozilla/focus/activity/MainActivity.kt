@@ -72,6 +72,7 @@ import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.home.HomeFragment
+import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity
 import org.mozilla.rocket.landing.DialogQueue
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -467,6 +468,13 @@ class MainActivity : BaseActivity(),
                     val url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL)
                     mDialogFragment?.dismissAllowingStateLoss()
                     screenNavigator.showBrowserScreen(url, true, false)
+                }
+            }
+        } else if (requestCode == AddNewTopSitesActivity.REQUEST_CODE_ADD_NEW_TOP_SITES) {
+            if (resultCode == AddNewTopSitesActivity.RESULT_CODE_ADD_NEW_TOP_SITES) {
+                val fragment = supportFragmentManager.findFragmentByTag(ScreenNavigator.HOME_FRAGMENT_TAG)
+                if (fragment is HomeFragment && data != null) {
+                    fragment.notifyAddNewTopSiteResult(data.getParcelableExtra(AddNewTopSitesActivity.ADD_NEW_TOP_SITES_EXTRA))
                 }
             }
         }
