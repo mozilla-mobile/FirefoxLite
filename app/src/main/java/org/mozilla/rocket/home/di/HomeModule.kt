@@ -30,6 +30,7 @@ import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.domain.GetRecommendedSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
+import org.mozilla.rocket.home.topsites.domain.IsTopSiteFullyPinnedUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
@@ -58,6 +59,7 @@ object HomeModule {
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
         topSitesConfigsUseCase: TopSitesConfigsUseCase,
+        isTopSiteFullyPinnedUseCase: IsTopSiteFullyPinnedUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
@@ -86,6 +88,7 @@ object HomeModule {
         settings,
         getTopSitesUseCase,
         topSitesConfigsUseCase,
+        isTopSiteFullyPinnedUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
@@ -121,6 +124,11 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideTopSitesConfigsUseCase(topSitesRepo: TopSitesRepo): TopSitesConfigsUseCase = TopSitesConfigsUseCase(topSitesRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideIsTopSiteFullyPinnedUseCase(topSitesRepo: TopSitesRepo): IsTopSiteFullyPinnedUseCase = IsTopSiteFullyPinnedUseCase(topSitesRepo)
 
     @JvmStatic
     @Singleton
