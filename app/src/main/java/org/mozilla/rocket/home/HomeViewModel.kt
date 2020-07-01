@@ -182,7 +182,12 @@ class HomeViewModel(
     }
 
     private fun updateTopSitesData() = viewModelScope.launch {
-        sitePages.value = getTopSitesUseCase().toSitePages()
+        val topSiteList = getTopSitesUseCase()
+        sitePages.value = if (topSiteList.isNotEmpty()) {
+            topSiteList.toSitePages()
+        } else {
+            listOf(SitePage(listOf(Site.EmptyHintSite)))
+        }
     }
 
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
@@ -245,6 +250,10 @@ class HomeViewModel(
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
                 val isAffiliate = site is Site.UrlSite.FixedSite
                 TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
+            }
+            is Site.EmptyHintSite -> {
+                openAddNewTopSitesPage()
+                TelemetryWrapper.addTopSite(true, 0, "", TelemetryWrapper.Extra_Value.EMPTY_HINT)
             }
         }
     }

@@ -6,7 +6,9 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.StrictMode
+import android.view.ContextThemeWrapper
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.item_top_site.content_image
 import kotlinx.android.synthetic.main.item_top_site.pin_indicator
@@ -55,6 +57,7 @@ class SiteViewHolder(
                         { getFavicon(itemView.context, site) }
                 )
                 content_image.visibility = View.VISIBLE
+                content_image.imageTintList = null
                 content_image.setImageBitmap(favicon)
 
                 // Background color
@@ -82,6 +85,20 @@ class SiteViewHolder(
                         topSiteClickListener.onTopSiteLongClicked(site, adapterPosition)
                     }
                 }
+            }
+            is Site.EmptyHintSite -> {
+                text.setText(R.string.add_top_site_placeholder)
+
+                content_image.setImageResource(R.drawable.action_add)
+                ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(Color.WHITE))
+                val contextThemeWrapper = ContextThemeWrapper(content_image.context, 0)
+                content_image.imageTintList = ContextCompat.getColorStateList(contextThemeWrapper, R.color.paletteDarkGreyE100)
+                content_image.visibility = View.VISIBLE
+
+                pin_indicator.visibility = View.GONE
+
+                itemView.setOnClickListener { topSiteClickListener.onTopSiteClicked(site, adapterPosition) }
+                itemView.setOnLongClickListener(null)
             }
         }
         text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
@@ -177,6 +194,8 @@ sealed class Site : DelegateAdapter.UiModel() {
             val isPinned: Boolean
         ) : UrlSite(id, title, url, iconUri, viewCount, lastViewTimestamp)
     }
+
+    object EmptyHintSite : Site()
 }
 
 fun Site.UrlSite.toSiteModel(): org.mozilla.focus.history.model.Site =
