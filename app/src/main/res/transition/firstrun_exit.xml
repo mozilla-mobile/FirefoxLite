@@ -2,6 +2,7 @@
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!-- TODO: Evan, check if need to delete this in 2.5 onboarding -->
 <fade xmlns:android="http://schemas.android.com/apk/res/android"
       android:fadingMode="fade_out"
       android:duration="@integer/erase_animation_alpha_duration" />

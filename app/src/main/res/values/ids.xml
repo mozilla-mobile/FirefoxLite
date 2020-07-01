@@ -12,8 +12,6 @@
     <item name="next" type="id" />
     <item name="main_list" type="id" />
     <item name="content_image" type="id" />
-    <item name="first_run_bg_odd" type="id" />
-    <item name="first_run_bg_even" type="id" />
     <item name="status" type="id"/>
     <item name="row_id" type="id"/>
     <item name="empty_view_container" type="id"/>
