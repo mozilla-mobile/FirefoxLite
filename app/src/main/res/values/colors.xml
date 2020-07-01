@@ -106,7 +106,6 @@
 
     <color name="onboarding_indicator_default">@color/paletteWhite50</color>
     <color name="onboarding_indicator_selected">@color/paletteWhite100</color>
-    <color name="onboarding_text_highlight">@color/paletteLightBlack100</color>
     <color name="onboarding_text_normal">@color/paletteDarkGreyD100</color>
 
     <color name="colorMenuBackground">@color/paletteWhite100</color>

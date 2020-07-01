@@ -42,10 +42,6 @@
     <dimen name="design_navigation_separator_vertical_padding" tools:override="true">0dp</dimen>
     <dimen name="design_navigation_padding_bottom" tools:override="true">0dp</dimen>
 
-    <dimen name="first_run_upgrade_title_margin_top">36dp</dimen>
-    <dimen name="first_run_upgrade_title_margin_bottom">16dp</dimen>
-    <dimen name="first_run_upgrade_image2_size">76dp</dimen>
-
     <dimen name="flow_layout_spacing">8dp</dimen>
 
     <dimen name="screenshot_grid_cell_padding">8dp</dimen>
@@ -67,7 +63,6 @@
 
     <dimen name="menu_layout_horizontal_margin">14dp</dimen>
     <dimen name="menu_layout_top_margin">3dp</dimen>
-    <dimen name="firstrun_icon_bottom_margin">20dp</dimen>
     <dimen name="fixed_menu_height">48dp</dimen>
     <dimen name="home_fixed_menu_horizontal_margin">36dp</dimen>
     <dimen name="browser_fixed_menu_horizontal_padding">40dp</dimen>
