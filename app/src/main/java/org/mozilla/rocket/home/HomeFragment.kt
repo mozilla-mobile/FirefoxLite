@@ -536,6 +536,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }
                 .show()
         })
+        homeViewModel.addExistingTopSite.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(main_list, getText(R.string.add_top_site_snackbar_2), Snackbar.LENGTH_LONG)
+                .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }
+                .show()
+        })
     }
 
     private fun observeActions() {
