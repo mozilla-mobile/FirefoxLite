@@ -116,6 +116,7 @@ class HomeViewModel(
     val openAddNewTopSitesPage = SingleLiveEvent<Unit>()
     val addNewTopSiteSuccess = SingleLiveEvent<Int>()
     val addNewTopSiteFullyPinned = SingleLiveEvent<Unit>()
+    val addExistingTopSite = SingleLiveEvent<Int>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -291,6 +292,7 @@ class HomeViewModel(
     fun onAddNewTopSiteResult(pinTopSiteResult: PinTopSiteUseCase.PinTopSiteResult) {
         when (pinTopSiteResult) {
             is PinTopSiteUseCase.PinTopSiteResult.Success -> addNewTopSiteSuccess.value = pinTopSiteResult.position
+            is PinTopSiteUseCase.PinTopSiteResult.Existing -> addExistingTopSite.value = pinTopSiteResult.position
         }
     }
 
