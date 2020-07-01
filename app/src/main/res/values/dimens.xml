@@ -42,9 +42,6 @@
     <dimen name="design_navigation_separator_vertical_padding" tools:override="true">0dp</dimen>
     <dimen name="design_navigation_padding_bottom" tools:override="true">0dp</dimen>
 
-    <dimen name="firstrun_card_width">300dp</dimen>
-    <dimen name="firstrun_card_height">500dp</dimen>
-
     <dimen name="first_run_upgrade_title_margin_top">36dp</dimen>
     <dimen name="first_run_upgrade_title_margin_bottom">16dp</dimen>
     <dimen name="first_run_upgrade_image2_size">76dp</dimen>
