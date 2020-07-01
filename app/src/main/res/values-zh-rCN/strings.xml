@@ -3,6 +3,8 @@
   <string name="action_cancel">取消</string>
   <string name="action_ok">确定</string>
   <string name="urlbar_hint">搜索或输入网址</string>
+  <string name="awesomebar_open_copied_link">打开复制的链接</string>
+  <string name="awesomebar_switch_to_tab">切换到标签页</string>
   <string name="menu_settings">设置</string>
   <string name="menu_about">关于</string>
   <string name="menu_help">帮助</string>

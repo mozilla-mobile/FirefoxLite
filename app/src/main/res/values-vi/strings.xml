@@ -3,6 +3,8 @@
   <string name="action_cancel">HỦY BỎ</string>
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">Tìm kiếm hoặc nhập địa chỉ</string>
+  <string name="awesomebar_open_copied_link">Mở liên kết đã sao chép</string>
+  <string name="awesomebar_switch_to_tab">Chuyển sang thẻ</string>
   <string name="menu_settings">Cài đặt</string>
   <string name="menu_about">Giới thiệu</string>
   <string name="menu_help">Trợ giúp</string>
@@ -508,5 +510,5 @@
   <string name="travel_dialog_2_description_new">Bạn có thể đặt %1$s %2$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
   <string name="travel_dialog_2_checkbox">Đừng hỏi lại tôi nữa</string>
   <string name="travel_dialog_2_action">ĐẶT LÀM MẶC ĐỊNH</string>
-  <string name="awesomebar_open_link_clipboard">Mở liên kế trong clipboard của bạn</string>
+  <string name="awesomebar_open_link_clipboard">Mở liên kết trong bộ nhớ tạm của bạn</string>
 </resources>
