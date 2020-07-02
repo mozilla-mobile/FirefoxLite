@@ -108,6 +108,7 @@ class FrecensySuggestionProvider(
                         isBookmark = true
                     )
             } else {
+                candidate[it.url]?.isBookmark = true
                 candidate[it.url]?.weight =
                     candidate[it.url]?.weight?.times(SUGGESTION_MULTIPLIER) ?: DEFAULT_SITE_WEIGHT
             }
