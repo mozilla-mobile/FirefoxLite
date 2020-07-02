@@ -104,12 +104,12 @@ class TopSitesRepo(
     suspend fun getConfiguredRecommendedSites(): RecommendedSitesResult? = withContext(Dispatchers.IO) {
         FirebaseHelper.getFirebase().getRcString(STR_RECOMMENDED_SITES)
             .takeIf { it.isNotEmpty() }
-            ?.jsonStringToRecommendedSitesResult()
+            ?.jsonStringToRecommendedSitesResult(appContext)
     }
 
     suspend fun getRecommendedSites(): RecommendedSitesResult? = withContext(Dispatchers.IO) {
         AssetsUtils.loadStringFromRawResource(appContext, R.raw.recommended_sites)
-            ?.jsonStringToRecommendedSitesResult()
+            ?.jsonStringToRecommendedSitesResult(appContext)
     }
 
     fun isPinEnabled(): Boolean = pinSiteManager.isEnabled()
@@ -253,12 +253,19 @@ private fun String.jsonStringToSites(): List<Site>? {
     }
 }
 
-private fun String.jsonStringToRecommendedSitesResult(): RecommendedSitesResult? {
+private fun String.jsonStringToRecommendedSitesResult(context: Context): RecommendedSitesResult? {
     return try {
         val categoryList =
             this.getJsonArray {
                 val categoryId = it.optString("categoryId")
-                val categoryName = it.optString("categoryName")
+                val categoryName = when (categoryId) {
+                    "1" -> context.getString(R.string.top_site_category_1)
+                    "2" -> context.getString(R.string.top_site_category_5)
+                    "3" -> context.getString(R.string.top_site_category_2)
+                    "4" -> context.getString(R.string.top_site_category_3)
+                    "5" -> context.getString(R.string.top_site_category_4)
+                    else -> it.optString("categoryName")
+                }
                 val sites = it.getJsonArray("sites") { sites ->
                     TopSitesUtils.paresSite(sites)
                 }
