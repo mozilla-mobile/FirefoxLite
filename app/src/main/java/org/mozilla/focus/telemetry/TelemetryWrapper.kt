@@ -318,6 +318,7 @@ object TelemetryWrapper {
         const val LANGUAGE = "language"
         const val KEYWORD = "keyword"
         const val ORIENTATION = "orientation"
+        const val PINNED = "pinned"
     }
 
     object Extra_Value {
@@ -1420,14 +1421,18 @@ object TelemetryWrapper {
             value = Value.LINK,
             extras = [TelemetryExtra(name = Extra.ON, value = "Top Site Position"),
                 TelemetryExtra(name = Extra.SOURCE, value = "Preset Top Site like **"),
-                TelemetryExtra(name = Extra.VERSION, value = OPEN_HOME_LINK_VERSION)
+                TelemetryExtra(name = Extra.VERSION, value = OPEN_HOME_LINK_VERSION),
+                TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
+                TelemetryExtra(name = Extra.PINNED, value = "true,false")
             ])
     @JvmStatic
-    fun clickTopSiteOn(index: Int, source: String, isAffiliate: Boolean) {
+    fun clickTopSiteOn(index: Int, source: String, isDefault: Boolean, isPinned: Boolean, isAffiliate: Boolean) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
-                .extra(Extra.ON, Integer.toString(index))
+                .extra(Extra.ON, index.toString())
                 .extra(Extra.SOURCE, source)
                 .extra(Extra.VERSION, OPEN_HOME_LINK_VERSION)
+                .extra(Extra.DEFAULT, isDefault.toString())
+                .extra(Extra.PINNED, isPinned.toString())
                 .queue()
 
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOPSITE)
@@ -1448,14 +1453,16 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
                 TelemetryExtra(name = Extra.ON, value = "Default Top Site Position"),
-                TelemetryExtra(name = Extra.SOURCE, value = "Default Topsite Name")
+                TelemetryExtra(name = Extra.SOURCE, value = "Default Topsite Name"),
+                TelemetryExtra(name = Extra.PINNED, value = "true,false")
             ])
     @JvmStatic
-    fun removeTopSite(isDefault: Boolean, position: Int, source: String) {
+    fun removeTopSite(isDefault: Boolean, position: Int, source: String, isPinned: Boolean) {
         EventBuilder(Category.ACTION, Method.REMOVE, Object.HOME, Value.LINK)
-                .extra(Extra.DEFAULT, java.lang.Boolean.toString(isDefault))
+                .extra(Extra.DEFAULT, isDefault.toString())
                 .extra(Extra.ON, position.toString())
                 .extra(Extra.SOURCE, source)
+                .extra(Extra.PINNED, isPinned.toString())
                 .queue()
     }
 
@@ -3592,12 +3599,16 @@ object TelemetryWrapper {
             value = Value.LINK,
             extras = [
                 TelemetryExtra(name = Extra.SOURCE, value = "buka|toko...|null"),
-                TelemetryExtra(name = Extra.POSITION, value = "[0-9]")
+                TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
+                TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
+                TelemetryExtra(name = Extra.PINNED, value = "false")
             ])
-    fun pinTopSite(source: String?, position: Int) {
+    fun pinTopSite(source: String?, position: Int, isDefault: Boolean) {
         EventBuilder(Category.ACTION, Method.PIN, Object.HOME, Value.LINK)
                 .extra(Extra.SOURCE, source ?: "null")
                 .extra(Extra.POSITION, position.toString())
+                .extra(Extra.DEFAULT, isDefault.toString())
+                .extra(Extra.PINNED, false.toString())
                 .queue()
     }
 
