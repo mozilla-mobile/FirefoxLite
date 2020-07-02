@@ -248,8 +248,13 @@ class HomeViewModel(
                 val title = if (allowToLogTitle) site.title else ""
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
+                val isPinned = if (site is Site.UrlSite.RemovableSite) {
+                    site.isPinned
+                } else {
+                    false
+                }
                 val isAffiliate = site is Site.UrlSite.FixedSite
-                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, isAffiliate)
+                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, allowToLogTitle, isPinned, isAffiliate)
             }
             is Site.EmptyHintSite -> {
                 openAddNewTopSitesPage()
@@ -281,7 +286,7 @@ class HomeViewModel(
                 val title = if (allowToLogTitle) site.title else ""
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-                TelemetryWrapper.pinTopSite(title, topSitePosition)
+                TelemetryWrapper.pinTopSite(title, topSitePosition, allowToLogTitle)
             }
         }
     }
@@ -293,7 +298,7 @@ class HomeViewModel(
                 updateTopSitesData()
                 val allowToLogTitle = site.isDefault
                 val title = if (allowToLogTitle) site.title else ""
-                TelemetryWrapper.removeTopSite(site.isDefault, position, title)
+                TelemetryWrapper.removeTopSite(site.isDefault, position, title, site.isPinned)
             }
         }
     }
