@@ -34,6 +34,7 @@ public class TopSitesUtils {
     public static final String KEY_VIEW_COUNT = "viewCount";
     public static final String KEY_LAST_VIEW_TIMESTAMP = "lastViewTimestamp";
     public static final String KEY_FAVICON = "favicon";
+    public static final String KEY_IS_DEFAULT = "isDefault";
 
     /**
      * get default topsites data from assets and restore it to SharedPreferences
