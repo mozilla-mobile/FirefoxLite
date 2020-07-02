@@ -93,7 +93,8 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
                 site.viewCount,
                 site.lastViewTimestamp,
                 site.favIconUri
-        ))
+            ).also { it.isDefault = site.isDefault }
+        )
         save(sites)
     }
 
@@ -204,7 +205,9 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
                         obj.getString(TopSitesUtils.KEY_URL),
                         obj.getLong(TopSitesUtils.KEY_VIEW_COUNT),
                         0,
-                        faviconPrefix + getFaviconUrl(obj)))
+                        faviconPrefix + getFaviconUrl(obj)
+                    ).also { it.isDefault = obj.optBoolean(TopSitesUtils.KEY_IS_DEFAULT, false) }
+                )
             }
         } catch (ignored: JSONException) {
         }
@@ -224,6 +227,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
             node.put(TopSitesUtils.KEY_TITLE, site.title)
             node.put(TopSitesUtils.KEY_FAVICON, site.favIconUri)
             node.put(TopSitesUtils.KEY_VIEW_COUNT, site.viewCount)
+            node.put(TopSitesUtils.KEY_IS_DEFAULT, site.isDefault)
         } catch (e: JSONException) {
             null
         }
