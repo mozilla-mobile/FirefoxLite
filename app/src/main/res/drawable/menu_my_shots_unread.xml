@@ -7,7 +7,8 @@
   <item android:drawable="@drawable/menu_my_shots"
       android:left="10dp"
       android:right="10dp"
-      android:top="5dp"/>
+      android:top="5dp"
+      android:bottom="5dp" />
 
   <item android:drawable="@drawable/ic_menu_screenshots_new"
       android:gravity="right|top"/>

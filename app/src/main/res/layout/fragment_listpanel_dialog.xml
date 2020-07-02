@@ -33,23 +33,21 @@
                 <FrameLayout
                     android:id="@+id/screenshots"
                     android:layout_width="74dp"
-                    android:layout_height="50dp"
-                    android:paddingBottom="5dp"
+                    android:layout_height="52dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_screenshots_selected"
                         android:layout_width="38dp"
                         android:layout_height="38dp"
-                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_gravity="center"
                         android:background="@drawable/menu_tab_selected" />
 
                     <ImageView
                         android:id="@+id/img_screenshots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="7dp"
+                        android:layout_gravity="center"
                         android:tint="@color/menu_tab_icon"
                         android:src="@drawable/menu_my_shots_states"/>
 
@@ -58,23 +56,21 @@
                 <FrameLayout
                     android:id="@+id/bookmarks"
                     android:layout_width="74dp"
-                    android:layout_height="50dp"
-                    android:paddingBottom="5dp"
+                    android:layout_height="52dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_bookmarks_selected"
                         android:layout_width="38dp"
                         android:layout_height="38dp"
-                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_gravity="center"
                         android:background="@drawable/menu_tab_selected" />
 
                     <ImageView
                         android:id="@+id/img_bookmarks"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="7dp"
+                        android:layout_gravity="center"
                         android:tint="@color/menu_tab_icon"
                         android:src="@drawable/ic_bookmarks"/>
 
@@ -83,23 +79,21 @@
                 <FrameLayout
                     android:id="@+id/history"
                     android:layout_width="74dp"
-                    android:layout_height="50dp"
-                    android:paddingBottom="5dp"
+                    android:layout_height="52dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_history_selected"
                         android:layout_width="38dp"
                         android:layout_height="38dp"
-                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_gravity="center"
                         android:background="@drawable/menu_tab_selected" />
 
                     <ImageView
                         android:id="@+id/img_history"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="7dp"
+                        android:layout_gravity="center"
                         android:tint="@color/menu_tab_icon"
                         android:src="@drawable/menu_history"/>
 
@@ -108,23 +102,21 @@
                 <FrameLayout
                     android:id="@+id/downloads"
                     android:layout_width="74dp"
-                    android:layout_height="50dp"
-                    android:paddingBottom="5dp"
+                    android:layout_height="52dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <View
                         android:id="@+id/img_downloads_selected"
                         android:layout_width="38dp"
                         android:layout_height="38dp"
-                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_gravity="center"
                         android:background="@drawable/menu_tab_selected" />
 
                     <ImageView
                         android:id="@+id/img_downloads"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="7dp"
+                        android:layout_gravity="center"
                         android:tint="@color/menu_tab_icon"
                         android:src="@drawable/menu_download"/>
 
@@ -136,8 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/paletteLightGreyA100"
-                android:layout_marginTop="53dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginTop="53dp" />
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/main_content"
