@@ -237,7 +237,7 @@ class TopSitesRepo(
     companion object {
         const val TOP_SITES_PREF = "topsites_pref"
         const val TOP_SITES_QUERY_LIMIT = 16
-        const val TOP_SITES_QUERY_MIN_VIEW_COUNT = 2
+        const val TOP_SITES_QUERY_MIN_VIEW_COUNT = 6
         private const val TOP_SITES_V2_PREF = "top_sites_v2_complete"
         private const val STR_RECOMMENDED_SITES = "str_recommended_sites"
         private const val MSG_ID_REFRESH = 8269
