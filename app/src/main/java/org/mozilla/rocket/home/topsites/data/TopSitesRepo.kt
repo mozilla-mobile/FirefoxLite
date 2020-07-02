@@ -39,7 +39,7 @@ class TopSitesRepo(
     private var needToCheckDbVersion = true
 
     fun getConfiguredFixedSites(): List<Site>? =
-            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_FIXED_ITEMS)
+            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_FIXED_ITEM_V2_5)
                     .takeIf { it.isNotEmpty() }
                     ?.jsonStringToSites()
 
