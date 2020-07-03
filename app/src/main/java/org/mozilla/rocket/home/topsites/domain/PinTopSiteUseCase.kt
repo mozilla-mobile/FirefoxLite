@@ -24,7 +24,7 @@ class PinTopSiteUseCase(private val topSitesRepo: TopSitesRepo) {
             }
             else -> {
                 topSitesRepo.pin(site.toSiteModel())
-                PinTopSiteResult.Success(fixedSites.size + pinnedSites.size)
+                PinTopSiteResult.Success(fixedSites.size + pinnedSites.size - 1)
             }
         }
     }
