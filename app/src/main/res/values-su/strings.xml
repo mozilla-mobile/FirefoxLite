@@ -3,6 +3,8 @@
   <string name="action_cancel">BOLAY</string>
   <string name="action_ok">OKÉH</string>
   <string name="urlbar_hint">Paluruh atawa asupkeun alamat</string>
+  <string name="awesomebar_open_copied_link">Buka Tutumbu Tironan</string>
+  <string name="awesomebar_switch_to_tab">Pindah ka Tab</string>
   <string name="menu_settings">Setélan</string>
   <string name="menu_about">Ngeunaan</string>
   <string name="menu_help">Pitulung</string>
