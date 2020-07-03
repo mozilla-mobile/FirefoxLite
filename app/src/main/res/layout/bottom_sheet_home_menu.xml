@@ -33,23 +33,25 @@
                 <LinearLayout
                     android:id="@+id/menu_screenshots"
                     android:layout_width="74dp"
-                    android:layout_height="71dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="71dp"
                     android:orientation="vertical"
-                    android:gravity="center_horizontal|bottom"
-                    android:paddingTop="7dp"
+                    android:gravity="center_horizontal"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <ImageView
                         android:id="@+id/img_screenshots"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:scaleType="centerInside"
                         android:src="@drawable/menu_my_shots_states"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="30dp"
+                        android:gravity="top|center_horizontal"
                         style="@style/MenuButtonText"
+                        android:layout_marginTop="-5dp"
                         android:text="@string/label_menu_my_shots"/>
 
                 </LinearLayout>
@@ -57,22 +59,24 @@
                 <LinearLayout
                     android:id="@+id/menu_bookmark"
                     android:layout_width="74dp"
-                    android:layout_height="71dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="71dp"
                     android:orientation="vertical"
-                    android:gravity="center_horizontal|bottom"
-                    android:paddingTop="7dp"
+                    android:gravity="center_horizontal"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:scaleType="centerInside"
                         android:src="@drawable/ic_bookmarks"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="30dp"
+                        android:gravity="top|center_horizontal"
                         style="@style/MenuButtonText"
+                        android:layout_marginTop="-5dp"
                         android:text="@string/label_menu_bookmark"/>
 
                 </LinearLayout>
@@ -80,22 +84,24 @@
                 <LinearLayout
                     android:id="@+id/menu_history"
                     android:layout_width="74dp"
-                    android:layout_height="71dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="71dp"
                     android:orientation="vertical"
-                    android:gravity="center_horizontal|bottom"
-                    android:paddingTop="7dp"
+                    android:gravity="center_horizontal"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:scaleType="centerInside"
                         android:src="@drawable/menu_history"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="30dp"
+                        android:gravity="top|center_horizontal"
                         style="@style/MenuButtonText"
+                        android:layout_marginTop="-5dp"
                         android:text="@string/label_menu_history"/>
 
                 </LinearLayout>
@@ -103,22 +109,24 @@
                 <LinearLayout
                     android:id="@+id/menu_download"
                     android:layout_width="74dp"
-                    android:layout_height="71dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="71dp"
                     android:orientation="vertical"
-                    android:gravity="center_horizontal|bottom"
-                    android:paddingTop="7dp"
+                    android:gravity="center_horizontal"
                     android:background="?android:attr/selectableItemBackgroundBorderless">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:scaleType="centerInside"
                         android:src="@drawable/menu_download"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:minHeight="30dp"
+                        android:gravity="top|center_horizontal"
                         style="@style/MenuButtonText"
+                        android:layout_marginTop="-5dp"
                         android:text="@string/label_menu_download"/>
 
                 </LinearLayout>
