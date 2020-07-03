@@ -20,6 +20,20 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/content_image_mask"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="false"
+        app:lottie_fileName="ring.json"
+        app:lottie_repeatCount="2" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/content_image"
         android:elevation="4dp"
