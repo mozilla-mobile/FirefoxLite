@@ -88,4 +88,10 @@ public class InfoActivity extends BaseActivity {
     public void applyLocale() {
 
     }
+
+    @Nullable
+    @Override
+    public View getNightModeCover() {
+        return null;
+    }
 }

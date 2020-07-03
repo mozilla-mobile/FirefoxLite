@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -220,6 +221,12 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
     @Override
     public void applyLocale() {
         //  Refresh UI strings to match new Locale
+    }
+
+    @Nullable
+    @Override
+    public View getNightModeCover() {
+        return null;
     }
 
     @Override

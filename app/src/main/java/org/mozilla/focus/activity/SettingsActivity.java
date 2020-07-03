@@ -82,4 +82,10 @@ public class SettingsActivity extends BaseActivity {
     public void applyLocale() {
         setTitle(R.string.menu_settings);
     }
+
+    @Nullable
+    @Override
+    public View getNightModeCover() {
+        return null;
+    }
 }

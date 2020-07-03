@@ -5,19 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
+import kotlinx.android.synthetic.main.adjust_briteness_view.brightness_root
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog.Constants.BRIGHT_PERCENTAGE
 
 class AdjustBrightnessDialog : BaseActivity() {
 
     object Constants {
+        @JvmStatic
+        var BRIGHT_PERCENTAGE = 0
         // Only allow user to adjust brightness from 0.0f to 0.5f of system brightness
         private const val SCALE = 0.5
         //  Value to Progress multiplier
         private const val MULTIPLIER = 100.0f
+
         // Value default is a quarter of SCALE
         const val DEFAULT_BRIGHTNESS = (0.25 * SCALE).toFloat()
 
@@ -58,13 +62,16 @@ class AdjustBrightnessDialog : BaseActivity() {
     private val mSeekListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             if (fromUser) {
-                val layoutParams = window.attributes
-                var value = Constants.progressToValue(progress)
-                if (value < 0.01) {
-                    value = 0.01f
-                }
-                layoutParams.screenBrightness = value
-                window.attributes = layoutParams
+//                val layoutParams = window.attributes
+//                var value = Constants.progressToValue(progress)
+//                if (value < 0.01) {
+//                    value = 0.01f
+//                }
+//                layoutParams.screenBrightness = value
+//                window.attributes = layoutParams
+
+                brightness_root.background.alpha = 255 * progress / 100
+                BRIGHT_PERCENTAGE = progress
             }
         }
 
@@ -93,10 +100,14 @@ class AdjustBrightnessDialog : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        val fromSetting = intent.getStringExtra(Intents.EXTRA_SOURCE) == Intents.SOURCE_SETTING
-        val layoutParams = window.attributes
-        Settings.getInstance(this).nightModeBrightnessValue = layoutParams.screenBrightness
-        TelemetryWrapper.nightModeBrightnessChangeTo(Constants.valueToProgress(layoutParams.screenBrightness), fromSetting)
+//        val fromSetting = intent.getStringExtra(Intents.EXTRA_SOURCE) == Intents.SOURCE_SETTING
+//        val layoutParams = window.attributes
+//        Settings.getInstance(this).nightModeBrightnessValue = layoutParams.screenBrightness
+//        TelemetryWrapper.nightModeBrightnessChangeTo(Constants.valueToProgress(layoutParams.screenBrightness), fromSetting)
+    }
+
+    override fun getNightModeCover(): View? {
+        return brightness_root
     }
 
     override fun applyLocale() {

@@ -174,6 +174,10 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
 
     override fun applyLocale() = Unit
 
+    override fun getNightModeCover(): View? {
+        return null
+    }
+
     override fun getSessionManager() = sessionManager
 
     override fun getHostActivity() = this

@@ -111,6 +111,10 @@ class TravelCityActivity : BaseActivity() {
 
     override fun applyLocale() = Unit
 
+    override fun getNightModeCover(): View? {
+        return null
+    }
+
     private fun initToolBar() {
         toolbar.title = city.name
         toolbar.setNavigationOnClickListener {

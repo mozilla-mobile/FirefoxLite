@@ -8,6 +8,8 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.Settings;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 
 import java.util.Locale;
 
@@ -32,6 +35,9 @@ public abstract class BaseActivity
      * all localised Strings, or replace itself with an updated version.
      */
     public abstract void applyLocale();
+
+    @Nullable
+    public abstract View getNightModeCover();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +111,11 @@ public abstract class BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        updateScreenBrightness();
+//        updateScreenBrightness();
+        View nightModeCover = getNightModeCover();
+        if (nightModeCover != null) {
+            nightModeCover.getBackground().setAlpha(255 * AdjustBrightnessDialog.Constants.getBRIGHT_PERCENTAGE() / 100);
+        }
         ((LocaleAwareApplication) getApplicationContext()).onActivityResume();
     }
 

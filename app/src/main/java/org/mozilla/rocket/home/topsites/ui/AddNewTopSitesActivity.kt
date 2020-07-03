@@ -12,6 +12,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 
 class AddNewTopSitesActivity : BaseActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -33,6 +34,10 @@ class AddNewTopSitesActivity : BaseActivity() {
 
     override fun applyLocale() {
         setTitle(R.string.label_menu_add_top_sites)
+    }
+
+    override fun getNightModeCover(): View? {
+        return null
     }
 
     companion object {

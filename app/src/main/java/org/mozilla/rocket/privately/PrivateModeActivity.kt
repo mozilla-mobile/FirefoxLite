@@ -133,6 +133,10 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun applyLocale() {}
 
+    override fun getNightModeCover(): View? {
+        return null
+    }
+
     private fun observeChromeAction() {
         chromeViewModel.openUrl.observe(this, Observer { action ->
             action?.run {

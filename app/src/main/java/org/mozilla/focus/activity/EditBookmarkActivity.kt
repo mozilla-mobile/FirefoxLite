@@ -10,6 +10,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.EditText
 import android.widget.ImageButton
@@ -127,6 +128,10 @@ class EditBookmarkActivity : BaseActivity() {
     }
 
     override fun applyLocale() {
+    }
+
+    override fun getNightModeCover(): View? {
+        return null
     }
 
     private fun isSaveValid(): Boolean {

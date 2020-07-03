@@ -335,8 +335,8 @@ class MainActivity : BaseActivity(),
                     this@MainActivity.showMyShotOnBoarding()
                 }
             }
-            isNightMode.nonNullObserve(this@MainActivity) { nightModeSettings ->
-                onNightModeEnabled(nightModeSettings.brightness, nightModeSettings.isEnabled)
+            isNightMode.nonNullObserve(this@MainActivity) { _ ->
+//                onNightModeEnabled(nightModeSettings.brightness, nightModeSettings.isEnabled)
             }
             driveDefaultBrowser.observe(this@MainActivity, Observer { driveDefaultBrowser() })
             exitApp.observe(this@MainActivity, Observer { exitApp() })
