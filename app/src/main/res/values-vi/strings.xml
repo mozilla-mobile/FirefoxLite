@@ -90,7 +90,7 @@
   <string name="first_run_upgrade_page_text1_highlight">nhiều thẻ</string>
   <string name="first_run_upgrade_page_text2">2. Truy cập các trang web yêu thích của bạn một cách nhanh chóng theo %s</string>
   <string name="first_run_upgrade_page_text2_highlight">thêm chúng vào màn hình chính!</string>
-  <string name="firstrun_close_button">Đã hiểu!</string>
+  <string name="firstrun_close_button">OK, đã hiểu!</string>
   <string name="firstrun_skip_button">Bỏ qua</string>
   <string name="firstrun_next_button">Tiếp</string>
   <string name="firstrun_fxlite_2.5_title_1">Xin chào!</string>

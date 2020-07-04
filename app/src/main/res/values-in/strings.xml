@@ -333,8 +333,8 @@
   <string name="private_browsing_dialog_add_shortcut_no_v2">TIDAK, TERIMA KASIH</string>
   <string name="private_browsing_dialog_add_shortcut_yes_v2">YA, TAMBAHKAN SEKARANG!</string>
   <string name="private_browsing_dialog_add_shortcut_no_toast">Anda dapat menambahkan pintasan mode pribadi di pengaturan.</string>
-  <string name="private_browsing_shortcut_name">%1$s - Penjelajahan privat</string>
-  <string name="preference_add_private_browsing_shortcut">Tambahkan pintasan mode private ke Beranda</string>
+  <string name="private_browsing_shortcut_name">%1$s - Penjelajahan pribadi</string>
+  <string name="preference_add_private_browsing_shortcut">Tambahkan pintasan mode pribadi ke Beranda</string>
   <string name="my_shot_on_boarding_message">Lihat cuplikan layar Anda di sini!</string>
   <string name="my_shot_on_boarding_category_message">Untuk meningkatkan pengalaman produk, kami mengumpulkan informasi tentang kategori cuplikan layar Anda.</string>
   <string name="http_auth_dialog_title">Autentikasi diperlukan</string>

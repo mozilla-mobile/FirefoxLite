@@ -106,7 +106,16 @@
   <string name="label_menu_settings">การตั้งค่า</string>
   <string name="label_menu_exit">ออก</string>
   <string name="label_menu_add_to_home_screen">เพิ่มไปยังหน้าจอหลัก</string>
+  <string name="label_menu_content_services">แสดงเนื้อหาและบริการ</string>
   <string name="label_menu_add_top_sites">เพิ่มไซต์เด่น</string>
+  <string name="label_menu_themes">ชุดตกแต่ง</string>
+  <string name="top_site_category_1">เว็บไซต์ยอดนิยม</string>
+  <string name="top_site_category_3">ความบันเทิง</string>
+  <string name="top_site_category_4">อื่น ๆ</string>
+  <string name="add_top_site_snackbar_1">เพิ่มไซต์เด่นแล้ว</string>
+  <string name="add_top_site_snackbar_2">เพิ่มไซต์แล้ว</string>
+  <string name="add_top_site_toast">โปรดเอาไซต์เด่นออกก่อน</string>
+  <string name="add_top_site_button">เพิ่ม</string>
   <string name="add_top_site_placeholder">เพิ่ม</string>
   <string name="permission_toast_location_deny">ปฏิเสธสิทธิอนุญาตตำแหน่งที่ตั้งแล้ว</string>
   <string name="permission_toast_storage_deny">ปฏิเสธสิทธิอนุญาตที่เก็บข้อมูลแล้ว</string>
@@ -196,7 +205,7 @@
   <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Lite ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="message_set_default_success">ขอบคุณที่เลือก %1$s!</string>
   <string name="message_set_default_incomplet">คุณต้องการตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณหรือไม่?</string>
-  <string name="setting_default_browser_instruction_system_settings">ตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณใน 30 วินาที</string>
+  <string name="setting_default_browser_instruction_system_settings">ตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณด้วย 2 ขั้นตอน</string>
   <string name="setting_default_browser_instruction_open_external_link">จะเรียกดูด้วย %1$s เสมอได้อย่างไร?</string>
   <string name="instruction_select">เลือก %1$s</string>
   <string name="browser_app">แอปเบราว์เซอร์</string>
