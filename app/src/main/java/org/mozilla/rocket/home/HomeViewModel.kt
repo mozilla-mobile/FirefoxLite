@@ -231,7 +231,8 @@ class HomeViewModel(
 
     fun onBackgroundViewDoubleTap(): Boolean {
         // Not allowed double tap to switch theme when night mode is on
-        if (settings.isNightModeEnable) return false
+        // TODO : dark theme
+//        if (settings.isNightModeEnable) return false
 
         toggleBackgroundColor.call()
         return true
@@ -239,7 +240,8 @@ class HomeViewModel(
 
     fun onBackgroundViewLongPress() {
         // Not allowed long press to reset theme when night mode is on
-        if (settings.isNightModeEnable) return
+        // TODO : dark theme
+//        if (settings.isNightModeEnable) return
 
         resetBackgroundColor.call()
     }

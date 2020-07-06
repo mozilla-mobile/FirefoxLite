@@ -136,7 +136,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initContentHub()
         initFxaView()
         initLogoManNotification()
-        observeNightMode()
+        // TODO : dark theme
+//         observeNightMode()
         initOnboardingSpotlight()
         observeAddNewTopSites()
         observeActions()

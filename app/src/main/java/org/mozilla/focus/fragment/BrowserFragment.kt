@@ -497,10 +497,11 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         bottomBarViewModel.items.observe(viewLifecycleOwner, Observer { types: List<BottomBarItemAdapter.ItemData> ->
             bottomBarItemAdapter.setItems(types)
         })
-        chromeViewModel.isNightMode.switchFrom(bottomBarViewModel.items)
+        // TODO : dark theme
+        /*chromeViewModel.isNightMode.switchFrom(bottomBarViewModel.items)
                 .observe(viewLifecycleOwner, Observer { (isEnabled) ->
                     bottomBarItemAdapter.setNightMode(isEnabled)
-                })
+                })*/
         chromeViewModel.tabCount.switchFrom(bottomBarViewModel.items)
                 .observe(viewLifecycleOwner, Observer { count: Int ->
                     bottomBarItemAdapter.setTabCount(count, true)
@@ -570,7 +571,8 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         sessionManager = TabsSessionProvider.getOrThrow(activity)
         sessionManager.register(managerObserver, this, false)
         observeShoppingSearchPromptMessageViewModel()
-        observeNightMode()
+        // TODO : dark theme
+        // observeNightMode()
 
         // restore WebView state
         if (savedInstanceState != null) {
