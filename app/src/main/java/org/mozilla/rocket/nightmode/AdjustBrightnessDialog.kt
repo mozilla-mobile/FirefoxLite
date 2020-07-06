@@ -17,7 +17,7 @@ class AdjustBrightnessDialog : BaseActivity() {
 
     object Constants {
         @JvmStatic
-        var BRIGHT_PERCENTAGE = 0
+        public var BRIGHT_PERCENTAGE = 0
         // Only allow user to adjust brightness from 0.0f to 0.5f of system brightness
         private const val SCALE = 0.5
         //  Value to Progress multiplier
@@ -101,8 +101,8 @@ class AdjustBrightnessDialog : BaseActivity() {
 //        TelemetryWrapper.nightModeBrightnessChangeTo(Constants.valueToProgress(layoutParams.screenBrightness), fromSetting)
     }
 
-    override fun getNightModeCover(): View? {
-        return brightness_root
+    override fun getNightModeCover(): List<View>? {
+        return listOf(brightness_root)
     }
 
     override fun applyLocale() {

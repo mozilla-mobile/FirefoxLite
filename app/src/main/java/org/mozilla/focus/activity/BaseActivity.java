@@ -21,12 +21,13 @@ import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.nightmode.BrightnessListener;
+import org.mozilla.rocket.nightmode.NightModeListener;
 
+import java.util.List;
 import java.util.Locale;
 
 public abstract class BaseActivity
-        extends AppCompatActivity implements BrightnessListener {
+        extends AppCompatActivity implements NightModeListener {
 
     private volatile Locale mLastLocale;
 
@@ -37,7 +38,7 @@ public abstract class BaseActivity
     public abstract void applyLocale();
 
     @Nullable
-    public abstract View getNightModeCover();
+    public abstract List<View> getNightModeCover();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public abstract class BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        adjustBrightness();
+        this.adjustBrightness();
         ((LocaleAwareApplication) getApplicationContext()).onActivityResume();
     }
 

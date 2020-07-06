@@ -130,7 +130,7 @@ class EditBookmarkActivity : BaseActivity() {
     override fun applyLocale() {
     }
 
-    override fun getNightModeCover(): View? {
+    override fun getNightModeCover(): List<View>? {
         return null
     }
 

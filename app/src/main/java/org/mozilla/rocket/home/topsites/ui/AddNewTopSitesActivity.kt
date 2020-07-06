@@ -36,7 +36,7 @@ class AddNewTopSitesActivity : BaseActivity() {
         setTitle(R.string.label_menu_add_top_sites)
     }
 
-    override fun getNightModeCover(): View? {
+    override fun getNightModeCover(): List<View>? {
         return null
     }
 

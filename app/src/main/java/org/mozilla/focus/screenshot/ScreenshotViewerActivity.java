@@ -49,7 +49,6 @@ import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
-import org.mozilla.rocket.nightmode.BrightnessListener;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -58,6 +57,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import static com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView.PAN_LIMIT_INSIDE;
@@ -226,7 +226,7 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
 
     @Nullable
     @Override
-    public View getNightModeCover() {
+    public List<View> getNightModeCover() {
         return null;
     }
 
@@ -412,11 +412,6 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
         }
 
         return "";
-    }
-
-    @Override
-    public void adjustBrightness() {
-        BrightnessListener.DefaultImpls.adjustBrightness(this);
     }
 
     private static class InfoItemAdapter extends ArrayAdapter<ImageInfo> {

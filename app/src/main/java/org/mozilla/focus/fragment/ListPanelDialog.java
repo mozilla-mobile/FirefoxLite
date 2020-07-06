@@ -26,10 +26,12 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
-import org.mozilla.rocket.nightmode.BrightnessListener;
+import org.mozilla.rocket.nightmode.NightModeListener;
 
-public class ListPanelDialog extends DialogFragment implements BrightnessListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListPanelDialog extends DialogFragment implements NightModeListener {
 
     public final static int TYPE_DOWNLOADS = 1;
     public final static int TYPE_HISTORY = 2;
@@ -289,12 +291,10 @@ public class ListPanelDialog extends DialogFragment implements BrightnessListene
     }
 
     @Override
-    public View getNightModeCover() {
-        return nightModCoverPanel;
+    public List<View> getNightModeCover() {
+        ArrayList<View> views = new ArrayList<>();
+        views.add(nightModCoverPanel);
+        return views;
     }
 
-    @Override
-    public void adjustBrightness() {
-        AdjustBrightnessDialog.DefaultImpls.adjustBrightness(this);
-    }
 }

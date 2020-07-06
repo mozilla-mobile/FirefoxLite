@@ -450,8 +450,15 @@ class MainActivity : BaseActivity(),
         setUpMenu()
     }
 
-    override fun getNightModeCover(): View? {
-        return night_mod_cover_main
+    override fun getNightModeCover(): List<View>? {
+        val mutableListOf = mutableListOf(night_mod_cover_main)
+        homeMenu.nightModeCover?.forEach {
+            mutableListOf.add(it)
+        }
+        browserMenu.nightModeCover.forEach {
+            mutableListOf.add(it)
+        }
+        return mutableListOf
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

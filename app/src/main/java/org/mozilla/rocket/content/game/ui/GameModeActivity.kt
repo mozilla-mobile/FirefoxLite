@@ -112,7 +112,7 @@ class GameModeActivity : BaseActivity(), TabsSessionProvider.SessionHost, Conten
 
     override fun applyLocale() = Unit
 
-    override fun getNightModeCover(): View? {
+    override fun getNightModeCover(): List<View>? {
         return null
     }
 

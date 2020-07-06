@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
+import kotlinx.android.synthetic.main.bottom_sheet_home_menu.content_layout
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.add_top_sites_red_dot
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_red_dot
@@ -44,10 +45,11 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
+import org.mozilla.rocket.nightmode.NightModeListener
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import javax.inject.Inject
 
-class HomeMenuDialog : BottomSheetDialog {
+class HomeMenuDialog : BottomSheetDialog, NightModeListener {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
@@ -234,5 +236,9 @@ class HomeMenuDialog : BottomSheetDialog {
     private fun showShoppingSearch() {
         val context: Context = this.context ?: return
         context.startActivity(ShoppingSearchActivity.getStartIntent(context))
+    }
+
+    override fun getNightModeCover(): List<View>? {
+        return listOf(content_layout)
     }
 }

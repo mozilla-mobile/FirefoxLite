@@ -74,7 +74,7 @@ class ShoppingSearchActivity : BaseActivity(), TabsSessionProvider.SessionHost {
 
     override fun applyLocale() = Unit
 
-    override fun getNightModeCover(): View? {
+    override fun getNightModeCover(): List<View>? {
         return null
     }
 

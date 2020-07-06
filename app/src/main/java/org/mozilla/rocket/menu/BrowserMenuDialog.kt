@@ -13,6 +13,8 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.content_layout
+import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.night_mod_cover_toolbar
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.block_images_switch
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.content_layout
 import kotlinx.android.synthetic.main.bottom_sheet_browser_menu.view.img_screenshots
@@ -45,10 +47,10 @@ import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
-import org.mozilla.rocket.nightmode.BrightnessListener
+import org.mozilla.rocket.nightmode.NightModeListener
 import javax.inject.Inject
 
-class BrowserMenuDialog : BottomSheetDialog, BrightnessListener {
+class BrowserMenuDialog : BottomSheetDialog, NightModeListener {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
@@ -287,7 +289,7 @@ class BrowserMenuDialog : BottomSheetDialog, BrightnessListener {
         }
     }
 
-    override fun getNightModeCover(): View? {
-        TODO("Not yet implemented")
+    override fun getNightModeCover(): List<View?> {
+        return listOf(content_layout, night_mod_cover_toolbar)
     }
 }
