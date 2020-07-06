@@ -30,4 +30,12 @@
     <string name="travel_dialog_1_action_1_new">SUBUKAN ANG %1$s</string>
     <string name="travel_dialog_2_title_new">Nag-e-enjoy na Gamitin ang %1$s?</string>
     <string name="travel_dialog_2_description_new">Puwede mong itakda ang %1$s %2$s bilang iyong default na search engine para sa pagbiyahe.</string>
+    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <string name="onboarding_transition_title">Ino-optimize ang karanasan para sa iyo…</string>
+    <!-- Introduce personalized home to new users -->
+    <string name="onboarding_transition_feature_1">Naglalapat ng mga huling pag-aayos sa iyong Home</string>
+    <!-- Introduce Turbo Mode to new users -->
+    <string name="onboarding_transition_feature_2">Ina-activate ang Turbo Mode</string>
+    <!-- Introduce tracking protection to new users -->
+    <string name="onboarding_transition_feature_3">Itinatakda ang mga tracker shield sa maximum na power</string>
 </resources>
