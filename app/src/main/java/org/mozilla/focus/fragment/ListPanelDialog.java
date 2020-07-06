@@ -7,6 +7,7 @@ package org.mozilla.focus.fragment;
 
 import android.content.DialogInterface;
 import android.graphics.Outline;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,10 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.history.BrowsingHistoryFragment;
 import org.mozilla.focus.screenshot.ScreenshotGridFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
+import org.mozilla.rocket.nightmode.BrightnessListener;
 
-public class ListPanelDialog extends DialogFragment {
+public class ListPanelDialog extends DialogFragment implements BrightnessListener {
 
     public final static int TYPE_DOWNLOADS = 1;
     public final static int TYPE_HISTORY = 2;
@@ -34,6 +37,7 @@ public class ListPanelDialog extends DialogFragment {
     public final static int TYPE_BOOKMARKS = 4;
 
     private NestedScrollView scrollView;
+    private View bottomsheet;
     private static final String TYPE = "TYPE";
     private View bookmarksIcon;
     private View downloadsIcon;
@@ -83,7 +87,7 @@ public class ListPanelDialog extends DialogFragment {
             }
         });
         contentLayout.setClipToOutline(true);
-        View bottomsheet = v.findViewById(R.id.bottom_sheet);
+        bottomsheet = v.findViewById(R.id.bottom_sheet);
         scrollView = (NestedScrollView) v.findViewById(R.id.main_content);
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
 
@@ -190,6 +194,12 @@ public class ListPanelDialog extends DialogFragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        adjustBrightness(view.findViewById(R.id.night_mod_cover_panel));
+    }
+
+    @Override
     public void onDismiss(DialogInterface dialog) {
         if (this.onDismissListener != null) {
             this.onDismissListener.onDismiss(dialog);
@@ -278,5 +288,13 @@ public class ListPanelDialog extends DialogFragment {
             default:
                 throw new RuntimeException("There is no view type " + getArguments().getInt(TYPE));
         }
+    }
+
+    @Override
+    public void adjustBrightness(View nightModeCover) {
+        if (nightModeCover == null) return;
+        Drawable background = nightModeCover.getBackground();
+        if (background == null) return;
+        background.setAlpha(255 * AdjustBrightnessDialog.Constants.getBRIGHT_PERCENTAGE() / 100);
     }
 }

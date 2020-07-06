@@ -3,6 +3,7 @@ package org.mozilla.rocket.nightmode
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import kotlinx.android.synthetic.main.adjust_briteness_view.brightness_root
@@ -70,7 +71,11 @@ class AdjustBrightnessDialog : BaseActivity() {
 //                layoutParams.screenBrightness = value
 //                window.attributes = layoutParams
 
-                brightness_root.background.alpha = 255 * progress / 100
+                val alpha = 255 * progress / 100
+
+                Log.d("nightmode", "onProgressChanged:$alpha")
+
+                brightness_root.background.alpha = alpha
                 BRIGHT_PERCENTAGE = progress
             }
         }

@@ -308,8 +308,8 @@ dependencies {
     })
 
     // LeakCanary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
-    firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+//    debugImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
+//    firebaseImplementation "com.squareup.leakcanary:leakcanary-android:${Versions.leakcanary}"
 
     implementation "com.google.android.play:core:${Versions.play}"
 }

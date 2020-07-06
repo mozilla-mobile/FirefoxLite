@@ -135,7 +135,7 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
-        enableStrictMode()
+//        enableStrictMode()
 
         SearchEngineManager.getInstance().init(this)
 

@@ -158,7 +158,12 @@
                 android:layout_gravity="top" />
 
         </FrameLayout>
-
+        <View
+            android:id="@+id/night_mod_cover_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#AA000000"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </FrameLayout>

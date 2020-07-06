@@ -35,6 +35,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_main.container
+import kotlinx.android.synthetic.main.activity_main.night_mod_cover
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.fragment.BrowserFragment
@@ -447,6 +448,10 @@ class MainActivity : BaseActivity(),
     override fun applyLocale() {
         // re-create bottom sheet menu
         setUpMenu()
+    }
+
+    override fun getNightModeCover(): View? {
+        return night_mod_cover
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
