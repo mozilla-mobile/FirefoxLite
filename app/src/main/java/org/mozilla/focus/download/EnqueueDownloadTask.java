@@ -13,6 +13,7 @@ import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
+import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.rocket.tabs.web.Download;
@@ -93,12 +94,15 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
         // is a because of on those devices we move files to SDcard or if this is true even if the
         // file is not moved.)
         if (!DownloadInfoManager.getInstance().recordExists(downloadId)) {
-            DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
-                @Override
-                public void onInsertComplete(long id) {
-                    DownloadInfoManager.notifyRowUpdated(context, id);
-                }
-            });
+            FocusApplication app = ((FocusApplication) context.getApplicationContext());
+            if (!app.isInPrivateProcess()) {
+                DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
+                    @Override
+                    public void onInsertComplete(long id) {
+                        DownloadInfoManager.notifyRowUpdated(context, id);
+                    }
+                });
+            }
         } else {
             DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
                 @Override
