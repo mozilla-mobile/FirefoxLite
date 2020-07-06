@@ -2,4 +2,13 @@
 <resources>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">旅遊探索</string>
+    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <string name="onboarding_transition_title">最佳化你的瀏覽體驗...</string>
+    <!-- Introduce personalized home to new users -->
+    <string name="onboarding_transition_feature_1">正在客製化專屬首頁</string>
+    <!-- Introduce Turbo Mode to new users -->
+    <string name="onboarding_transition_feature_2">正在啟動極速模式</string>
+    <!-- Introduce tracking protection to new users -->
+    <string name="onboarding_transition_feature_3">正在強化隱私保護功能</string>
+
 </resources>

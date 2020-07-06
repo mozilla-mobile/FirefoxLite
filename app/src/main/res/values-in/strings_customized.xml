@@ -2,5 +2,13 @@
 <resources>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">Penemuan Perjalanan</string>
+    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <string name="onboarding_transition_title">Mengoptimalkan pengalaman untuk Anda…</string>
+    <!-- Introduce personalized home to new users -->
+    <string name="onboarding_transition_feature_1">Menerapkan sentuhan akhir pada Beranda Anda</string>
+    <!-- Introduce Turbo Mode to new users -->
+    <string name="onboarding_transition_feature_2">Mengaktifkan Mode Turbo</string>
+    <!-- Introduce tracking protection to new users -->
+    <string name="onboarding_transition_feature_3">Mengatur perisai tracker ke kekuatan maksimal</string>
     
 	</resources>
