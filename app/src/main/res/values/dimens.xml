@@ -22,6 +22,8 @@
     <dimen name="menu_corner_radius">16dp</dimen>
     <dimen name="menu_horizontal_margin">4dp</dimen>
     <dimen name="menu_bottom_margin">12dp</dimen>
+    <dimen name="menu_item_size">48dp</dimen>
+    <dimen name="menu_height">363dp</dimen>
 
     <dimen name="floating_action_button_elevation">4dp</dimen>
     <dimen name="floating_action_button_margin">16dp</dimen>
