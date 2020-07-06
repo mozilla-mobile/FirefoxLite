@@ -454,4 +454,8 @@
 
     </LinearLayout>
 
+    <include
+        android:id="@+id/night_mod_cover_browser"
+        layout="@layout/night_mode_cover" />
+
 </FrameLayout>

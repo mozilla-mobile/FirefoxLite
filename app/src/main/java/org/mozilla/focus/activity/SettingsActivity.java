@@ -17,6 +17,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.settings.SettingsFragment;
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment;
 import org.mozilla.rocket.content.news.ui.NewsTabFragment;
+import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 
 public class SettingsActivity extends BaseActivity {
     public static final int ACTIVITY_RESULT_LOCALE_CHANGED = 1;
@@ -87,5 +88,10 @@ public class SettingsActivity extends BaseActivity {
     @Override
     public View getNightModeCover() {
         return null;
+    }
+
+    @Override
+    public void adjustBrightness() {
+        AdjustBrightnessDialog.DefaultImpls.adjustBrightness(this);
     }
 }

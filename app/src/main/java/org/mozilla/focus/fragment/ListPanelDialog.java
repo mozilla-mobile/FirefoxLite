@@ -42,6 +42,7 @@ public class ListPanelDialog extends DialogFragment implements BrightnessListene
     private View bookmarksIcon;
     private View downloadsIcon;
     private View historyIcon;
+    private View nightModCoverPanel;
     private View screenshotsIcon;
     private View bookmarksSelectedIcon;
     private View downloadsSelectedIcon;
@@ -65,6 +66,7 @@ public class ListPanelDialog extends DialogFragment implements BrightnessListene
     public void onResume() {
         super.onResume();
         showItem(getArguments().getInt(TYPE));
+        adjustBrightness();
     }
 
     @Override
@@ -190,13 +192,9 @@ public class ListPanelDialog extends DialogFragment implements BrightnessListene
                 TelemetryWrapper.showPanelCapture();
             }
         });
+        historyIcon = v.findViewById(R.id.img_history);
+        nightModCoverPanel = v.findViewById(R.id.night_mod_cover_panel);
         return v;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        adjustBrightness(view.findViewById(R.id.night_mod_cover_panel));
     }
 
     @Override
@@ -291,10 +289,12 @@ public class ListPanelDialog extends DialogFragment implements BrightnessListene
     }
 
     @Override
-    public void adjustBrightness(View nightModeCover) {
-        if (nightModeCover == null) return;
-        Drawable background = nightModeCover.getBackground();
-        if (background == null) return;
-        background.setAlpha(255 * AdjustBrightnessDialog.Constants.getBRIGHT_PERCENTAGE() / 100);
+    public View getNightModeCover() {
+        return nightModCoverPanel;
+    }
+
+    @Override
+    public void adjustBrightness() {
+        AdjustBrightnessDialog.DefaultImpls.adjustBrightness(this);
     }
 }

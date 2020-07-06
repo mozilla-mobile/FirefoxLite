@@ -18,6 +18,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.fragment.InfoFragment;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.SupportUtils;
+import org.mozilla.rocket.nightmode.BrightnessListener;
 
 /**
  * A generic activity that supports showing additional information in a WebView. This is useful
@@ -93,5 +94,10 @@ public class InfoActivity extends BaseActivity {
     @Override
     public View getNightModeCover() {
         return null;
+    }
+
+    @Override
+    public void adjustBrightness() {
+        BrightnessListener.DefaultImpls.adjustBrightness(this);
     }
 }

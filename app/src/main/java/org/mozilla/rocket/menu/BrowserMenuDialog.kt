@@ -45,9 +45,10 @@ import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
+import org.mozilla.rocket.nightmode.BrightnessListener
 import javax.inject.Inject
 
-class BrowserMenuDialog : BottomSheetDialog {
+class BrowserMenuDialog : BottomSheetDialog, BrightnessListener {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
@@ -284,5 +285,9 @@ class BrowserMenuDialog : BottomSheetDialog {
                 visibility = View.GONE
             }
         }
+    }
+
+    override fun getNightModeCover(): View? {
+        TODO("Not yet implemented")
     }
 }

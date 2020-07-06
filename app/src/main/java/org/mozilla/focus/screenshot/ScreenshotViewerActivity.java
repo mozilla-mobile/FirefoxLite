@@ -49,6 +49,7 @@ import org.mozilla.focus.screenshot.model.Screenshot;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.permissionhandler.PermissionHandle;
 import org.mozilla.permissionhandler.PermissionHandler;
+import org.mozilla.rocket.nightmode.BrightnessListener;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -411,6 +412,11 @@ public class ScreenshotViewerActivity extends BaseActivity implements View.OnCli
         }
 
         return "";
+    }
+
+    @Override
+    public void adjustBrightness() {
+        BrightnessListener.DefaultImpls.adjustBrightness(this);
     }
 
     private static class InfoItemAdapter extends ArrayAdapter<ImageInfo> {

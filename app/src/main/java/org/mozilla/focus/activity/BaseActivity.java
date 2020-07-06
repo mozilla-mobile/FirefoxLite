@@ -8,23 +8,19 @@ package org.mozilla.focus.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.core.text.TextUtilsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.TextUtilsCompat;
+import androidx.core.view.ViewCompat;
+
 import org.mozilla.focus.locale.LocaleAwareApplication;
 import org.mozilla.focus.locale.LocaleManager;
 import org.mozilla.focus.locale.Locales;
 import org.mozilla.focus.utils.Settings;
-import org.mozilla.rocket.nightmode.AdjustBrightnessDialog;
 import org.mozilla.rocket.nightmode.BrightnessListener;
 
 import java.util.Locale;
@@ -115,10 +111,7 @@ public abstract class BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        View nightModeCover = getNightModeCover();
-        if (nightModeCover != null) {
-            adjustBrightness(nightModeCover);
-        }
+        adjustBrightness();
         ((LocaleAwareApplication) getApplicationContext()).onActivityResume();
     }
 
@@ -126,13 +119,6 @@ public abstract class BaseActivity
     protected void onPause() {
         super.onPause();
         ((LocaleAwareApplication) getApplicationContext()).onActivityPause();
-    }
-
-    @Override
-    public void adjustBrightness(@NotNull View nightModeCover) {
-        int alpha = 255 * AdjustBrightnessDialog.Constants.getBRIGHT_PERCENTAGE() / 100;
-        nightModeCover.getBackground().setAlpha(alpha);
-        Log.d("nightmode", this + "onResume" + alpha);
     }
 
     /** Update current screen bright value per user setting */

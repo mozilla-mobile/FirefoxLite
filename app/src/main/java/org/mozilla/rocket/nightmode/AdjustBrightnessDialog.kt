@@ -63,19 +63,9 @@ class AdjustBrightnessDialog : BaseActivity() {
     private val mSeekListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             if (fromUser) {
-//                val layoutParams = window.attributes
-//                var value = Constants.progressToValue(progress)
-//                if (value < 0.01) {
-//                    value = 0.01f
-//                }
-//                layoutParams.screenBrightness = value
-//                window.attributes = layoutParams
-
                 val alpha = 255 * progress / 100
-
                 Log.d("nightmode", "onProgressChanged:$alpha")
-
-                brightness_root.background.alpha = alpha
+                adjustBrightness()
                 BRIGHT_PERCENTAGE = progress
             }
         }

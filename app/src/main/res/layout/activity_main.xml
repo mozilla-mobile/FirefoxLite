@@ -18,11 +18,10 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <View
-        android:id="@+id/night_mod_cover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#AA000000"
-        />
+
+
+    <include
+        android:id="@+id/night_mod_cover_main"
+        layout="@layout/night_mode_cover" />
 
 </FrameLayout>
