@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:background="@color/paletteLightGreyB100">
+
+    <LinearLayout
+        android:id="@+id/options_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.44">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/firstrun_fxlite_2_5_title_A"
+            android:textSize="32sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/paletteLightBlack100"
+            android:layout_marginStart="18dp"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/firstrun_fxlite_2_5_title_B"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="2dp"/>
+
+        <FrameLayout
+            android:id="@+id/item_browsing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_content_theme_browsing"
+            android:foreground="@drawable/ripple_round_rectangle_radius_20"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:id="@+id/text_browsing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="86dp"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/paletteWhite100"
+                android:text="@string/content_theme_1"/>
+
+            <ImageView
+                android:id="@+id/icon_browsing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="-8dp"
+                android:layout_marginEnd="22dp"
+                app:srcCompat="@drawable/ic_content_theme_browsing" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/item_shopping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_content_theme_games"
+            android:foreground="@drawable/ripple_round_rectangle_radius_20"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/text_shopping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="86dp"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/paletteWhite100"
+                android:text="@string/content_theme_2"/>
+
+            <ImageView
+                android:id="@+id/icon_shopping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="-8dp"
+                android:layout_marginEnd="22dp"
+                app:srcCompat="@drawable/ic_content_theme_shopping" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/item_games"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_content_theme_news"
+            android:foreground="@drawable/ripple_round_rectangle_radius_20"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/text_games"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="86dp"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/paletteWhite100"
+                android:text="@string/content_theme_3"/>
+
+            <ImageView
+                android:id="@+id/icon_games"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="17dp"
+                app:srcCompat="@drawable/ic_content_theme_games" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/item_news"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_content_theme_shopping"
+            android:foreground="@drawable/ripple_round_rectangle_radius_20"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/text_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="86dp"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/paletteWhite100"
+                android:text="@string/content_theme_4"/>
+
+            <ImageView
+                android:id="@+id/icon_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="-12dp"
+                android:layout_marginEnd="17dp"
+                app:srcCompat="@drawable/ic_content_theme_news" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+    
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_firefox_lite_logo_2"
+        app:layout_constraintBottom_toTopOf="@id/options_layout"
+        app:layout_constraintEnd_toEndOf="@id/options_layout"
+        android:translationY="30dp"/>
+    
+    <ImageView
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        app:srcCompat="@drawable/ic_content_theme_select"
+        android:foreground="@drawable/ripple_circle"
+        app:layout_constraintTop_toBottomOf="@id/options_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
