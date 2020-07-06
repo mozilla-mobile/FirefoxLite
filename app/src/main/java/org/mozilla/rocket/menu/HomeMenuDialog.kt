@@ -70,6 +70,8 @@ class HomeMenuDialog : BottomSheetDialog {
 
         initLayout()
         observeChromeAction()
+        setCancelable(false)
+        setCanceledOnTouchOutside(true)
     }
 
     override fun dismiss() {
