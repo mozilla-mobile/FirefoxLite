@@ -253,13 +253,13 @@
     <string name="button_done">Done</string>
     
     <!-- Onboarding transition before getting into Firefox Lite Home -->
-    <string name="onboarding_transition_title" translatable="false">Setting up the best experience for you…</string>
+    <string name="onboarding_transition_title" translatable="false">Optimizing experience for you…</string>
     <!-- Introduce personalized home to new users -->
-    <string name="onboarding_transition_feature_1" translatable="false">Personalizing your Home</string>
+    <string name="onboarding_transition_feature_1" translatable="false">Applying finishing touches to your Home</string>
     <!-- Introduce Turbo Mode to new users -->
-    <string name="onboarding_transition_feature_2" translatable="false">Turning Turbo Mode ON</string>
+    <string name="onboarding_transition_feature_2" translatable="false">Activating Turbo Mode</string>
     <!-- Introduce tracking protection to new users -->
-    <string name="onboarding_transition_feature_3" translatable="false">Setting shields to block trackers</string>
+    <string name="onboarding_transition_feature_3" translatable="false">Setting tracker shields to maximum power</string>
 
    
     <!-- Menu labels -->
