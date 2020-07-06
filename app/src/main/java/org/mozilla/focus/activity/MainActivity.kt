@@ -80,6 +80,7 @@ import org.mozilla.rocket.landing.PortraitComponent
 import org.mozilla.rocket.landing.PortraitStateModel
 import org.mozilla.rocket.menu.BrowserMenuDialog
 import org.mozilla.rocket.menu.HomeMenuDialog
+import org.mozilla.rocket.network.ConnectionLiveData
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
 import org.mozilla.rocket.privately.PrivateMode
@@ -211,6 +212,7 @@ class MainActivity : BaseActivity(),
         }
         observeNavigation()
         monitorOrientationState()
+        monitorNetworkConnectionStatus()
         observeChromeAction()
 
         appUpdateController.onReceiveIntent(getIntent())
@@ -301,6 +303,15 @@ class MainActivity : BaseActivity(),
                 requestedOrientation = orientation
             }
         })
+    }
+
+    private fun monitorNetworkConnectionStatus() {
+        if (AppConstants.isDevBuild()) {
+            val connectionStatus = ConnectionLiveData(this)
+            connectionStatus.observe(this, Observer { isConnection ->
+                Toast.makeText(this, "network connection $isConnection", Toast.LENGTH_LONG).show()
+            })
+        }
     }
 
     private fun observeChromeAction() {
