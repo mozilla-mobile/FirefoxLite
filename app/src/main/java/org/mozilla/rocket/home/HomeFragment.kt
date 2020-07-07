@@ -529,17 +529,27 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         chromeViewModel.addNewTopSiteMenuClicked.observe(viewLifecycleOwner, Observer {
             homeViewModel.onAddTopSiteMenuClicked()
         })
-        homeViewModel.addNewTopSiteSuccess.observe(viewLifecycleOwner, Observer {
+        homeViewModel.addNewTopSiteSuccess.observe(viewLifecycleOwner, Observer { page ->
+            page?.let {
+                scrollToTopSitePage(it)
+            }
             Snackbar.make(main_list, getText(R.string.add_top_site_snackbar_1), Snackbar.LENGTH_LONG)
                 .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }
                 .show()
         })
-        homeViewModel.addExistingTopSite.observe(viewLifecycleOwner, Observer {
+        homeViewModel.addExistingTopSite.observe(viewLifecycleOwner, Observer { page ->
+            page?.let {
+                scrollToTopSitePage(it)
+            }
             Snackbar.make(main_list, getText(R.string.add_top_site_snackbar_2), Snackbar.LENGTH_LONG)
                 .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }
                 .show()
         })
     }
+
+    private fun scrollToTopSitePage(page: Int) =
+        // TODO: Implement smooth scroll effect
+        main_list.postDelayed({ main_list.setCurrentItem(page, true) }, 100)
 
     private fun observeActions() {
         homeViewModel.showToast.observeForever(toastObserver)
