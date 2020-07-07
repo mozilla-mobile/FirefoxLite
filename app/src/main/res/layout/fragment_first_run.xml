@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingStart="24dp"
-    android:paddingEnd="24dp"
     android:background="@color/paletteLightGreyB100">
 
     <LinearLayout
@@ -13,6 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -181,6 +181,7 @@
         android:translationY="30dp"/>
     
     <ImageView
+        android:id="@+id/select_button"
         android:layout_width="46dp"
         android:layout_height="46dp"
         app:srcCompat="@drawable/ic_content_theme_select"
@@ -189,5 +190,72 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/animation_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/paletteLightGreyB100"
+        android:visibility="invisible">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H,1080:900"
+            app:lottie_autoPlay="false"
+            app:lottie_fileName="onboarding.json"
+            app:lottie_loop="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.45"/>
+
+        <TextView
+            android:id="@+id/animation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_transition_title"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/paletteLightBlack100"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/animation_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="46dp"/>
+
+        <TextView
+            android:id="@+id/animation_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@string/onboarding_transition_feature_1"
+            android:textSize="13sp"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/paletteDarkGreyD100"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/animation_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="240dp"
+            android:layout_height="6dp"
+            android:layout_marginTop="9dp"
+            android:progressDrawable="@drawable/first_run_progress"
+            android:max="100"
+            tools:progress="10"
+            app:layout_constraintTop_toBottomOf="@id/animation_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

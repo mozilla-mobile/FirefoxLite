@@ -49,6 +49,7 @@ public class BeforeTestTask {
 
         if (this.skipFirstRun) {
             NewFeatureNotice.getInstance(context).setLiteUpdateDidShow();
+            NewFeatureNotice.getInstance(context).setFirstRunDidShow();
         } else {
             NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
         }
