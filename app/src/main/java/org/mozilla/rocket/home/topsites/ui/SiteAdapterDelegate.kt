@@ -60,20 +60,13 @@ class SiteViewHolder(
                 content_image.imageTintList = null
                 content_image.setImageBitmap(favicon)
 
-                // Background color
-                val backgroundColor = when (site) {
-                    is Site.UrlSite.FixedSite -> Color.WHITE
-                    is Site.UrlSite.RemovableSite -> getBackgroundColor(site.url, favicon)
-                }
-                ViewCompat.setBackgroundTintList(content_image, ColorStateList.valueOf(backgroundColor))
-
                 // Pin
                 PinViewWrapper(pin_indicator).run {
                     visibility = when (site) {
                         is Site.UrlSite.FixedSite -> View.GONE
                         is Site.UrlSite.RemovableSite -> if (site.isPinned) View.VISIBLE else View.GONE
                     }
-                    setPinColor(backgroundColor)
+                    setPinColor(getBackgroundColor(site.url, favicon))
                 }
 
                 itemView.setOnClickListener { topSiteClickListener.onTopSiteClicked(site, adapterPosition) }
