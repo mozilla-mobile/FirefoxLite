@@ -13,34 +13,26 @@ import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.item_top_site.content_image
 import kotlinx.android.synthetic.main.item_top_site.pin_indicator
 import kotlinx.android.synthetic.main.item_top_site.text
-import org.json.JSONException
-import org.json.JSONObject
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.icon.FavIconUtils
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.chrome.ChromeViewModel
-import org.mozilla.rocket.util.AssetsUtils
-import org.mozilla.rocket.util.getJsonArray
 import org.mozilla.strictmodeviolator.StrictModeViolation
-import java.net.URI
-import java.net.URISyntaxException
 
 class SiteAdapterDelegate(
     private val topSiteClickListener: TopSiteClickListener,
-    private val chromeViewModel: ChromeViewModel,
-    private val specifiedFaviconBgColors: List<FaviconBgColor>?
+    private val chromeViewModel: ChromeViewModel
 ) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            SiteViewHolder(view, topSiteClickListener, chromeViewModel, specifiedFaviconBgColors)
+            SiteViewHolder(view, topSiteClickListener, chromeViewModel)
 }
 
 class SiteViewHolder(
     override val containerView: View,
     private val topSiteClickListener: TopSiteClickListener,
-    private val chromeViewModel: ChromeViewModel,
-    private val specifiedFaviconBgColors: List<FaviconBgColor>?
+    private val chromeViewModel: ChromeViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
 
     override fun bind(uiModel: DelegateAdapter.UiModel) {
@@ -66,7 +58,7 @@ class SiteViewHolder(
                         is Site.UrlSite.FixedSite -> View.GONE
                         is Site.UrlSite.RemovableSite -> if (site.isPinned) View.VISIBLE else View.GONE
                     }
-                    setPinColor(getBackgroundColor(site.url, favicon))
+                    setPinColor(getBackgroundColor(favicon))
                 }
 
                 itemView.setOnClickListener { topSiteClickListener.onTopSiteClicked(site, adapterPosition) }
@@ -120,20 +112,7 @@ class SiteViewHolder(
                 backgroundColor)
     }
 
-    private fun getBackgroundColor(url: String, bitmap: Bitmap): Int =
-            findSpecifiedBgColor(url) ?: calculateBackgroundColor(bitmap)
-
-    private fun findSpecifiedBgColor(url: String): Int? {
-        return try {
-            val host = URI(url).host
-            specifiedFaviconBgColors
-                    ?.find { it.host == host }
-                    ?.bg_color
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-            null
-        }
-    }
+    private fun getBackgroundColor(bitmap: Bitmap): Int = calculateBackgroundColor(bitmap)
 
     private fun calculateBackgroundColor(favicon: Bitmap): Int {
         val dominantColor = FavIconUtils.getDominantColor(favicon)
@@ -205,38 +184,6 @@ fun Site.UrlSite.toSiteModel(): org.mozilla.focus.history.model.Site =
                 is Site.UrlSite.RemovableSite -> this@toSiteModel.isDefault
             }
         }
-
-data class FaviconBgColor(val host: String, val bg_color: Int) {
-    companion object {
-        const val KEY_HOST = "host"
-        const val KEY_BG_COLOR = "bg_color"
-    }
-}
-
-fun getFaviconBgColorsFromResource(appContext: Context): List<FaviconBgColor>? =
-        AssetsUtils.loadStringFromRawResource(appContext, R.raw.favicon_bg_colors)
-                ?.jsonStringToFaviconBgColors()
-
-private fun String.jsonStringToFaviconBgColors(): List<FaviconBgColor>? {
-    return try {
-        this.getJsonArray { paresFaviconBgColor(it) }
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    } catch (e: NumberFormatException) {
-        e.printStackTrace()
-        null
-    }
-}
-
-@Throws(JSONException::class, NumberFormatException::class)
-private fun paresFaviconBgColor(jsonObject: JSONObject): FaviconBgColor {
-    val host = jsonObject.getString(FaviconBgColor.KEY_HOST)
-    val bgColorStr = jsonObject.getString(FaviconBgColor.KEY_BG_COLOR)
-    val bgColor = java.lang.Long.parseLong(bgColorStr, 16).toInt()
-
-    return FaviconBgColor(host, bgColor)
-}
 
 interface TopSiteClickListener {
     fun onTopSiteClicked(site: Site, position: Int)

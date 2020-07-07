@@ -11,24 +11,22 @@ import org.mozilla.rocket.home.HomeViewModel
 
 class SitePageAdapterDelegate(
     private val homeViewModel: HomeViewModel,
-    private val chromeViewModel: ChromeViewModel,
-    private val specifiedFaviconBgColors: List<FaviconBgColor>?
+    private val chromeViewModel: ChromeViewModel
 ) : AdapterDelegate {
     override fun onCreateViewHolder(view: View): DelegateAdapter.ViewHolder =
-            SitePageViewHolder(view, homeViewModel, chromeViewModel, specifiedFaviconBgColors)
+            SitePageViewHolder(view, homeViewModel, chromeViewModel)
 }
 
 class SitePageViewHolder(
     override val containerView: View,
     homeViewModel: HomeViewModel,
-    chromeViewModel: ChromeViewModel,
-    specifiedFaviconBgColors: List<FaviconBgColor>?
+    chromeViewModel: ChromeViewModel
 ) : DelegateAdapter.ViewHolder(containerView) {
     private var adapter = DelegateAdapter(
         AdapterDelegatesManager().apply {
-            add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
-            add(Site.UrlSite.RemovableSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
-            add(Site.EmptyHintSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
+            add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
+            add(Site.UrlSite.RemovableSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
+            add(Site.EmptyHintSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
         }
     )
 

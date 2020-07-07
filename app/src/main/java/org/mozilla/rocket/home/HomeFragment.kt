@@ -75,7 +75,6 @@ import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.SitePageAdapterDelegate
 import org.mozilla.rocket.home.topsites.ui.SiteViewHolder.Companion.TOP_SITE_LONG_CLICK_TARGET
-import org.mozilla.rocket.home.topsites.ui.getFaviconBgColorsFromResource
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DEFAULT
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DOWNLOADING
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_UNREAD
@@ -231,10 +230,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initTopSites() {
-        val specifiedFaviconBgColors = getFaviconBgColorsFromResource(appContext)
         topSitesAdapter = DelegateAdapter(
             AdapterDelegatesManager().apply {
-                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel, specifiedFaviconBgColors))
+                add(SitePage::class, R.layout.item_top_site_page, SitePageAdapterDelegate(homeViewModel, chromeViewModel))
             }
         )
         main_list.apply {
