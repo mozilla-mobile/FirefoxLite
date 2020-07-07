@@ -240,6 +240,10 @@
     <string name="firstrun_skip_button">Skip</string>
     <string name="firstrun_next_button">Next</string>
    
+    <!-- !NOT USE! The welcome titles in Firefox Lite 2.5 -->
+    <string name="firstrun_fxlite_2.5_title_1">Hello!</string>
+    <!-- !NOT USE! The welcome titles in Firefox Lite 2.5 for asking users to choose a main purpose of downloading Firefox Lite. The %1$s is Firefox Lite. -->
+    <string name="firstrun_fxlite_2.5_title_2">What brings you to %1$s?</string> 
     <!-- The welcome titles in Firefox Lite 2.5 -->
     <string name="firstrun_fxlite_2_5_title_1">Hello!</string>
     <!-- The welcome titles in Firefox Lite 2.5 for asking users to choose a main purpose of downloading Firefox Lite. The %1$s is Firefox Lite. -->
