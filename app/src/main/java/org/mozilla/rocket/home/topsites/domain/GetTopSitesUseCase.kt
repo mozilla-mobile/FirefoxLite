@@ -39,7 +39,7 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
                 pinnedSites.toRemovableSite(topSitesRepo) +
                 mergeHistoryAndDefaultSites(defaultSites, historySites).toRemovableSite(topSitesRepo)
 
-        return result.distinctBy { removeUrlPostSlash(it.url).toLowerCase(Locale.getDefault()) }
+        return result.distinctBy { it.url.removeUrlPostSlash().toLowerCase(Locale.getDefault()) }
                 .also { removeOutboundDefaultSites(it) }
                 .take(TOP_SITES_SIZE)
     }
@@ -49,7 +49,7 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         historySites: List<org.mozilla.focus.history.model.Site>
     ): List<org.mozilla.focus.history.model.Site> {
         val union = defaultSites + historySites
-        val merged = union.groupBy { removeUrlPostSlash(it.url).toLowerCase(Locale.getDefault()) }
+        val merged = union.groupBy { it.url.removeUrlPostSlash().toLowerCase(Locale.getDefault()) }
                 .map {
                     val sameSiteGroup = it.value
                     if (sameSiteGroup.size == 1) {
@@ -76,13 +76,6 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         ).reversed()
     }
 
-    private fun removeUrlPostSlash(url: String): String =
-            if (url.isNotEmpty() && url[url.length - 1] == '/') {
-                url.dropLast(1)
-            } else {
-                url
-            }
-
     private fun removeOutboundDefaultSites(sites: List<Site>) {
         val sizeLimit = TOP_SITES_SIZE
         if (sites.size > sizeLimit) {
@@ -100,6 +93,13 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         private const val TOP_SITES_SIZE = 16
     }
 }
+
+fun String.removeUrlPostSlash(): String =
+    if (isNotEmpty() && this[length - 1] == '/') {
+        dropLast(1)
+    } else {
+        this
+    }
 
 fun List<org.mozilla.focus.history.model.Site>.toFixedSite(): List<Site.UrlSite> =
         map { it.toFixedSite() }
