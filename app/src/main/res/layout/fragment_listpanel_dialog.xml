@@ -22,7 +22,7 @@
             android:background="@drawable/background_menu"
             app:layout_behavior="@string/bottom_sheet_behavior"
             app:behavior_hideable="true"
-            app:behavior_peekHeight="336dp">
+            app:behavior_peekHeight="@dimen/menu_height">
 
             <org.mozilla.focus.widget.EqualDistributeGrid
                 android:layout_width="match_parent"

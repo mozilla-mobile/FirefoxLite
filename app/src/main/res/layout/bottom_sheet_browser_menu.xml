@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
-        android:layout_height="336dp"
+        android:layout_height="@dimen/menu_height"
         android:orientation="vertical"
         android:background="@color/colorMenuBackground">
 
@@ -167,8 +167,8 @@
                         android:background="?android:attr/selectableItemBackground">
 
                         <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
+                            android:layout_width="@dimen/menu_item_size"
+                            android:layout_height="@dimen/menu_item_size"
                             android:scaleType="centerInside"
                             android:src="@drawable/icon_night_mode"/>
 
@@ -217,8 +217,8 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
+                            android:layout_width="@dimen/menu_item_size"
+                            android:layout_height="@dimen/menu_item_size"
                             android:scaleType="centerInside"
                             android:src="@drawable/menu_speedmode"/>
 
@@ -262,8 +262,8 @@
                         android:gravity="center_vertical">
 
                         <ImageView
-                            android:layout_width="44dp"
-                            android:layout_height="44dp"
+                            android:layout_width="@dimen/menu_item_size"
+                            android:layout_height="@dimen/menu_item_size"
                             android:scaleType="centerInside"
                             android:src="@drawable/menu_blockimg"/>
 
@@ -305,8 +305,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/menu_item_size"
+                        android:layout_height="@dimen/menu_item_size"
                         android:scaleType="centerInside"
                         android:src="@drawable/action_search"/>
 
@@ -333,8 +333,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/menu_item_size"
+                        android:layout_height="@dimen/menu_item_size"
                         android:scaleType="centerInside"
                         android:src="@drawable/action_add_to_home"/>
 
@@ -369,8 +369,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/menu_item_size"
+                        android:layout_height="@dimen/menu_item_size"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_settings"/>
 
@@ -403,8 +403,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/menu_item_size"
+                        android:layout_height="@dimen/menu_item_size"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_delete"/>
 
@@ -431,8 +431,8 @@
                     android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
+                        android:layout_width="@dimen/menu_item_size"
+                        android:layout_height="@dimen/menu_item_size"
                         android:scaleType="centerInside"
                         android:src="@drawable/menu_exit"/>
 
