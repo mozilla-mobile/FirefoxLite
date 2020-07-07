@@ -123,6 +123,7 @@ class HomeViewModel(
     private var contentServicesOnboardingTimeSpent = 0L
     private var hasLoggedShowLogoman = false
     private var isFirstRun = isNewUserUseCase()
+    private var pinTopSiteResult: PinTopSiteUseCase.PinTopSiteResult? = null
 
     init {
         initLogoManData()
@@ -184,7 +185,23 @@ class HomeViewModel(
     private fun updateTopSitesData() = viewModelScope.launch {
         val topSiteList = getTopSitesUseCase()
         sitePages.value = if (topSiteList.isNotEmpty()) {
-            topSiteList.toSitePages()
+            topSiteList.toSitePages().also { sitePages ->
+                val sitePosition = when (val result = pinTopSiteResult) {
+                    is PinTopSiteUseCase.PinTopSiteResult.Success -> result.position
+                    is PinTopSiteUseCase.PinTopSiteResult.Existing -> result.position
+                    else -> -1
+                }
+                if (sitePosition != -1) {
+                    val sitePage = sitePosition / TOP_SITES_PER_PAGE
+                    val siteInPageIndex = sitePosition % TOP_SITES_PER_PAGE
+                    if (sitePage < sitePages.size && siteInPageIndex < sitePages[sitePage].sites.size) {
+                        when (val topSite = sitePages[sitePage].sites[siteInPageIndex]) {
+                            is Site.UrlSite -> topSite.highlight = true
+                        }
+                    }
+                }
+                pinTopSiteResult = null
+            }
         } else {
             listOf(SitePage(listOf(Site.EmptyHintSite)))
         }
@@ -304,9 +321,14 @@ class HomeViewModel(
     }
 
     fun onAddNewTopSiteResult(pinTopSiteResult: PinTopSiteUseCase.PinTopSiteResult) {
+        this.pinTopSiteResult = pinTopSiteResult
         when (pinTopSiteResult) {
-            is PinTopSiteUseCase.PinTopSiteResult.Success -> addNewTopSiteSuccess.value = pinTopSiteResult.position
-            is PinTopSiteUseCase.PinTopSiteResult.Existing -> addExistingTopSite.value = pinTopSiteResult.position
+            is PinTopSiteUseCase.PinTopSiteResult.Success -> {
+                addNewTopSiteSuccess.value = pinTopSiteResult.position / TOP_SITES_PER_PAGE
+            }
+            is PinTopSiteUseCase.PinTopSiteResult.Existing -> {
+                addExistingTopSite.value = pinTopSiteResult.position / TOP_SITES_PER_PAGE
+            }
         }
     }
 

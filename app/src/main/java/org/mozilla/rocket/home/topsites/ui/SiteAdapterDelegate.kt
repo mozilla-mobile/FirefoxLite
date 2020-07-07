@@ -11,6 +11,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.item_top_site.content_image
+import kotlinx.android.synthetic.main.item_top_site.content_image_mask
 import kotlinx.android.synthetic.main.item_top_site.pin_indicator
 import kotlinx.android.synthetic.main.item_top_site.text
 import org.json.JSONException
@@ -84,6 +85,14 @@ class SiteViewHolder(
                         it.tag = TOP_SITE_LONG_CLICK_TARGET
                         topSiteClickListener.onTopSiteLongClicked(site, adapterPosition)
                     }
+                }
+
+                if (site.highlight) {
+                    content_image_mask.visibility = View.VISIBLE
+                    content_image_mask.playAnimation()
+                } else {
+                    content_image_mask.cancelAnimation()
+                    content_image_mask.visibility = View.GONE
                 }
             }
             is Site.EmptyHintSite -> {
@@ -172,7 +181,8 @@ sealed class Site : DelegateAdapter.UiModel() {
         open val url: String,
         open val iconUri: String?,
         open val viewCount: Long,
-        open val lastViewTimestamp: Long
+        open val lastViewTimestamp: Long,
+        open var highlight: Boolean = false
     ) : Site() {
         data class FixedSite(
             override val id: Long,
