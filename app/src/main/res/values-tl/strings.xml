@@ -91,6 +91,8 @@
   <string name="firstrun_close_button">OK, naintindihan ko!</string>
   <string name="firstrun_skip_button">Laktawan</string>
   <string name="firstrun_next_button">Susunod</string>
+  <string name="firstrun_fxlite_2.5_title_1">Mabuhay!</string>
+  <string name="button_done">Tapos na</string>
   <string name="label_menu_bookmark">Mga Bookmark</string>
   <string name="label_menu_download">Mga Download</string>
   <string name="label_menu_find_in_page">Hanapin sa pahina</string>
@@ -105,6 +107,8 @@
   <string name="label_menu_block_image">Walang imahe</string>
   <string name="label_menu_settings">Mga Setting</string>
   <string name="label_menu_exit">Lumabas</string>
+  <string name="top_site_category_4">Iba pa</string>
+  <string name="top_site_category_5">Balita</string>
   <string name="permission_toast_location_deny">Tinanggihan ang pahintulot ng lokasyon.</string>
   <string name="permission_toast_storage_deny">Ang pahintulot sa imbakan ay tinanggihan.</string>
   <string name="permission_handler_permission_dialog_setting">settings</string>
@@ -190,6 +194,7 @@
   <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
   <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Firefox Lite para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
+  <string name="always">Palagi</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
   <string name="rate_app_dialog_text_content">Maraming salamat sa iyong pagtangkilik sa aming produkto. Ang iyong feedback ay napakahalaga sa amin.</string>
   <string name="rate_app_dialog_btn_go_rate">Rate sa Amin</string>
