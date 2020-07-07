@@ -97,6 +97,22 @@ public class Settings {
         preferences.edit().putBoolean(key, enable).apply();
     }
 
+
+    public SharedPreferenceLiveData<Boolean> isDarkThemeEnableLiveData() {
+        return booleanLiveData(R.string.pref_key_dark_theme_enable, NIGHT_MODE_DEFAULT);
+    }
+
+    public boolean isDarkThemeEnable() {
+        return settingPreferenceWrapper.getBoolean(resources.getString(R.string.pref_key_dark_theme_enable),
+                NIGHT_MODE_DEFAULT);
+    }
+
+    public void setDarkTheme(boolean enable) {
+        final String key = getPreferenceKey(R.string.pref_key_dark_theme_enable);
+        preferences.edit().putBoolean(key, enable).apply();
+    }
+
+
     public boolean shouldSaveToRemovableStorage() {
         // FIXME: rely on String-array-order is not a good idea
         final String[] defined = resources.getStringArray(R.array.data_saving_path_values);

@@ -37,6 +37,7 @@ class ChromeViewModel(
     private val storageHelper: StorageHelper
 ) : ViewModel() {
     val isNightMode: LiveData<NightModeSettings> = settings.isNightModeEnablLiveData.map { NightModeSettings(it, settings.nightModeBrightnessValue) }
+    val isDarkTheme: LiveData<Boolean> = settings.isDarkThemeEnableLiveData
     val tabCount = MutableLiveData<Int>()
     val isTabRestoredComplete = MutableLiveData<Boolean>()
     val navigationState = MutableLiveData<ScreenNavigator.NavigationState>()
