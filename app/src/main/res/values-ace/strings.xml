@@ -3,6 +3,8 @@
   <string name="action_cancel">BATEUE</string>
   <string name="action_ok">GÖT</string>
   <string name="urlbar_hint">Mita atawa pasoë alamat</string>
+  <string name="awesomebar_open_copied_link">Peuhah Peunawôt Teusalén</string>
+  <string name="awesomebar_switch_to_tab">Pinah tab</string>
   <string name="menu_settings">Atô</string>
   <string name="menu_about">Bhaih</string>
   <string name="menu_help">Beunantu</string>
@@ -91,6 +93,10 @@
   <string name="firstrun_close_button">Göt, lôn muphôm!</string>
   <string name="firstrun_skip_button">Liwat</string>
   <string name="firstrun_next_button">Lanjut</string>
+  <string name="firstrun_fxlite_2.5_title_1">Hai!</string>
+  <string name="firstrun_fxlite_2.5_title_2">Peue meukeusud neujak u %1$s?</string>
+  <string name="content_theme_1">Lop-lop wèb</string>
+  <string name="content_theme_2">Mita Nyang Göt</string>
   <string name="label_menu_bookmark">Peutanda</string>
   <string name="label_menu_download">Keuneubah</string>
   <string name="label_menu_find_in_page">Mita lam laman</string>
