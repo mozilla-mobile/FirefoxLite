@@ -227,7 +227,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             themeManager.resetDefaultTheme()
             TelemetryWrapper.resetThemeToDefault()
         })
-        homeViewModel.homeBackgroundColorTheme.observe(viewLifecycleOwner, Observer { themeSet ->
+        homeViewModel.homeBackgroundColorThemeClicked.observe(viewLifecycleOwner, Observer { themeSet ->
             themeManager.setCurrentTheme(themeSet)
         })
     }

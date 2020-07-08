@@ -94,7 +94,6 @@ class HomeViewModel(
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
     val isContentHubEnabled: LiveData<Boolean> = shouldShowContentHubUseCase()
-    val homeBackgroundColorTheme = MutableLiveData<ThemeManager.ThemeSet>()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -119,6 +118,7 @@ class HomeViewModel(
     val addNewTopSiteSuccess = SingleLiveEvent<Int>()
     val addNewTopSiteFullyPinned = SingleLiveEvent<Unit>()
     val addExistingTopSite = SingleLiveEvent<Int>()
+    val homeBackgroundColorThemeClicked = SingleLiveEvent<ThemeManager.ThemeSet>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -253,7 +253,7 @@ class HomeViewModel(
         if (isDarkTheme) {
             return
         }
-        homeBackgroundColorTheme.value = theme
+        homeBackgroundColorThemeClicked.value = theme
     }
 
     fun onShoppingButtonClicked() {
