@@ -258,13 +258,13 @@ public class TabCounter extends ThemedRelativeLayout {
     }
 
     @Override
-    public void setNightMode(boolean isNight) {
-        super.setNightMode(isNight);
+    public void setDarkTheme(boolean isNight) {
+        super.setDarkTheme(isNight);
         if (menuIconColor != null) {
             tintDrawables(menuIconColor);
         }
-        bar.setNightMode(isNight);
-        box.setNightMode(isNight);
-        text.setNightMode(isNight);
+        bar.setDarkTheme(isNight);
+        box.setDarkTheme(isNight);
+        text.setDarkTheme(isNight);
     }
 }

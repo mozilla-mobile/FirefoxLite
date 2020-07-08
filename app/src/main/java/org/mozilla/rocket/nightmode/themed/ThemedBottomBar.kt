@@ -25,12 +25,12 @@ class ThemedBottomBar : BottomBar {
         }
     }
 
-    fun setNightMode(isNight: Boolean) {
+    fun setDarkTheme(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()
             invalidate()
         }
-        (dividerView as ThemedView).setNightMode(isNight)
+        (dividerView as ThemedView).setDarkTheme(isNight)
     }
 }

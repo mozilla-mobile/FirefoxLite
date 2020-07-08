@@ -95,8 +95,7 @@ class SiteViewHolder(
                 itemView.setOnLongClickListener(null)
             }
         }
-        // TODO : dark theme
-//        text.setNightMode(chromeViewModel.isNightMode.value?.isEnabled == true)
+        text.setDarkTheme(chromeViewModel.isDarkTheme.value == true)
     }
 
     private fun getFavicon(context: Context, site: Site.UrlSite): Bitmap {

@@ -63,6 +63,7 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.closeAllTabFromTabTray
 import org.mozilla.focus.telemetry.TelemetryWrapper.closeTabFromTabTray
 import org.mozilla.focus.telemetry.TelemetryWrapper.privateModeTray
 import org.mozilla.focus.telemetry.TelemetryWrapper.swipeTabFromTabTray
+import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getActivityViewModel
@@ -119,8 +120,7 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // TODO : dark theme
-//        setNightModeEnabled(Settings.getInstance(view.context).isNightModeEnable)
+        setDarkThemeEnabled(Settings.getInstance(view.context).isDarkThemeEnable)
         initWindowBackground(view.context)
         setupBottomSheetCallback()
         prepareExpandAnimation()
@@ -530,15 +530,14 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
         }
         if (drawable is LayerDrawable) {
             val layerDrawable = drawable
-            // TODO : dark theme
-//            if (Settings.getInstance(getContext()).isNightModeEnable) {
-//                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background_night)
-//                // set alpha = 0 to let this layer invisible
-//                layerDrawable.findDrawableByLayerId(R.id.gradient_background).alpha = 0
-//            } else {
+            if (Settings.getInstance(getContext()).isDarkThemeEnable) {
+                backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background_night)
+                // set alpha = 0 to let this layer invisible
+                layerDrawable.findDrawableByLayerId(R.id.gradient_background).alpha = 0
+            } else {
                 backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background)
                 layerDrawable.findDrawableByLayerId(R.id.gradient_background_night).alpha = 0
-//            }
+            }
             backgroundOverlay = layerDrawable.findDrawableByLayerId(R.id.background_overlay)
             val alpha = validateBackgroundAlpha(0xff)
             backgroundDrawable?.alpha = alpha
@@ -648,10 +647,7 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
         private val bounds = Rect()
         private var isNight = false
         override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-            // TODO : dark theme
-//            val divider = if (isNight) divierNight else divierDefault
-            // TODO : when implement dark theme, remove this line
-            val divider = divierDefault
+            val divider = if (isNight) divierNight else divierDefault
             if (parent.layoutManager == null || divider == null) {
                 return
             }
@@ -687,18 +683,18 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
             }
         }
 
-        fun setNightMode(enable: Boolean) {
+        fun setDarkTheme(enable: Boolean) {
             isNight = enable
         }
     }
 
-    private fun setNightModeEnabled(enable: Boolean) {
-        new_tab_button.setNightMode(enable)
-        private_browsing_img.setNightMode(enable)
-        plus_sign.setNightMode(enable)
-        bottom_divider.setNightMode(enable)
-        itemDecoration.setNightMode(enable)
-        tab_tray_recycler_view.setNightMode(enable)
+    private fun setDarkThemeEnabled(enable: Boolean) {
+        new_tab_button.setDarkTheme(enable)
+        private_browsing_img.setDarkTheme(enable)
+        plus_sign.setDarkTheme(enable)
+        bottom_divider.setDarkTheme(enable)
+        itemDecoration.setDarkTheme(enable)
+        tab_tray_recycler_view.setDarkTheme(enable)
         dialog?.window?.let {
             ViewUtils.updateStatusBarStyle(!enable, it)
         }

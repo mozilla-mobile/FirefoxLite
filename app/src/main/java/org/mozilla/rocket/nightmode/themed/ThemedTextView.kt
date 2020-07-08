@@ -17,7 +17,7 @@ class ThemedTextView(context: Context, attrs: AttributeSet) : androidx.appcompat
         }
     }
 
-    fun setNightMode(isNight: Boolean) {
+    fun setDarkTheme(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()

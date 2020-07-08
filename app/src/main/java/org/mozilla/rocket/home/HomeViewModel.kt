@@ -48,6 +48,7 @@ import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
 import org.mozilla.rocket.msrp.domain.LastReadMissionIdUseCase
 import org.mozilla.rocket.msrp.domain.RefreshMissionsUseCase
+import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.util.ToastMessage
 
 class HomeViewModel(
@@ -93,6 +94,7 @@ class HomeViewModel(
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
     val isContentHubEnabled: LiveData<Boolean> = shouldShowContentHubUseCase()
+    val homeBackgroundColorTheme = MutableLiveData<ThemeManager.ThemeSet>()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -230,20 +232,28 @@ class HomeViewModel(
     }
 
     fun onBackgroundViewDoubleTap(): Boolean {
-        // Not allowed double tap to switch theme when night mode is on
-        // TODO : dark theme
-//        if (settings.isNightModeEnable) return false
+        // Not allowed double tap to switch theme when dark theme is on
+        if (settings.isDarkThemeEnable) return false
 
         toggleBackgroundColor.call()
         return true
     }
 
     fun onBackgroundViewLongPress() {
-        // Not allowed long press to reset theme when night mode is on
-        // TODO : dark theme
-//        if (settings.isNightModeEnable) return
+        // Not allowed long press to reset theme when dark theme is on
+        if (settings.isDarkThemeEnable) return
 
         resetBackgroundColor.call()
+    }
+
+    // TODO : on theme clicked
+    fun onThemeClicked(isDarkTheme: Boolean, theme: ThemeManager.ThemeSet) {
+        settings.setDarkTheme(isDarkTheme)
+        // No need to update background color theme when in dark theme
+        if (isDarkTheme) {
+            return
+        }
+        homeBackgroundColorTheme.value = theme
     }
 
     fun onShoppingButtonClicked() {

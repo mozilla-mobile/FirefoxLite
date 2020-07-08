@@ -431,9 +431,8 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         })
     }
 
-    private fun observeNightMode() {
-        chromeViewModel.isNightMode.observe(viewLifecycleOwner,
-                Observer { (isEnabled) -> setNightModeEnabled(isEnabled) })
+    private fun observeDarkTheme() {
+        chromeViewModel.isDarkTheme.observe(viewLifecycleOwner, Observer { setDarkThemeEnabled(it) })
     }
 
     private fun setupBottomBar() {
@@ -497,11 +496,10 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         bottomBarViewModel.items.observe(viewLifecycleOwner, Observer { types: List<BottomBarItemAdapter.ItemData> ->
             bottomBarItemAdapter.setItems(types)
         })
-        // TODO : dark theme
-        /*chromeViewModel.isNightMode.switchFrom(bottomBarViewModel.items)
-                .observe(viewLifecycleOwner, Observer { (isEnabled) ->
-                    bottomBarItemAdapter.setNightMode(isEnabled)
-                })*/
+        chromeViewModel.isDarkTheme.switchFrom(bottomBarViewModel.items)
+                .observe(viewLifecycleOwner, Observer { isDarkTheme ->
+                    bottomBarItemAdapter.setDarkTheme(isDarkTheme)
+                })
         chromeViewModel.tabCount.switchFrom(bottomBarViewModel.items)
                 .observe(viewLifecycleOwner, Observer { count: Int ->
                     bottomBarItemAdapter.setTabCount(count, true)
@@ -571,8 +569,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         sessionManager = TabsSessionProvider.getOrThrow(activity)
         sessionManager.register(managerObserver, this, false)
         observeShoppingSearchPromptMessageViewModel()
-        // TODO : dark theme
-        // observeNightMode()
+        observeDarkTheme()
 
         // restore WebView state
         if (savedInstanceState != null) {
@@ -1582,15 +1579,15 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         return this
     }
 
-    private fun setNightModeEnabled(enable: Boolean) {
-        rootView.setNightMode(enable)
-        browser_bottom_bar.setNightMode(enable)
-        inset_cover.setNightMode(enable)
-        toolbar_root.setNightMode(enable)
-        display_url.setNightMode(enable)
-        site_identity.setNightMode(enable)
-        urlbar.setNightMode(enable)
-        url_bar_divider.setNightMode(enable)
+    private fun setDarkThemeEnabled(enable: Boolean) {
+        rootView.setDarkTheme(enable)
+        browser_bottom_bar.setDarkTheme(enable)
+        inset_cover.setDarkTheme(enable)
+        toolbar_root.setDarkTheme(enable)
+        display_url.setDarkTheme(enable)
+        site_identity.setDarkTheme(enable)
+        urlbar.setDarkTheme(enable)
+        url_bar_divider.setDarkTheme(enable)
         ViewUtils.updateStatusBarStyle(!enable, requireActivity().window)
     }
 

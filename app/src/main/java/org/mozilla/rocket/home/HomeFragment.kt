@@ -136,8 +136,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initContentHub()
         initFxaView()
         initLogoManNotification()
-        // TODO : dark theme
-//         observeNightMode()
+        observeDarkTheme()
         initOnboardingSpotlight()
         observeAddNewTopSites()
         observeActions()
@@ -227,6 +226,9 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.resetBackgroundColor.observe(viewLifecycleOwner, Observer {
             themeManager.resetDefaultTheme()
             TelemetryWrapper.resetThemeToDefault()
+        })
+        homeViewModel.homeBackgroundColorTheme.observe(viewLifecycleOwner, Observer { themeSet ->
+            themeManager.setCurrentTheme(themeSet)
         })
     }
 
@@ -322,24 +324,23 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         profile_button.setOnClickListener { homeViewModel.onProfileButtonClicked() }
     }
 
-    private fun observeNightMode() {
-        chromeViewModel.isNightMode.observe(viewLifecycleOwner, Observer {
-            val isNightMode = it.isEnabled
-            ViewUtils.updateStatusBarStyle(!isNightMode, requireActivity().window)
+    private fun observeDarkTheme() {
+        chromeViewModel.isDarkTheme.observe(viewLifecycleOwner, Observer { darkThemeEnable ->
+            ViewUtils.updateStatusBarStyle(!darkThemeEnable, requireActivity().window)
             topSitesAdapter.notifyDataSetChanged()
-            home_background.setNightMode(isNightMode)
-            content_hub_title.setNightMode(isNightMode)
-            arc_view.setNightMode(isNightMode)
-            arc_panel.setNightMode(isNightMode)
-            search_panel.setNightMode(isNightMode)
-            home_fragment_fake_input.setNightMode(isNightMode)
-            home_fragment_fake_input_icon.setNightMode(isNightMode)
-            home_fragment_fake_input_text.setNightMode(isNightMode)
-            home_fragment_tab_counter.setNightMode(isNightMode)
-            home_fragment_menu_button.setNightMode(isNightMode)
-            account_layout.setNightMode(isNightMode)
-            shopping_button.setNightMode(isNightMode)
-            private_mode_button.setNightMode(isNightMode)
+            home_background.setDarkTheme(darkThemeEnable)
+            content_hub_title.setDarkTheme(darkThemeEnable)
+            arc_view.setDarkTheme(darkThemeEnable)
+            arc_panel.setDarkTheme(darkThemeEnable)
+            search_panel.setDarkTheme(darkThemeEnable)
+            home_fragment_fake_input.setDarkTheme(darkThemeEnable)
+            home_fragment_fake_input_icon.setDarkTheme(darkThemeEnable)
+            home_fragment_fake_input_text.setDarkTheme(darkThemeEnable)
+            home_fragment_tab_counter.setDarkTheme(darkThemeEnable)
+            home_fragment_menu_button.setDarkTheme(darkThemeEnable)
+            account_layout.setDarkTheme(darkThemeEnable)
+            shopping_button.setDarkTheme(darkThemeEnable)
+            private_mode_button.setDarkTheme(darkThemeEnable)
         })
     }
 

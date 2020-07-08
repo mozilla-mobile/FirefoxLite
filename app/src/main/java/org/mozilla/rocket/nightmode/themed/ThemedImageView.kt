@@ -23,7 +23,7 @@ open class ThemedImageView : AppCompatImageView {
         }
     }
 
-    open fun setNightMode(isNight: Boolean) {
+    open fun setDarkTheme(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()
