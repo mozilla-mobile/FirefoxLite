@@ -16,7 +16,9 @@ import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
+import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
+import org.mozilla.rocket.home.domain.SetContentPrefUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
@@ -281,4 +283,13 @@ object HomeModule {
         pinTopSiteUseCase: PinTopSiteUseCase
     ): AddNewTopSitesViewModel =
             AddNewTopSitesViewModel(getRecommendedSitesUseCase, pinTopSiteUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideContentPrefRepo(appContext: Context): ContentPrefRepo = ContentPrefRepo(appContext)
+
+    @JvmStatic
+    @Provides
+    fun provideSetContentPrefUseCase(contentPrefRepo: ContentPrefRepo): SetContentPrefUseCase =
+            SetContentPrefUseCase(contentPrefRepo)
 }
