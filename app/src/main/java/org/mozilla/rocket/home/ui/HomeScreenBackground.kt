@@ -57,8 +57,8 @@ class HomeScreenBackground : ThemedImageView, ThemeManager.Themeable {
         }
     }
 
-    override fun setNightMode(isNight: Boolean) {
-        super.setNightMode(isNight)
+    override fun setDarkTheme(isNight: Boolean) {
+        super.setDarkTheme(isNight)
         this.isNight = isNight
         if (this.isNight) {
             setBackgroundResource(R.drawable.bg_homescreen_night_mode)

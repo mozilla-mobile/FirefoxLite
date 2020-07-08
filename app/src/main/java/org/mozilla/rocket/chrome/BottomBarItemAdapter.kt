@@ -75,17 +75,17 @@ class BottomBarItemAdapter(
         }
     }
 
-    fun setNightMode(isNight: Boolean) {
+    fun setDarkTheme(isNight: Boolean) {
         items?.forEach {
             val view = it.view
             val type = it.type
             when {
-                view is ThemedImageButton -> view.setNightMode(isNight)
-                type == TYPE_TAB_COUNTER -> (view as TabCounter).setNightMode(isNight)
-                type == TYPE_MENU -> view?.findViewById<ThemedImageButton>(R.id.btn_menu)?.setNightMode(isNight)
+                view is ThemedImageButton -> view.setDarkTheme(isNight)
+                type == TYPE_TAB_COUNTER -> (view as TabCounter).setDarkTheme(isNight)
+                type == TYPE_MENU -> view?.findViewById<ThemedImageButton>(R.id.btn_menu)?.setDarkTheme(isNight)
                 type == TYPE_REFRESH -> {
-                    view?.findViewById<ThemedImageButton>(R.id.action_refresh)?.setNightMode(isNight)
-                    view?.findViewById<ThemedImageButton>(R.id.action_stop)?.setNightMode(isNight)
+                    view?.findViewById<ThemedImageButton>(R.id.action_refresh)?.setDarkTheme(isNight)
+                    view?.findViewById<ThemedImageButton>(R.id.action_stop)?.setDarkTheme(isNight)
                 }
             }
         }

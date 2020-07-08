@@ -105,7 +105,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 String title = TextUtils.isEmpty(keyword) ? resources.getString(R.string.shopping_switch_ui_tabtray_title_no_keyword) :
                         resources.getString(R.string.shopping_switch_ui_tabtray_title, keyword);
                 ssHolder.title.setText(title);
-                ssHolder.closeIcon.setNightMode(isNight);
+                ssHolder.closeIcon.setDarkTheme(isNight);
                 break;
             }
             case VIEW_TYPE_TAB: {
@@ -123,10 +123,10 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
 
                 setFavicon(tab, tabHolder);
-                tabHolder.rootView.setNightMode(isNight);
-                tabHolder.websiteTitle.setNightMode(isNight);
-                tabHolder.websiteSubtitle.setNightMode(isNight);
-                tabHolder.closeIcon.setNightMode(isNight);
+                tabHolder.rootView.setDarkTheme(isNight);
+                tabHolder.websiteTitle.setDarkTheme(isNight);
+                tabHolder.websiteSubtitle.setDarkTheme(isNight);
+                tabHolder.closeIcon.setDarkTheme(isNight);
                 break;
             }
         }
@@ -157,7 +157,7 @@ public class TabTrayAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         super.onAttachedToRecyclerView(recyclerView);
         if (recyclerView instanceof ThemedRecyclerView) {
             ThemedRecyclerView themedRecyclerView = (ThemedRecyclerView) recyclerView;
-            this.isNight = themedRecyclerView.isNightMode();
+            this.isNight = themedRecyclerView.isDarkTheme();
         }
     }
 

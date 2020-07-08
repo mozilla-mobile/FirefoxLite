@@ -61,8 +61,8 @@ class MenuButton : ConstraintLayout {
         }
     }
 
-    fun setNightMode(isNight: Boolean) {
-        menu.setNightMode(isNight)
+    fun setDarkTheme(isNight: Boolean) {
+        menu.setDarkTheme(isNight)
     }
 
     companion object {

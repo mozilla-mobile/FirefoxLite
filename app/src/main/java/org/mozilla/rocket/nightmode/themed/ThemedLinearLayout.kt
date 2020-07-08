@@ -18,7 +18,7 @@ class ThemedLinearLayout(context: Context, attrs: AttributeSet) : LinearLayout(c
         }
     }
 
-    fun setNightMode(isNight: Boolean) {
+    fun setDarkTheme(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()

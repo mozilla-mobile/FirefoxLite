@@ -24,11 +24,11 @@ open class ThemedRecyclerView : RecyclerView {
         }
     }
 
-    fun isNightMode(): Boolean {
+    fun isDarkTheme(): Boolean {
         return isNight
     }
 
-    open fun setNightMode(isNight: Boolean) {
+    open fun setDarkTheme(isNight: Boolean) {
         if (this.isNight != isNight) {
             this.isNight = isNight
             refreshDrawableState()

@@ -120,7 +120,7 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setNightModeEnabled(Settings.getInstance(view.context).isNightModeEnable)
+        setDarkThemeEnabled(Settings.getInstance(view.context).isDarkThemeEnable)
         initWindowBackground(view.context)
         setupBottomSheetCallback()
         prepareExpandAnimation()
@@ -530,7 +530,7 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
         }
         if (drawable is LayerDrawable) {
             val layerDrawable = drawable
-            if (Settings.getInstance(getContext()).isNightModeEnable) {
+            if (Settings.getInstance(getContext()).isDarkThemeEnable) {
                 backgroundDrawable = layerDrawable.findDrawableByLayerId(R.id.gradient_background_night)
                 // set alpha = 0 to let this layer invisible
                 layerDrawable.findDrawableByLayerId(R.id.gradient_background).alpha = 0
@@ -683,18 +683,18 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
             }
         }
 
-        fun setNightMode(enable: Boolean) {
+        fun setDarkTheme(enable: Boolean) {
             isNight = enable
         }
     }
 
-    private fun setNightModeEnabled(enable: Boolean) {
-        new_tab_button.setNightMode(enable)
-        private_browsing_img.setNightMode(enable)
-        plus_sign.setNightMode(enable)
-        bottom_divider.setNightMode(enable)
-        itemDecoration.setNightMode(enable)
-        tab_tray_recycler_view.setNightMode(enable)
+    private fun setDarkThemeEnabled(enable: Boolean) {
+        new_tab_button.setDarkTheme(enable)
+        private_browsing_img.setDarkTheme(enable)
+        plus_sign.setDarkTheme(enable)
+        bottom_divider.setDarkTheme(enable)
+        itemDecoration.setDarkTheme(enable)
+        tab_tray_recycler_view.setDarkTheme(enable)
         dialog?.window?.let {
             ViewUtils.updateStatusBarStyle(!enable, it)
         }

@@ -54,13 +54,13 @@ public class ThemeManager {
 
     public void resetDefaultTheme() {
         setCurrentTheme(ThemeSet.Default);
-        notifyThemeChange();
     }
 
-    private void setCurrentTheme(ThemeSet themeSet) {
+    public void setCurrentTheme(ThemeSet themeSet) {
         saveCurrentTheme(getSharedPreferences(baseContext), themeSet);
         currentThemeSet = themeSet;
         dirty = true;
+        notifyThemeChange();
     }
 
     public static String getCurrentThemeName(Context context) {
@@ -109,8 +109,6 @@ public class ThemeManager {
         final ThemeSet nextTheme = findNextTheme(currentTheme);
 
         setCurrentTheme(nextTheme);
-
-        notifyThemeChange();
 
         return nextTheme;
     }
