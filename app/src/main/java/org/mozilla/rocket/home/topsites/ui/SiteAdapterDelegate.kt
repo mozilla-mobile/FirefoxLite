@@ -10,10 +10,10 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import kotlinx.android.synthetic.main.item_top_site.*
 import kotlinx.android.synthetic.main.item_top_site.content_image
-import kotlinx.android.synthetic.main.item_top_site.content_image_mask
-import kotlinx.android.synthetic.main.item_top_site.pin_indicator
 import kotlinx.android.synthetic.main.item_top_site.text
+import kotlinx.android.synthetic.main.item_dummy_top_site.*
 import org.mozilla.focus.R
 import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.icon.FavIconUtils
@@ -93,6 +93,8 @@ class SiteViewHolder(
 
                 itemView.setOnClickListener { topSiteClickListener.onTopSiteClicked(site, adapterPosition) }
                 itemView.setOnLongClickListener(null)
+            }
+            is Site.DummySite -> {
             }
         }
         text.setDarkTheme(chromeViewModel.isDarkTheme.value == true)
@@ -178,6 +180,7 @@ sealed class Site : DelegateAdapter.UiModel() {
     }
 
     object EmptyHintSite : Site()
+    object DummySite : Site()
 }
 
 fun Site.UrlSite.toSiteModel(): org.mozilla.focus.history.model.Site =

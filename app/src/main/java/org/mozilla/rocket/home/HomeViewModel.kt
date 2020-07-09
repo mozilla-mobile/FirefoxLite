@@ -187,6 +187,7 @@ class HomeViewModel(
     private fun updateTopSitesData() = viewModelScope.launch {
         val topSiteList = getTopSitesUseCase()
         sitePages.value = if (topSiteList.isNotEmpty()) {
+            val sitePagesWithDummySite = mutableListOf<SitePage>()
             topSiteList.toSitePages().also { sitePages ->
                 val sitePosition = when (val result = pinTopSiteResult) {
                     is PinTopSiteUseCase.PinTopSiteResult.Success -> result.position
@@ -203,7 +204,21 @@ class HomeViewModel(
                     }
                 }
                 pinTopSiteResult = null
+
+                // add dummy site for blank space long press
+                sitePages.forEach { sitePage ->
+                    if (sitePage.sites.size < TOP_SITES_PER_PAGE) {
+                        val sites = sitePage.sites.toMutableList()
+                        for (i in 0 until TOP_SITES_PER_PAGE - sitePage.sites.size) {
+                            sites.add(Site.DummySite)
+                        }
+                        sitePagesWithDummySite.add(SitePage(sites))
+                    } else {
+                        sitePagesWithDummySite.add(sitePage)
+                    }
+                }
             }
+            sitePagesWithDummySite
         } else {
             listOf(SitePage(listOf(Site.EmptyHintSite)))
         }
