@@ -81,6 +81,17 @@
         <item name="android:windowExitAnimation">@anim/tab_tray_exit</item>
     </style>
 
+    <style name="ThemeSettingDialog" parent="AppTheme">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@style/ThemeSettingDialogAnimation</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="ThemeSettingDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/theme_setting_enter</item>
+        <item name="android:windowExitAnimation">@anim/theme_setting_exit</item>
+    </style>
+
     <style name="DialogTitleStyle" parent="TextAppearance.AppCompat.Title">
         <item name="android:textColor">#FFFFFF</item>
     </style>
