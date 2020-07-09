@@ -112,8 +112,6 @@ class TopSitesRepo(
             ?.jsonStringToRecommendedSitesResult(appContext)
     }
 
-    fun isPinEnabled(): Boolean = pinSiteManager.isEnabled()
-
     fun pin(site: Site) {
         pinSiteManager.pin(site)
     }

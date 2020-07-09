@@ -262,7 +262,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             showTopSiteMenu.observe(viewLifecycleOwner, Observer { (site, position) ->
                 site as Site.UrlSite.RemovableSite
                 val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
-                val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
+                val allowToPin = !site.isPinned
                 showTopSiteMenu(anchorView, allowToPin, site, position)
             })
             showAddTopSiteMenu.observe(viewLifecycleOwner, Observer {

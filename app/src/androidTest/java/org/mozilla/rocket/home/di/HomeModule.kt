@@ -36,7 +36,6 @@ import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.IsTopSiteFullyPinnedUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
-import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesViewModel
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
@@ -58,7 +57,6 @@ object HomeModule {
     fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
-        topSitesConfigsUseCase: TopSitesConfigsUseCase,
         isTopSiteFullyPinnedUseCase: IsTopSiteFullyPinnedUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -87,7 +85,6 @@ object HomeModule {
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
-        topSitesConfigsUseCase,
         isTopSiteFullyPinnedUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
@@ -119,11 +116,6 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideGetTopSitesUseCase(topSitesRepo: TopSitesRepo): GetTopSitesUseCase = spy(GetTopSitesUseCase(topSitesRepo))
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideTopSitesConfigsUseCase(topSitesRepo: TopSitesRepo): TopSitesConfigsUseCase = TopSitesConfigsUseCase(topSitesRepo)
 
     @JvmStatic
     @Singleton

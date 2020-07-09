@@ -34,7 +34,6 @@ import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.IsTopSiteFullyPinnedUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
-import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.SitePage
 import org.mozilla.rocket.home.topsites.ui.TopSiteClickListener
@@ -54,7 +53,6 @@ import org.mozilla.rocket.util.ToastMessage
 class HomeViewModel(
     private val settings: Settings,
     private val getTopSitesUseCase: GetTopSitesUseCase,
-    topSitesConfigsUseCase: TopSitesConfigsUseCase,
     private val isTopSiteFullyPinnedUseCase: IsTopSiteFullyPinnedUseCase,
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -84,7 +82,6 @@ class HomeViewModel(
 
     val sitePages = MutableLiveData<List<SitePage>>()
     val topSitesPageIndex = MutableLiveData<Int>()
-    val pinEnabled = MutableLiveData<Boolean>().apply { value = topSitesConfigsUseCase().isPinEnabled }
     val contentHubItems = getContentHubItemsUseCase()
     val shouldShowContentHubItemText = MutableLiveData<Boolean>().apply { value = shouldShowContentHubItemTextUseCase() }
     val logoManNotification = MediatorLiveData<StateNotification?>()
