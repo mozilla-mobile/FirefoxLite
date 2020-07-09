@@ -85,6 +85,7 @@ import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.util.ResourceUtils.getVisibility
 import org.mozilla.rocket.util.ToastMessage
+import org.mozilla.rocket.util.setCurrentItem
 import javax.inject.Inject
 
 class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
@@ -550,8 +551,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun scrollToTopSitePage(page: Int) =
-        // TODO: Implement smooth scroll effect
-        main_list.postDelayed({ main_list.setCurrentItem(page, true) }, 100)
+        main_list.postDelayed({ main_list.setCurrentItem(page, 300) }, 100)
 
     private fun observeActions() {
         homeViewModel.showToast.observeForever(toastObserver)
