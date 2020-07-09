@@ -91,8 +91,8 @@ class TopSitesRepo(
                     ?.jsonStringToSites()
                     ?.apply { forEach { it.isDefault = true } }
 
-    fun getDefaultSites(): List<Site>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites)
+    fun getDefaultSites(resId: Int): List<Site>? =
+            AssetsUtils.loadStringFromRawResource(appContext, resId)
                     ?.jsonStringToSites()
                     ?.apply { forEach { it.isDefault = true } }
 
@@ -116,10 +116,10 @@ class TopSitesRepo(
         pinSiteManager.pin(site)
     }
 
-    suspend fun remove(site: Site) {
+    suspend fun remove(site: Site, defaultSitesResId: Int) {
         pinSiteManager.unpinned(site)
         if (site.isDefault) {
-            removeDefaultSite(site)
+            removeDefaultSite(site, defaultSitesResId)
         }
         withContext(Dispatchers.IO) {
             updateTopSiteToDb(site.apply { viewCount = 1 })
@@ -132,10 +132,10 @@ class TopSitesRepo(
         }
     }
 
-    fun removeDefaultSite(site: Site) {
+    fun removeDefaultSite(site: Site, defaultSitesResId: Int) {
         val defaultSitesString = getDefaultTopSitesJsonString()
                 ?: FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS).takeIf { it.isNotEmpty() }
-                ?: AssetsUtils.loadStringFromRawResource(appContext, R.raw.topsites)
+                ?: AssetsUtils.loadStringFromRawResource(appContext, defaultSitesResId)
         val defaultSitesJsonArray = defaultSitesString?.toJsonArray()
         if (defaultSitesJsonArray != null) {
             try {

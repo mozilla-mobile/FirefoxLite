@@ -2,12 +2,16 @@ package org.mozilla.rocket.home.topsites.domain
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
 import org.mozilla.rocket.home.topsites.ui.Site
 import org.mozilla.rocket.home.topsites.ui.toSiteModel
 import java.util.Locale
 
-open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
+open class GetTopSitesUseCase(
+    private val topSitesRepo: TopSitesRepo,
+    private val contentPrefRepo: ContentPrefRepo
+) {
 
     private val fixedSites: List<org.mozilla.focus.history.model.Site> by lazy {
         topSitesRepo.getConfiguredFixedSites() ?: topSitesRepo.getDefaultFixedSites() ?: emptyList()
@@ -17,7 +21,7 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
         val pinnedSites = topSitesRepo.getPinnedSites()
         val defaultSites = topSitesRepo.getChangedDefaultSites()
                 ?: topSitesRepo.getConfiguredDefaultSites()
-                ?: topSitesRepo.getDefaultSites()
+                ?: topSitesRepo.getDefaultSites(contentPrefRepo.getContentPref().dataResId)
                 ?: emptyList()
         val historySites = topSitesRepo.getHistorySites()
 
@@ -84,7 +88,7 @@ open class GetTopSitesUseCase(private val topSitesRepo: TopSitesRepo) {
                     .forEach { defaultSite ->
                         // Must be a RemovableSite
                         defaultSite as Site.UrlSite.RemovableSite
-                        topSitesRepo.removeDefaultSite(defaultSite.toSiteModel())
+                        topSitesRepo.removeDefaultSite(defaultSite.toSiteModel(), contentPrefRepo.getContentPref().dataResId)
                     }
         }
     }

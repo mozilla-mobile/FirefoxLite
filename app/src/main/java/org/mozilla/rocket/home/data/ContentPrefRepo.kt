@@ -1,6 +1,7 @@
 package org.mozilla.rocket.home.data
 
 import android.content.Context
+import org.mozilla.focus.R
 import org.mozilla.rocket.home.data.ContentPrefRepo.ContentPref.Browsing
 import org.mozilla.rocket.home.data.ContentPrefRepo.ContentPref.Games
 import org.mozilla.rocket.home.data.ContentPrefRepo.ContentPref.News
@@ -22,11 +23,11 @@ class ContentPrefRepo(private val appContext: Context) {
         preference.edit().putInt(SHARED_PREF_KEY_CONTENT_PREF, contentPref.id).apply()
     }
 
-    sealed class ContentPref(val id: Int) {
-        object Browsing : ContentPref(0)
-        object Shopping : ContentPref(1)
-        object Games : ContentPref(2)
-        object News : ContentPref(3)
+    sealed class ContentPref(val id: Int, val dataResId: Int) {
+        object Browsing : ContentPref(0, R.raw.topsites_browsing)
+        object Shopping : ContentPref(1, R.raw.topsites_shopping)
+        object Games : ContentPref(2, R.raw.topsites_games)
+        object News : ContentPref(3, R.raw.topsites_news)
     }
 
     private fun Int.toContentPref(): ContentPref = mapOf(
@@ -34,7 +35,7 @@ class ContentPrefRepo(private val appContext: Context) {
         Shopping.id to Shopping,
         Games.id to Games,
         News.id to News
-    ).getOrElse(this) { Browsing }
+    ).getOrElse(this) { error("Invalid content preference id") }
 
     companion object {
         private const val PREF_NAME = "content_pref"

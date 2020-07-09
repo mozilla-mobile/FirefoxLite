@@ -1,0 +1,79 @@
+[
+  {
+    "id": -1,
+    "url": "https://frvr.com/mozilla/",
+    "title": "FRVR",
+    "favicon": "ic_frvr.webp",
+    "viewCount": 1000
+  },
+  {
+    "id": -2,
+    "url": "https://www.booking.com/index.html?aid=1873270;label=mozilla_mainlinkout",
+    "title": "Booking.com",
+    "favicon": "ic_booking.webp",
+    "viewCount": 995
+  },
+  {
+    "id": -3,
+    "url": "https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic",
+    "title": "COVID-19",
+    "favicon": "",
+    "viewCount": 990
+  },
+  {
+    "id": -4,
+    "url": "https://shopee.com",
+    "title": "Shopee",
+    "favicon": "ic_shopee.png",
+    "viewCount": 985
+  },
+  {
+    "id": -5,
+    "url": "https://m.youtube.com",
+    "title": "Youtube",
+    "favicon": "ic_youtube.png",
+    "viewCount": 28
+  },
+  {
+    "id": -6,
+    "url": "https://m.facebook.com",
+    "title": "Facebook",
+    "favicon": "ic_facebook.png",
+    "viewCount": 26
+  },
+  {
+    "id": -7,
+    "url": "https://www.reddit.com",
+    "title": "Reddit",
+    "favicon": "ic_reddit.png",
+    "viewCount": 24
+  },
+  {
+    "id": -8,
+    "url": "https://www.instagram.com",
+    "title": "Instagram",
+    "favicon": "ic_instagram.png",
+    "viewCount": 22
+  },
+  {
+    "id": -9,
+    "url": "https://mail.google.com",
+    "title": "Gmail",
+    "favicon": "ic_gmail.webp",
+    "viewCount": 20
+  },
+  {
+    "id": -10,
+    "url": "https://mobile.twitter.com",
+    "title": "Twitter",
+    "favicon": "ic_twitter.png",
+    "viewCount": 18
+  },
+  {
+    "id": -11,
+    "url": "https://www.ebay.com",
+    "title": "eBay",
+    "favicon": "ic_ebay.png",
+    "viewCount": 16
+  }
+]

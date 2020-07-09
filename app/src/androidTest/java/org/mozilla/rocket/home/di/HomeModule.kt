@@ -115,7 +115,10 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGetTopSitesUseCase(topSitesRepo: TopSitesRepo): GetTopSitesUseCase = spy(GetTopSitesUseCase(topSitesRepo))
+    fun provideGetTopSitesUseCase(
+        topSitesRepo: TopSitesRepo,
+        contentPrefRepo: ContentPrefRepo
+    ): GetTopSitesUseCase = spy(GetTopSitesUseCase(topSitesRepo, contentPrefRepo))
 
     @JvmStatic
     @Singleton
@@ -130,7 +133,10 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideRemoveTopSiteUseCase(topSitesRepo: TopSitesRepo): RemoveTopSiteUseCase = RemoveTopSiteUseCase(topSitesRepo)
+    fun provideRemoveTopSiteUseCase(
+        topSitesRepo: TopSitesRepo,
+        contentPrefRepo: ContentPrefRepo
+    ): RemoveTopSiteUseCase = RemoveTopSiteUseCase(topSitesRepo, contentPrefRepo)
 
     @JvmStatic
     @Singleton
