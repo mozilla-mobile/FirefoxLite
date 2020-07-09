@@ -71,7 +71,7 @@
   <string name="first_run_page1_title">%1$s‌ను ఎంచుకున్నందుకు కృతజ్ఞతలు</string>
   <string name="first_run_page1_text">స్వేచ్ఛా, బహిరంగ జాలానికి కట్టుబడ్డ లాభాపేక్షలేని %1$s వారు తయారుచేసిన విహారిణి.</string>
   <string name="first_run_page2_title">మునుపెన్నటి కంటే వేగంగా విహరించండి</string>
-  <string name="first_run_page2_text">ట్రాకింగ్ ప్రకటనలను నిరోధించడానికి టర్బో రీతిని వాడండి, అప్పుడు మీరు జ్వలించే వేగంతో విహరించవచ్చు. సైట్లు సరిగా పనిచేయట్లేనట్టు అనిపిస్తే, మెనూలో టర్బో రీతి తాకి ఆపివేసుకోండి.</string>
+  <string name="first_run_page2_text">ట్రాకింగ్ ప్రకటనలను నిరోధించడానికి టర్బో రీతిని వాడండి, అప్పుడు మీరు జ్వలించే వేగంతో విహరించవచ్చు. సైట్లు సరిగ్గా పనిచేయనట్టు అనిపిస్తే, మెనూలో టర్బో రీతి తాకి ఆపివేసుకోండి.</string>
   <string name="first_run_page3_title">డేటా ఆదా = డబ్బు ఆదా</string>
   <string name="first_run_page3_text">ట్రాకింగు ప్రకటలను నిరోధించడం ద్వారా డేటా ఖర్చులను తగ్గించుకోండి. బొమ్మలను నిరోధించడం చేతనించుకుంటే ఇంకా ఆదాచేయవచ్చు.</string>
   <string name="first_run_page4_title">మెత్తం పేజీనంతా తెరపట్టు తీయి</string>
@@ -192,7 +192,7 @@
   <string name="rate_app_dialog_btn_feedback">ప్రతిస్పందన తెలియజేయండి</string>
   <string name="rate_app_notification_action_feedback">ప్రతిస్పందన</string>
   <string name="share_app_dialog_text_title">%1$s‌ను స్నేహితులతో పంచుకోండి!</string>
-  <string name="share_app_dialog_text_content">- వేగవంతం, తేలికైనది\n- డేటా ఆదా\n- శక్తివంతమైన తెరపట్లు</string>
+  <string name="share_app_dialog_text_content">- వేగవంతం, తేలికైనది\n- తెలివైన షాపింగ్ శోధన\n- ఉచిత ఆటలు, ప్రాచుర్య వార్తలు</string>
   <string name="share_app_dialog_btn_share">పంచుకో</string>
   <string name="share_app_promotion_text">హలో, %3$s వారి ఈ వేగవంతమైన, తేలికైన విహారిణిని చూడండి. %1$s %2$s</string>
   <string name="your_rights_content1">%1$s అనేది %2$s, ఇతర తోడ్పాటుదార్లు తయారుచేసిన స్వేచ్ఛా, ఓపెన్ సోర్సు సాఫ్ట్‌వేరు.</string>
