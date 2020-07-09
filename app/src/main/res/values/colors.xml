@@ -185,4 +185,16 @@
     <color name="msrpMissionListBgColor">#FAFAFA</color>
     <color name="msrpMissionListSeparatorColor">#F0F0F0</color>
 
+    <!-- Theme setting dialog -->
+    <color name="themeButton01GradientStart">#5BCEF2</color>
+    <color name="themeButton01GradientCenter">#6BDCE7</color>
+    <color name="themeButton01GradientEnd">#BAFCCF</color>
+    <color name="themeButton02GradientStart">#5D63EB</color>
+    <color name="themeButton02GradientEnd">#20DFE8</color>
+    <color name="themeButton03GradientStart">#BA33C7</color>
+    <color name="themeButton03GradientEnd">#FC65C6</color>
+    <color name="themeButton04GradientStart">#8595F0</color>
+    <color name="themeButton04GradientEnd">#CCAFFC</color>
+    <color name="darkThemeIconSelectedColor">#FFC400</color>
+
 </resources>
