@@ -56,7 +56,10 @@ class FrecensySuggestionProvider(
         private const val DEFAULT_SITE_VIEW_COUNT = 100L
         private const val DEFAULT_SITE_WEIGHT = 0.0
 
-        private const val SUGGESTION_MULTIPLIER = 1.75
+        private const val SUGGESTION_BOOKMARK_MULTIPLIER = 1.75
+        private const val SUGGESTION_TAB_MULTIPLIER = 2.0
+        private const val SUGGESTION_HISTORY_LIMIT = 10
+        private const val SUGGESTION_TAB_LIMIT = 3
         private const val SUGGESTION_QUERY_LIMIT = 100
         private const val DAY_IN_MS = 24 * 60 * 60 * 1000
         private const val FRECENCY_DAY_5 = 5.0 * DAY_IN_MS
@@ -110,7 +113,7 @@ class FrecensySuggestionProvider(
             } else {
                 candidate[it.url]?.isBookmark = true
                 candidate[it.url]?.weight =
-                    candidate[it.url]?.weight?.times(SUGGESTION_MULTIPLIER) ?: DEFAULT_SITE_WEIGHT
+                    candidate[it.url]?.weight?.times(SUGGESTION_BOOKMARK_MULTIPLIER) ?: DEFAULT_SITE_WEIGHT
             }
         }
 
@@ -134,14 +137,18 @@ class FrecensySuggestionProvider(
                 )
             } else {
                 candidate[url]?.weight =
-                    candidate[url]?.weight?.times(SUGGESTION_MULTIPLIER) ?: DEFAULT_SITE_WEIGHT
+                    candidate[url]?.weight?.times(SUGGESTION_TAB_MULTIPLIER) ?: DEFAULT_SITE_WEIGHT
                 candidate[url]?.tabId = it.id
                 candidate[url]?.site?.url = desc
             }
         }
+        val allCandidate = candidate.values.sortedByDescending { it.weight }
 
-        return candidate.values
-            .sortedByDescending { it.weight }
+        return allCandidate.filter { it.tabId.isNotEmpty() }.take(SUGGESTION_TAB_LIMIT)
+            .toMutableList()
+            .apply {
+                addAll(allCandidate.filter { it.tabId.isEmpty() }.take(SUGGESTION_HISTORY_LIMIT))
+            }
             .map { awesomeBarSite ->
                 makeAwesomeBarSuggestion(awesomeBarSite)
             }
