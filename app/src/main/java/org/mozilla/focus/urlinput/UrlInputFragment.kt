@@ -42,7 +42,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_MANUALCOMPLETE
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_SUGGESTION
 import org.mozilla.focus.telemetry.TelemetryWrapper.Extra_Value.AWESOMEBAR_TYPE_TABTRAY
-import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.SearchUtils
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
@@ -329,9 +328,6 @@ class UrlInputFragment : Fragment(), UrlInputContract.View, View.OnClickListener
 
             val url = if (isUrl) {
                 SupportUtils.normalize(input)
-            } else if (AppConstants.isNightlyBuild() && privateMode) {
-                // set giggle as default search engine when in private mode and preview flavor
-                SearchUtils.createSearchUrlWithSpecificSearchEngine("Giggle", input)
             } else {
                 SearchUtils.createSearchUrl(context, input)
             }
