@@ -95,6 +95,10 @@ class SiteViewHolder(
                 itemView.setOnLongClickListener(null)
             }
             is Site.DummySite -> {
+                itemView.setOnLongClickListener {
+                    it.tag = TOP_SITE_LONG_CLICK_TARGET
+                    topSiteClickListener.onTopSiteLongClicked(site, adapterPosition)
+                }
             }
         }
         text.setDarkTheme(chromeViewModel.isDarkTheme.value == true)

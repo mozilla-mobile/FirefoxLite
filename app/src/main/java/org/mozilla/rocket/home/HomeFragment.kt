@@ -265,6 +265,10 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 val allowToPin = !site.isPinned && homeViewModel.pinEnabled.value == true
                 showTopSiteMenu(anchorView, allowToPin, site, position)
             })
+            showAddTopSiteMenu.observe(viewLifecycleOwner, Observer {
+                val anchorView = main_list.findViewWithTag<View>(TOP_SITE_LONG_CLICK_TARGET).apply { tag = null }
+                showAddTopSiteMenu(anchorView)
+            })
         }
         chromeViewModel.clearBrowsingHistory.observe(viewLifecycleOwner, Observer {
             homeViewModel.onClearBrowsingHistory()
@@ -391,10 +395,24 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                         when (item.itemId) {
                             R.id.pin -> homeViewModel.onPinTopSiteClicked(site, position)
                             R.id.remove -> homeViewModel.onRemoveTopSiteClicked(site, position)
-                            R.id.add_top_sites -> homeViewModel.onAddTopSiteContextMenuClicked(site, position)
                             else -> throw IllegalStateException("Unhandled menu item")
                         }
 
+                        true
+                    }
+                }
+                .show()
+    }
+
+    private fun showAddTopSiteMenu(anchorView: View) {
+        PopupMenu(anchorView.context, anchorView, Gravity.CLIP_HORIZONTAL)
+                .apply {
+                    menuInflater.inflate(R.menu.menu_add_top_site_item, menu)
+                    setOnMenuItemClickListener { item ->
+                        when (item.itemId) {
+                            R.id.add_top_sites -> homeViewModel.onAddTopSiteContextMenuClicked()
+                            else -> throw IllegalStateException("Unhandled menu item")
+                        }
                         true
                     }
                 }

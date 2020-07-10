@@ -62,7 +62,7 @@
 |Click Toolbar - Take Screenshot|action|click|toolbar|"capture"|"version=4,category=category name,category_versio=category version,mode=[webview|menu],position=0-4," 
 |Click Top Site|action|open|home|"link"|"on=Top Site Position,source=Preset Top Site like **,version=2,default=true,false,pinned=true,false," 
 |Remove Top Site|action|remove|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name,pinned=true,false," 
-|Add Topsite|action|add|home|"link"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name,from=context_menu,empty_hint," 
+|Add Topsite|action|add|home|"link"|"from=context_menu,empty_hint," 
 |Click Add Topsite Snackbar|action|click|snackbar|"add_topsite"|"" 
 |Select to Add Topsite|action|click|panel|"add_topsite"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name," 
 |Search in Home and add a tab|action|add|tab|"home"|"" 
