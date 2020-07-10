@@ -1095,7 +1095,7 @@
     <string name="travel_dialog_2_action">SET AS DEFAULT</string>
 
     <!-- If the user had a url in his/her clipboard, the user  will see the URL in the first of the Awesome Bar suggestion -->
-    <string name="awesomebar_open_link_clipboard">Open Link in your Clipboard</string>
+    <string name="awesomebar_open_link_clipboard">Open Copied Link</string>
 
 
 </resources>
