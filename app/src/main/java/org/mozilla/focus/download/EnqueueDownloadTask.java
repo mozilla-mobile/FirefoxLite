@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.Toast;
@@ -16,10 +18,12 @@ import android.widget.Toast;
 import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.tabs.web.Download;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Use Android's Download Manager to queue this download.
@@ -27,6 +31,7 @@ import java.util.List;
 public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTask.ErrorCode> {
 
     private static final String DOWNLOAD_MANAGER_PACKAGE_NAME = "com.android.providers.downloads";
+    private static final String TAG = "EnqueueDownloadTask";
 
     private WeakReference<Activity> activityRef;
     private Download download;
@@ -99,6 +104,15 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
                 DownloadInfoManager.getInstance().insert(downloadInfo, new DownloadInfoManager.AsyncInsertListener() {
                     @Override
                     public void onInsertComplete(long id) {
+                        try {
+                            GetDownloadFileHeaderTask.HeaderInfo headerInfo = new GetDownloadFileHeaderTask().execute(download.getUrl()).get();
+                            TelemetryWrapper.startDownloadFile(downloadInfo.getDownloadId().toString(), headerInfo.isSupportSSL, headerInfo.isSupportRange);
+                        } catch (ExecutionException e) {
+                            Log.e(TAG,"Fail sending download telemetry because ExecutionException");
+                        } catch (InterruptedException e) {
+                            Log.e(TAG,"Fail sending download telemetry because InterruptedException");
+                        }
+
                         DownloadInfoManager.notifyRowUpdated(context, id);
                     }
                 });

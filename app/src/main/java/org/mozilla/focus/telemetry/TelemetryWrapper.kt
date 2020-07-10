@@ -11,6 +11,7 @@
 package org.mozilla.focus.telemetry
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.StrictMode.ThreadPolicy.Builder
 import android.preference.PreferenceManager
 import android.util.Log
@@ -171,6 +172,7 @@ object TelemetryWrapper {
         const val DETAIL_PAGE = "detail_page"
         const val TOAST = "toast"
         const val SNACKBAR = "snackbar"
+        const val DOWNLOAD = "download"
     }
 
     object Value {
@@ -322,6 +324,16 @@ object TelemetryWrapper {
         const val PINNED = "pinned"
         const val INTEREST = "interest"
         const val THEME = "theme"
+        const val DOWNLOAD_ID = "download_id"
+        const val FILE_SIZE = "file_size"
+        const val START_TIME = "start_time"
+        const val END_TIME = "end_time"
+        const val SUPPORT_RESUME = "support_resume"
+        const val PROGRESS = "progress"
+        const val VALID_SSL = "valid_ssl"
+        const val NETWORK = "network"
+        const val STATUS = "status"
+        const val REASON = "reason"
     }
 
     object Extra_Value {
@@ -3995,6 +4007,72 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.SNACKBAR, Value.SET_DEFAULT_TRY_AGAIN)
                 .extra(Extra.ACTION, Extra_Value.TRY_AGAIN)
                 .queue()
+    }
+
+    private fun network(): String {
+        val cm =
+            TelemetryHolder.get().configuration.context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        return if (cm?.isActiveNetworkMetered == true) "mobile" else "wifi"
+    }
+
+    @TelemetryDoc(
+        name = "Start Download File",
+        category = Category.ACTION,
+        method = Method.START,
+        `object` = Object.DOWNLOAD,
+        value = Value.FILE,
+        extras = [(TelemetryExtra(name = Extra.DOWNLOAD_ID, value = "1,2,3...")),
+            (TelemetryExtra(name = Extra.START_TIME, value = "timestamp")),
+            (TelemetryExtra(name = Extra.SUPPORT_RESUME, value = "true,false")),
+            (TelemetryExtra(name = Extra.VALID_SSL, value = "true,false")),
+            (TelemetryExtra(name = Extra.NETWORK, value = "mobile/wifi"))]
+    )
+    @JvmStatic
+    fun startDownloadFile(
+        downloadId: String,
+        isValidSSL: Boolean,
+        isSupportRange: Boolean
+    ) {
+        EventBuilder(Category.ACTION, Method.START, Object.DOWNLOAD, Value.FILE)
+            .extra(Extra.DOWNLOAD_ID, downloadId)
+            .extra(Extra.START_TIME, System.currentTimeMillis().toString())
+            .extra(Extra.SUPPORT_RESUME, isSupportRange.toString())
+            .extra(Extra.VALID_SSL, isValidSSL.toString())
+            .extra(Extra.NETWORK, network())
+            .queue()
+    }
+
+    @TelemetryDoc(
+        name = "End Download File",
+        category = Category.ACTION,
+        method = Method.END,
+        `object` = Object.DOWNLOAD,
+        value = Value.FILE,
+        extras = [(TelemetryExtra(name = Extra.DOWNLOAD_ID, value = "1,2,3...")),
+            (TelemetryExtra(name = Extra.END_TIME, value = "timestamp")),
+            (TelemetryExtra(name = Extra.FILE_SIZE, value = "number")),
+            (TelemetryExtra(name = Extra.PROGRESS, value = "number")),
+            (TelemetryExtra(name = Extra.STATUS, value = "1.3")),
+            (TelemetryExtra(name = Extra.REASON, value = "1005,1006")),
+            (TelemetryExtra(name = Extra.NETWORK, value = "mobile/wifi"))]
+    )
+    @JvmStatic
+    fun endDownloadFile(
+        downloadId: String,
+        fileSize: String,
+        progress: Double,
+        status: Int,
+        reason: Int
+    ) {
+        EventBuilder(Category.ACTION, Method.END, Object.DOWNLOAD, Value.FILE)
+            .extra(Extra.DOWNLOAD_ID, downloadId)
+            .extra(Extra.END_TIME, System.currentTimeMillis().toString())
+            .extra(Extra.FILE_SIZE, fileSize.toString())
+            .extra(Extra.PROGRESS, progress.toString())
+            .extra(Extra.STATUS, status.toString())
+            .extra(Extra.REASON, reason.toString())
+            .extra(Extra.NETWORK, network())
+            .queue()
     }
 
     internal class EventBuilder @JvmOverloads constructor(

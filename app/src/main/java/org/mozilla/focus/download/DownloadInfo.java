@@ -26,6 +26,7 @@ public class DownloadInfo {
     private Long RowId;
     private Long DownloadId;
     private int Status;
+    private int reason;
     private String Size;
     private String Date;
     private String FileName = "";
@@ -56,6 +57,14 @@ public class DownloadInfo {
 
     public String getFileExtension() {
         return FileExtension;
+    }
+
+    public void setReason(int reason) {
+        this.reason = reason;
+    }
+
+    public int getReason() {
+        return this.reason;
     }
 
     public void setStatusInt(int status) {
