@@ -599,6 +599,14 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 false
             }
         })
+        chromeViewModel.themeSettingMenuClicked.observe(viewLifecycleOwner, Observer {
+            homeViewModel.onThemeSettingMenuClicked()
+        })
+        homeViewModel.showThemeSetting.observe(viewLifecycleOwner, Observer {
+            activity?.let {
+                DialogUtils.showThemeSettingDialog(it, homeViewModel)
+            }
+        })
     }
 
     private fun showMissionCompleteDialog(mission: Mission) {

@@ -186,6 +186,8 @@ class HomeMenuDialog : BottomSheetDialog {
                 TelemetryWrapper.clickMenuAddTopsite()
             }
             menu_themes.setOnClickListener {
+                cancel()
+                chromeViewModel.onThemeSettingMenuClicked()
                 TelemetryWrapper.clickMenuTheme()
             }
             menu_preferences.setOnClickListener {
