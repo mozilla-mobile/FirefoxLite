@@ -58,9 +58,11 @@ import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
 import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import org.mozilla.rocket.extension.dpToPx
 import org.mozilla.rocket.extension.inflate
+import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserTutorialDialog
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserTutorialDialogData
+import org.mozilla.rocket.theme.ThemeSettingDialogBuilder
 import org.mozilla.rocket.widget.CustomViewDialogData
 import org.mozilla.rocket.widget.PromotionDialog
 
@@ -493,6 +495,10 @@ object DialogUtils {
                     viewModel.onDoNotAskMeAgainAction(isSelected!!)
                 }
         dialog.show()
+    }
+
+    fun showThemeSettingDialog(activity: FragmentActivity, homeViewModel: HomeViewModel) {
+        ThemeSettingDialogBuilder(activity, homeViewModel).show()
     }
 
     fun createMissionCompleteDialog(context: Context, imageUrl: String?): PromotionDialog {
