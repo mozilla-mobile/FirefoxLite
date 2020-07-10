@@ -88,6 +88,7 @@ class ChromeViewModel(
     val showFindInPage = SingleLiveEvent<Unit>()
     val showAdjustBrightness = SingleLiveEvent<Unit>()
     val addNewTopSiteMenuClicked = SingleLiveEvent<Unit>()
+    val themeSettingMenuClicked = SingleLiveEvent<Unit>()
 
     private var lastUrlLoadStart = 0L
     private var lastUrlLoadTime = 0L
@@ -299,6 +300,10 @@ class ChromeViewModel(
 
     fun onAddNewTopSiteMenuClicked() {
         addNewTopSiteMenuClicked.call()
+    }
+
+    fun onThemeSettingMenuClicked() {
+        themeSettingMenuClicked.call()
     }
 
     fun onSessionStarted() {

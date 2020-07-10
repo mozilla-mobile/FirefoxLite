@@ -117,6 +117,7 @@ class HomeViewModel(
     val addNewTopSiteFullyPinned = SingleLiveEvent<Unit>()
     val addExistingTopSite = SingleLiveEvent<Int>()
     val homeBackgroundColorThemeClicked = SingleLiveEvent<ThemeManager.ThemeSet>()
+    val showThemeSetting = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -382,6 +383,10 @@ class HomeViewModel(
     fun onAddMoreTopSiteSnackBarClicked() {
         openAddNewTopSitesPage()
         TelemetryWrapper.clickAddTopSiteFromSnackBar()
+    }
+
+    fun onThemeSettingMenuClicked() {
+        showThemeSetting.call()
     }
 
     fun onClearBrowsingHistory() {
