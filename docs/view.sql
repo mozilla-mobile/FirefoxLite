@@ -230,6 +230,8 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('toast') ) AND (event_value IN ('set_default_success') ) THEN 'Rocket -  Show Set-Default Success Toast' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('snackbar') ) AND (event_value IN ('set_default_try_again') ) THEN 'Rocket -  Show Set-Default Try-again Snackbar' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('snackbar') ) AND (event_value IN ('set_default_try_again') ) THEN 'Rocket -  Click Set-Default Try-again Snackbar' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('start') ) AND (event_object IN ('download') ) AND (event_value IN ('file') ) THEN 'Rocket -  Start Download File' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('end') ) AND (event_object IN ('download') ) AND (event_value IN ('file') ) THEN 'Rocket -  End Download File' 
 
     END AS event_name,
     event_timestamp AS timestamp,

@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -382,6 +383,7 @@ public class DownloadInfoManager {
         info.setSizeTotal(pojo.length);
         info.setSizeSoFar(pojo.sizeSoFar);
         info.setStatusInt(pojo.status);
+        info.setReason(pojo.reason);
         info.setDate(pojo.timeStamp);
         info.setMediaUri(pojo.mediaUri);
         info.setFileUri(pojo.fileUri);
@@ -407,6 +409,11 @@ public class DownloadInfoManager {
     }
 
     @Nullable
+    public DownloadPojo queryDownloadManager(final long downloadId) {
+        return queryDownloadManager(mContext, downloadId);
+    }
+
+    @Nullable
     private static DownloadPojo queryDownloadManager(@NonNull final Context context, final long downloadId) {
 
         //query download manager
@@ -421,6 +428,7 @@ public class DownloadInfoManager {
             if (managerCursor != null && managerCursor.moveToFirst()) {
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
                 pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                pojo.reason = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_REASON));
                 pojo.length = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
                 pojo.sizeSoFar = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 pojo.timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
@@ -446,15 +454,21 @@ public class DownloadInfoManager {
         return pojo;
     }
 
+    public String getNetwork(){
+        ConnectivityManager cm = ((ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return cm.isActiveNetworkMetered() ? "mobile" : "wifi";
+    }
+
     /* Data class to store queried information from DownloadManager */
-    private static class DownloadPojo {
+    public static class DownloadPojo {
         long downloadId;
         String desc;
         String mime;
-        double length;
-        double sizeSoFar;
-        int status;
-        long timeStamp;
+        public double length;
+        public double sizeSoFar;
+        public int status;
+        public int reason;
+        public long timeStamp;
         String mediaUri;
         String fileUri;
         String fileExtension;

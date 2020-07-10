@@ -112,7 +112,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
                 if (download.existInDownloadManager()) {
                     if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status) {
                         toastMessageObservable.value = R.string.download_cancel
-                        repository.deleteFromDownloadManager(download.downloadId)
+                        repository.recordDownloadDeletion(download.downloadId)
                         remove(rowId)
                     }
                 }
@@ -147,7 +147,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         try {
             val deleteFile = File(URI(download.fileUri).path)
             if (deleteFile.delete()) {
-                repository.deleteFromDownloadManager(download.downloadId)
+                repository.recordDownloadDeletion(download.downloadId)
                 repository.remove(download.rowId)
             } else {
                 toastMessageObservable.value = R.string.cannot_delete_the_file

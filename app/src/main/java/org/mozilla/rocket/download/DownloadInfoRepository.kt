@@ -3,6 +3,7 @@ package org.mozilla.rocket.download
 import android.app.DownloadManager
 import org.mozilla.focus.download.DownloadInfo
 import org.mozilla.focus.download.DownloadInfoManager
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.threadutils.ThreadUtils
 
 class DownloadInfoRepository {
@@ -77,7 +78,16 @@ class DownloadInfoRepository {
         DownloadInfoManager.getInstance().delete(rowId, null)
     }
 
-    fun deleteFromDownloadManager(downloadId: Long) {
-        DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
+    fun recordDownloadDeletion(downloadId: Long) {
+
+        val downloadPojo =
+            DownloadInfoManager.getInstance().queryDownloadManager(downloadId) ?: return
+        TelemetryWrapper.endDownloadFile(
+            downloadId.toString(),
+            downloadPojo.length.toString(),
+            downloadPojo.sizeSoFar / downloadPojo.length * 100,
+            downloadPojo.reason,
+            downloadPojo.status
+        )
     }
 }

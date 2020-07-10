@@ -15,6 +15,7 @@ import android.text.TextUtils;
 
 import org.mozilla.focus.download.DownloadInfo;
 import org.mozilla.focus.download.DownloadInfoManager;
+import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -27,6 +28,23 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
 
         if (downloadId == -1) {
             return;
+        }
+        DownloadInfoManager.DownloadPojo downloadPojo = DownloadInfoManager.getInstance().queryDownloadManager(downloadId);
+        // Download completed with a record in DM.
+        // This means it's aborted automatically or download compelted.
+        // If it's stopped in the notification, the event will be send out later.
+        if (downloadPojo != null) {
+            TelemetryWrapper.endDownloadFile(String.valueOf(downloadId),
+                    downloadPojo.length + "",
+                    downloadPojo.sizeSoFar / (downloadPojo.length + 1),
+                    downloadPojo.reason,
+                    downloadPojo.status);
+        } else {
+            TelemetryWrapper.endDownloadFile(String.valueOf(downloadId),
+                    "-1",
+                    0,
+                    0,
+                    DownloadInfo.STATUS_DELETED);
         }
 
         DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {

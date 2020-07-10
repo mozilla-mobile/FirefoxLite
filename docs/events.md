@@ -206,3 +206,5 @@
 |Show Set-Default Success Toast|action|show|toast|"set_default_success"|"" 
 |Show Set-Default Try-again Snackbar|action|show|snackbar|"set_default_try_again"|"" 
 |Click Set-Default Try-again Snackbar|action|click|snackbar|"set_default_try_again"|"action=try_again," 
+|Start Download File|action|start|download|"file"|"download_id=1,2,3...,start_time=timestamp,support_resume=true,false,valid_ssl=true,false,network=mobile/wifi," 
+|End Download File|action|end|download|"file"|"download_id=1,2,3...,end_time=timestamp,file_size=number,progress=number,status=1.3,reason=1005,1006,network=mobile/wifi," 
