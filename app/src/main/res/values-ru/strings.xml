@@ -3,6 +3,7 @@
   <string name="action_cancel">ОТМЕНА</string>
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">Введите запрос или адрес</string>
+  <string name="awesomebar_switch_to_tab">Перейти на вкладку</string>
   <string name="menu_settings">Параметры</string>
   <string name="menu_about">О нас</string>
   <string name="menu_help">Справка</string>
@@ -91,6 +92,9 @@
   <string name="firstrun_close_button">Ок, понятно!</string>
   <string name="firstrun_skip_button">Пропустить</string>
   <string name="firstrun_next_button">Далее</string>
+  <string name="firstrun_fxlite_2.5_title_1">Привет!</string>
+  <string name="content_theme_3">Играйте в игры и смотрите видео</string>
+  <string name="button_done">Готово</string>
   <string name="label_menu_bookmark">Закладки</string>
   <string name="label_menu_download">Загрузки</string>
   <string name="label_menu_find_in_page">Найти на странице</string>
@@ -109,10 +113,12 @@
   <string name="label_menu_content_services">Показать содержимое и службы</string>
   <string name="label_menu_add_top_sites">Добавить топ сайтов</string>
   <string name="label_menu_themes">Темы</string>
+  <string name="theme_settings_title">Выберите тему</string>
   <string name="top_site_category_1">Популярные сайты</string>
-  <string name="top_site_category_2">Социальные медиа</string>
+  <string name="top_site_category_2">Покупки и путешествия</string>
   <string name="top_site_category_3">Развлекательная сфера</string>
   <string name="top_site_category_4">Другие</string>
+  <string name="top_site_category_5">Новости</string>
   <string name="add_top_site_snackbar_1">Топ сайт добавлен</string>
   <string name="add_top_site_snackbar_2">Сайт был добавлен</string>
   <string name="add_top_site_toast">Пожалуйста, сначала удалите топ сайт</string>

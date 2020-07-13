@@ -215,7 +215,7 @@
   <string name="update_to_latest_app_toast">Ngundeur wangun mutahir…</string>
   <string name="update_to_latest_app_notification">Wangun mutahir geus diundeur. Toél pikeun ngamutahirkeun.</string>
   <string name="update_to_latest_app_snack_bar_message">Wangun mutahir geus diundeur</string>
-  <string name="update_to_latest_app_snack_bar_update">MUTAHIRKEUN</string>
+  <string name="update_to_latest_app_snack_bar_update">ANYARKEUN</string>
   <string name="privacy_policy_update_notification_title">Wawar Apdétan Prodak</string>
   <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
   <string name="message_set_default_success">Nuhun geus milih %1$s!</string>
