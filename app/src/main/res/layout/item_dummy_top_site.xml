@@ -1,43 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
+<?xml version="1.0" encoding="utf-8"?><!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@android:style/TextAppearance.Material.Menu"
+<View xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/top_site_empty_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="93dp"
     android:clickable="true"
-    android:gravity="center_horizontal"
-    android:longClickable="true"
-    android:paddingTop="5dp"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    android:clipChildren="false"
-    android:clipToPadding="false">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/content_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <org.mozilla.rocket.nightmode.themed.ThemedTextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:textColor="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/content_image"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="Foobar" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:longClickable="true" />

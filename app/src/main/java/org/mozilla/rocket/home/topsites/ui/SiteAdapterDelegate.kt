@@ -101,7 +101,9 @@ class SiteViewHolder(
                 }
             }
         }
-        text.setDarkTheme(chromeViewModel.isDarkTheme.value == true)
+        if (site != Site.DummySite) {
+            text.setDarkTheme(chromeViewModel.isDarkTheme.value == true)
+        }
     }
 
     private fun getFavicon(context: Context, site: Site.UrlSite): Bitmap {
