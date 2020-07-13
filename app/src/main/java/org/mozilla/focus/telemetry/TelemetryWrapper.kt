@@ -320,6 +320,7 @@ object TelemetryWrapper {
         const val KEYWORD = "keyword"
         const val ORIENTATION = "orientation"
         const val PINNED = "pinned"
+        const val INTEREST = "interest"
     }
 
     object Extra_Value {
@@ -390,6 +391,10 @@ object TelemetryWrapper {
         const val AWESOMEBAR_TYPE_MANUALCOMPLETE = "manualcomplete"
         const val AWESOMEBAR_TYPE_AUTOCOMPLETE = "autocomplete"
         const val AWESOMEBAR_TYPE_SUGGESTION = "suggestion"
+        const val CONTENT_PREF_DEFAULT = "DEFAULT"
+        const val CONTENT_PREF_DEALS = "DEALS"
+        const val CONTENT_PREF_NEWS = "NEWS"
+        const val CONTENT_PREF_ENTERTAINMENT = "ENTERTAINMENT"
     }
 
     enum class FIND_IN_PAGE {
@@ -2513,13 +2518,15 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.ON, value = "time spent on page"),
                 TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
+                TelemetryExtra(name = Extra.FINISH, value = "true,false"),
+                TelemetryExtra(name = Extra.INTEREST, value = "default|deals||news|entertainment")
             ])
-    fun clickFirstRunOnBoarding(timeSpent: Long, pageIndex: Int, finish: Boolean) {
+    fun clickFirstRunOnBoarding(timeSpent: Long, pageIndex: Int, finish: Boolean, interest: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.ONBOARDING, Value.FIRSTRUN)
                 .extra(Extra.ON, timeSpent.toString())
                 .extra(Extra.PAGE, pageIndex.toString())
                 .extra(Extra.FINISH, finish.toString())
+                .extra(Extra.INTEREST, interest)
                 .queue()
     }
 

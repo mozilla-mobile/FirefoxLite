@@ -125,7 +125,7 @@
 |Show in-app update install prompt|action|show|update|"downloaded"|"from_build=old version,to_build=new version,type=new,reminder," 
 |Click in-app update install prompt|action|click|update|"apply"|"from_build=old version,to_build=new version,source=notification,snackbar,type=new,reminder," 
 |Show Firstrun Onboarding|action|show|onboarding|"firstrun"|"" 
-|Click Firstrun Onboarding|action|click|onboarding|"firstrun"|"on=time spent on page,page=[0-9],finish=true,false," 
+|Click Firstrun Onboarding|action|click|onboarding|"firstrun"|"on=time spent on page,page=[0-9],finish=true,false,interest=default|deals||news|entertainment," 
 |Show Firstrun Contextual Hint|action|show|contextual_hint|"firstrun"|"message_id=message id," 
 |Show Whatsnew Contextual Hint|action|show|contextual_hint|"whatsnew"|"message_id=message id," 
 |Click Firstrun Contextual Hint|action|click|contextual_hint|"firstrun"|"message_id=message id,on=time spent on page,page=[0-9],finish=true,false," 
