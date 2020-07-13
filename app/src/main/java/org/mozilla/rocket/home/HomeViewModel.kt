@@ -101,6 +101,7 @@ class HomeViewModel(
     val openPrivateMode = SingleLiveEvent<Unit>()
     val openBrowser = SingleLiveEvent<String>()
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
+    val showAddTopSiteMenu = SingleLiveEvent<Unit>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
     val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showToast = SingleLiveEvent<ToastMessage>()
@@ -187,7 +188,7 @@ class HomeViewModel(
     private fun updateTopSitesData() = viewModelScope.launch {
         val topSiteList = getTopSitesUseCase()
         sitePages.value = if (topSiteList.isNotEmpty()) {
-            topSiteList.toSitePages().also { sitePages ->
+            topSiteList.toSitePages().addDummyTopSites().also { sitePages ->
                 val sitePosition = when (val result = pinTopSiteResult) {
                     is PinTopSiteUseCase.PinTopSiteResult.Success -> result.position
                     is PinTopSiteUseCase.PinTopSiteResult.Existing -> result.position
@@ -212,6 +213,22 @@ class HomeViewModel(
     private fun List<Site>.toSitePages(): List<SitePage> = chunked(TOP_SITES_PER_PAGE)
             .take(TOP_SITES_MAX_PAGE_SIZE)
             .map { SitePage(it) }
+
+    private fun List<SitePage>.addDummyTopSites(): List<SitePage> {
+        val sitePagesWithDummySite = mutableListOf<SitePage>()
+        this.forEach { sitePage ->
+            if (sitePage.sites.size < TOP_SITES_PER_PAGE) {
+                val sites = sitePage.sites.toMutableList()
+                for (i in 0 until TOP_SITES_PER_PAGE - sitePage.sites.size) {
+                    sites.add(Site.DummySite)
+                }
+                sitePagesWithDummySite.add(SitePage(sites))
+            } else {
+                sitePagesWithDummySite.add(sitePage)
+            }
+        }
+        return sitePagesWithDummySite
+    }
 
     fun onPageForeground() {
         val logoManNotification = logoManNotification.value
@@ -287,16 +304,19 @@ class HomeViewModel(
             }
             is Site.EmptyHintSite -> {
                 openAddNewTopSitesPage()
-                TelemetryWrapper.addTopSite(true, 0, "", TelemetryWrapper.Extra_Value.EMPTY_HINT)
+                TelemetryWrapper.addTopSite(TelemetryWrapper.Extra_Value.EMPTY_HINT)
             }
         }
     }
 
     override fun onTopSiteLongClicked(site: Site, position: Int): Boolean =
-            if (site is Site.UrlSite.RemovableSite) {
+            if (site is Site.UrlSite.RemovableSite || site is Site.DummySite) {
                 val pageIndex = requireNotNull(topSitesPageIndex.value)
                 val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-                showTopSiteMenu.value = ShowTopSiteMenuData(site, topSitePosition)
+                when (site) {
+                    is Site.UrlSite.RemovableSite -> showTopSiteMenu.value = ShowTopSiteMenuData(site, topSitePosition)
+                    is Site.DummySite -> showAddTopSiteMenu.call()
+                }
                 true
             } else {
                 false
@@ -344,15 +364,9 @@ class HomeViewModel(
         }
     }
 
-    fun onAddTopSiteContextMenuClicked(site: Site, position: Int) {
-        when (site) {
-            is Site.UrlSite.RemovableSite -> {
-                openAddNewTopSitesPage()
-                val allowToLogTitle = site.isDefault
-                val title = if (allowToLogTitle) site.title else ""
-                TelemetryWrapper.addTopSite(site.isDefault, position, title, TelemetryWrapper.Extra_Value.CONTEXT_MENU)
-            }
-        }
+    fun onAddTopSiteContextMenuClicked() {
+        openAddNewTopSitesPage()
+        TelemetryWrapper.addTopSite(TelemetryWrapper.Extra_Value.CONTEXT_MENU)
     }
 
     private fun openAddNewTopSitesPage() = viewModelScope.launch {

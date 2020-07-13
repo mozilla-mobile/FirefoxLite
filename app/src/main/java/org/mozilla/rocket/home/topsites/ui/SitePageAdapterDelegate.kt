@@ -27,6 +27,7 @@ class SitePageViewHolder(
             add(Site.UrlSite.FixedSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
             add(Site.UrlSite.RemovableSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
             add(Site.EmptyHintSite::class, R.layout.item_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
+            add(Site.DummySite::class, R.layout.item_dummy_top_site, SiteAdapterDelegate(homeViewModel, chromeViewModel))
         }
     )
 

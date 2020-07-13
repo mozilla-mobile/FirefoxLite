@@ -1473,17 +1473,11 @@ object TelemetryWrapper {
             `object` = Object.HOME,
             value = Value.LINK,
             extras = [
-                TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
-                TelemetryExtra(name = Extra.ON, value = "Default Top Site Position"),
-                TelemetryExtra(name = Extra.SOURCE, value = "Default Topsite Name"),
                 TelemetryExtra(name = Extra.FROM, value = "${Extra_Value.CONTEXT_MENU},${Extra_Value.EMPTY_HINT}")
             ])
     @JvmStatic
-    fun addTopSite(isDefault: Boolean, position: Int, source: String, from: String) {
+    fun addTopSite(from: String) {
         EventBuilder(Category.ACTION, Method.ADD, Object.HOME, Value.LINK)
-                .extra(Extra.DEFAULT, java.lang.Boolean.toString(isDefault))
-                .extra(Extra.ON, position.toString())
-                .extra(Extra.SOURCE, source)
                 .extra(Extra.FROM, from)
                 .queue()
     }
