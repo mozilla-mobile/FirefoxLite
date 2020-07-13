@@ -528,35 +528,6 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Turn on Turbo Mode in First Run",
-            category = Category.ACTION,
-            method = Method.CHANGE,
-            `object` = Object.FIRSTRUN,
-            value = Value.TURBO,
-            extras = [TelemetryExtra(name = Extra.TO, value = "true,false")])
-    @JvmStatic
-    fun toggleFirstRunPageEvent(enableTurboMode: Boolean) {
-        EventBuilder(Category.ACTION, Method.CHANGE, Object.FIRSTRUN, Value.TURBO)
-                .extra(Extra.TO, java.lang.Boolean.toString(enableTurboMode))
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Finish First Run",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.FIRSTRUN,
-            value = Value.FINISH,
-            extras = [TelemetryExtra(name = Extra.ON, value = "time spent on First Run")])
-    @JvmStatic
-    fun finishFirstRunEvent(duration: Long, mode: Int) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
-                .extra(Extra.ON, java.lang.Long.toString(duration))
-                .extra(Extra.MODE, Integer.toString(mode))
-                .queue()
-    }
-
-    @TelemetryDoc(
             name = "App is launched by Launcher",
             category = Category.ACTION,
             method = Method.LAUNCH,
@@ -2534,17 +2505,6 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Show Whatsnew Onboarding",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.ONBOARDING,
-            value = Value.WHATSNEW,
-            extras = [])
-    fun showWhatsnewOnBoarding() {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.ONBOARDING, Value.WHATSNEW).queue()
-    }
-
-    @TelemetryDoc(
             name = "Click Firstrun Onboarding",
             category = Category.ACTION,
             method = Method.CLICK,
@@ -2557,25 +2517,6 @@ object TelemetryWrapper {
             ])
     fun clickFirstRunOnBoarding(timeSpent: Long, pageIndex: Int, finish: Boolean) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.ONBOARDING, Value.FIRSTRUN)
-                .extra(Extra.ON, timeSpent.toString())
-                .extra(Extra.PAGE, pageIndex.toString())
-                .extra(Extra.FINISH, finish.toString())
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Whatsnew Onboarding",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.ONBOARDING,
-            value = Value.WHATSNEW,
-            extras = [
-                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
-                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
-            ])
-    fun clickWhatsnewOnBoarding(timeSpent: Long, pageIndex: Int, finish: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.ONBOARDING, Value.WHATSNEW)
                 .extra(Extra.ON, timeSpent.toString())
                 .extra(Extra.PAGE, pageIndex.toString())
                 .extra(Extra.FINISH, finish.toString())
