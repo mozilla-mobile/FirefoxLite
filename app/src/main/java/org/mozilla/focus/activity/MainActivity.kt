@@ -485,6 +485,7 @@ class MainActivity : BaseActivity(),
     override fun onBackPressed() {
         when {
             supportFragmentManager.isStateSaved -> return
+            getFirstRunScreen()?.isAnimationRunning() == true -> return
             screenNavigator.visibleBrowserScreen?.onBackPressed() == true -> return
             !screenNavigator.canGoBack() -> {
                 if (consumeByExitToast().not()) {
@@ -656,7 +657,10 @@ class MainActivity : BaseActivity(),
 
     override fun getScreenNavigator(): ScreenNavigator = screenNavigator
 
-    override fun createFirstRunScreen(): FirstrunFragment = FirstrunFragment.create()
+    override fun createFirstRunScreen(): ScreenNavigator.FirstrunScreen = FirstrunFragment.create()
+
+    override fun getFirstRunScreen(): ScreenNavigator.FirstrunScreen? =
+            supportFragmentManager.findFragmentByTag(ScreenNavigator.FIRST_RUN_FRAGMENT_TAG) as? ScreenNavigator.FirstrunScreen
 
     override fun getBrowserScreen(): BrowserFragment =
             supportFragmentManager.findFragmentById(R.id.browser) as BrowserFragment

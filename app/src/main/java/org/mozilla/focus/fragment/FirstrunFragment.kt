@@ -41,7 +41,7 @@ import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Browsing
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Games
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.News
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Shopping
-import org.mozilla.focus.navigation.ScreenNavigator.Screen
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.home.data.ContentPrefRepo
@@ -49,7 +49,7 @@ import org.mozilla.rocket.home.domain.SetContentPrefUseCase
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
 
-class FirstrunFragment : Fragment(), Screen {
+class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
 
     private var currentSelectedItem: ContentPrefItem? = null
 
@@ -172,6 +172,8 @@ class FirstrunFragment : Fragment(), Screen {
         progress_bar.animation = fadeInFadeOutAnimation
         animation_description.animation = fadeInFadeOutAnimation
     }
+
+    override fun isAnimationRunning(): Boolean = animation_layout?.isVisible == true
 
     private fun initContentPrefItems() {
         setContentPrefSelected(Browsing)
