@@ -63,6 +63,8 @@
 |Add Topsite|action|add|home|"link"|"from=context_menu,empty_hint," 
 |Click Add Topsite Snackbar|action|click|snackbar|"add_topsite"|"" 
 |Select to Add Topsite|action|click|panel|"add_topsite"|"default=true,false,on=Default Top Site Position,source=Default Topsite Name," 
+|Show Theme Contextual Hint|action|show|contextual_hint|"theme"|"" 
+|Click Theme Contextual Hint|action|click|contextual_hint|"theme"|"theme=aqua,cyan,raspberry,iris,night," 
 |Search in Home and add a tab|action|add|tab|"home"|"" 
 |Enter an url in SearchBar|action|open|search_bar|"link"|"orientation=portrait,landscape,type=history,bookmark,clipboard,suggestion,tabtray,manualcomplete,autocomplete," 
 |Use SearchSuggestion SearchBar|action|select_query|search_bar|""|"orientation=portrait,landscape," 

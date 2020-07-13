@@ -261,8 +261,8 @@ class HomeViewModel(
         resetBackgroundColor.call()
     }
 
-    // TODO : on theme clicked
-    fun onThemeClicked(isDarkTheme: Boolean, theme: ThemeManager.ThemeSet) {
+    fun onThemeClicked(isDarkTheme: Boolean, theme: ThemeManager.ThemeSet, name: String) {
+        TelemetryWrapper.clickThemeContextualHint(name)
         settings.setDarkTheme(isDarkTheme)
         // No need to update background color theme when in dark theme
         if (isDarkTheme) {
@@ -387,6 +387,7 @@ class HomeViewModel(
 
     fun onThemeSettingMenuClicked() {
         showThemeSetting.call()
+        TelemetryWrapper.showThemeContextualHint()
     }
 
     fun onClearBrowsingHistory() {

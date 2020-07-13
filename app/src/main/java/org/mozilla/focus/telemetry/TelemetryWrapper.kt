@@ -321,6 +321,7 @@ object TelemetryWrapper {
         const val ORIENTATION = "orientation"
         const val PINNED = "pinned"
         const val INTEREST = "interest"
+        const val THEME = "theme"
     }
 
     object Extra_Value {
@@ -1493,12 +1494,40 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Search in Home and add a tab",
+            name = "Show Theme Contextual Hint",
             category = Category.ACTION,
-            method = Method.ADD,
-            `object` = Object.TAB,
-            value = Value.HOME,
+            method = Method.SHOW,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.THEME,
             extras = [])
+    @JvmStatic
+    fun showThemeContextualHint() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.THEME).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Theme Contextual Hint",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.THEME,
+            extras = [
+                TelemetryExtra(name = Extra.THEME, value = "aqua,cyan,raspberry,iris,night")
+            ])
+    @JvmStatic
+    fun clickThemeContextualHint(name: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.THEME)
+                .extra(Extra.THEME, name)
+                .queue()
+    }
+
+    @TelemetryDoc(
+        name = "Search in Home and add a tab",
+        category = Category.ACTION,
+        method = Method.ADD,
+        `object` = Object.TAB,
+        value = Value.HOME,
+        extras = [])
     @JvmStatic
     fun addNewTabFromHome() {
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.HOME).queue()
