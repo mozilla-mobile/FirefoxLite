@@ -87,11 +87,11 @@ class ThemeSettingDialogBuilder(
             if (themeButton == clickedThemeButton) {
                 if (!themeButton.isSelected) {
                     when (clickedThemeButton) {
-                        themeButton1 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Default)
-                        themeButton2 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme2)
-                        themeButton3 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme3)
-                        themeButton4 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme4)
-                        themeButton5 -> homeViewModel.onThemeClicked(true, ThemeManager.ThemeSet.Default)
+                        themeButton1 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Default, THEME_DEFAULT_NAME)
+                        themeButton2 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme2, THEME_2_NAME)
+                        themeButton3 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme3, THEME_3_NAME)
+                        themeButton4 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme4, THEME_4_NAME)
+                        themeButton5 -> homeViewModel.onThemeClicked(true, ThemeManager.ThemeSet.Default, THEME_5_NAME)
                     }
                 }
                 themeButton.isSelected = true
@@ -99,5 +99,13 @@ class ThemeSettingDialogBuilder(
                 themeButton.isSelected = false
             }
         }
+    }
+
+    companion object {
+        private const val THEME_DEFAULT_NAME = "aqua"
+        private const val THEME_2_NAME = "cyan"
+        private const val THEME_3_NAME = "raspberry"
+        private const val THEME_4_NAME = "iris"
+        private const val THEME_5_NAME = "night"
     }
 }
