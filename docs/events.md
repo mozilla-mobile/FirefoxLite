@@ -1,7 +1,5 @@
 | Event | category | method | object | value | extra |
 | ---- | ---- | ---- | ---- | ---- | ---- |
-|Turn on Turbo Mode in First Run|action|change|firstrun|"turbo"|"to=true,false," 
-|Finish First Run|action|show|firstrun|"finish"|"on=time spent on First Run," 
 |App is launched by Launcher|action|launch|app|"launcher"|"" 
 |App is launched by Shortcut|action|launch|app|"shortcut"|"" 
 |App is launched from Private Shortcut|action|launch|app|"private_mode"|"from=[launcher|external_app]," 
@@ -127,9 +125,7 @@
 |Show in-app update install prompt|action|show|update|"downloaded"|"from_build=old version,to_build=new version,type=new,reminder," 
 |Click in-app update install prompt|action|click|update|"apply"|"from_build=old version,to_build=new version,source=notification,snackbar,type=new,reminder," 
 |Show Firstrun Onboarding|action|show|onboarding|"firstrun"|"" 
-|Show Whatsnew Onboarding|action|show|onboarding|"whatsnew"|"" 
-|Click Firstrun Onboarding|action|click|onboarding|"firstrun"|"on=time spent on page,page=[0-9],finish=true,false," 
-|Click Whatsnew Onboarding|action|click|onboarding|"whatsnew"|"on=time spent on page,page=[0-9],finish=true,false," 
+|Click Firstrun Onboarding|action|click|onboarding|"firstrun"|"on=time spent on page,page=[0-9],finish=true,false,interest=default|deals||news|entertainment," 
 |Show Firstrun Contextual Hint|action|show|contextual_hint|"firstrun"|"message_id=message id," 
 |Show Whatsnew Contextual Hint|action|show|contextual_hint|"whatsnew"|"message_id=message id," 
 |Click Firstrun Contextual Hint|action|click|contextual_hint|"firstrun"|"message_id=message id,on=time spent on page,page=[0-9],finish=true,false," 

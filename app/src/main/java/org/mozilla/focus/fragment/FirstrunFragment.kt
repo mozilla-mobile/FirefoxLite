@@ -42,6 +42,7 @@ import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Games
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.News
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Shopping
 import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.home.data.ContentPrefRepo
@@ -53,8 +54,15 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
 
     private var currentSelectedItem: ContentPrefItem? = null
 
+    private var pageStartTime = 0L
+
     override fun getFragment(): Fragment {
         return this
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        TelemetryWrapper.showFirstRunOnBoarding()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -72,6 +80,11 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
         returnTransition = TransitionInflater.from(context).inflateTransition(R.transition.firstrun_exit)
     }
 
+    override fun onResume() {
+        super.onResume()
+        pageStartTime = System.currentTimeMillis()
+    }
+
     private fun goNext() {
         NewFeatureNotice.getInstance(context).setFirstRunDidShow()
         NewFeatureNotice.getInstance(context).setLiteUpdateDidShow()
@@ -81,10 +94,25 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
 
         currentSelectedItem.let { selectedItem ->
             requireNotNull(selectedItem)
+            sendItemSelectedTelemetry(selectedItem, System.currentTimeMillis() - pageStartTime)
             SetContentPrefUseCase(ContentPrefRepo(appContext())).invoke(selectedItem.toContentPref())
         }
 
         showAnimation()
+    }
+
+    private fun sendItemSelectedTelemetry(selectedItem: ContentPrefItem, timeSpent: Long) {
+        TelemetryWrapper.clickFirstRunOnBoarding(
+            timeSpent,
+            0,
+            true,
+            when (selectedItem) {
+                Browsing -> TelemetryWrapper.Extra_Value.CONTENT_PREF_DEFAULT
+                Shopping -> TelemetryWrapper.Extra_Value.CONTENT_PREF_DEALS
+                Games -> TelemetryWrapper.Extra_Value.CONTENT_PREF_ENTERTAINMENT
+                News -> TelemetryWrapper.Extra_Value.CONTENT_PREF_NEWS
+            }
+        )
     }
 
     private fun showAnimation() {

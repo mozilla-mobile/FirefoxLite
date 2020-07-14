@@ -26,8 +26,6 @@ SELECT
     client_id AS device_id,
     (created + COALESCE(SAFE_CAST(`moz-fx-data-shared-prod.udf.get_key`(event_map_values, 'session_id') AS INT64), 0)) AS session_id,
     CASE
-        WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('firstrun') ) AND (event_value IN ('turbo') ) THEN 'Rocket -  Turn on Turbo Mode in First Run' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('firstrun') ) AND (event_value IN ('finish') ) THEN 'Rocket -  Finish First Run' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('launch') ) AND (event_object IN ('app') ) AND (event_value IN ('launcher') ) THEN 'Rocket -  App is launched by Launcher' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('launch') ) AND (event_object IN ('app') ) AND (event_value IN ('shortcut') ) THEN 'Rocket -  App is launched by Shortcut' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('launch') ) AND (event_object IN ('app') ) AND (event_value IN ('private_mode') ) THEN 'Rocket -  App is launched from Private Shortcut' 
@@ -151,9 +149,7 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('update') ) AND (event_value IN ('downloaded') ) THEN 'Rocket -  Show in-app update install prompt' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('update') ) AND (event_value IN ('apply') ) THEN 'Rocket -  Click in-app update install prompt' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('firstrun') ) THEN 'Rocket -  Show Firstrun Onboarding' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Show Whatsnew Onboarding' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('firstrun') ) THEN 'Rocket -  Click Firstrun Onboarding' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Click Whatsnew Onboarding' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('firstrun') ) THEN 'Rocket -  Show Firstrun Contextual Hint' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Show Whatsnew Contextual Hint' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('firstrun') ) THEN 'Rocket -  Click Firstrun Contextual Hint' 
