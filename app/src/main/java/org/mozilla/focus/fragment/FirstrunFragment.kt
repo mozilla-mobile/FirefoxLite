@@ -5,34 +5,222 @@
 
 package org.mozilla.focus.fragment
 
+import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.transition.TransitionInflater
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.LinearInterpolator
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_first_run.animation_description
+import kotlinx.android.synthetic.main.fragment_first_run.animation_layout
+import kotlinx.android.synthetic.main.fragment_first_run.animation_view
+import kotlinx.android.synthetic.main.fragment_first_run.description
+import kotlinx.android.synthetic.main.fragment_first_run.item_browsing
+import kotlinx.android.synthetic.main.fragment_first_run.item_games
+import kotlinx.android.synthetic.main.fragment_first_run.item_news
+import kotlinx.android.synthetic.main.fragment_first_run.item_shopping
+import kotlinx.android.synthetic.main.fragment_first_run.progress_bar
+import kotlinx.android.synthetic.main.fragment_first_run.select_button
+import org.mozilla.focus.R
+import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Browsing
+import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Games
+import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.News
+import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Shopping
 import org.mozilla.focus.navigation.ScreenNavigator.Screen
+import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.rocket.periodic.FirstLaunchWorker
+import org.mozilla.rocket.periodic.PeriodicReceiver
 
 class FirstrunFragment : Fragment(), Screen {
+
+    private var currentSelectedItem: ContentPrefItem? = null
 
     override fun getFragment(): Fragment {
         return this
     }
 
-    // TODO: Evan, add back to version 2.5 onboarding
-//    private fun wrapButtonClickListener(onClickListener: View.OnClickListener): View.OnClickListener {
-//        return View.OnClickListener { view ->
-//            if (view.id == R.id.finish) {
-//                activity?.sendBroadcast(Intent(activity, PeriodicReceiver::class.java).apply {
-//                    action = FirstLaunchWorker.ACTION
-//                })
-//            }
-//            onClickListener.onClick(view)
-//        }
-//    }
-//
-//    private fun finishFirstrun() {
-//        NewFeatureNotice.getInstance(context).setFirstRunDidShow()
-//        NewFeatureNotice.getInstance(context).setLiteUpdateDidShow()
-//        (activity as MainActivity).firstrunFinished()
-//    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater.inflate(R.layout.fragment_first_run, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        description.text = getString(R.string.firstrun_fxlite_2_5_title_B, getString(R.string.app_name))
+        select_button.setOnClickListener { goNext() }
+        initContentPrefItems()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        returnTransition = TransitionInflater.from(context).inflateTransition(R.transition.firstrun_exit)
+    }
+
+    private fun goNext() {
+        NewFeatureNotice.getInstance(context).setFirstRunDidShow()
+        NewFeatureNotice.getInstance(context).setLiteUpdateDidShow()
+        activity?.sendBroadcast(Intent(activity, PeriodicReceiver::class.java).apply {
+            action = FirstLaunchWorker.ACTION
+        })
+        showAnimation()
+    }
+
+    private fun showAnimation() {
+        animation_layout.isVisible = true
+
+        var textIndex = 0
+        var nextText = TEXT_SHOWING_LIST[0]
+
+        val animationAnimator = ValueAnimator.ofFloat(
+            0f,
+            (ANIMATION_PLAY_DURATION.toFloat() / ANIMATION_DURATION)
+        ).apply {
+            duration = ANIMATION_PLAY_DURATION
+            interpolator = LinearInterpolator()
+            addUpdateListener { valueAnimator: ValueAnimator ->
+                val progress = valueAnimator.animatedValue as Float
+                animation_view?.progress = progress
+
+                val time = (progress * ANIMATION_PLAY_DURATION).toInt()
+                if (time >= nextText.first) {
+                    animation_description?.text = getString(nextText.second)
+                    nextText = if (++textIndex < TEXT_SHOWING_LIST.size) {
+                        TEXT_SHOWING_LIST[textIndex]
+                    } else {
+                        Int.MAX_VALUE to 0
+                    }
+                }
+            }
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator?) {
+                }
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    (activity as? MainActivity)?.firstrunFinished()
+                }
+
+                override fun onAnimationCancel(animation: Animator?) {
+                }
+
+                override fun onAnimationStart(animation: Animator?) {
+                }
+            })
+        }
+        progress_bar.max = PROGRESS_BAR_MAX
+        val progressAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = PROGRESS_BAR_DURATION
+            startDelay = PROGRESS_BAR_START_DELAY
+            interpolator = AccelerateInterpolator(PROGRESS_BAR_ACCELERATE_FACTOR)
+            addUpdateListener { valueAnimator: ValueAnimator ->
+                val progress = valueAnimator.animatedValue as Float
+                progress_bar?.progress = (progress * PROGRESS_BAR_MAX).toInt()
+            }
+        }
+
+        val fadeInFadeOutAnimation = AnimationSet(false).apply {
+            addAnimation(AlphaAnimation(0f, 1f).apply {
+                interpolator = DecelerateInterpolator()
+                startOffset = DESCRIPTION_FADE_IN_OFFSET
+                duration = DESCRIPTION_FADE_IN_FADE_OUT_DURATION
+            })
+            addAnimation(AlphaAnimation(1f, 0f).apply {
+                interpolator = AccelerateInterpolator()
+                startOffset = DESCRIPTION_FADE_OUT_OFFSET
+                duration = DESCRIPTION_FADE_IN_FADE_OUT_DURATION
+            })
+            setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    progress_bar.visibility = View.INVISIBLE
+                    animation_description.visibility = View.INVISIBLE
+                }
+
+                override fun onAnimationStart(animation: Animation?) {
+                    progress_bar.visibility = View.VISIBLE
+                    animation_description.visibility = View.VISIBLE
+                }
+            })
+        }
+
+        AnimatorSet().apply {
+            playTogether(animationAnimator, progressAnimator)
+        }.start()
+        progress_bar.animation = fadeInFadeOutAnimation
+        animation_description.animation = fadeInFadeOutAnimation
+    }
+
+    private fun initContentPrefItems() {
+        setContentPrefSelected(Browsing)
+
+        item_browsing.setOnClickListener { setContentPrefSelected(Browsing) }
+        item_shopping.setOnClickListener { setContentPrefSelected(Shopping) }
+        item_games.setOnClickListener { setContentPrefSelected(Games) }
+        item_news.setOnClickListener { setContentPrefSelected(News) }
+    }
+
+    private fun setContentPrefSelected(item: ContentPrefItem) {
+        if (currentSelectedItem == item) return
+
+        currentSelectedItem = item
+        listOf(Browsing, Shopping, Games, News).groupBy { it == item }.run {
+            get(true)?.forEach { view?.setContentPrefSelected(it, true) }
+            get(false)?.forEach { view?.setContentPrefSelected(it, false) }
+        }
+    }
+
+    private fun View.setContentPrefSelected(item: ContentPrefItem, selected: Boolean) {
+        val view = this.findViewById<View>(item.viewId)
+        val icon = view.findViewById<View>(item.iconId)
+        val textView = view.findViewById<TextView>(item.textId)
+        view.isSelected = selected
+        icon.isVisible = selected
+        val textColorId = if (selected) {
+            R.color.paletteWhite100
+        } else {
+            R.color.paletteDarkGreyC100
+        }
+        textView.setTextColor(ContextCompat.getColor(context, textColorId))
+    }
+
+    private sealed class ContentPrefItem(val viewId: Int, val textId: Int, val iconId: Int) {
+        object Browsing : ContentPrefItem(R.id.item_browsing, R.id.text_browsing, R.id.icon_browsing)
+        object Shopping : ContentPrefItem(R.id.item_shopping, R.id.text_shopping, R.id.icon_shopping)
+        object Games : ContentPrefItem(R.id.item_games, R.id.text_games, R.id.icon_games)
+        object News : ContentPrefItem(R.id.item_news, R.id.text_news, R.id.icon_news)
+    }
 
     companion object {
+        private const val ANIMATION_DURATION = 6105L
+        private const val ANIMATION_PLAY_DURATION = 6000L
+        private const val PROGRESS_BAR_DURATION = 5280L
+        private const val PROGRESS_BAR_START_DELAY = 165L
+        private const val PROGRESS_BAR_MAX = 1000
+        private const val PROGRESS_BAR_ACCELERATE_FACTOR = 2f
+        private const val DESCRIPTION_FADE_IN_FADE_OUT_DURATION = 165L
+        private const val DESCRIPTION_FADE_IN_OFFSET = 165L
+        private const val DESCRIPTION_FADE_OUT_OFFSET = 5610L
+
+        private val TEXT_SHOWING_LIST = listOf(
+            165 to R.string.onboarding_transition_feature_1,
+            2310 to R.string.onboarding_transition_feature_2,
+            3795 to R.string.onboarding_transition_feature_3
+        )
+
         @JvmStatic
         fun create(): FirstrunFragment {
             return FirstrunFragment()
