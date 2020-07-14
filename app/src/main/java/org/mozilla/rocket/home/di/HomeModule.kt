@@ -26,7 +26,9 @@ import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
+import org.mozilla.rocket.home.onboarding.domain.SetThemeOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.domain.ShouldShowThemeOnboardingUseCase
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
 import org.mozilla.rocket.home.topsites.data.SharedPreferencePinSiteDelegate
 import org.mozilla.rocket.home.topsites.data.TopSitesRepo
@@ -83,7 +85,9 @@ object HomeModule {
         setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
         isNewUserUseCase: IsNewUserUseCase,
         shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
-        shouldShowContentHubUseCase: ShouldShowContentHubUseCase
+        shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
+        shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
+        setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -111,7 +115,9 @@ object HomeModule {
         setShoppingSearchOnboardingIsShownUseCase,
         isNewUserUseCase,
         shouldShowNewMenuItemHintUseCase,
-        shouldShowContentHubUseCase
+        shouldShowContentHubUseCase,
+        shouldShowThemeOnboardingUseCase,
+        setThemeOnboardingIsShownUseCase
     )
 
     @JvmStatic
@@ -292,4 +298,16 @@ object HomeModule {
     @Provides
     fun provideSetContentPrefUseCase(contentPrefRepo: ContentPrefRepo): SetContentPrefUseCase =
             SetContentPrefUseCase(contentPrefRepo)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowThemeOnboardingUseCase(newFeatureNotice: NewFeatureNotice): ShouldShowThemeOnboardingUseCase =
+            ShouldShowThemeOnboardingUseCase(newFeatureNotice)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetThemeOnboardingIsShownUseCase(newFeatureNotice: NewFeatureNotice): SetThemeOnboardingIsShownUseCase =
+            SetThemeOnboardingIsShownUseCase(newFeatureNotice)
 }

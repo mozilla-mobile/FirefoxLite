@@ -23,6 +23,7 @@ public class BeforeTestTask {
     private boolean skipFirstRun;
     private boolean skipHomePageOnboarding;
     private boolean skipHomeShoppingSearchOnboarding;
+    private boolean skipHomeThemeOnboarding;
     private boolean clearBrowsingHistory;
     private boolean enableSreenshotOnBoarding;
     private boolean enableDownloadIndicatorIntro;
@@ -32,6 +33,7 @@ public class BeforeTestTask {
         this.skipFirstRun = builder.skipFirstRun;
         this.skipHomePageOnboarding = builder.skipHomePageOnboarding;
         this.skipHomeShoppingSearchOnboarding = builder.skipHomeShoppingSearchOnbaording;
+        this.skipHomeThemeOnboarding = builder.skipHomeThemeOnbaording;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
         this.enableSreenshotOnBoarding = builder.enableSreenshotOnBoarding;
         this.enableDownloadIndicatorIntro = builder.enableDownloadIndicatorIntro;
@@ -62,6 +64,11 @@ public class BeforeTestTask {
             NewFeatureNotice.getInstance(context).setHomeShoppingSearchOnboardingDidShow();
         } else {
             NewFeatureNotice.getInstance(context).resetHomeShoppingSearchOnboardingDidShow();
+        }
+        if (this.skipHomeThemeOnboarding) {
+            NewFeatureNotice.getInstance(context).setHomeThemeOnboardingDidShow();
+        } else {
+            NewFeatureNotice.getInstance(context).resetHomeThemeOnboardingDidShow();
         }
         final Settings settings = Settings.getInstance(context);
         if (settings != null) {
@@ -98,6 +105,7 @@ public class BeforeTestTask {
         private boolean skipFirstRun;
         private boolean skipHomePageOnboarding;
         private boolean skipHomeShoppingSearchOnbaording;
+        private boolean skipHomeThemeOnbaording;
         private boolean clearBrowsingHistory;
 
         public Builder() {
@@ -105,6 +113,7 @@ public class BeforeTestTask {
             this.skipFirstRun = true;
             this.skipHomePageOnboarding = true;
             this.skipHomeShoppingSearchOnbaording = true;
+            this.skipHomeThemeOnbaording = true;
             this.clearBrowsingHistory = false;
             this.enableSreenshotOnBoarding = false;
             this.enableDownloadIndicatorIntro = false;
@@ -127,6 +136,11 @@ public class BeforeTestTask {
 
         public Builder setSkipShoppingSearchOnboarding(boolean skipHomeShoppingSearchOnbarding) {
             this.skipHomeShoppingSearchOnbaording = skipHomeShoppingSearchOnbarding;
+            return this;
+        }
+
+        public Builder setSkipHomeThemeOnboarding(boolean skipHomeThemeOnbarding) {
+            this.skipHomeThemeOnbaording = skipHomeThemeOnbarding;
             return this;
         }
 
