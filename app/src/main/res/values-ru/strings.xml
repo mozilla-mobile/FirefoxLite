@@ -3,6 +3,7 @@
   <string name="action_cancel">ОТМЕНА</string>
   <string name="action_ok">OK</string>
   <string name="urlbar_hint">Введите запрос или адрес</string>
+  <string name="awesomebar_open_copied_link">Вставить и перейти</string>
   <string name="awesomebar_switch_to_tab">Перейти на вкладку</string>
   <string name="menu_settings">Параметры</string>
   <string name="menu_about">О нас</string>
@@ -93,7 +94,11 @@
   <string name="firstrun_skip_button">Пропустить</string>
   <string name="firstrun_next_button">Далее</string>
   <string name="firstrun_fxlite_2.5_title_1">Привет!</string>
+  <string name="firstrun_fxlite_2.5_title_2">Что привело вас в %1$s?</string>
+  <string name="content_theme_1">Веб-сёрфинг</string>
+  <string name="content_theme_2">Поиск хороших предложений</string>
   <string name="content_theme_3">Играйте в игры и смотрите видео</string>
+  <string name="content_theme_4">Читайте новости</string>
   <string name="button_done">Готово</string>
   <string name="label_menu_bookmark">Закладки</string>
   <string name="label_menu_download">Загрузки</string>
@@ -114,6 +119,9 @@
   <string name="label_menu_add_top_sites">Добавить топ сайтов</string>
   <string name="label_menu_themes">Темы</string>
   <string name="theme_settings_title">Выберите тему</string>
+  <string name="theme_settings_subtitle">Экономьте заряд батареи с помощью тёмной темы оформления.</string>
+  <string name="set_as_default_dialog_title">Неплохо!</string>
+  <string name="set_as_default_dialog_subtitle">Хотите сделать %1$s вашим браузером по умолчанию?</string>
   <string name="top_site_category_1">Популярные сайты</string>
   <string name="top_site_category_2">Покупки и путешествия</string>
   <string name="top_site_category_3">Развлекательная сфера</string>
@@ -502,4 +510,5 @@
   <string name="travel_dialog_2_description_new">Вы можете установить %1$s %2$s вашей поисковой системой для путешествий по умолчанию.</string>
   <string name="travel_dialog_2_checkbox">Не спрашивать в следующий раз</string>
   <string name="travel_dialog_2_action">УСТАНОВИТЬ ПО УМОЛЧАНИЮ</string>
+  <string name="awesomebar_open_link_clipboard">Вставить и перейти</string>
 </resources>

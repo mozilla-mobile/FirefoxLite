@@ -3,6 +3,8 @@
   <string name="action_cancel">ยกเลิก</string>
   <string name="action_ok">ตกลง</string>
   <string name="urlbar_hint">ค้นหาหรือป้อนที่อยู่</string>
+  <string name="awesomebar_open_copied_link">เปิดลิงก์ที่คัดลอก</string>
+  <string name="awesomebar_switch_to_tab">สลับไปยังแท็บ</string>
   <string name="menu_settings">การตั้งค่า</string>
   <string name="menu_about">เกี่ยวกับ</string>
   <string name="menu_help">ช่วยเหลือ</string>
@@ -91,6 +93,13 @@
   <string name="firstrun_close_button">ตกลง เข้าใจแล้ว!</string>
   <string name="firstrun_skip_button">ข้าม</string>
   <string name="firstrun_next_button">ถัดไป</string>
+  <string name="firstrun_fxlite_2.5_title_1">สวัสดี!</string>
+  <string name="firstrun_fxlite_2.5_title_2">ทำไมคุณถึงเลือก %1$s?</string>
+  <string name="content_theme_1">เรียกดูเว็บ</string>
+  <string name="content_theme_2">ค้นหาข้อเสนอดี ๆ</string>
+  <string name="content_theme_3">เล่นเกมและวิดีโอ</string>
+  <string name="content_theme_4">อ่านข่าวที่กำลังมาแรง</string>
+  <string name="button_done">เสร็จสิ้น</string>
   <string name="label_menu_bookmark">ที่คั่นหน้า</string>
   <string name="label_menu_download">การดาวน์โหลด</string>
   <string name="label_menu_find_in_page">ค้นหาในหน้า</string>
@@ -109,9 +118,15 @@
   <string name="label_menu_content_services">แสดงเนื้อหาและบริการ</string>
   <string name="label_menu_add_top_sites">เพิ่มไซต์เด่น</string>
   <string name="label_menu_themes">ชุดตกแต่ง</string>
+  <string name="theme_settings_title">เลือกชุดตกแต่งของคุณ</string>
+  <string name="theme_settings_subtitle">ประหยัดแบตเตอรี่ได้โดยเลือกชุดตกแต่งมืด</string>
+  <string name="set_as_default_dialog_title">ดีมาก!</string>
+  <string name="set_as_default_dialog_subtitle">%1$s ของคุณดูดีมาก! คุณต้องการตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณหรือไม่?</string>
   <string name="top_site_category_1">เว็บไซต์ยอดนิยม</string>
+  <string name="top_site_category_2">การซื้อของและการท่องเที่ยว</string>
   <string name="top_site_category_3">ความบันเทิง</string>
   <string name="top_site_category_4">อื่น ๆ</string>
+  <string name="top_site_category_5">ข่าว</string>
   <string name="add_top_site_snackbar_1">เพิ่มไซต์เด่นแล้ว</string>
   <string name="add_top_site_snackbar_2">เพิ่มไซต์แล้ว</string>
   <string name="add_top_site_toast">โปรดเอาไซต์เด่นออกก่อน</string>
@@ -495,4 +510,5 @@
   <string name="travel_dialog_2_description_new">คุณสามารถตั้งค่า %1$s %2$s เป็นเครื่องมือค้นหาสำหรับการท่องเที่ยวเริ่มต้นของคุณได้</string>
   <string name="travel_dialog_2_checkbox">ไม่ต้องถามฉันอีก</string>
   <string name="travel_dialog_2_action">ตั้งเป็นค่าเริ่มต้น</string>
+  <string name="awesomebar_open_link_clipboard">เปิดลิงก์ในคลิปบอร์ดของคุณ</string>
 </resources>
