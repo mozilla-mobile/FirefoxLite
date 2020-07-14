@@ -15,7 +15,9 @@ import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
 import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
+import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
+import org.mozilla.rocket.home.domain.SetContentPrefUseCase
 import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
@@ -33,7 +35,6 @@ import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.IsTopSiteFullyPinnedUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.domain.RemoveTopSiteUseCase
-import org.mozilla.rocket.home.topsites.domain.TopSitesConfigsUseCase
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesViewModel
 import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.di.MissionModule
@@ -58,7 +59,6 @@ object HomeModule {
     fun provideHomeViewModel(
         settings: Settings,
         getTopSitesUseCase: GetTopSitesUseCase,
-        topSitesConfigsUseCase: TopSitesConfigsUseCase,
         isTopSiteFullyPinnedUseCase: IsTopSiteFullyPinnedUseCase,
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
@@ -87,7 +87,6 @@ object HomeModule {
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
-        topSitesConfigsUseCase,
         isTopSiteFullyPinnedUseCase,
         pinTopSiteUseCase,
         removeTopSiteUseCase,
@@ -118,12 +117,10 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGetTopSitesUseCase(topSitesRepo: TopSitesRepo): GetTopSitesUseCase = GetTopSitesUseCase(topSitesRepo)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideTopSitesConfigsUseCase(topSitesRepo: TopSitesRepo): TopSitesConfigsUseCase = TopSitesConfigsUseCase(topSitesRepo)
+    fun provideGetTopSitesUseCase(
+        topSitesRepo: TopSitesRepo,
+        contentPrefRepo: ContentPrefRepo
+    ): GetTopSitesUseCase = GetTopSitesUseCase(topSitesRepo, contentPrefRepo)
 
     @JvmStatic
     @Singleton
@@ -138,7 +135,10 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideRemoveTopSiteUseCase(topSitesRepo: TopSitesRepo): RemoveTopSiteUseCase = RemoveTopSiteUseCase(topSitesRepo)
+    fun provideRemoveTopSiteUseCase(
+        topSitesRepo: TopSitesRepo,
+        contentPrefRepo: ContentPrefRepo
+    ): RemoveTopSiteUseCase = RemoveTopSiteUseCase(topSitesRepo, contentPrefRepo)
 
     @JvmStatic
     @Singleton
@@ -283,4 +283,13 @@ object HomeModule {
         pinTopSiteUseCase: PinTopSiteUseCase
     ): AddNewTopSitesViewModel =
             AddNewTopSitesViewModel(getRecommendedSitesUseCase, pinTopSiteUseCase)
+
+    @JvmStatic
+    @Provides
+    fun provideContentPrefRepo(appContext: Context): ContentPrefRepo = ContentPrefRepo(appContext)
+
+    @JvmStatic
+    @Provides
+    fun provideSetContentPrefUseCase(contentPrefRepo: ContentPrefRepo): SetContentPrefUseCase =
+            SetContentPrefUseCase(contentPrefRepo)
 }

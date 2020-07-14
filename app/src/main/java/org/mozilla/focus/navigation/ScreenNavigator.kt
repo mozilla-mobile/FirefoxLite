@@ -227,7 +227,8 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
      */
     interface HostActivity : LifecycleOwner {
         fun getSupportFragmentManager(): FragmentManager
-        fun createFirstRunScreen(): Screen
+        fun createFirstRunScreen(): FirstrunScreen
+        fun getFirstRunScreen(): FirstrunScreen?
         fun getBrowserScreen(): BrowserScreen
         fun createHomeScreen(): HomeScreen
         fun createUrlInputScreen(url: String?, parentFragmentTag: String): UrlInputScreen
@@ -257,6 +258,13 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
     interface HomeScreen : Screen {
         /* callback if the coverage by UrlInputScreen became visible */
         fun onUrlInputScreenVisible(visible: Boolean)
+    }
+
+    /**
+     * Contract class for ScreenNavigator, to present a FirstrunFragment
+     */
+    interface FirstrunScreen : Screen {
+        fun isAnimationRunning(): Boolean
     }
 
     /**

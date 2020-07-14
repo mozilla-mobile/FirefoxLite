@@ -41,12 +41,15 @@ import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Browsing
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Games
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.News
 import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Shopping
-import org.mozilla.focus.navigation.ScreenNavigator.Screen
+import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.home.data.ContentPrefRepo
+import org.mozilla.rocket.home.domain.SetContentPrefUseCase
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
 
-class FirstrunFragment : Fragment(), Screen {
+class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
 
     private var currentSelectedItem: ContentPrefItem? = null
 
@@ -75,6 +78,12 @@ class FirstrunFragment : Fragment(), Screen {
         activity?.sendBroadcast(Intent(activity, PeriodicReceiver::class.java).apply {
             action = FirstLaunchWorker.ACTION
         })
+
+        currentSelectedItem.let { selectedItem ->
+            requireNotNull(selectedItem)
+            SetContentPrefUseCase(ContentPrefRepo(appContext())).invoke(selectedItem.toContentPref())
+        }
+
         showAnimation()
     }
 
@@ -164,6 +173,8 @@ class FirstrunFragment : Fragment(), Screen {
         animation_description.animation = fadeInFadeOutAnimation
     }
 
+    override fun isAnimationRunning(): Boolean = animation_layout?.isVisible == true
+
     private fun initContentPrefItems() {
         setContentPrefSelected(Browsing)
 
@@ -202,6 +213,15 @@ class FirstrunFragment : Fragment(), Screen {
         object Shopping : ContentPrefItem(R.id.item_shopping, R.id.text_shopping, R.id.icon_shopping)
         object Games : ContentPrefItem(R.id.item_games, R.id.text_games, R.id.icon_games)
         object News : ContentPrefItem(R.id.item_news, R.id.text_news, R.id.icon_news)
+    }
+
+    private fun ContentPrefItem.toContentPref(): ContentPrefRepo.ContentPref {
+        return when (this) {
+            Browsing -> ContentPrefRepo.ContentPref.Browsing
+            Shopping -> ContentPrefRepo.ContentPref.Shopping
+            Games -> ContentPrefRepo.ContentPref.Games
+            News -> ContentPrefRepo.ContentPref.News
+        }
     }
 
     companion object {

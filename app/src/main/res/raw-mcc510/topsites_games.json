@@ -1,0 +1,86 @@
+[
+  {
+    "id": -1,
+    "url": "https://frvr.com/mozilla/",
+    "title": "FRVR",
+    "favicon": "ic_frvr.webp",
+    "viewCount": 1000
+  },
+  {
+    "id": -2,
+    "url": "https://www.bolasport.com/",
+    "title": "BolaSport",
+    "favicon": "ic_bolasport.webp",
+    "viewCount": 995
+  },
+  {
+    "id": -3,
+    "url": "https://www.indosport.com/",
+    "title": "INDOSPORT",
+    "favicon": "ic_indosport.webp",
+    "viewCount": 990
+  },
+  {
+    "id": -4,
+    "url": "https://www.gamezop.com/?id=Pa6YWojZa",
+    "title": "Gamezop",
+    "favicon": "ic_gamezop.webp",
+    "viewCount": 985
+  },
+  {
+    "id": -5,
+    "url": "https://m.youtube.com",
+    "title": "YouTube",
+    "favicon": "ic_youtube.png",
+    "viewCount": 28
+  },
+  {
+    "id": -6,
+    "url": "https://m.facebook.com",
+    "title": "Facebook",
+    "favicon": "ic_facebook.png",
+    "viewCount": 26
+  },
+  {
+    "id": -7,
+    "url": "https://mobile.twitter.com",
+    "title": "Twitter",
+    "favicon": "ic_twitter.png",
+    "viewCount": 24
+  },
+  {
+    "id": -8,
+    "url": "https://www.accuweather.com/",
+    "title": "AccuWeather",
+    "favicon": "ic_accuweather.webp",
+    "viewCount": 22
+  },
+  {
+    "id": -9,
+    "url": "https://bukalapak.go2cloud.org/aff_c?offer_id=15&aff_id=4287&aff_sub=topsite",
+    "title": "Bukalapak",
+    "favicon": "ic_bukalapak.png",
+    "viewCount": 20
+  },
+  {
+    "id": -10,
+    "url": "http://wapshop.gameloft.com/buyfull/tdc.php?mozilla=true&adid=434816",
+    "title": "Gameloft",
+    "favicon": "ic_gameloft.webp",
+    "viewCount": 18
+  },
+  {
+    "id": -11,
+    "url": "https://mail.google.com/",
+    "title": "Gmail",
+    "favicon": "ic_gmail.webp",
+    "viewCount": 16
+  },
+  {
+    "id": -12,
+    "url": "https://m.detik.com",
+    "title": "Detik",
+    "favicon": "ic_detik.png",
+    "viewCount": 14
+  }
+]

@@ -33,6 +33,7 @@ import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.data.TabSwipeTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.strictmodeviolator.StrictModeViolation
 import org.mozilla.telemetry.Telemetry
@@ -4163,6 +4164,7 @@ object TelemetryWrapper {
             addCustomPing(configuration, InstallReferrerMeasurement(context))
             addCustomPing(configuration, ExperimentBucketMeasurement())
             addCustomPing(configuration, ExperimentNameMeasurement())
+            addCustomPing(configuration, ContentPrefMeasurement(context))
         }
 
         internal fun addCustomPing(
@@ -4275,6 +4277,26 @@ object TelemetryWrapper {
 
         companion object {
             private const val MEASUREMENT_EXPERIMENT_NAME = "experiment_name"
+        }
+    }
+
+    private class ContentPrefMeasurement internal constructor(context: Context) : TelemetryMeasurement(MEASUREMENT_INTEREST) {
+
+        private val appContext = context.applicationContext
+
+        override fun flush(): Any {
+            return getContentPref()
+        }
+
+        private fun getContentPref(): String = when (ContentPrefRepo(appContext).getContentPref()) {
+            ContentPrefRepo.ContentPref.Browsing -> "default"
+            ContentPrefRepo.ContentPref.Shopping -> "deals"
+            ContentPrefRepo.ContentPref.Games -> "entertainment"
+            ContentPrefRepo.ContentPref.News -> "news"
+        }
+
+        companion object {
+            private const val MEASUREMENT_INTEREST = "interest"
         }
     }
 }

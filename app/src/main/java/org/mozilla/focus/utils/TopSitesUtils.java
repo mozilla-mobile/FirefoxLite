@@ -36,27 +36,6 @@ public class TopSitesUtils {
     public static final String KEY_FAVICON = "favicon";
     public static final String KEY_IS_DEFAULT = "isDefault";
 
-    /**
-     * get default topsites data from assets and restore it to SharedPreferences
-     *
-     * @param context
-     * @return default TopSites Json Array
-     */
-    public static JSONArray getDefaultSitesJsonArrayFromAssets(Context context) {
-        JSONArray obj = null;
-        try {
-            obj = new JSONArray(loadDefaultSitesFromAssets(context, R.raw.topsites));
-            long lastViewTimestampSystem = System.currentTimeMillis();
-            for (int i = 0; i < obj.length(); i++) {
-                ((JSONObject) obj.get(i)).put("lastViewTimestamp", lastViewTimestampSystem);
-            }
-            saveDefaultSites(context, obj);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return obj;
-    }
-
     public static void clearTopSiteData(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()

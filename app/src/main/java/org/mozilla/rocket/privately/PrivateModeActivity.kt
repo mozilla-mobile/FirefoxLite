@@ -28,7 +28,6 @@ import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.navigation.ScreenNavigator.BrowserScreen
 import org.mozilla.focus.navigation.ScreenNavigator.HomeScreen
-import org.mozilla.focus.navigation.ScreenNavigator.Screen
 import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
@@ -276,7 +275,14 @@ class PrivateModeActivity : BaseActivity(),
         }
     }
 
-    override fun createFirstRunScreen(): Screen {
+    override fun createFirstRunScreen(): ScreenNavigator.FirstrunScreen {
+        if (BuildConfig.DEBUG) {
+            throw RuntimeException("PrivateModeActivity should never show first-run")
+        }
+        TODO("PrivateModeActivity should never show first-run")
+    }
+
+    override fun getFirstRunScreen(): ScreenNavigator.FirstrunScreen? {
         if (BuildConfig.DEBUG) {
             throw RuntimeException("PrivateModeActivity should never show first-run")
         }
