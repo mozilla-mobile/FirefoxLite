@@ -508,16 +508,25 @@
     <!--Button on the dialog of setting default browser. Tap this button will go to system settings-->
     <string name="setting_default_browser_instruction_button">Go to settings</string>
    
-    <!--In-app Promotion, Rate the App-->
+    <!-- In-app Promotion, Rate the App-->
     <!-- The title of the Message to prompt users to rate Rocket on Play Store, %1$s is the App name i.e. Rocket. -->
     <string name="rate_app_dialog_text_title">Love %1$s?</string>
     <string name="rate_app_dialog_text_content">Thank you for choosing our product. Your feedback is important to us.</string>
     <string name="rate_app_dialog_btn_go_rate">Rate Us</string>
     <string name="rate_app_notification_action_rate">RATE US</string>
     <string name="rate_app_dialog_btn_feedback">Leave Feedback</string>
-    <string name="rate_app_notification_action_feedback">FEEDBACK</string>
+    <string name="rate_app_notification_action_feedback">FEEDBACK</string> 
+    <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Lite-v2-5-Survey1</string>
+   
+    <!-- User satisfaction survey-->
+    <!-- The title of the dialog for asking users to take a satisfaction survey, %1$s is the App name. -->
+    <string name="survey_dialog_text_title">How do you like %1$s?</string>
+    <!-- Content text in the dialog. -->
+    <string name="survey_dialog_text_content">Tell us your thoughts about what you love, or what we could be doing better.</string>
+    <!-- A button to go to the survey website. -->
+    <string name="survey_dialog_btn">Take survey</string>
+    <string name="survey_url" translatable="false">https://qsurvey.mozilla.com/s3/Firefox-Lite-v2-5-Survey2</string>
 
-    <string name="rate_app_feedback_url" translatable="false">https://qsurvey.mozilla.com/s3/New-Firefox-Lite-2-0-Input</string>
 
     <!--In-app Promotion, Share app.-->
     <!-- The title of the Message to prompt users to share Rocket with friends, %1$s is the App name i.e. Rocket. -->
