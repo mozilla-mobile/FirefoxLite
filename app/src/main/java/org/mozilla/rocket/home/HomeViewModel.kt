@@ -29,7 +29,9 @@ import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
+import org.mozilla.rocket.home.onboarding.domain.SetThemeOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
+import org.mozilla.rocket.home.onboarding.domain.ShouldShowThemeOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.domain.IsTopSiteFullyPinnedUseCase
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
@@ -77,7 +79,9 @@ class HomeViewModel(
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
     isNewUserUseCase: IsNewUserUseCase,
     shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
-    shouldShowContentHubUseCase: ShouldShowContentHubUseCase
+    shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
+    shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
+    setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase
 ) : ViewModel(), TopSiteClickListener {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -134,7 +138,11 @@ class HomeViewModel(
                 refreshMissionsUseCase()
             }
         }
-        if (isNeedToShowHomeOnboardingUseCase()) {
+        if (shouldShowThemeOnboardingUseCase()) {
+            setThemeOnboardingIsShownUseCase()
+            showThemeSetting.call()
+            TelemetryWrapper.showThemeContextualHint()
+        } else if (isNeedToShowHomeOnboardingUseCase()) {
             completeHomeOnboardingUseCase()
             contentServicesOnboardingTimeSpent = System.currentTimeMillis()
             if (isFirstRun) {
