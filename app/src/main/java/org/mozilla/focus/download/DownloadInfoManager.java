@@ -454,11 +454,6 @@ public class DownloadInfoManager {
         return pojo;
     }
 
-    public String getNetwork(){
-        ConnectivityManager cm = ((ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE));
-        return cm.isActiveNetworkMetered() ? "mobile" : "wifi";
-    }
-
     /* Data class to store queried information from DownloadManager */
     public static class DownloadPojo {
         long downloadId;
