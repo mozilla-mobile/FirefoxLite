@@ -78,7 +78,7 @@ class DownloadInfoRepository {
         DownloadInfoManager.getInstance().delete(rowId, null)
     }
 
-    fun recordDownloadDeletion(downloadId: Long) {
+    fun deleteFromDownloadManager(downloadId: Long) {
 
         val downloadPojo =
             DownloadInfoManager.getInstance().queryDownloadManager(downloadId) ?: return
@@ -86,8 +86,9 @@ class DownloadInfoRepository {
             downloadId.toString(),
             downloadPojo.length.toString(),
             downloadPojo.sizeSoFar / downloadPojo.length * 100,
-            downloadPojo.reason,
-            downloadPojo.status
+            -1,
+            -1
         )
+        DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
     }
 }
