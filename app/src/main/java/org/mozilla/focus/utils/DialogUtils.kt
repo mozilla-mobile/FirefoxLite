@@ -25,6 +25,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -465,6 +466,37 @@ object DialogUtils {
 
     fun showThemeSettingDialog(activity: FragmentActivity, homeViewModel: HomeViewModel) {
         ThemeSettingDialogBuilder(activity, homeViewModel).show()
+    }
+
+    fun showSetAsDefaultBrowserDialog(activity: FragmentActivity) {
+        val customContentView = View.inflate(activity, R.layout.dialog_set_as_default_browser, null)
+        customContentView.findViewById<TextView>(R.id.description).apply {
+            text = context.getString(
+                R.string.set_as_default_dialog_subtitle,
+                context.getString(R.string.app_name)
+            )
+        }
+
+        val dialog = AlertDialog.Builder(activity)
+            .setView(customContentView)
+            .setPositiveButton(R.string.travel_dialog_2_action) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .setNegativeButton(R.string.update_app_dialog_btn_later) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
+            }
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
+
+        val buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        val buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE)
+        @Suppress("DEPRECATION")
+        if (buttonPositive != null && buttonNegative != null) {
+            buttonPositive.setTextAppearance(activity, R.style.TutorialDialogPositiveButtonStyle)
+            buttonNegative.setTextAppearance(activity, R.style.TutorialDialogNegativeButtonStyle)
+        }
     }
 
     fun createMissionCompleteDialog(context: Context, imageUrl: String?): PromotionDialog {
