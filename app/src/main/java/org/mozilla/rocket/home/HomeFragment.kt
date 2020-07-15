@@ -577,6 +577,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 DialogUtils.showThemeSettingDialog(it, homeViewModel)
             }
         })
+        homeViewModel.showSetAsDefaultBrowserOnboarding.observe(viewLifecycleOwner, Observer {
+            activity?.let {
+                DialogUtils.showSetAsDefaultBrowserDialog(it, homeViewModel)
+            }
+        })
     }
 
     private fun showMissionCompleteDialog(mission: Mission) {
