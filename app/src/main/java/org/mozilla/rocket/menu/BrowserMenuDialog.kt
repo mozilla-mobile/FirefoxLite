@@ -86,6 +86,11 @@ class BrowserMenuDialog : BottomSheetDialog {
         super.dismiss()
     }
 
+    override fun onDetachedFromWindow() {
+        uiHandler.removeCallbacksAndMessages(null)
+        super.onDetachedFromWindow()
+    }
+
     private fun initLayout() {
         rootView = layoutInflater.inflate(R.layout.bottom_sheet_browser_menu, null)
         rootView.content_layout.apply {
@@ -317,9 +322,5 @@ class BrowserMenuDialog : BottomSheetDialog {
         uiHandler.postDelayed({
             action()
         }, 150)
-    }
-
-    fun destroy() {
-        uiHandler.removeCallbacksAndMessages(null)
     }
 }

@@ -85,6 +85,11 @@ class HomeMenuDialog : BottomSheetDialog {
         super.dismiss()
     }
 
+    override fun onDetachedFromWindow() {
+        uiHandler.removeCallbacksAndMessages(null)
+        super.onDetachedFromWindow()
+    }
+
     private fun resetStates() {
         rootView.scroll_view.fullScroll(ScrollView.FOCUS_UP)
         hideNewItemHint()
@@ -275,9 +280,5 @@ class HomeMenuDialog : BottomSheetDialog {
         uiHandler.postDelayed({
             action()
         }, 150)
-    }
-
-    fun destroy() {
-        uiHandler.removeCallbacksAndMessages(null)
     }
 }
