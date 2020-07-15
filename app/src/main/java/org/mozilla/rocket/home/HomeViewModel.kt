@@ -25,9 +25,6 @@ import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
-import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
-import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
-import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetThemeOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
@@ -67,8 +64,6 @@ class HomeViewModel(
     private val dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
     private val isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
     private val isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
-    isNeedToShowHomeOnboardingUseCase: IsNeedToShowHomeOnboardingUseCase,
-    completeHomeOnboardingUseCase: CompleteHomeOnboardingUseCase,
     private val checkInMissionUseCase: CheckInMissionUseCase,
     private val completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
     getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
@@ -77,7 +72,6 @@ class HomeViewModel(
     getIsFxAccountUseCase: GetIsFxAccountUseCase,
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
-    isNewUserUseCase: IsNewUserUseCase,
     shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
     shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
     shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
@@ -104,7 +98,6 @@ class HomeViewModel(
     val showTopSiteMenu = SingleLiveEvent<ShowTopSiteMenuData>()
     val showAddTopSiteMenu = SingleLiveEvent<Unit>()
     val openContentPage = SingleLiveEvent<ContentHub.Item>()
-    val showContentServicesOnboardingSpotlight = SingleLiveEvent<Unit>()
     val showToast = SingleLiveEvent<ToastMessage>()
     val openRewardPage = SingleLiveEvent<Unit>()
     val openProfilePage = SingleLiveEvent<Unit>()
@@ -112,7 +105,6 @@ class HomeViewModel(
     val openMissionDetailPage = SingleLiveEvent<Mission>()
     val showContentHubClickOnboarding = getContentHubClickOnboardingEventUseCase()
     val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
-    val dismissContentServiceOnboardingDialog = SingleLiveEvent<Unit>()
     val hideLogoManNotification = SingleLiveEvent<Unit>()
     val executeUriAction = SingleLiveEvent<String>()
     val showKeyboard = SingleLiveEvent<Unit>()
@@ -125,9 +117,7 @@ class HomeViewModel(
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
-    private var contentServicesOnboardingTimeSpent = 0L
     private var hasLoggedShowLogoman = false
-    private var isFirstRun = isNewUserUseCase()
     private var pinTopSiteResult: PinTopSiteUseCase.PinTopSiteResult? = null
 
     init {
@@ -142,27 +132,12 @@ class HomeViewModel(
             setThemeOnboardingIsShownUseCase()
             showThemeSetting.call()
             TelemetryWrapper.showThemeContextualHint()
-        } else if (isNeedToShowHomeOnboardingUseCase()) {
-            completeHomeOnboardingUseCase()
-            contentServicesOnboardingTimeSpent = System.currentTimeMillis()
-            if (isFirstRun) {
-                TelemetryWrapper.showFirstRunContextualHint("onboarding_2_content_services_news_shopping_games")
-            } else {
-                TelemetryWrapper.showWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games")
-            }
-            showContentServicesOnboardingSpotlight.call()
-            // To prevent showing in app message when onboarding
-            FirebaseHelper.getFirebase().setIamMessagesSuppressed(true)
         } else if (shouldShowShoppingSearchOnboardingUseCase()) {
             setShoppingSearchOnboardingIsShownUseCase()
             showShoppingSearchOnboardingSpotlight.call()
             // To prevent showing in app message when onboarding
             FirebaseHelper.getFirebase().setIamMessagesSuppressed(true)
         }
-    }
-
-    fun onContentServicesOnboardingSpotlightDismiss() {
-        FirebaseHelper.getFirebase().setIamMessagesSuppressed(false)
     }
 
     fun onShoppingSearchOnboardingSpotlightDismiss() {
@@ -502,16 +477,6 @@ class HomeViewModel(
 
     fun onRedeemCompletedDialogClosed() {
         TelemetryWrapper.clickChallengeCompleteMessage(TelemetryWrapper.Extra_Value.CLOSE)
-    }
-
-    fun onContentServiceOnboardingButtonClicked() {
-        val timeSpent = System.currentTimeMillis() - contentServicesOnboardingTimeSpent
-        if (isFirstRun) {
-            TelemetryWrapper.clickFirstRunContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
-        } else {
-            TelemetryWrapper.clickWhatsnewContextualHint("onboarding_2_content_services_news_shopping_games", timeSpent, 0, true)
-        }
-        dismissContentServiceOnboardingDialog.call()
     }
 
     fun onNewTabButtonClicked() {

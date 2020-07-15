@@ -1,6 +1,5 @@
 package org.mozilla.rocket.home
 
-import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -104,7 +103,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     private lateinit var downloadIndicatorViewModel: DownloadIndicatorViewModel
     private lateinit var themeManager: ThemeManager
     private lateinit var topSitesAdapter: DelegateAdapter
-    private lateinit var contentServiceSpotlightDialog: Dialog
     private var currentShoppingBtnVisibleState = false
 
     private val topSitesPageChangeCallback = object : OnPageChangeCallback() {
@@ -476,28 +474,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         logo_man_notification.isVisible = false
     }
 
-    private fun showContentServiceSpotlight() {
-        val dismissListener = DialogInterface.OnDismissListener {
-            restoreStatusBarColor()
-            homeViewModel.onContentServicesOnboardingSpotlightDismiss()
-        }
-        val clickOkButtonListener = View.OnClickListener {
-            homeViewModel.onContentServiceOnboardingButtonClicked()
-        }
-        content_hub.post {
-            if (isAdded) {
-                setOnboardingStatusBarColor()
-                contentServiceSpotlightDialog = DialogUtils.showContentServiceOnboardingSpotlight(requireActivity(), content_hub_layout, dismissListener, clickOkButtonListener)
-            }
-        }
-    }
-
-    private fun closeContentServiceSpotlight() {
-        if (::contentServiceSpotlightDialog.isInitialized) {
-            contentServiceSpotlightDialog.dismiss()
-        }
-    }
-
     private fun showShoppingSearchSpotlight() {
         val dismissListener = DialogInterface.OnDismissListener {
             restoreStatusBarColor()
@@ -524,12 +500,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     private fun initOnboardingSpotlight() {
-        homeViewModel.showContentServicesOnboardingSpotlight.observe(viewLifecycleOwner, Observer {
-            showContentServiceSpotlight()
-        })
-        homeViewModel.dismissContentServiceOnboardingDialog.observe(viewLifecycleOwner, Observer {
-            closeContentServiceSpotlight()
-        })
         homeViewModel.showShoppingSearchOnboardingSpotlight.observe(viewLifecycleOwner, Observer {
             currentShoppingBtnVisibleState = shopping_button.isVisible
             shopping_button.isVisible = true

@@ -137,7 +137,6 @@ object TelemetryWrapper {
 
         const val BROWSER = "browser"
         const val BROWSER_CONTEXTMENU = "browser_contextmenu"
-        const val FIRSTRUN = "firstrun"
         const val FIRSTRUN_PUSH = "firstrun_push"
 
         const val FEEDBACK = "feedback"
@@ -201,7 +200,6 @@ object TelemetryWrapper {
         internal const val FILE = "file"
         internal const val IMAGE = "image"
         internal const val LINK = "link"
-        internal const val FINISH = "finish"
         internal const val INFO = "info"
 
         internal const val ENTER = "enter"
@@ -236,7 +234,6 @@ object TelemetryWrapper {
         internal const val APPLY = "apply"
 
         internal const val FIRSTRUN = "firstrun"
-        internal const val WHATSNEW = "whatsnew"
         internal const val IN_APP_MESSAGE = "in_app_message"
         internal const val VERTICAL = "vertical"
         internal const val TAB_SWIPE = "tab_swipe"
@@ -2556,78 +2553,6 @@ object TelemetryWrapper {
                 .extra(Extra.PAGE, pageIndex.toString())
                 .extra(Extra.FINISH, finish.toString())
                 .extra(Extra.INTEREST, interest)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show Firstrun Contextual Hint",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.FIRSTRUN,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
-            ])
-    fun showFirstRunContextualHint(messageId: String) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.FIRSTRUN)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show Whatsnew Contextual Hint",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.WHATSNEW,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
-            ])
-    fun showWhatsnewContextualHint(messageId: String) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.WHATSNEW)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Firstrun Contextual Hint",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.FIRSTRUN,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id"),
-                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
-                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
-            ])
-    fun clickFirstRunContextualHint(messageId: String, timeSpent: Long, pageIndex: Int, finish: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.FIRSTRUN)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .extra(Extra.ON, timeSpent.toString())
-                .extra(Extra.PAGE, pageIndex.toString())
-                .extra(Extra.FINISH, finish.toString())
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Whatsnew Contextual Hint",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.WHATSNEW,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id"),
-                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
-                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
-            ])
-    fun clickWhatsnewContextualHint(messageId: String, timeSpent: Long, pageIndex: Int, finish: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.WHATSNEW)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .extra(Extra.ON, timeSpent.toString())
-                .extra(Extra.PAGE, pageIndex.toString())
-                .extra(Extra.FINISH, finish.toString())
                 .queue()
     }
 

@@ -21,7 +21,6 @@ import org.mozilla.focus.utils.Settings;
 public class BeforeTestTask {
     private boolean enableRateAppPromotion;
     private boolean skipFirstRun;
-    private boolean skipHomePageOnboarding;
     private boolean skipHomeShoppingSearchOnboarding;
     private boolean skipHomeThemeOnboarding;
     private boolean clearBrowsingHistory;
@@ -31,7 +30,6 @@ public class BeforeTestTask {
     public BeforeTestTask(Builder builder) {
         this.enableRateAppPromotion = builder.enableRateAppPromotion;
         this.skipFirstRun = builder.skipFirstRun;
-        this.skipHomePageOnboarding = builder.skipHomePageOnboarding;
         this.skipHomeShoppingSearchOnboarding = builder.skipHomeShoppingSearchOnbaording;
         this.skipHomeThemeOnboarding = builder.skipHomeThemeOnbaording;
         this.clearBrowsingHistory = builder.clearBrowsingHistory;
@@ -54,11 +52,6 @@ public class BeforeTestTask {
             NewFeatureNotice.getInstance(context).setFirstRunDidShow();
         } else {
             NewFeatureNotice.getInstance(context).resetFirstRunDidShow();
-        }
-        if (this.skipHomePageOnboarding) {
-            NewFeatureNotice.getInstance(context).setHomePageOnboardingDidShow();
-        } else {
-            NewFeatureNotice.getInstance(context).resetHomePageOnboardingDidShow();
         }
         if (this.skipHomeShoppingSearchOnboarding) {
             NewFeatureNotice.getInstance(context).setHomeShoppingSearchOnboardingDidShow();
@@ -103,7 +96,6 @@ public class BeforeTestTask {
         private boolean enableDownloadIndicatorIntro;
         private boolean enableRateAppPromotion;
         private boolean skipFirstRun;
-        private boolean skipHomePageOnboarding;
         private boolean skipHomeShoppingSearchOnbaording;
         private boolean skipHomeThemeOnbaording;
         private boolean clearBrowsingHistory;
@@ -111,7 +103,6 @@ public class BeforeTestTask {
         public Builder() {
             this.enableRateAppPromotion = false;
             this.skipFirstRun = true;
-            this.skipHomePageOnboarding = true;
             this.skipHomeShoppingSearchOnbaording = true;
             this.skipHomeThemeOnbaording = true;
             this.clearBrowsingHistory = false;
@@ -126,11 +117,6 @@ public class BeforeTestTask {
 
         public Builder setSkipFirstRun(boolean skipFirstRun) {
             this.skipFirstRun = skipFirstRun;
-            return this;
-        }
-
-        public Builder setSkipHomePageOnboarding(boolean skipHomePageOnboarding) {
-            this.skipHomePageOnboarding = skipHomePageOnboarding;
             return this;
         }
 

@@ -313,40 +313,6 @@ object DialogUtils {
                     .build()
                     .also { it.show() }
 
-    fun showContentServiceOnboardingSpotlight(
-        activity: FragmentActivity,
-        targetView: View,
-        dismissListener: DialogInterface.OnDismissListener,
-        ok: View.OnClickListener?
-    ): Dialog = SpotlightDialog.Builder(activity, targetView)
-            .spotlightConfigs(
-                RectangleSpotlightConfigs(
-                    width = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_width),
-                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.content_service_focus_view_radius)
-                )
-            )
-            .addView(
-                activity.inflate(R.layout.onboarding_spotlight_content_services_logo_man),
-                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_END)
-                    addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-                    rightMargin = activity.dpToPx(27.6f)
-                }
-            )
-            .setAttachedView(
-                activity.inflate(R.layout.content_services_onboarding_attached_view).apply {
-                    next.setOnClickListener(ok)
-                },
-                AttachedViewConfigs(
-                    position = AttachedPosition.BOTTOM,
-                    gravity = AttachedGravity.CENTER_SCREEN
-                )
-            )
-            .cancelOnTouchOutside(false)
-            .dismissListener(dismissListener)
-            .build()
-            .also { it.show() }
-
     fun showContentServiceRequestClickSpotlight(
         activity: FragmentActivity,
         targetView: View,

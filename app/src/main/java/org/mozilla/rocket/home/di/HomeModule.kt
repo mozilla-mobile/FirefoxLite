@@ -22,9 +22,6 @@ import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
-import org.mozilla.rocket.home.onboarding.CompleteHomeOnboardingUseCase
-import org.mozilla.rocket.home.onboarding.IsNeedToShowHomeOnboardingUseCase
-import org.mozilla.rocket.home.onboarding.domain.IsNewUserUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetThemeOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
@@ -73,8 +70,6 @@ object HomeModule {
         dismissLogoManNotificationUseCase: DismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase: IsMsrpAvailableUseCase,
         isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
-        isNeedToShowHomeOnboardingUseCase: IsNeedToShowHomeOnboardingUseCase,
-        completeHomeOnboardingUseCase: CompleteHomeOnboardingUseCase,
         checkInMissionUseCase: CheckInMissionUseCase,
         completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
         getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
@@ -83,7 +78,6 @@ object HomeModule {
         getIsFxAccountUseCase: GetIsFxAccountUseCase,
         shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
-        isNewUserUseCase: IsNewUserUseCase,
         shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
         shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
         shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
@@ -103,8 +97,6 @@ object HomeModule {
         dismissLogoManNotificationUseCase,
         isMsrpAvailableUseCase,
         isHomeScreenShoppingButtonEnabledUseCase,
-        isNeedToShowHomeOnboardingUseCase,
-        completeHomeOnboardingUseCase,
         checkInMissionUseCase,
         completeJoinMissionOnboardingUseCase,
         getContentHubClickOnboardingEventUseCase,
@@ -113,7 +105,6 @@ object HomeModule {
         getIsFxAccountUseCase,
         shouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase,
-        isNewUserUseCase,
         shouldShowNewMenuItemHintUseCase,
         shouldShowContentHubUseCase,
         shouldShowThemeOnboardingUseCase,
@@ -241,18 +232,6 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideIsNeedToShowHomeOnboardingUseCase(newFeatureNotice: NewFeatureNotice): IsNeedToShowHomeOnboardingUseCase =
-            IsNeedToShowHomeOnboardingUseCase(newFeatureNotice)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideCompleteLiteUpdateUseCase(newFeatureNotice: NewFeatureNotice): CompleteHomeOnboardingUseCase =
-            CompleteHomeOnboardingUseCase(newFeatureNotice)
-
-    @JvmStatic
-    @Singleton
-    @Provides
     fun provideShouldShowShoppingSearchOnboardingUseCase(
         shoppingSearchRepository: ShoppingSearchRepository,
         newFeatureNotice: NewFeatureNotice
@@ -264,12 +243,6 @@ object HomeModule {
     @Provides
     fun provideSetShoppingSearchOnboardingIsShownUseCase(newFeatureNotice: NewFeatureNotice): SetShoppingSearchOnboardingIsShownUseCase =
             SetShoppingSearchOnboardingIsShownUseCase(newFeatureNotice)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideIsNewUserUseCase(newFeatureNotice: NewFeatureNotice): IsNewUserUseCase =
-            IsNewUserUseCase(newFeatureNotice)
 
     @JvmStatic
     @Provides
