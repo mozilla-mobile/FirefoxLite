@@ -82,10 +82,15 @@ class DownloadInfoRepository {
 
         val downloadPojo =
             DownloadInfoManager.getInstance().queryDownloadManager(downloadId) ?: return
+        val progress = if (downloadPojo.length == 0L) {
+            0.0
+        } else {
+            downloadPojo.sizeSoFar.times(100).toDouble() / downloadPojo.length
+        }
         TelemetryWrapper.endDownloadFile(
             downloadId,
             downloadPojo.length,
-            downloadPojo.sizeSoFar / (downloadPojo.length + 1) * 100,
+            progress,
             DownloadInfo.STATUS_DELETED,
             DownloadInfo.REASON_DEFAULT
         )

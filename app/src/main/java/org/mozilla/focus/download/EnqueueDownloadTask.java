@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -108,9 +109,9 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
                             GetDownloadFileHeaderTask.HeaderInfo headerInfo = new GetDownloadFileHeaderTask().execute(download.getUrl()).get();
                             TelemetryWrapper.startDownloadFile(downloadInfo.getDownloadId().toString(), download.getContentLength() / 1024, headerInfo.isValidSSL, headerInfo.isSupportRange);
                         } catch (ExecutionException e) {
-                            Log.e(TAG,"Fail sending download telemetry because ExecutionException");
+                            Log.e(TAG, "Fail sending download telemetry because ExecutionException");
                         } catch (InterruptedException e) {
-                            Log.e(TAG,"Fail sending download telemetry because InterruptedException");
+                            Log.e(TAG, "Fail sending download telemetry because InterruptedException");
                         }
 
                         DownloadInfoManager.notifyRowUpdated(context, id);

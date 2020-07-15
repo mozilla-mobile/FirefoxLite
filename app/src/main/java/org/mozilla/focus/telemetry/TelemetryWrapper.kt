@@ -4031,7 +4031,7 @@ object TelemetryWrapper {
     @JvmStatic
     fun startDownloadFile(
         downloadId: String,
-        fileSize: Double,
+        fileSize: Long,
         isValidSSL: Boolean,
         isSupportRange: Boolean
     ) {
@@ -4062,7 +4062,7 @@ object TelemetryWrapper {
     @JvmStatic
     fun endDownloadFile(
         downloadId: Long,
-        fileSize: Double,
+        fileSize: Long,
         progress: Double,
         status: Int,
         reason: Int
