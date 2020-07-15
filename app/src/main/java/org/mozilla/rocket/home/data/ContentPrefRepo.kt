@@ -23,7 +23,7 @@ class ContentPrefRepo(private val appContext: Context) {
         preference.edit().putInt(SHARED_PREF_KEY_CONTENT_PREF, contentPref.id).apply()
     }
 
-    sealed class ContentPref(val id: Int, val dataResId: Int) {
+    sealed class ContentPref(val id: Int, val topSitesResId: Int) {
         object Browsing : ContentPref(0, R.raw.topsites_browsing)
         object Shopping : ContentPref(1, R.raw.topsites_shopping)
         object Games : ContentPref(2, R.raw.topsites_games)

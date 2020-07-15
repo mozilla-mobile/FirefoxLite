@@ -11,6 +11,6 @@ class RemoveTopSiteUseCase(
 ) {
 
     suspend operator fun invoke(site: Site.UrlSite) {
-        topSitesRepo.remove(site.toSiteModel(), contentPrefRepo.getContentPref().dataResId)
+        topSitesRepo.remove(site.toSiteModel(), contentPrefRepo.getContentPref().topSitesResId)
     }
 }
