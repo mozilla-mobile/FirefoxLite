@@ -4,6 +4,7 @@ import android.net.TrafficStats;
 import android.os.AsyncTask;
 
 import org.mozilla.focus.network.SocketTags;
+import org.mozilla.focus.utils.AppConstants;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -24,6 +25,9 @@ public class GetDownloadFileHeaderTask extends AsyncTask<String, Void, GetDownlo
         TrafficStats.setThreadStatsTag(SocketTags.DOWNLOADS);
         HttpURLConnection connection = null;
         HeaderInfo headerInfo = new HeaderInfo();
+        if (AppConstants.isDevBuild()) {
+            return headerInfo;
+        }
         try {
             connection = (HttpURLConnection) new URL(params[0]).openConnection();
             connection.setRequestMethod("HEAD");
