@@ -406,6 +406,8 @@ class MainActivity : BaseActivity(),
     public override fun onDestroy() {
         sessionManager?.destroy()
         unregisterFirebaseEventReceiver()
+        homeMenu.destroy()
+        browserMenu.destroy()
         super.onDestroy()
     }
 
