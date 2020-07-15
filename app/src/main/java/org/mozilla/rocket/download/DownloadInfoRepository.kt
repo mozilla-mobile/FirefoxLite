@@ -83,11 +83,11 @@ class DownloadInfoRepository {
         val downloadPojo =
             DownloadInfoManager.getInstance().queryDownloadManager(downloadId) ?: return
         TelemetryWrapper.endDownloadFile(
-            downloadId.toString(),
-            downloadPojo.length.toString(),
-            downloadPojo.sizeSoFar / downloadPojo.length * 100,
-            -1,
-            -1
+            downloadId,
+            downloadPojo.length,
+            downloadPojo.sizeSoFar / (downloadPojo.length + 1) * 100,
+            DownloadInfo.STATUS_DELETED,
+            DownloadInfo.REASON_DEFAULT
         )
         DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
     }

@@ -15,29 +15,27 @@ import javax.net.ssl.SSLHandshakeException;
 public class GetDownloadFileHeaderTask extends AsyncTask<String, Void, GetDownloadFileHeaderTask.HeaderInfo> {
 
     public static class HeaderInfo {
-        boolean isSupportRange;
-        boolean isSupportSSL;
+        boolean isSupportRange = false;
+        boolean isValidSSL = true;
     }
 
     @Override
     protected HeaderInfo doInBackground(String... params) {
         TrafficStats.setThreadStatsTag(SocketTags.DOWNLOADS);
         HttpURLConnection connection = null;
-        boolean supportRange = false;
-        boolean isSSL = true;
-        int responseCode = 0;
+        HeaderInfo headerInfo = new HeaderInfo();
         try {
             connection = (HttpURLConnection) new URL(params[0]).openConnection();
             connection.setRequestMethod("HEAD");
             String headerField = connection.getHeaderField("Accept-Ranges");
             if (headerField != null && headerField.equals("bytes")) {
-                supportRange = true;
+                headerInfo.isSupportRange = true;
             }
-            responseCode = connection.getResponseCode();
+            connection.getResponseCode();
             connection.disconnect();
 
         } catch (SSLHandshakeException e) {
-            isSSL = false;
+            headerInfo.isValidSSL = false;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -45,14 +43,6 @@ public class GetDownloadFileHeaderTask extends AsyncTask<String, Void, GetDownlo
                 connection.disconnect();
             }
         }
-
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            HeaderInfo headerInfo = new HeaderInfo();
-            headerInfo.isSupportRange = supportRange;
-            headerInfo.isSupportSSL = isSSL;
-            return headerInfo;
-        } else {
-            return null;
-        }
+        return headerInfo;
     }
 }
