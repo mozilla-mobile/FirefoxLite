@@ -115,6 +115,7 @@ class HomeViewModel(
     val homeBackgroundColorThemeClicked = SingleLiveEvent<ThemeManager.ThemeSet>()
     val showThemeSetting = SingleLiveEvent<Unit>()
     val showSetAsDefaultBrowserOnboarding = SingleLiveEvent<Unit>()
+    val tryToSetDefaultBrowser = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -379,6 +380,7 @@ class HomeViewModel(
     }
 
     fun onSetAsDefaultBrowserClicked() {
+        tryToSetDefaultBrowser.call()
     }
 
     fun onClearBrowsingHistory() {

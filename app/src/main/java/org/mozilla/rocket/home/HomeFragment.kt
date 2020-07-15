@@ -80,6 +80,8 @@ import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_UNREAD
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_WARNING
 import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.ui.RewardActivity
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserHelper
+import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.util.ResourceUtils.getVisibility
@@ -96,13 +98,17 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     @Inject
     lateinit var downloadIndicatorViewModelCreator: Lazy<DownloadIndicatorViewModel>
     @Inject
+    lateinit var defaultBrowserPreferenceViewModelCreator: Lazy<DefaultBrowserPreferenceViewModel>
+    @Inject
     lateinit var appContext: Context
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var downloadIndicatorViewModel: DownloadIndicatorViewModel
+    private lateinit var defaultBrowserPreferenceViewModel: DefaultBrowserPreferenceViewModel
     private lateinit var themeManager: ThemeManager
     private lateinit var topSitesAdapter: DelegateAdapter
+    private lateinit var defaultBrowserHelper: DefaultBrowserHelper
     private var currentShoppingBtnVisibleState = false
 
     private val topSitesPageChangeCallback = object : OnPageChangeCallback() {
@@ -120,6 +126,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel = getActivityViewModel(homeViewModelCreator)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
         downloadIndicatorViewModel = getActivityViewModel(downloadIndicatorViewModelCreator)
+        defaultBrowserPreferenceViewModel = getActivityViewModel(defaultBrowserPreferenceViewModelCreator)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -138,6 +145,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         observeDarkTheme()
         initOnboardingSpotlight()
         observeAddNewTopSites()
+        observeSetDefaultBrowser()
         observeActions()
     }
 
@@ -352,6 +360,16 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.onPageForeground()
     }
 
+    override fun onResume() {
+        super.onResume()
+        defaultBrowserPreferenceViewModel.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        defaultBrowserPreferenceViewModel.onPause()
+    }
+
     override fun onStop() {
         super.onStop()
         homeViewModel.onPageBackground()
@@ -536,6 +554,23 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 .setAction(R.string.add_top_site_button) { homeViewModel.onAddMoreTopSiteSnackBarClicked() }
                 .show()
         })
+    }
+
+    private fun observeSetDefaultBrowser() {
+        activity?.let { activity ->
+            defaultBrowserHelper = DefaultBrowserHelper(activity, defaultBrowserPreferenceViewModel)
+            homeViewModel.tryToSetDefaultBrowser.observe(viewLifecycleOwner, Observer {
+                defaultBrowserPreferenceViewModel.performAction()
+            })
+            defaultBrowserPreferenceViewModel.openDefaultAppsSettings.observe(viewLifecycleOwner, Observer { defaultBrowserHelper.openDefaultAppsSettings() })
+            defaultBrowserPreferenceViewModel.openAppDetailSettings.observe(viewLifecycleOwner, Observer { defaultBrowserHelper.openAppDetailSettings() })
+            defaultBrowserPreferenceViewModel.openSumoPage.observe(viewLifecycleOwner, Observer { defaultBrowserHelper.openSumoPage() })
+            defaultBrowserPreferenceViewModel.triggerWebOpen.observe(viewLifecycleOwner, Observer { defaultBrowserHelper.triggerWebOpen() })
+            defaultBrowserPreferenceViewModel.openDefaultAppsSettingsTutorialDialog.observe(viewLifecycleOwner, Observer { DialogUtils.showGoToSystemAppsSettingsDialog(activity, defaultBrowserPreferenceViewModel) })
+            defaultBrowserPreferenceViewModel.openUrlTutorialDialog.observe(viewLifecycleOwner, Observer { DialogUtils.showOpenUrlDialog(activity, defaultBrowserPreferenceViewModel) })
+            defaultBrowserPreferenceViewModel.successToSetDefaultBrowser.observe(viewLifecycleOwner, Observer { defaultBrowserHelper.showSuccessMessage() })
+            defaultBrowserPreferenceViewModel.failToSetDefaultBrowser.observe(viewLifecycleOwner, Observer { defaultBrowserHelper.showFailMessage() })
+        }
     }
 
     private fun scrollToTopSitePage(page: Int) =
