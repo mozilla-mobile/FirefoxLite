@@ -22,6 +22,7 @@ public class DownloadInfo {
     // DownloadManager.COLUMN_STATUS field is not available because no matching entry is available
     // in the DownloadManager's table.
     public static final int STATUS_DELETED = -1;
+    public static final int REASON_DEFAULT = -2;
 
     private Long RowId;
     private Long DownloadId;

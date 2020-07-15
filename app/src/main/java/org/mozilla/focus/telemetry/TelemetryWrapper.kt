@@ -57,6 +57,7 @@ import org.mozilla.telemetry.serialize.JSONPingSerializer
 import org.mozilla.telemetry.storage.FileTelemetryStorage
 import org.mozilla.threadutils.ThreadUtils
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.math.roundToInt
 
 object TelemetryWrapper {
     private const val TELEMETRY_APP_NAME_ZERDA = "Zerda"
@@ -4030,11 +4031,13 @@ object TelemetryWrapper {
     @JvmStatic
     fun startDownloadFile(
         downloadId: String,
+        fileSize: Double,
         isValidSSL: Boolean,
         isSupportRange: Boolean
     ) {
         EventBuilder(Category.ACTION, Method.START, Object.DOWNLOAD, Value.FILE)
             .extra(Extra.DOWNLOAD_ID, downloadId)
+            .extra(Extra.FILE_SIZE, (fileSize / 1024).toString())
             .extra(Extra.START_TIME, System.currentTimeMillis().toString())
             .extra(Extra.SUPPORT_RESUME, isSupportRange.toString())
             .extra(Extra.VALID_SSL, isValidSSL.toString())
@@ -4058,17 +4061,17 @@ object TelemetryWrapper {
     )
     @JvmStatic
     fun endDownloadFile(
-        downloadId: String,
-        fileSize: String,
+        downloadId: Long,
+        fileSize: Double,
         progress: Double,
         status: Int,
         reason: Int
     ) {
         EventBuilder(Category.ACTION, Method.END, Object.DOWNLOAD, Value.FILE)
-            .extra(Extra.DOWNLOAD_ID, downloadId)
+            .extra(Extra.DOWNLOAD_ID, downloadId.toString())
             .extra(Extra.END_TIME, System.currentTimeMillis().toString())
-            .extra(Extra.FILE_SIZE, fileSize.toString())
-            .extra(Extra.PROGRESS, progress.toString())
+            .extra(Extra.FILE_SIZE, (fileSize / 1024).toString())
+            .extra(Extra.PROGRESS, progress.roundToInt().toString())
             .extra(Extra.STATUS, status.toString())
             .extra(Extra.REASON, reason.toString())
             .extra(Extra.NETWORK, network())

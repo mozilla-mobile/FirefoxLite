@@ -34,11 +34,11 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
         // This means it's aborted automatically or download completed.
         // If it's stopped in the notification, the event will be send out later.
         if (downloadPojo != null) {
-            TelemetryWrapper.endDownloadFile(String.valueOf(downloadId),
-                    downloadPojo.length + "",
-                    downloadPojo.sizeSoFar / (downloadPojo.length + 1),
-                    downloadPojo.reason,
-                    downloadPojo.status);
+            TelemetryWrapper.endDownloadFile(downloadId,
+                    downloadPojo.length,
+                    downloadPojo.sizeSoFar / (downloadPojo.length + 1) * 100,
+                    downloadPojo.status,
+                    downloadPojo.reason);
         }
 
         DownloadInfoManager.getInstance().queryByDownloadId(downloadId, new DownloadInfoManager.AsyncQueryListener() {
@@ -48,11 +48,13 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                     final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
                     if (downloadInfo.getStatus() != DownloadManager.STATUS_SUCCESSFUL) {
                         // there's data in DB, this means deletion happens outside of our UI
-                        TelemetryWrapper.endDownloadFile(String.valueOf(downloadId),
-                                "-1",
+                        // when we delete the download, we also remove it from DM. So we can't get
+                        // the file size and progress anymore.
+                        TelemetryWrapper.endDownloadFile(downloadId,
+                                -1,
                                 0,
-                                0,
-                                DownloadInfo.STATUS_DELETED);
+                                DownloadInfo.STATUS_DELETED,
+                                DownloadInfo.REASON_DEFAULT);
                     }
                     if ((downloadInfo.getStatus() == DownloadManager.STATUS_SUCCESSFUL)
                             && !TextUtils.isEmpty(downloadInfo.getFileUri())) {
