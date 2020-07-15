@@ -430,8 +430,8 @@ public class DownloadInfoManager {
                 pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION));
                 pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                 pojo.reason = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_REASON));
-                pojo.length = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                pojo.sizeSoFar = managerCursor.getDouble(managerCursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                pojo.length = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                pojo.sizeSoFar = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
                 pojo.timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP));
                 pojo.mediaUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI));
                 pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
@@ -460,8 +460,8 @@ public class DownloadInfoManager {
         long downloadId;
         String desc;
         String mime;
-        public double length;
-        public double sizeSoFar;
+        public long length;
+        public long sizeSoFar;
         public int status;
         public int reason;
         public long timeStamp;

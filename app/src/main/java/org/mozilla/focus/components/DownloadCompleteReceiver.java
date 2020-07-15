@@ -34,9 +34,10 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
         // This means it's aborted automatically or download completed.
         // If it's stopped in the notification, the event will be send out later.
         if (downloadPojo != null) {
+            double progress = downloadPojo.length != 0.0 ? downloadPojo.sizeSoFar * 100.0 / downloadPojo.length : 0.0;
             TelemetryWrapper.endDownloadFile(downloadId,
                     downloadPojo.length,
-                    downloadPojo.sizeSoFar / (downloadPojo.length + 1) * 100,
+                    progress,
                     downloadPojo.status,
                     downloadPojo.reason);
         }
@@ -51,7 +52,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                         // when we delete the download, we also remove it from DM. So we can't get
                         // the file size and progress anymore.
                         TelemetryWrapper.endDownloadFile(downloadId,
-                                -1,
+                                0,
                                 0,
                                 DownloadInfo.STATUS_DELETED,
                                 DownloadInfo.REASON_DEFAULT);
