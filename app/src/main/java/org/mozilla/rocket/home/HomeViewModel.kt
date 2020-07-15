@@ -222,7 +222,7 @@ class HomeViewModel(
 
     private fun List<Site>.addDummyTopSites(): List<Site> {
         val siteListWithDummySite = this.toMutableList()
-        val dummySiteSize = TOP_SITES_PER_PAGE * 2 - this.size
+        val dummySiteSize = TOP_SITES_PER_PAGE * TOP_SITES_MAX_PAGE_SIZE - this.size
         for (i in 0 until dummySiteSize) {
             siteListWithDummySite.add(Site.DummySite)
         }
