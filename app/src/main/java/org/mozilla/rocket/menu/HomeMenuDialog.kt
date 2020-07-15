@@ -109,23 +109,31 @@ class HomeMenuDialog : BottomSheetDialog {
             })
 
             menu_screenshots.setOnClickListener {
-                cancel()
-                chromeViewModel.showScreenshots()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.showScreenshots()
+                }
             }
             menu_bookmark.setOnClickListener {
-                cancel()
-                chromeViewModel.showBookmarks.call()
-                TelemetryWrapper.clickMenuBookmark()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.showBookmarks.call()
+                    TelemetryWrapper.clickMenuBookmark()
+                }
             }
             menu_history.setOnClickListener {
-                cancel()
-                chromeViewModel.showHistory.call()
-                TelemetryWrapper.clickMenuHistory()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.showHistory.call()
+                    TelemetryWrapper.clickMenuHistory()
+                }
             }
             menu_download.setOnClickListener {
-                cancel()
-                chromeViewModel.showDownloadPanel.call()
-                TelemetryWrapper.clickMenuDownload()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.showDownloadPanel.call()
+                    TelemetryWrapper.clickMenuDownload()
+                }
             }
         }
     }
@@ -156,13 +164,17 @@ class HomeMenuDialog : BottomSheetDialog {
             })
 
             btn_private_browsing.setOnClickListener {
-                cancel()
-                chromeViewModel.togglePrivateMode.call()
-                TelemetryWrapper.togglePrivateMode(true)
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.togglePrivateMode.call()
+                    TelemetryWrapper.togglePrivateMode(true)
+                }
             }
             menu_smart_shopping_search.setOnClickListener {
-                cancel()
-                showShoppingSearch()
+                postDelayClickEvent(it) {
+                    cancel()
+                    showShoppingSearch()
+                }
             }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
@@ -181,30 +193,40 @@ class HomeMenuDialog : BottomSheetDialog {
                 TelemetryWrapper.changeMenuVerticalToggle(isChecked)
             }
             menu_add_top_sites.setOnClickListener {
-                cancel()
-                chromeViewModel.onAddNewTopSiteMenuClicked()
-                TelemetryWrapper.clickMenuAddTopsite()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.onAddNewTopSiteMenuClicked()
+                    TelemetryWrapper.clickMenuAddTopsite()
+                }
             }
             menu_themes.setOnClickListener {
-                cancel()
-                chromeViewModel.onThemeSettingMenuClicked()
-                TelemetryWrapper.clickMenuTheme()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.onThemeSettingMenuClicked()
+                    TelemetryWrapper.clickMenuTheme()
+                }
             }
             menu_preferences.setOnClickListener {
-                cancel()
-                chromeViewModel.checkToDriveDefaultBrowser()
-                chromeViewModel.openPreference.call()
-                TelemetryWrapper.clickMenuSettings()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.checkToDriveDefaultBrowser()
+                    chromeViewModel.openPreference.call()
+                    TelemetryWrapper.clickMenuSettings()
+                }
             }
             menu_delete.setOnClickListener {
-                cancel()
-                onDeleteClicked()
-                TelemetryWrapper.clickMenuClearCache()
+                postDelayClickEvent(it) {
+                    cancel()
+                    onDeleteClicked()
+                    TelemetryWrapper.clickMenuClearCache()
+                }
             }
             menu_exit.setOnClickListener {
-                cancel()
-                chromeViewModel.exitApp.call()
-                TelemetryWrapper.clickMenuExit()
+                postDelayClickEvent(it) {
+                    cancel()
+                    chromeViewModel.exitApp.call()
+                    TelemetryWrapper.clickMenuExit()
+                }
             }
         }
     }
@@ -240,5 +262,14 @@ class HomeMenuDialog : BottomSheetDialog {
     private fun showShoppingSearch() {
         val context: Context = this.context ?: return
         context.startActivity(ShoppingSearchActivity.getStartIntent(context))
+    }
+
+    /**
+     * Post delay click event to wait the clicking feedback shows
+     */
+    private fun postDelayClickEvent(view: View, action: () -> Unit) {
+        view.postDelayed({
+            action()
+        }, 150)
     }
 }
