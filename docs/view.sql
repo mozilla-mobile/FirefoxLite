@@ -89,6 +89,8 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('panel') ) AND (event_value IN ('add_topsite') ) THEN 'Rocket -  Select to Add Topsite' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('theme') ) THEN 'Rocket -  Show Theme Contextual Hint' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('theme') ) THEN 'Rocket -  Click Theme Contextual Hint' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('message') ) AND (event_value IN ('go_set_default') ) THEN 'Rocket -  Show Go-Set-Default Message' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('message') ) AND (event_value IN ('go_set_default') ) THEN 'Rocket -  Click Go-Set-Default Message' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('add') ) AND (event_object IN ('tab') ) AND (event_value IN ('home') ) THEN 'Rocket -  Search in Home and add a tab' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('search_bar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Enter an url in SearchBar' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('select_query') ) AND (event_object IN ('search_bar') ) AND event_value IS NULL THEN 'Rocket -  Use SearchSuggestion SearchBar' 

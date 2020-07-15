@@ -267,6 +267,7 @@ object TelemetryWrapper {
         internal const val SET_DEFAULT_BY_LINK = "set_default_by_link"
         internal const val SET_DEFAULT_SUCCESS = "set_default_success"
         internal const val SET_DEFAULT_TRY_AGAIN = "set_default_try_again"
+        internal const val GO_SET_DEFAULT = "go_set_default"
     }
 
     internal object Extra {
@@ -1528,6 +1529,34 @@ object TelemetryWrapper {
     fun clickThemeContextualHint(name: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.THEME)
                 .extra(Extra.THEME, name)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Go-Set-Default Message",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.MESSAGE,
+            value = Value.GO_SET_DEFAULT,
+            extras = [])
+    @JvmStatic
+    fun showGoSetDefaultMessage() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.GO_SET_DEFAULT).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Go-Set-Default Message",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.MESSAGE,
+            value = Value.GO_SET_DEFAULT,
+            extras = [
+                TelemetryExtra(name = Extra.ACTION, value = "later,ok")
+            ])
+    @JvmStatic
+    fun clickGoSetDefaultMessage(action: String) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.GO_SET_DEFAULT)
+                .extra(Extra.ACTION, action)
                 .queue()
     }
 
