@@ -36,8 +36,8 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.myshot_onboarding.view.my_shot_category_learn_more
-import kotlinx.android.synthetic.main.onboarding_spotlight_content_services.view.next
 import kotlinx.android.synthetic.main.onboarding_spotlight_content_services_request_click.view.content_services_plateform_onboarding_message
+import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.next
 import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_message
 import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_title
 import kotlinx.android.synthetic.main.spotlight_message.view.spotlight_message
