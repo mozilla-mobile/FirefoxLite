@@ -322,7 +322,7 @@ class TabTrayFragment : DialogFragment(), TabTrayContract.View, View.OnClickList
 
     private fun setupBottomSheetCallback() {
         val behavior = getBehavior(tab_tray_recycler_view) ?: return
-        behavior.setBottomSheetCallback(object : BottomSheetCallback() {
+        behavior.addBottomSheetCallback(object : BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     dismissAllowingStateLoss()

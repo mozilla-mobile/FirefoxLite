@@ -1,5 +1,6 @@
 package org.mozilla.rocket.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -508,6 +509,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
     }
 
+    @SuppressLint("WrongConstant")
     private fun observeAddNewTopSites() {
         homeViewModel.openAddNewTopSitesPage.observe(viewLifecycleOwner, Observer {
             showAddNewTopSitesPage()

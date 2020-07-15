@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.app.PendingIntent
@@ -616,6 +617,7 @@ class MainActivity : BaseActivity(),
         applyNightModeBrightness(enabled, brightness, window)
     }
 
+    @SuppressLint("WrongConstant")
     private fun showBookmarkAddedSnackbar(bookmarkItemId: String) {
         Snackbar.make(container, R.string.bookmark_saved, Snackbar.LENGTH_LONG).apply {
             setAction(R.string.bookmark_saved_edit) {
@@ -764,6 +766,7 @@ class MainActivity : BaseActivity(),
         return true
     }
 
+    @SuppressLint("WrongConstant")
     override fun showInstallPrompt(actionCallback: () -> Unit) {
         Snackbar.make(
                 container,

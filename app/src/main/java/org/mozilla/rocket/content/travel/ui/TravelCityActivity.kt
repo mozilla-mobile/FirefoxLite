@@ -1,5 +1,6 @@
 package org.mozilla.rocket.content.travel.ui
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -13,7 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
-import kotlinx.android.synthetic.main.activity_travel_city.*
+import kotlinx.android.synthetic.main.activity_travel_city.city_details
+import kotlinx.android.synthetic.main.activity_travel_city.container
+import kotlinx.android.synthetic.main.activity_travel_city.favorite_button
+import kotlinx.android.synthetic.main.activity_travel_city.refresh_button
+import kotlinx.android.synthetic.main.activity_travel_city.spinner
+import kotlinx.android.synthetic.main.activity_travel_city.toolbar
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -190,6 +196,7 @@ class TravelCityActivity : BaseActivity() {
         })
     }
 
+    @SuppressLint("WrongConstant")
     private fun showBucketListAddedSnackbar() {
         Snackbar.make(container, R.string.travel_snack_bar_saved_message, Snackbar.LENGTH_LONG).apply {
             setAction(R.string.travel_snack_bar_button) {

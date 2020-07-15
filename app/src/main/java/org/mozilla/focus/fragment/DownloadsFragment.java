@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -86,6 +87,8 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
         super.onCreate(savedInstanceState);
     }
 
+
+    @SuppressLint("WrongConstant")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

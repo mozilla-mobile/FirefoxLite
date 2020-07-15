@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.download;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
@@ -326,6 +327,7 @@ public class DownloadInfoManager {
         return (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
+    @SuppressLint("WrongConstant")
     public void showOpenDownloadSnackBar(final Long rowId, @NonNull final View container, final String logTag) {
         queryByRowId(rowId, downloadInfoList -> {
             final boolean existInLocalDB = downloadInfoList.size() > 0;

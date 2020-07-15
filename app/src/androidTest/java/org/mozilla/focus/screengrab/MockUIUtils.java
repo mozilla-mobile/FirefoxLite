@@ -1,5 +1,6 @@
 package org.mozilla.focus.screengrab;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.SystemClock;
@@ -18,6 +19,7 @@ public class MockUIUtils {
     static final int SHORT_DELAY = 2000; // 2 seconds
     static final int POPUP_DELAY = 800;
 
+    @SuppressLint("WrongConstant")
     static void showSnackbarAndWait(@NotNull Activity activity, int strId, int actionStrId) {
         View view = activity.findViewById(R.id.container);
         if (view != null) {

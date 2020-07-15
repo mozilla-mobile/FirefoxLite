@@ -5,6 +5,7 @@
 
 package org.mozilla.focus.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
@@ -57,6 +58,7 @@ public class ViewUtils {
     /**
      * Create a snackbar with Focus branding (See #193).
      */
+    @SuppressLint("WrongConstant")
     public static void showBrandedSnackbar(View view, @StringRes int resId, int delayMillis) {
         final Context context = view.getContext();
         final Snackbar snackbar = Snackbar.make(view, resId, Snackbar.LENGTH_LONG);

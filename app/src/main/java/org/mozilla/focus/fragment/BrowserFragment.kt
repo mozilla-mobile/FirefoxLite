@@ -8,6 +8,7 @@ import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -367,7 +368,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
 
     private fun setupShoppingSearchPrompt(view: View) {
         shoppingSearchPromptMessageBehavior = BottomSheetBehavior.from(view.findViewById<CoordinatorLayout>(R.id.bottom_sheet)).apply {
-            setBottomSheetCallback(object : BottomSheetCallback() {
+            addBottomSheetCallback(object : BottomSheetCallback() {
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when (newState) {
                         BottomSheetBehavior.STATE_EXPANDED -> shoppingSearchPromptMessageViewModel.onPromptIsShown()
@@ -1483,6 +1484,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
             }
         }
 
+        @SuppressLint("WrongConstant")
         private fun onTabAddedByContextMenu(tab: Session, arguments: Bundle) {
             if (!TabUtil.toFocus(arguments)) {
                 Snackbar.make(rootView, R.string.new_background_tab_hint, Snackbar.LENGTH_LONG)
