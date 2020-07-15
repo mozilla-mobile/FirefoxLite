@@ -468,7 +468,7 @@ object DialogUtils {
         ThemeSettingDialogBuilder(activity, homeViewModel).show()
     }
 
-    fun showSetAsDefaultBrowserDialog(activity: FragmentActivity) {
+    fun showSetAsDefaultBrowserDialog(activity: FragmentActivity, homeViewModel: HomeViewModel) {
         val customContentView = View.inflate(activity, R.layout.dialog_set_as_default_browser, null)
         customContentView.findViewById<TextView>(R.id.description).apply {
             text = context.getString(
@@ -480,6 +480,7 @@ object DialogUtils {
         val dialog = AlertDialog.Builder(activity)
             .setView(customContentView)
             .setPositiveButton(R.string.travel_dialog_2_action) { dialogInterface: DialogInterface, _: Int ->
+                homeViewModel.onSetAsDefaultBrowserClicked()
                 dialogInterface.dismiss()
             }
             .setNegativeButton(R.string.update_app_dialog_btn_later) { dialogInterface: DialogInterface, _: Int ->

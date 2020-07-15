@@ -114,6 +114,7 @@ class HomeViewModel(
     val addExistingTopSite = SingleLiveEvent<Int>()
     val homeBackgroundColorThemeClicked = SingleLiveEvent<ThemeManager.ThemeSet>()
     val showThemeSetting = SingleLiveEvent<Unit>()
+    val showSetAsDefaultBrowserOnboarding = SingleLiveEvent<Unit>()
 
     private var logoManClickAction: GetLogoManNotificationUseCase.LogoManAction? = null
     private var logoManType: String? = null
@@ -364,6 +365,13 @@ class HomeViewModel(
     fun onThemeSettingMenuClicked() {
         showThemeSetting.call()
         TelemetryWrapper.showThemeContextualHint()
+    }
+
+    fun onExitThemeSetting() {
+        showSetAsDefaultBrowserOnboarding.call()
+    }
+
+    fun onSetAsDefaultBrowserClicked() {
     }
 
     fun onClearBrowsingHistory() {

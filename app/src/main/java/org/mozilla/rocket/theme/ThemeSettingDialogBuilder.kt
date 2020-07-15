@@ -29,6 +29,9 @@ class ThemeSettingDialogBuilder(
 
         return AlertDialog.Builder(activity, R.style.ThemeSettingDialog)
             .setView(customContentView)
+            .setOnDismissListener {
+                homeViewModel.onExitThemeSetting()
+            }
             .create()
             .also { dialog ->
                 val currentTheme = ThemeManager.getCurrentThemeName(activity)
