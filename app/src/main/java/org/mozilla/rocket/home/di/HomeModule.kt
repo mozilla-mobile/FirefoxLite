@@ -163,7 +163,10 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideGetContentHubItemsUseCase(contentHubRepo: ContentHubRepo): GetContentHubItemsUseCase = GetContentHubItemsUseCase(contentHubRepo)
+    fun provideGetContentHubItemsUseCase(
+        contentHubRepo: ContentHubRepo,
+        contentPrefRepo: ContentPrefRepo
+    ): GetContentHubItemsUseCase = GetContentHubItemsUseCase(contentHubRepo, contentPrefRepo)
 
     @JvmStatic
     @Singleton
