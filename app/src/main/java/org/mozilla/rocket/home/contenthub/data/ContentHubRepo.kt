@@ -43,8 +43,8 @@ class ContentHubRepo(private val appContext: Context) {
         }
     }
 
-    fun getDefaultContentHubItems(): List<ContentHubItem>? =
-            AssetsUtils.loadStringFromRawResource(appContext, R.raw.content_hub_default_items)
+    fun getDefaultContentHubItems(resId: Int): List<ContentHubItem>? =
+            AssetsUtils.loadStringFromRawResource(appContext, resId)
                     ?.jsonStringToContentHubItems(readTypes = getReadTypes())
 
     private fun getReadTypes(): List<Int> =

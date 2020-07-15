@@ -7,12 +7,16 @@ import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.home.contenthub.data.ContentHubItem
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
+import org.mozilla.rocket.home.data.ContentPrefRepo
 
-class GetContentHubItemsUseCase(private val contentHubRepo: ContentHubRepo) {
+class GetContentHubItemsUseCase(
+    private val contentHubRepo: ContentHubRepo,
+    private val contentPrefRepo: ContentPrefRepo
+) {
 
     operator fun invoke(): LiveData<List<ContentHub.Item>> {
         val defaultItemsLiveData = MutableLiveData<List<ContentHubItem>>().apply {
-            value = contentHubRepo.getDefaultContentHubItems()
+            value = contentHubRepo.getDefaultContentHubItems(contentPrefRepo.getContentPref().verticalItemsResId)
         }
         val configuredItemsLiveData = contentHubRepo.getConfiguredContentHubItemsLive()
         return combineLatest(defaultItemsLiveData, configuredItemsLiveData)

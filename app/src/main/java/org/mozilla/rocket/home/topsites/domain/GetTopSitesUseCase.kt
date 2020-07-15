@@ -21,7 +21,7 @@ open class GetTopSitesUseCase(
         val pinnedSites = topSitesRepo.getPinnedSites()
         val defaultSites = topSitesRepo.getChangedDefaultSites()
                 ?: topSitesRepo.getConfiguredDefaultSites()
-                ?: topSitesRepo.getDefaultSites(contentPrefRepo.getContentPref().dataResId)
+                ?: topSitesRepo.getDefaultSites(contentPrefRepo.getContentPref().topSitesResId)
                 ?: emptyList()
         val historySites = topSitesRepo.getHistorySites()
 
@@ -88,7 +88,7 @@ open class GetTopSitesUseCase(
                     .forEach { defaultSite ->
                         // Must be a RemovableSite
                         defaultSite as Site.UrlSite.RemovableSite
-                        topSitesRepo.removeDefaultSite(defaultSite.toSiteModel(), contentPrefRepo.getContentPref().dataResId)
+                        topSitesRepo.removeDefaultSite(defaultSite.toSiteModel(), contentPrefRepo.getContentPref().topSitesResId)
                     }
         }
     }
