@@ -383,11 +383,17 @@ class HomeViewModel(
         if (shouldShowSetDefaultBrowserOnboardingUseCase()) {
             setSetDefaultBrowserOnboardingIsShownUseCase()
             showSetAsDefaultBrowserOnboarding.call()
+            TelemetryWrapper.showGoSetDefaultMessage()
         }
     }
 
     fun onSetAsDefaultBrowserClicked() {
         tryToSetDefaultBrowser.call()
+        TelemetryWrapper.clickGoSetDefaultMessage(TelemetryWrapper.Extra_Value.OK)
+    }
+
+    fun onCancelSetAsDefaultBrowserClicked() {
+        TelemetryWrapper.clickGoSetDefaultMessage(TelemetryWrapper.Extra_Value.LATER)
     }
 
     fun onClearBrowsingHistory() {

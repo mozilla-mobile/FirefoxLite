@@ -484,6 +484,7 @@ object DialogUtils {
                 dialogInterface.dismiss()
             }
             .setNegativeButton(R.string.update_app_dialog_btn_later) { dialogInterface: DialogInterface, _: Int ->
+                homeViewModel.onCancelSetAsDefaultBrowserClicked()
                 dialogInterface.dismiss()
             }
             .setCancelable(false)
