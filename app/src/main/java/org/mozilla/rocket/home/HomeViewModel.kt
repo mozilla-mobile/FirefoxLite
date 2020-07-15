@@ -25,8 +25,10 @@ import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.ui.LogoManNotification.Notification
+import org.mozilla.rocket.home.onboarding.domain.SetSetDefaultBrowserOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetThemeOnboardingIsShownUseCase
+import org.mozilla.rocket.home.onboarding.domain.ShouldShowSetDefaultBrowserOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowThemeOnboardingUseCase
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
@@ -75,7 +77,9 @@ class HomeViewModel(
     shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
     shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
     shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
-    setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase
+    setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase,
+    private val shouldShowSetDefaultBrowserOnboardingUseCase: ShouldShowSetDefaultBrowserOnboardingUseCase,
+    private val setSetDefaultBrowserOnboardingIsShownUseCase: SetSetDefaultBrowserOnboardingIsShownUseCase
 ) : ViewModel(), TopSiteClickListener {
 
     val sitePages = MutableLiveData<List<SitePage>>()
@@ -369,7 +373,10 @@ class HomeViewModel(
     }
 
     fun onExitThemeSetting() {
-        showSetAsDefaultBrowserOnboarding.call()
+        if (shouldShowSetDefaultBrowserOnboardingUseCase()) {
+            setSetDefaultBrowserOnboardingIsShownUseCase()
+            showSetAsDefaultBrowserOnboarding.call()
+        }
     }
 
     fun onSetAsDefaultBrowserClicked() {

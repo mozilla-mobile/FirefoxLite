@@ -23,8 +23,10 @@ import org.mozilla.rocket.home.logoman.data.LogoManNotificationRepo
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.GetLogoManNotificationUseCase
 import org.mozilla.rocket.home.logoman.domain.LastReadLogoManNotificationUseCase
+import org.mozilla.rocket.home.onboarding.domain.SetSetDefaultBrowserOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetShoppingSearchOnboardingIsShownUseCase
 import org.mozilla.rocket.home.onboarding.domain.SetThemeOnboardingIsShownUseCase
+import org.mozilla.rocket.home.onboarding.domain.ShouldShowSetDefaultBrowserOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowShoppingSearchOnboardingUseCase
 import org.mozilla.rocket.home.onboarding.domain.ShouldShowThemeOnboardingUseCase
 import org.mozilla.rocket.home.topsites.data.PinSiteManager
@@ -79,7 +81,9 @@ object HomeModule {
         shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
         shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
         shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
-        setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase
+        setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase,
+        shouldShowSetDefaultBrowserOnboardingUseCase: ShouldShowSetDefaultBrowserOnboardingUseCase,
+        setSetDefaultBrowserOnboardingIsShownUseCase: SetSetDefaultBrowserOnboardingIsShownUseCase
     ): HomeViewModel = HomeViewModel(
         settings,
         getTopSitesUseCase,
@@ -106,7 +110,9 @@ object HomeModule {
         shouldShowNewMenuItemHintUseCase,
         shouldShowContentHubUseCase,
         shouldShowThemeOnboardingUseCase,
-        setThemeOnboardingIsShownUseCase
+        setThemeOnboardingIsShownUseCase,
+        shouldShowSetDefaultBrowserOnboardingUseCase,
+        setSetDefaultBrowserOnboardingIsShownUseCase
     )
 
     @JvmStatic
@@ -284,4 +290,16 @@ object HomeModule {
     @Provides
     fun provideSetThemeOnboardingIsShownUseCase(newFeatureNotice: NewFeatureNotice): SetThemeOnboardingIsShownUseCase =
             SetThemeOnboardingIsShownUseCase(newFeatureNotice)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideShouldShowSetDefaultBrowserOnboardingUseCase(newFeatureNotice: NewFeatureNotice): ShouldShowSetDefaultBrowserOnboardingUseCase =
+            ShouldShowSetDefaultBrowserOnboardingUseCase(newFeatureNotice)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideSetSetDefaultBrowserOnboardingIsShownUseCase(newFeatureNotice: NewFeatureNotice): SetSetDefaultBrowserOnboardingIsShownUseCase =
+            SetSetDefaultBrowserOnboardingIsShownUseCase(newFeatureNotice)
 }
