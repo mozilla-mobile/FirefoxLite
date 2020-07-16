@@ -141,4 +141,6 @@
     <dimen name="set_default_browser_tutorial_flow_1_step_1_image_height">104dp</dimen>
     <dimen name="set_default_browser_tutorial_flow_1_step_2_image_height">108dp</dimen>
     <dimen name="set_default_browser_tutorial_flow_2_step_2_image_height">208dp</dimen>
+
+    <dimen name="card_view_elevation">1dp</dimen>
 </resources>
