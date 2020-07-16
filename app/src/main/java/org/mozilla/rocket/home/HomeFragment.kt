@@ -614,7 +614,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
         homeViewModel.showSetAsDefaultBrowserOnboarding.observe(viewLifecycleOwner, Observer {
             activity?.let {
-                DialogUtils.showSetAsDefaultBrowserDialog(it, homeViewModel)
+                DialogUtils.showSetAsDefaultBrowserDialog(
+                    it,
+                    { homeViewModel.onSetAsDefaultBrowserClicked() },
+                    { homeViewModel.onCancelSetAsDefaultBrowserClicked() }
+                )
             }
         })
     }
