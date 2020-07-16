@@ -73,7 +73,7 @@ object FirebaseHelper {
     const val BOOL_CONTENT_HUB_ITEM_TEXT_ENABLED = "bool_content_hub_item_text_enabled"
 
     const val STR_TOP_SITES_FIXED_ITEM_V2_5 = "str_top_sites_fixed_items_v2_5"
-    const val STR_TOP_SITES_DEFAULT_ITEMS = "str_top_sites_default_items"
+    const val STR_TOP_SITES_DEFAULT_ITEMS_V2_5 = "str_top_sites_default_items_v2_5"
 
     const val STR_EXPERIMENT_NAME = "str_experiment_name"
 
