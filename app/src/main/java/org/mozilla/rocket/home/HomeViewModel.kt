@@ -169,7 +169,7 @@ class HomeViewModel(
     private fun updateTopSitesData() = viewModelScope.launch {
         val topSiteList = getTopSitesUseCase()
         sitePages.value = if (topSiteList.isNotEmpty()) {
-            topSiteList.toSitePages().addDummyTopSites().also { sitePages ->
+            topSiteList.addDummyTopSites().toSitePages().also { sitePages ->
                 val sitePosition = when (val result = pinTopSiteResult) {
                     is PinTopSiteUseCase.PinTopSiteResult.Success -> result.position
                     is PinTopSiteUseCase.PinTopSiteResult.Existing -> result.position
@@ -187,7 +187,7 @@ class HomeViewModel(
                 pinTopSiteResult = null
             }
         } else {
-            listOf(SitePage(listOf(Site.EmptyHintSite)))
+            listOf(Site.EmptyHintSite).addDummyTopSites().toSitePages()
         }
     }
 
@@ -195,20 +195,13 @@ class HomeViewModel(
             .take(TOP_SITES_MAX_PAGE_SIZE)
             .map { SitePage(it) }
 
-    private fun List<SitePage>.addDummyTopSites(): List<SitePage> {
-        val sitePagesWithDummySite = mutableListOf<SitePage>()
-        this.forEach { sitePage ->
-            if (sitePage.sites.size < TOP_SITES_PER_PAGE) {
-                val sites = sitePage.sites.toMutableList()
-                for (i in 0 until TOP_SITES_PER_PAGE - sitePage.sites.size) {
-                    sites.add(Site.DummySite)
-                }
-                sitePagesWithDummySite.add(SitePage(sites))
-            } else {
-                sitePagesWithDummySite.add(sitePage)
-            }
+    private fun List<Site>.addDummyTopSites(): List<Site> {
+        val siteListWithDummySite = this.toMutableList()
+        val dummySiteSize = TOP_SITES_PER_PAGE * TOP_SITES_MAX_PAGE_SIZE - this.size
+        for (i in 0 until dummySiteSize) {
+            siteListWithDummySite.add(Site.DummySite)
         }
-        return sitePagesWithDummySite
+        return siteListWithDummySite
     }
 
     fun onPageForeground() {
