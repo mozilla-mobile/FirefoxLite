@@ -3,6 +3,8 @@ package org.mozilla.rocket.menu
 import android.content.Context
 import android.graphics.Outline
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.widget.ScrollView
@@ -59,6 +61,8 @@ class HomeMenuDialog : BottomSheetDialog {
 
     private lateinit var rootView: View
 
+    private val uiHandler = Handler(Looper.getMainLooper())
+
     constructor(context: Context) : super(context)
     constructor(context: Context, @StyleRes theme: Int) : super(context, theme)
 
@@ -79,6 +83,11 @@ class HomeMenuDialog : BottomSheetDialog {
             resetStates()
         }
         super.dismiss()
+    }
+
+    override fun onDetachedFromWindow() {
+        uiHandler.removeCallbacksAndMessages(null)
+        super.onDetachedFromWindow()
     }
 
     private fun resetStates() {
@@ -109,23 +118,31 @@ class HomeMenuDialog : BottomSheetDialog {
             })
 
             menu_screenshots.setOnClickListener {
-                cancel()
-                chromeViewModel.showScreenshots()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.showScreenshots()
+                }
             }
             menu_bookmark.setOnClickListener {
-                cancel()
-                chromeViewModel.showBookmarks.call()
-                TelemetryWrapper.clickMenuBookmark()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.showBookmarks.call()
+                    TelemetryWrapper.clickMenuBookmark()
+                }
             }
             menu_history.setOnClickListener {
-                cancel()
-                chromeViewModel.showHistory.call()
-                TelemetryWrapper.clickMenuHistory()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.showHistory.call()
+                    TelemetryWrapper.clickMenuHistory()
+                }
             }
             menu_download.setOnClickListener {
-                cancel()
-                chromeViewModel.showDownloadPanel.call()
-                TelemetryWrapper.clickMenuDownload()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.showDownloadPanel.call()
+                    TelemetryWrapper.clickMenuDownload()
+                }
             }
         }
     }
@@ -156,13 +173,17 @@ class HomeMenuDialog : BottomSheetDialog {
             })
 
             btn_private_browsing.setOnClickListener {
-                cancel()
-                chromeViewModel.togglePrivateMode.call()
-                TelemetryWrapper.togglePrivateMode(true)
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.togglePrivateMode.call()
+                    TelemetryWrapper.togglePrivateMode(true)
+                }
             }
             menu_smart_shopping_search.setOnClickListener {
-                cancel()
-                showShoppingSearch()
+                postDelayClickEvent {
+                    cancel()
+                    showShoppingSearch()
+                }
             }
             menu_night_mode.setOnClickListener {
                 chromeViewModel.adjustNightMode()
@@ -181,30 +202,40 @@ class HomeMenuDialog : BottomSheetDialog {
                 TelemetryWrapper.changeMenuVerticalToggle(isChecked)
             }
             menu_add_top_sites.setOnClickListener {
-                cancel()
-                chromeViewModel.onAddNewTopSiteMenuClicked()
-                TelemetryWrapper.clickMenuAddTopsite()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.onAddNewTopSiteMenuClicked()
+                    TelemetryWrapper.clickMenuAddTopsite()
+                }
             }
             menu_themes.setOnClickListener {
-                cancel()
-                chromeViewModel.onThemeSettingMenuClicked()
-                TelemetryWrapper.clickMenuTheme()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.onThemeSettingMenuClicked()
+                    TelemetryWrapper.clickMenuTheme()
+                }
             }
             menu_preferences.setOnClickListener {
-                cancel()
-                chromeViewModel.checkToDriveDefaultBrowser()
-                chromeViewModel.openPreference.call()
-                TelemetryWrapper.clickMenuSettings()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.checkToDriveDefaultBrowser()
+                    chromeViewModel.openPreference.call()
+                    TelemetryWrapper.clickMenuSettings()
+                }
             }
             menu_delete.setOnClickListener {
-                cancel()
-                onDeleteClicked()
-                TelemetryWrapper.clickMenuClearCache()
+                postDelayClickEvent {
+                    cancel()
+                    onDeleteClicked()
+                    TelemetryWrapper.clickMenuClearCache()
+                }
             }
             menu_exit.setOnClickListener {
-                cancel()
-                chromeViewModel.exitApp.call()
-                TelemetryWrapper.clickMenuExit()
+                postDelayClickEvent {
+                    cancel()
+                    chromeViewModel.exitApp.call()
+                    TelemetryWrapper.clickMenuExit()
+                }
             }
         }
     }
@@ -240,5 +271,14 @@ class HomeMenuDialog : BottomSheetDialog {
     private fun showShoppingSearch() {
         val context: Context = this.context ?: return
         context.startActivity(ShoppingSearchActivity.getStartIntent(context))
+    }
+
+    /**
+     * Post delay click event to wait the clicking feedback shows
+     */
+    private fun postDelayClickEvent(action: () -> Unit) {
+        uiHandler.postDelayed({
+            action()
+        }, 150)
     }
 }
