@@ -95,6 +95,8 @@
   <string name="firstrun_next_button">下一步</string>
   <string name="firstrun_fxlite_2.5_title_1">您好！</string>
   <string name="firstrun_fxlite_2.5_title_2">从哪里听说 %1$s 的？</string>
+  <string name="firstrun_fxlite_2_5_title_A">你好！</string>
+  <string name="firstrun_fxlite_2_5_title_B">从哪里听说 %1$s 的？</string>
   <string name="content_theme_1">浏览网页</string>
   <string name="content_theme_2">寻找优惠</string>
   <string name="content_theme_3">玩游戏看视频</string>

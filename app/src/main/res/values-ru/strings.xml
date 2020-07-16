@@ -94,7 +94,7 @@
   <string name="firstrun_skip_button">Пропустить</string>
   <string name="firstrun_next_button">Далее</string>
   <string name="firstrun_fxlite_2.5_title_1">Привет!</string>
-  <string name="firstrun_fxlite_2.5_title_2">Что привело вас в %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_B">Что привело вас в %1$s?</string>
   <string name="content_theme_1">Веб-сёрфинг</string>
   <string name="content_theme_2">Поиск хороших предложений</string>
   <string name="content_theme_3">Играйте в игры и смотрите видео</string>

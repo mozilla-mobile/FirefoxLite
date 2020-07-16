@@ -94,7 +94,7 @@
   <string name="firstrun_skip_button">ข้าม</string>
   <string name="firstrun_next_button">ถัดไป</string>
   <string name="firstrun_fxlite_2.5_title_1">สวัสดี!</string>
-  <string name="firstrun_fxlite_2.5_title_2">ทำไมคุณถึงเลือก %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_B">ทำไมคุณถึงเลือก %1$s?</string>
   <string name="content_theme_1">เรียกดูเว็บ</string>
   <string name="content_theme_2">ค้นหาข้อเสนอดี ๆ</string>
   <string name="content_theme_3">เล่นเกมและวิดีโอ</string>
