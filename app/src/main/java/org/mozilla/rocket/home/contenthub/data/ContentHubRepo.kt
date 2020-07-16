@@ -36,7 +36,7 @@ class ContentHubRepo(private val appContext: Context) {
 
     fun getConfiguredContentHubItemsLive(): LiveData<List<ContentHubItem>?> {
         val readTypes = getReadTypesLive()
-        val contentHubItemsJsonStr = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_ITEMS)
+        val contentHubItemsJsonStr = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_ITEMS_V2_5)
                 .takeIf { it.isNotEmpty() }
         return readTypes.map {
             contentHubItemsJsonStr?.jsonStringToContentHubItems(it)
