@@ -11,7 +11,7 @@
     android:layout_marginBottom="@dimen/common_margin_m2"
     android:clipToPadding="false"
     app:cardCornerRadius="4dp"
-    app:cardElevation="0dp"
+    app:cardElevation="@dimen/card_view_elevation"
     app:strokeColor="@color/paletteLightGreyA100"
     app:strokeWidth="1dp">
 
