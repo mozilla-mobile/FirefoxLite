@@ -86,7 +86,7 @@ class TopSitesRepo(
                     ?.apply { forEach { it.isDefault = true } }
 
     fun getConfiguredDefaultSites(): List<Site>? =
-            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS)
+            FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS_V2_5)
                     .takeIf { it.isNotEmpty() }
                     ?.jsonStringToSites()
                     ?.apply { forEach { it.isDefault = true } }
@@ -134,7 +134,7 @@ class TopSitesRepo(
 
     fun removeDefaultSite(site: Site, defaultSitesResId: Int) {
         val defaultSitesString = getDefaultTopSitesJsonString()
-                ?: FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS).takeIf { it.isNotEmpty() }
+                ?: FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS_V2_5).takeIf { it.isNotEmpty() }
                 ?: AssetsUtils.loadStringFromRawResource(appContext, defaultSitesResId)
         val defaultSitesJsonArray = defaultSitesString?.toJsonArray()
         if (defaultSitesJsonArray != null) {
