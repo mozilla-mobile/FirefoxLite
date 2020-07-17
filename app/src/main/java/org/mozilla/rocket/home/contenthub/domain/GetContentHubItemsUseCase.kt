@@ -18,7 +18,10 @@ class GetContentHubItemsUseCase(
         val defaultItemsLiveData = MutableLiveData<List<ContentHubItem>>().apply {
             value = contentHubRepo.getDefaultContentHubItems(contentPrefRepo.getContentPref().verticalItemsResId)
         }
-        val configuredItemsLiveData = contentHubRepo.getConfiguredContentHubItemsLive()
+        val configuredItemGroupsLiveData = contentHubRepo.getConfiguredContentHubItemGroupsLive()
+        val configuredItemsLiveData = configuredItemGroupsLiveData.map { groups ->
+            groups?.find { it.groupId == contentPrefRepo.getContentPref().id }?.items
+        }
         return combineLatest(defaultItemsLiveData, configuredItemsLiveData)
                 .map { (defaultItems, configuredItems) ->
                     configuredItems ?: defaultItems
