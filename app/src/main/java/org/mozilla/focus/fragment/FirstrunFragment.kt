@@ -121,17 +121,14 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
         var textIndex = 0
         var nextText = TEXT_SHOWING_LIST[0]
 
-        val animationAnimator = ValueAnimator.ofFloat(
-            0f,
-            (ANIMATION_PLAY_DURATION.toFloat() / ANIMATION_DURATION)
-        ).apply {
-            duration = ANIMATION_PLAY_DURATION
+        val animationAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = ANIMATION_DURATION
             interpolator = LinearInterpolator()
             addUpdateListener { valueAnimator: ValueAnimator ->
                 val progress = valueAnimator.animatedValue as Float
                 animation_view?.progress = progress
 
-                val time = (progress * ANIMATION_PLAY_DURATION).toInt()
+                val time = (progress * ANIMATION_DURATION).toInt()
                 if (time >= nextText.first) {
                     animation_description?.text = getString(nextText.second)
                     nextText = if (++textIndex < TEXT_SHOWING_LIST.size) {
@@ -253,8 +250,7 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
     }
 
     companion object {
-        private const val ANIMATION_DURATION = 6105L
-        private const val ANIMATION_PLAY_DURATION = 6000L
+        private const val ANIMATION_DURATION = 5940L
         private const val PROGRESS_BAR_DURATION = 5280L
         private const val PROGRESS_BAR_START_DELAY = 165L
         private const val PROGRESS_BAR_MAX = 1000
