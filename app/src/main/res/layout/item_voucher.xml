@@ -8,7 +8,6 @@
     android:layout_height="wrap_content"
     android:minWidth="146dp"
     android:minHeight="146dp"
-    android:theme="@style/Theme.MaterialComponents.Light"
     app:strokeColor="@color/paletteLightGreyA100"
     app:strokeWidth="1dp"
     app:cardCornerRadius="12dp"

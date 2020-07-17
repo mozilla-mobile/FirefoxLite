@@ -10,7 +10,6 @@
     android:layout_marginEnd="@dimen/common_margin_m3"
     android:layout_marginBottom="@dimen/common_margin_m2"
     android:clipToPadding="false"
-    android:theme="@style/Theme.MaterialComponents.Light"
     app:cardCornerRadius="4dp"
     app:cardElevation="0dp"
     app:strokeColor="@color/paletteLightGreyA100"
