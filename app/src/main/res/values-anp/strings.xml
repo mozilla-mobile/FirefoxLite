@@ -67,22 +67,7 @@
   <string name="contextmenu_image_save">चित्र सहेजियै</string>
   <string name="contextmenu_open_in_new_tab">लिंक नया टैब में खोलियै</string>
   <string name="contextmenu_open_image_in_new_tab">चित्र नया टैब में खोलियै</string>
-  <string name="first_run_page1_title">%1$s चुनै ल धन्यवाद</string>
-  <string name="first_run_page1_text">%1$s द्वारा एगो ब्राउज़र बनाल्य गेलो छै, जअ मुफ़्त आरु खुलल वेब कअ खतिर कोमिटेड गैर-लाभकारी छै.</string>
-  <string name="first_run_page2_title">पहनो स तेज ब्राउज़ करोॅ</string>
-  <string name="first_run_page2_text">ट्रैकिंग विज्ञापनों कअ ब्लोक करै लअ टर्बो मोड क उपयोग करियै ताकि तोय तेजि से ब्राउज़ कैर पाबियै.आगर साइट सिनि टूटै छै,तअ मेनू में टर्बो मोड स्विच क टैप करिइयै.</string>
-  <string name="first_run_page3_title">डेटा बचाबियै = पैसे बचाबियै</string>
-  <string name="first_run_page3_text">ट्रैकिंग विज्ञापनों कअ ब्लोकिंग करै सअ न खालि ब्राउज़िंग कअ बढ़बै छै, इ डेटा बचबै छै. इमेज ब्लोक करै छिऐ तअ आरु सहेजियै.</string>
-  <string name="first_run_page4_title">पुरे पेज के स्क्रीनशॉट</string>
-  <string name="first_run_page4_text">पुरे पृष्ठ के स्क्रीनशॉट लीजियै. डेटा इस्तेमाल किये बिना एकरा ऑफलाइन पढियै या वेब पृष्ठ पर दुबारा जाय लअ टैप करियै</string>
-  <string name="first_run_upgrade_page_title">हम अपनो के प्रतिक्रिया सुनलियै!</string>
-  <string name="first_run_upgrade_page_text1">1. एके समय म %s मल्टीटास्क खुल रहल छै!</string>
-  <string name="first_run_upgrade_page_text1_highlight">एकाधिको टैब्स</string>
-  <string name="first_run_upgrade_page_text2">2. अपनो पसंदीदा साइटों क %s स जल्दी अनुमति दियै</string>
-  <string name="first_run_upgrade_page_text2_highlight">ओकरा होम स्क्रीन में जोरियै!</string>
   <string name="firstrun_close_button">ठीक, बुझि गेलियै!</string>
-  <string name="firstrun_skip_button">छोड़ियै</string>
-  <string name="firstrun_next_button">अगिला</string>
   <string name="label_menu_bookmark">बुकमार्कस</string>
   <string name="label_menu_download">डाउनलोडस</string>
   <string name="label_menu_find_in_page">पेज मेॅ खोलहोॅ</string>

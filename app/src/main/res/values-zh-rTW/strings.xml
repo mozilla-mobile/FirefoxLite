@@ -70,29 +70,9 @@
   <string name="contextmenu_image_save">儲存圖片</string>
   <string name="contextmenu_open_in_new_tab">用新分頁開啟鏈結</string>
   <string name="contextmenu_open_image_in_new_tab">用新分頁開啟圖片</string>
-  <string name="first_run_page1_title">感謝使用 %1$s</string>
-  <string name="first_run_page1_text">這是一套由致力於維持網路自由、開放的非營利組織 %1$s 所打造的網頁瀏覽器。</string>
-  <string name="first_run_page2_title">上網變得更快</string>
-  <string name="first_run_page2_text">使用極速模式來封鎖追蹤廣告，這樣就可以用更快的速度上網。若網站用起來有問題，只要在選單暫時關閉即可。</string>
-  <string name="first_run_page3_title">節省流量 就是省錢</string>
-  <string name="first_run_page3_text">透過封鎖追蹤廣告來節省上網流量，若封鎖圖片顯示還可節省更多。</string>
-  <string name="first_run_page4_title">拍攝整張頁面的擷圖</string>
-  <string name="first_run_page4_text">拍攝整個頁面的長條擷圖，儲存後即可離線閱讀，之後不用再耗費流量或點擊重新開啟。</string>
-  <string name="first_run_page5_title">更進一步的隱私保護</string>
-  <string name="first_run_page5_text">瀏覽不留痕跡，還會預設封鎖一系列常見的網頁追蹤器，可確保您的機密資料安全。</string>
-  <string name="first_run_page6_text">只要翻一下，就可以透過「%1$s」獲得最新消息 - 各種線上熱門主題與折扣資訊。%2$s</string>
-  <string name="first_run_page7_title">防止被追蹤</string>
-  <string name="first_run_page7_text">現在起，您可以於隱私模式中看到封鎖了多少追蹤器。</string>
-  <string name="first_run_upgrade_page_title">我們聽到了您的意見！</string>
   <string name="new_name_upgrade_page_title">我們有全新外觀！</string>
   <string name="new_name_upgrade_page_text">隨著產品不斷進化，我們推出全新的 %1$s，改為新的名稱也更換商標。</string>
-  <string name="first_run_upgrade_page_text1">1. 一次開啟%s，讓您多工作業！</string>
-  <string name="first_run_upgrade_page_text1_highlight">多個分頁標籤</string>
-  <string name="first_run_upgrade_page_text2">2. %s，快速開啟最愛的網站！</string>
-  <string name="first_run_upgrade_page_text2_highlight">把它們加到主畫面</string>
   <string name="firstrun_close_button">好，知道了！</string>
-  <string name="firstrun_skip_button">略過</string>
-  <string name="firstrun_next_button">下一個</string>
   <string name="firstrun_fxlite_2.5_title_1">哈囉！</string>
   <string name="firstrun_fxlite_2.5_title_2">從哪裡聽說 %1$s 的？</string>
   <string name="firstrun_fxlite_2_5_title_A">哈囉！</string>
@@ -235,6 +215,9 @@
   <string name="rate_app_notification_action_rate">幫我們打分數</string>
   <string name="rate_app_dialog_btn_feedback">留下意見回饋</string>
   <string name="rate_app_notification_action_feedback">意見回饋</string>
+  <string name="survey_dialog_text_title">您覺得 %1$s 如何？</string>
+  <string name="survey_dialog_text_content">請告訴我們您喜歡什麼東西，或是有哪些部份可以做得更好。</string>
+  <string name="survey_dialog_btn">填寫問卷</string>
   <string name="share_app_dialog_text_title">分享 %1$s 給朋友！</string>
   <string name="share_app_dialog_text_content">- 輕量光速快\n- 智慧購物搜尋\n- 免費遊戲、熱門新聞</string>
   <string name="share_app_dialog_btn_share">分享</string>
@@ -393,8 +376,6 @@
   <string name="gaming_vertical_genre_10">益智解謎</string>
   <string name="gaming_vertical_genre_11">體育與賽車</string>
   <string name="gaming_vertical_genre_12">女性</string>
-  <string name="onboarding_2_introduction_title">全新 %1$s</string>
-  <string name="onboarding_2_introduction_description">快速而輕量的瀏覽器，加入更多熱門功能。我們加入了智慧購物搜尋功能與內容，讓上網變得更好玩有趣！</string>
   <string name="onboarding_2_content_services_news_shopping_games">點擊即可閱讀熱門新聞、尋找優惠折扣，或者玩最熱門的免費遊戲！</string>
   <string name="onboarding_2_content_services_news_games">點擊即可閱讀熱門新聞，或玩最熱門的免費遊戲！</string>
   <string name="onboarding_2_content_services_games">點擊此處即可玩最熱門的免費遊戲！</string>
@@ -512,5 +493,5 @@
   <string name="travel_dialog_2_description_new">您可以將 %1$s %2$s 設為預設旅遊搜尋引擎。</string>
   <string name="travel_dialog_2_checkbox">不要再問我</string>
   <string name="travel_dialog_2_action">設為預設值</string>
-  <string name="awesomebar_open_link_clipboard">開啟剪貼簿當中的鏈結</string>
+  <string name="awesomebar_open_link_clipboard">開啟複製的鏈結</string>
 </resources>

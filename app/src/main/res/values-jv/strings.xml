@@ -68,27 +68,9 @@
   <string name="contextmenu_image_save">Simpen gambar</string>
   <string name="contextmenu_open_in_new_tab">Bukak pranala ing tab anyar</string>
   <string name="contextmenu_open_image_in_new_tab">Bukak gambar ing tab anyar</string>
-  <string name="first_run_page1_title">Matur nuwun wis milih %1$s</string>
-  <string name="first_run_page1_text">Sawijining paramban sing digawé karo %1$s, organisasi nirlaba sing setya karo misi mujudaké wèb bébas lan kabuka.</string>
-  <string name="first_run_page2_title">"Ndlajah luwih banter "</string>
-  <string name="first_run_page2_text">Nggunakaké mode turbo kanggo mblokir iklan palacak ben sampéyan bisa ndlajah luwih banter. Menawa situs rusak, tunyuk saklar mode turbo ing menu.</string>
-  <string name="first_run_page3_title">Irit dhata = Irit dhuwit</string>
-  <string name="first_run_page3_text">Mblokir iklan palacak ora mung nyepetaké paramban, nanging uga bisa nyimpen dhata. Nyimpen luwih akeh manèh kala sampéyan mblokir gambar.</string>
-  <string name="first_run_page4_title">Jeprèt sakabèhing layar</string>
-  <string name="first_run_page4_text">Jepret layar sakabèhé situs wèb. Waca sawijining jepretan layar tanpa nganggo dhata utawa tunyuk manéh kanggo mbalik menyang situs wèb mau.</string>
-  <string name="first_run_page5_title">Wadi sabanjure</string>
-  <string name="first_run_page5_text">Delajah tanpa tilak, lan blokir sawetara pelacak web. Jamin keamanan data pribadimu.</string>
-  <string name="first_run_page6_text">Mung sakbalikan, tansah anyaraké karo “%1$s” - anéka kontèn saka topik paling populèr nganti dodolan paling oké. %2$s</string>
-  <string name="first_run_upgrade_page_title">Kita ngrungokaké tanggepan sampéyan!</string>
   <string name="new_name_upgrade_page_title">Kita duwe tampilan anyar!</string>
   <string name="new_name_upgrade_page_text">Bareng produk sing berkembang, kita nampilake %1$s sing anyar, sabarenge jeneng anyar lan logo anyar.</string>
-  <string name="first_run_upgrade_page_text1">1. Klumpukan garapan liwat mbukak %s bebarengan!</string>
-  <string name="first_run_upgrade_page_text1_highlight">klumpukan tab</string>
-  <string name="first_run_upgrade_page_text2">2. Ngaksès situs wèb kasenengan kang cepet liwat %s</string>
-  <string name="first_run_upgrade_page_text2_highlight">nambahké menyang kaca utama!</string>
   <string name="firstrun_close_button">Oké, mudheng!</string>
-  <string name="firstrun_skip_button">Liwati</string>
-  <string name="firstrun_next_button">Candhaké</string>
   <string name="label_menu_bookmark">Tetenger</string>
   <string name="label_menu_download">Undhuhan</string>
   <string name="label_menu_find_in_page">Golèk ing kaca</string>

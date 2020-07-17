@@ -68,25 +68,8 @@
   <string name="contextmenu_image_save">బొమ్మను భద్రపరుచు</string>
   <string name="contextmenu_open_in_new_tab">లంకెను కొత్త ట్యాబులో తెరువు</string>
   <string name="contextmenu_open_image_in_new_tab">బొమ్మను కొత్త ట్యాబులో తెరువు</string>
-  <string name="first_run_page1_title">%1$s‌ను ఎంచుకున్నందుకు కృతజ్ఞతలు</string>
-  <string name="first_run_page1_text">స్వేచ్ఛా, బహిరంగ జాలానికి కట్టుబడ్డ లాభాపేక్షలేని %1$s వారు తయారుచేసిన విహారిణి.</string>
-  <string name="first_run_page2_title">మునుపెన్నటి కంటే వేగంగా విహరించండి</string>
-  <string name="first_run_page2_text">ట్రాకింగ్ ప్రకటనలను నిరోధించడానికి టర్బో రీతిని వాడండి, అప్పుడు మీరు జ్వలించే వేగంతో విహరించవచ్చు. సైట్లు సరిగ్గా పనిచేయనట్టు అనిపిస్తే, మెనూలో టర్బో రీతి తాకి ఆపివేసుకోండి.</string>
-  <string name="first_run_page3_title">డేటా ఆదా = డబ్బు ఆదా</string>
-  <string name="first_run_page3_text">ట్రాకింగు ప్రకటలను నిరోధించడం ద్వారా డేటా ఖర్చులను తగ్గించుకోండి. బొమ్మలను నిరోధించడం చేతనించుకుంటే ఇంకా ఆదాచేయవచ్చు.</string>
-  <string name="first_run_page4_title">మెత్తం పేజీనంతా తెరపట్టు తీయి</string>
-  <string name="first_run_page4_text">వెబ్ పేజీల పూర్తి పొడవు తెరపట్లు తీసుకోండి. డేటా వాడుకోకుండానే ఆఫ్‌లైనులో దాన్ని చదువుకోవచ్చు లేదా ఆ వెబ్‌పేజీను మళ్ళీ చూడడానికి దానిపై తాకవచ్చు.</string>
-  <string name="first_run_page5_title">తరువాత స్థాయి అంతరంగికత</string>
-  <string name="first_run_page7_title">జాడ తెలుసుకోనీకుండా నియంత్రించండి</string>
-  <string name="first_run_upgrade_page_title">మేము మీ ప్రతిస్పందన విన్నాము!</string>
   <string name="new_name_upgrade_page_title">మాకు కొత్త రూపం వచ్చింది!</string>
-  <string name="first_run_upgrade_page_text1">1. ఒకేసారి %s తెరవడం ద్వారా మల్టీటాస్కింగు చెయ్యండి!</string>
-  <string name="first_run_upgrade_page_text1_highlight">పలు ట్యాబులు</string>
-  <string name="first_run_upgrade_page_text2">2. మీ అభిమాన సైట్లను %s త్వరగా చేరుకోండి!</string>
-  <string name="first_run_upgrade_page_text2_highlight">ముంగిలి తెరకు చేర్చుకోవడం ద్వారా!</string>
   <string name="firstrun_close_button">సరే, అర్థమైంది!</string>
-  <string name="firstrun_skip_button">దాటవేయి</string>
-  <string name="firstrun_next_button">తదుపరి</string>
   <string name="label_menu_bookmark">ఇష్టాంశాలు</string>
   <string name="label_menu_download">దింపుకోళ్ళు</string>
   <string name="label_menu_find_in_page">పేజీలో కనుక్కొండి</string>

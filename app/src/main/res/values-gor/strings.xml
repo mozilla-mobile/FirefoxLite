@@ -65,26 +65,9 @@
   <string name="contextmenu_image_save">Tahuwa gāmbari</string>
   <string name="contextmenu_open_in_new_tab">Hu\'owa wūmbuta to tab bohu</string>
   <string name="contextmenu_open_image_in_new_tab">Hu\'owa gāmbari to tab bohu</string>
-  <string name="first_run_page1_title">Odu\'olo mā lolulawoto %1$s</string>
-  <string name="first_run_page1_text">Peramban pilohutu lo %1$s, organisasi nirlaba yang berkomitmen to situs pereyi wawu bu\'a-bu\'adu.</string>
-  <string name="first_run_page2_title">Monguli\'ato ngo\'ita lomato</string>
-  <string name="first_run_page2_text">Pomakeya mode turbo momubulo iklan alupo alihu Yi\'o molinggahu monguli\'ato. Wonu situs orasawa o masa\'ala, mowali nonaktif moli menu.</string>
-  <string name="first_run_page3_title">Hemat data = hemat doyi</string>
-  <string name="first_run_page3_text">Hemat kuota data wolo momubulo iklan u\'alupo. Lebe hemat da\'a wonu Yi\'o mopo\'aktif bubulo gambari.</string>
-  <string name="first_run_page4_title">Cuplik nga\'amila layar</string>
-  <string name="first_run_page4_text">Cuplik layar nga\'amila mopoheyi lo layar. Pobacawa secara luring ja momake kuota data meyambo woduta u mona\'o ode laman Web boyito.</string>
-  <string name="first_run_page5_title">Privasi lenggota de yitato</string>
-  <string name="first_run_page5_text">"Monguli\'ato ja\'o alupo wawu bubuli ngotayade damango alupo web lo\'u layito. Pastiya amani lo data rahasia olemu. "</string>
-  <string name="first_run_upgrade_page_title">Ami modungohu potuhatamu!</string>
   <string name="new_name_upgrade_page_title">Bibilohu bohu!</string>
   <string name="new_name_upgrade_page_text">"Melalui evolusi produk, popowuluwo mayi lami %1$s u molamahu, wolo tanggulo wawu logo bohu. "</string>
-  <string name="first_run_upgrade_page_text1">1. Mowali momu\'o wawu mokalaja pe\'enta %s nga\'amila!</string>
-  <string name="first_run_upgrade_page_text1_highlight">multi tab</string>
-  <string name="first_run_upgrade_page_text2">2. Akses situs favorit Ulemu wolo u molinggahu %s</string>
-  <string name="first_run_upgrade_page_text2_highlight">Duhengi ode duledehu!</string>
   <string name="firstrun_close_button">OKE, mā otāwa!</string>
-  <string name="firstrun_skip_button">Lawodi</string>
-  <string name="firstrun_next_button">Tunuhiyo</string>
   <string name="label_menu_bookmark">Tuwoto buku</string>
   <string name="label_menu_download">Pilopohuli</string>
   <string name="label_menu_find_in_page">Lolohe to halaman</string>

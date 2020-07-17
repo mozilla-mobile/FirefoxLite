@@ -68,29 +68,9 @@
   <string name="contextmenu_image_save">I-save ang imahe</string>
   <string name="contextmenu_open_in_new_tab">Buksan ang link sa panibagong tab</string>
   <string name="contextmenu_open_image_in_new_tab">Buksan ang imahe sa panibagong tab</string>
-  <string name="first_run_page1_title">Salamat sa pagpili ng %1$s</string>
-  <string name="first_run_page1_text">Ang browser na sadyang ginawa para sa Pilipinas mula sa %1$s, ang non-profit na nagtataguyod ng isang malaya at bukas na web.</string>
-  <string name="first_run_page2_title">Mag-browse nang mas matulin</string>
-  <string name="first_run_page2_text">Gamitin ang turbo mode para harangin ang mga tracking ads at para makapag-browse nang mas matulin. Kung hindi lalabas ng tama ang mga website, i-tap lang ang turbo mode mula sa menu para ito ay mag-off.</string>
-  <string name="first_run_page3_title">Naipong data = Naipong pera</string>
-  <string name="first_run_page3_text">Makakatipid ka ng data sa pagharang sa tracking ads. May Karagdagang katipiran kung gagamit din ng image blocking.</string>
-  <string name="first_run_page4_title">I-screenshot ang buong pahina</string>
-  <string name="first_run_page4_text">Kunin ang screenshot ng buong pahina. Tingnan ang screenshot offline ng hindi gagamit ng data o kaya ay i-tap ito para puntahan ang web page.</string>
-  <string name="first_run_page5_title">Susunod na antas ng privacy</string>
-  <string name="first_run_page5_text">Mag-browse nang walang bakas, at i-block ang isang malawak na hanay ng mga karaniwang trackers sa web bilang default. Tiyakin ang seguridad ng iyong kumpidensyal na data.</string>
-  <string name="first_run_page6_text">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
-  <string name="first_run_page7_title">Iwasan ang pagiging sinusubaybayan</string>
-  <string name="first_run_page7_text">Ngayon ay maaari mong suriin kung gaano karaming mga tracker ang naharang sa pribadong mode.</string>
-  <string name="first_run_upgrade_page_title">Narinig namin ang inyong feedback!</string>
   <string name="new_name_upgrade_page_title">Mayroon kaming bagong hitsura!</string>
   <string name="new_name_upgrade_page_text">Sa paglaki ng produkto, dalhin namin sa iyo ang isang bagong na-refresh na %1$s, na may bagong pangalan at bagong logo.</string>
-  <string name="first_run_upgrade_page_text1">1. Mag-multitask sa pamamagitan ng pagbubukas ng %s sabay-sabay!</string>
-  <string name="first_run_upgrade_page_text1_highlight">maraming mga tab</string>
-  <string name="first_run_upgrade_page_text2">2. Puntahan ang iyong mga paboritong website nang mas mabilis sa pamamagitan ng %s</string>
-  <string name="first_run_upgrade_page_text2_highlight">idagdag sa home screen!</string>
   <string name="firstrun_close_button">OK, naintindihan ko!</string>
-  <string name="firstrun_skip_button">Laktawan</string>
-  <string name="firstrun_next_button">Susunod</string>
   <string name="firstrun_fxlite_2.5_title_1">Mabuhay!</string>
   <string name="button_done">Tapos na</string>
   <string name="label_menu_bookmark">Mga Bookmark</string>
@@ -353,7 +333,6 @@
   <string name="gaming_vertical_genre_10">Palaisipan at Lohika</string>
   <string name="gaming_vertical_genre_11">Palakasan at Karera</string>
   <string name="gaming_vertical_genre_12">Mga babae</string>
-  <string name="onboarding_2_introduction_title">Pinakabago %1$s</string>
   <string name="home_search_bar_text">Hanapin...</string>
   <string name="home_content_services">Nilalaman at Serbisyo</string>
   <string name="home_discovery">Pagtuklas</string>

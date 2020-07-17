@@ -57,22 +57,7 @@
   <string name="contextmenu_image_save">चित्र सहेजू</string>
   <string name="contextmenu_open_in_new_tab">लिंक नव टैब मे खोलू</string>
   <string name="contextmenu_open_image_in_new_tab">चित्र नव टैब मे खोलू</string>
-  <string name="first_run_page1_title">%1$s चुनए कलेल धन्यवाद</string>
-  <string name="first_run_page1_text">गैर-लाभकारी %1$s द्वारा बनाएल गेल एकटा ब्राउज़र, एकटा मुफ्त तथा खुलल वेब कलेल समर्पित.</string>
-  <string name="first_run_page2_title">पहिने सँ तेज ब्राउज करू</string>
-  <string name="first_run_page2_text">टर्बो मोड द्वारा ट्रैकिंग एड केँ ब्लॉक करू अहाँ तूफानी गति सँ ब्राउज कए सकब. जँ साइट टूटल बुझाएत अछि, टर्बो मोड केँ टैप ऑफ करू आओर मेनू मे जाउ.</string>
-  <string name="first_run_page3_title">डेटा बचाबू = टका बचाबू</string>
-  <string name="first_run_page3_text">ट्रैकिंग विज्ञापन केँ ब्लॉक करै सँ ई ब्राउज़िंग केँ गति देत अछि, आओर डेटा बचबैत अछि सेहो. जँ अहाँ छवि केँ ब्लॉक करैत छी तँ आओर भी सहेजू.</string>
-  <string name="first_run_page4_title">सभक स्क्रीनशॉट लिअ</string>
-  <string name="first_run_page4_text">सौंसे वेब पृष्ठक स्क्रीनशॉट लिअ. एकटा स्क्रीनशॉट केँ ऑफ़लाइन देखू (बिनु डेटा उपयोग कएने) या वेब पृष्ठ पर फिनु सँ जाए कलेल एकरा टैप करू.</string>
-  <string name="first_run_upgrade_page_title">हम अहाँक प्रतिक्रिया सुनलहूँ!</string>
-  <string name="first_run_upgrade_page_text1">1. एक्के टाइम मे %s मल्टीटास्क सेहो खुलल अछि!</string>
-  <string name="first_run_upgrade_page_text1_highlight">अनेक टैब</string>
-  <string name="first_run_upgrade_page_text2">2. अपन पसंदीदा साइट पर तेजी सँ %s द्वारा पहुँचू</string>
-  <string name="first_run_upgrade_page_text2_highlight">ओकरा होम स्क्रीन मे जोड़ू!</string>
   <string name="firstrun_close_button">बेस, बुझि गेलहूँ!</string>
-  <string name="firstrun_skip_button">छोड़ू</string>
-  <string name="firstrun_next_button">अगिला</string>
   <string name="label_menu_bookmark">पुस्तकचिह्न</string>
   <string name="label_menu_download">डाउनलोड</string>
   <string name="label_menu_clear_cache">कैश मेटाबू</string>
