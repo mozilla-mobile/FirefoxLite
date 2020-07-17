@@ -7,7 +7,6 @@
     android:layout_width="104dp"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
-    android:theme="@style/Theme.MaterialComponents.Light"
     app:strokeColor="@color/paletteLightGreyA100"
     app:strokeWidth="1dp"
     app:cardCornerRadius="4dp"
