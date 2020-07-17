@@ -9,6 +9,8 @@ import org.mozilla.focus.R
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.GAMES
+import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.JSON_KEY_ID
+import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.JSON_KEY_ITEMS
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.JSON_KEY_TYPE
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.NEWS
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.SHOPPING
@@ -16,6 +18,7 @@ import org.mozilla.rocket.home.contenthub.data.ContentHubRepo.Companion.TRAVEL
 import org.mozilla.rocket.preference.booleanLiveData
 import org.mozilla.rocket.preference.stringLiveData
 import org.mozilla.rocket.util.AssetsUtils
+import org.mozilla.rocket.util.getJsonArray
 import org.mozilla.rocket.util.toJsonArray
 import org.mozilla.strictmodeviolator.StrictModeViolation
 
@@ -34,12 +37,12 @@ class ContentHubRepo(private val appContext: Context) {
         preference.edit().putBoolean(SHARED_PREF_KEY_ENABLE_CONTENT_HUB, enabled).apply()
     }
 
-    fun getConfiguredContentHubItemsLive(): LiveData<List<ContentHubItem>?> {
+    fun getConfiguredContentHubItemGroupsLive(): LiveData<List<ContentHubItemGroup>?> {
         val readTypes = getReadTypesLive()
         val contentHubItemsJsonStr = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_CONTENT_HUB_ITEMS_V2_5)
                 .takeIf { it.isNotEmpty() }
         return readTypes.map {
-            contentHubItemsJsonStr?.jsonStringToContentHubItems(it)
+            contentHubItemsJsonStr?.jsonStringToContentHubItemGroups(it)
         }
     }
 
@@ -83,6 +86,8 @@ class ContentHubRepo(private val appContext: Context) {
         private const val SHARED_PREF_KEY_READ_CONTENT_HUB = "shared_pref_key_read_content_hub"
         private const val SHARED_PREF_KEY_ENABLE_CONTENT_HUB = "shared_pref_key_enable_content_hub"
         const val JSON_KEY_TYPE = "type"
+        const val JSON_KEY_ID = "id"
+        const val JSON_KEY_ITEMS = "items"
     }
 }
 
@@ -92,6 +97,33 @@ private fun String.jsonStringToTypeList(): List<Int>? {
         (0 until jsonArray.length())
                 .map { index -> jsonArray.getJSONObject(index) }
                 .map { jsonObject -> jsonObject.getInt(JSON_KEY_TYPE) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun String.jsonStringToContentHubItemGroups(readTypes: List<Int>): List<ContentHubItemGroup>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .mapNotNull { jsonObject -> jsonObject.toContentHubItemGroup(readTypes) }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun JSONObject.toContentHubItemGroup(readTypes: List<Int>): ContentHubItemGroup? {
+    return try {
+        val id = this.getInt(JSON_KEY_ID)
+        val items = this.getJsonArray(JSON_KEY_ITEMS) { jsonObject ->
+            val type = jsonObject.getInt(JSON_KEY_TYPE)
+            val isUnread = !readTypes.contains(type)
+            createContentHubItem(type, isUnread)
+        }
+        ContentHubItemGroup(id, items)
     } catch (e: JSONException) {
         e.printStackTrace()
         null
@@ -120,6 +152,11 @@ sealed class ContentHubItem(val iconResId: Int, val textResId: Int, open var isU
     class News(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_news, R.string.label_menu_news, isUnread)
     class Games(override var isUnread: Boolean) : ContentHubItem(R.drawable.ic_games, R.string.gaming_vertical_title, isUnread)
 }
+
+data class ContentHubItemGroup(
+    val groupId: Int,
+    val items: List<ContentHubItem>
+)
 
 private fun createContentHubItem(type: Int, isUnread: Boolean): ContentHubItem {
     return when (type) {

@@ -20,7 +20,7 @@ open class GetTopSitesUseCase(
     open suspend operator fun invoke(): List<Site> = withContext(Dispatchers.IO) {
         val pinnedSites = topSitesRepo.getPinnedSites()
         val defaultSites = topSitesRepo.getChangedDefaultSites()
-                ?: topSitesRepo.getConfiguredDefaultSites()
+                ?: topSitesRepo.getConfiguredDefaultSiteGroups()?.find { it.groupId == contentPrefRepo.getContentPref().id }?.sites
                 ?: topSitesRepo.getDefaultSites(contentPrefRepo.getContentPref().topSitesResId)
                 ?: emptyList()
         val historySites = topSitesRepo.getHistorySites()

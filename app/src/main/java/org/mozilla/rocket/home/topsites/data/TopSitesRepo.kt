@@ -23,6 +23,8 @@ import org.mozilla.focus.utils.DimenUtils
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.TopSitesUtils
 import org.mozilla.icon.FavIconUtils
+import org.mozilla.rocket.home.topsites.data.TopSitesRepo.Companion.JSON_KEY_ID
+import org.mozilla.rocket.home.topsites.data.TopSitesRepo.Companion.JSON_KEY_SITES
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import org.mozilla.rocket.util.AssetsUtils
 import org.mozilla.rocket.util.getJsonArray
@@ -85,11 +87,17 @@ class TopSitesRepo(
                     ?.jsonStringToSites()
                     ?.apply { forEach { it.isDefault = true } }
 
-    fun getConfiguredDefaultSites(): List<Site>? =
+    fun getConfiguredDefaultSiteGroups(): List<SiteGroup>? =
             FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_TOP_SITES_DEFAULT_ITEMS_V2_5)
                     .takeIf { it.isNotEmpty() }
-                    ?.jsonStringToSites()
-                    ?.apply { forEach { it.isDefault = true } }
+                    ?.jsonStringToSiteGroups()
+                    ?.apply {
+                        forEach { group ->
+                            group.sites.forEach { site ->
+                                site.isDefault = true
+                            }
+                        }
+                    }
 
     fun getDefaultSites(resId: Int): List<Site>? =
             AssetsUtils.loadStringFromRawResource(appContext, resId)
@@ -239,8 +247,39 @@ class TopSitesRepo(
         private const val TOP_SITES_V2_PREF = "top_sites_v2_complete"
         private const val STR_RECOMMENDED_SITES = "str_recommended_sites"
         private const val MSG_ID_REFRESH = 8269
+        const val JSON_KEY_ID = "id"
+        const val JSON_KEY_SITES = "sites"
     }
 }
+
+private fun String.jsonStringToSiteGroups(): List<SiteGroup>? {
+    return try {
+        val jsonArray = this.toJsonArray()
+        (0 until jsonArray.length())
+                .map { index -> jsonArray.getJSONObject(index) }
+                .mapNotNull { jsonObject -> jsonObject.toSiteGroup() }
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+private fun JSONObject.toSiteGroup(): SiteGroup? {
+    return try {
+        SiteGroup(
+            groupId = this.getInt(JSON_KEY_ID),
+            sites = this.getJsonArray(JSON_KEY_SITES) { TopSitesUtils.paresSite(it) }
+        )
+    } catch (e: JSONException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+data class SiteGroup(
+    val groupId: Int,
+    val sites: List<Site>
+)
 
 private fun String.jsonStringToSites(): List<Site>? {
     return try {
