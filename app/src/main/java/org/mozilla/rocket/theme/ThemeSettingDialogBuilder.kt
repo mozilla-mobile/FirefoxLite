@@ -30,7 +30,15 @@ class ThemeSettingDialogBuilder(
         return AlertDialog.Builder(activity, R.style.ThemeSettingDialog)
             .setView(customContentView)
             .setOnDismissListener {
-                homeViewModel.onExitThemeSetting()
+                val selectedTheme =
+                    when {
+                        themeButton1.isSelected -> THEME_DEFAULT_NAME
+                        themeButton2.isSelected -> THEME_2_NAME
+                        themeButton3.isSelected -> THEME_3_NAME
+                        themeButton4.isSelected -> THEME_4_NAME
+                        else -> THEME_5_NAME
+                    }
+                homeViewModel.onExitThemeSetting(selectedTheme)
             }
             .create()
             .also { dialog ->
@@ -90,11 +98,11 @@ class ThemeSettingDialogBuilder(
             if (themeButton == clickedThemeButton) {
                 if (!themeButton.isSelected) {
                     when (clickedThemeButton) {
-                        themeButton1 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Default, THEME_DEFAULT_NAME)
-                        themeButton2 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme2, THEME_2_NAME)
-                        themeButton3 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme3, THEME_3_NAME)
-                        themeButton4 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme4, THEME_4_NAME)
-                        themeButton5 -> homeViewModel.onThemeClicked(true, ThemeManager.ThemeSet.Default, THEME_5_NAME)
+                        themeButton1 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Default)
+                        themeButton2 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme2)
+                        themeButton3 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme3)
+                        themeButton4 -> homeViewModel.onThemeClicked(false, ThemeManager.ThemeSet.Theme4)
+                        themeButton5 -> homeViewModel.onThemeClicked(true, ThemeManager.ThemeSet.Default)
                     }
                 }
                 themeButton.isSelected = true

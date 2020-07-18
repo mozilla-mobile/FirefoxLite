@@ -243,8 +243,7 @@ class HomeViewModel(
         resetBackgroundColor.call()
     }
 
-    fun onThemeClicked(isDarkTheme: Boolean, theme: ThemeManager.ThemeSet, name: String) {
-        TelemetryWrapper.clickThemeContextualHint(name)
+    fun onThemeClicked(isDarkTheme: Boolean, theme: ThemeManager.ThemeSet) {
         settings.setDarkTheme(isDarkTheme)
         // No need to update background color theme when in dark theme
         if (isDarkTheme) {
@@ -370,12 +369,13 @@ class HomeViewModel(
         TelemetryWrapper.showThemeContextualHint()
     }
 
-    fun onExitThemeSetting() {
+    fun onExitThemeSetting(selectedTheme: String) {
         if (shouldShowSetDefaultBrowserOnboardingUseCase()) {
             setSetDefaultBrowserOnboardingIsShownUseCase()
             showSetAsDefaultBrowserOnboarding.call()
             TelemetryWrapper.showGoSetDefaultMessage()
         }
+        TelemetryWrapper.clickThemeContextualHint(selectedTheme)
     }
 
     fun onSetAsDefaultBrowserClicked() {
