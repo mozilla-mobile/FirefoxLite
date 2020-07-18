@@ -75,6 +75,8 @@
   <string name="firstrun_close_button">OK, đã hiểu!</string>
   <string name="firstrun_fxlite_2.5_title_1">Xin chào!</string>
   <string name="firstrun_fxlite_2.5_title_2">Điều gì đưa bạn đến %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_A">Xin chào!</string>
+  <string name="firstrun_fxlite_2_5_title_B">Điều gì đưa bạn đến %1$s?</string>
   <string name="content_theme_1">Duyệt web</string>
   <string name="content_theme_2">Tìm ưu đãi tốt</string>
   <string name="content_theme_3">Chơi trò chơi và video</string>
@@ -213,6 +215,9 @@
   <string name="rate_app_notification_action_rate">ĐÁNH GIÁ CHÚNG TÔI</string>
   <string name="rate_app_dialog_btn_feedback">Để lại phản hồi</string>
   <string name="rate_app_notification_action_feedback">PHẢN HỒI</string>
+  <string name="survey_dialog_text_title">Bạn thích %1$s như thế nào?</string>
+  <string name="survey_dialog_text_content">Hãy cho chúng tôi suy nghĩ của bạn về những gì bạn yêu thích, hoặc những gì chúng ta có thể làm tốt hơn.</string>
+  <string name="survey_dialog_btn">Tham gia khảo sát</string>
   <string name="share_app_dialog_text_title">Chia sẻ %1$s với bạn bè!</string>
   <string name="share_app_dialog_text_content">- Nhanh và nhẹ\n- Tìm kiếm mua sắm thông minh\n- Trò chơi miễn phí, tin tức xu hướng</string>
   <string name="share_app_dialog_btn_share">Chia sẻ</string>
@@ -488,5 +493,5 @@
   <string name="travel_dialog_2_description_new">Bạn có thể đặt %1$s %2$s làm công cụ tìm kiếm mặc định cho du lịch.</string>
   <string name="travel_dialog_2_checkbox">Đừng hỏi lại tôi nữa</string>
   <string name="travel_dialog_2_action">ĐẶT LÀM MẶC ĐỊNH</string>
-  <string name="awesomebar_open_link_clipboard">Mở liên kết trong bộ nhớ tạm của bạn</string>
+  <string name="awesomebar_open_link_clipboard">Mở liên kết đã sao chép</string>
 </resources>

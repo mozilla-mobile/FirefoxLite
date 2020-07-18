@@ -215,6 +215,9 @@
   <string name="rate_app_notification_action_rate">为我们打分</string>
   <string name="rate_app_dialog_btn_feedback">留下反馈</string>
   <string name="rate_app_notification_action_feedback">反馈</string>
+  <string name="survey_dialog_text_title">您觉得 %1$s 如何？</string>
+  <string name="survey_dialog_text_content">请告诉我们您喜欢哪些，或是有哪些部份可以做得更好。</string>
+  <string name="survey_dialog_btn">填写问卷</string>
   <string name="share_app_dialog_text_title">与朋友分享 %1$s！</string>
   <string name="share_app_dialog_text_content">- 一如既往的轻快\n- 智能购物搜索\n- 免费游戏、热门新闻</string>
   <string name="share_app_dialog_btn_share">分享</string>
@@ -490,5 +493,5 @@
   <string name="travel_dialog_2_description_new">您可以将 %1$s %2$s 设为默认旅游搜索引擎。</string>
   <string name="travel_dialog_2_checkbox">不再询问我</string>
   <string name="travel_dialog_2_action">设为默认值</string>
-  <string name="awesomebar_open_link_clipboard">在剪贴板中打开链接</string>
+  <string name="awesomebar_open_link_clipboard">打开复制的链接</string>
 </resources>
