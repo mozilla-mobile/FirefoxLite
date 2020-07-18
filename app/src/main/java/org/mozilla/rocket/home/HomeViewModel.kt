@@ -313,9 +313,7 @@ class HomeViewModel(
                     false
                 }
                 val title = if (allowToLogTitle) site.title else ""
-                val pageIndex = requireNotNull(topSitesPageIndex.value)
-                val topSitePosition = position + pageIndex * TOP_SITES_PER_PAGE
-                TelemetryWrapper.pinTopSite(title, topSitePosition, allowToLogTitle)
+                TelemetryWrapper.pinTopSite(title, position, allowToLogTitle)
             }
         }
     }
