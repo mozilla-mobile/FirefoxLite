@@ -75,6 +75,8 @@
   <string name="firstrun_close_button">Oke, paham</string>
   <string name="firstrun_fxlite_2.5_title_1">Halo!</string>
   <string name="firstrun_fxlite_2.5_title_2">Apa yang ingin Anda lakukan di %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_A">Halo!</string>
+  <string name="firstrun_fxlite_2_5_title_B">Apa yang membuatmu pakai %1$s?</string>
   <string name="content_theme_1">Jelajahi Web</string>
   <string name="content_theme_2">Temukan Penawaran Bagus</string>
   <string name="content_theme_3">Bermain Gim dan Video</string>
@@ -213,6 +215,9 @@
   <string name="rate_app_notification_action_rate">BERI PERINGKAT</string>
   <string name="rate_app_dialog_btn_feedback">Kirim Saran</string>
   <string name="rate_app_notification_action_feedback">MASUKAN</string>
+  <string name="survey_dialog_text_title">Seberapa suka Anda dengan %1$s?</string>
+  <string name="survey_dialog_text_content">Ceritakan pendapat Anda kepada kami tentang hal yang Anda suka dari aplikasi ini, atau apa yang bisa kami lakukan agar menjadi lebih baik.</string>
+  <string name="survey_dialog_btn">Ikuti survei</string>
   <string name="share_app_dialog_text_title">Bagikan %1$s dengan teman!</string>
   <string name="share_app_dialog_text_content">- Cepat dan ringan\n- Pencarian Belanja Pintar\n- Permainan Gratis, berita terkini</string>
   <string name="share_app_dialog_btn_share">Bagikan</string>
