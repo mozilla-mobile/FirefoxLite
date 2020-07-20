@@ -38,7 +38,7 @@ public class NewFeatureNotice {
     }
 
     public boolean shouldShowLiteUpdate() {
-        return !hasShownFirstRun();
+        return isNewUser();
     }
 
     public void setLiteUpdateDidShow() {
@@ -92,6 +92,12 @@ public class NewFeatureNotice {
 
     public int getLastShownFeatureVersion() {
         return preferences.getInt(PREF_KEY_INT_FEATURE_UPGRADE_VERSION, 0);
+    }
+
+    private boolean isNewUser() {
+        return getLastShownFeatureVersion() == 0 &&
+                !hasHomePageOnboardingShown() && // TODO: temporary fix, see if there's a way to remove this check
+                !hasShownFirstRun(); // TODO: temporary fix, see if there's a way to remove this check
     }
 
     public boolean hasHomePageOnboardingShown() {

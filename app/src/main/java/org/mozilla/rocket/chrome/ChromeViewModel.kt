@@ -57,6 +57,11 @@ class ChromeViewModel(
 
     val shouldShowFirstrun: Boolean
         get() = newFeatureNotice.shouldShowLiteUpdate()
+                .also { shouldShow ->
+                    if (!shouldShow) {
+                        newFeatureNotice.setLiteUpdateDidShow()
+                    }
+                }
 
     val showToast = SingleLiveEvent<ToastMessage>()
     val openUrl = SingleLiveEvent<OpenUrlAction>()
