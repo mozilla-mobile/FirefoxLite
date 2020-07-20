@@ -15,7 +15,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.notification.RocketMessagingService
 import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.rocket.periodic.FirstLaunchWorker
-import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource.Companion.RC_KEY_ENABLE_SHOPPING_SEARCH
+import org.mozilla.rocket.shopping.search.data.ShoppingSearchRemoteDataSource.Companion.RC_KEY_ENABLE_SHOPPING_SEARCH_V2_5
 import java.util.HashMap
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -255,7 +255,7 @@ object FirebaseHelper {
         map[SHARE_APP_DIALOG_THRESHOLD] = DialogUtils.APP_CREATE_THRESHOLD_FOR_SHARE_DIALOG
         map[SCREENSHOT_CATEGORY_MANIFEST] = ScreenshotManager.SCREENSHOT_CATEGORY_MANIFEST_DEFAULT
         map[FIRST_LAUNCH_TIMER_MINUTES] = FirstLaunchWorker.TIMER_DISABLED
-        map[RC_KEY_ENABLE_SHOPPING_SEARCH] = AppConfigWrapper.RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT
+        map[RC_KEY_ENABLE_SHOPPING_SEARCH_V2_5] = AppConfigWrapper.RC_KEY_ENABLE_SHOPPING_SEARCH_DEFAULT
 
         return map
     }

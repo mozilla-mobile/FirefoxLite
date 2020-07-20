@@ -17,7 +17,7 @@ class ShoppingSearchLocalDataSource(private val appContext: Context) : ShoppingS
         })
     }
 
-    override fun isHomeScreenShoppingSearchEnabled(): Boolean {
+    override fun getHomeShoppingSearchEnabledGroups(): List<HomeShoppingSearchEnabledGroup>? {
         throw UnsupportedOperationException("Always get shopping search settings from remote")
     }
 

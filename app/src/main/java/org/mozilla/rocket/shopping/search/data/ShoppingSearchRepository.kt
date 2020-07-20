@@ -35,7 +35,8 @@ class ShoppingSearchRepository(
         }
     }
 
-    fun isHomeScreenShoppingSearchEnabled() = remoteDataSource.isHomeScreenShoppingSearchEnabled()
+    fun getHomeShoppingSearchEnabledGroups(): List<HomeShoppingSearchEnabledGroup>? =
+            remoteDataSource.getHomeShoppingSearchEnabledGroups()
 
     fun getShoppingSitesData(): LiveData<List<ShoppingSite>> = shoppingSitesData
 
