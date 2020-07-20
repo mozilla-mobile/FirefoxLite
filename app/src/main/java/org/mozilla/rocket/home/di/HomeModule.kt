@@ -235,17 +235,21 @@ object HomeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideIsHomeScreenShoppingButtonEnabledUseCase(shoppingSearchRepository: ShoppingSearchRepository): IsHomeScreenShoppingButtonEnabledUseCase =
-            IsHomeScreenShoppingButtonEnabledUseCase(shoppingSearchRepository)
+    fun provideIsHomeScreenShoppingButtonEnabledUseCase(
+        shoppingSearchRepository: ShoppingSearchRepository,
+        contentPrefRepo: ContentPrefRepo
+    ): IsHomeScreenShoppingButtonEnabledUseCase =
+            IsHomeScreenShoppingButtonEnabledUseCase(shoppingSearchRepository, contentPrefRepo)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideShouldShowShoppingSearchOnboardingUseCase(
         shoppingSearchRepository: ShoppingSearchRepository,
+        contentPrefRepo: ContentPrefRepo,
         newFeatureNotice: NewFeatureNotice
     ): ShouldShowShoppingSearchOnboardingUseCase =
-            ShouldShowShoppingSearchOnboardingUseCase(shoppingSearchRepository, newFeatureNotice)
+            ShouldShowShoppingSearchOnboardingUseCase(shoppingSearchRepository, contentPrefRepo, newFeatureNotice)
 
     @JvmStatic
     @Singleton
