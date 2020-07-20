@@ -80,6 +80,10 @@ class DownloadInfoRepository {
 
     fun deleteFromDownloadManager(downloadId: Long) {
 
+        DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
+    }
+
+    fun trackDownloadCancel(downloadId: Long) {
         val downloadPojo =
             DownloadInfoManager.getInstance().queryDownloadManager(downloadId) ?: return
         val progress = if (downloadPojo.length == 0L) {
@@ -94,6 +98,5 @@ class DownloadInfoRepository {
             DownloadInfo.STATUS_DELETED,
             DownloadInfo.REASON_DEFAULT
         )
-        DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
     }
 }
