@@ -107,7 +107,9 @@ public class EnqueueDownloadTask extends AsyncTask<Void, Void, EnqueueDownloadTa
                     public void onInsertComplete(long id) {
                         try {
                             GetDownloadFileHeaderTask.HeaderInfo headerInfo = new GetDownloadFileHeaderTask().execute(download.getUrl()).get();
-                            TelemetryWrapper.startDownloadFile(downloadInfo.getDownloadId().toString(), download.getContentLength(), headerInfo.isValidSSL, headerInfo.isSupportRange);
+                            long contentLengthFromDownloadRequest = download.getContentLength();    // it'll be -1 if it's from context menu, and real file size from webview callback
+                            long fileSize = contentLengthFromDownloadRequest == -1 ? headerInfo.contentLength : contentLengthFromDownloadRequest;
+                            TelemetryWrapper.startDownloadFile(downloadInfo.getDownloadId().toString(), fileSize, headerInfo.isValidSSL, headerInfo.isSupportRange);
                         } catch (ExecutionException e) {
                             Log.e(TAG, "Fail sending download telemetry because ExecutionException");
                         } catch (InterruptedException e) {
