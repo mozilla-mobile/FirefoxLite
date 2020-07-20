@@ -74,7 +74,7 @@ public class MenuTest {
         onView(withId(R.id.menu_screenshots)).check(matches(isDisplayed()));
 
         // check private mode displayed
-        onView(withId(R.id.btn_private_browsing))
+        onView(withId(R.id.menu_smart_shopping_search))
                 .perform(nestedScrollTo())
                 .check(matches(isDisplayed()));
 
