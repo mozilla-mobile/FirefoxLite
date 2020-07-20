@@ -366,7 +366,6 @@ class HomeViewModel(
 
     fun onThemeSettingMenuClicked() {
         showThemeSetting.call()
-        TelemetryWrapper.showThemeContextualHint()
     }
 
     fun onExitThemeSetting(selectedTheme: String) {
