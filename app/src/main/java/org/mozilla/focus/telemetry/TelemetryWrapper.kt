@@ -4016,16 +4016,16 @@ object TelemetryWrapper {
     @JvmStatic
     fun endDownloadFile(
         downloadId: Long,
-        fileSize: Long,
-        progress: Double,
+        fileSize: Long?,
+        progress: Double?,
         status: Int,
         reason: Int
     ) {
         EventBuilder(Category.ACTION, Method.END, Object.DOWNLOAD, Value.FILE)
             .extra(Extra.DOWNLOAD_ID, downloadId.toString())
             .extra(Extra.END_TIME, System.currentTimeMillis().toString())
-            .extra(Extra.FILE_SIZE, (fileSize / 1024).toString())
-            .extra(Extra.PROGRESS, progress.roundToInt().toString())
+            .extra(Extra.FILE_SIZE, fileSize?.div(1024)?.toString() ?: "null")
+            .extra(Extra.PROGRESS, progress?.roundToInt()?.toString() ?: "null")
             .extra(Extra.STATUS, status.toString())
             .extra(Extra.REASON, reason.toString())
             .extra(Extra.NETWORK, network())

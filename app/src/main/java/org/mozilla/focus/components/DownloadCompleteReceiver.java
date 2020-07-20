@@ -52,8 +52,8 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                         // when we delete the download, we also remove it from DM. So we can't get
                         // the file size and progress anymore.
                         TelemetryWrapper.endDownloadFile(downloadId,
-                                0,
-                                0,
+                                null,
+                                null,
                                 DownloadInfo.STATUS_DELETED,
                                 DownloadInfo.REASON_DEFAULT);
                     }
