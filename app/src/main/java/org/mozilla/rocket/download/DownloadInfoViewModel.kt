@@ -110,9 +110,11 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
             override fun onComplete(download: DownloadInfo) {
                 if (download.existInDownloadManager()) {
-                    if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status) {
+                    val downloadId = download.downloadId
+                    if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status && downloadId != null) {
                         toastMessageObservable.value = R.string.download_cancel
-                        repository.deleteFromDownloadManager(download.downloadId)
+                        repository.trackDownloadCancel(downloadId)
+                        repository.deleteFromDownloadManager(downloadId)
                         remove(rowId)
                     }
                 }
