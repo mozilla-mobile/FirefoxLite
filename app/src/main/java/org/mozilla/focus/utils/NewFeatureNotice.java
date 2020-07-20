@@ -95,8 +95,7 @@ public class NewFeatureNotice {
     }
 
     private boolean isNewUser() {
-        return getLastShownFeatureVersion() == 0 &&
-                !hasHomePageOnboardingShown() && // TODO: temporary fix, see if there's a way to remove this check
+        return !hasHomePageOnboardingShown() && // TODO: temporary fix, see if there's a way to remove this check
                 !hasShownFirstRun(); // TODO: temporary fix, see if there's a way to remove this check
     }
 
