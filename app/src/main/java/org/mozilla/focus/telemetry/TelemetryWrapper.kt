@@ -173,6 +173,7 @@ object TelemetryWrapper {
         const val TOAST = "toast"
         const val SNACKBAR = "snackbar"
         const val DOWNLOAD = "download"
+        const val FIRSTRUN = "firstrun"
     }
 
     object Value {
@@ -268,6 +269,8 @@ object TelemetryWrapper {
         internal const val SET_DEFAULT_SUCCESS = "set_default_success"
         internal const val SET_DEFAULT_TRY_AGAIN = "set_default_try_again"
         internal const val GO_SET_DEFAULT = "go_set_default"
+        internal const val FINISH = "finish"
+        internal const val WHATSNEW = "whatsnew"
     }
 
     internal object Extra {
@@ -4290,6 +4293,138 @@ object TelemetryWrapper {
         companion object {
             private const val MEASUREMENT_EXPERIMENT_NAME = "experiment_name"
         }
+    }
+
+    // Keep telemetry functions in order to also keep generated sql
+    @TelemetryDoc(
+            name = "Turn on Turbo Mode in First Run",
+            category = Category.ACTION,
+            method = Method.CHANGE,
+            `object` = Object.FIRSTRUN,
+            value = Value.TURBO,
+            extras = [TelemetryExtra(name = Extra.TO, value = "true,false")])
+    @JvmStatic
+    fun toggleFirstRunPageEvent(enableTurboMode: Boolean) {
+        EventBuilder(Category.ACTION, Method.CHANGE, Object.FIRSTRUN, Value.TURBO)
+                .extra(Extra.TO, java.lang.Boolean.toString(enableTurboMode))
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Finish First Run",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.FIRSTRUN,
+            value = Value.FINISH,
+            extras = [TelemetryExtra(name = Extra.ON, value = "time spent on First Run")])
+    @JvmStatic
+    fun finishFirstRunEvent(duration: Long, mode: Int) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
+                .extra(Extra.ON, java.lang.Long.toString(duration))
+                .extra(Extra.MODE, Integer.toString(mode))
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Whatsnew Onboarding",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.ONBOARDING,
+            value = Value.WHATSNEW,
+            extras = [])
+    fun showWhatsnewOnBoarding() {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.ONBOARDING, Value.WHATSNEW).queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Whatsnew Onboarding",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.ONBOARDING,
+            value = Value.WHATSNEW,
+            extras = [
+                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
+                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
+                TelemetryExtra(name = Extra.FINISH, value = "true,false")
+            ])
+    fun clickWhatsnewOnBoarding(timeSpent: Long, pageIndex: Int, finish: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.ONBOARDING, Value.WHATSNEW)
+                .extra(Extra.ON, timeSpent.toString())
+                .extra(Extra.PAGE, pageIndex.toString())
+                .extra(Extra.FINISH, finish.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Firstrun Contextual Hint",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.FIRSTRUN,
+            extras = [
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
+            ])
+    fun showFirstRunContextualHint(messageId: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.FIRSTRUN)
+                .extra(Extra.MESSAGE_ID, messageId)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Show Whatsnew Contextual Hint",
+            category = Category.ACTION,
+            method = Method.SHOW,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.WHATSNEW,
+            extras = [
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
+            ])
+    fun showWhatsnewContextualHint(messageId: String) {
+        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.WHATSNEW)
+                .extra(Extra.MESSAGE_ID, messageId)
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Firstrun Contextual Hint",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.FIRSTRUN,
+            extras = [
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id"),
+                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
+                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
+                TelemetryExtra(name = Extra.FINISH, value = "true,false")
+            ])
+    fun clickFirstRunContextualHint(messageId: String, timeSpent: Long, pageIndex: Int, finish: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.FIRSTRUN)
+                .extra(Extra.MESSAGE_ID, messageId)
+                .extra(Extra.ON, timeSpent.toString())
+                .extra(Extra.PAGE, pageIndex.toString())
+                .extra(Extra.FINISH, finish.toString())
+                .queue()
+    }
+
+    @TelemetryDoc(
+            name = "Click Whatsnew Contextual Hint",
+            category = Category.ACTION,
+            method = Method.CLICK,
+            `object` = Object.CONTEXTUAL_HINT,
+            value = Value.WHATSNEW,
+            extras = [
+                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id"),
+                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
+                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
+                TelemetryExtra(name = Extra.FINISH, value = "true,false")
+            ])
+    fun clickWhatsnewContextualHint(messageId: String, timeSpent: Long, pageIndex: Int, finish: Boolean) {
+        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.WHATSNEW)
+                .extra(Extra.MESSAGE_ID, messageId)
+                .extra(Extra.ON, timeSpent.toString())
+                .extra(Extra.PAGE, pageIndex.toString())
+                .extra(Extra.FINISH, finish.toString())
+                .queue()
     }
 
     private class ContentPrefMeasurement internal constructor(context: Context) : TelemetryMeasurement(MEASUREMENT_INTEREST) {
