@@ -75,12 +75,11 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('menu') ) AND (event_value IN ('add_topsite') ) THEN 'Rocket -  Click Menu - Add Topsite' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('menu') ) AND (event_value IN ('vertical') ) THEN 'Rocket -  Click Menu - Vertical Toggle' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('forward') ) THEN 'Rocket -  Click Toolbar - Forward' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('back') ) THEN 'Rocket -  Click Toolbar - Back' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('reload') ) THEN 'Rocket -  Click Toolbar - Reload' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Share Link' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('bookmark') ) THEN 'Rocket -  Click Toolbar - Add bookmark' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('pin_shortcut') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Pin shortcut' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('pin_shortcut') ) AND (event_object IN ('menu') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Pin shortcut' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('pin_shortcut') ) AND (event_object IN ('menu') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Menu - Pin shortcut' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('capture') ) THEN 'Rocket -  Click Toolbar - Take Screenshot' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Top Site' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('remove') ) AND (event_object IN ('home') ) AND (event_value IN ('link') ) THEN 'Rocket -  Remove Top Site' 
@@ -234,6 +233,14 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('snackbar') ) AND (event_value IN ('set_default_try_again') ) THEN 'Rocket -  Click Set-Default Try-again Snackbar' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('start') ) AND (event_object IN ('download') ) AND (event_value IN ('file') ) THEN 'Rocket -  Start Download File' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('end') ) AND (event_object IN ('download') ) AND (event_value IN ('file') ) THEN 'Rocket -  End Download File' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('firstrun') ) AND (event_value IN ('turbo') ) THEN 'Rocket -  Turn on Turbo Mode in First Run' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('firstrun') ) AND (event_value IN ('finish') ) THEN 'Rocket -  Finish First Run' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Show Whatsnew Onboarding' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('onboarding') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Click Whatsnew Onboarding' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('firstrun') ) THEN 'Rocket -  Show Firstrun Contextual Hint' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Show Whatsnew Contextual Hint' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('firstrun') ) THEN 'Rocket -  Click Firstrun Contextual Hint' 
+        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('contextual_hint') ) AND (event_value IN ('whatsnew') ) THEN 'Rocket -  Click Whatsnew Contextual Hint' 
 
     END AS event_name,
     event_timestamp AS timestamp,
