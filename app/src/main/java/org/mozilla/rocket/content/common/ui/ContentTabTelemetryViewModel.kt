@@ -65,7 +65,7 @@ class ContentTabTelemetryViewModel : ViewModel() {
 
     fun onBackButtonClicked() {
         telemetryDataModel?.let {
-            TelemetryWrapper.clickContentTabToolbarBack(0, it)
+            TelemetryWrapper.clickContentTabToolbarBack(0, true, it)
         }
     }
 
