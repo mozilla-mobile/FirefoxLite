@@ -40,8 +40,8 @@ open class GetTopSitesUseCase(
         historySites: List<org.mozilla.focus.history.model.Site>
     ): List<Site> {
         val result = fixedSites.toFixedSite() +
-                pinnedSites.toRemovableSite(topSitesRepo) +
-                mergeHistoryAndDefaultSites(defaultSites, historySites).toRemovableSite(topSitesRepo)
+                pinnedSites.toRemovableSite(isPinned = true) +
+                mergeHistoryAndDefaultSites(defaultSites, historySites).toRemovableSite(isPinned = false)
 
         return result.distinctBy { it.url.removeUrlPostSlash().toLowerCase(Locale.getDefault()) }
                 .also { removeOutboundDefaultSites(it) }
@@ -118,10 +118,10 @@ fun org.mozilla.focus.history.model.Site.toFixedSite(): Site.UrlSite =
             lastViewTimestamp = lastViewTimestamp
         )
 
-private fun List<org.mozilla.focus.history.model.Site>.toRemovableSite(topSitesRepo: TopSitesRepo): List<Site.UrlSite> =
-        map { it.toRemovableSite(topSitesRepo) }
+private fun List<org.mozilla.focus.history.model.Site>.toRemovableSite(isPinned: Boolean): List<Site.UrlSite> =
+        map { it.toRemovableSite(isPinned) }
 
-private fun org.mozilla.focus.history.model.Site.toRemovableSite(topSitesRepo: TopSitesRepo): Site.UrlSite =
+private fun org.mozilla.focus.history.model.Site.toRemovableSite(isPinned: Boolean): Site.UrlSite =
         Site.UrlSite.RemovableSite(
             id = id,
             title = title,
@@ -130,5 +130,5 @@ private fun org.mozilla.focus.history.model.Site.toRemovableSite(topSitesRepo: T
             viewCount = viewCount,
             lastViewTimestamp = lastViewTimestamp,
             isDefault = isDefault,
-            isPinned = topSitesRepo.isPinned(this)
+            isPinned = isPinned
         )
