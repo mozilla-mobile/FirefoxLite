@@ -30,10 +30,8 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
             return;
         }
         DownloadInfoManager.DownloadPojo downloadPojo = DownloadInfoManager.getInstance().queryDownloadManager(downloadId);
-        // Download completed with a record in DM.
-        // This means it's aborted automatically or download completed.
-        // If it's stopped in the notification, the event will be send out later.
-        if (downloadPojo != null) {
+        // track the event when the file download completes successfully.
+        if (downloadPojo != null && downloadPojo.status == DownloadManager.STATUS_SUCCESSFUL) {
             double progress = downloadPojo.length != 0.0 ? downloadPojo.sizeSoFar * 100.0 / downloadPojo.length : 0.0;
             TelemetryWrapper.endDownloadFile(downloadId,
                     downloadPojo.length,
@@ -48,9 +46,7 @@ public class DownloadCompleteReceiver extends BroadcastReceiver {
                 if (downloadInfoList.size() > 0) {
                     final DownloadInfo downloadInfo = (DownloadInfo) downloadInfoList.get(0);
                     if (downloadInfo.getStatus() != DownloadManager.STATUS_SUCCESSFUL) {
-                        // there's data in DB, this means deletion happens outside of our UI
-                        // when we delete the download, we also remove it from DM. So we can't get
-                        // the file size and progress anymore.
+                        // track the event when the file download cancel from notification tray.
                         TelemetryWrapper.endDownloadFile(downloadId,
                                 null,
                                 null,

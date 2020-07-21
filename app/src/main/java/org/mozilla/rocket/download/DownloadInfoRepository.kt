@@ -91,6 +91,7 @@ class DownloadInfoRepository {
         } else {
             downloadPojo.sizeSoFar.times(100).toDouble() / downloadPojo.length
         }
+        // track the event when the file download cancel from Download Panel.
         TelemetryWrapper.endDownloadFile(
             downloadId,
             downloadPojo.length,
