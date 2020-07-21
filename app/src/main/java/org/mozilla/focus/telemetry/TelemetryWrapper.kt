@@ -1331,7 +1331,7 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Menu - Pin shortcut",
+            name = "Click Toolbar - Pin shortcut",
             category = Category.ACTION,
             method = Method.PIN_SHORTCUT,
             `object` = Object.TOOLBAR,
@@ -1352,7 +1352,7 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Toolbar - Pin shortcut",
+            name = "Click Menu - Pin shortcut",
             category = Category.ACTION,
             method = Method.PIN_SHORTCUT,
             `object` = Object.MENU,
