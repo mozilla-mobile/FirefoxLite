@@ -1262,22 +1262,6 @@ object TelemetryWrapper {
     }
 
     @TelemetryDoc(
-            name = "Click Toolbar - Back",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.TOOLBAR,
-            value = Value.BACK,
-            extras = [
-                TelemetryExtra(name = Extra.POSITION, value = "[0-4]")
-            ])
-    @JvmStatic
-    fun clickToolbarBack(position: Int) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.BACK)
-                .extra(Extra.POSITION, position.toString())
-                .queue()
-    }
-
-    @TelemetryDoc(
             name = "Click Toolbar - Reload",
             category = Category.ACTION,
             method = Method.CLICK,
@@ -3218,6 +3202,10 @@ object TelemetryWrapper {
                 .queue()
     }
 
+    fun clickToolbarBack(position: Int) {
+        clickContentTabToolbarBack(position, false, null)
+    }
+
     @TelemetryDoc(
             name = "Click Toolbar - Back",
             category = Category.ACTION,
@@ -3227,7 +3215,7 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -3235,18 +3223,26 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.SUB_CATEGORY_ID, value = "subcategory id"),
                 TelemetryExtra(name = Extra.VERSION_ID, value = "version id")
             ])
-    fun clickContentTabToolbarBack(position: Int, contentTabTelemetryData: ContentTabTelemetryData) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.BACK)
-                .extra(Extra.MODE, Extra_Value.WEBVIEW)
-                .extra(Extra.POSITION, position.toString())
-                .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
-                .extra(Extra.FEED, contentTabTelemetryData.feed)
-                .extra(Extra.SOURCE, contentTabTelemetryData.source)
-                .extra(Extra.CATEGORY, contentTabTelemetryData.category)
-                .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
-                .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
-                .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
-                .queue()
+    fun clickContentTabToolbarBack(position: Int, isFromVertical: Boolean, contentTabTelemetryData: ContentTabTelemetryData?) {
+        if (isFromVertical) {
+            requireNotNull(contentTabTelemetryData)
+            EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.BACK)
+                    .extra(Extra.MODE, Extra_Value.WEBVIEW)
+                    .extra(Extra.POSITION, position.toString())
+                    .extra(Extra.VERTICAL, contentTabTelemetryData.vertical)
+                    .extra(Extra.FEED, contentTabTelemetryData.feed)
+                    .extra(Extra.SOURCE, contentTabTelemetryData.source)
+                    .extra(Extra.CATEGORY, contentTabTelemetryData.category)
+                    .extra(Extra.COMPONENT_ID, contentTabTelemetryData.componentId)
+                    .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
+                    .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
+                    .queue()
+        } else {
+            EventBuilder(Category.ACTION, Method.CLICK, Object.TOOLBAR, Value.BACK)
+                    .extra(Extra.POSITION, position.toString())
+                    .extra(Extra.VERTICAL, Extra_Value.ALL)
+                    .queue()
+        }
     }
 
     @TelemetryDoc(
