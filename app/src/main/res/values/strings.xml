@@ -203,43 +203,12 @@
     <!-- Label used in the contextmenu shown when long-pressing on a image -->
     <string name="contextmenu_open_image_in_new_tab">Open image in new tab</string>
 
-    <!-- First run tour -->
-    <!-- title for first page of FirstRun, Argument 1 will be formatted by product name -->
-    <string name="first_run_page1_title" translatable="false">Thanks for choosing %1$s</string>
-    <!-- Message for first page of FirstRun, %1$s will be "Mozilla" -->
-    <string name="first_run_page1_text" translatable="false">A browser made by %1$s, the non-profit committed to a free and open web.</string>
-    <string name="first_run_page2_title" translatable="false">Browse faster than ever</string>
-    <string name="first_run_page2_text" translatable="false">Use turbo mode to block tracking ads so you can browse at blazing speeds. If sites seem broken, just tap off the turbo mode switch in the menu.</string>
-    <string name="first_run_page3_title" translatable="false">Save data = Save money</string>
-    <string name="first_run_page3_text" translatable="false">Save on data costs by blocking tracking ads. Save even more when you enable image blocking.</string>
-    <string name="first_run_page4_title" translatable="false">Screenshot the whole page</string>
-    <string name="first_run_page4_text" translatable="false">Take screenshot of an entire page scroll. Read it offline without using data or tap it to revisit the web page.</string>
-    <string name="first_run_page5_title" translatable="false">Next-level privacy</string>
-    <string name="first_run_page5_text" translatable="false">Browse without a trace, and block a wide range of common web trackers by default. Ensure the security of your confidential data.</string>
-    <!-- The %1$s here is a placeholder for "Life Feed", the %2$s is "Learn more" which is localized in preference_learn_more. Life Feed is an information panel covering content that might help our customers' life. It covers from the most popular topics to the hottest deals, including news, games, coupon...etc.-->
-    <string name="first_run_page6_text" translatable="false">Just one flip, keep yourself updated with the “%1$s” - a variety of contents from the most popular topics to the hottest deals. %2$s</string>
-    <!-- Title message shown in a privacy on-boarding page. It means to prevent websites from tracking you. -->
-    <string name="first_run_page7_title" translatable="false">Prevent from being tracked</string>
-    <string name="first_run_page7_text" translatable="false">Now you can check how many trackers are blocked in private mode.</string>
-   
-    <string name="first_run_upgrade_page_title" translatable="false">We heard your feedback!</string>
-
     <string name="new_name_upgrade_page_title">We have a new look!</string>
     <!-- The %1$s here is a placeholder for "Firefox Lite"-->
     <string name="new_name_upgrade_page_text">With the evolved product, we bring you a newly refreshed %1$s, with new name and new logo.</string>
    
-    <!-- The %s here is a placeholder for "multiple tabs" (paired with first_run_upgrade_page_text1_highlight) -->
-    <string name="first_run_upgrade_page_text1" translatable="false">1. Multitask by opening %s at the same time!</string>
-    <string name="first_run_upgrade_page_text1_highlight" translatable="false">multiple tabs</string>
-
-    <!-- The %s here is a placeholder for "adding them to the home screen!" (paired with first_run_upgrade_page_text2_highlight) -->
-    <string name="first_run_upgrade_page_text2" translatable="false">2. Access your favorite sites quickly by %s</string>
-    <string name="first_run_upgrade_page_text2_highlight" translatable="false">adding them to the home screen!</string>
-   
     <string name="firstrun_close_button">OK, got it!</string>
-    <string name="firstrun_skip_button" translatable="false">Skip</string>
-    <string name="firstrun_next_button" translatable="false">Next</string>
-   
+
     <!-- !NOT USE! The welcome titles in Firefox Lite 2.5 -->
     <string name="firstrun_fxlite_2.5_title_1">Hello!</string>
     <!-- !NOT USE! The welcome titles in Firefox Lite 2.5 for asking users to choose a main purpose of downloading Firefox Lite. The %1$s is Firefox Lite. -->
@@ -836,10 +805,6 @@
     <string name="gaming_vertical_genre_11">Sports &amp; Racing</string>
     <string name="gaming_vertical_genre_12">Girls</string>
 
-    <!-- Home 2.0 -->
-    <!-- Onboarding for existing users to upgrage to Firefox Lite 2.0. %1$s will be replaced with the name of the app (e.g. Firefox Lite) -->
-    <string name="onboarding_2_introduction_title" translatable="false">Brand-new %1$s</string>
-    <string name="onboarding_2_introduction_description" translatable="false">A fast and lightweight browser, now with cool features! We have added smart shopping search and content to make browsing more fun!</string>
     <!-- Onboarding for new users to introduce Firefox Lite 2.0 -->
     <!-- Introduce Content & Services -->
     <string name="onboarding_2_content_services_news_shopping_games">Tap to read trending news, find good deals, or have fun playing the hottest free games!</string>
