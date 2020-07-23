@@ -225,6 +225,9 @@ class MainActivity : BaseActivity(),
     }
 
     private fun setUpMenu() {
+        if (::homeMenu.isInitialized) {
+            homeMenu.release()
+        }
         homeMenu = HomeMenuDialog(this, R.style.BottomSheetTheme).apply {
             setCanceledOnTouchOutside(true)
             setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
