@@ -33,9 +33,9 @@
     <!-- Onboarding transition before getting into Firefox Lite Home -->
     <string name="onboarding_transition_title">Ino-optimize ang karanasan para sa iyo…</string>
     <!-- Introduce personalized home to new users -->
-    <string name="onboarding_transition_feature_1">Naglalapat ng mga huling pag-aayos sa iyong Home</string>
+    <string name="onboarding_transition_feature_1">Pine-personalize</string>
     <!-- Introduce Turbo Mode to new users -->
     <string name="onboarding_transition_feature_2">Ina-activate ang Turbo Mode</string>
     <!-- Introduce tracking protection to new users -->
-    <string name="onboarding_transition_feature_3">Itinatakda ang mga tracker shield sa maximum na power</string>
+    <string name="onboarding_transition_feature_3">Sine-set tracker shield</string>
 </resources>
