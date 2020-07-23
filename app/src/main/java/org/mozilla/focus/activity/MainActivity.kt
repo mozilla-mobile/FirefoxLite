@@ -233,6 +233,9 @@ class MainActivity : BaseActivity(),
             setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
             setOnDismissListener { portraitStateModel.cancelRequest(PortraitComponent.BottomMenu) }
         }
+        if (::browserMenu.isInitialized) {
+            browserMenu.release()
+        }
         browserMenu = BrowserMenuDialog(this, R.style.BottomSheetTheme).apply {
             setCanceledOnTouchOutside(true)
             setOnShowListener { portraitStateModel.request(PortraitComponent.BottomMenu) }
