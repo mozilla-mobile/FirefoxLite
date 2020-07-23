@@ -5,9 +5,9 @@
     <!-- Onboarding transition before getting into Firefox Lite Home -->
     <string name="onboarding_transition_title">Tối ưu hóa trải nghiệm cho bạn…</string>
     <!-- Introduce personalized home to new users -->
-    <string name="onboarding_transition_feature_1">Áp dụng những nét hoàn tất cho Trang chủ của bạn</string>
+    <string name="onboarding_transition_feature_1">Cá nhân hóa Trang chủ</string>
     <!-- Introduce Turbo Mode to new users -->
     <string name="onboarding_transition_feature_2">Kích hoạt chế độ Turbo</string>
     <!-- Introduce tracking protection to new users -->
-    <string name="onboarding_transition_feature_3">Cài đặt lá chắn theo dõi lên mức tối đa</string>
+    <string name="onboarding_transition_feature_3">Cài đặt lá chắn theo dõi</string>
 	</resources>

@@ -20,9 +20,9 @@
     <!-- Onboarding transition before getting into Firefox Lite Home -->
     <string name="onboarding_transition_title">สร้างสุดยอดประสบการณ์สำหรับคุณ...</string>
     <!-- Introduce personalized home to new users -->
-    <string name="onboarding_transition_feature_1">เพิ่มรายละเอียดให้กับหน้าหลักของคุณ</string>
+    <string name="onboarding_transition_feature_1">ปรับแต่งหน้าหลักของคุณ</string>
     <!-- Introduce Turbo Mode to new users -->
     <string name="onboarding_transition_feature_2">เปิดใช้งานโหมดเทอร์โบ</string>
     <!-- Introduce tracking protection to new users -->
-    <string name="onboarding_transition_feature_3">ตั้งค่าป้องกันการติดตามในระดับสูงสุด</string>
+    <string name="onboarding_transition_feature_3">ตั้งค่าป้องกันการติดตาม</string>
     </resources>
