@@ -75,6 +75,8 @@
   <string name="firstrun_close_button">Okéh, ngarti!</string>
   <string name="firstrun_fxlite_2.5_title_1">Euy!</string>
   <string name="firstrun_fxlite_2.5_title_2">Aya pikersaeun naon ka %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_A">Euy!</string>
+  <string name="firstrun_fxlite_2_5_title_B">Aya pikersaeun naon ka %1$s?</string>
   <string name="content_theme_1">Nyungsi Raramat</string>
   <string name="content_theme_2">Néang Kortingan</string>
   <string name="content_theme_3">Maén Kaulinan jeung Pidéo</string>
@@ -213,6 +215,9 @@
   <string name="rate_app_notification_action_rate">PEUNTEUN KAMI</string>
   <string name="rate_app_dialog_btn_feedback">Tinggalkeun Pangdeudeul</string>
   <string name="rate_app_notification_action_feedback">PANGDEUDEUL</string>
+  <string name="survey_dialog_text_title">Resep ka %1$s?</string>
+  <string name="survey_dialog_text_content">Kedalkeun kamandang anjeun ngeunaan anu dipikaresep atawa naon anu kudu diropéa ngarah leuwih hadé.</string>
+  <string name="survey_dialog_btn">Eusi surpéy</string>
   <string name="share_app_dialog_text_title">Bagikeun %1$s ka babaturan!</string>
   <string name="share_app_dialog_text_content">- Gancang tur hampang\n- Sungsi Balanja Pinter\n- Kaulinan Gratis, warta sabiwir hiji</string>
   <string name="share_app_dialog_btn_share">Bagikeun</string>
