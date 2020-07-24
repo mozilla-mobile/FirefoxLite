@@ -13,7 +13,6 @@ import androidx.annotation.StyleRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.add_top_sites_red_dot
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
@@ -47,9 +46,10 @@ import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.extension.toFragmentActivity
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
+import org.mozilla.rocket.widget.LifecycleBottomSheetDialog
 import javax.inject.Inject
 
-class HomeMenuDialog : BottomSheetDialog {
+class HomeMenuDialog : LifecycleBottomSheetDialog {
 
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
@@ -69,6 +69,7 @@ class HomeMenuDialog : BottomSheetDialog {
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        context.toFragmentActivity().lifecycle.addObserver(this)
         chromeViewModel = getActivityViewModel(chromeViewModelCreator)
         menuViewModel = getActivityViewModel(menuViewModelCreator)
 
@@ -111,9 +112,8 @@ class HomeMenuDialog : BottomSheetDialog {
     }
 
     private fun initMenuTabs(contentLayout: View) {
-        val activity = context.toFragmentActivity()
         contentLayout.apply {
-            chromeViewModel.hasUnreadScreenshot.observe(activity, Observer {
+            chromeViewModel.hasUnreadScreenshot.observe(this@HomeMenuDialog, Observer {
                 img_screenshots.isActivated = it
             })
 
@@ -148,25 +148,24 @@ class HomeMenuDialog : BottomSheetDialog {
     }
 
     private fun initMenuItems(contentLayout: View) {
-        val activity = context.toFragmentActivity()
         contentLayout.apply {
-            chromeViewModel.isNightMode.observe(activity, Observer { nightModeSettings ->
+            chromeViewModel.isNightMode.observe(this@HomeMenuDialog, Observer { nightModeSettings ->
                 night_mode_switch.isChecked = nightModeSettings.isEnabled
             })
-            menuViewModel.isHomeScreenShoppingSearchEnabled.observe(activity, Observer {
+            menuViewModel.isHomeScreenShoppingSearchEnabled.observe(this@HomeMenuDialog, Observer {
                 btn_private_browsing.isVisible = it
                 menu_smart_shopping_search.isVisible = !it
             })
-            chromeViewModel.isPrivateBrowsingActive.observe(activity, Observer {
+            chromeViewModel.isPrivateBrowsingActive.observe(this@HomeMenuDialog, Observer {
                 img_private_mode.isActivated = it
             })
-            menuViewModel.shouldShowNewMenuItemHint.observe(activity, Observer {
+            menuViewModel.shouldShowNewMenuItemHint.observe(this@HomeMenuDialog, Observer {
                 if (it) {
                     showNewItemHint()
                     menuViewModel.onNewMenuItemDisplayed()
                 }
             })
-            menuViewModel.isContentHubEnabled.observe(activity, Observer {
+            menuViewModel.isContentHubEnabled.observe(this@HomeMenuDialog, Observer {
                 if (content_services_switch.isChecked != it) {
                     content_services_switch.isChecked = it
                 }
@@ -260,8 +259,7 @@ class HomeMenuDialog : BottomSheetDialog {
     }
 
     private fun observeChromeAction() {
-        val activity = context.toFragmentActivity()
-        chromeViewModel.showAdjustBrightness.observe(activity, Observer { showAdjustBrightness() })
+        chromeViewModel.showAdjustBrightness.observe(this, Observer { showAdjustBrightness() })
     }
 
     private fun showAdjustBrightness() {
