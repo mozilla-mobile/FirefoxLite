@@ -74,6 +74,8 @@
   <string name="new_name_upgrade_page_text">Благодаря развитию продукта, мы предлагаем вам обновленный %1$s с новым именем и логотипом.</string>
   <string name="firstrun_close_button">Ок, понятно!</string>
   <string name="firstrun_fxlite_2.5_title_1">Привет!</string>
+  <string name="firstrun_fxlite_2.5_title_2">Что привело вас в %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_A">Добро пожаловать!</string>
   <string name="firstrun_fxlite_2_5_title_B">Что привело вас в %1$s?</string>
   <string name="content_theme_1">Веб-сёрфинг</string>
   <string name="content_theme_2">Поиск хороших предложений</string>
@@ -86,7 +88,7 @@
   <string name="label_menu_clear_cache">Очистить кэш</string>
   <string name="label_menu_history">История</string>
   <string name="label_menu_share">Поделиться</string>
-  <string name="label_menu_my_shots">Снимки экрана</string>
+  <string name="label_menu_my_shots">Скриншоты</string>
   <string name="label_menu_capture_page">Снимок страницы</string>
   <string name="label_menu_turbo_mode">Режим Турбо</string>
   <string name="label_menu_night_mode">Ночной режим</string>
@@ -96,7 +98,7 @@
   <string name="label_menu_exit">Выход</string>
   <string name="label_menu_add_to_home_screen">Добавить на домашний экран</string>
   <string name="label_menu_content_services">Показать содержимое и службы</string>
-  <string name="label_menu_add_top_sites">Добавить топ сайтов</string>
+  <string name="label_menu_add_top_sites">Добавить в топ сайтов</string>
   <string name="label_menu_themes">Темы</string>
   <string name="theme_settings_title">Выберите тему</string>
   <string name="theme_settings_subtitle">Экономьте заряд батареи с помощью тёмной темы оформления.</string>
@@ -107,9 +109,9 @@
   <string name="top_site_category_3">Развлекательная сфера</string>
   <string name="top_site_category_4">Другие</string>
   <string name="top_site_category_5">Новости</string>
-  <string name="add_top_site_snackbar_1">Топ сайт добавлен</string>
+  <string name="add_top_site_snackbar_1">Сайт добавлен в топ</string>
   <string name="add_top_site_snackbar_2">Сайт был добавлен</string>
-  <string name="add_top_site_toast">Пожалуйста, сначала удалите топ сайт</string>
+  <string name="add_top_site_toast">Пожалуйста, сначала удалите сайт из топа</string>
   <string name="add_top_site_button">ДОБАВИТЬ ЕЩЁ</string>
   <string name="add_top_site_placeholder">Добавить</string>
   <string name="permission_toast_location_deny">Запрос на доступ к местоположению отклонен.</string>
@@ -199,11 +201,11 @@
   <string name="privacy_policy_update_notification_title">Уведомление об обновлении продукта</string>
   <string name="privacy_policy_update_notification_action">Чтобы сделать Firefox Lite лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
   <string name="message_set_default_success">Спасибо, что выбрали %1$s!</string>
-  <string name="message_set_default_incomplet">Вы хотите завершить установку %1$s в качестве браузера по умолчанию?</string>
-  <string name="setting_default_browser_instruction_system_settings">2 шага для установки %1$s как браузера по умолчанию</string>
+  <string name="message_set_default_incomplet">Вы действительно хотите установить %1$s в качестве браузера по умолчанию?</string>
+  <string name="setting_default_browser_instruction_system_settings">2 шага для установки %1$s в качестве браузера по умолчанию</string>
   <string name="setting_default_browser_instruction_open_external_link">Как всегда заходить в Интернет через %1$s?</string>
   <string name="instruction_select">Выберите %1$s</string>
-  <string name="browser_app">Приложение Браузер</string>
+  <string name="browser_app">Браузер</string>
   <string name="instruction_tap">Нажмите %1$s</string>
   <string name="always">Всегда</string>
   <string name="setting_default_browser_instruction_button">Перейти в настройки</string>
@@ -213,6 +215,9 @@
   <string name="rate_app_notification_action_rate">ОЦЕНИТЕ НАС</string>
   <string name="rate_app_dialog_btn_feedback">Оставьте отзыв</string>
   <string name="rate_app_notification_action_feedback">ОТЗЫВ</string>
+  <string name="survey_dialog_text_title">Вам нравится %1$s?</string>
+  <string name="survey_dialog_text_content">Поделитесь своими мыслями о том, что вам понравилось, или о том, что мы могли бы улучшить.</string>
+  <string name="survey_dialog_btn">Пройти опрос</string>
   <string name="share_app_dialog_text_title">Поделитесь %1$s с друзьями!</string>
   <string name="share_app_dialog_text_content">- Быстрый и легкий\n- Умный поиск покупок\n- Бесплатные игры, актуальные новости</string>
   <string name="share_app_dialog_btn_share">Поделиться</string>
