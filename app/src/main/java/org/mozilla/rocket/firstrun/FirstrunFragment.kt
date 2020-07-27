@@ -25,6 +25,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_first_run.animation_description
 import kotlinx.android.synthetic.main.fragment_first_run.animation_layout
 import kotlinx.android.synthetic.main.fragment_first_run.animation_view
@@ -37,20 +38,28 @@ import kotlinx.android.synthetic.main.fragment_first_run.progress_bar
 import kotlinx.android.synthetic.main.fragment_first_run.select_button
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
+import org.mozilla.focus.navigation.ScreenNavigator
+import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.rocket.content.appComponent
+import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Browsing
 import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Games
 import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.News
 import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Shopping
-import org.mozilla.focus.navigation.ScreenNavigator
-import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.NewFeatureNotice
-import org.mozilla.rocket.content.appContext
 import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.home.domain.SetContentPrefUseCase
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
+import javax.inject.Inject
 
 class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
+
+    @Inject
+    lateinit var firstrunViewModelCreator: Lazy<FirstrunViewModel>
+
+    private lateinit var firstrunViewModel: FirstrunViewModel
 
     private var currentSelectedItem: ContentPrefItem? = null
 
@@ -61,7 +70,9 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        firstrunViewModel = getViewModel(firstrunViewModelCreator)
         TelemetryWrapper.showFirstRunOnBoarding()
     }
 
