@@ -41,7 +41,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         get() {
             val ids = downloadInfoPack.list
                     .filter { it.status == DownloadManager.STATUS_RUNNING || it.status == DownloadManager.STATUS_PENDING }
-                    .map { it.downloadId }
+                    .mapNotNull { it.downloadId }
             val array = LongArray(ids.size)
             for (i in array.indices) {
                 array[i] = ids[i]
@@ -149,8 +149,8 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         try {
             val deleteFile = File(URI(download.fileUri).path)
             if (deleteFile.delete()) {
-                repository.deleteFromDownloadManager(download.downloadId)
-                repository.remove(download.rowId)
+                download.downloadId?.let { repository.deleteFromDownloadManager(it) }
+                download.rowId?.let { repository.remove(it) }
             } else {
                 toastMessageObservable.value = R.string.cannot_delete_the_file
             }
@@ -163,7 +163,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     fun add(downloadInfo: DownloadInfo) {
         var index = -1
         for (i in 0 until downloadInfoPack.list.size) {
-            if (downloadInfoPack.list[i].rowId < downloadInfo.rowId) {
+            if ((downloadInfoPack.list[i].rowId ?: -1) < (downloadInfo.rowId ?: -1)) {
                 index = i
                 break
             }
