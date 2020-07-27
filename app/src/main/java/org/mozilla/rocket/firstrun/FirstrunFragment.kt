@@ -11,6 +11,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_first_run.animation_description
 import kotlinx.android.synthetic.main.fragment_first_run.animation_layout
@@ -84,6 +86,17 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
         description.text = getString(R.string.firstrun_fxlite_2_5_title_B, getString(R.string.app_name))
         select_button.setOnClickListener { goNext() }
         initContentPrefItems()
+        observeActions()
+    }
+
+    private fun observeActions() {
+        firstrunViewModel.finishFirstRunEvent.observe(viewLifecycleOwner, Observer {
+            // use handler to prevent the error when app come back from background
+            // Error message: FragmentManager is already executing transactions
+            Handler().post {
+                (activity as? MainActivity)?.firstrunFinished()
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -154,7 +167,7 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
                 }
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    (activity as? MainActivity)?.firstrunFinished()
+                    firstrunViewModel.onAnimationFinished()
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {
