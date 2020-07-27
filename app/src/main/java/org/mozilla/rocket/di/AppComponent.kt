@@ -54,6 +54,8 @@ import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
 import org.mozilla.rocket.content.travel.ui.TravelCityActivity
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
 import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
+import org.mozilla.rocket.firstrun.FirstrunFragment
+import org.mozilla.rocket.firstrun.di.FirstrunModule
 import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
@@ -93,7 +95,8 @@ import javax.inject.Singleton
         TabsModule::class,
         HomeModule::class,
         ShoppingSearchModule::class,
-        MissionModule::class
+        MissionModule::class,
+        FirstrunModule::class
     ]
 )
 interface AppComponent {
@@ -148,6 +151,7 @@ interface AppComponent {
     fun inject(travelBucketListFragment: TravelBucketListFragment)
     fun inject(defaultBrowserPreference: DefaultBrowserPreference)
     fun inject(addNewTopSitesFragment: AddNewTopSitesFragment)
+    fun inject(firstrunFragment: FirstrunFragment)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel

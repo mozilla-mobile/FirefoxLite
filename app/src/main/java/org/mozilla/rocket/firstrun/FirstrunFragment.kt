@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.fragment
+package org.mozilla.rocket.firstrun
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -11,6 +11,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_first_run.animation_description
 import kotlinx.android.synthetic.main.fragment_first_run.animation_layout
 import kotlinx.android.synthetic.main.fragment_first_run.animation_view
@@ -37,20 +40,28 @@ import kotlinx.android.synthetic.main.fragment_first_run.progress_bar
 import kotlinx.android.synthetic.main.fragment_first_run.select_button
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Browsing
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Games
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.News
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Shopping
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.NewFeatureNotice
+import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
+import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Browsing
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Games
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.News
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Shopping
 import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.home.domain.SetContentPrefUseCase
 import org.mozilla.rocket.periodic.FirstLaunchWorker
 import org.mozilla.rocket.periodic.PeriodicReceiver
+import javax.inject.Inject
 
 class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
+
+    @Inject
+    lateinit var firstrunViewModelCreator: Lazy<FirstrunViewModel>
+
+    private lateinit var firstrunViewModel: FirstrunViewModel
 
     private var currentSelectedItem: ContentPrefItem? = null
 
@@ -61,7 +72,9 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent().inject(this)
         super.onCreate(savedInstanceState)
+        firstrunViewModel = getViewModel(firstrunViewModelCreator)
         TelemetryWrapper.showFirstRunOnBoarding()
     }
 
@@ -73,6 +86,17 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
         description.text = getString(R.string.firstrun_fxlite_2_5_title_B, getString(R.string.app_name))
         select_button.setOnClickListener { goNext() }
         initContentPrefItems()
+        observeActions()
+    }
+
+    private fun observeActions() {
+        firstrunViewModel.finishFirstRunEvent.observe(viewLifecycleOwner, Observer {
+            // use handler to prevent the error when app come back from background
+            // Error message: FragmentManager is already executing transactions
+            Handler().post {
+                (activity as? MainActivity)?.firstrunFinished()
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -143,7 +167,7 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
                 }
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    (activity as? MainActivity)?.firstrunFinished()
+                    firstrunViewModel.onAnimationFinished()
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {
