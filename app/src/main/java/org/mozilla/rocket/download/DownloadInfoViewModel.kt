@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Log
 import org.mozilla.focus.R
-import org.mozilla.focus.download.DownloadInfo
+import org.mozilla.rocket.download.data.DownloadInfo
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 import java.net.URI

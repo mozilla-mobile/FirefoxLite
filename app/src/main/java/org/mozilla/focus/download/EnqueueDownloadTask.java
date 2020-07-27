@@ -20,6 +20,7 @@ import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.download.data.DownloadInfo;
 import org.mozilla.rocket.tabs.web.Download;
 
 import java.lang.ref.WeakReference;
