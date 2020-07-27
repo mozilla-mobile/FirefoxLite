@@ -38,7 +38,7 @@ import kotlinx.android.synthetic.main.activity_main.container
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.fragment.BrowserFragment
-import org.mozilla.focus.fragment.FirstrunFragment
+import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.focus.fragment.ListPanelDialog
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.notification.NotificationId

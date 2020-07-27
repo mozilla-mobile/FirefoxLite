@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.fragment
+package org.mozilla.rocket.firstrun
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -37,10 +37,10 @@ import kotlinx.android.synthetic.main.fragment_first_run.progress_bar
 import kotlinx.android.synthetic.main.fragment_first_run.select_button
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Browsing
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Games
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.News
-import org.mozilla.focus.fragment.FirstrunFragment.ContentPrefItem.Shopping
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Browsing
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Games
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.News
+import org.mozilla.rocket.firstrun.FirstrunFragment.ContentPrefItem.Shopping
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.NewFeatureNotice
