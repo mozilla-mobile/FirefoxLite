@@ -22,31 +22,31 @@ class DownloadInfo {
         private set
     var date: String? = null
         private set
-    var fileName = ""
+    var fileName: String? = ""
         set(fileName) {
             if (!TextUtils.isEmpty(fileName)) {
                 field = fileName
             }
         }
-    var mediaUri = ""
+    var mediaUri: String? = ""
         set(mediaUri) {
             if (!TextUtils.isEmpty(mediaUri)) {
                 field = mediaUri
             }
         }
-    var mimeType = ""
+    var mimeType: String? = ""
         set(mimeType) {
             if (!TextUtils.isEmpty(mimeType)) {
                 field = mimeType
             }
         }
-    var fileUri = ""
+    var fileUri: String? = ""
         set(fileUri) {
             if (!TextUtils.isEmpty(fileUri)) {
                 field = fileUri
             }
         }
-    var fileExtension = ""
+    var fileExtension: String? = ""
         set(fileExtension) {
             if (!TextUtils.isEmpty(fileExtension)) {
                 field = fileExtension
@@ -75,18 +75,17 @@ class DownloadInfo {
     }
 
     private fun convertByteToReadable(bytes: Double): String {
-        var bytes = bytes
+        var displaySize = bytes
         val dictionary = arrayOf("bytes", "KB", "MB", "GB")
-        var index: Int
-        index = 0
+        var index = 0
         while (index < dictionary.size) {
-            if (bytes < 1024) {
+            if (displaySize < 1024) {
                 break
             }
-            bytes = bytes / 1024
+            displaySize /= 1024
             index++
         }
-        return String.format(Locale.getDefault(), "%.1f", bytes) + dictionary[index]
+        return String.format(Locale.getDefault(), "%.1f", displaySize) + dictionary[index]
     }
 
     fun existInDownloadManager(): Boolean {
