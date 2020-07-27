@@ -14,6 +14,7 @@ import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_
 import org.mozilla.focus.notification.RocketMessagingService.Companion.STR_PUSH_OPEN_URL
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.IntentUtils
+import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.widget.DefaultBrowserPreference
 import org.mozilla.rocket.deeplink.DeepLinkConstants
 import org.mozilla.rocket.deeplink.DeepLinkType
@@ -46,14 +47,16 @@ class LaunchIntentDispatcher {
          * */
         @JvmStatic
         @CheckResult
-        fun dispatch(context: Context, intent: Intent): Action? {
+        fun dispatch(context: Context, unsafeIntent: Intent): Action? {
+            val intent = SafeIntent(unsafeIntent)
             // External URL from other apps (e.g. GMail) will go to InfoActivity
             val inComingUrl = intent.data?.toString()
 
             sendOpenNotificationEvent(intent)
 
             if (inComingUrl?.contains(FXA_EMAIL_VERIFY_URL) == true) {
-                val newIntent = InfoActivity.getIntentFor(context, inComingUrl, "Firefox Account verified")
+                val newIntent =
+                    InfoActivity.getIntentFor(context, inComingUrl, "Firefox Account verified")
                 context.startActivity(newIntent)
                 return Action.HANDLED
             }
@@ -95,11 +98,10 @@ class LaunchIntentDispatcher {
              * if we have this extra, we want to show this url in a new tab
              */
             intent.getStringExtra(STR_PUSH_OPEN_URL)?.run {
-
-                intent.data = Uri.parse(this)
-                intent.action = Intent.ACTION_VIEW
-                intent.setClass(context, MainActivity::class.java)
-                intent.putExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true)
+                intent.unsafe.data = Uri.parse(this)
+                intent.unsafe.action = Intent.ACTION_VIEW
+                intent.unsafe.setClass(context, MainActivity::class.java)
+                intent.unsafe.putExtra(IntentUtils.EXTRA_OPEN_NEW_TAB, true)
             }
 
             /**
@@ -109,7 +111,9 @@ class LaunchIntentDispatcher {
             intent.getStringExtra(STR_PUSH_COMMAND)?.apply {
                 when (this) {
                     Command.SET_DEFAULT.value -> {
-                        StartSettingsActivityTask(DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER).execute(context)
+                        StartSettingsActivityTask(DeepLinkConstants.COMMAND_SET_DEFAULT_BROWSER).execute(
+                            context
+                        )
                         return Action.HANDLED
                     }
                 }
@@ -163,7 +167,7 @@ class LaunchIntentDispatcher {
             return Action.NORMAL
         }
 
-        private fun sendOpenNotificationEvent(intent: Intent) {
+        private fun sendOpenNotificationEvent(intent: SafeIntent) {
             val pushMessageId = intent.extras?.getString("message_id", null)
             val isFromPush = pushMessageId != null
             if (isFromPush) {
@@ -172,7 +176,7 @@ class LaunchIntentDispatcher {
             }
         }
 
-        private fun parseLink(intent: Intent): String? {
+        private fun parseLink(intent: SafeIntent): String? {
             var link: String? = intent.getStringExtra(STR_PUSH_OPEN_URL)
             if (link == null) {
                 link = intent.getStringExtra(STR_PUSH_COMMAND)
