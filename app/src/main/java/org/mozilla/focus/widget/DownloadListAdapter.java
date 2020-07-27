@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.download.DownloadInfo;
+import org.mozilla.rocket.download.data.DownloadInfo;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.IntentUtils;

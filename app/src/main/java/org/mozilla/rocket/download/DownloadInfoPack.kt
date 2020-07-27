@@ -1,6 +1,6 @@
 package org.mozilla.rocket.download
 
-import org.mozilla.focus.download.DownloadInfo
+import org.mozilla.rocket.download.data.DownloadInfo
 
 class DownloadInfoPack(var list: ArrayList<DownloadInfo>, var notifyType: Int, var index: Long) {
     object Constants {

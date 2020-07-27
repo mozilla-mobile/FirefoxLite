@@ -3,7 +3,7 @@ package org.mozilla.rocket.download
 import android.app.DownloadManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.mozilla.focus.download.DownloadInfo
+import org.mozilla.rocket.download.data.DownloadInfo
 
 class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository) : ViewModel() {
 

@@ -12,7 +12,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +25,7 @@ import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.utils.CursorUtils;
 import org.mozilla.focus.utils.IntentUtils;
+import org.mozilla.rocket.download.data.DownloadInfo;
 import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.threadutils.ThreadUtils;
 
