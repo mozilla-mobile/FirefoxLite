@@ -15,6 +15,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
 import android.database.ContentObserver
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -307,7 +308,7 @@ class MainActivity : BaseActivity(),
 
     private fun monitorNetworkConnectionStatus() {
         if (AppConstants.isDevBuild()) {
-            val connectionStatus = ConnectionLiveData(this)
+            val connectionStatus = ConnectionLiveData(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)
             connectionStatus.observe(this, Observer { isConnection ->
                 Toast.makeText(this, "network connection $isConnection", Toast.LENGTH_LONG).show()
             })
