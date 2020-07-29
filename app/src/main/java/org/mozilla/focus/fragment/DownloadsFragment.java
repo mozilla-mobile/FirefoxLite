@@ -30,13 +30,13 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.mozilla.focus.R;
-import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.widget.DownloadListAdapter;
 import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoPack;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
+import org.mozilla.rocket.download.data.DownloadInfoManager;
 
 import javax.inject.Inject;
 

@@ -13,9 +13,9 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import org.mozilla.rocket.download.data.DownloadInfo;
-import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
+import org.mozilla.rocket.download.data.DownloadInfo;
+import org.mozilla.rocket.download.data.DownloadInfoManager;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;

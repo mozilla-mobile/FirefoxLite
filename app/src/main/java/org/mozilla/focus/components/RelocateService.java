@@ -14,22 +14,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.ServiceCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import android.util.Log;
 
 import org.mozilla.fileutils.FileUtils;
 import org.mozilla.focus.R;
-import org.mozilla.focus.download.DownloadInfoManager;
 import org.mozilla.focus.notification.NotificationId;
 import org.mozilla.focus.utils.Constants;
 import org.mozilla.focus.utils.NoRemovableStorageException;
 import org.mozilla.focus.utils.Settings;
 import org.mozilla.focus.utils.StorageUtils;
+import org.mozilla.rocket.download.data.DownloadInfoManager;
 
 import java.io.File;
 
