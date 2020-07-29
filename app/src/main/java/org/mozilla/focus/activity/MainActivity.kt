@@ -36,9 +36,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_main.container
 import org.mozilla.focus.R
-import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.fragment.BrowserFragment
-import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.focus.fragment.ListPanelDialog
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.notification.NotificationId
@@ -70,7 +68,9 @@ import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
+import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.extension.nonNullObserve
+import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity
 import org.mozilla.rocket.landing.DialogQueue

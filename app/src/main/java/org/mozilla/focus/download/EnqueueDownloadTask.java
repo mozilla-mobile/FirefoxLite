@@ -7,20 +7,20 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.mozilla.focus.FocusApplication;
 import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.rocket.download.data.DownloadInfo;
+import org.mozilla.rocket.download.data.DownloadInfoManager;
 import org.mozilla.rocket.tabs.web.Download;
 
 import java.lang.ref.WeakReference;

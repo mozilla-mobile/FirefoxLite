@@ -20,7 +20,6 @@ import kotlinx.android.synthetic.main.activity_content_tab.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
-import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener
@@ -31,6 +30,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.view.BottomBar
+import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
 import org.mozilla.rocket.privately.PrivateTabViewProvider

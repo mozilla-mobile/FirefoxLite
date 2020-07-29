@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.download;
+package org.mozilla.rocket.download.data;
 
 import android.app.DownloadManager;
 import android.content.AsyncQueryHandler;
@@ -13,19 +13,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.mozilla.focus.R;
 import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.utils.CursorUtils;
 import org.mozilla.focus.utils.IntentUtils;
-import org.mozilla.rocket.download.data.DownloadInfo;
 import org.mozilla.rocket.util.LoggerWrapper;
 import org.mozilla.threadutils.ThreadUtils;
 

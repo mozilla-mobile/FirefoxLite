@@ -15,7 +15,6 @@ import dagger.Lazy
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_game.*
 import org.mozilla.focus.R
-import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
@@ -23,6 +22,7 @@ import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.GameTabsAdapter
 import org.mozilla.rocket.content.getViewModel
+import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.extension.isLaunchedFromHistory
 import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
