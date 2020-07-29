@@ -16,28 +16,34 @@ class DownloadInfoRepository {
         fun onComplete(download: DownloadInfo)
     }
 
-    fun queryIndicatorStatus(listenerList: DownloadInfoRepository.OnQueryListCompleteListener) {
-        DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds { downloadInfoList ->
-            listenerList.onComplete(downloadInfoList)
-        }
+    fun queryIndicatorStatus(listenerList: OnQueryListCompleteListener) {
+        DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds(object : DownloadInfoManager.AsyncQueryListener {
+            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                listenerList.onComplete(downloadInfoList)
+            }
+        })
     }
 
     fun queryByRowId(rowId: Long, listenerItem: OnQueryItemCompleteListener) {
-        DownloadInfoManager.getInstance().queryByRowId(rowId) { downloadInfoList ->
-            if (downloadInfoList.size > 0) {
-                val downloadInfo = downloadInfoList[0]
-                listenerItem.onComplete(downloadInfo)
+        DownloadInfoManager.getInstance().queryByRowId(rowId, object : DownloadInfoManager.AsyncQueryListener {
+            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                if (downloadInfoList.isNotEmpty()) {
+                    val downloadInfo = downloadInfoList[0]
+                    listenerItem.onComplete(downloadInfo)
+                }
             }
-        }
+        })
     }
 
     fun queryByDownloadId(rowId: Long, listenerItem: OnQueryItemCompleteListener) {
-        DownloadInfoManager.getInstance().queryByDownloadId(rowId) { downloadInfoList ->
-            if (downloadInfoList.size > 0) {
-                val downloadInfo = downloadInfoList[0]
-                listenerItem.onComplete(downloadInfo)
+        DownloadInfoManager.getInstance().queryByDownloadId(rowId, object : DownloadInfoManager.AsyncQueryListener {
+            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                if (downloadInfoList.isNotEmpty()) {
+                    val downloadInfo = downloadInfoList[0]
+                    listenerItem.onComplete(downloadInfo)
+                }
             }
-        }
+        })
     }
 
     fun queryDownloadingItems(runningIds: LongArray, listenerList: OnQueryListCompleteListener) {
@@ -69,9 +75,11 @@ class DownloadInfoRepository {
     }
 
     fun loadData(offset: Int, pageSize: Int, listenerList: OnQueryListCompleteListener) {
-        DownloadInfoManager.getInstance().query(offset, pageSize) { downloadInfoList ->
-            listenerList.onComplete(downloadInfoList)
-        }
+        DownloadInfoManager.getInstance().query(offset, pageSize, object : DownloadInfoManager.AsyncQueryListener {
+            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                listenerList.onComplete(downloadInfoList)
+            }
+        })
     }
 
     fun remove(rowId: Long) {
