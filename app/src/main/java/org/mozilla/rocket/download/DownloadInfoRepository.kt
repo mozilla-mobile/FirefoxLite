@@ -16,13 +16,8 @@ class DownloadInfoRepository {
         fun onComplete(download: DownloadInfo)
     }
 
-    fun queryIndicatorStatus(listenerList: OnQueryListCompleteListener) {
-        DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds(object : DownloadInfoManager.AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                listenerList.onComplete(downloadInfoList)
-            }
-        })
-    }
+    suspend fun queryIndicatorStatus(): List<DownloadInfo> =
+        DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds()
 
     fun queryByRowId(rowId: Long, listenerItem: OnQueryItemCompleteListener) {
         DownloadInfoManager.getInstance().queryByRowId(rowId, object : DownloadInfoManager.AsyncQueryListener {
