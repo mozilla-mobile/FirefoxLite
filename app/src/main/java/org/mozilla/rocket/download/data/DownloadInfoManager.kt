@@ -40,8 +40,18 @@ class DownloadInfoManager {
         mQueryHandler.startInsert(TOKEN, listener, DownloadContract.Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo))
     }
 
-    fun delete(rowId: Long, listener: AsyncDeleteListener?) {
-        mQueryHandler.startDelete(TOKEN, AsyncDeleteWrapper(rowId, listener), DownloadContract.Download.CONTENT_URI, DownloadContract.Download._ID + " = ?", arrayOf(java.lang.Long.toString(rowId)))
+    suspend fun delete(rowId: Long) = suspendCoroutine<Int> { continuation ->
+        mQueryHandler.startDelete(
+            TOKEN,
+            AsyncDeleteWrapper(rowId, object : AsyncDeleteListener {
+                override fun onDeleteComplete(result: Int, id: Long) {
+                    continuation.resume(result)
+                }
+            }),
+            DownloadContract.Download.CONTENT_URI,
+            DownloadContract.Download._ID + " = ?",
+            arrayOf(rowId.toString())
+        )
     }
 
     fun updateByRowId(downloadInfo: DownloadInfo, listener: AsyncUpdateListener?) {

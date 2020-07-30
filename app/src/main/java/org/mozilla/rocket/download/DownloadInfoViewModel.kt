@@ -126,7 +126,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         })
     }
 
-    fun remove(rowId: Long) {
+    fun remove(rowId: Long) = viewModelScope.launch {
         repository.remove(rowId)
         hide(rowId)
     }

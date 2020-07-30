@@ -42,9 +42,8 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
     suspend fun loadData(offset: Int, pageSize: Int) =
         DownloadInfoManager.getInstance().query(offset, pageSize)
 
-    fun remove(rowId: Long) {
-        DownloadInfoManager.getInstance().delete(rowId, null)
-    }
+    suspend fun remove(rowId: Long) =
+        DownloadInfoManager.getInstance().delete(rowId)
 
     suspend fun deleteFromDownloadManager(downloadId: Long) =
         downloadManagerDataSource.remove(downloadId)
