@@ -1,9 +1,7 @@
-package org.mozilla.rocket.download
+package org.mozilla.rocket.download.data
 
 import android.app.DownloadManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.rocket.download.data.DownloadInfo
-import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.threadutils.ThreadUtils
 
 class DownloadInfoRepository {
