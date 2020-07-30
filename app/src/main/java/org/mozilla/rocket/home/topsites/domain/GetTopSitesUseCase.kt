@@ -111,7 +111,7 @@ fun List<org.mozilla.focus.history.model.Site>.toFixedSite(): List<Site.UrlSite>
 fun org.mozilla.focus.history.model.Site.toFixedSite(): Site.UrlSite =
         Site.UrlSite.FixedSite(
             id = id,
-            title = title,
+            title = title ?: "",
             url = url,
             iconUri = favIconUri,
             viewCount = viewCount,
@@ -124,7 +124,7 @@ private fun List<org.mozilla.focus.history.model.Site>.toRemovableSite(isPinned:
 private fun org.mozilla.focus.history.model.Site.toRemovableSite(isPinned: Boolean): Site.UrlSite =
         Site.UrlSite.RemovableSite(
             id = id,
-            title = title,
+            title = title ?: "",
             url = url,
             iconUri = favIconUri,
             viewCount = viewCount,
