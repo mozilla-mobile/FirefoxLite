@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.data.DownloadInfo
 import org.mozilla.rocket.download.data.DownloadInfoRepository
-import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 import java.net.URI
 import java.net.URISyntaxException
@@ -112,13 +111,15 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     fun cancel(rowId: Long) {
         repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
             override fun onComplete(download: DownloadInfo) {
-                if (download.existInDownloadManager()) {
-                    val downloadId = download.downloadId
-                    if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status && downloadId != null) {
-                        toastMessageObservable.value = R.string.download_cancel
-                        repository.trackDownloadCancel(downloadId)
-                        repository.deleteFromDownloadManager(downloadId)
-                        remove(rowId)
+                viewModelScope.launch {
+                    if (download.existInDownloadManager()) {
+                        val downloadId = download.downloadId
+                        if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status && downloadId != null) {
+                            toastMessageObservable.value = R.string.download_cancel
+                            repository.trackDownloadCancel(downloadId)
+                            repository.deleteFromDownloadManager(downloadId)
+                            remove(rowId)
+                        }
                     }
                 }
             }
@@ -148,7 +149,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         })
     }
 
-    fun confirmDelete(download: DownloadInfo) {
+    fun confirmDelete(download: DownloadInfo) = viewModelScope.launch {
         try {
             val deleteFile = File(URI(download.fileUri).path)
             if (deleteFile.delete()) {
@@ -232,33 +233,28 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         repository.queryByRowId(rowId, updateListener)
     }
 
-    fun queryDownloadProgress() {
-        repository.queryDownloadingItems(runningDownloadIds, object : DownloadInfoRepository.OnQueryListCompleteListener {
-            override fun onComplete(list: List<DownloadInfo>) {
-                if (list.isNotEmpty()) {
-                    ThreadUtils.postToMainThread {
-                        for (tempInfo in list) {
-                            for (i in 0 until downloadInfoPack.list.size) {
-                                val info = downloadInfoPack.list.get(i)
-                                if (info.downloadId == tempInfo.downloadId) {
-                                    info.sizeTotal = tempInfo.sizeTotal
-                                    info.sizeSoFar = tempInfo.sizeSoFar
+    fun queryDownloadProgress() = viewModelScope.launch {
+        val list = repository.queryDownloadingItems(runningDownloadIds)
+        if (list.isNotEmpty()) {
+            for (tempInfo in list) {
+                for (i in 0 until downloadInfoPack.list.size) {
+                    val info = downloadInfoPack.list.get(i)
+                    if (info.downloadId == tempInfo.downloadId) {
+                        info.sizeTotal = tempInfo.sizeTotal
+                        info.sizeSoFar = tempInfo.sizeSoFar
 
-                                    downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
-                                    downloadInfoPack.index = i.toLong()
-                                    downloadInfoObservable.value = downloadInfoPack
-                                    break
-                                }
-                            }
-                        }
+                        downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
+                        downloadInfoPack.index = i.toLong()
+                        downloadInfoObservable.value = downloadInfoPack
+                        break
                     }
-                    progressUpdateListener?.onCompleteUpdate()
-                } else {
-                    // no running items, remove update
-                    progressUpdateListener?.onStopUpdate()
                 }
             }
-        })
+            progressUpdateListener?.onCompleteUpdate()
+        } else {
+            // no running items, remove update
+            progressUpdateListener?.onStopUpdate()
+        }
     }
 
     fun markAllItemsAreRead() = viewModelScope.launch {

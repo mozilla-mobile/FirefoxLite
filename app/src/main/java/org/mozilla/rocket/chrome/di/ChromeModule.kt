@@ -19,6 +19,7 @@ import org.mozilla.rocket.chrome.domain.ReadNewMenuItemsUseCase
 import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadInfoViewModel
+import org.mozilla.rocket.download.data.AndroidDownloadManagerDataSource
 import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
@@ -67,7 +68,12 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideDownloadInfoRepository(): DownloadInfoRepository = DownloadInfoRepository()
+    fun provideDownloadManagerDataSource(appContext: Context): AndroidDownloadManagerDataSource = AndroidDownloadManagerDataSource(appContext)
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideDownloadInfoRepository(downloadManagerDataSource: AndroidDownloadManagerDataSource): DownloadInfoRepository = DownloadInfoRepository(downloadManagerDataSource)
 
     @JvmStatic
     @Provides
