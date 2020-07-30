@@ -38,7 +38,6 @@ import kotlinx.android.synthetic.main.activity_main.container
 import org.mozilla.focus.R
 import org.mozilla.focus.download.DownloadInfoManager
 import org.mozilla.focus.fragment.BrowserFragment
-import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.focus.fragment.ListPanelDialog
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.notification.NotificationId
@@ -71,6 +70,7 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.nonNullObserve
+import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity
 import org.mozilla.rocket.landing.DialogQueue
@@ -473,7 +473,7 @@ class MainActivity : BaseActivity(),
                 if (data != null) {
                     val url = data.getStringExtra(ScreenshotViewerActivity.EXTRA_URL)
                     mDialogFragment?.dismissAllowingStateLoss()
-                    screenNavigator.showBrowserScreen(url, true, false)
+                    chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = true, isFromExternal = false)
                 }
             }
         } else if (requestCode == AddNewTopSitesActivity.REQUEST_CODE_ADD_NEW_TOP_SITES) {
@@ -726,7 +726,7 @@ class MainActivity : BaseActivity(),
                     DialogInterface.OnCancelListener { dismissAllMenus() },
                     View.OnClickListener {
                         val url = SupportUtils.getSumoURLForTopic(this@MainActivity, "screenshot-telemetry")
-                        screenNavigator.showBrowserScreen(url, true, false)
+                        chromeViewModel.openUrl.value = OpenUrlAction(url, withNewTab = true, isFromExternal = false)
                         dismissAllMenus()
                     })
             chromeViewModel.onMyShotOnBoardingDisplayed()
