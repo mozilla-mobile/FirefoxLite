@@ -74,6 +74,8 @@
   <string name="new_name_upgrade_page_text">ด้วยผลิตภัณฑ์ที่ได้รับการพัฒนา เรานำ %1$s แบบใหม่พร้อมชื่อใหม่และโลโก้ใหม่มาให้คุณ</string>
   <string name="firstrun_close_button">ตกลง เข้าใจแล้ว!</string>
   <string name="firstrun_fxlite_2.5_title_1">สวัสดี!</string>
+  <string name="firstrun_fxlite_2.5_title_2">อะไรทำให้คุณเลือกใช้ %1$s?</string>
+  <string name="firstrun_fxlite_2_5_title_A">สวัสดี!</string>
   <string name="firstrun_fxlite_2_5_title_B">ทำไมคุณถึงเลือก %1$s?</string>
   <string name="content_theme_1">เรียกดูเว็บ</string>
   <string name="content_theme_2">ค้นหาข้อเสนอดี ๆ</string>
@@ -213,6 +215,9 @@
   <string name="rate_app_notification_action_rate">ให้คะแนนเรา</string>
   <string name="rate_app_dialog_btn_feedback">เสนอข้อคิดเห็น</string>
   <string name="rate_app_notification_action_feedback">ข้อคิดเห็น</string>
+  <string name="survey_dialog_text_title">คุณรู้สึกอย่างไรกับ %1$s?</string>
+  <string name="survey_dialog_text_content">บอกความคิดของคุณเกี่ยวกับสิ่งที่คุณรัก หรือสิ่งที่เราสามารถทำได้ดีกว่าแก่เรา</string>
+  <string name="survey_dialog_btn">ทำแบบสำรวจ</string>
   <string name="share_app_dialog_text_title">แบ่งปัน %1$s กับเพื่อน ๆ!</string>
   <string name="share_app_dialog_text_content">- เร็วและเบา\n- การค้นหาแบบสมาร์ตช็อปปิ้ง\n- เกมฟรีและข่าวที่กำลังมาแรง</string>
   <string name="share_app_dialog_btn_share">แบ่งปัน</string>
@@ -488,5 +493,5 @@
   <string name="travel_dialog_2_description_new">คุณสามารถตั้งค่า %1$s %2$s เป็นเครื่องมือค้นหาสำหรับการท่องเที่ยวเริ่มต้นของคุณได้</string>
   <string name="travel_dialog_2_checkbox">ไม่ต้องถามฉันอีก</string>
   <string name="travel_dialog_2_action">ตั้งเป็นค่าเริ่มต้น</string>
-  <string name="awesomebar_open_link_clipboard">เปิดลิงก์ในคลิปบอร์ดของคุณ</string>
+  <string name="awesomebar_open_link_clipboard">เปิดลิงก์ที่คัดลอก</string>
 </resources>
