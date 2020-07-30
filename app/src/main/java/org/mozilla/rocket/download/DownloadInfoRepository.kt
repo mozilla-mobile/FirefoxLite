@@ -74,13 +74,8 @@ class DownloadInfoRepository {
         DownloadInfoManager.getInstance().markAllItemsAreRead(null)
     }
 
-    fun loadData(offset: Int, pageSize: Int, listenerList: OnQueryListCompleteListener) {
-        DownloadInfoManager.getInstance().query(offset, pageSize, object : DownloadInfoManager.AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                listenerList.onComplete(downloadInfoList)
-            }
-        })
-    }
+    suspend fun loadData(offset: Int, pageSize: Int) =
+        DownloadInfoManager.getInstance().query(offset, pageSize)
 
     fun remove(rowId: Long) {
         DownloadInfoManager.getInstance().delete(rowId, null)

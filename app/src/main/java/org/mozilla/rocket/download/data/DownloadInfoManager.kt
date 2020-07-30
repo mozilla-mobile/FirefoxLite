@@ -28,6 +28,8 @@ import java.net.URISyntaxException
 import java.net.URLEncoder
 import java.util.ArrayList
 import java.util.Locale
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 /**
  * Created by anlin on 17/08/2017.
@@ -46,9 +48,21 @@ class DownloadInfoManager {
         mQueryHandler.startUpdate(TOKEN, listener, DownloadContract.Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo), DownloadContract.Download._ID + " = ?", arrayOf(downloadInfo.rowId.toString()))
     }
 
-    fun query(offset: Int, limit: Int, listener: AsyncQueryListener?) {
+    suspend fun query(offset: Int, limit: Int) = suspendCoroutine<List<DownloadInfo>> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit
-        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, null, null, DownloadContract.Download._ID + " DESC")
+        mQueryHandler.startQuery(
+            TOKEN,
+            object : AsyncQueryListener {
+                override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                    continuation.resume(downloadInfoList)
+                }
+            },
+            Uri.parse(uri),
+            null,
+            null,
+            null,
+            DownloadContract.Download._ID + " DESC"
+        )
     }
 
     fun queryByDownloadId(downloadId: Long, listener: AsyncQueryListener?) {

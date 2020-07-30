@@ -1,9 +1,11 @@
 package org.mozilla.rocket.download
 
 import android.app.DownloadManager
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Log
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.data.DownloadInfo
 import org.mozilla.threadutils.ThreadUtils
@@ -90,20 +92,20 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
             isLoading = false
             return
         }
-        repository.loadData(itemCount, PAGE_SIZE, object : DownloadInfoRepository.OnQueryListCompleteListener {
-            override fun onComplete(list: List<DownloadInfo>) {
-                downloadInfoPack.list.addAll(list)
-                downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_DATASET_CHANGED
-                itemCount = downloadInfoPack.list.size
-                downloadInfoObservable.value = downloadInfoPack
-                isOpening = false
-                isLoading = false
-                isLastPage = list.isEmpty()
-                if (isDownloading) {
-                    progressUpdateListener?.onStartUpdate()
-                }
+
+        viewModelScope.launch {
+            val list = repository.loadData(itemCount, PAGE_SIZE)
+            downloadInfoPack.list.addAll(list)
+            downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_DATASET_CHANGED
+            itemCount = downloadInfoPack.list.size
+            downloadInfoObservable.value = downloadInfoPack
+            isOpening = false
+            isLoading = false
+            isLastPage = list.isEmpty()
+            if (isDownloading) {
+                progressUpdateListener?.onStartUpdate()
             }
-        })
+        }
     }
 
     fun cancel(rowId: Long) {
