@@ -260,7 +260,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         })
     }
 
-    fun markAllItemsAreRead() {
+    fun markAllItemsAreRead() = viewModelScope.launch {
         repository.markAllItemsAreRead()
     }
 

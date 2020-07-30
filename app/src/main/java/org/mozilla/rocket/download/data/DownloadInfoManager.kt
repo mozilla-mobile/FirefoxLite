@@ -91,10 +91,18 @@ class DownloadInfoManager {
         )
     }
 
-    fun markAllItemsAreRead(listener: AsyncUpdateListener?) {
+    suspend fun markAllItemsAreRead() = suspendCoroutine<Int> { continuation ->
         val contentValues = ContentValues()
         contentValues.put(DownloadContract.Download.IS_READ, "1")
-        mQueryHandler.startUpdate(TOKEN, listener, DownloadContract.Download.CONTENT_URI, contentValues, DownloadContract.Download.STATUS + "=? and " + DownloadContract.Download.IS_READ + " = ?", arrayOf(DownloadManager.STATUS_SUCCESSFUL.toString(), "0"))
+        mQueryHandler.startUpdate(
+            TOKEN,
+            object : AsyncUpdateListener {
+                override fun onUpdateComplete(result: Int) {
+                    continuation.resume(result)
+                }
+            },
+            DownloadContract.Download.CONTENT_URI, contentValues, DownloadContract.Download.STATUS + "=? and " + DownloadContract.Download.IS_READ + " = ?", arrayOf(DownloadManager.STATUS_SUCCESSFUL.toString(), "0")
+        )
     }
 
     fun recordExists(downloadId: Long): Boolean {

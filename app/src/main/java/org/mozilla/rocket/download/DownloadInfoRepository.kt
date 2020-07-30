@@ -65,9 +65,8 @@ class DownloadInfoRepository {
         }
     }
 
-    fun markAllItemsAreRead() {
-        DownloadInfoManager.getInstance().markAllItemsAreRead(null)
-    }
+    suspend fun markAllItemsAreRead() =
+        DownloadInfoManager.getInstance().markAllItemsAreRead()
 
     suspend fun loadData(offset: Int, pageSize: Int) =
         DownloadInfoManager.getInstance().query(offset, pageSize)
