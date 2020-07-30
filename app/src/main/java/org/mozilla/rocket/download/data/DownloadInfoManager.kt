@@ -182,9 +182,6 @@ class DownloadInfoManager {
         })
     }
 
-    val downloadManager: DownloadManager
-        get() = mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-
     fun showOpenDownloadSnackBar(rowId: Long, container: View, logTag: String?) {
         queryByRowId(rowId, object : AsyncQueryListener {
             override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {

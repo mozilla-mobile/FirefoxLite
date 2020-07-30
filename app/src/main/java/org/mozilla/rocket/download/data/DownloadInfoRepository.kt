@@ -1,14 +1,8 @@
 package org.mozilla.rocket.download.data
 
-import android.app.DownloadManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.threadutils.ThreadUtils
 
-class DownloadInfoRepository {
-
-    interface OnQueryListCompleteListener {
-        fun onComplete(list: List<DownloadInfo>)
-    }
+class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownloadManagerDataSource) {
 
     interface OnQueryItemCompleteListener {
         fun onComplete(download: DownloadInfo)
@@ -39,29 +33,8 @@ class DownloadInfoRepository {
         })
     }
 
-    fun queryDownloadingItems(runningIds: LongArray, listenerList: OnQueryListCompleteListener) {
-        ThreadUtils.postToBackgroundThread {
-            val query = DownloadManager.Query()
-            query.setFilterById(*runningIds)
-            query.setFilterByStatus(DownloadManager.STATUS_RUNNING)
-            DownloadInfoManager.getInstance().downloadManager.query(query).use {
-                if (it != null) {
-                    val list = ArrayList<DownloadInfo>()
-                    while (it.moveToNext()) {
-                        val id = it.getLong(it.getColumnIndex(DownloadManager.COLUMN_ID))
-                        val totalSize = it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                        val currentSize = it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                        val info = DownloadInfo()
-                        info.downloadId = id
-                        info.sizeTotal = totalSize
-                        info.sizeSoFar = currentSize
-                        list.add(info)
-                    }
-                    listenerList.onComplete(list)
-                }
-            }
-        }
-    }
+    suspend fun queryDownloadingItems(runningIds: LongArray): List<DownloadInfo> =
+        downloadManagerDataSource.queryDownloadingItems(runningIds)
 
     suspend fun markAllItemsAreRead() =
         DownloadInfoManager.getInstance().markAllItemsAreRead()
@@ -73,10 +46,8 @@ class DownloadInfoRepository {
         DownloadInfoManager.getInstance().delete(rowId, null)
     }
 
-    fun deleteFromDownloadManager(downloadId: Long) {
-
-        DownloadInfoManager.getInstance().downloadManager.remove(downloadId)
-    }
+    suspend fun deleteFromDownloadManager(downloadId: Long) =
+        downloadManagerDataSource.remove(downloadId)
 
     fun trackDownloadCancel(downloadId: Long) {
         val downloadPojo =
