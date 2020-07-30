@@ -75,9 +75,20 @@ class DownloadInfoManager {
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, DownloadContract.Download._ID + "==?", arrayOf(rowId.toString()), null)
     }
 
-    fun queryDownloadingAndUnreadIds(listener: AsyncQueryListener?) {
+    suspend fun queryDownloadingAndUnreadIds() = suspendCoroutine<List<DownloadInfo>> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
-        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, DownloadContract.Download.STATUS + "!=? or " + DownloadContract.Download.IS_READ + "=?", arrayOf(DownloadManager.STATUS_SUCCESSFUL.toString(), "0"), null)
+        mQueryHandler.startQuery(
+            TOKEN,
+            object : AsyncQueryListener {
+                override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                    continuation.resume(downloadInfoList)
+                }
+            },
+            Uri.parse(uri),
+            null,
+            DownloadContract.Download.STATUS + "!=? or " + DownloadContract.Download.IS_READ + "=?", arrayOf(DownloadManager.STATUS_SUCCESSFUL.toString(), "0"),
+            null
+        )
     }
 
     fun markAllItemsAreRead(listener: AsyncUpdateListener?) {
