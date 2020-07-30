@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.data.DownloadInfo
+import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 import java.net.URI
