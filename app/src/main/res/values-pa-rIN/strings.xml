@@ -32,7 +32,7 @@
   <string name="preference_data_saving_block_images">ਚਿੱਤਰਾਂ ਉੱਤੇ ਪਾਬੰਦੀ ਲਾਓ</string>
   <string name="preference_privacy_storage_clear_browsing_data">ਬਰਾਊਜ਼ਰ ਡਾਟਾ ਸਾਫ਼ ਕਰੋ</string>
   <string name="preference_privacy_storage_save_downloads_to">ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਇੱਥੇ ਸੰਭਾਲੋ</string>
-  <string name="preference_default_browser">ਮੂਲ ਬਰਾਊਜ਼ਰ ਬਣਾਓ</string>
+  <string name="preference_default_browser">ਡਿਫੌਲਟ ਬਰਾਊਜ਼ਰ ਦੇ ਤੌਰ ਤੇ ਸੈੱਟ ਕਰੋ</string>
   <string name="preference_default_browser_is_setting">…ਸੈਟਿੰਗਾਂ ਬਦਲੀਆਂ ਜਾ ਰਹੀਆਂ ਹਨ</string>
   <string name="preference_turbo_mode">ਟਰਬੋ ਮੋਡ</string>
   <string name="preference_mozilla_telemetry">ਵਰਤੋਂ ਸਬੰਧੀ ਡਾਟਾ ਭੇਜੋ</string>
@@ -71,13 +71,15 @@
   <string name="new_name_upgrade_page_title">ਸਾਡੇ ਕੋਲ ਨਵੀਂ ਦਿੱਖ ਹੈ!</string>
   <string name="new_name_upgrade_page_text">ਵਿਕਾਸ ਹੋਏ ਉਤਪਾਦ ਦੇ ਨਾਲ, ਅਸੀਂ ਤੁਹਾਨੂੰ ਨਵੇਂ ਨਾਂ ਅਤੇ ਨਵੇਂ ਲੋਗੋ ਦੇ ਨਾਲ ਇੱਕ ਤਾਜ਼ਾ ਰਿਫ੍ਰੈਸ਼ਡ %1$s ਲਿਆਉਂਦੇ ਹਾਂ।</string>
   <string name="firstrun_close_button">ਠੀਕ ਹੈ, ਸਮਝ ਗਏ!</string>
+  <string name="firstrun_fxlite_2.5_title_1">ਹੈਲੋ!</string>
+  <string name="firstrun_fxlite_2.5_title_2">ਕੀ ਤੁਹਾਨੂੰ%1$s ਤੇ ਲਿਆਉਂਦਾ ਹੈ?</string>
   <string name="label_menu_bookmark">ਬੁੱਕਮਾਰਕ</string>
   <string name="label_menu_download">ਡਾਊਨਲੋਡ</string>
   <string name="label_menu_find_in_page">ਸਫ਼ੇ ਵਿੱਚ ਲੱਭੋ</string>
   <string name="label_menu_clear_cache">ਕੈਸ਼ ਸਾਫ ਕਰੋ</string>
   <string name="label_menu_history">ਅਤੀਤ</string>
   <string name="label_menu_share">ਸਾਂਝਾ ਕਰੋ</string>
-  <string name="label_menu_my_shots">ਮੇਰੇ ਸ਼ਾਟ</string>
+  <string name="label_menu_my_shots">ਸਕਰੀਨਸ਼ਾਟ</string>
   <string name="label_menu_capture_page">ਕੈਪਚਰ ਸਫਾ</string>
   <string name="label_menu_turbo_mode">ਟਰਬੋ ਮੋਡ</string>
   <string name="label_menu_night_mode">ਨਾਈਟ ਮੋਡ</string>
