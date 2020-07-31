@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
@@ -40,8 +41,12 @@ import org.mozilla.rocket.tabs.web.DownloadCallback;
 import org.mozilla.threadutils.ThreadUtils;
 import org.mozilla.urlutils.UrlUtils;
 
+import java.io.File;
+import java.net.URL;
+
 public class WebkitView extends NestedWebView implements TabView {
     private static final String KEY_CURRENTURL = "currenturl";
+    private static final String TAG = "WebkitView";
 
     private DownloadCallback downloadCallback;
     private FocusWebViewClient webViewClient;
@@ -393,8 +398,15 @@ public class WebkitView extends NestedWebView implements TabView {
                     return;
                 }
 
-                if (downloadCallback != null) {
-                    final String name = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                if (downloadCallback != null && url != null) {
+                    String name = "";
+                    try {
+                        name = new File(new URL(url).getFile()).getName();
+                    } catch (Exception e) {
+                        name = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                        Log.e(TAG, "onDownloadStart:" + e.getMessage());
+                    }
+
                     final Download download = new Download(url, name, userAgent, contentDisposition, mimetype, contentLength, false);
                     downloadCallback.onDownloadStart(download);
                 }
