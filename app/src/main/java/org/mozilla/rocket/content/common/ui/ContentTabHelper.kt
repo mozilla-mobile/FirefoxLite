@@ -20,7 +20,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import com.google.android.material.snackbar.Snackbar
 import org.mozilla.focus.R
-import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.focus.web.HttpAuthenticationDialogBuilder
@@ -115,9 +114,9 @@ class ContentTabHelper(private val contentTabViewContract: ContentTabViewContrac
             }
 
             private fun queueDownload(download: Download?) {
-                contentTabViewContract.getHostActivity()?.let { activity ->
+                contentTabViewContract.getHostActivity()?.let {
                     download?.let {
-                        EnqueueDownloadTask(activity, it, contentTabViewContract.getDisplayUrlView()?.text.toString()).execute()
+                        contentTabViewContract.getChromeViewModel().onEnqueueDownload(it, contentTabViewContract.getDisplayUrlView()?.text.toString())
                     }
                 }
             }

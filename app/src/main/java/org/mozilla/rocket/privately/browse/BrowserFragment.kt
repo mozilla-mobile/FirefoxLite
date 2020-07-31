@@ -38,7 +38,6 @@ import mozilla.components.concept.engine.LifecycleObserver
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
-import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -224,9 +223,9 @@ class BrowserFragment : LocaleAwareFragment(),
             }
 
             private fun queueDownload(download: Download?) {
-                activity?.let { activity ->
+                activity?.let {
                     download?.let {
-                        EnqueueDownloadTask(activity, it, displayUrlView.text.toString()).execute()
+                        chromeViewModel.onEnqueueDownload(it, displayUrlView.text.toString(), shouldShowInDownloadList = false)
                     }
                 }
             }

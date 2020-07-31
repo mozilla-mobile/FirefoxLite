@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.fragment_game.*
 import org.mozilla.focus.R
-import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.web.WebViewProvider
 import org.mozilla.permissionhandler.PermissionHandle
@@ -112,10 +111,8 @@ class DownloadGameFragment : Fragment() {
             }
 
             private fun queueDownload(download: Download?) {
-                activity?.let { activity ->
-                    download?.let {
-                        EnqueueDownloadTask(activity, it, download.url).execute()
-                    }
+                download?.let {
+                    TODO("Implement new downloading APK game flow")
                 }
             }
         })

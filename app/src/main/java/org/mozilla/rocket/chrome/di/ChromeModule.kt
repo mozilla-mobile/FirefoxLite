@@ -157,7 +157,8 @@ object ChromeModule {
         historyRepository: HistoryRepository,
         privateMode: PrivateMode,
         browsers: Browsers,
-        storageHelper: StorageHelper
+        storageHelper: StorageHelper,
+        downloadInfoRepository: DownloadInfoRepository
     ): ChromeViewModel = ChromeViewModel(
         settings,
         newFeatureNotice,
@@ -165,7 +166,8 @@ object ChromeModule {
         historyRepository,
         privateMode,
         browsers,
-        storageHelper
+        storageHelper,
+        downloadInfoRepository
     )
 
     @JvmStatic

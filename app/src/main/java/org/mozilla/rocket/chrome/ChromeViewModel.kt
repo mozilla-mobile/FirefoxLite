@@ -7,6 +7,8 @@ import android.view.WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.mozilla.focus.R
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.repository.BookmarkRepository
@@ -16,12 +18,14 @@ import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog
 import org.mozilla.rocket.persistance.History.HistoryRepository
 import org.mozilla.rocket.privately.PrivateMode
+import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.util.ToastMessage
 import org.mozilla.rocket.util.ToastMessage.Companion.LENGTH_LONG
 import org.mozilla.urlutils.UrlUtils
@@ -34,7 +38,8 @@ class ChromeViewModel(
     val historyRepo: HistoryRepository,
     private val privateMode: PrivateMode,
     private val browsers: Browsers,
-    private val storageHelper: StorageHelper
+    private val storageHelper: StorageHelper,
+    private val downloadInfoRepository: DownloadInfoRepository
 ) : ViewModel() {
     val isNightMode: LiveData<NightModeSettings> = settings.isNightModeEnablLiveData.map { NightModeSettings(it, settings.nightModeBrightnessValue) }
     val isDarkTheme: LiveData<Boolean> = settings.isDarkThemeEnableLiveData
@@ -94,6 +99,7 @@ class ChromeViewModel(
     val showAdjustBrightness = SingleLiveEvent<Unit>()
     val addNewTopSiteMenuClicked = SingleLiveEvent<Unit>()
     val themeSettingMenuClicked = SingleLiveEvent<Unit>()
+    val downloadState = SingleLiveEvent<DownloadInfoRepository.DownloadState>()
 
     private var lastUrlLoadStart = 0L
     private var lastUrlLoadTime = 0L
@@ -309,6 +315,10 @@ class ChromeViewModel(
 
     fun onThemeSettingMenuClicked() {
         themeSettingMenuClicked.call()
+    }
+
+    fun onEnqueueDownload(download: Download, refererUrl: String?, shouldShowInDownloadList: Boolean = true) = viewModelScope.launch {
+        downloadState.value = downloadInfoRepository.enqueueToDownloadManager(download, refererUrl, shouldShowInDownloadList)
     }
 
     fun onSessionStarted() {

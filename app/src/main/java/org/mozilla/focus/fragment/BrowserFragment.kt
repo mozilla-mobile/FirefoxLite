@@ -68,7 +68,6 @@ import mozilla.components.browser.session.Session.FindResult
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
-import org.mozilla.focus.download.EnqueueDownloadTask
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.WebContextMenu
 import org.mozilla.focus.navigation.ScreenNavigator
@@ -818,7 +817,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         if (activity == null || download == null) {
             return
         }
-        EnqueueDownloadTask(requireActivity(), download, url).execute()
+        chromeViewModel.onEnqueueDownload(download, url)
     }
 
     /*
