@@ -16,11 +16,16 @@ import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.mozilla.focus.R
 import org.mozilla.focus.components.RelocateService
+import org.mozilla.focus.download.GetDownloadFileHeaderTask
 import org.mozilla.focus.provider.DownloadContract
+import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.CursorUtils
 import org.mozilla.focus.utils.IntentUtils
+import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.util.LoggerWrapper
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
@@ -28,6 +33,7 @@ import java.net.URISyntaxException
 import java.net.URLEncoder
 import java.util.ArrayList
 import java.util.Locale
+import java.util.concurrent.ExecutionException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -36,8 +42,51 @@ import kotlin.coroutines.suspendCoroutine
  */
 class DownloadInfoManager {
 
-    fun insert(downloadInfo: DownloadInfo, listener: AsyncInsertListener?) {
-        mQueryHandler.startInsert(TOKEN, listener, DownloadContract.Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo))
+    suspend fun enqueueDownload(download: Download, downloadId: Long) = withContext(Dispatchers.IO) {
+        val downloadInfo = DownloadInfo()
+        downloadInfo.downloadId = downloadId
+
+        // On Pixel, When downloading downloaded content which is still available, DownloadManager
+        // returns the previous download id.
+        // For that case we remove the old entry and re-insert a new one to move it to the top.
+        // (Note that this is not the case for devices like Samsung, I have not verified yet if this
+        // is a because of on those devices we move files to SDcard or if this is true even if the
+        // file is not moved.)
+        if (!recordExists(downloadId)) {
+            val rowId = insert(downloadInfo)
+            try {
+                val headerInfo = GetDownloadFileHeaderTask().execute(download.url).get()
+                val contentLengthFromDownloadRequest: Long = download.contentLength // it'll be -1 if it's from context menu, and real file size from webview callback
+                val fileSize = if (contentLengthFromDownloadRequest == -1L) headerInfo.contentLength else contentLengthFromDownloadRequest
+                TelemetryWrapper.startDownloadFile(downloadInfo.downloadId.toString(), fileSize, headerInfo.isValidSSL, headerInfo.isSupportRange)
+            } catch (e: ExecutionException) {
+                e.printStackTrace()
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            notifyRowUpdated(mContext, rowId)
+        } else {
+            val info = queryByDownloadId(downloadId)
+            info?.rowId?.let { delete(it) }
+            info?.let {
+                val rowId = insert(it)
+                notifyRowUpdated(mContext, rowId)
+                RelocateService.broadcastRelocateFinished(mContext, rowId)
+            }
+        }
+    }
+
+    private suspend fun insert(downloadInfo: DownloadInfo) = suspendCoroutine<Long> { continuation ->
+        mQueryHandler.startInsert(
+            TOKEN,
+            object : AsyncInsertListener {
+                override fun onInsertComplete(id: Long) {
+                    continuation.resume(id)
+                }
+            },
+            DownloadContract.Download.CONTENT_URI,
+            getContentValuesFromDownloadInfo(downloadInfo)
+        )
     }
 
     suspend fun delete(rowId: Long) = suspendCoroutine<Int> { continuation ->
@@ -80,6 +129,28 @@ class DownloadInfoManager {
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, DownloadContract.Download.DOWNLOAD_ID + "==?", arrayOf(downloadId.toString()), null)
     }
 
+    private suspend fun queryByDownloadId(downloadId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
+        val uri = DownloadContract.Download.CONTENT_URI.toString()
+        mQueryHandler.startQuery(
+            TOKEN,
+            object : AsyncQueryListener {
+                override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                    continuation.resume(
+                        if (downloadInfoList.isNotEmpty()) {
+                            downloadInfoList[0]
+                        } else {
+                            null
+                        }
+                    )
+                }
+            },
+            Uri.parse(uri),
+            null,
+            DownloadContract.Download.DOWNLOAD_ID + "==?", arrayOf(downloadId.toString()),
+            null
+        )
+    }
+
     fun queryByRowId(rowId: Long, listener: AsyncQueryListener?) {
         val uri = DownloadContract.Download.CONTENT_URI.toString()
         mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, DownloadContract.Download._ID + "==?", arrayOf(rowId.toString()), null)
@@ -119,16 +190,9 @@ class DownloadInfoManager {
         val resolver = mContext.contentResolver
         val uri = DownloadContract.Download.CONTENT_URI
         val selection = DownloadContract.Download.DOWNLOAD_ID + "=" + downloadId
-        val cursor = resolver.query(uri, null, selection, null, null)
-        var isExist = false
-        try {
-            isExist = cursor != null && cursor.count > 0 && cursor.moveToFirst()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            CursorUtils.closeCursorSafely(cursor)
+        resolver.query(uri, null, selection, null, null).use {
+            return it != null && it.count > 0 && it.moveToFirst()
         }
-        return isExist
     }
 
     /**

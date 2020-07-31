@@ -1,6 +1,7 @@
 package org.mozilla.rocket.download.data
 
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.tabs.web.Download
 
 class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownloadManagerDataSource) {
 
@@ -45,6 +46,18 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
     suspend fun remove(rowId: Long) =
         DownloadInfoManager.getInstance().delete(rowId)
 
+    suspend fun enqueueToDownloadManager(download: Download, refererUrl: String?, shouldShowInDownloadList: Boolean = true): DownloadState {
+        val result = downloadManagerDataSource.enqueue(download, refererUrl)
+        if (shouldShowInDownloadList) {
+            when (result) {
+                is DownloadState.Success -> {
+                    DownloadInfoManager.getInstance().enqueueDownload(download, result.downloadId)
+                }
+            }
+        }
+        return result
+    }
+
     suspend fun deleteFromDownloadManager(downloadId: Long) =
         downloadManagerDataSource.remove(downloadId)
 
@@ -64,5 +77,12 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
             DownloadInfo.STATUS_DELETED,
             DownloadInfo.REASON_DEFAULT
         )
+    }
+
+    sealed class DownloadState {
+        class Success(val downloadId: Long, val isStartFromContextMenu: Boolean) : DownloadState()
+        object GeneralError : DownloadState()
+        object StorageUnavailable : DownloadState()
+        object FileNotSupported : DownloadState()
     }
 }

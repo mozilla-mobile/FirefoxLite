@@ -13,15 +13,20 @@ import java.net.URL;
 
 import javax.net.ssl.SSLHandshakeException;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 
 public class GetDownloadFileHeaderTask extends AsyncTask<String, Void, GetDownloadFileHeaderTask.HeaderInfo> {
 
     private static String TAG = "GetDownloadFileHeaderTask";
 
     public static class HeaderInfo {
-        boolean isSupportRange = false;
-        boolean isValidSSL = true;
-        long contentLength = 0L;
+        @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
+        public boolean isSupportRange = false;
+        @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
+        public boolean isValidSSL = true;
+        @SuppressFBWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
+        public long contentLength = 0L;
     }
 
     @Override
