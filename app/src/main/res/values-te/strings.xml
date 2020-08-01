@@ -72,6 +72,8 @@
   <string name="firstrun_close_button">సరే, అర్థమైంది!</string>
   <string name="firstrun_fxlite_2.5_title_1">హలో!</string>
   <string name="firstrun_fxlite_2_5_title_A">హలో!</string>
+  <string name="firstrun_fxlite_2_5_title_B">మిమ్మల్ని %1$s‌కి తీసుకువచ్చింది ఏమిటి?</string>
+  <string name="content_theme_1">జాలంలో విహరించండి</string>
   <string name="button_done">పూర్తయింది</string>
   <string name="label_menu_bookmark">ఇష్టాంశాలు</string>
   <string name="label_menu_download">దింపుకోళ్ళు</string>
@@ -195,6 +197,7 @@
   <string name="rate_app_notification_action_rate">మమ్మల్ని రేట్ చేయండి</string>
   <string name="rate_app_dialog_btn_feedback">ప్రతిస్పందన తెలియజేయండి</string>
   <string name="rate_app_notification_action_feedback">ప్రతిస్పందన</string>
+  <string name="survey_dialog_text_title">%1$s మీకు నచ్చిందా?</string>
   <string name="share_app_dialog_text_title">%1$s‌ను స్నేహితులతో పంచుకోండి!</string>
   <string name="share_app_dialog_text_content">- వేగవంతం, తేలికైనది\n- తెలివైన షాపింగ్ శోధన\n- ఉచిత ఆటలు, ప్రాచుర్య వార్తలు</string>
   <string name="share_app_dialog_btn_share">పంచుకో</string>
@@ -280,6 +283,7 @@
   <string name="private_browsing_tracker_blocked_description">అధిక సంరక్షణతో విహరణను ఆనందించండి.</string>
   <string name="private_browsing_dialog_add_shortcut_no">వద్దు, ఫరవాలేదు</string>
   <string name="private_browsing_dialog_add_shortcut_yes">అవును</string>
+  <string name="private_browsing_shortcut_name">%1$s - అంతరంగిక విహారణ</string>
   <string name="my_shot_on_boarding_message">మీ తెరపట్లను ఇక్కడ చూడండి!</string>
   <string name="my_shot_on_boarding_category_message">మీ అనుభవాన్ని మెరుగుపరచడానికి, మేము మీ తెరపట్ల వర్గాల సమాచారాన్ని సేకరిస్తాము.</string>
   <string name="http_auth_dialog_title">అథీకరణ అవసరం</string>
@@ -287,16 +291,22 @@
   <string name="http_auth_dialog_password">సంకేతపదం</string>
   <string name="low_priority_notification_channel">దాచిన గమనింపులు</string>
   <string name="about_link_terms_of_service">సేవా నియమాలు</string>
+  <string name="shopping_search_prompt_message_button">వెతుకు</string>
   <string name="shopping_switch_ui_onboarding_button">సరే</string>
   <string name="shopping_closing_dialog_cancel">రద్దుచేయి</string>
+  <string name="shopping_coupon_expire_one">1 రోజు ఉంది</string>
+  <string name="shopping_coupon_expire_other">%1$d రోజులు ఉన్నాయి</string>
   <string name="gaming_vertical_new">కొత్తది</string>
   <string name="gaming_vertical_hint_button">సరే</string>
   <string name="gaming_vertical_genre_6">వ్యూహం</string>
   <string name="gaming_vertical_genre_7">సాహసం</string>
+  <string name="gaming_vertical_genre_8">పోరాటాలు</string>
+  <string name="gaming_vertical_genre_9">ఆర్కేడ్</string>
   <string name="gaming_vertical_genre_12">బాలికలు</string>
   <string name="home_search_bar_text">వెతకండి…</string>
   <string name="msrp_reward_category_1">ఆశయం</string>
   <string name="msrp_reward_category_2">బహుమతి</string>
+  <string name="msrp_challenge_details_sign_in_to_start">మీ ఈమెయిలు చిరునామా ఇచ్చి మొదలుపెట్టండి.</string>
   <string name="msrp_challenge_tou_terms_of_use">వాడుక నియమాలు</string>
   <string name="msrp_challenge_leaving_button_1">రద్దుచేయి</string>
   <string name="msrp_completed_popup_title">అభినందనలు!</string>
