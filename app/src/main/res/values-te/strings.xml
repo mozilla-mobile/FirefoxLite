@@ -191,6 +191,7 @@
   <string name="privacy_policy_update_notification_action">Firefox Liteని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. ఇంకా తెలుసుకోడానికి తాకండి.</string>
   <string name="message_set_default_success">%1$s‌ను ఎంచుకున్నందుకు కృతజ్ఞతలు!</string>
   <string name="always">ఎల్లప్పుడూ</string>
+  <string name="setting_default_browser_instruction_button">అమరికలకు వెళ్లు</string>
   <string name="rate_app_dialog_text_title">%1$s నచ్చిందా?</string>
   <string name="rate_app_dialog_text_content">మా ఉత్పాదనను ఎంచుకున్నందుకు కృతజ్ఞతలు. మీ ప్రతిస్పందన మాకు చాలా ముఖ్యం.</string>
   <string name="rate_app_dialog_btn_go_rate">మమ్మల్ని రేట్ చేయండి</string>
