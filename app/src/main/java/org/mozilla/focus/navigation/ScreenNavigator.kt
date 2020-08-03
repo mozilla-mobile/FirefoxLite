@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.utils.FirebaseHelper
+import org.mozilla.focus.utils.FirebaseHelper.stopAndClose
 import org.mozilla.focus.widget.BackKeyHandleable
 import java.util.Arrays
 
@@ -117,7 +118,7 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
                 false)
         }
         transactionHelper?.executePendingTransaction()
-        trace.stop()
+        trace.stopAndClose()
     }
 
     /**
