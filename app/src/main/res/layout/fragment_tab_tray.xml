@@ -99,31 +99,23 @@
                 android:tint="@color/tab_tray_private_btn"
                 tools:ignore="contentDescription" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+
+            <TextView
+                android:id="@+id/close_all_tabs_btn"
+                style="@style/ButtonText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@id/plus_sign"
-                android:layout_marginStart="@dimen/tab_tray_close_all_btn_margin_start">
-                <TextView
-                    android:id="@+id/close_all_tabs_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/tab_tray_bottom_sheet_end_margin"
-                    android:paddingStart="@dimen/tab_tray_close_all_btn_margin_end"
-                    android:paddingEnd="@dimen/tab_tray_close_all_btn_margin_end"
-                    android:textAllCaps="true"
-                    android:text="@string/tab_tray_close_tabs_btn_text"
-                    android:gravity="center|end"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="@color/tabTrayCloseAll"
-                    android:textSize="@dimen/tab_tray_close_all_btn_text_size"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
-                    tools:ignore="RtlSymmetry" />
-            </FrameLayout>
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/tab_tray_bottom_sheet_end_margin"
+                android:background="?android:attr/selectableItemBackground"
+                android:ellipsize="end"
+                android:gravity="center|end"
+                android:maxLines="2"
+                android:text="@string/tab_tray_close_tabs_btn_text"
+                android:textColor="@color/tabTrayCloseAll"
+                android:textSize="@dimen/tab_tray_close_all_btn_text_size"
+                tools:ignore="RtlSymmetry" />
         </org.mozilla.rocket.nightmode.themed.ThemedRelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

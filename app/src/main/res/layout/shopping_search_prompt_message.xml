@@ -36,13 +36,14 @@
 
         <Button
             android:id="@+id/bottom_sheet_search"
-            android:layout_width="68dp"
+            android:layout_width="wrap_content"
+            android:minWidth="86dp"
             android:layout_height="32dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bottom_sheet_search"
             android:fontFamily="sans-serif-medium"
             android:text="@string/shopping_search_prompt_message_button"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="normal"

@@ -6,7 +6,7 @@
     tools:parentTag="android.widget.FrameLayout">
 
     <LinearLayout
-        android:layout_width="160dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -31,7 +31,7 @@
             android:text="@string/error_page_recover_a"
             android:textColor="@color/paletteDarkGreyD100" />
 
-        <Button
+        <TextView
             android:id="@+id/no_result_view_button"
             style="@style/ButtonText2"
             android:layout_width="wrap_content"
