@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.mozilla.focus.components;
+package org.mozilla.rocket.download.data;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -13,9 +13,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import org.mozilla.focus.components.RelocateService;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
-import org.mozilla.rocket.download.data.DownloadInfo;
-import org.mozilla.rocket.download.data.DownloadInfoManager;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
