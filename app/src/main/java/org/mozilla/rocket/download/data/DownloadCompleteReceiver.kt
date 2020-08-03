@@ -11,9 +11,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.text.TextUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.mozilla.focus.components.RelocateService
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.threadutils.ThreadUtils
 import java.io.File
 
 class DownloadCompleteReceiver : BroadcastReceiver() {
@@ -26,58 +29,72 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
         // track the event when the file download completes successfully.
         if (downloadPojo != null && downloadPojo.status == DownloadManager.STATUS_SUCCESSFUL) {
             val progress = if (downloadPojo.length.toDouble() != 0.0) downloadPojo.sizeSoFar * 100.0 / downloadPojo.length else 0.0
-            TelemetryWrapper.endDownloadFile(downloadId,
+            TelemetryWrapper.endDownloadFile(
+                downloadId,
                 downloadPojo.length,
                 progress,
                 downloadPojo.status,
-                downloadPojo.reason)
+                downloadPojo.reason
+            )
         }
         DownloadInfoManager.getInstance().queryByDownloadId(downloadId, object : DownloadInfoManager.AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<*>) {
-                if (downloadInfoList.size > 0) {
-                    val downloadInfo = downloadInfoList[0] as DownloadInfo
+            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                if (downloadInfoList.isNotEmpty()) {
+                    val downloadInfo = downloadInfoList[0]
                     if (downloadInfo.status != DownloadManager.STATUS_SUCCESSFUL) {
                         // track the event when the file download cancel from notification tray.
-                        TelemetryWrapper.endDownloadFile(downloadId,
+                        TelemetryWrapper.endDownloadFile(
+                            downloadId,
                             null,
                             null,
                             DownloadInfo.STATUS_DELETED,
-                            DownloadInfo.REASON_DEFAULT)
+                            DownloadInfo.REASON_DEFAULT
+                        )
                     }
-                    if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL
-                        && !TextUtils.isEmpty(downloadInfo.fileUri)) {
+                    if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL && !TextUtils.isEmpty(downloadInfo.fileUri)) {
 
                         // have to update, then the fileUri may write into our DB.
                         DownloadInfoManager.getInstance().updateByRowId(downloadInfo, object : DownloadInfoManager.AsyncUpdateListener {
                             override fun onUpdateComplete(result: Int) {
-                                val fileUri = Uri.parse(downloadInfo.fileUri)
-                                if ("file" == fileUri.scheme) {
-                                    ThreadUtils.postToBackgroundThread { // on some device the uri is "file:///storage/emulated/0/Download/file.png"
-                                        // but the real path is "file:///storage/emulated/legacy/Download/file.png"
-                                        // Since we already restrict download folder when we were making request to
-                                        // DownloadManager, now we only look for the file-name in download folder.
-                                        val fileName = File(fileUri.path).name
-                                        val type = Environment.DIRECTORY_DOWNLOADS
-                                        val dir = Environment.getExternalStoragePublicDirectory(type)
-                                        val downloadedFile = File(dir, fileName)
-                                        if (downloadedFile.exists() && downloadedFile.canWrite()) {
-                                            RelocateService.startActionMove(context,
-                                                downloadInfo.rowId!!,
-                                                downloadInfo.downloadId!!,
-                                                downloadedFile,
-                                                downloadInfo.mimeType)
-                                        }
-                                    }
+                                GlobalScope.launch {
+                                    startRelocationService(context, downloadInfo)
                                 }
                             }
                         })
                     }
                     // Download canceled
                     if (!downloadInfo.existInDownloadManager()) {
-                        DownloadInfoManager.getInstance().delete(downloadInfo.rowId!!, null)
+                        GlobalScope.launch {
+                            downloadInfo.rowId?.let { DownloadInfoManager.getInstance().delete(it) }
+                        }
                     }
                 }
             }
         })
+    }
+
+    private suspend fun startRelocationService(context: Context, downloadInfo: DownloadInfo) = withContext(Dispatchers.IO) {
+        val fileUri = Uri.parse(downloadInfo.fileUri)
+        if ("file" == fileUri.scheme) {
+            // on some device the uri is "file:///storage/emulated/0/Download/file.png"
+            // but the real path is "file:///storage/emulated/legacy/Download/file.png"
+            // Since we already restrict download folder when we were making request to
+            // DownloadManager, now we only look for the file-name in download folder.
+            val fileName = File(fileUri.path).name
+            val type = Environment.DIRECTORY_DOWNLOADS
+            val dir = Environment.getExternalStoragePublicDirectory(type)
+            val downloadedFile = File(dir, fileName)
+            val rowId = downloadInfo.rowId ?: -1L
+            val downloadId = downloadInfo.downloadId ?: -1L
+            if (rowId != -1L && downloadId != -1L && downloadedFile.exists() && downloadedFile.canWrite()) {
+                RelocateService.startActionMove(
+                    context,
+                    rowId,
+                    downloadId,
+                    downloadedFile,
+                    downloadInfo.mimeType
+                )
+            }
+        }
     }
 }
