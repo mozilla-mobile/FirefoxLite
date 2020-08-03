@@ -3,13 +3,19 @@ package org.mozilla.rocket.download.data
 import android.app.DownloadManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.TrafficStats
 import android.net.Uri
 import android.os.Environment
 import android.webkit.CookieManager
 import android.webkit.URLUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.mozilla.focus.network.SocketTags
 import org.mozilla.rocket.tabs.web.Download
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.SSLHandshakeException
 
 class AndroidDownloadManagerDataSource(private val appContext: Context) {
 
@@ -49,6 +55,33 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
 
         val downloadId = downloadManager.enqueue(request)
         return@withContext DownloadInfoRepository.DownloadState.Success(downloadId, download.isStartFromContextMenu)
+    }
+
+    suspend fun getDownloadUrlHeaderInfo(url: String): DownloadInfoRepository.HeaderInfo = withContext(Dispatchers.IO) {
+        TrafficStats.setThreadStatsTag(SocketTags.DOWNLOADS)
+        var connection: HttpURLConnection? = null
+        var isSupportRange = false
+        var isValidSSL = true
+        var contentLength = 0L
+        try {
+            connection = URL(url).openConnection() as HttpURLConnection
+            connection.requestMethod = "HEAD"
+            val headerField = connection.getHeaderField("Accept-Ranges")
+            isSupportRange = (headerField != null && headerField == "bytes")
+            val strContentLength = connection.getHeaderField("Content-Length")
+            contentLength = strContentLength?.toLong() ?: 0L
+            connection.responseCode
+            connection.disconnect()
+        } catch (e: SSLHandshakeException) {
+            isValidSSL = false
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.disconnect()
+        }
+        return@withContext DownloadInfoRepository.HeaderInfo(isSupportRange, isValidSSL, contentLength)
     }
 
     suspend fun queryDownloadingItems(runningIds: LongArray): List<DownloadInfo> = withContext(Dispatchers.IO) {

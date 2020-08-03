@@ -51,7 +51,13 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
         if (shouldShowInDownloadList) {
             when (result) {
                 is DownloadState.Success -> {
-                    DownloadInfoManager.getInstance().enqueueDownload(download, result.downloadId)
+                    val newlyAdded = DownloadInfoManager.getInstance().enqueueDownload(result.downloadId)
+                    if (newlyAdded) {
+                        val headerInfo = downloadManagerDataSource.getDownloadUrlHeaderInfo(download.url)
+                        val contentLengthFromDownloadRequest: Long = download.contentLength // it'll be -1 if it's from context menu, and real file size from webview callback
+                        val fileSize = if (contentLengthFromDownloadRequest == -1L) headerInfo.contentLength else contentLengthFromDownloadRequest
+                        TelemetryWrapper.startDownloadFile(result.downloadId.toString(), fileSize, headerInfo.isValidSSL, headerInfo.isSupportRange)
+                    }
                 }
             }
         }
@@ -85,4 +91,10 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
         object StorageUnavailable : DownloadState()
         object FileNotSupported : DownloadState()
     }
+
+    class HeaderInfo(
+        val isSupportRange: Boolean = false,
+        val isValidSSL: Boolean = true,
+        val contentLength: Long = 0L
+    )
 }
