@@ -24,6 +24,7 @@ import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.persistence.BookmarkModel;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.viewmodel.BookmarkViewModel;
+import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.rocket.content.BaseViewModelFactory;
 import org.mozilla.rocket.content.ExtentionKt;
 
@@ -36,11 +37,14 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
 
     @Inject
     Lazy<BookmarkViewModel> bookmarkViewModelCreator;
+    @Inject
+    Lazy<ChromeViewModel> chromeViewModelCreator;
 
     private RecyclerView recyclerView;
     private View emptyView;
     private BookmarkAdapter adapter;
     private BookmarkViewModel viewModel;
+    private ChromeViewModel chromeViewModel;
 
     public static BookmarksFragment newInstance() {
         return new BookmarksFragment();
@@ -51,6 +55,7 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
         ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(bookmarkViewModelCreator::get)).get(BookmarkViewModel.class);
+        chromeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
     }
 
     @Override
@@ -97,7 +102,7 @@ public class BookmarksFragment extends PanelFragment implements BookmarkAdapter.
 
     @Override
     public void onItemClicked(String url) {
-        ScreenNavigator.get(getContext()).showBrowserScreen(url, true, false);
+        chromeViewModel.getOpenUrl().setValue(new ChromeViewModel.OpenUrlAction(url, true, false));
         closePanel();
         TelemetryWrapper.bookmarkOpenItem();
     }

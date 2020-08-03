@@ -39,6 +39,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     private RecyclerView mRecyclerView;
     private ViewGroup mContainerEmptyView, mContainerRecyclerView;
     private HistoryItemAdapter mAdapter;
+    private ChromeViewModel mChromeViewModel;
 
     public static BrowsingHistoryFragment newInstance() {
         return new BrowsingHistoryFragment();
@@ -48,6 +49,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ExtentionKt.appComponent(this).inject(this);
         super.onCreate(savedInstanceState);
+        mChromeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new HistoryItemAdapter(mRecyclerView, getActivity(), this);
+        mAdapter = new HistoryItemAdapter(mRecyclerView, getActivity(), mChromeViewModel, this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(layoutManager);
     }
@@ -86,8 +88,7 @@ public class BrowsingHistoryFragment extends PanelFragment implements View.OnCli
                             return;
                         }
                         mAdapter.clear();
-                        ChromeViewModel chromeViewModel = new ViewModelProvider(requireActivity(), new BaseViewModelFactory<>(chromeViewModelCreator::get)).get(ChromeViewModel.class);
-                        chromeViewModel.getClearBrowsingHistory().call();
+                        mChromeViewModel.getClearBrowsingHistory().call();
                         TelemetryWrapper.clearHistory();
                     }
                 });

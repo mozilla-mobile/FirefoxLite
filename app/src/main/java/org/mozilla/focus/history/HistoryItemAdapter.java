@@ -28,12 +28,12 @@ import org.mozilla.focus.fragment.ItemClosingPanelFragmentStatusListener;
 import org.mozilla.focus.fragment.PanelFragment;
 import org.mozilla.focus.history.model.DateSection;
 import org.mozilla.focus.history.model.Site;
-import org.mozilla.focus.navigation.ScreenNavigator;
 import org.mozilla.focus.provider.QueryHandler;
 import org.mozilla.focus.site.SiteItemViewHolder;
 import org.mozilla.focus.telemetry.TelemetryWrapper;
 import org.mozilla.focus.utils.DimenUtils;
 import org.mozilla.icon.FavIconUtils;
+import org.mozilla.rocket.chrome.ChromeViewModel;
 import org.mozilla.threadutils.ThreadUtils;
 
 import java.io.File;
@@ -58,15 +58,17 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private List mItems = new ArrayList();
     private RecyclerView mRecyclerView;
     private Context mContext;
+    private ChromeViewModel mChromeViewModel;
     private ItemClosingPanelFragmentStatusListener mHistoryListener;
     private boolean mIsInitialQuery;
     private boolean mIsLoading;
     private boolean mIsLastPage;
     private int mCurrentCount;
 
-    public HistoryItemAdapter(RecyclerView recyclerView, Context context, ItemClosingPanelFragmentStatusListener historyListener) {
+    public HistoryItemAdapter(RecyclerView recyclerView, Context context, ChromeViewModel chromeViewModel, ItemClosingPanelFragmentStatusListener historyListener) {
         mRecyclerView = recyclerView;
         mContext = context;
+        mChromeViewModel = chromeViewModel;
         mHistoryListener = historyListener;
         mIsInitialQuery = true;
         notifyStatusListener(BrowsingHistoryFragment.ON_OPENING);
@@ -187,7 +189,7 @@ public class HistoryItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (position != RecyclerView.NO_POSITION && position < mItems.size()) {
             Object item = mItems.get(position);
             if (item instanceof Site) {
-                ScreenNavigator.get(mContext).showBrowserScreen(((Site) item).getUrl(), true, false);
+                mChromeViewModel.getOpenUrl().setValue(new ChromeViewModel.OpenUrlAction(((Site) item).getUrl(), true, false));
                 mHistoryListener.onItemClicked();
                 TelemetryWrapper.historyOpenLink();
             }
