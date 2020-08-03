@@ -231,7 +231,7 @@
             android:exported="false" />
 
         <receiver
-            android:name="org.mozilla.focus.components.DownloadCompleteReceiver"
+            android:name="org.mozilla.rocket.download.data.DownloadCompleteReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
