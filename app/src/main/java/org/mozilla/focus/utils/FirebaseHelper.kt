@@ -307,4 +307,12 @@ object FirebaseHelper {
     fun newTrace(key: String): FirebaseContract.FirebaseTrace {
         return firebaseContract.newTrace(key)
     }
+
+    fun retrieveTrace(key: String): FirebaseContract.FirebaseTrace? {
+        return firebaseContract.retrieveTrace(key)
+    }
+
+    fun FirebaseContract.FirebaseTrace.stopAndClose() {
+        getFirebase().closeTrace(this)
+    }
 }

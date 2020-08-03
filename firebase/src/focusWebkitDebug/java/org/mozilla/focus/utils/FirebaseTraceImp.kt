@@ -11,9 +11,11 @@ import com.google.firebase.perf.metrics.Trace
 /**
  * It's a wrapper to communicate with Firebase Monitoring
  */
-class FirebaseTraceImp(key: String) : FirebaseContract.FirebaseTrace {
+class FirebaseTraceImp(private val traceKey: String) : FirebaseContract.FirebaseTrace {
 
-    private val trace: Trace = FirebasePerformance.getInstance().newTrace(key)
+    private val trace: Trace = FirebasePerformance.getInstance().newTrace(traceKey)
+
+    override fun getKey(): String = traceKey
 
     override fun start() {
         trace.start()
