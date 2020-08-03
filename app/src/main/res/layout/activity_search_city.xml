@@ -9,6 +9,7 @@
     tools:context="org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">
@@ -82,14 +83,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider" />
 
-        <org.mozilla.rocket.content.common.ui.NoResultView
-            android:id="@+id/no_result_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <org.mozilla.rocket.content.common.ui.NoResultView
+        android:id="@+id/no_result_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@+id/constraintLayout"
+        app:layout_anchorGravity="center" />
 
 </org.mozilla.focus.widget.ResizableKeyboardLayout>

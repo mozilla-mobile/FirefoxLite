@@ -3,8 +3,8 @@ package org.mozilla.rocket.content.common.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import kotlinx.android.synthetic.main.no_result_view.view.*
 import org.mozilla.focus.R
@@ -15,7 +15,7 @@ class NoResultView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
 
-    private val button: Button
+    private val button: TextView
 
     init {
         View.inflate(context, R.layout.no_result_view, this)
