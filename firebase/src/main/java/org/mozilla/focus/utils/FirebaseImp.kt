@@ -8,6 +8,7 @@ package org.mozilla.focus.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.ArrayMap
 import android.util.Log
 import androidx.annotation.Size
 import androidx.annotation.WorkerThread
@@ -30,6 +31,7 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
     private lateinit var firebaseAuth: FirebaseAuth
+    private val traceMap = ArrayMap<String, FirebaseTrace>()
 
     override fun init(context: Context) {
         FirebaseApp.initializeApp(context)
@@ -244,6 +246,17 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
     }
 
     override fun newTrace(key: String): FirebaseTrace {
-        return FirebaseTraceImp(key)
+        return FirebaseTraceImp(key).also {
+            traceMap[key] = it
+        }
+    }
+
+    override fun retrieveTrace(key: String): FirebaseTrace? {
+        return traceMap[key]
+    }
+
+    override fun closeTrace(trace: FirebaseTrace): FirebaseTrace? {
+        trace.stop()
+        return traceMap.remove(trace.getKey())
     }
 }

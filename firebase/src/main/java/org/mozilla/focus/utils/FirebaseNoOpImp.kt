@@ -107,6 +107,8 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
 
     override fun newTrace(key: String): FirebaseTrace {
         return object : FirebaseTrace {
+            override fun getKey(): String = ""
+
             override fun start() {
             }
 
@@ -114,4 +116,8 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
             }
         }
     }
+
+    override fun retrieveTrace(key: String): FirebaseTrace? = null
+
+    override fun closeTrace(trace: FirebaseTrace): FirebaseTrace? = null
 }

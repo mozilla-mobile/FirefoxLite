@@ -80,7 +80,12 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun newTrace(key: String): FirebaseTrace
 
+    abstract fun retrieveTrace(key: String): FirebaseTrace?
+
+    abstract fun closeTrace(trace: FirebaseTrace): FirebaseTrace?
+
     interface FirebaseTrace {
+        fun getKey(): String
         fun start()
         fun stop()
     }
