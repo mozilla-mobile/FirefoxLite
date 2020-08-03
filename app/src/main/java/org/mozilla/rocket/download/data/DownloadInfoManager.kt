@@ -20,12 +20,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.R
 import org.mozilla.focus.components.RelocateService
-import org.mozilla.focus.download.GetDownloadFileHeaderTask
 import org.mozilla.focus.provider.DownloadContract
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.CursorUtils
 import org.mozilla.focus.utils.IntentUtils
-import org.mozilla.rocket.tabs.web.Download
 import org.mozilla.rocket.util.LoggerWrapper
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
@@ -33,7 +30,6 @@ import java.net.URISyntaxException
 import java.net.URLEncoder
 import java.util.ArrayList
 import java.util.Locale
-import java.util.concurrent.ExecutionException
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -42,7 +38,7 @@ import kotlin.coroutines.suspendCoroutine
  */
 class DownloadInfoManager {
 
-    suspend fun enqueueDownload(download: Download, downloadId: Long) = withContext(Dispatchers.IO) {
+    suspend fun enqueueDownload(downloadId: Long): Boolean = withContext(Dispatchers.IO) {
         val downloadInfo = DownloadInfo()
         downloadInfo.downloadId = downloadId
 
@@ -54,17 +50,8 @@ class DownloadInfoManager {
         // file is not moved.)
         if (!recordExists(downloadId)) {
             val rowId = insert(downloadInfo)
-            try {
-                val headerInfo = GetDownloadFileHeaderTask().execute(download.url).get()
-                val contentLengthFromDownloadRequest: Long = download.contentLength // it'll be -1 if it's from context menu, and real file size from webview callback
-                val fileSize = if (contentLengthFromDownloadRequest == -1L) headerInfo.contentLength else contentLengthFromDownloadRequest
-                TelemetryWrapper.startDownloadFile(downloadInfo.downloadId.toString(), fileSize, headerInfo.isValidSSL, headerInfo.isSupportRange)
-            } catch (e: ExecutionException) {
-                e.printStackTrace()
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
             notifyRowUpdated(mContext, rowId)
+            return@withContext true
         } else {
             val info = queryByDownloadId(downloadId)
             info?.rowId?.let { delete(it) }
@@ -73,6 +60,7 @@ class DownloadInfoManager {
                 notifyRowUpdated(mContext, rowId)
                 RelocateService.broadcastRelocateFinished(mContext, rowId)
             }
+            return@withContext false
         }
     }
 
