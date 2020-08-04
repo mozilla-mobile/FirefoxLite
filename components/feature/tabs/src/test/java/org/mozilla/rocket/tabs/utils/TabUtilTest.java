@@ -5,6 +5,8 @@
 
 package org.mozilla.rocket.tabs.utils;
 
+import android.os.Build;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -12,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
-@Config(manifest = Config.NONE)
+@Config(manifest = Config.NONE, maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP)
 @RunWith(RobolectricTestRunner.class)
 public class TabUtilTest {
 
