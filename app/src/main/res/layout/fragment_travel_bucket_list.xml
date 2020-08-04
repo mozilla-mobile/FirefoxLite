@@ -71,8 +71,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/travel_empty_state_button"
                 android:textColor="@color/paletteDarkBlueC100"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textSize="14sp" />
         </LinearLayout>
     </FrameLayout>
 
