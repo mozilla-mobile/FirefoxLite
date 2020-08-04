@@ -12,20 +12,14 @@ import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.text.TextUtils
-import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.mozilla.focus.R
 import org.mozilla.focus.provider.DownloadContract
 import org.mozilla.focus.utils.CursorUtils
-import org.mozilla.focus.utils.IntentUtils
-import org.mozilla.rocket.util.LoggerWrapper
 import org.mozilla.threadutils.ThreadUtils
 import java.io.File
-import java.net.URISyntaxException
 import java.net.URLEncoder
 import java.util.ArrayList
 import java.util.Locale
@@ -144,9 +138,27 @@ class DownloadInfoManager {
         )
     }
 
-    fun queryByRowId(rowId: Long, listener: AsyncQueryListener?) {
+    suspend fun queryByRowId(rowId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
-        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, DownloadContract.Download._ID + "==?", arrayOf(rowId.toString()), null)
+        mQueryHandler.startQuery(
+            TOKEN,
+            object : AsyncQueryListener {
+                override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                    continuation.resume(
+                        if (downloadInfoList.isNotEmpty()) {
+                            downloadInfoList[0]
+                        } else {
+                            null
+                        }
+                    )
+                }
+            },
+            Uri.parse(uri),
+            null,
+            DownloadContract.Download._ID + "==?",
+            arrayOf(rowId.toString()),
+            null
+        )
     }
 
     suspend fun queryDownloadingAndUnreadIds() = suspendCoroutine<List<DownloadInfo>> { continuation ->
@@ -246,36 +258,6 @@ class DownloadInfoManager {
                 RelocateService.broadcastRelocateFinished(mContext, it)
             }
         }
-    }
-
-    fun showOpenDownloadSnackBar(rowId: Long, container: View, logTag: String?) {
-        queryByRowId(rowId, object : AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                val existInLocalDB = downloadInfoList.isNotEmpty()
-                if (!existInLocalDB) {
-                    LoggerWrapper.throwOrWarn(logTag, "Download Completed with unknown local row id")
-                    return
-                }
-                val downloadInfo = downloadInfoList[0]
-                val existInDownloadManager = downloadInfo.existInDownloadManager()
-                if (!existInDownloadManager) {
-                    LoggerWrapper.throwOrWarn(logTag, "Download Completed with unknown DownloadManager id")
-                }
-                val completedStr = container.context.getString(R.string.download_completed, downloadInfo.fileName)
-                val snackbar = Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG)
-                // Set the open action only if we can.
-                if (existInDownloadManager) {
-                    snackbar.setAction(R.string.open) {
-                        try {
-                            IntentUtils.intentOpenFile(container.context, downloadInfo.fileUri, downloadInfo.mimeType)
-                        } catch (e: URISyntaxException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-                snackbar.show()
-            }
-        })
     }
 
     fun queryDownloadManager(downloadId: Long): DownloadPojo? {

@@ -68,7 +68,6 @@ import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
-import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.firstrun.FirstrunFragment
@@ -95,6 +94,7 @@ import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
 import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.rocket.widget.enqueue
+import java.net.URISyntaxException
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -261,7 +261,9 @@ class MainActivity : BaseActivity(),
                             Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
                         }
                     }
-                    Constants.ACTION_NOTIFY_RELOCATE_FINISH -> DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), container, LOG_TAG)
+                    Constants.ACTION_NOTIFY_RELOCATE_FINISH -> {
+                        chromeViewModel.onRelocateFinished(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1))
+                    }
                 }
             }
         }
@@ -363,6 +365,22 @@ class MainActivity : BaseActivity(),
                         if (!downloadState.isStartFromContextMenu) {
                             Toast.makeText(this@MainActivity, R.string.download_started, Toast.LENGTH_LONG).show()
                         }
+                }
+            })
+            showDownloadFinishedSnackBar.observe(this@MainActivity, Observer { downloadInfo ->
+                val message = getString(R.string.download_completed, downloadInfo.fileName)
+                Snackbar.make(container, message, Snackbar.LENGTH_LONG).apply {
+                    // Set the open action only if we can.
+                    if (downloadInfo.existInDownloadManager()) {
+                        setAction(R.string.open) {
+                            try {
+                                IntentUtils.intentOpenFile(this@MainActivity, downloadInfo.fileUri, downloadInfo.mimeType)
+                            } catch (e: URISyntaxException) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                    show()
                 }
             })
         }
@@ -850,8 +868,6 @@ class MainActivity : BaseActivity(),
     }
 
     companion object {
-        private const val LOG_TAG = "MainActivity"
-
         const val REQUEST_CODE_IN_APP_UPDATE = 1024
         const val ACTION_INSTALL_IN_APP_UPDATE = "action_install_in_app_update"
 

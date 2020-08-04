@@ -5,23 +5,11 @@ import org.mozilla.rocket.tabs.web.Download
 
 class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownloadManagerDataSource) {
 
-    interface OnQueryItemCompleteListener {
-        fun onComplete(download: DownloadInfo)
-    }
-
     suspend fun queryIndicatorStatus(): List<DownloadInfo> =
         DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds()
 
-    fun queryByRowId(rowId: Long, listenerItem: OnQueryItemCompleteListener) {
-        DownloadInfoManager.getInstance().queryByRowId(rowId, object : DownloadInfoManager.AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                if (downloadInfoList.isNotEmpty()) {
-                    val downloadInfo = downloadInfoList[0]
-                    listenerItem.onComplete(downloadInfo)
-                }
-            }
-        })
-    }
+    suspend fun queryByRowId(rowId: Long) =
+        DownloadInfoManager.getInstance().queryByRowId(rowId)
 
     suspend fun queryByDownloadId(rowId: Long) =
         DownloadInfoManager.getInstance().queryByDownloadId(rowId)

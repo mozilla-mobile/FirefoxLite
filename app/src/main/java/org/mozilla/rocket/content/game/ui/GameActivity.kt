@@ -22,7 +22,6 @@ import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.game.ui.adapter.GameTabsAdapter
 import org.mozilla.rocket.content.getViewModel
-import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.extension.isLaunchedFromHistory
 import org.mozilla.rocket.util.sha256
 import javax.inject.Inject
@@ -45,8 +44,6 @@ class GameActivity : FragmentActivity() {
         initViewPager()
         initTabLayout()
         initToolBar()
-
-        initBroadcastReceivers()
 
         intent.extras?.let {
             if (!isLaunchedFromHistory()) {
@@ -131,16 +128,6 @@ class GameActivity : FragmentActivity() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
         telemetryViewModel.onSessionEnded()
-    }
-
-    private fun initBroadcastReceivers() {
-        uiMessageReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
-                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snack_bar_container, this@GameActivity.javaClass.name)
-                }
-            }
-        }
     }
 
     sealed class DeepLink(val name: String) {
