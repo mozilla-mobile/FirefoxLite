@@ -17,7 +17,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -27,7 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
+import kotlinx.android.synthetic.main.fragment_private_browser_legacy.*
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.FocusApplication
 import org.mozilla.focus.R
@@ -145,8 +144,8 @@ class BrowserFragmentLegacy : LocaleAwareFragment(),
 
         monitorTrackerBlocked { count -> updateTrackerBlockedCount(count) }
 
-        view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
-            (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
+        view.findViewById<View>(R.id.browser_container).setOnApplyWindowInsetsListener { v, insets ->
+            (v.layoutParams as FrameLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
 
