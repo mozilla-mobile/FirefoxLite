@@ -13,7 +13,6 @@ import android.os.Environment
 import android.text.TextUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -53,13 +52,8 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
             }
             if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL && !TextUtils.isEmpty(downloadInfo.fileUri)) {
                 // have to update, then the fileUri may write into our DB.
-                DownloadInfoManager.getInstance().updateByRowId(downloadInfo, object : DownloadInfoManager.AsyncUpdateListener {
-                    override fun onUpdateComplete(result: Int) {
-                        GlobalScope.launch {
-                            startRelocationService(context, downloadInfo)
-                        }
-                    }
-                })
+                DownloadInfoManager.getInstance().updateByRowId(downloadInfo)
+                startRelocationService(context, downloadInfo)
             }
             // Download canceled
             if (!downloadInfo.existInDownloadManager()) {

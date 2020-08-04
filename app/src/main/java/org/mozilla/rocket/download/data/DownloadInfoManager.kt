@@ -90,8 +90,19 @@ class DownloadInfoManager {
         )
     }
 
-    fun updateByRowId(downloadInfo: DownloadInfo, listener: AsyncUpdateListener?) {
-        mQueryHandler.startUpdate(TOKEN, listener, DownloadContract.Download.CONTENT_URI, getContentValuesFromDownloadInfo(downloadInfo), DownloadContract.Download._ID + " = ?", arrayOf(downloadInfo.rowId.toString()))
+    suspend fun updateByRowId(downloadInfo: DownloadInfo) = suspendCoroutine<Int> { continuation ->
+        mQueryHandler.startUpdate(
+            TOKEN,
+            object : AsyncUpdateListener {
+                override fun onUpdateComplete(result: Int) {
+                    continuation.resume(result)
+                }
+            },
+            DownloadContract.Download.CONTENT_URI,
+            getContentValuesFromDownloadInfo(downloadInfo),
+            DownloadContract.Download._ID + " = ?",
+            arrayOf(downloadInfo.rowId.toString())
+        )
     }
 
     suspend fun query(offset: Int, limit: Int) = suspendCoroutine<List<DownloadInfo>> { continuation ->
@@ -229,13 +240,10 @@ class DownloadInfoManager {
             queryDownloadInfo.rowId?.let {
                 val newInfo = pojoToDownloadInfo(pojo, newPath, it)
                 newInfo.downloadId = newId
-                updateByRowId(newInfo, object : AsyncUpdateListener {
-                    override fun onUpdateComplete(result: Int) {
-                        notifyRowUpdated(mContext, it)
-                        RelocateService.broadcastRelocateFinished(mContext, it)
-                    }
-                })
+                updateByRowId(newInfo)
                 manager.remove(downloadId)
+                notifyRowUpdated(mContext, it)
+                RelocateService.broadcastRelocateFinished(mContext, it)
             }
         }
     }
