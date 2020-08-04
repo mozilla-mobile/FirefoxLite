@@ -15,7 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.mozilla.focus.components.RelocateService
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import java.io.File
 

@@ -253,7 +253,7 @@
             android:enabled="true" />
 
         <service
-            android:name="org.mozilla.focus.components.RelocateService"
+            android:name="org.mozilla.rocket.download.data.RelocateService"
             android:exported="false" />
 
         <service
