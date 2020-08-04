@@ -17,6 +17,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.mozilla.fileutils.FileUtils
 import org.mozilla.focus.R
 import org.mozilla.focus.notification.NotificationId
@@ -64,8 +66,10 @@ class RelocateService : IntentService(TAG) {
                 val rowId = intent.getLongExtra(Constants.EXTRA_ROW_ID, -1)
                 val type = intent.type
                 startForeground()
-                handleActionMove(rowId, downloadId, src, type)
-                stopForeground()
+                GlobalScope.launch {
+                    handleActionMove(rowId, downloadId, src, type)
+                    stopForeground()
+                }
             }
         }
     }
@@ -74,7 +78,7 @@ class RelocateService : IntentService(TAG) {
      * Handle action Move in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionMove(
+    private suspend fun handleActionMove(
         rowId: Long,
         downloadId: Long,
         srcFile: File,
@@ -107,7 +111,7 @@ class RelocateService : IntentService(TAG) {
      * @param srcFile file to be moved
      * @param type MIME type of the file, to decide sub directory
      */
-    private fun moveFile(rowId: Long, downloadId: Long, srcFile: File, type: String?) {
+    private suspend fun moveFile(rowId: Long, downloadId: Long, srcFile: File, type: String?) {
         val settings = Settings.getInstance(applicationContext)
         var destFile: File? = null
         try {

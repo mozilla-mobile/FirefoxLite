@@ -205,28 +205,28 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         }
     }
 
-    private fun updateRunningItems() {
-        if (!runningDownloadIds.isEmpty()) {
+    private fun updateRunningItems() = viewModelScope.launch {
+        if (runningDownloadIds.isNotEmpty()) {
             for (i in runningDownloadIds.indices) {
-                repository.queryByDownloadId(runningDownloadIds[i], object : DownloadInfoRepository.OnQueryItemCompleteListener {
-                    override fun onComplete(download: DownloadInfo) {
-                        for (j in 0 until downloadInfoPack.list.size) {
-                            val downloadInfo = downloadInfoPack.list[j]
-                            if (download.downloadId == downloadInfo.downloadId) {
-                                downloadInfo.setStatusInt(download.status)
-                                downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
-                                downloadInfoPack.index = j.toLong()
-                                downloadInfoObservable.value = downloadInfoPack
-                            }
+                repository.queryByDownloadId(runningDownloadIds[i])?.let { download ->
+                    for (j in 0 until downloadInfoPack.list.size) {
+                        val downloadInfo = downloadInfoPack.list[j]
+                        if (download.downloadId == downloadInfo.downloadId) {
+                            downloadInfo.setStatusInt(download.status)
+                            downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_ITEM_CHANGED
+                            downloadInfoPack.index = j.toLong()
+                            downloadInfoObservable.value = downloadInfoPack
                         }
                     }
-                })
+                }
             }
         }
     }
 
-    fun notifyDownloadComplete(downloadId: Long) {
-        repository.queryByDownloadId(downloadId, updateListener)
+    fun notifyDownloadComplete(downloadId: Long) = viewModelScope.launch {
+        repository.queryByDownloadId(downloadId)?.let {
+            updateItem(it)
+        }
     }
 
     fun notifyRowUpdate(rowId: Long) {

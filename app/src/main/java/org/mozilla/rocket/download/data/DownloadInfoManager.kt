@@ -111,12 +111,7 @@ class DownloadInfoManager {
         )
     }
 
-    fun queryByDownloadId(downloadId: Long, listener: AsyncQueryListener?) {
-        val uri = DownloadContract.Download.CONTENT_URI.toString()
-        mQueryHandler.startQuery(TOKEN, listener, Uri.parse(uri), null, DownloadContract.Download.DOWNLOAD_ID + "==?", arrayOf(downloadId.toString()), null)
-    }
-
-    private suspend fun queryByDownloadId(downloadId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
+    suspend fun queryByDownloadId(downloadId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
         mQueryHandler.startQuery(
             TOKEN,
@@ -189,7 +184,7 @@ class DownloadInfoManager {
      * @param newPath new file path
      * @param type Mime type
      */
-    fun replacePath(downloadId: Long, newPath: String, type: String?) {
+    suspend fun replacePath(downloadId: Long, newPath: String, type: String?) {
         val newFile = File(newPath)
         val pojo = queryDownloadManager(mContext, downloadId)
         if (pojo == null) {
@@ -224,32 +219,25 @@ class DownloadInfoManager {
 
         // filename might be different from old file
         // update by row id
-        queryByDownloadId(downloadId, object : AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                for (i in downloadInfoList.indices) {
-                    val queryDownloadInfo = downloadInfoList[i]
-                    if (!queryDownloadInfo.existInDownloadManager()) {
-                        // Should never happen
-                        val msg = "File entry disappeared after being moved"
-                        throw IllegalStateException(msg)
+        val queryDownloadInfo = queryByDownloadId(downloadId) ?: return
+        if (!queryDownloadInfo.existInDownloadManager()) {
+            // Should never happen
+            val msg = "File entry disappeared after being moved"
+            throw IllegalStateException(msg)
+        }
+        if (downloadId == queryDownloadInfo.downloadId) {
+            queryDownloadInfo.rowId?.let {
+                val newInfo = pojoToDownloadInfo(pojo, newPath, it)
+                newInfo.downloadId = newId
+                updateByRowId(newInfo, object : AsyncUpdateListener {
+                    override fun onUpdateComplete(result: Int) {
+                        notifyRowUpdated(mContext, it)
+                        RelocateService.broadcastRelocateFinished(mContext, it)
                     }
-                    if (downloadId == queryDownloadInfo.downloadId) {
-                        queryDownloadInfo.rowId?.let {
-                            val newInfo = pojoToDownloadInfo(pojo, newPath, it)
-                            newInfo.downloadId = newId
-                            updateByRowId(newInfo, object : AsyncUpdateListener {
-                                override fun onUpdateComplete(result: Int) {
-                                    notifyRowUpdated(mContext, it)
-                                    RelocateService.broadcastRelocateFinished(mContext, it)
-                                }
-                            })
-                            manager.remove(downloadId)
-                        }
-                        break
-                    }
-                }
+                })
+                manager.remove(downloadId)
             }
-        })
+        }
     }
 
     fun showOpenDownloadSnackBar(rowId: Long, container: View, logTag: String?) {
