@@ -189,7 +189,7 @@ class DownloadInfoManager {
      * @param newPath new file path
      * @param type Mime type
      */
-    fun replacePath(downloadId: Long, newPath: String, type: String) {
+    fun replacePath(downloadId: Long, newPath: String, type: String?) {
         val newFile = File(newPath)
         val pojo = queryDownloadManager(mContext, downloadId)
         if (pojo == null) {
@@ -202,7 +202,16 @@ class DownloadInfoManager {
         // Description and MIME cannot be blank, otherwise system refuse to add new record
         val manager = mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val desc = if (TextUtils.isEmpty(pojo.desc)) "Downloaded from internet" else pojo.desc
-        val mimeType = if (TextUtils.isEmpty(pojo.mime)) if (TextUtils.isEmpty(type)) "*/*" else type else pojo.mime
+        val mimeType =
+            if (TextUtils.isEmpty(pojo.mime)) {
+                if (TextUtils.isEmpty(type)) {
+                    "*/*"
+                } else {
+                    type
+                }
+            } else {
+                pojo.mime
+            }
         val visible = true // otherwise we need permission DOWNLOAD_WITHOUT_NOTIFICATION
         val newId = manager.addCompletedDownload(
             newFile.name,
