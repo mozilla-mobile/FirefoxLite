@@ -217,8 +217,10 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun notifyDownloadComplete(downloadId: Long) = viewModelScope.launch {
-        repository.queryByDownloadId(downloadId)?.let {
-            updateItem(it)
+        repository.queryByDownloadId(downloadId)?.let { download ->
+            if (download.existInDownloadManager()) {
+                updateItem(download)
+            }
         }
     }
 

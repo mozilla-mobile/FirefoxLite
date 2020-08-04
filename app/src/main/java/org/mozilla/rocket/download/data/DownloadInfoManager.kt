@@ -441,7 +441,6 @@ class DownloadInfoManager {
             info.downloadId = downloadId
             info.fileUri = fileUri
             info.setStatusInt(DownloadInfo.STATUS_DELETED)
-            info.setStatusInt(DownloadInfo.REASON_DEFAULT)
             return info
         }
 
