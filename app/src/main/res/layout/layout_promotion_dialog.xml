@@ -82,6 +82,7 @@
         style="@style/PromoteDialogButton"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:background="@drawable/round_rectangle_ripple"
         android:text="@string/rate_app_dialog_btn_go_rate"
         android:textColor="@color/colorAccent"
         android:textSize="14sp" />
@@ -97,6 +98,7 @@
         style="@style/PromoteDialogButton"
         android:layout_width="match_parent"
         android:layout_height="52dp"
+        android:background="@drawable/round_rectangle_ripple"
         android:text="@string/rate_app_dialog_btn_feedback"
         android:textColor="@color/colorPromotionDialogSecBtn"
         android:textSize="14sp" />
