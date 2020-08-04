@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.R
-import org.mozilla.focus.components.RelocateService
 import org.mozilla.focus.provider.DownloadContract
 import org.mozilla.focus.utils.CursorUtils
 import org.mozilla.focus.utils.IntentUtils
