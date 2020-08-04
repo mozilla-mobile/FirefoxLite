@@ -31,16 +31,14 @@ import java.io.File
  */
 class RelocateService : IntentService(TAG) {
     private fun startForeground() {
-        val notificationChannelId: String
-        notificationChannelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val notificationChannelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             configForegroundChannel(this)
             CHANNEL_ID
         } else {
             "not_used_notification_id"
         }
         val builder = NotificationCompat.Builder(applicationContext, notificationChannelId)
-        val notification = builder
-            .build()
+        val notification = builder.build()
         startForeground(NotificationId.RELOCATE_SERVICE, notification)
     }
 
@@ -48,15 +46,13 @@ class RelocateService : IntentService(TAG) {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
     }
 
-    override fun onHandleIntent(intent: Intent) {
+    override fun onHandleIntent(intent: Intent?) {
         if (intent != null) {
             val action = intent.action
             if (ACTION_MOVE == action) {
-
                 // if the download id is not in our database, ignore this operation
                 val downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1)
-                val mgr = DownloadInfoManager.getInstance()
-                if (!mgr.recordExists(downloadId)) {
+                if (!DownloadInfoManager.getInstance().recordExists(downloadId)) {
                     return
                 }
 
@@ -78,10 +74,12 @@ class RelocateService : IntentService(TAG) {
      * Handle action Move in the provided background thread with the provided
      * parameters.
      */
-    private fun handleActionMove(rowId: Long,
-                                 downloadId: Long,
-                                 srcFile: File,
-                                 mediaType: String?) {
+    private fun handleActionMove(
+        rowId: Long,
+        downloadId: Long,
+        srcFile: File,
+        mediaType: String?
+    ) {
         val settings = Settings.getInstance(applicationContext)
         // Do nothing, if user turned off the option
         if (!settings.shouldSaveToRemovableStorage()) {
@@ -104,10 +102,10 @@ class RelocateService : IntentService(TAG) {
      * If removable storage exists, to move a file to it. Once moving completed, also update
      * database for latest file path.
      *
-     * @param rowId      id of downloaded file in our database
+     * @param rowId id of downloaded file in our database
      * @param downloadId downloadId of downloaded file, need this to update system database
-     * @param srcFile    file to be moved
-     * @param type       MIME type of the file, to decide sub directory
+     * @param srcFile file to be moved
+     * @param type MIME type of the file, to decide sub directory
      */
     private fun moveFile(rowId: Long, downloadId: Long, srcFile: File, type: String?) {
         val settings = Settings.getInstance(applicationContext)
@@ -139,13 +137,11 @@ class RelocateService : IntentService(TAG) {
                 }
 
                 // downloaded file is moved, update database to reflect this changing
-                val mgr = DownloadInfoManager.getInstance()
-                mgr.replacePath(downloadId, destFile.absolutePath, type!!)
+                DownloadInfoManager.getInstance().replacePath(downloadId, destFile.absolutePath, type)
 
                 // removable-storage did not exist on app creation, but now it is back
                 // we moved download file to removable-storage, now we should inform user
                 if (!settings.removableStorageStateOnCreate) {
-
                     // avoid sending same message continuously
                     if (settings.showedStorageMessage != Settings.STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE) {
                         settings.showedStorageMessage = Settings.STORAGE_MSG_TYPE_REMOVABLE_AVAILABLE
@@ -160,7 +156,6 @@ class RelocateService : IntentService(TAG) {
             // we keep download file in original path, now we should inform user
             broadcastRelocateFinished(rowId)
             if (settings.removableStorageStateOnCreate) {
-
                 // avoid sending same message continuously
                 if (settings.showedStorageMessage != Settings.STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE) {
                     settings.showedStorageMessage = Settings.STORAGE_MSG_TYPE_REMOVABLE_UNAVAILABLE
@@ -174,10 +169,7 @@ class RelocateService : IntentService(TAG) {
             // if anything wrong, try to keep original file
             broadcastRelocateFinished(rowId)
             try {
-                if (destFile != null
-                    && destFile.exists()
-                    && destFile.canWrite()
-                    && srcFile.exists()) {
+                if (destFile != null && destFile.exists() && destFile.canWrite() && srcFile.exists()) {
                     if (destFile.delete()) {
                         Log.w(TAG, "cannot delete copied file: " + destFile.absolutePath)
                     }
@@ -201,9 +193,11 @@ class RelocateService : IntentService(TAG) {
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
     }
 
-    private fun broadcastNoPermission(downloadId: Long,
-                                      srcFile: File,
-                                      mediaType: String?) {
+    private fun broadcastNoPermission(
+        downloadId: Long,
+        srcFile: File,
+        mediaType: String?
+    ) {
         val broadcastIntent = Intent(Constants.ACTION_REQUEST_PERMISSION)
         broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION)
 
@@ -230,11 +224,13 @@ class RelocateService : IntentService(TAG) {
          *
          * @see IntentService
          */
-        fun startActionMove(context: Context,
-                            rowId: Long,
-                            downloadId: Long,
-                            srcFile: File,
-                            mediaType: String?) {
+        fun startActionMove(
+            context: Context,
+            rowId: Long,
+            downloadId: Long,
+            srcFile: File,
+            mediaType: String?
+        ) {
             val intent = Intent(context, RelocateService::class.java)
             intent.action = ACTION_MOVE
             intent.putExtra(Constants.EXTRA_ROW_ID, rowId)
@@ -255,11 +251,11 @@ class RelocateService : IntentService(TAG) {
             }
         }
 
-        fun broadcastRelocateFinished(context: Context?, rowId: Long) {
+        fun broadcastRelocateFinished(context: Context, rowId: Long) {
             val broadcastIntent = Intent(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
             broadcastIntent.addCategory(Constants.CATEGORY_FILE_OPERATION)
             broadcastIntent.putExtra(Constants.EXTRA_ROW_ID, rowId)
-            LocalBroadcastManager.getInstance(context!!).sendBroadcast(broadcastIntent)
+            LocalBroadcastManager.getInstance(context).sendBroadcast(broadcastIntent)
         }
     }
 }
