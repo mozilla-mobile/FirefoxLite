@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.data.DownloadInfo
 import org.mozilla.rocket.download.data.DownloadInfoRepository
@@ -32,12 +34,6 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     private var isLoading = false
     private var isLastPage = false
     private var progressUpdateListener: OnProgressUpdateListener? = null
-
-    private var updateListener: DownloadInfoRepository.OnQueryItemCompleteListener = object : DownloadInfoRepository.OnQueryItemCompleteListener {
-        override fun onComplete(download: DownloadInfo) {
-            updateItem(download)
-        }
-    }
 
     private val runningDownloadIds: LongArray
         get() {
@@ -108,22 +104,18 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         }
     }
 
-    fun cancel(rowId: Long) {
-        repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
-            override fun onComplete(download: DownloadInfo) {
-                viewModelScope.launch {
-                    if (download.existInDownloadManager()) {
-                        val downloadId = download.downloadId
-                        if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status && downloadId != null) {
-                            toastMessageObservable.value = R.string.download_cancel
-                            repository.trackDownloadCancel(downloadId)
-                            repository.deleteFromDownloadManager(downloadId)
-                            remove(rowId)
-                        }
-                    }
+    fun cancel(rowId: Long) = viewModelScope.launch {
+        repository.queryByRowId(rowId)?.let { download ->
+            if (download.existInDownloadManager()) {
+                val downloadId = download.downloadId
+                if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status && downloadId != null) {
+                    toastMessageObservable.value = R.string.download_cancel
+                    repository.trackDownloadCancel(downloadId)
+                    repository.deleteFromDownloadManager(downloadId)
+                    remove(rowId)
                 }
             }
-        })
+        }
     }
 
     fun remove(rowId: Long) = viewModelScope.launch {
@@ -131,36 +123,37 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         hide(rowId)
     }
 
-    fun delete(rowId: Long) {
-        repository.queryByRowId(rowId, object : DownloadInfoRepository.OnQueryItemCompleteListener {
-            override fun onComplete(download: DownloadInfo) {
-                val file = try {
-                    File(URI(download.fileUri).path)
-                } catch (e: URISyntaxException) {
-                    e.printStackTrace()
-                    null
-                }
+    fun delete(rowId: Long) = viewModelScope.launch {
+        repository.queryByRowId(rowId)?.let { download ->
+            withContext(Dispatchers.IO) {
+                val file =
+                    try {
+                        File(URI(download.fileUri).path)
+                    } catch (e: URISyntaxException) {
+                        e.printStackTrace()
+                        null
+                    }
                 if (file?.exists() == true) {
-                    deleteSnackbarObservable.value = download
+                    deleteSnackbarObservable.postValue(download)
                 } else {
-                    toastMessageObservable.value = R.string.cannot_find_the_file
+                    toastMessageObservable.postValue(R.string.cannot_find_the_file)
                 }
             }
-        })
+        }
     }
 
-    fun confirmDelete(download: DownloadInfo) = viewModelScope.launch {
+    fun confirmDelete(download: DownloadInfo) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val deleteFile = File(URI(download.fileUri).path)
             if (deleteFile.delete()) {
                 download.downloadId?.let { repository.deleteFromDownloadManager(it) }
                 download.rowId?.let { repository.remove(it) }
             } else {
-                toastMessageObservable.value = R.string.cannot_delete_the_file
+                toastMessageObservable.postValue(R.string.cannot_delete_the_file)
             }
         } catch (e: Exception) {
             Log.e(this.javaClass.simpleName, "" + e.message)
-            toastMessageObservable.value = R.string.cannot_delete_the_file
+            toastMessageObservable.postValue(R.string.cannot_delete_the_file)
         }
     }
 
@@ -229,8 +222,10 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         }
     }
 
-    fun notifyRowUpdate(rowId: Long) {
-        repository.queryByRowId(rowId, updateListener)
+    fun notifyRowUpdate(rowId: Long) = viewModelScope.launch {
+        repository.queryByRowId(rowId)?.let {
+            updateItem(it)
+        }
     }
 
     fun queryDownloadProgress() = viewModelScope.launch {

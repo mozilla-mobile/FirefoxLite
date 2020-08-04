@@ -18,6 +18,7 @@ import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
+import org.mozilla.rocket.download.data.DownloadInfo
 import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.extension.switchMap
@@ -100,6 +101,7 @@ class ChromeViewModel(
     val addNewTopSiteMenuClicked = SingleLiveEvent<Unit>()
     val themeSettingMenuClicked = SingleLiveEvent<Unit>()
     val downloadState = SingleLiveEvent<DownloadInfoRepository.DownloadState>()
+    val showDownloadFinishedSnackBar = SingleLiveEvent<DownloadInfo>()
 
     private var lastUrlLoadStart = 0L
     private var lastUrlLoadTime = 0L
@@ -319,6 +321,12 @@ class ChromeViewModel(
 
     fun onEnqueueDownload(download: Download, refererUrl: String?, shouldShowInDownloadList: Boolean = true) = viewModelScope.launch {
         downloadState.value = downloadInfoRepository.enqueueToDownloadManager(download, refererUrl, shouldShowInDownloadList)
+    }
+
+    fun onRelocateFinished(rowId: Long) = viewModelScope.launch {
+        downloadInfoRepository.queryByRowId(rowId)?.let {
+            showDownloadFinishedSnackBar.value = it
+        }
     }
 
     fun onSessionStarted() {

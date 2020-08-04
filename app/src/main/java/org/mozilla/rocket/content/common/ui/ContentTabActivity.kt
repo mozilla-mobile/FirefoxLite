@@ -16,12 +16,14 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.activity_content_tab.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.BaseActivity
 import org.mozilla.focus.utils.Constants
+import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.widget.BackKeyHandleable
 import org.mozilla.focus.widget.ResizableKeyboardLayout.OnKeyboardVisibilityChangedListener
 import org.mozilla.permissionhandler.PermissionHandler
@@ -31,7 +33,6 @@ import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.getViewModel
 import org.mozilla.rocket.content.view.BottomBar
-import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.rocket.extension.nonNullObserve
 import org.mozilla.rocket.extension.switchFrom
@@ -39,6 +40,7 @@ import org.mozilla.rocket.privately.PrivateTabViewProvider
 import org.mozilla.rocket.tabs.SessionManager
 import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.TabsSessionProvider
+import java.net.URISyntaxException
 import javax.inject.Inject
 
 class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, ContentTabViewContract {
@@ -241,7 +243,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
         uiMessageReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
-                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snack_bar_container, LOG_TAG)
+                    chromeViewModel.onRelocateFinished(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1))
                 }
             }
         }
@@ -276,6 +278,23 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
                     }
             }
         })
+
+        chromeViewModel.showDownloadFinishedSnackBar.observe(this, Observer { downloadInfo ->
+            val message = getString(R.string.download_completed, downloadInfo.fileName)
+            Snackbar.make(snack_bar_container, message, Snackbar.LENGTH_LONG).apply {
+                // Set the open action only if we can.
+                if (downloadInfo.existInDownloadManager()) {
+                    setAction(R.string.open) {
+                        try {
+                            IntentUtils.intentOpenFile(this@ContentTabActivity, downloadInfo.fileUri, downloadInfo.mimeType)
+                        } catch (e: URISyntaxException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+                show()
+            }
+        })
     }
 
     private fun onShareClicked(url: String) {
@@ -286,7 +305,6 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
     }
 
     companion object {
-        private const val LOG_TAG = "ContentTabActivity"
         private const val EXTRA_URL = "url"
         private const val EXTRA_TELEMETRY_DATA = "telemetry_data"
         private const val EXTRA_ENABLE_TURBO_MODE = "enable_turbo_mode"

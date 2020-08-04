@@ -42,7 +42,6 @@ import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.app
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
-import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.download.data.DownloadInfoRepository
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
@@ -61,7 +60,6 @@ class PrivateModeActivity : BaseActivity(),
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
-    private val LOG_TAG = "PrivateModeActivity"
     private lateinit var sessionManager: SessionManager
     // TODO: remove after AC browser engine is stable
     private var sessionManagerLegacy: org.mozilla.rocket.tabs.SessionManager? = null
@@ -101,8 +99,6 @@ class PrivateModeActivity : BaseActivity(),
 
         snackBarContainer = findViewById(R.id.container)
         makeStatusBarTransparent()
-
-        initBroadcastReceivers()
 
         screenNavigator.popToHomeScreen(false)
         observeChromeAction()
@@ -382,16 +378,6 @@ class PrivateModeActivity : BaseActivity(),
                 LaunchIntentDispatcher.LaunchMethod.EXTRA_BOOL_PRIVATE_MODE_SHORTCUT.value,
                 false
         )
-    }
-
-    private fun initBroadcastReceivers() {
-        uiMessageReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (intent.action == Constants.ACTION_NOTIFY_RELOCATE_FINISH) {
-                    DownloadInfoManager.getInstance().showOpenDownloadSnackBar(intent.getLongExtra(Constants.EXTRA_ROW_ID, -1), snackBarContainer, LOG_TAG)
-                }
-            }
-        }
     }
 
     private fun checkShortcutPromotion(continuation: () -> Unit) {
