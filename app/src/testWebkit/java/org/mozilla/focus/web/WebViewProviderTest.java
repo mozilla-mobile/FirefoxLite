@@ -5,13 +5,17 @@
 
 package org.mozilla.focus.web;
 
+import android.os.Build;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP) // Value of Build.VERSION_CODES.P is 28
 public class WebViewProviderTest {
 
     @Test

@@ -6,11 +6,13 @@
 package org.mozilla.focus.webkit.matcher;
 
 import android.net.Uri;
+import android.os.Build;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.focus.webkit.matcher.util.FocusString;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.*;
 
@@ -18,6 +20,7 @@ import static org.junit.Assert.*;
  * Integration test to make sure all our whitelisting methods work as expected.
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP)
 public class EntityListTest {
 
 

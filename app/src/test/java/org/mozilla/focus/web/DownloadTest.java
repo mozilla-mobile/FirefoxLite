@@ -5,16 +5,19 @@
 
 package org.mozilla.focus.web;
 
+import android.os.Build;
 import android.os.Parcel;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mozilla.rocket.tabs.web.Download;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
+@Config(maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP)
 public class DownloadTest {
     @Test
     public void testGetters() {
