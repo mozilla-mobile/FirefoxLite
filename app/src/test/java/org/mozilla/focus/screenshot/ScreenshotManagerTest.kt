@@ -1,14 +1,17 @@
 package org.mozilla.focus.screenshot
 
 import android.app.Application
+import android.os.Build
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.FirebaseNoOpImp
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP)
 class ScreenshotManagerTest {
 
     @Test
