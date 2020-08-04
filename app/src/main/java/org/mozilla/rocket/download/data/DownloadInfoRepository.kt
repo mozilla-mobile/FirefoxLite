@@ -23,16 +23,8 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
         })
     }
 
-    fun queryByDownloadId(rowId: Long, listenerItem: OnQueryItemCompleteListener) {
-        DownloadInfoManager.getInstance().queryByDownloadId(rowId, object : DownloadInfoManager.AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                if (downloadInfoList.isNotEmpty()) {
-                    val downloadInfo = downloadInfoList[0]
-                    listenerItem.onComplete(downloadInfo)
-                }
-            }
-        })
-    }
+    suspend fun queryByDownloadId(rowId: Long) =
+        DownloadInfoManager.getInstance().queryByDownloadId(rowId)
 
     suspend fun queryDownloadingItems(runningIds: LongArray): List<DownloadInfo> =
         downloadManagerDataSource.queryDownloadingItems(runningIds)

@@ -11,6 +11,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.text.TextUtils
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -24,52 +25,47 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
         if (downloadId == -1L) {
             return
         }
-        val downloadPojo = DownloadInfoManager.getInstance().queryDownloadManager(downloadId)
-        // track the event when the file download completes successfully.
-        if (downloadPojo != null && downloadPojo.status == DownloadManager.STATUS_SUCCESSFUL) {
-            val progress = if (downloadPojo.length.toDouble() != 0.0) downloadPojo.sizeSoFar * 100.0 / downloadPojo.length else 0.0
-            TelemetryWrapper.endDownloadFile(
-                downloadId,
-                downloadPojo.length,
-                progress,
-                downloadPojo.status,
-                downloadPojo.reason
-            )
-        }
-        DownloadInfoManager.getInstance().queryByDownloadId(downloadId, object : DownloadInfoManager.AsyncQueryListener {
-            override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                if (downloadInfoList.isNotEmpty()) {
-                    val downloadInfo = downloadInfoList[0]
-                    if (downloadInfo.status != DownloadManager.STATUS_SUCCESSFUL) {
-                        // track the event when the file download cancel from notification tray.
-                        TelemetryWrapper.endDownloadFile(
-                            downloadId,
-                            null,
-                            null,
-                            DownloadInfo.STATUS_DELETED,
-                            DownloadInfo.REASON_DEFAULT
-                        )
-                    }
-                    if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL && !TextUtils.isEmpty(downloadInfo.fileUri)) {
 
-                        // have to update, then the fileUri may write into our DB.
-                        DownloadInfoManager.getInstance().updateByRowId(downloadInfo, object : DownloadInfoManager.AsyncUpdateListener {
-                            override fun onUpdateComplete(result: Int) {
-                                GlobalScope.launch {
-                                    startRelocationService(context, downloadInfo)
-                                }
-                            }
-                        })
-                    }
-                    // Download canceled
-                    if (!downloadInfo.existInDownloadManager()) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val downloadPojo = DownloadInfoManager.getInstance().queryDownloadManager(downloadId)
+            // track the event when the file download completes successfully.
+            if (downloadPojo != null && downloadPojo.status == DownloadManager.STATUS_SUCCESSFUL) {
+                val progress = if (downloadPojo.length.toDouble() != 0.0) downloadPojo.sizeSoFar * 100.0 / downloadPojo.length else 0.0
+                TelemetryWrapper.endDownloadFile(
+                    downloadId,
+                    downloadPojo.length,
+                    progress,
+                    downloadPojo.status,
+                    downloadPojo.reason
+                )
+            }
+            val downloadInfo = DownloadInfoManager.getInstance().queryByDownloadId(downloadId)
+                ?: return@launch
+            if (downloadInfo.status != DownloadManager.STATUS_SUCCESSFUL) {
+                // track the event when the file download cancel from notification tray.
+                TelemetryWrapper.endDownloadFile(
+                    downloadId,
+                    null,
+                    null,
+                    DownloadInfo.STATUS_DELETED,
+                    DownloadInfo.REASON_DEFAULT
+                )
+            }
+            if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL && !TextUtils.isEmpty(downloadInfo.fileUri)) {
+                // have to update, then the fileUri may write into our DB.
+                DownloadInfoManager.getInstance().updateByRowId(downloadInfo, object : DownloadInfoManager.AsyncUpdateListener {
+                    override fun onUpdateComplete(result: Int) {
                         GlobalScope.launch {
-                            downloadInfo.rowId?.let { DownloadInfoManager.getInstance().delete(it) }
+                            startRelocationService(context, downloadInfo)
                         }
                     }
-                }
+                })
             }
-        })
+            // Download canceled
+            if (!downloadInfo.existInDownloadManager()) {
+                downloadInfo.rowId?.let { DownloadInfoManager.getInstance().delete(it) }
+            }
+        }
     }
 
     private suspend fun startRelocationService(context: Context, downloadInfo: DownloadInfo) = withContext(Dispatchers.IO) {
