@@ -223,7 +223,9 @@
     <string name="content_theme_3">Play Games and Videos</string>
     <string name="content_theme_4">Read Trending News</string>
     <!-- Button to finish setting -->
-    <string name="button_done">Next</string>
+    <string name="button_done">Done</string>
+    <!-- Button to finish the on-boarding flow -->
+    <string name="button_next">Next</string>
     
     <!-- Onboarding transition before getting into Firefox Lite Home -->
     <string name="onboarding_transition_title" translatable="false">Optimizing experience for you…</string>
