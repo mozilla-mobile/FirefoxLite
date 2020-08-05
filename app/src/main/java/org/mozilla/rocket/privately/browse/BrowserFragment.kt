@@ -14,20 +14,19 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
-import kotlinx.android.synthetic.main.fragment_private_browser.appbar
-import kotlinx.android.synthetic.main.fragment_private_browser.browser_bottom_bar
-import kotlinx.android.synthetic.main.fragment_private_browser.main_content
-import kotlinx.android.synthetic.main.fragment_private_browser.tab_view_slot
+import kotlinx.android.synthetic.main.fragment_private_browser.*
+import kotlinx.android.synthetic.main.toolbar.*
 import mozilla.components.browser.engine.system.SystemEngineView
 import mozilla.components.browser.session.Session
 import mozilla.components.browser.session.SessionManager
@@ -74,6 +73,7 @@ class BrowserFragment : LocaleAwareFragment(),
 
     @Inject
     lateinit var privateBottomBarViewModelCreator: Lazy<PrivateBottomBarViewModel>
+
     @Inject
     lateinit var chromeViewModelCreator: Lazy<ChromeViewModel>
 
@@ -143,8 +143,8 @@ class BrowserFragment : LocaleAwareFragment(),
 
         monitorTrackerBlocked { count -> updateTrackerBlockedCount(count) }
 
-        view.findViewById<View>(R.id.appbar).setOnApplyWindowInsetsListener { v, insets ->
-            (v.layoutParams as LinearLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
+        view.findViewById<View>(R.id.browser_container).setOnApplyWindowInsetsListener { v, insets ->
+            (v.layoutParams as FrameLayout.LayoutParams).topMargin = insets.systemWindowInsetTop
             insets
         }
 
@@ -237,11 +237,11 @@ class BrowserFragment : LocaleAwareFragment(),
         trackerPopup.dismiss()
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            appbar.visibility = View.GONE
+            toolbar_root.visibility = View.GONE
             browser_bottom_bar.visibility = View.GONE
         } else {
             if (sessionManager.selectedSession?.fullScreenMode == false) {
-                appbar.visibility = View.VISIBLE
+                toolbar_root.visibility = View.VISIBLE
                 browser_bottom_bar.visibility = View.VISIBLE
             }
         }
@@ -275,6 +275,21 @@ class BrowserFragment : LocaleAwareFragment(),
         if (fullscreenContentView != null) {
             tab_view_slot.removeAllViews()
             tab_view_slot.addView(fullscreenContentView, params)
+        }
+    }
+
+    private fun updateContainerBehavior(isFullScreenMode: Boolean) {
+        val params = tabViewSlot.layoutParams as CoordinatorLayout.LayoutParams
+        // When in fullscreen mode we don't show appbar and bottom bar, so disable appbar behavior
+        params.behavior = if (isFullScreenMode) null else AppBarLayout.ScrollingViewBehavior()
+        tabViewSlot.layoutParams = params
+        tabViewSlot.requestLayout()
+
+        view?.findViewById<View>(R.id.browser_container)?.setOnApplyWindowInsetsListener { v, insets ->
+            // When in full screen mode we don't need any extra top margin,
+            // whereas we need extra top margin to prevent website's button area is covered
+            (v.layoutParams as FrameLayout.LayoutParams).topMargin = if (isFullScreenMode) 0 else insets.systemWindowInsetTop
+            insets
         }
     }
 
@@ -420,7 +435,7 @@ class BrowserFragment : LocaleAwareFragment(),
         chromeViewModel.canGoForward.switchFrom(bottomBarViewModel.items)
                 .observe(viewLifecycleOwner, Observer { bottomBarItemAdapter.setCanGoForward(it == true) })
 
-        main_content.setOnKeyboardVisibilityChangedListener { isKeyboardVisible ->
+        browser_container.setOnKeyboardVisibilityChangedListener { isKeyboardVisible ->
             val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             bottomBar.isVisible = !isKeyboardVisible && !isLandscape
         }
@@ -539,17 +554,21 @@ class BrowserFragment : LocaleAwareFragment(),
             val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             if (enabled) {
                 if (!isLandscape) {
-                    appbar.visibility = View.GONE
+                    toolbar_root.visibility = View.GONE
                     browser_bottom_bar.visibility = View.GONE
                 }
+
+                updateContainerBehavior(isFullScreenMode = true)
 
                 // Switch to immersive mode: Hide system bars other UI controls
                 systemVisibility = ViewUtils.switchToImmersiveMode(activity)
             } else {
                 if (!isLandscape) {
-                    appbar.visibility = View.VISIBLE
+                    toolbar_root.visibility = View.VISIBLE
                     browser_bottom_bar.visibility = View.VISIBLE
                 }
+
+                updateContainerBehavior(isFullScreenMode = false)
 
                 if (systemVisibility != ViewUtils.SYSTEM_UI_VISIBILITY_NONE) {
                     ViewUtils.exitImmersiveMode(systemVisibility, activity)
