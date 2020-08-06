@@ -78,9 +78,13 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
 
     abstract fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit)
 
-    abstract fun newTrace(key: String): FirebaseTrace
+    abstract fun enablePerformanceCollection(enabled: Boolean)
+
+    abstract fun newTrace(key: String): FirebaseTrace?
 
     abstract fun retrieveTrace(key: String): FirebaseTrace?
+
+    abstract fun cancelTrace(key: String): FirebaseTrace?
 
     abstract fun closeTrace(trace: FirebaseTrace): FirebaseTrace?
 

@@ -105,19 +105,14 @@ open class FirebaseNoOpImp(remoteConfigDefault: HashMap<String, Any> = HashMap()
     override fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit) {
     }
 
-    override fun newTrace(key: String): FirebaseTrace {
-        return object : FirebaseTrace {
-            override fun getKey(): String = ""
-
-            override fun start() {
-            }
-
-            override fun stop() {
-            }
-        }
+    override fun enablePerformanceCollection(enabled: Boolean) {
     }
 
+    override fun newTrace(key: String): FirebaseTrace? = null
+
     override fun retrieveTrace(key: String): FirebaseTrace? = null
+
+    override fun cancelTrace(key: String): FirebaseTrace? = null
 
     override fun closeTrace(trace: FirebaseTrace): FirebaseTrace? = null
 }

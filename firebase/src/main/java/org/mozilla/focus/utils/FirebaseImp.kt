@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
+import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import org.mozilla.focus.inappmessage.InAppMessage
@@ -245,17 +246,33 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         }
     }
 
-    override fun newTrace(key: String): FirebaseTrace {
+    override fun enablePerformanceCollection(enabled: Boolean) {
+        FirebasePerformance.getInstance().isPerformanceCollectionEnabled = enabled
+    }
+
+    override fun newTrace(key: String): FirebaseTrace? {
+        if (!FirebasePerformance.getInstance().isPerformanceCollectionEnabled) return null
+
         return FirebaseTraceImp(key).also {
             traceMap[key] = it
         }
     }
 
     override fun retrieveTrace(key: String): FirebaseTrace? {
+        if (!FirebasePerformance.getInstance().isPerformanceCollectionEnabled) return null
+
         return traceMap[key]
     }
 
+    override fun cancelTrace(key: String): FirebaseTrace? {
+        if (!FirebasePerformance.getInstance().isPerformanceCollectionEnabled) return null
+
+        return traceMap.remove(key)
+    }
+
     override fun closeTrace(trace: FirebaseTrace): FirebaseTrace? {
+        if (!FirebasePerformance.getInstance().isPerformanceCollectionEnabled) return null
+
         trace.stop()
         return traceMap.remove(trace.getKey())
     }
