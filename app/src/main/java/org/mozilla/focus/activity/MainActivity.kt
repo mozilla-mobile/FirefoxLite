@@ -34,7 +34,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import dagger.Lazy
-import kotlinx.android.synthetic.main.activity_main.container
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_browser.*
 import org.mozilla.focus.R
 import org.mozilla.focus.fragment.BrowserFragment
 import org.mozilla.focus.fragment.ListPanelDialog
@@ -380,6 +381,7 @@ class MainActivity : BaseActivity(),
                             }
                         }
                     }
+                    anchorView = browser.browser_bottom_bar
                     show()
                 }
             })
@@ -658,6 +660,7 @@ class MainActivity : BaseActivity(),
             setAction(R.string.bookmark_saved_edit) {
                 startActivity(Intent(this@MainActivity, EditBookmarkActivity::class.java).putExtra(ITEM_UUID_KEY, bookmarkItemId))
             }
+            anchorView = browser.browser_bottom_bar
         }.show()
     }
 

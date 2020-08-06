@@ -292,6 +292,7 @@ class ContentTabActivity : BaseActivity(), TabsSessionProvider.SessionHost, Cont
                         }
                     }
                 }
+                anchorView = bottom_bar
                 show()
             }
         })

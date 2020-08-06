@@ -1484,8 +1484,10 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
 
         private fun onTabAddedByContextMenu(tab: Session, arguments: Bundle) {
             if (!TabUtil.toFocus(arguments)) {
-                Snackbar.make(rootView, R.string.new_background_tab_hint, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.new_background_tab_switch) { sessionManager.switchToTab(tab.id) }.show()
+                Snackbar.make(rootView, R.string.new_background_tab_hint, Snackbar.LENGTH_LONG).apply {
+                    setAction(R.string.new_background_tab_switch) { sessionManager.switchToTab(tab.id) }
+                    anchorView = browser_bottom_bar
+                }.show()
             }
         }
 
