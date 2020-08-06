@@ -1,22 +1,18 @@
 package org.mozilla.rocket.content.game.ui
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Looper
 import android.os.Parcelable
 import android.view.View
 import androidx.fragment.app.FragmentActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.tabs.TabLayout
 import dagger.Lazy
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.activity_game.*
 import org.mozilla.focus.R
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.Constants
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
@@ -34,7 +30,6 @@ class GameActivity : FragmentActivity() {
     private lateinit var telemetryViewModel: VerticalTelemetryViewModel
 
     private lateinit var adapter: GameTabsAdapter
-    private lateinit var uiMessageReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent().inject(this)
@@ -117,16 +112,11 @@ class GameActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-        val uiActionFilter = IntentFilter()
-        uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
-        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
-        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
         telemetryViewModel.onSessionStarted(TelemetryWrapper.Extra_Value.GAME)
     }
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
         telemetryViewModel.onSessionEnded()
     }
 
