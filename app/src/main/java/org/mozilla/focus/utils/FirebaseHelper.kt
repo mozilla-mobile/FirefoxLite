@@ -119,6 +119,8 @@ object FirebaseHelper {
 
         enableCrashlytics(context.applicationContext, enabled)
 
+        enablePerformanceCollection(enabled)
+
         Log.d(TAG, "Firebase Helper initialized")
     }
 
@@ -304,15 +306,27 @@ object FirebaseHelper {
         firebaseContract.refreshRemoteConfig(callback)
     }
 
-    fun newTrace(key: String): FirebaseContract.FirebaseTrace {
+    private fun enablePerformanceCollection(enabled: Boolean) {
+        firebaseContract.enablePerformanceCollection(enabled)
+    }
+
+    @JvmStatic
+    fun newTrace(key: String): FirebaseContract.FirebaseTrace? {
         return firebaseContract.newTrace(key)
     }
 
+    @JvmStatic
     fun retrieveTrace(key: String): FirebaseContract.FirebaseTrace? {
         return firebaseContract.retrieveTrace(key)
     }
 
+    @JvmStatic
+    fun cancelTrace(key: String): FirebaseContract.FirebaseTrace? {
+        return firebaseContract.cancelTrace(key)
+    }
+
+    @JvmStatic
     fun FirebaseContract.FirebaseTrace.stopAndClose() {
-        getFirebase().closeTrace(this)
+        firebaseContract.closeTrace(this)
     }
 }

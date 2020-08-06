@@ -51,6 +51,8 @@ import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.DialogUtils
+import org.mozilla.focus.utils.FirebaseHelper
+import org.mozilla.focus.utils.FirebaseHelper.stopAndClose
 import org.mozilla.focus.utils.ViewUtils
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -147,6 +149,11 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         observeAddNewTopSites()
         observeSetDefaultBrowser()
         observeActions()
+
+        Looper.myQueue().addIdleHandler {
+            FirebaseHelper.retrieveTrace("coldStart")?.stopAndClose()
+            false
+        }
     }
 
     private fun initSearchToolBar() {

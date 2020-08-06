@@ -42,6 +42,7 @@ import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.navigation.ScreenNavigator
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.appContext
@@ -76,6 +77,7 @@ class FirstrunFragment : Fragment(), ScreenNavigator.FirstrunScreen {
         super.onCreate(savedInstanceState)
         firstrunViewModel = getViewModel(firstrunViewModelCreator)
         TelemetryWrapper.showFirstRunOnBoarding()
+        FirebaseHelper.cancelTrace("coldStart")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =

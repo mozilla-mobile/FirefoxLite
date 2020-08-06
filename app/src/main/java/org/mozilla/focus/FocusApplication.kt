@@ -9,6 +9,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.os.StrictMode
 import android.preference.PreferenceManager
+import android.util.TimingLogger
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -130,6 +131,12 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
     }
 
     override fun onCreate() {
+        TimingLogger(TAG, "coldStart before firebase performance initialization").also {
+            TelemetryWrapper.init(this)
+            it.addSplit("init TelemetryWrapper")
+        }.dumpToLog()
+        FirebaseHelper.newTrace("coldStart")?.start()
+
         super.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 
@@ -140,7 +147,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
         SearchEngineManager.getInstance().init(this)
 
         LocalAbTesting.init(this)
-        TelemetryWrapper.init(this)
         AdjustHelper.setupAdjustIfNeeded(this)
 
         BrowsingHistoryManager.getInstance().init(this)
@@ -241,5 +247,9 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppInBackground() {
         isForeground = false
+    }
+
+    companion object {
+        private const val TAG = "FocusApplication"
     }
 }

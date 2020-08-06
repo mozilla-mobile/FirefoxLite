@@ -105,7 +105,7 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
      */
     open fun addHomeScreen(animate: Boolean) {
         val trace = FirebaseHelper.newTrace("addHomeScreen")
-        trace.start()
+        trace?.start()
 
         logMethod()
         val found = transactionHelper?.popScreensUntil(HOME_FRAGMENT_TAG,
@@ -118,7 +118,7 @@ open class ScreenNavigator(private val activity: HostActivity?) : DefaultLifecyc
                 false)
         }
         transactionHelper?.executePendingTransaction()
-        trace.stopAndClose()
+        trace?.stopAndClose()
     }
 
     /**
