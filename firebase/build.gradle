@@ -32,6 +32,8 @@ android {
             // Since there's no source code for me to trace, I'll do it manually.
             // For more details, use ./gradlew help --task fabricGenerateResourcesDebug
             resValue "string", "com.crashlytics.android.build_id", UUID.randomUUID().toString()
+
+            manifestPlaceholders = [enablePerfLogs:'true']
         }
 
         // this is used by app module's beta and release build types
@@ -45,6 +47,8 @@ android {
             resValue "string", "google_crash_reporting_api_key", SystemEnv.google_crash_reporting_api_key ?: ""
             resValue "string", "project_id", SystemEnv.project_id ?: ""
             resValue "string", "com.crashlytics.android.build_id", UUID.randomUUID().toString()
+
+            manifestPlaceholders = [enablePerfLogs:'false']
         }
     }
     flavorDimensions "product", "engine"
