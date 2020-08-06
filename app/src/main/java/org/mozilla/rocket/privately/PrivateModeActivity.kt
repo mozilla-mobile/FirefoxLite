@@ -5,10 +5,8 @@
 
 package org.mozilla.rocket.privately
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
@@ -17,7 +15,6 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dagger.Lazy
 import mozilla.components.browser.session.SessionManager
 import org.mozilla.focus.BuildConfig
@@ -31,7 +28,6 @@ import org.mozilla.focus.navigation.ScreenNavigator.UrlInputScreen
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.urlinput.UrlInputFragment
 import org.mozilla.focus.utils.AppConstants
-import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.SafeIntent
 import org.mozilla.focus.utils.ShortcutUtils
 import org.mozilla.focus.utils.SupportUtils
@@ -66,7 +62,6 @@ class PrivateModeActivity : BaseActivity(),
     private lateinit var chromeViewModel: ChromeViewModel
     private lateinit var tabViewProvider: PrivateTabViewProvider
     private lateinit var screenNavigator: ScreenNavigator
-    private lateinit var uiMessageReceiver: BroadcastReceiver
     private lateinit var snackBarContainer: View
 
     private val portraitStateModel = PortraitStateModel()
@@ -108,16 +103,11 @@ class PrivateModeActivity : BaseActivity(),
 
     override fun onResume() {
         super.onResume()
-        val uiActionFilter = IntentFilter()
-        uiActionFilter.addCategory(Constants.CATEGORY_FILE_OPERATION)
-        uiActionFilter.addAction(Constants.ACTION_NOTIFY_RELOCATE_FINISH)
-        LocalBroadcastManager.getInstance(this).registerReceiver(uiMessageReceiver, uiActionFilter)
         chromeViewModel.onSessionStarted()
     }
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(uiMessageReceiver)
         chromeViewModel.onSessionEnded()
     }
 
