@@ -52,6 +52,12 @@ class DownloadInfo {
                 field = fileExtension
             }
         }
+    var description: String? = ""
+        set(description) {
+            if (!TextUtils.isEmpty(description)) {
+                field = description
+            }
+        }
     var sizeSoFar = 0.0
     var sizeTotal = 0.0
     var isRead = false
@@ -99,5 +105,19 @@ class DownloadInfo {
         // in the DownloadManager's table.
         const val STATUS_DELETED = -1
         const val REASON_DEFAULT = -2
+
+        fun createEmptyDownloadInfo(
+            downloadId: Long,
+            rowId: Long,
+            fileUri: String,
+            status: Int = STATUS_DELETED
+        ): DownloadInfo {
+            val info = DownloadInfo()
+            info.rowId = rowId
+            info.downloadId = downloadId
+            info.fileUri = fileUri
+            info.setStatusInt(status)
+            return info
+        }
     }
 }

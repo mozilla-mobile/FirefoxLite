@@ -11,18 +11,11 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
-import android.text.TextUtils
-import android.webkit.MimeTypeMap
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.provider.DownloadContract
-import org.mozilla.focus.utils.CursorUtils
-import org.mozilla.threadutils.ThreadUtils
-import java.io.File
-import java.net.URLEncoder
 import java.util.ArrayList
-import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -43,15 +36,15 @@ class DownloadInfoManager {
         // file is not moved.)
         if (!recordExists(downloadId)) {
             val rowId = insert(downloadInfo)
-            notifyRowUpdated(mContext, rowId)
+            notifyRowUpdated(rowId)
             return@withContext true
         } else {
             val info = queryByDownloadId(downloadId)
             info?.rowId?.let { delete(it) }
             info?.let {
                 val rowId = insert(it)
-                notifyRowUpdated(mContext, rowId)
-                RelocateService.broadcastRelocateFinished(mContext, rowId)
+                notifyRowUpdated(rowId)
+                relocateFileFinished(rowId)
             }
             return@withContext false
         }
@@ -68,6 +61,15 @@ class DownloadInfoManager {
             DownloadContract.Download.CONTENT_URI,
             getContentValuesFromDownloadInfo(downloadInfo)
         )
+    }
+
+    private fun getContentValuesFromDownloadInfo(downloadInfo: DownloadInfo): ContentValues {
+        val contentValues = ContentValues()
+        contentValues.put(DownloadContract.Download.DOWNLOAD_ID, downloadInfo.downloadId)
+        contentValues.put(DownloadContract.Download.FILE_PATH, downloadInfo.fileUri)
+        contentValues.put(DownloadContract.Download.STATUS, downloadInfo.status)
+        contentValues.put(DownloadContract.Download.IS_READ, downloadInfo.isRead)
+        return contentValues
     }
 
     suspend fun delete(rowId: Long) = suspendCoroutine<Int> { continuation ->
@@ -172,7 +174,7 @@ class DownloadInfoManager {
             },
             Uri.parse(uri),
             null,
-            DownloadContract.Download.STATUS + "!=? or " + DownloadContract.Download.IS_READ + "=?", arrayOf(DownloadManager.STATUS_SUCCESSFUL.toString(), "0"),
+            DownloadContract.Download.STATUS + "!=? or " + DownloadContract.Download.IS_READ + "=?", arrayOf(STATUS_SUCCESSFUL, "0"),
             null
         )
     }
@@ -187,7 +189,7 @@ class DownloadInfoManager {
                     continuation.resume(result)
                 }
             },
-            DownloadContract.Download.CONTENT_URI, contentValues, DownloadContract.Download.STATUS + "=? and " + DownloadContract.Download.IS_READ + " = ?", arrayOf(DownloadManager.STATUS_SUCCESSFUL.toString(), "0")
+            DownloadContract.Download.CONTENT_URI, contentValues, DownloadContract.Download.STATUS + "=? and " + DownloadContract.Download.IS_READ + " = ?", arrayOf(STATUS_SUCCESSFUL, "0")
         )
     }
 
@@ -200,68 +202,14 @@ class DownloadInfoManager {
         }
     }
 
-    /**
-     * Update database, to replace file path of a record in both of our own db and DownloadManager.
-     *
-     * @param downloadId download id for record in DownloadManager
-     * @param newPath new file path
-     * @param type Mime type
-     */
-    suspend fun replacePath(downloadId: Long, newPath: String, type: String?) {
-        val newFile = File(newPath)
-        val pojo = queryDownloadManager(mContext, downloadId)
-        if (pojo == null) {
-            // Should never happen
-            val msg = "File entry disappeared after being moved"
-            throw IllegalStateException(msg)
-        }
-
-        // remove old download from DownloadManager, then add new one
-        // Description and MIME cannot be blank, otherwise system refuse to add new record
-        val manager = mContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val desc = if (TextUtils.isEmpty(pojo.desc)) "Downloaded from internet" else pojo.desc
-        val mimeType =
-            if (TextUtils.isEmpty(pojo.mime)) {
-                if (TextUtils.isEmpty(type)) {
-                    "*/*"
-                } else {
-                    type
-                }
-            } else {
-                pojo.mime
-            }
-        val visible = true // otherwise we need permission DOWNLOAD_WITHOUT_NOTIFICATION
-        val newId = manager.addCompletedDownload(
-            newFile.name,
-            desc,
-            true,
-            mimeType,
-            newPath,
-            newFile.length(),
-            visible)
-
-        // filename might be different from old file
-        // update by row id
-        val queryDownloadInfo = queryByDownloadId(downloadId) ?: return
-        if (!queryDownloadInfo.existInDownloadManager()) {
-            // Should never happen
-            val msg = "File entry disappeared after being moved"
-            throw IllegalStateException(msg)
-        }
-        if (downloadId == queryDownloadInfo.downloadId) {
-            queryDownloadInfo.rowId?.let {
-                val newInfo = pojoToDownloadInfo(pojo, newPath, it)
-                newInfo.downloadId = newId
-                updateByRowId(newInfo)
-                manager.remove(downloadId)
-                notifyRowUpdated(mContext, it)
-                RelocateService.broadcastRelocateFinished(mContext, it)
-            }
-        }
+    fun notifyRowUpdated(rowId: Long) {
+        val intent = Intent(ROW_UPDATED)
+        intent.putExtra(ROW_ID, rowId)
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent)
     }
 
-    fun queryDownloadManager(downloadId: Long): DownloadPojo? {
-        return queryDownloadManager(mContext, downloadId)
+    fun relocateFileFinished(rowId: Long) {
+        RelocateService.broadcastRelocateFinished(mContext, rowId)
     }
 
     private class DownloadInfoQueryHandler(context: Context) : AsyncQueryHandler(context.contentResolver) {
@@ -270,8 +218,6 @@ class DownloadInfoManager {
                 TOKEN -> if (cookie != null) {
                     val id = uri?.lastPathSegment?.toLong() ?: -1
                     (cookie as AsyncInsertListener).onInsertComplete(id)
-                }
-                else -> {
                 }
             }
         }
@@ -282,8 +228,6 @@ class DownloadInfoManager {
                     val wrapper = cookie as AsyncDeleteWrapper
                     wrapper.listener?.onDeleteComplete(result, wrapper.id)
                 }
-                else -> {
-                }
             }
         }
 
@@ -292,34 +236,23 @@ class DownloadInfoManager {
                 TOKEN -> if (cookie != null) {
                     (cookie as AsyncUpdateListener).onUpdateComplete(result)
                 }
-                else -> {
-                }
             }
         }
 
         override fun onQueryComplete(token: Int, cookie: Any?, cursor: Cursor?) {
-            when (token) {
-                TOKEN -> ThreadUtils.postToBackgroundThread {
-                    if (cookie != null) {
-                        val downloadInfoList: MutableList<DownloadInfo> = ArrayList()
-                        if (cursor != null) {
-                            try {
-                                while (cursor.moveToNext()) {
-                                    val downloadInfo = cursorToDownloadInfo(cursor)
-                                    downloadInfoList.add(downloadInfo)
-                                }
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            } finally {
-                                CursorUtils.closeCursorSafely(cursor)
-                            }
-                        }
-                        ThreadUtils.postToMainThread { (cookie as AsyncQueryListener).onQueryComplete(downloadInfoList) }
-                    } else {
-                        CursorUtils.closeCursorSafely(cursor)
+            val downloadInfoList: MutableList<DownloadInfo> = ArrayList()
+            cursor?.use { safeCursor ->
+                when (token) {
+                    TOKEN -> while (cursor.moveToNext()) {
+                        val downloadId = safeCursor.getLong(safeCursor.getColumnIndex(DownloadContract.Download.DOWNLOAD_ID))
+                        val rowId = safeCursor.getLong(safeCursor.getColumnIndex(DownloadContract.Download._ID))
+                        val fileUri = safeCursor.getString(safeCursor.getColumnIndex(DownloadContract.Download.FILE_PATH))
+                        downloadInfoList.add(DownloadInfo.createEmptyDownloadInfo(downloadId, rowId, fileUri))
                     }
                 }
-                else -> CursorUtils.closeCursorSafely(cursor)
+            }
+            if (cookie != null) {
+                (cookie as AsyncQueryListener).onQueryComplete(downloadInfoList)
             }
         }
     }
@@ -342,34 +275,11 @@ class DownloadInfoManager {
         fun onQueryComplete(downloadInfoList: List<DownloadInfo>)
     }
 
-    /* Data class to store queried information from DownloadManager */
-    class DownloadPojo {
-        var downloadId: Long = 0
-        var desc: String? = null
-        var mime: String? = null
-
-        @JvmField
-        var length: Long = 0
-
-        @JvmField
-        var sizeSoFar: Long = 0
-
-        @JvmField
-        var status = 0
-
-        @JvmField
-        var reason = 0
-        var timeStamp: Long = 0
-        var mediaUri: String? = null
-        var fileUri: String? = null
-        var fileExtension: String? = null
-        var fileName: String? = null
-    }
-
     companion object {
         const val ROW_ID = "row id"
         const val ROW_UPDATED = "row_updated"
         private const val TOKEN = 2
+        private const val STATUS_SUCCESSFUL = DownloadManager.STATUS_SUCCESSFUL.toString()
         private var sInstance: DownloadInfoManager? = null
         private lateinit var mContext: Context
         private lateinit var mQueryHandler: DownloadInfoQueryHandler
@@ -385,100 +295,6 @@ class DownloadInfoManager {
         fun init(context: Context) {
             mContext = context
             mQueryHandler = DownloadInfoQueryHandler(context)
-        }
-
-        @JvmStatic
-        fun notifyRowUpdated(context: Context, rowId: Long) {
-            val intent = Intent(ROW_UPDATED)
-            intent.putExtra(ROW_ID, rowId)
-            LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-        }
-
-        private fun getContentValuesFromDownloadInfo(downloadInfo: DownloadInfo): ContentValues {
-            val contentValues = ContentValues()
-            contentValues.put(DownloadContract.Download.DOWNLOAD_ID, downloadInfo.downloadId)
-            contentValues.put(DownloadContract.Download.FILE_PATH, downloadInfo.fileUri)
-            contentValues.put(DownloadContract.Download.STATUS, downloadInfo.status)
-            contentValues.put(DownloadContract.Download.IS_READ, downloadInfo.isRead)
-            return contentValues
-        }
-
-        private fun cursorToDownloadInfo(cursor: Cursor): DownloadInfo {
-            val downloadId = cursor.getLong(cursor.getColumnIndex(DownloadContract.Download.DOWNLOAD_ID))
-            val fileUri = cursor.getString(cursor.getColumnIndex(DownloadContract.Download.FILE_PATH))
-            val rowId = cursor.getLong(cursor.getColumnIndex(DownloadContract.Download._ID))
-            val pojo = queryDownloadManager(mContext, downloadId)
-            return pojo?.let { pojoToDownloadInfo(it, fileUri, rowId) }
-                ?: createEmptyDownloadInfo(downloadId, rowId, fileUri)
-        }
-
-        private fun pojoToDownloadInfo(pojo: DownloadPojo, fileUri: String, rowId: Long): DownloadInfo {
-            val info = DownloadInfo()
-            info.rowId = rowId
-            info.fileName = pojo.fileName
-            info.downloadId = pojo.downloadId
-            info.setSize(pojo.length.toDouble())
-            info.sizeTotal = pojo.length.toDouble()
-            info.sizeSoFar = pojo.sizeSoFar.toDouble()
-            info.setStatusInt(pojo.status)
-            info.reason = pojo.reason
-            info.setDate(pojo.timeStamp)
-            info.mediaUri = pojo.mediaUri
-            info.fileUri = pojo.fileUri
-            info.mimeType = pojo.mime
-            info.fileExtension = pojo.fileExtension
-            if (TextUtils.isEmpty(pojo.fileUri)) {
-                info.fileUri = fileUri
-            } else {
-                info.fileUri = pojo.fileUri
-            }
-            return info
-        }
-
-        private fun createEmptyDownloadInfo(downloadId: Long, rowId: Long, fileUri: String): DownloadInfo {
-            val info = DownloadInfo()
-            info.rowId = rowId
-            info.downloadId = downloadId
-            info.fileUri = fileUri
-            info.setStatusInt(DownloadInfo.STATUS_DELETED)
-            return info
-        }
-
-        private fun queryDownloadManager(context: Context, downloadId: Long): DownloadPojo? {
-            // query download manager
-            val query = DownloadManager.Query()
-            query.setFilterById(downloadId)
-            val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            val managerCursor = manager.query(query)
-            val pojo = DownloadPojo()
-            pojo.downloadId = downloadId
-            try {
-                if (managerCursor != null && managerCursor.moveToFirst()) {
-                    pojo.desc = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION))
-                    pojo.status = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-                    pojo.reason = managerCursor.getInt(managerCursor.getColumnIndex(DownloadManager.COLUMN_REASON))
-                    pojo.length = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                    pojo.sizeSoFar = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                    pojo.timeStamp = managerCursor.getLong(managerCursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP))
-                    pojo.mediaUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI))
-                    pojo.fileUri = managerCursor.getString(managerCursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))
-                    if (pojo.fileUri != null) {
-                        val extension = MimeTypeMap.getFileExtensionFromUrl(URLEncoder.encode(pojo.fileUri, "UTF-8"))
-                        pojo.mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase(Locale.ROOT))
-                        pojo.fileExtension = extension
-                        pojo.fileName = File(Uri.parse(pojo.fileUri).path).name
-                    }
-                } else {
-                    // No pojo
-                    return null
-                }
-            } catch (e: Exception) {
-                // No valid pojo
-                return null
-            } finally {
-                CursorUtils.closeCursorSafely(managerCursor)
-            }
-            return pojo
         }
     }
 }

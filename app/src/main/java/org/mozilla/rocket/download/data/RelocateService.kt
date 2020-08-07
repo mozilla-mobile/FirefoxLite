@@ -26,12 +26,23 @@ import org.mozilla.focus.utils.Constants
 import org.mozilla.focus.utils.NoRemovableStorageException
 import org.mozilla.focus.utils.Settings
 import org.mozilla.focus.utils.StorageUtils
+import org.mozilla.rocket.content.appComponent
 import java.io.File
+import javax.inject.Inject
 
 /**
  * A service to help on moving downloaded file to another storage directory
  */
 class RelocateService : IntentService(TAG) {
+
+    @Inject
+    lateinit var downloadInfoRepository: DownloadInfoRepository
+
+    override fun onCreate() {
+        appComponent().inject(this)
+        super.onCreate()
+    }
+
     private fun startForeground() {
         val notificationChannelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             configForegroundChannel(this)
@@ -141,7 +152,7 @@ class RelocateService : IntentService(TAG) {
                 }
 
                 // downloaded file is moved, update database to reflect this changing
-                DownloadInfoManager.getInstance().replacePath(downloadId, destFile.absolutePath, type)
+                downloadInfoRepository.replaceFilePath(downloadId, destFile.absolutePath, type)
 
                 // removable-storage did not exist on app creation, but now it is back
                 // we moved download file to removable-storage, now we should inform user

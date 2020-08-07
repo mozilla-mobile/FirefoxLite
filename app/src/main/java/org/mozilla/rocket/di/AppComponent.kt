@@ -54,6 +54,8 @@ import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
 import org.mozilla.rocket.content.travel.ui.TravelCityActivity
 import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
 import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
+import org.mozilla.rocket.download.data.DownloadCompleteReceiver
+import org.mozilla.rocket.download.data.RelocateService
 import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.rocket.firstrun.di.FirstrunModule
 import org.mozilla.rocket.fxa.ProfileActivity
@@ -152,6 +154,8 @@ interface AppComponent {
     fun inject(defaultBrowserPreference: DefaultBrowserPreference)
     fun inject(addNewTopSitesFragment: AddNewTopSitesFragment)
     fun inject(firstrunFragment: FirstrunFragment)
+    fun inject(downloadCompleteReceiver: DownloadCompleteReceiver)
+    fun inject(relocateService: RelocateService)
 
     @VisibleForTesting
     fun chromeViewModel(): ChromeViewModel
