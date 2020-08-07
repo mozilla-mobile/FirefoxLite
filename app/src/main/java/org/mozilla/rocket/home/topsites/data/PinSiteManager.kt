@@ -37,7 +37,7 @@ class SharedPreferencePinSiteDelegate(private val context: Context) : PinSiteDel
         private const val PINNED_SITE_VIEW_COUNT_INTERVAL = 100L
     }
 
-    private val pref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    private val pref by lazy { context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE) }
     private val sites = mutableListOf<Site>()
 
     override fun isPinned(site: Site): Boolean {
