@@ -51,11 +51,11 @@ class ContentHubRepo(private val appContext: Context) {
                     ?.jsonStringToContentHubItems(readTypes = getReadTypes())
 
     private fun getReadTypes(): List<Int> =
-            preference.getString(SHARED_PREF_KEY_READ_CONTENT_HUB, "")?.jsonStringToTypeList() ?: emptyList()
+            preference.getString(SHARED_PREF_KEY_READ_CONTENT_HUB, "")?.takeIf { it.isNotEmpty() }?.jsonStringToTypeList() ?: emptyList()
 
     private fun getReadTypesLive(): LiveData<List<Int>> =
             preference.stringLiveData(SHARED_PREF_KEY_READ_CONTENT_HUB, "")
-                    .map { it.jsonStringToTypeList() ?: emptyList() }
+                    .map { it.takeIf { it.isNotEmpty() }?.jsonStringToTypeList() ?: emptyList() }
 
     fun addReadType(type: Int) {
         setReadTypes(
