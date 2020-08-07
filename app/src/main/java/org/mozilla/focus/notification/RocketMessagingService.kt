@@ -17,9 +17,10 @@ import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.launch
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
 import mozilla.components.concept.fetch.interceptor.withInterceptors
@@ -268,12 +269,10 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
         }
 
         private fun handleNewToken(applicationContext: Context, token: String) {
-            FirebaseHelper.getFirebase().getUserToken {
-                runBlocking {
-                    withContext(Dispatchers.IO) {
-                        it?.apply {
-                            sendRegistrationToServer(applicationContext, this, token)
-                        }
+            FirebaseHelper.getFirebase().getUserToken { userToken ->
+                userToken?.let {
+                    CoroutineScope(Dispatchers.IO + NonCancellable).launch {
+                        sendRegistrationToServer(applicationContext, it, token)
                     }
                 }
             }
