@@ -7,14 +7,18 @@ import android.net.TrafficStats
 import android.net.Uri
 import android.os.Environment
 import android.webkit.CookieManager
+import android.webkit.MimeTypeMap
 import android.webkit.URLUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.network.SocketTags
 import org.mozilla.rocket.tabs.web.Download
+import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
+import java.util.Locale
 import javax.net.ssl.SSLHandshakeException
 
 class AndroidDownloadManagerDataSource(private val appContext: Context) {
@@ -57,6 +61,16 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         return@withContext DownloadInfoRepository.DownloadState.Success(downloadId, download.isStartFromContextMenu)
     }
 
+    fun addCompletedDownload(
+        title: String,
+        description: String,
+        isMediaScannerScannable: Boolean,
+        mimeType: String,
+        path: String,
+        length: Long,
+        showNotification: Boolean
+    ) = downloadManager.addCompletedDownload(title, description, isMediaScannerScannable, mimeType, path, length, showNotification)
+
     suspend fun getDownloadUrlHeaderInfo(url: String): DownloadInfoRepository.HeaderInfo = withContext(Dispatchers.IO) {
         TrafficStats.setThreadStatsTag(SocketTags.DOWNLOADS)
         var connection: HttpURLConnection? = null
@@ -84,25 +98,51 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         return@withContext DownloadInfoRepository.HeaderInfo(isSupportRange, isValidSSL, contentLength)
     }
 
+    suspend fun queryDownloadItem(downloadId: Long): DownloadInfo? = withContext(Dispatchers.IO) {
+        val query = DownloadManager.Query()
+        query.setFilterById(downloadId)
+        downloadManager.query(query)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                val downloadInfo = DownloadInfo()
+                downloadInfo.downloadId = downloadId
+                downloadInfo.description = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_DESCRIPTION))
+                downloadInfo.setStatusInt(cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)))
+                downloadInfo.reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON))
+                downloadInfo.setSize(cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)).toDouble())
+                downloadInfo.sizeTotal = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES)).toDouble()
+                downloadInfo.sizeSoFar = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR)).toDouble()
+                downloadInfo.setDate(cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_LAST_MODIFIED_TIMESTAMP)))
+                downloadInfo.mediaUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_MEDIAPROVIDER_URI))
+                downloadInfo.fileUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))
+                if (downloadInfo.fileUri != null) {
+                    val extension = MimeTypeMap.getFileExtensionFromUrl(URLEncoder.encode(downloadInfo.fileUri, "UTF-8"))
+                    downloadInfo.mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.toLowerCase(Locale.ROOT))
+                    downloadInfo.fileExtension = extension
+                    downloadInfo.fileName = File(Uri.parse(downloadInfo.fileUri).path).name
+                }
+                return@withContext downloadInfo
+            }
+        }
+        return@withContext null
+    }
+
     suspend fun queryDownloadingItems(runningIds: LongArray): List<DownloadInfo> = withContext(Dispatchers.IO) {
         val query = DownloadManager.Query()
         query.setFilterById(*runningIds)
         query.setFilterByStatus(DownloadManager.STATUS_RUNNING)
-        downloadManager.query(query).use {
-            if (it != null) {
-                val list = ArrayList<DownloadInfo>()
-                while (it.moveToNext()) {
-                    val id = it.getLong(it.getColumnIndex(DownloadManager.COLUMN_ID))
-                    val totalSize = it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                    val currentSize = it.getDouble(it.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                    val info = DownloadInfo()
-                    info.downloadId = id
-                    info.sizeTotal = totalSize
-                    info.sizeSoFar = currentSize
-                    list.add(info)
-                }
-                return@withContext list
+        downloadManager.query(query)?.use { cursor ->
+            val list = ArrayList<DownloadInfo>()
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_ID))
+                val totalSize = cursor.getDouble(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
+                val currentSize = cursor.getDouble(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
+                val info = DownloadInfo()
+                info.downloadId = id
+                info.sizeTotal = totalSize
+                info.sizeSoFar = currentSize
+                list.add(info)
             }
+            return@withContext list
         }
         return@withContext emptyList<DownloadInfo>()
     }

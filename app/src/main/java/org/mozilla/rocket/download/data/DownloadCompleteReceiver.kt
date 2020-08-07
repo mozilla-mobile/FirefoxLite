@@ -16,29 +16,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.telemetry.TelemetryWrapper
+import org.mozilla.rocket.content.appComponent
 import java.io.File
+import javax.inject.Inject
 
 class DownloadCompleteReceiver : BroadcastReceiver() {
+
+    @Inject
+    lateinit var downloadInfoRepository: DownloadInfoRepository
+
     override fun onReceive(context: Context, intent: Intent) {
+        appComponent(context).inject(this)
+
         val downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
         if (downloadId == -1L) {
             return
         }
 
         CoroutineScope(Dispatchers.Main).launch {
-            val downloadPojo = DownloadInfoManager.getInstance().queryDownloadManager(downloadId)
-            // track the event when the file download completes successfully.
-            if (downloadPojo != null && downloadPojo.status == DownloadManager.STATUS_SUCCESSFUL) {
-                val progress = if (downloadPojo.length.toDouble() != 0.0) downloadPojo.sizeSoFar * 100.0 / downloadPojo.length else 0.0
-                TelemetryWrapper.endDownloadFile(
-                    downloadId,
-                    downloadPojo.length,
-                    progress,
-                    downloadPojo.status,
-                    downloadPojo.reason
-                )
+            downloadInfoRepository.queryByDownloadId(downloadId)?.let { downloadInfo ->
+                // track the event when the file download completes successfully.
+                if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL) {
+                    val progress = if (downloadInfo.sizeTotal != 0.0) {
+                        downloadInfo.sizeSoFar.times(100) / downloadInfo.sizeTotal
+                    } else {
+                        0.0
+                    }
+                    TelemetryWrapper.endDownloadFile(
+                        downloadId,
+                        downloadInfo.sizeTotal.toLong(),
+                        progress,
+                        downloadInfo.status,
+                        downloadInfo.reason
+                    )
+                }
             }
-            val downloadInfo = DownloadInfoManager.getInstance().queryByDownloadId(downloadId)
+            val downloadInfo = downloadInfoRepository.queryByDownloadId(downloadId)
                 ?: return@launch
             if (downloadInfo.status != DownloadManager.STATUS_SUCCESSFUL) {
                 // track the event when the file download cancel from notification tray.

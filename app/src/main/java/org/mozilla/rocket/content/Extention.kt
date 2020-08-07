@@ -1,5 +1,7 @@
 package org.mozilla.rocket.content
 
+import android.app.IntentService
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.preference.Preference
 import androidx.annotation.VisibleForTesting
@@ -17,10 +19,14 @@ fun Fragment.app(): FocusApplication = context?.applicationContext as FocusAppli
 fun FragmentActivity.app(): FocusApplication = applicationContext as FocusApplication
 fun AppCompatDialog.app(): FocusApplication = context.applicationContext as FocusApplication
 fun Preference.app(): FocusApplication = context.applicationContext as FocusApplication
+fun BroadcastReceiver.app(context: Context): FocusApplication = context.applicationContext as FocusApplication
+fun IntentService.app(): FocusApplication = applicationContext as FocusApplication
 fun Fragment.appComponent(): AppComponent = app().getAppComponent()
 fun FragmentActivity.appComponent(): AppComponent = app().getAppComponent()
 fun AppCompatDialog.appComponent(): AppComponent = app().getAppComponent()
 fun Preference.appComponent(): AppComponent = app().getAppComponent()
+fun BroadcastReceiver.appComponent(context: Context): AppComponent = app(context).getAppComponent()
+fun IntentService.appComponent(): AppComponent = app().getAppComponent()
 fun Fragment.appContext(): Context = appComponent().appContext()
 
 @VisibleForTesting
