@@ -101,6 +101,10 @@ public class AppConfigWrapper {
     public static List<BottomBarItemAdapter.ItemData> getBottomBarItems() {
         List<BottomBarItemAdapter.ItemData> itemDataList = new ArrayList<>();
         String jsonString = FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_BOTTOM_BAR_ITEMS_V2);
+        if (jsonString.isEmpty()) {
+            return null;
+        }
+
         try {
             JSONArray jsonArray = new JSONArray(jsonString);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -193,6 +197,9 @@ public class AppConfigWrapper {
 
     @Nullable
     private static InAppUpdateConfig convertToInAppUpdateConfig(String config, boolean showIntro) {
+        if (config == null || config.isEmpty()) {
+            return null;
+        }
         try {
             JSONObject obj = new JSONObject(config);
             InAppUpdateIntro intro = getInAppUpdateIntro(obj);
