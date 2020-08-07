@@ -34,7 +34,6 @@ import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
 import org.mozilla.rocket.di.DaggerAppComponent
-import org.mozilla.rocket.download.data.DownloadInfoManager
 import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
@@ -151,8 +150,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
         BrowsingHistoryManager.getInstance().init(this)
         ScreenshotManager.getInstance().init(this)
-        DownloadInfoManager.getInstance()
-        DownloadInfoManager.init(this)
         // initialize the NotificationUtil to configure the default notification channel. This is required for API 26+
         NotificationUtil.init(this)
 

@@ -65,7 +65,7 @@ class RelocateService : IntentService(TAG) {
             if (ACTION_MOVE == action) {
                 // if the download id is not in our database, ignore this operation
                 val downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1)
-                if (!DownloadInfoManager.getInstance().recordExists(downloadId)) {
+                if (!downloadInfoRepository.hasDownloadItem(downloadId)) {
                     return
                 }
 

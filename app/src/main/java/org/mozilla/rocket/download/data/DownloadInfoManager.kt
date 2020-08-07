@@ -22,7 +22,9 @@ import kotlin.coroutines.suspendCoroutine
 /**
  * Created by anlin on 17/08/2017.
  */
-class DownloadInfoManager {
+class DownloadInfoManager(private val appContext: Context) {
+
+    private val queryHandler by lazy { DownloadInfoQueryHandler(appContext) }
 
     suspend fun enqueueDownload(downloadId: Long): Boolean = withContext(Dispatchers.IO) {
         val downloadInfo = DownloadInfo()
@@ -34,7 +36,7 @@ class DownloadInfoManager {
         // (Note that this is not the case for devices like Samsung, I have not verified yet if this
         // is a because of on those devices we move files to SDcard or if this is true even if the
         // file is not moved.)
-        if (!recordExists(downloadId)) {
+        if (!hasDownloadItem(downloadId)) {
             val rowId = insert(downloadInfo)
             notifyRowUpdated(rowId)
             return@withContext true
@@ -51,7 +53,7 @@ class DownloadInfoManager {
     }
 
     private suspend fun insert(downloadInfo: DownloadInfo) = suspendCoroutine<Long> { continuation ->
-        mQueryHandler.startInsert(
+        queryHandler.startInsert(
             TOKEN,
             object : AsyncInsertListener {
                 override fun onInsertComplete(id: Long) {
@@ -73,7 +75,7 @@ class DownloadInfoManager {
     }
 
     suspend fun delete(rowId: Long) = suspendCoroutine<Int> { continuation ->
-        mQueryHandler.startDelete(
+        queryHandler.startDelete(
             TOKEN,
             AsyncDeleteWrapper(rowId, object : AsyncDeleteListener {
                 override fun onDeleteComplete(result: Int, id: Long) {
@@ -87,7 +89,7 @@ class DownloadInfoManager {
     }
 
     suspend fun updateByRowId(downloadInfo: DownloadInfo) = suspendCoroutine<Int> { continuation ->
-        mQueryHandler.startUpdate(
+        queryHandler.startUpdate(
             TOKEN,
             object : AsyncUpdateListener {
                 override fun onUpdateComplete(result: Int) {
@@ -103,7 +105,7 @@ class DownloadInfoManager {
 
     suspend fun query(offset: Int, limit: Int) = suspendCoroutine<List<DownloadInfo>> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit
-        mQueryHandler.startQuery(
+        queryHandler.startQuery(
             TOKEN,
             object : AsyncQueryListener {
                 override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
@@ -120,7 +122,7 @@ class DownloadInfoManager {
 
     suspend fun queryByDownloadId(downloadId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
-        mQueryHandler.startQuery(
+        queryHandler.startQuery(
             TOKEN,
             object : AsyncQueryListener {
                 override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
@@ -142,7 +144,7 @@ class DownloadInfoManager {
 
     suspend fun queryByRowId(rowId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
-        mQueryHandler.startQuery(
+        queryHandler.startQuery(
             TOKEN,
             object : AsyncQueryListener {
                 override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
@@ -165,7 +167,7 @@ class DownloadInfoManager {
 
     suspend fun queryDownloadingAndUnreadIds() = suspendCoroutine<List<DownloadInfo>> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
-        mQueryHandler.startQuery(
+        queryHandler.startQuery(
             TOKEN,
             object : AsyncQueryListener {
                 override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
@@ -182,7 +184,7 @@ class DownloadInfoManager {
     suspend fun markAllItemsAreRead() = suspendCoroutine<Int> { continuation ->
         val contentValues = ContentValues()
         contentValues.put(DownloadContract.Download.IS_READ, "1")
-        mQueryHandler.startUpdate(
+        queryHandler.startUpdate(
             TOKEN,
             object : AsyncUpdateListener {
                 override fun onUpdateComplete(result: Int) {
@@ -193,8 +195,8 @@ class DownloadInfoManager {
         )
     }
 
-    fun recordExists(downloadId: Long): Boolean {
-        val resolver = mContext.contentResolver
+    fun hasDownloadItem(downloadId: Long): Boolean {
+        val resolver = appContext.contentResolver
         val uri = DownloadContract.Download.CONTENT_URI
         val selection = DownloadContract.Download.DOWNLOAD_ID + "=" + downloadId
         resolver.query(uri, null, selection, null, null).use {
@@ -203,13 +205,13 @@ class DownloadInfoManager {
     }
 
     fun notifyRowUpdated(rowId: Long) {
-        val intent = Intent(ROW_UPDATED)
-        intent.putExtra(ROW_ID, rowId)
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent)
+        val intent = Intent(DownloadInfo.ROW_UPDATED)
+        intent.putExtra(DownloadInfo.ROW_ID, rowId)
+        LocalBroadcastManager.getInstance(appContext).sendBroadcast(intent)
     }
 
     fun relocateFileFinished(rowId: Long) {
-        RelocateService.broadcastRelocateFinished(mContext, rowId)
+        RelocateService.broadcastRelocateFinished(appContext, rowId)
     }
 
     private class DownloadInfoQueryHandler(context: Context) : AsyncQueryHandler(context.contentResolver) {
@@ -276,25 +278,7 @@ class DownloadInfoManager {
     }
 
     companion object {
-        const val ROW_ID = "row id"
-        const val ROW_UPDATED = "row_updated"
         private const val TOKEN = 2
         private const val STATUS_SUCCESSFUL = DownloadManager.STATUS_SUCCESSFUL.toString()
-        private var sInstance: DownloadInfoManager? = null
-        private lateinit var mContext: Context
-        private lateinit var mQueryHandler: DownloadInfoQueryHandler
-
-        @JvmStatic
-        fun getInstance(): DownloadInfoManager {
-            if (sInstance == null) {
-                sInstance = DownloadInfoManager()
-            }
-            return sInstance!!
-        }
-
-        fun init(context: Context) {
-            mContext = context
-            mQueryHandler = DownloadInfoQueryHandler(context)
-        }
     }
 }

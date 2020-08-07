@@ -5,39 +5,48 @@ import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.rocket.tabs.web.Download
 import java.io.File
 
-class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownloadManagerDataSource) {
+class DownloadInfoRepository(
+    private val downloadManagerDataSource: AndroidDownloadManagerDataSource,
+    private val downloadInfoManager: DownloadInfoManager
+) {
 
     suspend fun queryIndicatorStatus(): List<DownloadInfo> =
-        DownloadInfoManager.getInstance().queryDownloadingAndUnreadIds().mapNotNull { downloadInfo ->
+        downloadInfoManager.queryDownloadingAndUnreadIds().mapNotNull { downloadInfo ->
             downloadInfo.joinWithDownloadManager()
         }
 
     suspend fun queryByRowId(rowId: Long) =
-        DownloadInfoManager.getInstance().queryByRowId(rowId)?.joinWithDownloadManager()
+        downloadInfoManager.queryByRowId(rowId)?.joinWithDownloadManager()
 
     suspend fun queryByDownloadId(downloadId: Long) =
-        DownloadInfoManager.getInstance().queryByDownloadId(downloadId)?.joinWithDownloadManager()
+        downloadInfoManager.queryByDownloadId(downloadId)?.joinWithDownloadManager()
 
     suspend fun queryDownloadingItems(runningIds: LongArray): List<DownloadInfo> =
         downloadManagerDataSource.queryDownloadingItems(runningIds)
 
     suspend fun markAllItemsAreRead() =
-        DownloadInfoManager.getInstance().markAllItemsAreRead()
+        downloadInfoManager.markAllItemsAreRead()
 
     suspend fun loadData(offset: Int, pageSize: Int) =
-        DownloadInfoManager.getInstance().query(offset, pageSize).mapNotNull { downloadInfo ->
+        downloadInfoManager.query(offset, pageSize).mapNotNull { downloadInfo ->
             downloadInfo.joinWithDownloadManager()
         }
 
+    fun hasDownloadItem(downloadId: Long) =
+        downloadInfoManager.hasDownloadItem(downloadId)
+
+    suspend fun updateByRowId(downloadInfo: DownloadInfo) =
+        downloadInfoManager.updateByRowId(downloadInfo)
+
     suspend fun remove(rowId: Long) =
-        DownloadInfoManager.getInstance().delete(rowId)
+        downloadInfoManager.delete(rowId)
 
     suspend fun enqueueToDownloadManager(download: Download, refererUrl: String?, shouldShowInDownloadList: Boolean = true): DownloadState {
         val result = downloadManagerDataSource.enqueue(download, refererUrl)
         if (shouldShowInDownloadList) {
             when (result) {
                 is DownloadState.Success -> {
-                    val newlyAdded = DownloadInfoManager.getInstance().enqueueDownload(result.downloadId)
+                    val newlyAdded = downloadInfoManager.enqueueDownload(result.downloadId)
                     if (newlyAdded) {
                         val headerInfo = downloadManagerDataSource.getDownloadUrlHeaderInfo(download.url)
                         val contentLengthFromDownloadRequest: Long = download.contentLength // it'll be -1 if it's from context menu, and real file size from webview callback
@@ -79,10 +88,10 @@ class DownloadInfoRepository(private val downloadManagerDataSource: AndroidDownl
             if (downloadInfo.existInDownloadManager()) {
                 downloadInfo.rowId?.let {
                     val newDownloadInfo = DownloadInfo.createEmptyDownloadInfo(newId, it, newPath, downloadInfo.status)
-                    DownloadInfoManager.getInstance().updateByRowId(newDownloadInfo)
+                    downloadInfoManager.updateByRowId(newDownloadInfo)
                     downloadManagerDataSource.remove(downloadId)
-                    DownloadInfoManager.getInstance().notifyRowUpdated(it)
-                    DownloadInfoManager.getInstance().relocateFileFinished(it)
+                    downloadInfoManager.notifyRowUpdated(it)
+                    downloadInfoManager.relocateFileFinished(it)
                 }
             }
         }

@@ -36,7 +36,7 @@ import org.mozilla.rocket.content.ExtentionKt;
 import org.mozilla.rocket.download.DownloadIndicatorViewModel;
 import org.mozilla.rocket.download.DownloadInfoPack;
 import org.mozilla.rocket.download.DownloadInfoViewModel;
-import org.mozilla.rocket.download.data.DownloadInfoManager;
+import org.mozilla.rocket.download.data.DownloadInfo;
 
 import javax.inject.Inject;
 
@@ -71,8 +71,8 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
                 if (id > 0) {
                     viewModel.notifyDownloadComplete(id);
                 }
-            } else if (DownloadInfoManager.ROW_UPDATED.equals(intent.getAction())) {
-                long id = intent.getLongExtra(DownloadInfoManager.ROW_ID, 0L);
+            } else if (DownloadInfo.ROW_UPDATED.equals(intent.getAction())) {
+                long id = intent.getLongExtra(DownloadInfo.ROW_ID, 0L);
                 if (id > 0) {
                     viewModel.notifyRowUpdate(id);
                 }
@@ -156,7 +156,7 @@ public class DownloadsFragment extends PanelFragment implements DownloadInfoView
     @Override
     public void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(DownloadInfoManager.ROW_UPDATED));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(DownloadInfo.ROW_UPDATED));
         getActivity().registerReceiver(broadcastReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         viewModel.registerForProgressUpdate(this);
     }

@@ -65,12 +65,12 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
             }
             if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL && !TextUtils.isEmpty(downloadInfo.fileUri)) {
                 // have to update, then the fileUri may write into our DB.
-                DownloadInfoManager.getInstance().updateByRowId(downloadInfo)
+                downloadInfoRepository.updateByRowId(downloadInfo)
                 startRelocationService(context, downloadInfo)
             }
             // Download canceled
             if (!downloadInfo.existInDownloadManager()) {
-                downloadInfo.rowId?.let { DownloadInfoManager.getInstance().delete(it) }
+                downloadInfo.rowId?.let { downloadInfoRepository.remove(it) }
             }
         }
     }

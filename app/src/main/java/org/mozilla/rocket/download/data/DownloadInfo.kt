@@ -106,6 +106,9 @@ class DownloadInfo {
         const val STATUS_DELETED = -1
         const val REASON_DEFAULT = -2
 
+        const val ROW_ID = "row id"
+        const val ROW_UPDATED = "row_updated"
+
         fun createEmptyDownloadInfo(
             downloadId: Long,
             rowId: Long,
