@@ -2,24 +2,29 @@ package org.mozilla.rocket.shopping.search.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ShoppingSearchRepository(
     private val remoteDataSource: ShoppingSearchDataSource,
     private val localDataSource: ShoppingSearchDataSource
 ) {
-
-    private val shoppingSitesData: MutableLiveData<List<ShoppingSite>> = MutableLiveData()
-
-    init {
-        initShoppingSites()
+    private val shoppingSitesData: MutableLiveData<List<ShoppingSite>> by lazy {
+        MutableLiveData<List<ShoppingSite>>().apply {
+            CoroutineScope(Dispatchers.IO).launch {
+                postValue(getShoppingSites())
+            }
+        }
     }
 
-    private fun initShoppingSites() {
+    private fun getShoppingSites(): List<ShoppingSite> {
         val remoteShoppingSites = remoteDataSource.getShoppingSites()
         val localShoppingSites = localDataSource.getShoppingSites()
 
-        if (localShoppingSites.isEmpty() && remoteShoppingSites.isNotEmpty()) {
-            updateShoppingSites(remoteShoppingSites)
+        return if (localShoppingSites.isEmpty() && remoteShoppingSites.isNotEmpty()) {
+            localDataSource.updateShoppingSites(remoteShoppingSites)
+            remoteShoppingSites
         } else if (localShoppingSites.isNotEmpty()) {
             val mergedShoppingSites = arrayListOf<ShoppingSite>()
             if (shouldMergeShoppingSites(remoteShoppingSites, localShoppingSites)) {
@@ -29,9 +34,9 @@ class ShoppingSearchRepository(
                 mergedShoppingSites.addAll(localShoppingSites)
             }
             syncRemoteSettingsToLocalSites(remoteShoppingSites, localShoppingSites)
-            shoppingSitesData.postValue(mergedShoppingSites)
+            mergedShoppingSites
         } else {
-            shoppingSitesData.postValue(remoteDataSource.getDefaultShoppingSites())
+            remoteDataSource.getDefaultShoppingSites()
         }
     }
 
@@ -41,7 +46,7 @@ class ShoppingSearchRepository(
     fun getShoppingSitesData(): LiveData<List<ShoppingSite>> = shoppingSitesData
 
     fun refreshShoppingSites() {
-        initShoppingSites()
+        shoppingSitesData.postValue(getShoppingSites())
     }
 
     fun updateShoppingSites(shoppingSites: List<ShoppingSite>) {
