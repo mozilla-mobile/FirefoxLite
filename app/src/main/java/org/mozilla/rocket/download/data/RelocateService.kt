@@ -36,7 +36,7 @@ import javax.inject.Inject
 class RelocateService : IntentService(TAG) {
 
     @Inject
-    lateinit var downloadInfoRepository: DownloadInfoRepository
+    lateinit var downloadsRepository: DownloadsRepository
 
     override fun onCreate() {
         appComponent().inject(this)
@@ -65,7 +65,7 @@ class RelocateService : IntentService(TAG) {
             if (ACTION_MOVE == action) {
                 // if the download id is not in our database, ignore this operation
                 val downloadId = intent.getLongExtra(Constants.EXTRA_DOWNLOAD_ID, -1)
-                if (!downloadInfoRepository.hasDownloadItem(downloadId)) {
+                if (!downloadsRepository.hasDownloadItem(downloadId)) {
                     return
                 }
 
@@ -152,7 +152,7 @@ class RelocateService : IntentService(TAG) {
                 }
 
                 // downloaded file is moved, update database to reflect this changing
-                downloadInfoRepository.replaceFilePath(downloadId, destFile.absolutePath, type)
+                downloadsRepository.replaceFilePath(downloadId, destFile.absolutePath, type)
 
                 // removable-storage did not exist on app creation, but now it is back
                 // we moved download file to removable-storage, now we should inform user

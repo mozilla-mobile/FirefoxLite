@@ -10,12 +10,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mozilla.focus.R
 import org.mozilla.rocket.download.data.DownloadInfo
-import org.mozilla.rocket.download.data.DownloadInfoRepository
+import org.mozilla.rocket.download.data.DownloadsRepository
 import java.io.File
 import java.net.URI
 import java.net.URISyntaxException
 
-class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : ViewModel() {
+class DownloadInfoViewModel(private val repository: DownloadsRepository) : ViewModel() {
 
     interface OnProgressUpdateListener {
         fun onStartUpdate()
@@ -90,7 +90,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         }
 
         viewModelScope.launch {
-            val list = repository.loadData(itemCount, PAGE_SIZE)
+            val list = repository.getDownloads(itemCount, PAGE_SIZE)
             downloadInfoPack.list.addAll(list)
             downloadInfoPack.notifyType = DownloadInfoPack.Constants.NOTIFY_DATASET_CHANGED
             itemCount = downloadInfoPack.list.size
@@ -105,13 +105,13 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun cancel(rowId: Long) = viewModelScope.launch {
-        repository.queryByRowId(rowId)?.let { download ->
+        repository.getDownloadByRowId(rowId)?.let { download ->
             if (download.existInDownloadManager()) {
                 val downloadId = download.downloadId
                 if (rowId == download.rowId && DownloadManager.STATUS_SUCCESSFUL != download.status && downloadId != null) {
                     toastMessageObservable.value = R.string.download_cancel
                     repository.trackDownloadCancel(downloadId)
-                    repository.deleteFromDownloadManager(downloadId)
+                    repository.delete(downloadId)
                     remove(rowId)
                 }
             }
@@ -124,7 +124,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun delete(rowId: Long) = viewModelScope.launch {
-        repository.queryByRowId(rowId)?.let { download ->
+        repository.getDownloadByRowId(rowId)?.let { download ->
             withContext(Dispatchers.IO) {
                 val file =
                     try {
@@ -146,7 +146,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
         try {
             val deleteFile = File(URI(download.fileUri).path)
             if (deleteFile.delete()) {
-                download.downloadId?.let { repository.deleteFromDownloadManager(it) }
+                download.downloadId?.let { repository.delete(it) }
                 download.rowId?.let { repository.remove(it) }
             } else {
                 toastMessageObservable.postValue(R.string.cannot_delete_the_file)
@@ -201,7 +201,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     private fun updateRunningItems() = viewModelScope.launch {
         if (runningDownloadIds.isNotEmpty()) {
             for (i in runningDownloadIds.indices) {
-                repository.queryByDownloadId(runningDownloadIds[i])?.let { download ->
+                repository.getDownload(runningDownloadIds[i])?.let { download ->
                     for (j in 0 until downloadInfoPack.list.size) {
                         val downloadInfo = downloadInfoPack.list[j]
                         if (download.downloadId == downloadInfo.downloadId) {
@@ -217,7 +217,7 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun notifyDownloadComplete(downloadId: Long) = viewModelScope.launch {
-        repository.queryByDownloadId(downloadId)?.let { download ->
+        repository.getDownload(downloadId)?.let { download ->
             if (download.existInDownloadManager()) {
                 updateItem(download)
             }
@@ -225,13 +225,13 @@ class DownloadInfoViewModel(private val repository: DownloadInfoRepository) : Vi
     }
 
     fun notifyRowUpdate(rowId: Long) = viewModelScope.launch {
-        repository.queryByRowId(rowId)?.let {
+        repository.getDownloadByRowId(rowId)?.let {
             updateItem(it)
         }
     }
 
     fun queryDownloadProgress() = viewModelScope.launch {
-        val list = repository.queryDownloadingItems(runningDownloadIds)
+        val list = repository.getDownloadingItems(runningDownloadIds)
         if (list.isNotEmpty()) {
             for (tempInfo in list) {
                 for (i in 0 until downloadInfoPack.list.size) {

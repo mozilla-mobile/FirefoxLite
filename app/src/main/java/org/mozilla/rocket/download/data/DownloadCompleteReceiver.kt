@@ -23,7 +23,7 @@ import javax.inject.Inject
 class DownloadCompleteReceiver : BroadcastReceiver() {
 
     @Inject
-    lateinit var downloadInfoRepository: DownloadInfoRepository
+    lateinit var downloadsRepository: DownloadsRepository
 
     override fun onReceive(context: Context, intent: Intent) {
         appComponent(context).inject(this)
@@ -34,7 +34,7 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
         }
 
         CoroutineScope(Dispatchers.Main).launch {
-            downloadInfoRepository.queryByDownloadId(downloadId)?.let { downloadInfo ->
+            downloadsRepository.getDownload(downloadId)?.let { downloadInfo ->
                 // track the event when the file download completes successfully.
                 if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL) {
                     val progress = if (downloadInfo.sizeTotal != 0.0) {
@@ -51,7 +51,7 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
                     )
                 }
             }
-            val downloadInfo = downloadInfoRepository.queryByDownloadId(downloadId)
+            val downloadInfo = downloadsRepository.getDownload(downloadId)
                 ?: return@launch
             if (downloadInfo.status != DownloadManager.STATUS_SUCCESSFUL) {
                 // track the event when the file download cancel from notification tray.
@@ -65,12 +65,12 @@ class DownloadCompleteReceiver : BroadcastReceiver() {
             }
             if (downloadInfo.status == DownloadManager.STATUS_SUCCESSFUL && !TextUtils.isEmpty(downloadInfo.fileUri)) {
                 // have to update, then the fileUri may write into our DB.
-                downloadInfoRepository.updateByRowId(downloadInfo)
+                downloadsRepository.updateDownloadByRowId(downloadInfo)
                 startRelocationService(context, downloadInfo)
             }
             // Download canceled
             if (!downloadInfo.existInDownloadManager()) {
-                downloadInfo.rowId?.let { downloadInfoRepository.remove(it) }
+                downloadInfo.rowId?.let { downloadsRepository.remove(it) }
             }
         }
     }

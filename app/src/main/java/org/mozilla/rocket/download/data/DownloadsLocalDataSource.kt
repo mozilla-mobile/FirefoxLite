@@ -22,11 +22,11 @@ import kotlin.coroutines.suspendCoroutine
 /**
  * Created by anlin on 17/08/2017.
  */
-class DownloadInfoManager(private val appContext: Context) {
+class DownloadsLocalDataSource(private val appContext: Context) {
 
     private val queryHandler by lazy { DownloadInfoQueryHandler(appContext) }
 
-    suspend fun enqueueDownload(downloadId: Long): Boolean = withContext(Dispatchers.IO) {
+    suspend fun enqueue(downloadId: Long): Boolean = withContext(Dispatchers.IO) {
         val downloadInfo = DownloadInfo()
         downloadInfo.downloadId = downloadId
 
@@ -41,8 +41,8 @@ class DownloadInfoManager(private val appContext: Context) {
             notifyRowUpdated(rowId)
             return@withContext true
         } else {
-            val info = queryByDownloadId(downloadId)
-            info?.rowId?.let { delete(it) }
+            val info = getDownload(downloadId)
+            info?.rowId?.let { remove(it) }
             info?.let {
                 val rowId = insert(it)
                 notifyRowUpdated(rowId)
@@ -74,53 +74,7 @@ class DownloadInfoManager(private val appContext: Context) {
         return contentValues
     }
 
-    suspend fun delete(rowId: Long) = suspendCoroutine<Int> { continuation ->
-        queryHandler.startDelete(
-            TOKEN,
-            AsyncDeleteWrapper(rowId, object : AsyncDeleteListener {
-                override fun onDeleteComplete(result: Int, id: Long) {
-                    continuation.resume(result)
-                }
-            }),
-            DownloadContract.Download.CONTENT_URI,
-            DownloadContract.Download._ID + " = ?",
-            arrayOf(rowId.toString())
-        )
-    }
-
-    suspend fun updateByRowId(downloadInfo: DownloadInfo) = suspendCoroutine<Int> { continuation ->
-        queryHandler.startUpdate(
-            TOKEN,
-            object : AsyncUpdateListener {
-                override fun onUpdateComplete(result: Int) {
-                    continuation.resume(result)
-                }
-            },
-            DownloadContract.Download.CONTENT_URI,
-            getContentValuesFromDownloadInfo(downloadInfo),
-            DownloadContract.Download._ID + " = ?",
-            arrayOf(downloadInfo.rowId.toString())
-        )
-    }
-
-    suspend fun query(offset: Int, limit: Int) = suspendCoroutine<List<DownloadInfo>> { continuation ->
-        val uri = DownloadContract.Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit
-        queryHandler.startQuery(
-            TOKEN,
-            object : AsyncQueryListener {
-                override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
-                    continuation.resume(downloadInfoList)
-                }
-            },
-            Uri.parse(uri),
-            null,
-            null,
-            null,
-            DownloadContract.Download._ID + " DESC"
-        )
-    }
-
-    suspend fun queryByDownloadId(downloadId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
+    suspend fun getDownload(downloadId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
         queryHandler.startQuery(
             TOKEN,
@@ -142,7 +96,7 @@ class DownloadInfoManager(private val appContext: Context) {
         )
     }
 
-    suspend fun queryByRowId(rowId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
+    suspend fun getDownloadByRowId(rowId: Long) = suspendCoroutine<DownloadInfo?> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
         queryHandler.startQuery(
             TOKEN,
@@ -165,7 +119,33 @@ class DownloadInfoManager(private val appContext: Context) {
         )
     }
 
-    suspend fun queryDownloadingAndUnreadIds() = suspendCoroutine<List<DownloadInfo>> { continuation ->
+    fun hasDownloadItem(downloadId: Long): Boolean {
+        val resolver = appContext.contentResolver
+        val uri = DownloadContract.Download.CONTENT_URI
+        val selection = DownloadContract.Download.DOWNLOAD_ID + "=" + downloadId
+        resolver.query(uri, null, selection, null, null).use {
+            return it != null && it.count > 0 && it.moveToFirst()
+        }
+    }
+
+    suspend fun getDownloads(offset: Int, limit: Int) = suspendCoroutine<List<DownloadInfo>> { continuation ->
+        val uri = DownloadContract.Download.CONTENT_URI.toString() + "?offset=" + offset + "&limit=" + limit
+        queryHandler.startQuery(
+            TOKEN,
+            object : AsyncQueryListener {
+                override fun onQueryComplete(downloadInfoList: List<DownloadInfo>) {
+                    continuation.resume(downloadInfoList)
+                }
+            },
+            Uri.parse(uri),
+            null,
+            null,
+            null,
+            DownloadContract.Download._ID + " DESC"
+        )
+    }
+
+    suspend fun getDownloadingAndUnreadIds() = suspendCoroutine<List<DownloadInfo>> { continuation ->
         val uri = DownloadContract.Download.CONTENT_URI.toString()
         queryHandler.startQuery(
             TOKEN,
@@ -195,13 +175,33 @@ class DownloadInfoManager(private val appContext: Context) {
         )
     }
 
-    fun hasDownloadItem(downloadId: Long): Boolean {
-        val resolver = appContext.contentResolver
-        val uri = DownloadContract.Download.CONTENT_URI
-        val selection = DownloadContract.Download.DOWNLOAD_ID + "=" + downloadId
-        resolver.query(uri, null, selection, null, null).use {
-            return it != null && it.count > 0 && it.moveToFirst()
-        }
+    suspend fun updateDownloadByRowId(downloadInfo: DownloadInfo) = suspendCoroutine<Int> { continuation ->
+        queryHandler.startUpdate(
+            TOKEN,
+            object : AsyncUpdateListener {
+                override fun onUpdateComplete(result: Int) {
+                    continuation.resume(result)
+                }
+            },
+            DownloadContract.Download.CONTENT_URI,
+            getContentValuesFromDownloadInfo(downloadInfo),
+            DownloadContract.Download._ID + " = ?",
+            arrayOf(downloadInfo.rowId.toString())
+        )
+    }
+
+    suspend fun remove(rowId: Long) = suspendCoroutine<Int> { continuation ->
+        queryHandler.startDelete(
+            TOKEN,
+            AsyncDeleteWrapper(rowId, object : AsyncDeleteListener {
+                override fun onDeleteComplete(result: Int, id: Long) {
+                    continuation.resume(result)
+                }
+            }),
+            DownloadContract.Download.CONTENT_URI,
+            DownloadContract.Download._ID + " = ?",
+            arrayOf(rowId.toString())
+        )
     }
 
     fun notifyRowUpdated(rowId: Long) {
