@@ -272,7 +272,10 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
             }
 
             override fun makeAskAgainSnackBar(actionId: Int): Snackbar {
-                return PermissionHandler.makeAskAgainSnackBar(this@BrowserFragment, requireActivity().findViewById(R.id.container), getAskAgainSnackBarString(actionId))
+                return PermissionHandler.makeAskAgainSnackBar(this@BrowserFragment,
+                        requireActivity().findViewById(R.id.container),
+                        getAskAgainSnackBarString(actionId),
+                        browser_bottom_bar)
             }
 
             private fun getAskAgainSnackBarString(actionId: Int): Int {

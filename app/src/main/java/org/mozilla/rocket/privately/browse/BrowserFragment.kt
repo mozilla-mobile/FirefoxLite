@@ -208,7 +208,8 @@ class BrowserFragment : LocaleAwareFragment(),
                     return PermissionHandler.makeAskAgainSnackBar(
                             this@BrowserFragment,
                             it.findViewById(R.id.container),
-                            R.string.permission_toast_storage
+                            R.string.permission_toast_storage,
+                            browser_bottom_bar
                     )
                 }
                 throw IllegalStateException("No Activity to show Snackbar.")
