@@ -19,7 +19,7 @@ import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.download.SingleLiveEvent
 import org.mozilla.rocket.download.data.DownloadInfo
-import org.mozilla.rocket.download.data.DownloadInfoRepository
+import org.mozilla.rocket.download.data.DownloadsRepository
 import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.extension.switchMap
 import org.mozilla.rocket.helper.StorageHelper
@@ -40,7 +40,7 @@ class ChromeViewModel(
     private val privateMode: PrivateMode,
     private val browsers: Browsers,
     private val storageHelper: StorageHelper,
-    private val downloadInfoRepository: DownloadInfoRepository
+    private val downloadsRepository: DownloadsRepository
 ) : ViewModel() {
     val isNightMode: LiveData<NightModeSettings> = settings.isNightModeEnablLiveData.map { NightModeSettings(it, settings.nightModeBrightnessValue) }
     val isDarkTheme: LiveData<Boolean> = settings.isDarkThemeEnableLiveData
@@ -100,7 +100,7 @@ class ChromeViewModel(
     val showAdjustBrightness = SingleLiveEvent<Unit>()
     val addNewTopSiteMenuClicked = SingleLiveEvent<Unit>()
     val themeSettingMenuClicked = SingleLiveEvent<Unit>()
-    val downloadState = SingleLiveEvent<DownloadInfoRepository.DownloadState>()
+    val downloadState = SingleLiveEvent<DownloadsRepository.DownloadState>()
     val showDownloadFinishedSnackBar = SingleLiveEvent<DownloadInfo>()
 
     private var lastUrlLoadStart = 0L
@@ -320,11 +320,11 @@ class ChromeViewModel(
     }
 
     fun onEnqueueDownload(download: Download, refererUrl: String?, shouldShowInDownloadList: Boolean = true) = viewModelScope.launch {
-        downloadState.value = downloadInfoRepository.enqueueToDownloadManager(download, refererUrl, shouldShowInDownloadList)
+        downloadState.value = downloadsRepository.enqueue(download, refererUrl, shouldShowInDownloadList)
     }
 
     fun onRelocateFinished(rowId: Long) = viewModelScope.launch {
-        downloadInfoRepository.queryByRowId(rowId)?.let {
+        downloadsRepository.getDownloadByRowId(rowId)?.let {
             showDownloadFinishedSnackBar.value = it
         }
     }

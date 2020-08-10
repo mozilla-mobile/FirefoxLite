@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.mozilla.rocket.download.data.DownloadInfoRepository
+import org.mozilla.rocket.download.data.DownloadsRepository
 
-class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository) : ViewModel() {
+class DownloadIndicatorViewModel(private val repository: DownloadsRepository) : ViewModel() {
 
     enum class Status {
         DEFAULT, DOWNLOADING, UNREAD, WARNING
@@ -16,7 +16,7 @@ class DownloadIndicatorViewModel(private val repository: DownloadInfoRepository)
     val downloadIndicatorObservable = MutableLiveData<Status>()
 
     fun updateIndicator() = viewModelScope.launch {
-        val list = repository.queryIndicatorStatus()
+        val list = repository.getIndicatorStatus()
         var hasDownloading = false
         var hasUnread = false
         var hasWarning = false

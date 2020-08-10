@@ -20,8 +20,8 @@ import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.download.DownloadInfoViewModel
 import org.mozilla.rocket.download.data.AndroidDownloadManagerDataSource
-import org.mozilla.rocket.download.data.DownloadInfoManager
-import org.mozilla.rocket.download.data.DownloadInfoRepository
+import org.mozilla.rocket.download.data.DownloadsLocalDataSource
+import org.mozilla.rocket.download.data.DownloadsRepository
 import org.mozilla.rocket.helper.StorageHelper
 import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
 import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
@@ -74,26 +74,26 @@ object ChromeModule {
     @JvmStatic
     @Singleton
     @Provides
-    fun provideDownloadInfoManager(appContext: Context): DownloadInfoManager = DownloadInfoManager(appContext)
+    fun provideDownloadInfoManager(appContext: Context): DownloadsLocalDataSource = DownloadsLocalDataSource(appContext)
 
     @JvmStatic
     @Singleton
     @Provides
     fun provideDownloadInfoRepository(
         downloadManagerDataSource: AndroidDownloadManagerDataSource,
-        downloadInfoManager: DownloadInfoManager
-    ): DownloadInfoRepository = DownloadInfoRepository(
+        downloadsLocalDataSource: DownloadsLocalDataSource
+    ): DownloadsRepository = DownloadsRepository(
         downloadManagerDataSource,
-        downloadInfoManager
+        downloadsLocalDataSource
     )
 
     @JvmStatic
     @Provides
-    fun provideDownloadIndicatorViewModel(downloadInfoRepository: DownloadInfoRepository): DownloadIndicatorViewModel = DownloadIndicatorViewModel(downloadInfoRepository)
+    fun provideDownloadIndicatorViewModel(downloadsRepository: DownloadsRepository): DownloadIndicatorViewModel = DownloadIndicatorViewModel(downloadsRepository)
 
     @JvmStatic
     @Provides
-    fun provideDownloadInfoViewModel(downloadInfoRepository: DownloadInfoRepository): DownloadInfoViewModel = DownloadInfoViewModel(downloadInfoRepository)
+    fun provideDownloadInfoViewModel(downloadsRepository: DownloadsRepository): DownloadInfoViewModel = DownloadInfoViewModel(downloadsRepository)
 
     @JvmStatic
     @Provides
@@ -170,7 +170,7 @@ object ChromeModule {
         privateMode: PrivateMode,
         browsers: Browsers,
         storageHelper: StorageHelper,
-        downloadInfoRepository: DownloadInfoRepository
+        downloadsRepository: DownloadsRepository
     ): ChromeViewModel = ChromeViewModel(
         settings,
         newFeatureNotice,
@@ -179,7 +179,7 @@ object ChromeModule {
         privateMode,
         browsers,
         storageHelper,
-        downloadInfoRepository
+        downloadsRepository
     )
 
     @JvmStatic

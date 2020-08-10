@@ -38,7 +38,7 @@ import org.mozilla.rocket.component.PrivateSessionNotificationService
 import org.mozilla.rocket.content.app
 import org.mozilla.rocket.content.appComponent
 import org.mozilla.rocket.content.getViewModel
-import org.mozilla.rocket.download.data.DownloadInfoRepository
+import org.mozilla.rocket.download.data.DownloadsRepository
 import org.mozilla.rocket.landing.NavigationModel
 import org.mozilla.rocket.landing.OrientationState
 import org.mozilla.rocket.landing.PortraitStateModel
@@ -152,11 +152,11 @@ class PrivateModeActivity : BaseActivity(),
         })
         chromeViewModel.downloadState.observe(this, Observer { downloadState ->
             when (downloadState) {
-                is DownloadInfoRepository.DownloadState.StorageUnavailable ->
+                is DownloadsRepository.DownloadState.StorageUnavailable ->
                     Toast.makeText(this, R.string.message_storage_unavailable_cancel_download, Toast.LENGTH_LONG).show()
-                is DownloadInfoRepository.DownloadState.FileNotSupported ->
+                is DownloadsRepository.DownloadState.FileNotSupported ->
                     Toast.makeText(this, R.string.download_file_not_supported, Toast.LENGTH_LONG).show()
-                is DownloadInfoRepository.DownloadState.Success ->
+                is DownloadsRepository.DownloadState.Success ->
                     if (!downloadState.isStartFromContextMenu) {
                         Toast.makeText(this, R.string.download_started, Toast.LENGTH_LONG).show()
                     }

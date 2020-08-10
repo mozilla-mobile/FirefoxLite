@@ -25,7 +25,7 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
 
     private val downloadManager by lazy { appContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager }
 
-    suspend fun enqueue(download: Download, refererUrl: String?): DownloadInfoRepository.DownloadState = withContext(Dispatchers.IO) {
+    suspend fun enqueue(download: Download, refererUrl: String?): DownloadsRepository.DownloadState = withContext(Dispatchers.IO) {
         val cookie = CookieManager.getInstance().getCookie(download.url)
         val fileName = download.name
             ?: URLUtil.guessFileName(download.url, download.contentDisposition, download.mimeType)
@@ -36,16 +36,16 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         val dir = Environment.DIRECTORY_DOWNLOADS
 
         if (Environment.MEDIA_MOUNTED != Environment.getExternalStorageState()) {
-            return@withContext DownloadInfoRepository.DownloadState.StorageUnavailable
+            return@withContext DownloadsRepository.DownloadState.StorageUnavailable
         }
 
         // block non-http/https download links
         if (!URLUtil.isNetworkUrl(download.url)) {
-            return@withContext DownloadInfoRepository.DownloadState.FileNotSupported
+            return@withContext DownloadsRepository.DownloadState.FileNotSupported
         }
 
         if (!isDownloadManagerEnabled(appContext)) {
-            return@withContext DownloadInfoRepository.DownloadState.GeneralError
+            return@withContext DownloadsRepository.DownloadState.GeneralError
         }
 
         val request = DownloadManager.Request(Uri.parse(download.url))
@@ -58,7 +58,7 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
             .also { it.allowScanningByMediaScanner() }
 
         val downloadId = downloadManager.enqueue(request)
-        return@withContext DownloadInfoRepository.DownloadState.Success(downloadId, download.isStartFromContextMenu)
+        return@withContext DownloadsRepository.DownloadState.Success(downloadId, download.isStartFromContextMenu)
     }
 
     fun addCompletedDownload(
@@ -71,7 +71,7 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         showNotification: Boolean
     ) = downloadManager.addCompletedDownload(title, description, isMediaScannerScannable, mimeType, path, length, showNotification)
 
-    suspend fun getDownloadUrlHeaderInfo(url: String): DownloadInfoRepository.HeaderInfo = withContext(Dispatchers.IO) {
+    suspend fun getDownloadUrlHeaderInfo(url: String): DownloadsRepository.HeaderInfo = withContext(Dispatchers.IO) {
         TrafficStats.setThreadStatsTag(SocketTags.DOWNLOADS)
         var connection: HttpURLConnection? = null
         var isSupportRange = false
@@ -95,10 +95,10 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         } finally {
             connection?.disconnect()
         }
-        return@withContext DownloadInfoRepository.HeaderInfo(isSupportRange, isValidSSL, contentLength)
+        return@withContext DownloadsRepository.HeaderInfo(isSupportRange, isValidSSL, contentLength)
     }
 
-    suspend fun queryDownloadItem(downloadId: Long): DownloadInfo? = withContext(Dispatchers.IO) {
+    suspend fun getDownload(downloadId: Long): DownloadInfo? = withContext(Dispatchers.IO) {
         val query = DownloadManager.Query()
         query.setFilterById(downloadId)
         downloadManager.query(query)?.use { cursor ->
@@ -126,7 +126,7 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         return@withContext null
     }
 
-    suspend fun queryDownloadingItems(runningIds: LongArray): List<DownloadInfo> = withContext(Dispatchers.IO) {
+    suspend fun getDownloadingItems(runningIds: LongArray): List<DownloadInfo> = withContext(Dispatchers.IO) {
         val query = DownloadManager.Query()
         query.setFilterById(*runningIds)
         query.setFilterByStatus(DownloadManager.STATUS_RUNNING)
@@ -147,7 +147,7 @@ class AndroidDownloadManagerDataSource(private val appContext: Context) {
         return@withContext emptyList<DownloadInfo>()
     }
 
-    suspend fun remove(downloadId: Long) = withContext(Dispatchers.IO) {
+    suspend fun delete(downloadId: Long) = withContext(Dispatchers.IO) {
         downloadManager.remove(downloadId)
     }
 
