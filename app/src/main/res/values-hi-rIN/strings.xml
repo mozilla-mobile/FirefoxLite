@@ -3,6 +3,8 @@
   <string name="action_cancel">रद्द करें</string>
   <string name="action_ok">ठीक</string>
   <string name="urlbar_hint">खोजें या पता दर्ज करें</string>
+  <string name="awesomebar_open_copied_link">कॉपी की गई लिंक खोलें</string>
+  <string name="awesomebar_switch_to_tab">टैब पर जाएं</string>
   <string name="menu_settings">सेटिंग</string>
   <string name="menu_about">परिचय</string>
   <string name="menu_help">सहायता</string>
@@ -71,6 +73,15 @@
   <string name="new_name_upgrade_page_title">हमारे पास एक नया लुक है!</string>
   <string name="new_name_upgrade_page_text">विकसित प्रोडक्ट के साथ, एक नए नाम और नए लोगो के साथ, हम आपके लिए बिलकुल नया %1$s लाये हैं।</string>
   <string name="firstrun_close_button">अच्छा, समझ गया!</string>
+  <string name="firstrun_fxlite_2.5_title_1">नमस्ते!</string>
+  <string name="firstrun_fxlite_2.5_title_2">%1$s पर आप किस लिए आए हैं?</string>
+  <string name="firstrun_fxlite_2_5_title_A">नमस्ते!</string>
+  <string name="firstrun_fxlite_2_5_title_B">%1$s पर आप किस लिए आए हैं?</string>
+  <string name="content_theme_1">वेब ब्राउज करें</string>
+  <string name="content_theme_2">अच्छे डील्स खोजें</string>
+  <string name="content_theme_3">गेम खेलें एवं विडियो देखें</string>
+  <string name="content_theme_4">चर्चित ख़बरें पढ़ें</string>
+  <string name="button_done">संपन्न करें</string>
   <string name="label_menu_bookmark">बुकमार्क</string>
   <string name="label_menu_download">डाउनलोड</string>
   <string name="label_menu_find_in_page">पृष्ठ में खोजें</string>
@@ -87,12 +98,20 @@
   <string name="label_menu_exit">निकास</string>
   <string name="label_menu_add_to_home_screen">मुख्य पृष्ठ में जोड़ें</string>
   <string name="label_menu_content_services">सामग्री और सेवाएं दिखाएं</string>
+  <string name="label_menu_add_top_sites">शीर्ष साइटें जोड़ें</string>
   <string name="label_menu_themes">थीम</string>
+  <string name="theme_settings_title">अपना थीम चुनें</string>
+  <string name="theme_settings_subtitle">डार्क थीम को चुनकर अपने बैटरी की बचत करें।</string>
+  <string name="set_as_default_dialog_title">बहुत बढ़िया!</string>
+  <string name="set_as_default_dialog_subtitle">आपका %1$s शानदार दिख रहा है! क्या आप इसे डिफ़ॉल्ट ब्राउज़र के रूप में सेट करना चाहते हैं?</string>
   <string name="top_site_category_1">लोकप्रिय वेबसाइटें</string>
-  <string name="top_site_category_2">सोशल मीडिया</string>
+  <string name="top_site_category_2">शॉपिंग एवं यात्रा</string>
   <string name="top_site_category_3">मनोरंजन</string>
   <string name="top_site_category_4">अन्य</string>
+  <string name="top_site_category_5">समाचार</string>
+  <string name="add_top_site_snackbar_1">शीर्ष साइट जोड़ी गई</string>
   <string name="add_top_site_snackbar_2">साइट जोड़ दिया गया है</string>
+  <string name="add_top_site_toast">कृपया पहले से मौजूद किसी शीर्ष साईट को हटाएं</string>
   <string name="add_top_site_button">अधिक जोड़ें</string>
   <string name="add_top_site_placeholder">जोड़ें</string>
   <string name="permission_toast_location_deny">स्थान की अनुमति ख़ारिज कर दी गयी।</string>
@@ -183,7 +202,7 @@
   <string name="privacy_policy_update_notification_action">Firefox Lite को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएं।</string>
   <string name="message_set_default_success">%1$s को चुनने के लिए धन्यवाद!</string>
   <string name="message_set_default_incomplet">क्या आप अपने तयशुदा ब्राउज़र के रूप में %1$s की सेटिंग समाप्त करना चाहेंगे?</string>
-  <string name="setting_default_browser_instruction_system_settings">30 सेकंड में %1$s को अपने तयशुदा ब्राउज़र के रूप में सेट करें</string>
+  <string name="setting_default_browser_instruction_system_settings">2 चरण में %1$s को अपना डिफ़ॉल्ट ब्राउज़र बनाएं</string>
   <string name="setting_default_browser_instruction_open_external_link">हमेशा %1$s के साथ कैसे ब्राउज़ करें?</string>
   <string name="instruction_select">%1$s चुनें</string>
   <string name="browser_app">ब्राउज़र ऐप</string>
@@ -196,6 +215,9 @@
   <string name="rate_app_notification_action_rate">हमें रेट करें</string>
   <string name="rate_app_dialog_btn_feedback">प्रतिक्रिया दें</string>
   <string name="rate_app_notification_action_feedback">प्रतिक्रिया दें</string>
+  <string name="survey_dialog_text_title">आपको %1$s कैसा लगा?</string>
+  <string name="survey_dialog_text_content">आपको क्या पसंद आया या हम क्या बेहतर कर सकते हैं, इस बारे में अपने विचार हमें बताएं।</string>
+  <string name="survey_dialog_btn">सर्वेक्षण लें</string>
   <string name="share_app_dialog_text_title">दोस्तों के साथ %1$s साझा करें!</string>
   <string name="share_app_dialog_text_content">- तीव्र एवं हल्का\n- स्मार्ट शॉपिंग सर्च\n- मुफ्त गेम्स, चर्चित समाचार</string>
   <string name="share_app_dialog_btn_share">साझा करें</string>
@@ -471,4 +493,5 @@
   <string name="travel_dialog_2_description_new">यात्रा के लिए आप %1$s के %2$s को अपने तयशुदा खोज इंजन के रूप में सेट कर सकते हैं।</string>
   <string name="travel_dialog_2_checkbox">मुझसे दोबारा ना पूछें</string>
   <string name="travel_dialog_2_action">तयशुदा बनाएं</string>
+  <string name="awesomebar_open_link_clipboard">कॉपी की गई लिंक खोलें</string>
 </resources>
