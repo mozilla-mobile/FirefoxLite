@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">Golek asil sabanjure</string>
   <string name="accessibility_find_previous_result">Golek asil sadurunge</string>
   <string name="accessibility_dismiss_find_in_page">Nolak nemokake ing kaca</string>
-  <string name="text_selection_search_action">Golèk ing Firefox Lite</string>
+  <string name="text_selection_search_action">Golèk ing Rocket</string>
   <string name="about_content_body">%1$s iku paramban sing ènthèng lan bantèr digawé déning %2$s. Misi kita iki kanggo ngopèni internèt sing séhat lan kabukak.</string>
   <string name="about_link_learn_more">Sinaoni manèh</string>
   <string name="about_link_support">Sokongan</string>
@@ -165,7 +165,7 @@
   <string name="remove">Ilangké</string>
   <string name="update_to_latest_app_snack_bar_update">VERSI ANYAR</string>
   <string name="privacy_policy_update_notification_title">Pratélan Panganyaran Produk</string>
-  <string name="privacy_policy_update_notification_action">Supaya Firefox Lite luwih apik kanggo sampéyan lan wong liya, kita ngowahi niti privasi. Tunyuk kanggo nyinaoni manèh.</string>
+  <string name="privacy_policy_update_notification_action">Supaya Rocket luwih apik kanggo sampéyan lan wong liya, kita ngowahi niti privasi. Tunyuk kanggo nyinaoni manèh.</string>
   <string name="rate_app_dialog_text_title">Dhemen %1$s?</string>
   <string name="rate_app_dialog_text_content">Matur nuwun wis milih produk kita. Tanggepan sampéyan penting kanggo kita.</string>
   <string name="rate_app_dialog_btn_go_rate">Bintangi Kita</string>

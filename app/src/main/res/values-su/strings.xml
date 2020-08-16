@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">Téang hasil séjén</string>
   <string name="accessibility_find_previous_result">Téang hasil saméméhna</string>
   <string name="accessibility_dismiss_find_in_page">Tutup téangan dina kaca</string>
-  <string name="text_selection_search_action">Paluruh di Firefox Lite</string>
+  <string name="text_selection_search_action">Paluruh di Rocket</string>
   <string name="about_content_body">%1$s téh panyungsi anu gancang tur hampang karya %2$s. Ari udaganana nya éta pikeun ngarojong internét nembrak anu séhat.</string>
   <string name="about_link_learn_more">Lenyepan</string>
   <string name="about_link_support">Pangrojong</string>
@@ -199,7 +199,7 @@
   <string name="update_to_latest_app_snack_bar_message">Wangun mutahir geus diundeur</string>
   <string name="update_to_latest_app_snack_bar_update">ANYARKEUN</string>
   <string name="privacy_policy_update_notification_title">Wawar Apdétan Prodak</string>
-  <string name="privacy_policy_update_notification_action">Ngarah Firefox Lite leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
+  <string name="privacy_policy_update_notification_action">Ngarah Rocket leuwih hadé pikeun anjeun jeung balaréa, kami nyieun sawatara parobahan kana kawijakan salindungan kami. Toél baé pikeun leuwih teleb.</string>
   <string name="message_set_default_success">Nuhun geus milih %1$s!</string>
   <string name="message_set_default_incomplet">Badé nganggeuskeun setélan %1$s salaku panyungsi baku anjeun?</string>
   <string name="setting_default_browser_instruction_system_settings">2 léngkah pikeun nyetél %1$s jadi panyungsi baku anjeun</string>

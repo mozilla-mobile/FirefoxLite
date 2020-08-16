@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">આગામી પરિણામ શોધો</string>
   <string name="accessibility_find_previous_result">અગાઉના પરિણામ શોધો</string>
   <string name="accessibility_dismiss_find_in_page">પૃષ્ઠમાં શોધો કાઢી નાખો</string>
-  <string name="text_selection_search_action">Firefox Lite માં શોધો</string>
+  <string name="text_selection_search_action">Rocket માં શોધો</string>
   <string name="about_content_body">%1$s એ %2$s દ્વારા ઉત્પાદિત કરવામાં આવેલું ઝડપી અને ઓછી જગ્યા રોકે તેવું છે. અમારું લક્ષ્ય એક યોગ્ય , બધાં વાપરી શકે તેવું ઇન્ટરનેટ પ્રસ્થાપિત કરવાનું છે.</string>
   <string name="about_link_learn_more">વધુ શીખો</string>
   <string name="about_link_support">સહાય</string>
@@ -169,7 +169,7 @@
   <string name="update_to_latest_app_snack_bar_message">નવીનતમ બિલ્ડ ડાઉનલોડ</string>
   <string name="update_to_latest_app_snack_bar_update">અપડેટ</string>
   <string name="privacy_policy_update_notification_title">ઉત્પાદન અધ્યતન બનાવવાની સૂચના</string>
-  <string name="privacy_policy_update_notification_action">Firefox Lite ને તમારાં માટે અને બીજા બધાં માટે વધુ સારુ બનાવવા, અમે ખાનગી પાૅલીસિમાં અમુક સુધારા કરેલ છે. વધું જાણવાં માટે આ દબાવો.</string>
+  <string name="privacy_policy_update_notification_action">Rocket ને તમારાં માટે અને બીજા બધાં માટે વધુ સારુ બનાવવા, અમે ખાનગી પાૅલીસિમાં અમુક સુધારા કરેલ છે. વધું જાણવાં માટે આ દબાવો.</string>
   <string name="rate_app_dialog_text_title">%1$s ગમ્યું?</string>
   <string name="rate_app_dialog_text_content">અમારું ઉત્પાદન પસંદ કરવા બદલ આપનો આભાર. તમારો અભિપ્રાય અમારી માટે મહત્વનો છે.</string>
   <string name="rate_app_dialog_btn_go_rate">અમને રેટ કરો</string>

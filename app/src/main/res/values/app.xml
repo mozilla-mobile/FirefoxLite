@@ -3,8 +3,8 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <string name="app_name" translatable="false">Firefox Lite</string>
-    <string name="app_name_private" translatable="false">Firefox Lite - Private browsing</string>
+    <string name="app_name" translatable="false">Rocket</string>
+    <string name="app_name_private" translatable="false">Rocket - Private browsing</string>
 
     <!-- This String is used in the User Agent -->
     <string name="useragent_appname" translatable="false">Rocket</string>

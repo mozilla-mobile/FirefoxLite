@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">తదుపరి ఫలితాన్ని కనుగొనండి</string>
   <string name="accessibility_find_previous_result">మునుపటి ఫలితాన్ని కనుగొనండి</string>
   <string name="accessibility_dismiss_find_in_page">పేజీలో వెతకడాన్ని రద్ధుచేయి</string>
-  <string name="text_selection_search_action">Firefox Liteతో వెతుకు</string>
+  <string name="text_selection_search_action">Rocketతో వెతుకు</string>
   <string name="about_content_body">%1$s అనేది %2$s వారు తయారుచేసిన వేగవంతమైన, తేలికైన విహారిణి. ఆరోగ్యకరమైన, స్వేచ్ఛాయుతమైన అంతర్జాలాన్ని వృద్ధిచేయడం మా ఆశయం.</string>
   <string name="about_link_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="about_link_support">తోడ్పాటు</string>
@@ -191,7 +191,7 @@
   <string name="update_to_latest_app_snack_bar_message">తాజా బిల్డు దించుకొనబడింది</string>
   <string name="update_to_latest_app_snack_bar_update">తాజాకరించు</string>
   <string name="privacy_policy_update_notification_title">ఉత్పత్తి తాజాకరణ గమనిక</string>
-  <string name="privacy_policy_update_notification_action">Firefox Liteని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. ఇంకా తెలుసుకోడానికి తాకండి.</string>
+  <string name="privacy_policy_update_notification_action">Rocketని మీకూ, ప్రతీఒక్కరికీ మెరుగుపరిచేందుకు, మా గోప్యతా విధానానికి మేం కొన్ని మార్పులు చేసాం. ఇంకా తెలుసుకోడానికి తాకండి.</string>
   <string name="message_set_default_success">%1$s‌ను ఎంచుకున్నందుకు కృతజ్ఞతలు!</string>
   <string name="setting_default_browser_instruction_open_external_link">ఎల్లప్పుడూ %1$s‌తో విహరించడం ఎలా?</string>
   <string name="always">ఎల్లప్పుడూ</string>

@@ -4,16 +4,16 @@
     <string name="travel_search_engine_fxlite">Tingnan ang mga resulta sa %1$s Travel Discovery</string>
 
     <!--Dialog-->
-    <!--dialog title for introducing Firefox Lite Travel Discovery-->
+    <!--dialog title for introducing Rocket Travel Discovery-->
     <string name="travel_dialog_1_title">Tumuklas Pa!</string>
-    <!--dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <!--dialog description for introducing the feature. The %1$s here is Rocket.-->
     <string name="travel_dialog_1_description">Mag-explore ng mga bagay na puwedeng gawin, mga accomodation, at higit pa sa Travel Discovery ng %1$s.</string>
-    <!--Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <!--Action button for seeing the search result in Rocket Travel Discovery-->
     <string name="travel_dialog_1_action_1">SUBUKAN ANG TRAVEL DISCOVERY</string>
     <!--Action button for dismissing this prompt-->
     <!--dialog title for asking if users want to change default search engine-->
     <string name="travel_dialog_2_title">Nag-enjoy sa Paggamit ng Travel Discovery?</string>
-    <!--dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <!--dialog description for introducing how it works. The %1$s here is Rocket.-->
     <string name="travel_dialog_2_description">Puwede mong itakda ang Travel Discovery ng %1$s bilang iyong default na search engine para sa paglalakbay.</string>
     <!--checkbox for not showing this dialog again-->
     <!--Action button for setting Travel Discovery as default search engine-->
@@ -30,7 +30,7 @@
     <string name="travel_dialog_1_action_1_new">SUBUKAN ANG %1$s</string>
     <string name="travel_dialog_2_title_new">Nag-e-enjoy na Gamitin ang %1$s?</string>
     <string name="travel_dialog_2_description_new">Puwede mong itakda ang %1$s %2$s bilang iyong default na search engine para sa pagbiyahe.</string>
-    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">Ino-optimize ang karanasan para sa iyo…</string>
     <!-- Introduce personalized home to new users -->
     <string name="onboarding_transition_feature_1">Pine-personalize</string>

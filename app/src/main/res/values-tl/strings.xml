@@ -173,7 +173,7 @@
   <string name="update_to_latest_app_snack_bar_message">Pinakabagong nai-download na build</string>
   <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
-  <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Firefox Lite para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
+  <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Rocket para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
   <string name="always">Palagi</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
   <string name="rate_app_dialog_text_content">Maraming salamat sa iyong pagtangkilik sa aming produkto. Ang iyong feedback ay napakahalaga sa amin.</string>

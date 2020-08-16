@@ -50,7 +50,7 @@
     <!-- This is the label of an action we offer when the user selects text in other third-party apps.
          Clicking this action will launch Rocket and perform a search in the default search engine.
          Please keep the "Firefox Rocket" part and don't localize the product name. -->
-    <string name="text_selection_search_action">Search in Firefox Lite</string>
+    <string name="text_selection_search_action">Search in Rocket</string>
 
     <!-- Content of "about Rocket". Argument 1 is the major body of the content #about_content_body.
          Argument 2,4,6,8 is the urls.
@@ -97,9 +97,9 @@
     <string name="preference_privacy_storage_clear_browsing_data">Clear browsing data</string>
     <string name="preference_privacy_storage_save_downloads_to">Save downloads to </string>
 
-    <!-- This preference does not set Firefox Lite as the default browser but instead links to Android's
+    <!-- This preference does not set Rocket as the default browser but instead links to Android's
      "default apps" screen, on older Android versions, we try to reset user's current default
-     browser and let user choose again if they want to always open links with Firefox Lite. -->
+     browser and let user choose again if they want to always open links with Rocket. -->
     <string name="preference_default_browser">Set as default browser</string>
     <!-- In the "Make default browser" preference entry, there is an optional description field
     which is empty before the entry is tapped. When a user taps the entry and the change is
@@ -204,20 +204,20 @@
     <string name="contextmenu_open_image_in_new_tab">Open image in new tab</string>
 
     <string name="new_name_upgrade_page_title">We have a new look!</string>
-    <!-- The %1$s here is a placeholder for "Firefox Lite"-->
+    <!-- The %1$s here is a placeholder for "Rocket"-->
     <string name="new_name_upgrade_page_text">With the evolved product, we bring you a newly refreshed %1$s, with new name and new logo.</string>
    
     <string name="firstrun_close_button">OK, got it!</string>
 
-    <!-- !NOT USE! The welcome titles in Firefox Lite 2.5 -->
+    <!-- !NOT USE! The welcome titles in Rocket 2.5 -->
     <string name="firstrun_fxlite_2.5_title_1">Hello!</string>
-    <!-- !NOT USE! The welcome titles in Firefox Lite 2.5 for asking users to choose a main purpose of downloading Firefox Lite. The %1$s is Firefox Lite. -->
+    <!-- !NOT USE! The welcome titles in Rocket 2.5 for asking users to choose a main purpose of downloading Rocket. The %1$s is Rocket. -->
     <string name="firstrun_fxlite_2.5_title_2">What brings you to %1$s?</string> 
-    <!-- The welcome titles in Firefox Lite 2.5 -->
+    <!-- The welcome titles in Rocket 2.5 -->
     <string name="firstrun_fxlite_2_5_title_A">Hello!</string>
-    <!-- The welcome titles in Firefox Lite 2.5 for asking users to choose a main purpose of downloading Firefox Lite. The %1$s is Firefox Lite. -->
+    <!-- The welcome titles in Rocket 2.5 for asking users to choose a main purpose of downloading Rocket. The %1$s is Rocket. -->
     <string name="firstrun_fxlite_2_5_title_B">What brings you to %1$s?</string>
-    <!-- 4 content themes for users to select in order to get the most relevant content on Firefox Lite Home -->
+    <!-- 4 content themes for users to select in order to get the most relevant content on Rocket Home -->
     <string name="content_theme_1">All of the Above</string>
     <string name="content_theme_2">Find Good Deals</string>
     <string name="content_theme_3">Play Games and Videos</string>
@@ -227,7 +227,7 @@
     <!-- Button to finish the on-boarding flow -->
     <string name="button_next">Next</string>
     
-    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title" translatable="false">Optimizing experience for you…</string>
     <!-- Introduce personalized home to new users -->
     <string name="onboarding_transition_feature_1" translatable="false">Personalizing your Home</string>
@@ -273,7 +273,7 @@
    
     <!-- The title in the dialog for congratulating users who have done a setting. -->
     <string name="set_as_default_dialog_title">Well done!</string>
-    <!-- The subtitle in the dialog for asking if the user want to set Firefox Lite as default. The %1$s is Firefox Lite. -->
+    <!-- The subtitle in the dialog for asking if the user want to set Rocket as default. The %1$s is Rocket. -->
     <string name="set_as_default_dialog_subtitle">Your %1$s is looking great! Do you want to set it as your default browser?</string>
     <!-- The button in the dialog for starting the default browser setting flow -->
     <string name="set_as_default_dialog_button">Set up now</string>
@@ -461,17 +461,17 @@
    
     <!-- In-app notification, Privacy policy update -->
     <string name="privacy_policy_update_notification_title">Product Update Notice</string>
-    <string name="privacy_policy_update_notification_action">To make Firefox Lite better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
+    <string name="privacy_policy_update_notification_action">To make Rocket better for you and everyone, we made some changes to our privacy policy. Tap to learn more.</string>
 
 
     <!--In-app Promotion, Set default browser-->
-    <!--Show a toast message when user set Firefox Lite as default browser successfully. The %1$s is Firefox Lite.-->
+    <!--Show a toast message when user set Rocket as default browser successfully. The %1$s is Rocket.-->
     <string name="message_set_default_success">Thanks for choosing %1$s!</string>
-    <!--Message shown after user tried to set Firefox Lite as default browser, and be directed to system settings then back, but we detect the default browser is still not Firefox Lite. The %1$s is Firefox Lite.-->
+    <!--Message shown after user tried to set Rocket as default browser, and be directed to system settings then back, but we detect the default browser is still not Rocket. The %1$s is Rocket.-->
     <string name="message_set_default_incomplet">Would you like to finish setting %1$s as your default browser?</string>
-    <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they be directed to system settings page to complete the settings. The %1$s is Firefox Lite.-->
+    <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they be directed to system settings page to complete the settings. The %1$s is Rocket.-->
     <string name="setting_default_browser_instruction_system_settings">2 steps to set %1$s as your default browser</string>
-    <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they need to choose Firefox Lite and check Always. The %1$s is Firefox Lite.-->
+    <!--Title for setting default browser dialog popped after user tap Set as default browser. The dialog is for guiding users that they need to choose Rocket and check Always. The %1$s is Rocket.-->
     <string name="setting_default_browser_instruction_open_external_link">How to always browse with %1$s?</string>
     <!--Text shown in the setting default browser instruction, the complete sentence is "Select Browser app", but we separate the sentences for code implementing purpose. "Browser app" is replaced with %1$s, so that we can identify the text of placeholder and show it as Bold font.-->
     <string name="instruction_select">Select %1$s</string>
@@ -511,7 +511,7 @@
     <!-- The message template used when user shares Rocket with friends. %1$s is the App name i.e. Rocket, and %2$s is the Google Play url, and %3$s is "Mozilla"-->
     <string name="share_app_promotion_text">Hey, check out this fast and lightweight browser from %3$s. %1$s %2$s</string> 
     
-    <!-- In-app message to update Firefox Lite -->
+    <!-- In-app message to update Rocket -->
     <string name="update_app_dialog_btn_update_now">UPDATE NOW!</string>
     <string name="update_app_dialog_btn_later">LATER</string>
    
@@ -698,7 +698,7 @@
     <string name="private_browsing_dialog_add_shortcut_yes_v2">YES, ADD IT NOW!</string>
     <!-- Message shown after user denied add private mode shortcut's prompt. -->
     <string name="private_browsing_dialog_add_shortcut_no_toast">You can add private mode shortcut later in settings.</string>
-    <!-- Name of Private mode shortcut. %1$s will be replaced with the name of the app (e.g. Firefox Lite) -->
+    <!-- Name of Private mode shortcut. %1$s will be replaced with the name of the app (e.g. Rocket) -->
     <string name="private_browsing_shortcut_name">%1$s - Private browsing</string>
     <!-- Item in Preferences that users can add private mode shortcut to their device' home. -->
     <string name="preference_add_private_browsing_shortcut">Add private mode shortcut to Home screen</string>
@@ -810,7 +810,7 @@
     <string name="gaming_vertical_genre_11">Sports &amp; Racing</string>
     <string name="gaming_vertical_genre_12">Girls</string>
 
-    <!-- Onboarding for new users to introduce Firefox Lite 2.0 -->
+    <!-- Onboarding for new users to introduce Rocket 2.0 -->
     <!-- Introduce Content & Services -->
     <string name="onboarding_2_content_services_news_shopping_games">Tap to read trending news, find good deals, or have fun playing the hottest free games!</string>
     <string name="onboarding_2_content_services_news_games">Tap to read trending news or have fun playing the hottest free games!</string>
@@ -863,7 +863,7 @@
     <string name="msrp_challenge_title">7-day challenge for Rp 15,000 Shopee voucher</string>  
     <string name="msrp_challenge_description">Rp 15,000 Shopee voucher</string>    
     <string name="msrp_challenge_details_title_1">Join the 7-Day challenge</string>
-    <!-- The %1$s here is a placeholder for "Firefox Lite"--> 
+    <!-- The %1$s here is a placeholder for "Rocket"--> 
     <string name="msrp_challenge_details_body_1">Try Shopping, News, Game on %1$s Home by simply clicking the buttons for seven days in a row.</string>
     <string name="msrp_challenge_details_title_2">Use your Firefox account to redeem your reward</string>
     <!-- The %1$s here is a placeholder for "Enter your email address to get started."-->
@@ -945,7 +945,7 @@
     <string name="msrp_completed_toast_day4">Congrats! You have completed the fourth daily challenge!</string>
     <string name="msrp_completed_toast_day5">Terrific! You have completed the fifth daily challenge!</string>
     <string name="msrp_completed_toast_day6">Wow! You are just one day away from getting the voucher!</string>
-    <!-- The %1$s here is a placeholder for "Firefox Lite"-->  
+    <!-- The %1$s here is a placeholder for "Rocket"-->  
     <string name="msrp_completed_toast_day7">You’ve completed the challenge! Please go back to %1$s Home to redeem your voucher!</string>
     
     <!--Notifications for last 3 days-->
@@ -1033,9 +1033,9 @@
     <string name="travel_search_engine_1">See results in %1$s</string>
     <!--!NOT USE! this is a title indicates that users will see search results summerized by smart travel search after tapping on the following options. -->
     <string name="travel_search_engine_2" translatable="false">See results in smart travel search</string>
-    <!--!NOT USE! this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Firefox Lite.-->
+    <!--!NOT USE! this is a title indicates that users will see search results summerized by Travel Discovery after tapping on the following options. the %1$s here is Rocket.-->
     <string name="travel_search_engine_fxlite" translatable="false">See results in %1$s Travel Discovery</string>   
-    <!--this is a title of search suggestions from Firefox Lite Travel Discovery. the first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
+    <!--this is a title of search suggestions from Rocket Travel Discovery. the first %1$s is Rocket, and the %2$s is Travel Discovery.-->
     <string name="travel_search_engine_fxlite_new">See results in %1$s %2$s</string>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery" translatable="false">Travel Discovery</string>
@@ -1047,15 +1047,15 @@
 
  
     <!--Dialog-->
-    <!--dialog title for introducing Firefox Lite Travel Discovery-->
+    <!--dialog title for introducing Rocket Travel Discovery-->
     <string name="travel_dialog_1_title">Discover More!</string>
-    <!--!NOT USE! dialog description for introducing the feature. The %1$s here is Firefox Lite.-->
+    <!--!NOT USE! dialog description for introducing the feature. The %1$s here is Rocket.-->
     <string name="travel_dialog_1_description" translatable="false">Explore things to do, accommodations, and more in %1$s Travel Discovery.</string>
-    <!--dialog description for introducing the feature. the first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
+    <!--dialog description for introducing the feature. the first %1$s is Rocket, and the %2$s is Travel Discovery.-->
     <string name="travel_dialog_1_description_new">Explore things to do, accommodations, and more in %1$s %2$s.</string>
-    <!--!NOT USE! Action button for seeing the search result in Firefox Lite Travel Discovery-->
+    <!--!NOT USE! Action button for seeing the search result in Rocket Travel Discovery-->
     <string name="travel_dialog_1_action_1" translatable="false">TRY TRAVEL DISCOVERY</string>
-    <!--Action button for seeing the search result in Firefox Lite Travel Discovery. the %1$s is Travel Discovery.-->
+    <!--Action button for seeing the search result in Rocket Travel Discovery. the %1$s is Travel Discovery.-->
     <string name="travel_dialog_1_action_1_new">TRY %1$s</string>
     <!--Action button for dismissing this prompt-->
     <string name="travel_dialog_1_action_2">NO, THANKS</string>
@@ -1064,9 +1064,9 @@
     <string name="travel_dialog_2_title" translatable="false">Enjoy Using Travel Discovery?</string>
     <!--dialog title for asking if users want to change default search engine. the %1$s is Travel Discovery.-->
     <string name="travel_dialog_2_title_new">Enjoy Using %1$s?</string>
-    <!--!NOT USE! dialog description for introducing how it works. The %1$s here is Firefox Lite.-->
+    <!--!NOT USE! dialog description for introducing how it works. The %1$s here is Rocket.-->
     <string name="travel_dialog_2_description" translatable="false">You can set %1$s Travel Disovery as your default search engine for travel.</string>
-    <!--dialog description for introducing how it works. The first %1$s is Firefox Lite, and the %2$s is Travel Discovery.-->
+    <!--dialog description for introducing how it works. The first %1$s is Rocket, and the %2$s is Travel Discovery.-->
     <string name="travel_dialog_2_description_new">You can set %1$s %2$s as your default search engine for travel.</string>
     <!--checkbox for not showing this dialog again-->
     <string name="travel_dialog_2_checkbox">Do not ask me again</string>

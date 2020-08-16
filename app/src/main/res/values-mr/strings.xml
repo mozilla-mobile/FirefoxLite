@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">पुढील परिणाम शोधा</string>
   <string name="accessibility_find_previous_result">मागील परिणाम शोधा</string>
   <string name="accessibility_dismiss_find_in_page">पृष्ठावर शोधणे रद्द करा</string>
-  <string name="text_selection_search_action">Firefox Lite मध्ये शोधा</string>
+  <string name="text_selection_search_action">Rocket मध्ये शोधा</string>
   <string name="about_content_body">%2$s द्वारे तयार केलेला %1$s हा एक जलद आणि उज्वल ब्राउझर आहे. आमचे ध्येय निरोगी , सर्व-वापरण्यायोग्य इंटरनेट स्थापित करणे आहे.</string>
   <string name="about_link_learn_more">अधिक जाणा</string>
   <string name="about_link_support">आधार</string>
@@ -169,7 +169,7 @@
   <string name="update_to_latest_app_snack_bar_message">नवीनतम बिल्ड डाउनलोड केले</string>
   <string name="update_to_latest_app_snack_bar_update">अद्ययावत करा</string>
   <string name="privacy_policy_update_notification_title">उत्पादन अद्यतन सूचना</string>
-  <string name="privacy_policy_update_notification_action">FIrefox Lite सर्वांसाठी सुधारण्यासाठी, आम्ही गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
+  <string name="privacy_policy_update_notification_action">Rocket सर्वांसाठी सुधारण्यासाठी, आम्ही गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
   <string name="rate_app_dialog_text_title">%1$s आवडलं का?</string>
   <string name="rate_app_dialog_text_content">आमचे उत्पादन निवडल्याबद्दल धन्यवाद. आपला अभिप्राय आमच्यासाठी महत्त्वाचा आहे.</string>
   <string name="rate_app_dialog_btn_go_rate">गुणांकन द्या</string>

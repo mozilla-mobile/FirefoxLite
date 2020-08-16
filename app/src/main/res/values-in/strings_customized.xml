@@ -2,7 +2,7 @@
 <resources>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">Penemuan Perjalanan</string>
-    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">Mengoptimalkan pengalaman untuk Anda…</string>
     <!-- Introduce personalized home to new users -->
     <string name="onboarding_transition_feature_1">Mempersonalisasi Beranda Anda</string>

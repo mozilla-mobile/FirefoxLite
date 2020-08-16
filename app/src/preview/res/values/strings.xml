@@ -3,6 +3,6 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <string name="app_name" translatable="false">Firefox Lite Preview</string>
-    <string name="app_name_private" translatable="false">Firefox Lite Preview - Private browsing</string>
+    <string name="app_name" translatable="false">Rocket Preview</string>
+    <string name="app_name_private" translatable="false">Rocket Preview - Private browsing</string>
 </resources>

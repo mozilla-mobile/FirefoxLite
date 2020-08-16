@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">ค้นหาผลลัพธ์ถัดไป</string>
   <string name="accessibility_find_previous_result">ค้นหาผลลัพธ์ก่อนหน้า</string>
   <string name="accessibility_dismiss_find_in_page">ยกเลิกการค้นหาในหน้า</string>
-  <string name="text_selection_search_action">ค้นหาใน Firefox Lite</string>
+  <string name="text_selection_search_action">ค้นหาใน Rocket</string>
   <string name="about_content_body">%1$s เป็นเบราว์เซอร์ที่เร็วและเบาที่สร้างขึ้นโดย %2$s ภารกิจของเราคือส่งเสริมอินเทอร์เน็ตที่สมบูรณ์และเปิดกว้าง</string>
   <string name="about_link_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="about_link_support">การสนับสนุน</string>
@@ -199,7 +199,7 @@
   <string name="update_to_latest_app_snack_bar_message">ดาวน์โหลดรุ่นล่าสุดแล้ว</string>
   <string name="update_to_latest_app_snack_bar_update">อัปเดต</string>
   <string name="privacy_policy_update_notification_title">ประกาศการอัปเดตผลิตภัณฑ์</string>
-  <string name="privacy_policy_update_notification_action">เพื่อทำให้ Firefox Lite ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
+  <string name="privacy_policy_update_notification_action">เพื่อทำให้ Rocket ดีขึ้นสำหรับคุณและทุกคน เราได้ทำการเปลี่ยนแปลงบางอย่างกับนโยบายความเป็นส่วนตัวของเรา แตะเพื่อเรียนรู้เพิ่มเติม</string>
   <string name="message_set_default_success">ขอบคุณที่เลือก %1$s!</string>
   <string name="message_set_default_incomplet">คุณต้องการตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณหรือไม่?</string>
   <string name="setting_default_browser_instruction_system_settings">ตั้ง %1$s เป็นเบราว์เซอร์เริ่มต้นของคุณด้วย 2 ขั้นตอน</string>
