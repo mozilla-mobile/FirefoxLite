@@ -29,7 +29,7 @@
 
     <ImageView
         android:id="@+id/pm_home_brand_logo"
-        android:src="@drawable/ic_firefox_lite_logo"
+        android:src="@drawable/ic_rocket_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

@@ -47,14 +47,12 @@
         android:id="@+id/home_fragment_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_firefox_lite_logo"
-        android:visibility="@integer/home_firefox_logo_visibility"
+        android:src="@drawable/ic_rocket_logo"
         app:layout_constraintBottom_toTopOf="@id/arc_panel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26"
-        tools:visibility="visible" />
+        app:layout_constraintVertical_bias="0.26" />
 
     <org.mozilla.rocket.home.logoman.ui.LogoManNotification
         android:id="@+id/logo_man_notification"
