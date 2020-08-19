@@ -16,13 +16,10 @@ import androidx.lifecycle.Observer
 import dagger.Lazy
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.add_top_sites_red_dot
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.btn_private_browsing
-import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_red_dot
-import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.content_services_switch
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_private_mode
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.img_screenshots
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_add_top_sites
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_bookmark
-import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_content_services
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_delete
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_download
 import kotlinx.android.synthetic.main.bottom_sheet_home_menu.view.menu_exit
@@ -165,11 +162,6 @@ class HomeMenuDialog : LifecycleBottomSheetDialog {
                     menuViewModel.onNewMenuItemDisplayed()
                 }
             })
-            menuViewModel.isContentHubEnabled.observe(this@HomeMenuDialog, Observer {
-                if (content_services_switch.isChecked != it) {
-                    content_services_switch.isChecked = it
-                }
-            })
 
             btn_private_browsing.setOnClickListener {
                 postDelayClickEvent {
@@ -192,13 +184,6 @@ class HomeMenuDialog : LifecycleBottomSheetDialog {
                 if (needToUpdate) {
                     chromeViewModel.onNightModeToggled()
                 }
-            }
-            menu_content_services.setOnClickListener {
-                content_services_switch.toggle()
-            }
-            content_services_switch.setOnCheckedChangeListener { _, isChecked ->
-                menuViewModel.onContentHubSwitchToggled(isChecked)
-                TelemetryWrapper.changeMenuVerticalToggle(isChecked)
             }
             menu_add_top_sites.setOnClickListener {
                 postDelayClickEvent {
@@ -240,13 +225,11 @@ class HomeMenuDialog : LifecycleBottomSheetDialog {
     }
 
     private fun showNewItemHint() {
-        rootView.content_services_red_dot.visibility = View.VISIBLE
         rootView.add_top_sites_red_dot.visibility = View.VISIBLE
         rootView.themes_red_dot.visibility = View.VISIBLE
     }
 
     private fun hideNewItemHint() {
-        rootView.content_services_red_dot.visibility = View.INVISIBLE
         rootView.add_top_sites_red_dot.visibility = View.INVISIBLE
         rootView.themes_red_dot.visibility = View.INVISIBLE
     }

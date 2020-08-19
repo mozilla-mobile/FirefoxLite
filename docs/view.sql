@@ -73,7 +73,6 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('menu') ) AND (event_value IN ('bookmark') ) THEN 'Rocket -  Click Menu - Bookmarks' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('menu') ) AND (event_value IN ('theme') ) THEN 'Rocket -  Click Menu - Theme' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('menu') ) AND (event_value IN ('add_topsite') ) THEN 'Rocket -  Click Menu - Add Topsite' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('change') ) AND (event_object IN ('menu') ) AND (event_value IN ('vertical') ) THEN 'Rocket -  Click Menu - Vertical Toggle' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('forward') ) THEN 'Rocket -  Click Toolbar - Forward' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('reload') ) THEN 'Rocket -  Click Toolbar - Reload' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('share') ) AND (event_object IN ('toolbar') ) AND (event_value IN ('link') ) THEN 'Rocket -  Click Toolbar - Share Link' 

@@ -383,7 +383,6 @@
   <string name="onboarding_2_smart_shopping_search_title">การค้นหาแบบสมาร์ตช็อปปิ้ง</string>
   <string name="onboarding_2_smart_shopping_search_description">เปรียบเทียบราคากับร้านค้าออนไลน์ต่าง ๆ ได้ง่ายสุด ๆ ลองดูเลย!</string>
   <string name="home_search_bar_text">ค้นหา…</string>
-  <string name="home_content_services">เนื้อหาและบริการ</string>
   <string name="home_discovery">ค้นพบ</string>
   <string name="content_home_context_menu_add_to_home_screen">เพิ่มไปยังหน้าจอหลัก</string>
   <string name="content_home_context_menu_share_link">แบ่งปันลิงก์</string>

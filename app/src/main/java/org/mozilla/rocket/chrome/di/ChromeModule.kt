@@ -23,8 +23,6 @@ import org.mozilla.rocket.download.data.AndroidDownloadManagerDataSource
 import org.mozilla.rocket.download.data.DownloadsLocalDataSource
 import org.mozilla.rocket.download.data.DownloadsRepository
 import org.mozilla.rocket.helper.StorageHelper
-import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
-import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.persistance.History.HistoryDatabase
 import org.mozilla.rocket.persistance.History.HistoryRepository
@@ -100,15 +98,11 @@ object ChromeModule {
     fun provideMenuViewModel(
         shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
         readNewMenuItemsUseCase: ReadNewMenuItemsUseCase,
-        isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
-        shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
-        setContentHubEnabledUseCase: SetContentHubEnabledUseCase
+        isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase
     ): MenuViewModel = MenuViewModel(
         shouldShowNewMenuItemHintUseCase,
         readNewMenuItemsUseCase,
-        isHomeScreenShoppingButtonEnabledUseCase,
-        shouldShowContentHubUseCase,
-        setContentHubEnabledUseCase
+        isHomeScreenShoppingButtonEnabledUseCase
     )
 
     @JvmStatic

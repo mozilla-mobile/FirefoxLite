@@ -342,58 +342,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/menu_content_services"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="0dp"
-                android:paddingEnd="24dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="?android:attr/selectableItemBackground">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="0dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <View
-                        android:id="@+id/content_services_red_dot"
-                        android:layout_width="6dp"
-                        android:layout_height="6dp"
-                        android:background="@drawable/ic_red_dot"
-                        android:visibility="invisible" />
-
-                    <ImageView
-                        android:layout_width="@dimen/menu_item_size"
-                        android:layout_height="@dimen/menu_item_size"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/menu_content_services"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="14sp"
-                        android:fontFamily="sans-serif"
-                        android:textColor="@color/paletteLightBlack100"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/label_menu_content_services"/>
-
-                </LinearLayout>
-
-                <Switch
-                    android:id="@+id/content_services_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"/>
-
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

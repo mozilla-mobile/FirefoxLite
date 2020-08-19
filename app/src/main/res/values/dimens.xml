@@ -103,7 +103,6 @@
 
     <!--  HomeFragment  -->
     <item name="home_firefox_logo_visibility" type="integer">@integer/visibility_gone</item>
-    <item name="content_hub_title_visibility" type="integer">@integer/visibility_gone</item>
     <item name="top_sites_pager_indicator_visibility" type="integer">@integer/visibility_gone</item>
     <item name="content_hub_title_top_margin" type="dimen">0dp</item>
     <dimen name="shopping_focus_view_radius">51dp</dimen>

@@ -56,44 +56,6 @@
         app:layout_constraintVertical_bias="0.26"
         tools:visibility="visible" />
 
-    <LinearLayout
-        android:id="@+id/content_hub_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/content_hub_title_top_margin"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/home_fragment_title"
-        tools:layout_marginTop="16dp">
-
-        <org.mozilla.rocket.nightmode.themed.ThemedTextView
-            android:id="@+id/content_hub_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/home_content_services"
-            android:textColor="@color/home_content_hub_title"
-            android:textSize="12dp"
-            android:visibility="@integer/content_hub_title_visibility"
-            android:shadowColor="#4C000000"
-            android:shadowRadius="8"
-            android:paddingTop="4dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            tools:ignore="SpUsage" />
-
-        <org.mozilla.rocket.home.contenthub.ui.ContentHub
-            android:id="@+id/content_hub"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            tools:background="#00FF00"
-            tools:layout_height="40dp"
-            tools:layout_width="200dp" />
-    </LinearLayout>
-
     <org.mozilla.rocket.home.logoman.ui.LogoManNotification
         android:id="@+id/logo_man_notification"
         android:layout_width="match_parent"

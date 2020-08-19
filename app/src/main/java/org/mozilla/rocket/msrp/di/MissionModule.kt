@@ -13,7 +13,6 @@ import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
 import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
 import org.mozilla.rocket.msrp.domain.GetApkDownloadLinkUseCase
 import org.mozilla.rocket.msrp.domain.GetChallengeMissionsUseCase
-import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetCouponUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.GetRedeemMissionsUseCase
@@ -179,13 +178,6 @@ object MissionModule {
     fun provideCompleteJoinMissionOnboardingUseCase(
         missionRepository: MissionRepository
     ) = CompleteJoinMissionOnboardingUseCase(missionRepository)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGetContentHubClickOnboardingEventUseCase(
-        missionRepository: MissionRepository
-    ) = GetContentHubClickOnboardingEventUseCase(missionRepository)
 
     @JvmStatic
     @Singleton

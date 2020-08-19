@@ -823,8 +823,6 @@
     <string name="home_search_bar_text">Search…</string>
     
     <!-- Content & Services -->
-    <!-- Title of Content & Services -->
-    <string name="home_content_services">Content &amp; Services</string>
     <string name="home_discovery">Discovery</string>
     <!-- Actions in context menu. Users can long press an item then show the context menu to select an action -->
     <string name="content_home_context_menu_add_to_home_screen">Add to Home screen</string>
