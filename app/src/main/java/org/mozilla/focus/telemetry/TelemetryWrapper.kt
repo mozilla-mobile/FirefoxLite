@@ -16,61 +16,31 @@ import android.os.StrictMode.ThreadPolicy.Builder
 import android.preference.PreferenceManager
 import android.util.Log
 import android.webkit.PermissionRequest
-import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import org.mozilla.focus.BuildConfig
 import org.mozilla.focus.R
-import org.mozilla.focus.provider.ScreenshotContract
-import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
 import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
-import org.mozilla.focus.utils.Browsers
 import org.mozilla.focus.utils.FirebaseHelper
-import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
 import org.mozilla.rocket.content.common.data.TabSwipeTelemetryData
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
-import org.mozilla.rocket.home.data.ContentPrefRepo
-import org.mozilla.rocket.theme.ThemeManager
 import org.mozilla.strictmodeviolator.StrictModeViolation
-import org.mozilla.telemetry.Telemetry
-import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.telemetry.annotation.TelemetryDoc
 import org.mozilla.telemetry.annotation.TelemetryExtra
-import org.mozilla.telemetry.config.TelemetryConfiguration
-import org.mozilla.telemetry.event.TelemetryEvent
-import org.mozilla.telemetry.measurement.DefaultSearchMeasurement
-import org.mozilla.telemetry.measurement.EventsMeasurement
-import org.mozilla.telemetry.measurement.SearchesMeasurement
-import org.mozilla.telemetry.measurement.SettingsMeasurement
-import org.mozilla.telemetry.measurement.TelemetryMeasurement
-import org.mozilla.telemetry.net.TelemetryClient
-import org.mozilla.telemetry.ping.TelemetryCorePingBuilder
-import org.mozilla.telemetry.ping.TelemetryEventPingBuilder
-import org.mozilla.telemetry.ping.TelemetryPingBuilder
-import org.mozilla.telemetry.schedule.jobscheduler.JobSchedulerTelemetryScheduler
-import org.mozilla.telemetry.serialize.JSONPingSerializer
-import org.mozilla.telemetry.storage.FileTelemetryStorage
-import org.mozilla.threadutils.ThreadUtils
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.roundToInt
 
 object TelemetryWrapper {
-    private const val TELEMETRY_APP_NAME_ZERDA = "Zerda"
-
     private const val RATE_APP_NOTIFICATION_TELEMETRY_VERSION = 3
     private const val DEFAULT_BROWSER_NOTIFICATION_TELEMETRY_VERSION = 2
     private const val OPEN_HOME_LINK_VERSION = "2"
     private const val FIND_IN_PAGE_VERSION = 2
     private const val SEARCHCLEAR_TELEMETRY_VERSION = "2"
     private const val SEARCHDISMISS_TELEMETRY_VERSION = "2"
-
-    @JvmStatic
-    private val sRefCount = AtomicInteger(0)
+    private lateinit var appContext: Context
 
     internal object Category {
         const val ACTION = "action"
@@ -101,8 +71,6 @@ object TelemetryWrapper {
         const val END = "end"
         const val IMPRESSION = "impression"
         const val PIN = "pin"
-        const val PREDICTED = "predicted"
-
         const val FOREGROUND = "foreground"
         const val BACKGROUND = "background"
         const val SHARE = "share"
@@ -131,27 +99,21 @@ object TelemetryWrapper {
         const val TAB = "tab"
         const val TABTRAY = "tab_tray"
         const val CLOSE_ALL = "close_all"
-
         const val SETTING = "setting"
         const val APP = "app"
         const val MENU = "menu"
         const val FIND_IN_PAGE = "find_in_page"
-
         const val BROWSER = "browser"
         const val BROWSER_CONTEXTMENU = "browser_contextmenu"
         const val FIRSTRUN_PUSH = "firstrun_push"
-
         const val FEEDBACK = "feedback"
         const val DEFAULT_BROWSER = "default_browser"
         const val PROMOTE_SHARE = "promote_share"
         const val THEMETOY = "themetoy"
         const val QUICK_SEARCH = "quicksearch"
-
         const val LANDSCAPE_MODE = "landscape_mode"
-
         const val UPDATE_MESSAGE = "update_msg"
         const val UPDATE = "update"
-
         const val ONBOARDING = "onboarding"
         const val CONTEXTUAL_HINT = "contextual_hint"
         const val CONTENT_HUB = "content_hub"
@@ -163,7 +125,6 @@ object TelemetryWrapper {
         const val MESSAGE = "message"
         const val CATEGORY = "category"
         const val PROCESS = "process"
-        const val AUDIENCE = "audience"
         const val CHALLENGE_PAGE = "challenge_page"
         const val TASK = "task"
         const val ACCOUNT = "account"
@@ -173,7 +134,6 @@ object TelemetryWrapper {
         const val TOAST = "toast"
         const val SNACKBAR = "snackbar"
         const val DOWNLOAD = "download"
-        const val FIRSTRUN = "firstrun"
     }
 
     object Value {
@@ -186,7 +146,6 @@ object TelemetryWrapper {
         internal const val BLOCK_IMAGE = "block_image"
         internal const val CLEAR_CACHE = "clear_cache"
         internal const val SETTINGS = "settings"
-
         internal const val TABTRAY = "tab_tray"
         internal const val TOOLBAR = "toolbar"
         internal const val FORWARD = "forward"
@@ -196,16 +155,13 @@ object TelemetryWrapper {
         internal const val FIND_IN_PAGE = "find_in_page"
         internal const val THEME = "theme"
         internal const val ADD_TOPSITE = "add_topsite"
-
         internal const val SEARCH_BUTTON = "search_btn"
         internal const val SEARCH_BOX = "search_box"
         internal const val MINI_URLBAR = "mini_urlbar"
-
         internal const val FILE = "file"
         internal const val IMAGE = "image"
         internal const val LINK = "link"
         internal const val INFO = "info"
-
         internal const val ENTER = "enter"
         internal const val EXIT = "exit"
         internal const val GEOLOCATION = "geolocation"
@@ -213,37 +169,28 @@ object TelemetryWrapper {
         internal const val VIDEO = "video"
         internal const val MIDI = "midi"
         internal const val EME = "eme"
-
         internal const val LEARN_MORE = "learn_more"
-
         const val DISMISS = "dismiss"
         const val POSITIVE = "positive"
         const val NEGATIVE = "negative"
         const val SHARE = "share"
-
         internal const val LAUNCHER = "launcher"
         internal const val EXTERNAL_APP = "external_app"
         internal const val SHORTCUT = "shortcut"
         internal const val GAME_SHORTCUT = "game_shortcut"
         internal const val PRIVATE_MODE = "private_mode"
-
         internal const val PREVIOUS = "previous"
         internal const val NEXT = "next"
-
         internal const val NIGHT_MODE = "night_mode"
         internal const val NIGHT_MODE_BRIGHTNESS = "night_mode_brightness"
-
         internal const val SETTINGS_PRIVATE_SHORTCUT = "pref_private_shortcut"
-
         internal const val APPLY = "apply"
-
         internal const val FIRSTRUN = "firstrun"
         internal const val IN_APP_MESSAGE = "in_app_message"
         internal const val VERTICAL = "vertical"
         internal const val TAB_SWIPE = "tab_swipe"
         internal const val OPEN_IN_BROWSER = "OPEN_IN_BROWSER"
         internal const val BACK = "back"
-        internal const val AUDIENCE_NAME = "audience_name"
         internal const val JOIN = "join"
         internal const val TASK = "task"
         internal const val CHALLENGE_COMPLETE = "challenge_complete"
@@ -269,8 +216,6 @@ object TelemetryWrapper {
         internal const val SET_DEFAULT_SUCCESS = "set_default_success"
         internal const val SET_DEFAULT_TRY_AGAIN = "set_default_try_again"
         internal const val GO_SET_DEFAULT = "go_set_default"
-        internal const val FINISH = "finish"
-        internal const val WHATSNEW = "whatsnew"
     }
 
     internal object Extra {
@@ -288,7 +233,6 @@ object TelemetryWrapper {
         const val CATEGORY_VERSION = "category_versio"
         const val ENGINE = "engine"
         const val DELAY = "delay"
-        const val MESSAGE = "message"
         const val MESSAGE_ID = "message_id"
         const val POSITION = "position"
         const val FEED = "feed"
@@ -311,7 +255,6 @@ object TelemetryWrapper {
         const val SHOW_KEYBOARD = "show_keyboard"
         const val IMPRESSION = "impression"
         const val LOADTIME = "loadtime"
-        const val AUDIENCE_NAME = "audience_name"
         const val TASK = "task"
         const val FINISHED = "finished"
         const val ITEM_ID = "item_id"
@@ -398,7 +341,6 @@ object TelemetryWrapper {
         const val TRY_AGAIN = "try_again"
         const val CONTEXT_MENU = "context_menu"
         const val EMPTY_HINT = "empty_hint"
-        const val AWESOMEBAR_TYPE_USER_INPUT = "user_input"
         const val AWESOMEBAR_TYPE_HISTORY = "history"
         const val AWESOMEBAR_TYPE_BOOKMARK = "bookmark"
         const val AWESOMEBAR_TYPE_TABTRAY = "tabtray"
@@ -442,108 +384,15 @@ object TelemetryWrapper {
         preferences.edit()
                 .putBoolean(key, enabled)
                 .apply()
-
-        ThreadUtils.postToBackgroundThread {
-            // We want to queue this ping and send asap.
-            TelemetryWrapper.settingsEvent(key, enabled.toString(), true)
-
-            // If there are things already collected, we'll still upload them.
-            TelemetryHolder.get()
-                    .configuration
-                    .isCollectionEnabled = enabled
-        }
     }
 
     fun init(context: Context) {
         StrictModeViolation.tempGrant({ obj: Builder -> obj.permitDiskReads().permitDiskWrites() }) {
+            appContext = context.applicationContext
             // When initializing the telemetry library it will make sure that all directories exist and
             // are readable/writable.
-            val resources = context.resources
-
             val telemetryEnabled = isTelemetryEnabled(context)
-
-            updateDefaultBrowserStatus(context)
-
-            val trackerTokenPrefKey = resources.getString(R.string.pref_key_s_tracker_token)
-            val channel = AppConstants.getChannel()
-            val configuration = TelemetryConfiguration(context)
-                    .setServerEndpoint("https://incoming.telemetry.mozilla.org")
-                    .setAppName(TELEMETRY_APP_NAME_ZERDA)
-                    .setUpdateChannel(channel)
-                    .setPreferencesImportantForTelemetry(
-                            resources.getString(R.string.pref_key_search_engine),
-                            resources.getString(R.string.pref_key_turbo_mode),
-                            resources.getString(R.string.pref_key_performance_block_images),
-                            resources.getString(R.string.pref_key_default_browser),
-                            resources.getString(R.string.pref_key_default_browser_name),
-                            resources.getString(R.string.pref_key_storage_save_downloads_to),
-                            resources.getString(R.string.pref_key_webview_version),
-                            resources.getString(R.string.pref_key_locale),
-                            trackerTokenPrefKey
-                    )
-                    .setSettingsProvider(CustomSettingsProvider())
-                    .setCollectionEnabled(telemetryEnabled)
-                    .setUploadEnabled(true) // the default value for UploadEnabled is true, but we want to make it clear.
-
             FirebaseHelper.init(context, telemetryEnabled)
-
-            updateFirebaseUserPropertiesAsync(configuration)
-
-            val serializer = JSONPingSerializer()
-            val storage = FileTelemetryStorage(configuration, serializer)
-            val client = TelemetryClient(HttpURLConnectionClient())
-            val scheduler = JobSchedulerTelemetryScheduler()
-
-            TelemetryHolder.set(
-                    Telemetry(configuration, storage, client, scheduler)
-                            .addPingBuilder(TelemetryCorePingBuilder(configuration))
-                            .addPingBuilder(TelemetryEventPingBuilder(configuration))
-                            .setDefaultSearchProvider(createDefaultSearchProvider(context))
-            )
-        }
-    }
-
-    private fun updateFirebaseUserPropertiesAsync(configuration: TelemetryConfiguration) {
-        ThreadUtils.postToBackgroundThread {
-            val provider = CustomSettingsProvider().apply { update(configuration) }
-            val context = configuration.context
-
-            configuration.preferencesImportantForTelemetry?.forEach { key ->
-                val value = if (provider.containsKey(key)) {
-                    provider.getValue(key).toString()
-                } else {
-                    ""
-                }
-
-                val propertyKey = convertToPropertyKey(context, key)
-                FirebaseHelper.setUserProperty(configuration.context, propertyKey, value)
-            }
-        }
-    }
-
-    private fun convertToPropertyKey(context: Context, key: String): String {
-        return when (key) {
-            context.getString(R.string.pref_key_s_tracker_token) -> {
-                FirebaseHelper.USER_PROPERTY_TRACKER
-            }
-            context.getString(R.string.pref_key_default_browser_name) -> {
-                FirebaseHelper.USER_PROPERTY_DEFAULT_BROWSER_NAME
-            }
-            else -> {
-                key
-            }
-        }
-    }
-
-    private fun updateDefaultBrowserStatus(context: Context) {
-        Settings.updatePrefDefaultBrowserIfNeeded(context, Browsers.isDefaultBrowser(context), Browsers.hasDefaultBrowser(context))
-    }
-
-    private fun createDefaultSearchProvider(context: Context): DefaultSearchMeasurement.DefaultSearchEngineProvider {
-        return DefaultSearchMeasurement.DefaultSearchEngineProvider {
-            SearchEngineManager.getInstance()
-                    .getDefaultSearchEngine(context)
-                    .identifier
         }
     }
 
@@ -699,13 +548,13 @@ object TelemetryWrapper {
             extras = [TelemetryExtra(name = Extra.TO, value = "New Value for the pref")],
             skipAmplitude = true)
     @JvmStatic
-    fun settingsEvent(key: String, value: String, sendNow: Boolean = false) {
+    fun settingsEvent(key: String, value: String) {
         // We only log whitelist-ed setting
         val validPrefKey = FirebaseEvent.getValidPrefKey(key)
         if (validPrefKey != null) {
             EventBuilder(Category.ACTION, Method.CHANGE, Object.SETTING, validPrefKey)
                     .extra(Extra.TO, value)
-                    .queue(sendNow)
+                    .queue()
         }
     }
 
@@ -764,10 +613,6 @@ object TelemetryWrapper {
             extras = [])
     @JvmStatic
     fun startSession() {
-        if (sRefCount.getAndIncrement() == 0) {
-            TelemetryHolder.get().recordSessionStart()
-        }
-
         EventBuilder(Category.ACTION, Method.FOREGROUND, Object.APP).queue()
     }
 
@@ -780,19 +625,7 @@ object TelemetryWrapper {
             extras = [])
     @JvmStatic
     fun stopSession() {
-        if (sRefCount.decrementAndGet() == 0) {
-            TelemetryHolder.get().recordSessionEnd()
-        }
-
         EventBuilder(Category.ACTION, Method.BACKGROUND, Object.APP).queue()
-    }
-
-    @JvmStatic
-    fun stopMainActivity() {
-        TelemetryHolder.get()
-                .queuePing(TelemetryCorePingBuilder.TYPE)
-                .queuePing(TelemetryEventPingBuilder.TYPE)
-                .scheduleUpload()
     }
 
     @TelemetryDoc(
@@ -1590,16 +1423,9 @@ object TelemetryWrapper {
             ])
     @JvmStatic
     fun searchSelectEvent(isInLandscape: Boolean) {
-        val telemetry = TelemetryHolder.get()
-
         EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR)
                 .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
-
-        val searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
-                telemetry.configuration.context)
-
-        telemetry.recordSearch(SearchesMeasurement.LOCATION_SUGGESTION, searchEngine.identifier)
 
         AdjustHelper.trackEvent(EVENT_START_SEARCH)
     }
@@ -1614,16 +1440,9 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     private fun searchEnterEvent(isInLandscape: Boolean) {
-        val telemetry = TelemetryHolder.get()
-
         EventBuilder(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR)
                 .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
-
-        val searchEngine = SearchEngineManager.getInstance().getDefaultSearchEngine(
-                telemetry.configuration.context)
-
-        telemetry.recordSearch(SearchesMeasurement.LOCATION_ACTIONBAR, searchEngine.identifier)
 
         AdjustHelper.trackEvent(EVENT_START_SEARCH)
     }
@@ -3948,8 +3767,7 @@ object TelemetryWrapper {
     }
 
     private fun network(): String {
-        val cm =
-            TelemetryHolder.get().configuration.context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
+        val cm = appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager
         return if (cm?.isActiveNetworkMetered == true) "mobile" else "wifi"
     }
 
@@ -4021,63 +3839,23 @@ object TelemetryWrapper {
         `object`: String?,
         value: String? = null
     ) {
-        var telemetryEvent: TelemetryEvent
         var firebaseEvent: FirebaseEvent
 
         init {
             lazyInit()
             Log.d(TAG, "EVENT:$category/$method/$`object`/$value")
 
-            telemetryEvent = TelemetryEvent.create(category, method, `object`, value)
             firebaseEvent = FirebaseEvent.create(category, method, `object`, value)
         }
 
         fun extra(key: String, value: String): EventBuilder {
             Log.d(TAG, "EXTRA:$key/$value")
-            telemetryEvent.extra(key, value)
             firebaseEvent.param(key, value)
             return this
         }
 
-        fun queue(sendNow: Boolean = false) {
-
-            val context = TelemetryHolder.get().configuration.context
-            if (context != null) {
-                if (sendNow) {
-                    // if the user open MainActivity and goes to Setting Fragment and disable "Send Usage Data", we still want to send that event asap
-                    // This pref is wrapped in async call so we don't know when to set it back.
-                    // It'll resume to it's default value when the user start the app next time.
-                    TelemetryHolder.get().configuration.minimumEventsForUpload = 1
-                    sendEventNow(telemetryEvent)
-                } else {
-                    telemetryEvent.queue()
-                }
-
-                firebaseEvent.event(context)
-            }
-        }
-
-        private fun sendEventNow(event: TelemetryEvent) {
-            val telemetry = TelemetryHolder.get()
-            var focusEventBuilder: TelemetryPingBuilder? = null
-            // we only have FocusEventPing now
-            for (telemetryPingBuilder in telemetry.builders) {
-                if (telemetryPingBuilder is TelemetryEventPingBuilder) {
-                    focusEventBuilder = telemetryPingBuilder
-                }
-            }
-            val measurement: EventsMeasurement
-            val addedPingType: String
-
-            if (focusEventBuilder == null) {
-                throw IllegalStateException("Expect either TelemetryEventPingBuilder or TelemetryMobileEventPingBuilder to be added to queue events")
-            }
-
-            measurement = (focusEventBuilder as TelemetryEventPingBuilder).eventsMeasurement
-            addedPingType = focusEventBuilder.type
-
-            measurement.add(event)
-            telemetry.queuePing(addedPingType).scheduleUpload()
+        fun queue() {
+            firebaseEvent.event(appContext)
         }
 
         companion object {
@@ -4089,7 +3867,7 @@ object TelemetryWrapper {
                 if (FirebaseEvent.isInitialized()) {
                     return
                 }
-                val context = TelemetryHolder.get().configuration.context ?: return
+                val context = appContext
                 val prefKeyWhitelist = HashMap<String, String>()
                 prefKeyWhitelist[context.getString(R.string.pref_key_search_engine)] = "search_engine"
 
@@ -4137,293 +3915,12 @@ object TelemetryWrapper {
                 prefKeyWhitelist[context.getString(R.string.pref_value_saving_path_sd_card)] = "path_sd_card"
                 prefKeyWhitelist[context.getString(R.string.pref_value_saving_path_internal_storage)] = "path_internal_storage"
 
-                //  default browser already have telemetry
+                // default browser already have telemetry
 
                 // NewFeatureNotice already have telemetry
 
                 FirebaseEvent.setPrefKeyWhitelist(prefKeyWhitelist)
             }
-        }
-    }
-
-    private class CustomSettingsProvider : SettingsMeasurement.SharedPreferenceSettingsProvider() {
-
-        private val custom = HashMap<String, Any>(2)
-
-        override fun update(configuration: TelemetryConfiguration) {
-            super.update(configuration)
-
-            val context = configuration.context
-            addCustomPing(configuration, ThemeToyMeasurement(context))
-            addCustomPing(configuration, CaptureCountMeasurement(context))
-            addCustomPing(configuration, InstallReferrerMeasurement(context))
-            addCustomPing(configuration, ExperimentBucketMeasurement())
-            addCustomPing(configuration, ExperimentNameMeasurement())
-            addCustomPing(configuration, ContentPrefMeasurement(context))
-        }
-
-        internal fun addCustomPing(
-            configuration: TelemetryConfiguration,
-            measurement: TelemetryMeasurement
-        ) {
-            var preferenceKeys: MutableSet<String>? = configuration.preferencesImportantForTelemetry
-            if (preferenceKeys == null) {
-                configuration.setPreferencesImportantForTelemetry(*arrayOf())
-                preferenceKeys = configuration.preferencesImportantForTelemetry
-            }
-            preferenceKeys!!.add(measurement.fieldName)
-            custom[measurement.fieldName] = measurement.flush()
-        }
-
-        override fun containsKey(key: String): Boolean {
-            return super.containsKey(key) or custom.containsKey(key)
-        }
-
-        override fun getValue(key: String): Any {
-            val value = custom[key]
-
-            return value ?: super.getValue(key)
-        }
-    }
-
-    private class ThemeToyMeasurement internal constructor(internal var context: Context) : TelemetryMeasurement(MEASUREMENT_CURRENT_THEME) {
-
-        override fun flush(): Any {
-            return ThemeManager.getCurrentThemeName(context)
-        }
-
-        companion object {
-
-            private val MEASUREMENT_CURRENT_THEME = "current_theme"
-        }
-    }
-
-    private class CaptureCountMeasurement internal constructor(private val context: Context) : TelemetryMeasurement(MEASUREMENT_CAPTURE_COUNT) {
-
-        override fun flush(): Any {
-            var captureCount: Int = -1
-            if ("main" == Thread.currentThread().name) {
-                throw RuntimeException("Call from main thread exception")
-            }
-            try {
-                context.contentResolver.query(ScreenshotContract.Screenshot.CONTENT_URI, null, null, null, null)!!.use { cursor ->
-                    captureCount = cursor.count
-                }
-            } catch (e: Exception) {
-                captureCount = -1
-            }
-
-            return captureCount
-        }
-
-        companion object {
-            private const val MEASUREMENT_CAPTURE_COUNT = "capture_count"
-        }
-    }
-
-    private class InstallReferrerMeasurement internal constructor(
-        private val context: Context
-    ) : TelemetryMeasurement(MEASUREMENT_INSTALL_REFERRER) {
-        override fun flush(): Any {
-            return try {
-                context.packageManager.getInstallerPackageName(context.packageName)
-            } catch (e: Exception) {
-                null
-            } ?: ""
-        }
-
-        companion object {
-            private const val MEASUREMENT_INSTALL_REFERRER = "install_referrer"
-        }
-    }
-
-    private class ExperimentBucketMeasurement internal constructor() : TelemetryMeasurement(MEASUREMENT_EXPERIMENT_BUCKET) {
-
-        override fun flush(): Any {
-            return getExperimentBucket()
-        }
-
-        private fun getExperimentBucket(): Int {
-            return LocalAbTesting.userGroup
-        }
-
-        companion object {
-            private const val MEASUREMENT_EXPERIMENT_BUCKET = "experiment_bucket"
-        }
-    }
-
-    private class ExperimentNameMeasurement internal constructor() : TelemetryMeasurement(MEASUREMENT_EXPERIMENT_NAME) {
-
-        override fun flush(): Any {
-            return getExperimentName()
-        }
-
-        private fun getExperimentName(): String {
-            return if (LocalAbTesting.isActive) {
-                if (LocalAbTesting.assignedBuckets.isEmpty()) {
-                    "null"
-                } else {
-                    LocalAbTesting.assignedBuckets.first()
-                }
-            } else {
-                FirebaseHelper.getFirebase().getRcString(FirebaseHelper.STR_EXPERIMENT_NAME)
-            }
-        }
-
-        companion object {
-            private const val MEASUREMENT_EXPERIMENT_NAME = "experiment_name"
-        }
-    }
-
-    // Keep telemetry functions in order to also keep generated sql
-    @TelemetryDoc(
-            name = "Turn on Turbo Mode in First Run",
-            category = Category.ACTION,
-            method = Method.CHANGE,
-            `object` = Object.FIRSTRUN,
-            value = Value.TURBO,
-            extras = [TelemetryExtra(name = Extra.TO, value = "true,false")])
-    @JvmStatic
-    fun toggleFirstRunPageEvent(enableTurboMode: Boolean) {
-        EventBuilder(Category.ACTION, Method.CHANGE, Object.FIRSTRUN, Value.TURBO)
-                .extra(Extra.TO, java.lang.Boolean.toString(enableTurboMode))
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Finish First Run",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.FIRSTRUN,
-            value = Value.FINISH,
-            extras = [TelemetryExtra(name = Extra.ON, value = "time spent on First Run")])
-    @JvmStatic
-    fun finishFirstRunEvent(duration: Long, mode: Int) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.FIRSTRUN, Value.FINISH)
-                .extra(Extra.ON, java.lang.Long.toString(duration))
-                .extra(Extra.MODE, Integer.toString(mode))
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show Whatsnew Onboarding",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.ONBOARDING,
-            value = Value.WHATSNEW,
-            extras = [])
-    fun showWhatsnewOnBoarding() {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.ONBOARDING, Value.WHATSNEW).queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Whatsnew Onboarding",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.ONBOARDING,
-            value = Value.WHATSNEW,
-            extras = [
-                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
-                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
-            ])
-    fun clickWhatsnewOnBoarding(timeSpent: Long, pageIndex: Int, finish: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.ONBOARDING, Value.WHATSNEW)
-                .extra(Extra.ON, timeSpent.toString())
-                .extra(Extra.PAGE, pageIndex.toString())
-                .extra(Extra.FINISH, finish.toString())
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show Firstrun Contextual Hint",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.FIRSTRUN,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
-            ])
-    fun showFirstRunContextualHint(messageId: String) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.FIRSTRUN)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show Whatsnew Contextual Hint",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.WHATSNEW,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
-            ])
-    fun showWhatsnewContextualHint(messageId: String) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.WHATSNEW)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Firstrun Contextual Hint",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.FIRSTRUN,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id"),
-                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
-                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
-            ])
-    fun clickFirstRunContextualHint(messageId: String, timeSpent: Long, pageIndex: Int, finish: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.FIRSTRUN)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .extra(Extra.ON, timeSpent.toString())
-                .extra(Extra.PAGE, pageIndex.toString())
-                .extra(Extra.FINISH, finish.toString())
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Whatsnew Contextual Hint",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.WHATSNEW,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id"),
-                TelemetryExtra(name = Extra.ON, value = "time spent on page"),
-                TelemetryExtra(name = Extra.PAGE, value = "[0-9]"),
-                TelemetryExtra(name = Extra.FINISH, value = "true,false")
-            ])
-    fun clickWhatsnewContextualHint(messageId: String, timeSpent: Long, pageIndex: Int, finish: Boolean) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTEXTUAL_HINT, Value.WHATSNEW)
-                .extra(Extra.MESSAGE_ID, messageId)
-                .extra(Extra.ON, timeSpent.toString())
-                .extra(Extra.PAGE, pageIndex.toString())
-                .extra(Extra.FINISH, finish.toString())
-                .queue()
-    }
-
-    private class ContentPrefMeasurement internal constructor(context: Context) : TelemetryMeasurement(MEASUREMENT_INTEREST) {
-
-        private val appContext = context.applicationContext
-
-        override fun flush(): Any {
-            return getContentPref()
-        }
-
-        private fun getContentPref(): String = when (ContentPrefRepo(appContext).getContentPref()) {
-            ContentPrefRepo.ContentPref.Browsing -> "default"
-            ContentPrefRepo.ContentPref.Shopping -> "deals"
-            ContentPrefRepo.ContentPref.Games -> "entertainment"
-            ContentPrefRepo.ContentPref.News -> "news"
-        }
-
-        companion object {
-            private const val MEASUREMENT_INTEREST = "interest"
         }
     }
 }

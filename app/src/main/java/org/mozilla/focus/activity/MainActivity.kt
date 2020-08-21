@@ -437,11 +437,6 @@ class MainActivity : BaseActivity(),
         chromeViewModel.onSessionEnded()
     }
 
-    override fun onStop() {
-        super.onStop()
-        TelemetryWrapper.stopMainActivity()
-    }
-
     public override fun onDestroy() {
         sessionManager?.destroy()
         unregisterFirebaseEventReceiver()

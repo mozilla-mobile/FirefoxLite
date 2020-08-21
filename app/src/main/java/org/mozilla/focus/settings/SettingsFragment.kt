@@ -32,7 +32,6 @@ import org.mozilla.rocket.debugging.DebugActivity.Companion.getStartIntent
 import org.mozilla.rocket.deeplink.DeepLinkConstants
 import org.mozilla.rocket.nightmode.AdjustBrightnessDialog.Intents.getStartIntentFromSetting
 import org.mozilla.rocket.privately.ShortcutUtils.Companion.createShortcut
-import org.mozilla.telemetry.TelemetryHolder
 import java.util.Locale
 
 class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener {
@@ -95,8 +94,7 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
             val debugShare = Intent()
             debugShare.action = Intent.ACTION_SEND
             debugShare.type = "text/plain"
-            val testingId = "${getFirebase().getFcmToken()}\n\n${TelemetryHolder.get().clientId}"
-            debugShare.putExtra(Intent.EXTRA_TEXT, testingId)
+            debugShare.putExtra(Intent.EXTRA_TEXT, "${getFirebase().getFcmToken()}")
             startActivity(Intent.createChooser(debugShare, "This token is only for QA to test in Nightly and debug build"))
             return true
         }
@@ -175,7 +173,7 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
         } else if (key != getString(R.string.pref_key_telemetry)) {
             // We'll handle the pref_key_telemetry by TelemetrySwitchPreference.
             // For other events, we handle them here.
-            TelemetryWrapper.settingsEvent(key, sharedPreferences.all[key].toString(), false)
+            TelemetryWrapper.settingsEvent(key, sharedPreferences.all[key].toString())
         }
     }
 
