@@ -269,8 +269,7 @@ class HomeViewModel(
                 } else {
                     false
                 }
-                val isAffiliate = site is Site.UrlSite.FixedSite
-                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, allowToLogTitle, isPinned, isAffiliate)
+                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, allowToLogTitle, isPinned)
             }
             is Site.EmptyHintSite -> {
                 openAddNewTopSitesPage()

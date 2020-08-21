@@ -22,7 +22,6 @@ import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_NEXT
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.CLICK_PREVIOUS
 import org.mozilla.focus.telemetry.TelemetryWrapper.FIND_IN_PAGE.OPEN_BY_MENU
 import org.mozilla.focus.telemetry.TelemetryWrapper.Value.SETTINGS
-import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.rocket.content.common.data.ContentTabTelemetryData
@@ -1142,9 +1141,6 @@ object TelemetryWrapper {
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
                 .queue()
-        if (isAdd) {
-            AdjustHelper.trackEvent(EVENT_SAVE_BOOKMKARK)
-        }
     }
 
     @TelemetryDoc(
@@ -1165,7 +1161,6 @@ object TelemetryWrapper {
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
                 .queue()
-        AdjustHelper.trackEvent(EVENT_ADD_TO_HOMESCREEN)
     }
 
     @TelemetryDoc(
@@ -1179,7 +1174,6 @@ object TelemetryWrapper {
     fun clickMenuPinShortcut() {
         EventBuilder(Category.ACTION, Method.PIN_SHORTCUT, Object.MENU, Value.LINK)
                 .queue()
-        AdjustHelper.trackEvent(EVENT_ADD_TO_HOMESCREEN)
     }
 
     @TelemetryDoc(
@@ -1203,7 +1197,6 @@ object TelemetryWrapper {
                 .extra(Extra.MODE, mode)
                 .extra(Extra.POSITION, Integer.toString(position))
                 .queue()
-        AdjustHelper.trackEvent(EVENT_TAKE_SCREENSHOT)
     }
 
     @TelemetryDoc(
@@ -1219,7 +1212,7 @@ object TelemetryWrapper {
                 TelemetryExtra(name = Extra.PINNED, value = "true,false")
             ])
     @JvmStatic
-    fun clickTopSiteOn(index: Int, source: String, isDefault: Boolean, isPinned: Boolean, isAffiliate: Boolean) {
+    fun clickTopSiteOn(index: Int, source: String, isDefault: Boolean, isPinned: Boolean) {
         EventBuilder(Category.ACTION, Method.OPEN, Object.HOME, Value.LINK)
                 .extra(Extra.ON, index.toString())
                 .extra(Extra.SOURCE, source)
@@ -1230,11 +1223,6 @@ object TelemetryWrapper {
 
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TOPSITE)
                 .queue()
-
-        // Record a separate click count from those affiliate program partners.
-        if (isAffiliate) {
-            AdjustHelper.trackEvent(EVENT_CLICK_AFFILIATE_LINK)
-        }
     }
 
     @TelemetryDoc(
@@ -1426,8 +1414,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.TYPE_SELECT_QUERY, Object.SEARCH_BAR)
                 .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
-
-        AdjustHelper.trackEvent(EVENT_START_SEARCH)
     }
 
     @TelemetryDoc(
@@ -1443,8 +1429,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.TYPE_QUERY, Object.SEARCH_BAR)
                 .extra(Extra.ORIENTATION, if (isInLandscape) Extra_Value.LANDSCAPE else Extra_Value.PORTRAIT)
                 .queue()
-
-        AdjustHelper.trackEvent(EVENT_START_SEARCH)
     }
 
     @TelemetryDoc(
@@ -1457,9 +1441,6 @@ object TelemetryWrapper {
     @JvmStatic
     fun togglePrivateMode(enter: Boolean) {
         EventBuilder(Category.ACTION, Method.CHANGE, Object.PRIVATE_MODE, if (enter) Value.ENTER else Value.EXIT).queue()
-        if (enter) {
-            AdjustHelper.trackEvent(EVENT_ENTER_PRIVATE_MODE)
-        }
     }
 
     @TelemetryDoc(
@@ -1944,9 +1925,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.FEEDBACK, value)
                 .extra(Extra.SOURCE, source).extra(Extra.VERSION, RATE_APP_NOTIFICATION_TELEMETRY_VERSION.toString())
                 .queue()
-        if (Value.POSITIVE == value) {
-            AdjustHelper.trackEvent(EVENT_FEEDBACK_POSITIVE)
-        }
     }
 
     @TelemetryDoc(
@@ -2051,10 +2029,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.PROMOTE_SHARE, value)
                 .extra(Extra.SOURCE, source)
                 .queue()
-
-        if (Value.SHARE == value) {
-            AdjustHelper.trackEvent(EVENT_SHARE_APP)
-        }
     }
 
     @TelemetryDoc(
@@ -2189,11 +2163,6 @@ object TelemetryWrapper {
     internal fun clickMenuFindInPage() =
             EventBuilder(Category.ACTION, Method.CLICK, Object.MENU, Value.FIND_IN_PAGE)
                     .extra(Extra.VERSION, Integer.toString(FIND_IN_PAGE_VERSION))
-
-    @JvmStatic
-    fun clickDefaultBrowserInSetting() {
-        AdjustHelper.trackEvent(EVENT_SET_DEFAULT_BROWSER)
-    }
 
     @TelemetryDoc(
             name = "Click Quick Search",
@@ -2728,7 +2697,6 @@ object TelemetryWrapper {
                 .extra(Extra.SUB_CATEGORY_ID, contentTabTelemetryData.subCategoryId)
                 .extra(Extra.VERSION_ID, contentTabTelemetryData.versionId.toString())
                 .queue()
-        AdjustHelper.trackEvent(EVENT_START_CONTENT_TAB)
     }
 
     @TelemetryDoc(
@@ -2798,7 +2766,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.VERTICAL)
                 .extra(Extra.VERTICAL, vertical)
                 .queue()
-        AdjustHelper.trackEvent(EVENT_START_VERTICAL_PROCESS)
     }
 
     @TelemetryDoc(
@@ -2846,7 +2813,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.TAB_SWIPE)
                 .extra(Extra.VERTICAL, vertical)
                 .queue()
-        AdjustHelper.trackEvent(EVENT_START_TAB_SWIPE_PROCESS)
     }
 
     @TelemetryDoc(

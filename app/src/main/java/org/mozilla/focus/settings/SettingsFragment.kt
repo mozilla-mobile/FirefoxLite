@@ -74,9 +74,6 @@ class SettingsFragment : PreferenceFragment(), OnSharedPreferenceChangeListener 
             resources.getString(R.string.pref_key_night_mode_brightness) -> {
                 startActivity(getStartIntentFromSetting(preference.context))
             }
-            resources.getString(R.string.pref_key_default_browser) -> {
-                TelemetryWrapper.clickDefaultBrowserInSetting()
-            }
             resources.getString(R.string.pref_key_private_mode_shortcut) -> {
                 TelemetryWrapper.clickPrivateShortcutItemInSettings()
                 createShortcut(preference.context.applicationContext)

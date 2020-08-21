@@ -34,8 +34,6 @@ object Versions {
     const val leakcanary = "2.0-beta-3"
     const val android_components = "0.52.0"
     const val android_components_awesomebar = "0.56.0"
-    const val adjust = "4.20.0"
-    const val android_installreferrer = "1.1.2"
     const val annotation = "1.1.0"
     const val junit = "4.13"
     const val mockito = "3.3.0"
