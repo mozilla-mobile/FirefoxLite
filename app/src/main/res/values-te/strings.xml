@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">అమరికలను మారుస్తోంది…</string>
   <string name="preference_turbo_mode">టర్బో రీతి</string>
   <string name="preference_mozilla_telemetry">వాడుక డేటాను పంపించు</string>
-  <string name="preference_mozilla_telemetry_summary">అందరికీ %1$s‌ని మెరుగ్గా అందించడానికి కావలసినంత తక్కువ సమాచారాన్ని మాత్రమే సేకరించడానికి %2$s ప్రయత్నిస్తుంది.</string>
   <string name="preference_learn_more">ఇంకా తెలుసుకోండి</string>
   <string name="preference_about">గురించి</string>
   <string name="preference_night_mode_brightness">రాత్రి రీతి ప్రకాశస్థాయి</string>

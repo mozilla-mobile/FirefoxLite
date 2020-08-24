@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">அமைவுகளை மாற்றுகிறது…</string>
   <string name="preference_turbo_mode">சுழலி முறைமை</string>
   <string name="preference_mozilla_telemetry">பயனளவு தரவை அனுப்பு</string>
-  <string name="preference_mozilla_telemetry_summary">அனைவருக்கும் %1$s வழங்க மற்றும் மேம்படுத்த தேவையானதை மட்டும் சேகரிக்க %2$s உறுதிபூண்டுள்ளது.</string>
   <string name="preference_learn_more">மேலும் அறிய</string>
   <string name="preference_about">பற்றி</string>
   <string name="preference_night_mode_brightness">இரவு முறை வெளிச்சம்</string>

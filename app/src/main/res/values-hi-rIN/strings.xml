@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">सेटिंग बदले जा रहे हैं…</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">उपयोग डेटा भेजें</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s मात्र वही जानकारी एकत्र करने का प्रयास करता है जिससे हम %1$s को सभी के लिए उपलब्ध तथा बेहतर बना सकें।</string>
   <string name="preference_learn_more">अधिक जानें</string>
   <string name="preference_about">परिचय</string>
   <string name="preference_night_mode_brightness">रात्रि मोड चमक</string>

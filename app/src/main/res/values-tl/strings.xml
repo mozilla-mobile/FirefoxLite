@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">Kasalukuyang binabago ang mga setting…</string>
   <string name="preference_turbo_mode">Turbo mode</string>
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
-  <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang %2$s na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
   <string name="preference_about">Patungkol</string>
   <string name="preference_night_mode_brightness">Liwanag ng Night Mode</string>

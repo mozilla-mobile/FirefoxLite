@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Ngarobah setélan...</string>
   <string name="preference_turbo_mode">Modeu turbo</string>
   <string name="preference_mozilla_telemetry">Kirim data pamakéan</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s bakal kukumpul data nu diperlukeun hungkul jang nyadiakeun jeung ngoméan %1$s pikeun anjeun.</string>
   <string name="preference_learn_more">Lenyepan</string>
   <string name="preference_about">Ngeunaan</string>
   <string name="preference_night_mode_brightness">Kacaangan modeu peuting</string>

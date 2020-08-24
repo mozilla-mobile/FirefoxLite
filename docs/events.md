@@ -12,7 +12,7 @@
 |App is launched by external app|action|launch|app|"external_app"|"type=text_selection,web_search," 
 |Users changed a Setting|action|change|setting|"settings pref key"|"to=New Value for the pref," 
 |Users clicked on a Setting|action|click|setting|"settings pref key"|"" 
-|Users clicked on the Learn More link in Settings|action|click|setting|"learn_more"|"source=TurboMode,Telemetry," 
+|Users clicked on the Learn More link in Settings|action|click|setting|"learn_more"|"source=TurboMode," 
 |Users change Locale in Settings|action|change|setting|"pref_locale"|"to=Locale ,default=true,false," 
 |Session starts|action|foreground|app|""|"" 
 |Session ends|action|background|app|""|"" 

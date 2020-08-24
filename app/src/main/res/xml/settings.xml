@@ -54,7 +54,7 @@
         android:key="@string/pref_key_private_mode_shortcut" />
 
     <org.mozilla.focus.widget.TelemetrySwitchPreference
-        android:layout="@layout/preference_telemetry"
+        android:layout="@layout/focus_preference"
         android:title="@string/preference_mozilla_telemetry"
         android:persistent="false" />
 

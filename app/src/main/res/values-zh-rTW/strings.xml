@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">正在變更設定…</string>
   <string name="preference_turbo_mode">極速模式</string>
   <string name="preference_mozilla_telemetry">傳送使用資料</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s 致力於只收集用來為眾人改善 %1$s 所需的必要資料。</string>
   <string name="preference_learn_more">了解更多</string>
   <string name="preference_about">關於</string>
   <string name="preference_night_mode_brightness">夜間模式亮度</string>

@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Изменение параметров…</string>
   <string name="preference_turbo_mode">Режим Турбо</string>
   <string name="preference_mozilla_telemetry">Отправлять данные об использовании</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s стремится собирать только ту информацию, которая необходима для работы %1$s и его улучшения в будущем.</string>
   <string name="preference_learn_more">Подробнее</string>
   <string name="preference_about">О программе</string>
   <string name="preference_night_mode_brightness">Яркость в ночном режиме</string>

@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">Ngowahi setélan…</string>
   <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirim dhata panggunaan</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s puguh ngumpulaké apa sing diperlukaké kanggo nyedhiani lan nambahi %1$s kanggo kabèh.</string>
   <string name="preference_learn_more">Sinaoni manèh</string>
   <string name="preference_about">Ngenani</string>
   <string name="preference_night_mode_brightness">Kacerahan mode bengi</string>

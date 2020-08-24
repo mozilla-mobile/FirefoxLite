@@ -27,7 +27,6 @@
   <string name="preference_default_browser_is_setting">सेटिंग्स बदैल रहल अछि...</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">उपयोग डेटा भेजू</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s मात्र ओहि जानकारी एकत्र करबाक प्रयास करैत अछि जकरा सँ हम %1$s केँ सभक लेल उपलब्ध तथा बेहतर बनाए सकब.</string>
   <string name="preference_learn_more">अधिक जानू</string>
   <string name="preference_about">क संबंध मे</string>
   <string name="content_description_clear_input">इनपुट साफ करू</string>

@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Đang thay đổi cài đặt…</string>
   <string name="preference_turbo_mode">Chế độ tăng tốc</string>
   <string name="preference_mozilla_telemetry">Gửi dữ liệu sử dụng</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s cố gắng chỉ thu thập những gì chúng tôi cần cung cấp và cải thiện %1$s cho mọi người.</string>
   <string name="preference_learn_more">Tìm hiểu thêm</string>
   <string name="preference_about">Giới thiệu</string>
   <string name="preference_night_mode_brightness">Chế độ ban đêm</string>

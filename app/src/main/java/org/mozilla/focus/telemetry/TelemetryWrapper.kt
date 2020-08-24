@@ -579,7 +579,7 @@ object TelemetryWrapper {
             method = Method.CLICK,
             `object` = Object.SETTING,
             value = Value.LEARN_MORE,
-            extras = [TelemetryExtra(name = Extra.SOURCE, value = "TurboMode,Telemetry")])
+            extras = [TelemetryExtra(name = Extra.SOURCE, value = "TurboMode")])
     @JvmStatic
     fun settingsLearnMoreClickEvent(source: String) {
         EventBuilder(Category.ACTION, Method.CLICK, Object.SETTING, Value.LEARN_MORE)

@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">सेटिंग बदलत आहे…</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">वापर डेटा पाठवा</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s सर्वांसाठी फक्त %1$s उपलब्ध करून सुधारण्यासाठी जी माहिती लागते ती जमवते.</string>
   <string name="preference_learn_more">आणखी जाणा</string>
   <string name="preference_about">याबद्दल</string>
   <string name="preference_night_mode_brightness">नाईट मोड प्रखरता</string>

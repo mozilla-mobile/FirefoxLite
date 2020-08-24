@@ -33,7 +33,6 @@
   <string name="preference_default_browser_is_setting">Boli\'a setelan…</string>
   <string name="preference_turbo_mode">Mode susupo</string>
   <string name="preference_mozilla_telemetry">Lawola data pilomake</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s mopoyimo\'o wolo u paralu po\'opiyohulo %1$s ode nga\'amila</string>
   <string name="preference_learn_more">Pobalājariyapo</string>
   <string name="preference_about">Tomimbihu</string>
   <string name="preference_night_mode_brightness">Tilango mode huyi</string>

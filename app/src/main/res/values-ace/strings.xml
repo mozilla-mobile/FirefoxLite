@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Gantoe peuatô…</string>
   <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirém data teungui</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s bit-bit meupeusapat data nyang peureulé sagai beu meutamah get %1$s keu mandum.</string>
   <string name="preference_learn_more">Meurunoe lom</string>
   <string name="preference_about">Bhaih</string>
   <string name="preference_night_mode_brightness">Peungeuih mode malam</string>

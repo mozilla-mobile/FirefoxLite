@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">กำลังเปลี่ยนการตั้งค่า…</string>
   <string name="preference_turbo_mode">โหมดเทอร์โบ</string>
   <string name="preference_mozilla_telemetry">ส่งข้อมูลการใช้งาน</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s มุ่งมั่นที่จะเก็บรวบรวมเฉพาะสิ่งที่เราจำเป็นต้องให้บริการและปรับปรุง %1$s สำหรับทุกคน</string>
   <string name="preference_learn_more">เรียนรู้เพิ่มเติม</string>
   <string name="preference_about">เกี่ยวกับ</string>
   <string name="preference_night_mode_brightness">ความสว่างโหมดกลางคืน</string>
