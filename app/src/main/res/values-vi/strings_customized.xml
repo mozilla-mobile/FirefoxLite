@@ -2,7 +2,7 @@
 <resources>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">Du lịch Khám phá</string>
-    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">Tối ưu hóa trải nghiệm cho bạn…</string>
     <!-- Introduce personalized home to new users -->
     <string name="onboarding_transition_feature_1">Cá nhân hóa Trang chủ</string>

@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">Lolohe hasili lapatiyo</string>
   <string name="accessibility_find_previous_result">Lolohe hasili yilalu</string>
   <string name="accessibility_dismiss_find_in_page">He\'uti mololohu to halaman</string>
-  <string name="text_selection_search_action">Lolohe to Firefox Lite</string>
+  <string name="text_selection_search_action">Lolohe to Rocket</string>
   <string name="about_content_body">%1$s utiye peramban molinggahu wawu mohēlo pilohutu lo %2$s. Patuju lami mopolayi\'a internet sēhati wawu bu\'a-bu\'adu.</string>
   <string name="about_link_learn_more">Pobalājariyapo</string>
   <string name="about_link_support">Modūkungi</string>
@@ -33,7 +33,6 @@
   <string name="preference_default_browser_is_setting">Boli\'a setelan…</string>
   <string name="preference_turbo_mode">Mode susupo</string>
   <string name="preference_mozilla_telemetry">Lawola data pilomake</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s mopoyimo\'o wolo u paralu po\'opiyohulo %1$s ode nga\'amila</string>
   <string name="preference_learn_more">Pobalājariyapo</string>
   <string name="preference_about">Tomimbihu</string>
   <string name="preference_night_mode_brightness">Tilango mode huyi</string>
@@ -159,7 +158,7 @@
   <string name="message_cannot_find_screenshot">Ja mowali mopobilohu cuplikan layar</string>
   <string name="remove">Yinggila</string>
   <string name="privacy_policy_update_notification_title">Mopo\'ota mopobohu produk</string>
-  <string name="privacy_policy_update_notification_action">Alihu Firefox Lite lebe mopiyohu ode olemu wawu nga\'amila tawu, ami lomoli\'a ngolobotu tinepo privasi lami. Tepuwa u mobalājari.</string>
+  <string name="privacy_policy_update_notification_action">Alihu Rocket lebe mopiyohu ode olemu wawu nga\'amila tawu, ami lomoli\'a ngolobotu tinepo privasi lami. Tepuwa u mobalājari.</string>
   <string name="rate_app_dialog_text_title">Motohilawo %1$s?</string>
   <string name="rate_app_dialog_text_content">Odu\'olo ma lolulawoto produk lami. Potunu wawu potuhatamu paralu ode olami.</string>
   <string name="rate_app_dialog_btn_go_rate">Wohiye Lenggota</string>

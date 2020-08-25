@@ -17,8 +17,6 @@ import org.mozilla.rocket.extension.map
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
-import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
-import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.logoman.domain.DismissLogoManNotificationUseCase
@@ -42,7 +40,6 @@ import org.mozilla.rocket.msrp.data.Mission
 import org.mozilla.rocket.msrp.data.MissionProgress
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
 import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
-import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
@@ -58,7 +55,6 @@ class HomeViewModel(
     private val pinTopSiteUseCase: PinTopSiteUseCase,
     private val removeTopSiteUseCase: RemoveTopSiteUseCase,
     getContentHubItemsUseCase: GetContentHubItemsUseCase,
-    shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
     private val readContentHubItemUseCase: ReadContentHubItemUseCase,
     private val getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
     private val lastReadLogoManNotificationUseCase: LastReadLogoManNotificationUseCase,
@@ -68,14 +64,12 @@ class HomeViewModel(
     private val isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
     private val checkInMissionUseCase: CheckInMissionUseCase,
     private val completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
-    getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
     refreshMissionsUseCase: RefreshMissionsUseCase,
     hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
     getIsFxAccountUseCase: GetIsFxAccountUseCase,
     shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
     setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
     shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
-    shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
     shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
     setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase,
     private val shouldShowSetDefaultBrowserOnboardingUseCase: ShouldShowSetDefaultBrowserOnboardingUseCase,
@@ -85,14 +79,12 @@ class HomeViewModel(
     val sitePages = MutableLiveData<List<SitePage>>()
     val topSitesPageIndex = MutableLiveData<Int>()
     val contentHubItems = getContentHubItemsUseCase()
-    val shouldShowContentHubItemText = MutableLiveData<Boolean>().apply { value = shouldShowContentHubItemTextUseCase() }
     val logoManNotification = MediatorLiveData<StateNotification?>()
     val isAccountLayerVisible = MutableLiveData<Boolean>().apply { value = isMsrpAvailableUseCase() }
     val isShoppingSearchEnabled = MutableLiveData<Boolean>().apply { value = isHomeScreenShoppingButtonEnabledUseCase() }
     val hasUnreadMissions: LiveData<Boolean> = hasUnreadMissionsUseCase()
     val isFxAccount: LiveData<Boolean> = getIsFxAccountUseCase()
     val shouldShowNewMenuItemHint: LiveData<Boolean> = shouldShowNewMenuItemHintUseCase()
-    val isContentHubEnabled: LiveData<Boolean> = shouldShowContentHubUseCase()
 
     val toggleBackgroundColor = SingleLiveEvent<Unit>()
     val resetBackgroundColor = SingleLiveEvent<Unit>()
@@ -107,7 +99,6 @@ class HomeViewModel(
     val openProfilePage = SingleLiveEvent<Unit>()
     val showMissionCompleteDialog = SingleLiveEvent<Mission>()
     val openMissionDetailPage = SingleLiveEvent<Mission>()
-    val showContentHubClickOnboarding = getContentHubClickOnboardingEventUseCase()
     val showShoppingSearchOnboardingSpotlight = SingleLiveEvent<Unit>()
     val hideLogoManNotification = SingleLiveEvent<Unit>()
     val executeUriAction = SingleLiveEvent<String>()
@@ -278,8 +269,7 @@ class HomeViewModel(
                 } else {
                     false
                 }
-                val isAffiliate = site is Site.UrlSite.FixedSite
-                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, allowToLogTitle, isPinned, isAffiliate)
+                TelemetryWrapper.clickTopSiteOn(topSitePosition, title, allowToLogTitle, isPinned)
             }
             is Site.EmptyHintSite -> {
                 openAddNewTopSitesPage()

@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">Kasalukuyang binabago ang mga setting…</string>
   <string name="preference_turbo_mode">Turbo mode</string>
   <string name="preference_mozilla_telemetry">Ipadala ang mga datos ng paggamit</string>
-  <string name="preference_mozilla_telemetry_summary">Nagsusumikap ang %2$s na kumulekta lamang ng mga impormasyon base sa pangangailangan upang mapagbuti ang %1$s para sa lahat.</string>
   <string name="preference_learn_more">Detalye</string>
   <string name="preference_about">Patungkol</string>
   <string name="preference_night_mode_brightness">Liwanag ng Night Mode</string>
@@ -173,7 +172,7 @@
   <string name="update_to_latest_app_snack_bar_message">Pinakabagong nai-download na build</string>
   <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">Abiso sa Update ng Produkto</string>
-  <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Firefox Lite para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
+  <string name="privacy_policy_update_notification_action">Upang gawing mas mahusay ang Rocket para sa iyo at sa lahat, gumawa kami ng ilang mga pagbabago sa aming patakaran sa privacy. Tapikin upang matuto nang higit pa.</string>
   <string name="always">Palagi</string>
   <string name="rate_app_dialog_text_title">Naibigan mo ba ang %1$s?</string>
   <string name="rate_app_dialog_text_content">Maraming salamat sa iyong pagtangkilik sa aming produkto. Ang iyong feedback ay napakahalaga sa amin.</string>
@@ -334,7 +333,6 @@
   <string name="gaming_vertical_genre_11">Palakasan at Karera</string>
   <string name="gaming_vertical_genre_12">Mga babae</string>
   <string name="home_search_bar_text">Hanapin...</string>
-  <string name="home_content_services">Nilalaman at Serbisyo</string>
   <string name="home_discovery">Pagtuklas</string>
   <string name="content_home_context_menu_add_to_home_screen">Idagdag sa Home screen</string>
   <string name="content_home_context_menu_share_link">Ibahagi ang link</string>

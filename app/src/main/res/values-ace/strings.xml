@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">Kalön hasé u keue</string>
   <string name="accessibility_find_previous_result">Kalön hasé u likôt</string>
   <string name="accessibility_dismiss_find_in_page">Tôp mita lam laman</string>
-  <string name="text_selection_search_action">Mita lam Firefox Lite</string>
+  <string name="text_selection_search_action">Mita lam Rocket</string>
   <string name="about_content_body">%1$s nakeuh saboh browser nyang bagah ngön phui atra jipeugöt lé %2$s. Meukeusud kamoe nakeuh keu meupeularha internet nyang jroh ngön teupeuhah.</string>
   <string name="about_link_learn_more">Meurunoe lom</string>
   <string name="about_link_support">Dukông</string>
@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Gantoe peuatô…</string>
   <string name="preference_turbo_mode">Mode turbo</string>
   <string name="preference_mozilla_telemetry">Kirém data teungui</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s bit-bit meupeusapat data nyang peureulé sagai beu meutamah get %1$s keu mandum.</string>
   <string name="preference_learn_more">Meurunoe lom</string>
   <string name="preference_about">Bhaih</string>
   <string name="preference_night_mode_brightness">Peungeuih mode malam</string>
@@ -175,7 +174,7 @@
   <string name="update_to_latest_app_snack_bar_message">Nyan ban teuseubaro ka meucok-keubah</string>
   <string name="update_to_latest_app_snack_bar_update">SEUBARO</string>
   <string name="privacy_policy_update_notification_title">Bri Thèe Pubarô Produk</string>
-  <string name="privacy_policy_update_notification_action">Mangat jeuet Firefox Lite leubèh göt keu Droeneuh ngön ban mandum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut lom.</string>
+  <string name="privacy_policy_update_notification_action">Mangat jeuet Rocket leubèh göt keu Droeneuh ngön ban mandum ureueng, kamoe meupeugöt padum-padum boh hai barô lam keubijakan privasi kamoe. Neuteugön keu neumeurunoe leubèh lanjut lom.</string>
   <string name="rate_app_dialog_text_title">Galak keu %1$s?</string>
   <string name="rate_app_dialog_text_content">Sabah ka neupiléh produk kamoe. Saran Droeneuh peunténg keu kamoe.</string>
   <string name="rate_app_dialog_btn_go_rate">Nyo, bri 5 bintang!</string>

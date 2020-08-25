@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">अगला परिणाम खोजें</string>
   <string name="accessibility_find_previous_result">पिछला परिणाम खोजें</string>
   <string name="accessibility_dismiss_find_in_page">पृष्ठ में खोजें हटायें</string>
-  <string name="text_selection_search_action">Firefox Lite में खोजें</string>
+  <string name="text_selection_search_action">Rocket में खोजें</string>
   <string name="about_content_body">%1$s %2$s द्वारा निर्मित तीव्र एवं हल्का ब्राउज़र है। हमारा लक्ष्य एक स्वस्थ, मुक्त इंटरनेट को बढ़ावा देना है।</string>
   <string name="about_link_learn_more">अधिक जानें</string>
   <string name="about_link_support">सहारा</string>
@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">सेटिंग बदले जा रहे हैं…</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">उपयोग डेटा भेजें</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s मात्र वही जानकारी एकत्र करने का प्रयास करता है जिससे हम %1$s को सभी के लिए उपलब्ध तथा बेहतर बना सकें।</string>
   <string name="preference_learn_more">अधिक जानें</string>
   <string name="preference_about">परिचय</string>
   <string name="preference_night_mode_brightness">रात्रि मोड चमक</string>
@@ -199,7 +198,7 @@
   <string name="update_to_latest_app_snack_bar_message">नवीनतम बिल्ड डाउनलोड हो चूका है</string>
   <string name="update_to_latest_app_snack_bar_update">UPDATE</string>
   <string name="privacy_policy_update_notification_title">प्रोडक्ट अद्यतन सूचना</string>
-  <string name="privacy_policy_update_notification_action">Firefox Lite को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएं।</string>
+  <string name="privacy_policy_update_notification_action">Rocket को आपके और हर किसी के लिए बेहतर बनाने के लिए, हमने अपनी गोपनीयता नीति में कुछ बदलाव किए हैं। अधिक जानने के लिए दबाएं।</string>
   <string name="message_set_default_success">%1$s को चुनने के लिए धन्यवाद!</string>
   <string name="message_set_default_incomplet">क्या आप अपने तयशुदा ब्राउज़र के रूप में %1$s की सेटिंग समाप्त करना चाहेंगे?</string>
   <string name="setting_default_browser_instruction_system_settings">2 चरण में %1$s को अपना डिफ़ॉल्ट ब्राउज़र बनाएं</string>
@@ -383,7 +382,6 @@
   <string name="onboarding_2_smart_shopping_search_title">स्मार्ट शॉपिंग सर्च</string>
   <string name="onboarding_2_smart_shopping_search_description">अलग-अलग ऑनलाइन स्टोरों की कीमतों का तुलना करना बहुत ही आसान है, अभी आज़माएं!</string>
   <string name="home_search_bar_text">खोज…</string>
-  <string name="home_content_services">सामग्री एवं सेवाएं</string>
   <string name="home_discovery">खोज</string>
   <string name="content_home_context_menu_add_to_home_screen">होम स्क्रीन में जोड़ें</string>
   <string name="content_home_context_menu_share_link">लिंक साझा करें</string>

@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">Tìm kiếm kết quả tiếp theo</string>
   <string name="accessibility_find_previous_result">Tìm kiếm kết quả trước đó</string>
   <string name="accessibility_dismiss_find_in_page">Bỏ qua tìm kiếm trong trang</string>
-  <string name="text_selection_search_action">Tìm kiếm trong Firefox Lite</string>
+  <string name="text_selection_search_action">Tìm kiếm trong Rocket</string>
   <string name="about_content_body">%1$s là một trình duyệt nhanh và nhẹ được sản xuất bởi %2$s. Nhiệm vụ của chúng tôi là thúc đẩy một mạng internet mở, lành mạnh.</string>
   <string name="about_link_learn_more">Tìm hiểu thêm</string>
   <string name="about_link_support">Hỗ trợ</string>
@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Đang thay đổi cài đặt…</string>
   <string name="preference_turbo_mode">Chế độ tăng tốc</string>
   <string name="preference_mozilla_telemetry">Gửi dữ liệu sử dụng</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s cố gắng chỉ thu thập những gì chúng tôi cần cung cấp và cải thiện %1$s cho mọi người.</string>
   <string name="preference_learn_more">Tìm hiểu thêm</string>
   <string name="preference_about">Giới thiệu</string>
   <string name="preference_night_mode_brightness">Chế độ ban đêm</string>
@@ -199,7 +198,7 @@
   <string name="update_to_latest_app_snack_bar_message">Bản dựng mới nhất được tải xuống</string>
   <string name="update_to_latest_app_snack_bar_update">CẬP NHẬT</string>
   <string name="privacy_policy_update_notification_title">Thông báo cập nhật sản phẩm</string>
-  <string name="privacy_policy_update_notification_action">Để làm cho Firefox Lite tốt hơn cho bạn và mọi người, chúng tôi đã thực hiện một số thay đổi đối với chính sách quyền riêng tư của mình. Nhấn để tìm hiểu thêm.</string>
+  <string name="privacy_policy_update_notification_action">Để làm cho Rocket tốt hơn cho bạn và mọi người, chúng tôi đã thực hiện một số thay đổi đối với chính sách quyền riêng tư của mình. Nhấn để tìm hiểu thêm.</string>
   <string name="message_set_default_success">Cảm ơn bạn đã chọn %1$s!</string>
   <string name="message_set_default_incomplet">Bạn có muốn hoàn thành cài đặt %1$s bằng cách đặt làm trình duyệt mặc định của mình không?</string>
   <string name="setting_default_browser_instruction_system_settings">2 bước để đặt %1$s làm trình duyệt mặc định của bạn</string>
@@ -383,7 +382,6 @@
   <string name="onboarding_2_smart_shopping_search_title">Tìm kiếm mua sắm thông minh</string>
   <string name="onboarding_2_smart_shopping_search_description">So sánh giá giữa các cửa hàng trực tuyến khác nhau là siêu dễ dàng, hãy thử ngay bây giờ!</string>
   <string name="home_search_bar_text">Tìm kiếm…</string>
-  <string name="home_content_services">Nội dung &amp; dịch vụ</string>
   <string name="home_discovery">Khám phá</string>
   <string name="content_home_context_menu_add_to_home_screen">Thêm vào màn hình chính</string>
   <string name="content_home_context_menu_share_link">Chia sẻ liên kết</string>

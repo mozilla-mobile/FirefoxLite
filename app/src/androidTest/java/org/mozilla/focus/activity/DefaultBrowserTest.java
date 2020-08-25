@@ -65,14 +65,14 @@ public class DefaultBrowserTest {
 
     /**
      * Test case no: TC0090
-     * Test case name: Set Firefox Lite as default browser when Chrome is default browser
+     * Test case name: Set Rocket as default browser when Chrome is default browser
      * Steps:
      * 1. Set Chrome as a default browser
      * 2. Launch app
      * 3. Go to settings page (Tap menu -> settings)
      * 4. Tap "Make default browser"
-     * 5. Go back to Firefox Lite's settings
-     * 6. Check it correctly set default browser to Firefox Lite
+     * 5. Go back to Rocket's settings
+     * 6. Check it correctly set default browser to Rocket
      */
     @Test
     public void changeDefaultBrowser_whenChromeIsDefault() {
@@ -123,7 +123,7 @@ public class DefaultBrowserTest {
                 withKey(prefName))).
                 onChildView(withClassName(is(Switch.class.getName()))).check(matches(not(isChecked())));
 
-        // 2. Set Firefox Lite as default browser
+        // 2. Set Rocket as default browser
         // Click on "Default Browser" setting, this will brings up the Android system setting
         clickDefaultBrowserSetting(prefName);
 
@@ -135,10 +135,10 @@ public class DefaultBrowserTest {
         // Open default browser setting
         openDefaultBrowserAndroidSetting(allAppsButton);
 
-        // Choose Firefox Lite browser
+        // Choose Rocket browser
         chooseLiteAsDefaultBrowser(activity);
 
-        // Now launch Firefox Lite's setting activity
+        // Now launch Rocket's setting activity
         settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
 
         // Check if the "Default Browser" pref is correctly displayed (switch checked)
@@ -151,13 +151,13 @@ public class DefaultBrowserTest {
 
     /**
      * Test case no: TC0093
-     * Test case name: Set Firefox Lite as default browser when no default browser
+     * Test case name: Set Rocket as default browser when no default browser
      * Steps:
      * 1. Launch app
      * 2. Go to settings page (Tap menu -> settings)
      * 3. Tap "Make default browser"
      * 4. Go back to app's settings
-     * 5. Check it correctly set default browser to Firefox Lite
+     * 5. Check it correctly set default browser to Rocket
      */
     @Test
     public void changeDefaultBrowser_whenNoDefault() {
@@ -184,10 +184,10 @@ public class DefaultBrowserTest {
                 .inRoot(RootMatchers.isDialog())
                 .perform(click());
 
-        // Set Firefox Lite as default browser in 'Open with' panel
+        // Set Rocket as default browser in 'Open with' panel
         chooseAsDefaultBrowserViaOpenLink(activity.getString(R.string.app_name));
 
-        // Now launch Firefox Lite's setting activity
+        // Now launch Rocket's setting activity
         settingsActivity.launchActivity((new Intent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)));
 
         // Check if the "Default Browser" pref is correctly displayed (switch checked)
@@ -225,7 +225,7 @@ public class DefaultBrowserTest {
             browserCandidate.click();
 
         } catch (UiObjectNotFoundException e) {
-            throw new AssertionError("Could find the Firefox Lite app in default browser", e);
+            throw new AssertionError("Could find the Rocket app in default browser", e);
         }
     }
 

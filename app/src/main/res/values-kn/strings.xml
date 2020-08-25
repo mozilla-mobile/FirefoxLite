@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">ಸಿದ್ಧತೆಗಳನ್ನು ಬದಲಿಸುವುದು…</string>
   <string name="preference_turbo_mode">ಟರ್ಬೋ ಸ್ಥಿತಿ</string>
   <string name="preference_mozilla_telemetry">ಬಳಕೆಯ ದತ್ತಾಂಶ ಕಳುಹಿಸಿ</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s ಎಲ್ಲರಿಗಾಗಿ %1$s ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಿ ಕೊಡುವುದಕ್ಕೆ ಬೇಕಾದ್ದನ್ನು ಮಾತ್ರ ಸಂಗ್ರಹಿಸುತ್ತದೆ.</string>
   <string name="preference_learn_more">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</string>
   <string name="preference_about">ನ ಬಗ್ಗೆ</string>
   <string name="preference_night_mode_brightness">ರಾತ್ರಿ ಸ್ಥಿತಿಯ ಹೊಳಪು</string>

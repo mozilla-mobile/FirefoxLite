@@ -4,7 +4,6 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import org.mozilla.focus.tabs.tabtray.TabTrayViewModel
-import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.NewFeatureNotice
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
@@ -12,9 +11,6 @@ import org.mozilla.rocket.home.HomeViewModel
 import org.mozilla.rocket.home.contenthub.data.ContentHubRepo
 import org.mozilla.rocket.home.contenthub.domain.GetContentHubItemsUseCase
 import org.mozilla.rocket.home.contenthub.domain.ReadContentHubItemUseCase
-import org.mozilla.rocket.home.contenthub.domain.SetContentHubEnabledUseCase
-import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubItemTextUseCase
-import org.mozilla.rocket.home.contenthub.domain.ShouldShowContentHubUseCase
 import org.mozilla.rocket.home.data.ContentPrefRepo
 import org.mozilla.rocket.home.domain.IsHomeScreenShoppingButtonEnabledUseCase
 import org.mozilla.rocket.home.domain.SetContentPrefUseCase
@@ -41,7 +37,6 @@ import org.mozilla.rocket.msrp.data.MissionRepository
 import org.mozilla.rocket.msrp.di.MissionModule
 import org.mozilla.rocket.msrp.domain.CheckInMissionUseCase
 import org.mozilla.rocket.msrp.domain.CompleteJoinMissionOnboardingUseCase
-import org.mozilla.rocket.msrp.domain.GetContentHubClickOnboardingEventUseCase
 import org.mozilla.rocket.msrp.domain.GetIsFxAccountUseCase
 import org.mozilla.rocket.msrp.domain.HasUnreadMissionsUseCase
 import org.mozilla.rocket.msrp.domain.IsMsrpAvailableUseCase
@@ -64,7 +59,6 @@ object HomeModule {
         pinTopSiteUseCase: PinTopSiteUseCase,
         removeTopSiteUseCase: RemoveTopSiteUseCase,
         getContentHubItemsUseCase: GetContentHubItemsUseCase,
-        shouldShowContentHubItemTextUseCase: ShouldShowContentHubItemTextUseCase,
         readContentHubItemUseCase: ReadContentHubItemUseCase,
         getLogoManNotificationUseCase: GetLogoManNotificationUseCase,
         lastReadLogoManNotificationUseCase: LastReadLogoManNotificationUseCase,
@@ -74,14 +68,12 @@ object HomeModule {
         isHomeScreenShoppingButtonEnabledUseCase: IsHomeScreenShoppingButtonEnabledUseCase,
         checkInMissionUseCase: CheckInMissionUseCase,
         completeJoinMissionOnboardingUseCase: CompleteJoinMissionOnboardingUseCase,
-        getContentHubClickOnboardingEventUseCase: GetContentHubClickOnboardingEventUseCase,
         refreshMissionsUseCase: RefreshMissionsUseCase,
         hasUnreadMissionsUseCase: HasUnreadMissionsUseCase,
         getIsFxAccountUseCase: GetIsFxAccountUseCase,
         shouldShowShoppingSearchOnboardingUseCase: ShouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase: SetShoppingSearchOnboardingIsShownUseCase,
         shouldShowNewMenuItemHintUseCase: ShouldShowNewMenuItemHintUseCase,
-        shouldShowContentHubUseCase: ShouldShowContentHubUseCase,
         shouldShowThemeOnboardingUseCase: ShouldShowThemeOnboardingUseCase,
         setThemeOnboardingIsShownUseCase: SetThemeOnboardingIsShownUseCase,
         shouldShowSetDefaultBrowserOnboardingUseCase: ShouldShowSetDefaultBrowserOnboardingUseCase,
@@ -93,7 +85,6 @@ object HomeModule {
         pinTopSiteUseCase,
         removeTopSiteUseCase,
         getContentHubItemsUseCase,
-        shouldShowContentHubItemTextUseCase,
         readContentHubItemUseCase,
         getLogoManNotificationUseCase,
         lastReadLogoManNotificationUseCase,
@@ -103,14 +94,12 @@ object HomeModule {
         isHomeScreenShoppingButtonEnabledUseCase,
         checkInMissionUseCase,
         completeJoinMissionOnboardingUseCase,
-        getContentHubClickOnboardingEventUseCase,
         refreshMissionsUseCase,
         hasUnreadMissionsUseCase,
         getIsFxAccountUseCase,
         shouldShowShoppingSearchOnboardingUseCase,
         setShoppingSearchOnboardingIsShownUseCase,
         shouldShowNewMenuItemHintUseCase,
-        shouldShowContentHubUseCase,
         shouldShowThemeOnboardingUseCase,
         setThemeOnboardingIsShownUseCase,
         shouldShowSetDefaultBrowserOnboardingUseCase,
@@ -169,22 +158,6 @@ object HomeModule {
     @Singleton
     @Provides
     fun provideReadContentHubItemUseCase(contentHubRepo: ContentHubRepo): ReadContentHubItemUseCase = ReadContentHubItemUseCase(contentHubRepo)
-
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideShouldShowContentHubItemTextUseCase(): ShouldShowContentHubItemTextUseCase =
-            ShouldShowContentHubItemTextUseCase(FirebaseHelper.getFirebase())
-
-    @JvmStatic
-    @Provides
-    fun provideSetContentHubEnabledUseCase(contentHubRepo: ContentHubRepo): SetContentHubEnabledUseCase =
-            SetContentHubEnabledUseCase(contentHubRepo)
-
-    @JvmStatic
-    @Provides
-    fun provideShouldShowContentHubUseCase(contentHubRepo: ContentHubRepo): ShouldShowContentHubUseCase =
-            ShouldShowContentHubUseCase(contentHubRepo)
 
     @JvmStatic
     @Singleton

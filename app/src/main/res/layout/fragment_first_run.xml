@@ -173,14 +173,6 @@
     </LinearLayout>
     
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/ic_firefox_lite_logo_2"
-        app:layout_constraintBottom_toTopOf="@id/options_layout"
-        app:layout_constraintEnd_toEndOf="@id/options_layout"
-        android:translationY="30dp"/>
-    
-    <ImageView
         android:id="@+id/select_button"
         android:layout_width="46dp"
         android:layout_height="46dp"

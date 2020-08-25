@@ -4,7 +4,7 @@ object Versions {
     const val compile_sdk = 28
     const val build_tools = "28.0.3"
     const val version_code = 1
-    const val version_name = "2.5.1"
+    const val version_name = "2.6.0"
     const val android_gradle_plugin = "3.6.1"
     const val gms_oss_licenses_plugin = "0.10.2"
     const val support = "1.0.0"
@@ -34,8 +34,6 @@ object Versions {
     const val leakcanary = "2.0-beta-3"
     const val android_components = "0.52.0"
     const val android_components_awesomebar = "0.56.0"
-    const val adjust = "4.20.0"
-    const val android_installreferrer = "1.1.2"
     const val annotation = "1.1.0"
     const val junit = "4.13"
     const val mockito = "3.3.0"

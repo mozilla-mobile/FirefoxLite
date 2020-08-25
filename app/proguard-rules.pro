@@ -1,8 +1,6 @@
 # We do not want to obfuscate - It's just painful to debug without the right mapping file.
 -dontobfuscate
 
-# Adjust
--keep public class com.adjust.sdk.** { *; }
 -keep class com.google.android.gms.common.ConnectionResult {
     int SUCCESS;
 }

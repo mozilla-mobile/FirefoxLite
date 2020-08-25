@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">पुढील परिणाम शोधा</string>
   <string name="accessibility_find_previous_result">मागील परिणाम शोधा</string>
   <string name="accessibility_dismiss_find_in_page">पृष्ठावर शोधणे रद्द करा</string>
-  <string name="text_selection_search_action">Firefox Lite मध्ये शोधा</string>
+  <string name="text_selection_search_action">Rocket मध्ये शोधा</string>
   <string name="about_content_body">%2$s द्वारे तयार केलेला %1$s हा एक जलद आणि उज्वल ब्राउझर आहे. आमचे ध्येय निरोगी , सर्व-वापरण्यायोग्य इंटरनेट स्थापित करणे आहे.</string>
   <string name="about_link_learn_more">अधिक जाणा</string>
   <string name="about_link_support">आधार</string>
@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">सेटिंग बदलत आहे…</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">वापर डेटा पाठवा</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s सर्वांसाठी फक्त %1$s उपलब्ध करून सुधारण्यासाठी जी माहिती लागते ती जमवते.</string>
   <string name="preference_learn_more">आणखी जाणा</string>
   <string name="preference_about">याबद्दल</string>
   <string name="preference_night_mode_brightness">नाईट मोड प्रखरता</string>
@@ -169,7 +168,7 @@
   <string name="update_to_latest_app_snack_bar_message">नवीनतम बिल्ड डाउनलोड केले</string>
   <string name="update_to_latest_app_snack_bar_update">अद्ययावत करा</string>
   <string name="privacy_policy_update_notification_title">उत्पादन अद्यतन सूचना</string>
-  <string name="privacy_policy_update_notification_action">FIrefox Lite सर्वांसाठी सुधारण्यासाठी, आम्ही गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
+  <string name="privacy_policy_update_notification_action">Rocket सर्वांसाठी सुधारण्यासाठी, आम्ही गोपनीयता धोरणात बदल केले आहेत. अधिक जाणून घेण्यासाठी टॅप करा.</string>
   <string name="rate_app_dialog_text_title">%1$s आवडलं का?</string>
   <string name="rate_app_dialog_text_content">आमचे उत्पादन निवडल्याबद्दल धन्यवाद. आपला अभिप्राय आमच्यासाठी महत्त्वाचा आहे.</string>
   <string name="rate_app_dialog_btn_go_rate">गुणांकन द्या</string>
@@ -332,7 +331,6 @@
   <string name="onboarding_2_smart_shopping_search_title">स्मार्ट शॉपिंग शोध</string>
   <string name="onboarding_2_smart_shopping_search_description">अनेक ऑनलाईन स्टोअर वर किमतीची तुलना करणे झाले सोप्पे, वापरून पहा!</string>
   <string name="home_search_bar_text">शोधा…</string>
-  <string name="home_content_services">सामग्री आणि सेवा</string>
   <string name="home_discovery">शोध</string>
   <string name="content_home_context_menu_add_to_home_screen">मुख्य पटलावर जोडा</string>
   <string name="content_home_context_menu_share_link">दुवा शेअर करा</string>

@@ -3,8 +3,8 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <resources>
-    <string name="app_name" translatable="false">Firefox Lite Dev</string>
-    <string name="app_name_private" translatable="false">Firefox Lite Dev - Private browsing</string>
+    <string name="app_name" translatable="false">Rocket Dev</string>
+    <string name="app_name_private" translatable="false">Rocket Dev - Private browsing</string>
 
-    <string name="text_selection_search_action">Search in Firefox Lite Dev</string>
+    <string name="text_selection_search_action">Search in Rocket Dev</string>
 </resources>

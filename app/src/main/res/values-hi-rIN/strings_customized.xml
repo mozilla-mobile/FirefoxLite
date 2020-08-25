@@ -2,7 +2,7 @@
 <resources>
     <!--The product feature "Travel Discovery"-->
     <string name="travel_discovery">ट्रैवल डिस्कवरी</string>
-    <!-- Onboarding transition before getting into Firefox Lite Home -->
+    <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">अनुभव को अपने अनुसार अनुकूलित करें...</string>
     <!-- Introduce personalized home to new users -->
     <string name="onboarding_transition_feature_1">आपके पसंदीदा रूप में आपका होम</string>

@@ -25,7 +25,6 @@ import org.mozilla.focus.notification.NotificationUtil
 import org.mozilla.focus.screenshot.ScreenshotManager
 import org.mozilla.focus.search.SearchEngineManager
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.AdjustHelper
 import org.mozilla.focus.utils.AppConstants
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
@@ -146,7 +145,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
         SearchEngineManager.getInstance().init(this)
 
         LocalAbTesting.init(this)
-        AdjustHelper.setupAdjustIfNeeded(this)
 
         BrowsingHistoryManager.getInstance().init(this)
         ScreenshotManager.getInstance().init(this)

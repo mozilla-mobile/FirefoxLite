@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">পরবর্তী ফলাফল খুঁজুন</string>
   <string name="accessibility_find_previous_result">পূর্ববর্তী ফলাফল খুঁজুন</string>
   <string name="accessibility_dismiss_find_in_page">পাতায় অনুসন্ধান বাদ দিন</string>
-  <string name="text_selection_search_action">Firefox Lite এ খুঁজুন</string>
+  <string name="text_selection_search_action">Rocket এ খুঁজুন</string>
   <string name="about_content_body">%1$s %2$s-র তৈরি একটি দ্রুত এবং হালকা ব্রাউজার। আমাদের লক্ষ্য হল একটি ভালো, মুক্ত ইন্টারনেটের উন্নতিবিধান করা।</string>
   <string name="about_link_learn_more">আরও জানুন</string>
   <string name="about_link_support">সহায়তা</string>
@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">সেটিংস পাল্টানো হচ্ছে…</string>
   <string name="preference_turbo_mode">টার্বো মোড</string>
   <string name="preference_mozilla_telemetry">ব্যবহারের তথ্য পাঠান</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s কেবলমাত্র সেটাই সংগ্রহ করার চেষ্টা করে যা প্রত্যেকের জন্য %1$sকে প্রদান এবং উন্নতি করতে লাগে।</string>
   <string name="preference_learn_more">আরও জানুন</string>
   <string name="preference_about">সম্বন্ধে</string>
   <string name="preference_night_mode_brightness">নাইট মোড উজ্জ্বলতা</string>
@@ -169,7 +168,7 @@
   <string name="update_to_latest_app_snack_bar_message">সর্বশেষ বিল্ড ডাউনলোড হয়েছে</string>
   <string name="update_to_latest_app_snack_bar_update">হালনাগাদ করুন</string>
   <string name="privacy_policy_update_notification_title">প্রোডাক্ট আপডেটের বিজ্ঞপ্তি</string>
-  <string name="privacy_policy_update_notification_action">আপনার এবং সবার জন্য Firefox Lite আরও উন্নত করতে আমরা আমাদের গোপনীয়তা নীতিতে কিছু পরিবর্তন করেছি। আরও জানার জন্য ট্যাপ করুন।</string>
+  <string name="privacy_policy_update_notification_action">আপনার এবং সবার জন্য Rocket আরও উন্নত করতে আমরা আমাদের গোপনীয়তা নীতিতে কিছু পরিবর্তন করেছি। আরও জানার জন্য ট্যাপ করুন।</string>
   <string name="rate_app_dialog_text_title">%1$s কে ভালোবাসেন কি?</string>
   <string name="rate_app_dialog_text_content">আমাদের প্রোডাক্ট নির্বাচন করার জন্য আপনাকে ধন্যবাদ। আপনার মতামত আমাদের কাছে গুরুত্বপূর্ণ।</string>
   <string name="rate_app_dialog_btn_go_rate">আমাদের ব্যাপারে আপনার মতামত দিন</string>
@@ -334,7 +333,6 @@
   <string name="onboarding_2_smart_shopping_search_title">স্মার্ট শপিং অনুসন্ধান</string>
   <string name="onboarding_2_smart_shopping_search_description">বিভিন্ন অনলাইন স্টোরের দামের তুলনা করা এখন খুবই সহজ, এখনই পরখ করুন!</string>
   <string name="home_search_bar_text">অনুসন্ধান…</string>
-  <string name="home_content_services">কন্টেন্ট ও সার্ভিস</string>
   <string name="home_discovery">আবিষ্কার</string>
   <string name="content_home_context_menu_add_to_home_screen">নীড় স্ক্রিনে যুক্ত করুন</string>
   <string name="content_home_context_menu_share_link">লিঙ্ক শেয়ার করুন</string>

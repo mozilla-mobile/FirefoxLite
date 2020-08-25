@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">尋找下一筆</string>
   <string name="accessibility_find_previous_result">尋找上一筆</string>
   <string name="accessibility_dismiss_find_in_page">關閉頁面搜尋</string>
-  <string name="text_selection_search_action">在 Firefox Lite 中搜尋</string>
+  <string name="text_selection_search_action">在 Rocket 中搜尋</string>
   <string name="about_content_body">%1$s 是由 %2$s 所打造的輕量而快速的瀏覽器。我們的使命是培養一個健康、開放的網際網路環境。</string>
   <string name="about_link_learn_more">了解更多</string>
   <string name="about_link_support">技術支援</string>
@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">正在變更設定…</string>
   <string name="preference_turbo_mode">極速模式</string>
   <string name="preference_mozilla_telemetry">傳送使用資料</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s 致力於只收集用來為眾人改善 %1$s 所需的必要資料。</string>
   <string name="preference_learn_more">了解更多</string>
   <string name="preference_about">關於</string>
   <string name="preference_night_mode_brightness">夜間模式亮度</string>
@@ -199,7 +198,7 @@
   <string name="update_to_latest_app_snack_bar_message">已下載最新版本</string>
   <string name="update_to_latest_app_snack_bar_update">更新</string>
   <string name="privacy_policy_update_notification_title">產品更新公告</string>
-  <string name="privacy_policy_update_notification_action">為了讓 Firefox Lite 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
+  <string name="privacy_policy_update_notification_action">為了讓 Rocket 能為您與所有人變得更好，我們修改了部分的隱私權保護政策。可點擊此處了解更多資訊。</string>
   <string name="message_set_default_success">感謝使用 %1$s！</string>
   <string name="message_set_default_incomplet">您想要完成將 %1$s 設為預設瀏覽器的過程嗎？</string>
   <string name="setting_default_browser_instruction_system_settings">只要兩個步驟即可將 %1$s 設為預設瀏覽器</string>
@@ -383,7 +382,6 @@
   <string name="onboarding_2_smart_shopping_search_title">智慧購物搜尋</string>
   <string name="onboarding_2_smart_shopping_search_description">在不同線上商店間比價相當簡單，現在就試試看！</string>
   <string name="home_search_bar_text">搜尋…</string>
-  <string name="home_content_services">內容與服務</string>
   <string name="home_discovery">探索</string>
   <string name="content_home_context_menu_add_to_home_screen">新增至裝置主畫面</string>
   <string name="content_home_context_menu_share_link">分享鏈結</string>

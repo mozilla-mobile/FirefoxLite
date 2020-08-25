@@ -18,7 +18,7 @@
   <string name="accessibility_find_next_result">Найти следующее совпадение</string>
   <string name="accessibility_find_previous_result">Найти предыдущее совпадение</string>
   <string name="accessibility_dismiss_find_in_page">Убрать поиск на странице</string>
-  <string name="text_selection_search_action">Искать в Firefox Lite</string>
+  <string name="text_selection_search_action">Искать в Rocket</string>
   <string name="about_content_body">%1$s — быстрый и легкий браузер, созданный %2$s. Нашей миссией является обеспечение здоровья и открытости Интернета.</string>
   <string name="about_link_learn_more">Узнать больше</string>
   <string name="about_link_support">Поддержка</string>
@@ -38,7 +38,6 @@
   <string name="preference_default_browser_is_setting">Изменение параметров…</string>
   <string name="preference_turbo_mode">Режим Турбо</string>
   <string name="preference_mozilla_telemetry">Отправлять данные об использовании</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s стремится собирать только ту информацию, которая необходима для работы %1$s и его улучшения в будущем.</string>
   <string name="preference_learn_more">Подробнее</string>
   <string name="preference_about">О программе</string>
   <string name="preference_night_mode_brightness">Яркость в ночном режиме</string>
@@ -199,7 +198,7 @@
   <string name="update_to_latest_app_snack_bar_message">Последняя сборка загружена</string>
   <string name="update_to_latest_app_snack_bar_update">ОБНОВИТЬ</string>
   <string name="privacy_policy_update_notification_title">Уведомление об обновлении продукта</string>
-  <string name="privacy_policy_update_notification_action">Чтобы сделать Firefox Lite лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
+  <string name="privacy_policy_update_notification_action">Чтобы сделать Rocket лучше для вас и для всех, мы внесли некоторые изменения в нашу политику конфиденциальности. Нажмите, чтобы узнать больше.</string>
   <string name="message_set_default_success">Спасибо, что выбрали %1$s!</string>
   <string name="message_set_default_incomplet">Вы действительно хотите установить %1$s в качестве браузера по умолчанию?</string>
   <string name="setting_default_browser_instruction_system_settings">2 шага для установки %1$s в качестве браузера по умолчанию</string>
@@ -383,7 +382,6 @@
   <string name="onboarding_2_smart_shopping_search_title">Умный поиск покупок</string>
   <string name="onboarding_2_smart_shopping_search_description">Сравнивать цены во множестве интернет-магазинов — легко, попробуйте сейчас!</string>
   <string name="home_search_bar_text">Поиск…</string>
-  <string name="home_content_services">Содержимое и услуги</string>
   <string name="home_discovery">Обзор</string>
   <string name="content_home_context_menu_add_to_home_screen">Добавить на домашний экран</string>
   <string name="content_home_context_menu_share_link">Поделиться ссылкой</string>

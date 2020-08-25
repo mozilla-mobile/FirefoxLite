@@ -16,7 +16,7 @@
   <string name="accessibility_find_next_result">अगलो परिणाम जानोॅ</string>
   <string name="accessibility_find_previous_result">पिछ्लो परिणाम जानोॅ</string>
   <string name="accessibility_dismiss_find_in_page">पेज में रद्द करोॅ</string>
-  <string name="text_selection_search_action">Firefox Lite में खोजोॅ</string>
+  <string name="text_selection_search_action">Rocket में खोजोॅ</string>
   <string name="about_content_body">%1$s %2$s द्वारा बनाएल गेल एगो तेज आरु हल्लुक ब्राउजर छै. हमर मिशन स्वस्थ आरु खुलल इंटरनेट क बढ़ावा देनाय छै.</string>
   <string name="about_link_learn_more">बेसी जानकारी</string>
   <string name="about_link_support">समर्थन</string>
@@ -36,7 +36,6 @@
   <string name="preference_default_browser_is_setting">सेटिंग्स बदलि रहलोॅ छै...</string>
   <string name="preference_turbo_mode">टर्बो मोड</string>
   <string name="preference_mozilla_telemetry">उपयोग डेटा भेजोॅ</string>
-  <string name="preference_mozilla_telemetry_summary">%2$s खलि ओ चीज के जमा करै छै जकरा %1$s मे सभक लेली सुधार करै के आवश्यक्ता छै.</string>
   <string name="preference_learn_more">बेसी जानकारी</string>
   <string name="preference_about">के बारो मेॅ</string>
   <string name="preference_night_mode_brightness">नाईट मोड चमक</string>
@@ -159,7 +158,7 @@
   <string name="pin_site">साइट पिन करोॅ</string>
   <string name="update_to_latest_app_snack_bar_update">अपडेट</string>
   <string name="privacy_policy_update_notification_title">उत्पाद अपडेट सूचना</string>
-  <string name="privacy_policy_update_notification_action">Firefox Lite कअ तोहरो आरु हर एक खतिर सबसे अच्छा बनबे लअ, हम अपनो गोपनीयता नीति मे कुछ बदलाओ करलियै यै. अधिक जानै लअ टेप करिइयै.</string>
+  <string name="privacy_policy_update_notification_action">Rocket कअ तोहरो आरु हर एक खतिर सबसे अच्छा बनबे लअ, हम अपनो गोपनीयता नीति मे कुछ बदलाओ करलियै यै. अधिक जानै लअ टेप करिइयै.</string>
   <string name="rate_app_dialog_text_title">%1$s पसंद छै?</string>
   <string name="rate_app_dialog_text_content">हमरो उत्पाद क चुने ल धन्यवाद. अपनो कअ प्रतिक्रिया हमारा ल जरुरी छै.</string>
   <string name="rate_app_dialog_btn_go_rate">रेट करियै</string>
