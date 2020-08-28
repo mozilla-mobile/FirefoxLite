@@ -33,7 +33,6 @@ import org.mozilla.rocket.abtesting.LocalAbTesting
 import org.mozilla.rocket.di.AppComponent
 import org.mozilla.rocket.di.AppModule
 import org.mozilla.rocket.di.DaggerAppComponent
-import org.mozilla.rocket.partner.PartnerActivator
 import org.mozilla.rocket.privately.PrivateMode.Companion.PRIVATE_PROCESS_NAME
 import org.mozilla.rocket.privately.PrivateMode.Companion.WEBVIEW_FOLDER_NAME
 import org.mozilla.rocket.privately.PrivateModeActivity
@@ -44,7 +43,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
     private var appComponent: AppComponent? = null
 
-    lateinit var partnerActivator: PartnerActivator
     var isInPrivateProcess = false
     var isForeground = false
 
@@ -150,9 +148,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
         ScreenshotManager.getInstance().init(this)
         // initialize the NotificationUtil to configure the default notification channel. This is required for API 26+
         NotificationUtil.init(this)
-
-        partnerActivator = PartnerActivator(this)
-        partnerActivator.launch()
 
         monitorPrivateProcess()
 
