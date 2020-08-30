@@ -215,7 +215,7 @@
     <!-- The welcome titles in Rocket 2.5 for asking users to choose a main purpose of downloading Rocket. The %1$s is Rocket. -->
     <string name="firstrun_fxlite_2_5_title_B">What brings you to %1$s?</string>
     <!-- 4 content themes for users to select in order to get the most relevant content on Rocket Home -->
-    <string name="content_theme_1">All of the Above</string>
+    <string name="content_theme_1">Browse the Web</string>
     <string name="content_theme_2">Find Good Deals</string>
     <string name="content_theme_3">Play Games and Videos</string>
     <string name="content_theme_4">Read Trending News</string>
