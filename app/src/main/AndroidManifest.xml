@@ -272,18 +272,6 @@
             android:exported="false" />
 
         <activity
-            android:name="org.mozilla.rocket.content.game.ui.GameActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:taskAffinity=".content.game" />
-
-        <activity
-            android:name="org.mozilla.rocket.content.game.ui.GameModeActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:theme="@style/GameModeTheme" />
-
-        <activity
             android:name="org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity"
             android:exported="false"
             android:screenOrientation="portrait"

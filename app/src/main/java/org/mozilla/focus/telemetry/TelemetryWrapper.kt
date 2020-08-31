@@ -176,7 +176,6 @@ object TelemetryWrapper {
         internal const val LAUNCHER = "launcher"
         internal const val EXTERNAL_APP = "external_app"
         internal const val SHORTCUT = "shortcut"
-        internal const val GAME_SHORTCUT = "game_shortcut"
         internal const val PRIVATE_MODE = "private_mode"
         internal const val PREVIOUS = "previous"
         internal const val NEXT = "next"
@@ -299,7 +298,6 @@ object TelemetryWrapper {
         const val NEW = "new"
         const val REMINDER = "reminder"
         const val SHOPPING = "shopping"
-        const val GAME = "game"
         const val TRAVEL = "travel"
         const val LIFESTYLE = "lifestyle"
         const val REWARDS = "rewards"
@@ -314,10 +312,6 @@ object TelemetryWrapper {
         const val CLOSE = "close"
         const val MISSION = "mission"
         const val GIFT = "gift"
-        const val INSTANT_GAME = "browser game"
-        const val DOWNLOAD_GAME = "premium game"
-        const val CREATE_GAME_SHORTCUT = "create_game_shortcut"
-        const val SHARE_GAME = "share_game"
         const val HOME = "home"
         const val TAB_SWIPE = "tab_swipe"
         const val EXPLORE = "explore"
@@ -1507,7 +1501,7 @@ object TelemetryWrapper {
             `object` = Object.SEARCH_BAR,
             value = Value.MINI_URLBAR,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.ORIENTATION, value = "portrait,landscape")
             ])
     @JvmStatic
@@ -2361,7 +2355,7 @@ object TelemetryWrapper {
             `object` = Object.LOGOMAN,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
+                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
                 TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
                 TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
             ])
@@ -2380,7 +2374,7 @@ object TelemetryWrapper {
             `object` = Object.LOGOMAN,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
+                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
                 TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
                 TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
             ])
@@ -2399,7 +2393,7 @@ object TelemetryWrapper {
             `object` = Object.LOGOMAN,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
+                TelemetryExtra(name = Extra.TYPE, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS},${Extra_Value.WEATHER},null"),
                 TelemetryExtra(name = Extra.LINK, value = "${Extra_Value.URL},${Extra_Value.DEEPLINK},null"),
                 TelemetryExtra(name = Extra.MESSAGE_ID, value = "message id")
             ])
@@ -2564,12 +2558,12 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_HUB,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
             ])
     fun clickContentHub(item: ContentHub.Item) {
         val vertical = when (item) {
             is ContentHub.Item.Shopping -> Extra_Value.SHOPPING
-            is ContentHub.Item.Games -> Extra_Value.GAME
+            is ContentHub.Item.Games -> ""
             is ContentHub.Item.Travel -> Extra_Value.TRAVEL
             is ContentHub.Item.News -> Extra_Value.LIFESTYLE
         }
@@ -2585,7 +2579,7 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_HOME,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category")
             ])
     fun reloadContentHome(vertical: String, category: String) {
@@ -2602,7 +2596,7 @@ object TelemetryWrapper {
             `object` = Object.SEARCH_BAR,
             value = Value.CONTENT_HOME,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}")
             ])
     @JvmStatic
     fun showContentHomeSearchBar(vertical: String) {
@@ -2618,7 +2612,7 @@ object TelemetryWrapper {
             `object` = Object.SEARCH_BAR,
             value = Value.CONTENT_HOME,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.SOURCE, value = "${Extra_Value.GOOGLE},${Extra_Value.BOOKING_COM}")
             ])
     @JvmStatic
@@ -2636,7 +2630,7 @@ object TelemetryWrapper {
             `object` = Object.CATEGORY,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category")
             ])
     fun openCategory(vertical: String, category: String) {
@@ -2653,7 +2647,7 @@ object TelemetryWrapper {
             `object` = Object.DETAIL_PAGE,
             value = Value.MORE,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
                 TelemetryExtra(name = Extra.ITEM_ID, value = "item id"),
                 TelemetryExtra(name = Extra.ITEM_NAME, value = "item name"),
@@ -2676,7 +2670,7 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_TAB,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2703,7 +2697,7 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_TAB,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2757,7 +2751,7 @@ object TelemetryWrapper {
             `object` = Object.PROCESS,
             value = Value.VERTICAL,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
             ])
     fun startVerticalProcess(vertical: String) {
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.VERTICAL)
@@ -2772,7 +2766,7 @@ object TelemetryWrapper {
             `object` = Object.PROCESS,
             value = Value.VERTICAL,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.LOADTIME, value = "[0-9]+")
             ])
     fun endVerticalProcess(vertical: String, loadTime: Long) {
@@ -2789,7 +2783,7 @@ object TelemetryWrapper {
             `object` = Object.ONBOARDING,
             value = Value.VERTICAL,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
             ])
     fun showVerticalOnboarding(vertical: String) {
         EventBuilder(Category.ACTION, Method.SHOW, Object.ONBOARDING, Value.VERTICAL)
@@ -2804,7 +2798,7 @@ object TelemetryWrapper {
             `object` = Object.PROCESS,
             value = Value.TAB_SWIPE,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}")
             ])
     fun startTabSwipeProcess(vertical: String) {
         EventBuilder(Category.ACTION, Method.START, Object.PROCESS, Value.TAB_SWIPE)
@@ -2819,7 +2813,7 @@ object TelemetryWrapper {
             `object` = Object.PROCESS,
             value = Value.TAB_SWIPE,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.LOADTIME, value = "[0-9]+")
             ])
     fun endTabSwipeProcess(vertical: String, loadTime: Long) {
@@ -2836,7 +2830,7 @@ object TelemetryWrapper {
             `object` = Object.TAB_SWIPE,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source")
             ])
@@ -2855,7 +2849,7 @@ object TelemetryWrapper {
             `object` = Object.TAB_SWIPE,
             value = "",
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.SESSION_TIME, value = "time duration from entering component"),
@@ -2884,7 +2878,7 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2915,7 +2909,7 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2946,7 +2940,7 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -2981,7 +2975,7 @@ object TelemetryWrapper {
             extras = [
                 TelemetryExtra(name = Extra.MODE, value = "webview"),
                 TelemetryExtra(name = Extra.POSITION, value = "[0-9]"),
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.FEED, value = "feed"),
                 TelemetryExtra(name = Extra.SOURCE, value = "source"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "category"),
@@ -3017,7 +3011,7 @@ object TelemetryWrapper {
         method = Method.CLICK,
         `object` = Object.TOOLBAR,
         value = Value.TAB_SWIPE,
-        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
             TelemetryExtra(name = Extra.FROM, value = "${Extra_Value.HOME},${Extra_Value.TAB_SWIPE}")
         ])
     @JvmStatic
@@ -3034,7 +3028,7 @@ object TelemetryWrapper {
         method = Method.SHOW,
         `object` = Object.DRAWER,
         value = Value.TAB_SWIPE,
-        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
             TelemetryExtra(name = Extra.FEED, value = "feed")
         ])
     @JvmStatic
@@ -3051,7 +3045,7 @@ object TelemetryWrapper {
         method = Method.CLICK,
         `object` = Object.DRAWER,
         value = Value.TAB_SWIPE,
-        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
             TelemetryExtra(name = Extra.FEED, value = "feed")
         ])
     @JvmStatic
@@ -3068,7 +3062,7 @@ object TelemetryWrapper {
         method = Method.ADD,
         `object` = Object.TAB,
         value = Value.TAB_SWIPE,
-        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")])
+        extras = [TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")])
     @JvmStatic
     fun addTabSwipeTab(vertical: String) {
         EventBuilder(Category.ACTION, Method.ADD, Object.TAB, Value.TAB_SWIPE)
@@ -3097,7 +3091,7 @@ object TelemetryWrapper {
         `object` = Object.SEARCH_BAR,
         value = Value.TAB_SWIPE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
         ])
     @JvmStatic
     fun showSearchBarFromTabSwipe(vertical: String) {
@@ -3113,7 +3107,7 @@ object TelemetryWrapper {
         `object` = Object.SEARCH_BAR,
         value = Value.TAB_SWIPE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
         ])
     @JvmStatic
     fun showKeyboardFromTabSwipeSearchBar(vertical: String) {
@@ -3129,7 +3123,7 @@ object TelemetryWrapper {
         `object` = Object.SEARCH_BAR,
         value = Value.TAB_SWIPE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
         ])
     @JvmStatic
     fun startTypingFromTabSwipeSearchBar(vertical: String) {
@@ -3145,7 +3139,7 @@ object TelemetryWrapper {
         `object` = Object.SEARCH_BAR,
         value = Value.TAB_SWIPE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}")
         ])
     @JvmStatic
     fun searchWithTextInSearchBar(vertical: String) {
@@ -3161,7 +3155,7 @@ object TelemetryWrapper {
         `object` = Object.SEARCH_BAR,
         value = Value.TAB_SWIPE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.REWARDS}"),
             TelemetryExtra(name = Extra.DEFAULT, value = "true,false"),
             TelemetryExtra(name = Extra.KEYWORD, value = "default name xxx,null")
         ])
@@ -3181,7 +3175,7 @@ object TelemetryWrapper {
         `object` = Object.SETTING,
         value = Value.DETAIL_PAGE,
         extras = [
-            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
+            TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE}"),
             TelemetryExtra(name = Extra.CATEGORY, value = "category"),
             TelemetryExtra(name = Extra.ITEM_ID, value = "item id"),
             TelemetryExtra(name = Extra.ITEM_NAME, value = "item name"),
@@ -3208,7 +3202,7 @@ object TelemetryWrapper {
             `object` = Object.ONBOARDING,
             value = Value.PERSONALIZATION,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.PERSONALIZATION, value = "true,false")
             ])
     @JvmStatic
@@ -3226,7 +3220,7 @@ object TelemetryWrapper {
             `object` = Object.ONBOARDING,
             value = Value.LANGUAGE,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.GAME},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING},${Extra_Value.TRAVEL},${Extra_Value.LIFESTYLE},${Extra_Value.ALL}"),
                 TelemetryExtra(name = Extra.LANGUAGE, value = "language")
             ])
     @JvmStatic
@@ -3451,7 +3445,7 @@ object TelemetryWrapper {
             `object` = Object.CONTENT_HOME,
             value = Value.ITEM,
             extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.GAME}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
+                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
                 TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.MISSION}|${Extra_Value.GIFT}|${Extra_Value.EXPLORE}|${Extra_Value.BUCKET_LIST}"),
                 TelemetryExtra(name = Extra.ITEM_ID, value = "item id"),
                 TelemetryExtra(name = Extra.ITEM_NAME, value = "item name")
@@ -3474,52 +3468,6 @@ object TelemetryWrapper {
             extras = [])
     fun clickChellengePageLogin() {
         EventBuilder(Category.ACTION, Method.CLICK, Object.CHALLENGE_PAGE, Value.LOGIN)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Long Press Content Home Item",
-            category = Category.ACTION,
-            method = Method.LONG_PRESS,
-            `object` = Object.CONTENT_HOME,
-            value = Value.ITEM,
-            extras = [
-                TelemetryExtra(name = Extra.VERTICAL, value = "${Extra_Value.SHOPPING}|${Extra_Value.GAME}|${Extra_Value.TRAVEL}|${Extra_Value.LIFESTYLE}|${Extra_Value.REWARDS}"),
-                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.INSTANT_GAME}|${Extra_Value.DOWNLOAD_GAME}")
-            ])
-    fun openContentContextMenuEvent(vertical: String, category: String) {
-        EventBuilder(Category.ACTION, Method.LONG_PRESS, Object.CONTENT_HOME, Value.ITEM)
-                .extra(Extra.VERTICAL, vertical)
-                .extra(Extra.CATEGORY, category)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click Content Home Contextmenu",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.CONTENT_HOME,
-            value = Value.CONTEXTMENU,
-            extras = [
-                TelemetryExtra(name = Extra.ACTION, value = "${Extra_Value.CREATE_GAME_SHORTCUT}|${Extra_Value.SHARE_GAME}"),
-                TelemetryExtra(name = Extra.CATEGORY, value = "${Extra_Value.INSTANT_GAME}|${Extra_Value.DOWNLOAD_GAME}")
-            ])
-    fun clickContentContextMenuItem(action: String, category: String) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.CONTENT_HOME, Value.CONTEXTMENU)
-                .extra(Extra.ACTION, action)
-                .extra(Extra.CATEGORY, category)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "App is launched by Game Shortcut",
-            category = Category.ACTION,
-            method = Method.LAUNCH,
-            `object` = Object.APP,
-            value = Value.GAME_SHORTCUT,
-            extras = [])
-    fun launchByGameShortcut() {
-        EventBuilder(Category.ACTION, Method.LAUNCH, Object.APP, Value.GAME_SHORTCUT)
                 .queue()
     }
 
@@ -3552,21 +3500,6 @@ object TelemetryWrapper {
         EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.UPDATE)
                 .extra(Extra.CHALLENGE_NAME, missionName)
                 .extra(Extra.ACTION, action)
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show Game Shortcut Contextual Hint",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.CONTEXTUAL_HINT,
-            value = Value.GAME_SHORTCUT,
-            extras = [
-                TelemetryExtra(name = Extra.ACTION, value = Value.POSITIVE)
-            ])
-    fun clickGameShortcutContextualHint() {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.CONTEXTUAL_HINT, Value.GAME_SHORTCUT)
-                .extra(Extra.ACTION, Value.POSITIVE)
                 .queue()
     }
 

@@ -3,8 +3,6 @@ package org.mozilla.rocket.deeplink
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import org.mozilla.rocket.deeplink.task.OpenPrivateModeTask
-import org.mozilla.rocket.deeplink.task.StartGameActivityTask
-import org.mozilla.rocket.deeplink.task.StartGameItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsActivityTask
 import org.mozilla.rocket.deeplink.task.StartNewsItemActivityTask
 import org.mozilla.rocket.deeplink.task.StartRewardActivityTask
@@ -18,25 +16,6 @@ import java.net.URI
 import java.net.URISyntaxException
 
 enum class DeepLinkType {
-
-    GAME_HOME {
-        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_GAME, hasQuery = false)
-
-        override fun addTasks(uri: URI) {
-            addTask(StartGameActivityTask())
-        }
-    },
-    GAME_ITEM {
-        override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_GAME_ITEM, hasQuery = true)
-
-        override fun addTasks(uri: URI) {
-            val url = uri.getParam("url")
-            val feed = uri.getParam("feed")
-            val source = uri.getParam("source")
-
-            addTask(StartGameItemActivityTask(url, feed, source))
-        }
-    },
 
     NEWS_HOME {
         override fun match(uri: URI) = isContentLink(uri, DeepLinkConstants.PATH_NEWS, hasQuery = false)

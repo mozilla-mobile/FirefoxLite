@@ -74,7 +74,7 @@ class CheckInMissionUseCase(
         private const val PING_ENTER_SHOPPING = "${TelemetryWrapper.Category.ACTION}-${TelemetryWrapper.Method.CLICK}-${TelemetryWrapper.Object.CONTENT_HUB}-${""}" +
                 ":${TelemetryWrapper.Extra_Value.SHOPPING}"
         private const val PING_ENTER_GAME = "${TelemetryWrapper.Category.ACTION}-${TelemetryWrapper.Method.CLICK}-${TelemetryWrapper.Object.CONTENT_HUB}-${""}" +
-                ":${TelemetryWrapper.Extra_Value.GAME}"
+                ":"
         private const val PING_ENTER_TRAVEL = "${TelemetryWrapper.Category.ACTION}-${TelemetryWrapper.Method.CLICK}-${TelemetryWrapper.Object.CONTENT_HUB}-${""}" +
                 ":${TelemetryWrapper.Extra_Value.TRAVEL}"
         private const val PING_ENTER_LIFESTYLE = "${TelemetryWrapper.Category.ACTION}-${TelemetryWrapper.Method.CLICK}-${TelemetryWrapper.Object.CONTENT_HUB}-${""}" +

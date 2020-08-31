@@ -21,7 +21,6 @@ import org.mozilla.rocket.content.common.adapter.RunwayItem
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
-import org.mozilla.rocket.content.game.ui.GameModeActivity
 import org.mozilla.rocket.content.getActivityViewModel
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryAdapterDelegate
 import org.mozilla.rocket.content.travel.ui.adapter.CityCategoryUiModel
@@ -100,12 +99,6 @@ class TravelExploreFragment : Fragment() {
         runwayViewModel.openRunway.observe(viewLifecycleOwner, Observer { action ->
             context?.let {
                 when (action.type) {
-                    RunwayItem.TYPE_FULL_SCREEN_CONTENT_TAB -> {
-                        startActivity(GameModeActivity.getStartIntent(
-                            it,
-                            action.url,
-                            action.telemetryData.copy(vertical = TelemetryWrapper.Extra_Value.TRAVEL, versionId = travelExploreViewModel.versionId)))
-                    }
                     RunwayItem.TYPE_EXTERNAL_LINK -> {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(action.url))
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

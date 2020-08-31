@@ -128,9 +128,6 @@
     <dimen name="travel_focus_view_height">48dp</dimen>
     <dimen name="travel_focus_view_width">48dp</dimen>
 
-    <!-- InstantGameFragment -->
-    <dimen name="game_focus_view_radius">4dp</dimen>
-
     <!-- Shopping Search -->
     <dimen name="shopping_search_tab_bar_height">47dp</dimen>
 

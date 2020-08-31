@@ -261,13 +261,6 @@
   <string name="shopping_switch_ui_tabtray_title_no_keyword">खरीदारी खोज</string>
   <string name="shopping_closing_dialog_close">सब बंद करोॅ</string>
   <string name="shopping_closing_dialog_cancel">रद्द करोॅ</string>
-  <string name="gaming_vertical_title">खेल</string>
-  <string name="gaming_vertical_new">नया</string>
-  <string name="gaming_vertical_hint_button">ठीक छै</string>
-  <string name="gaming_vertical_menu_option_1">खेल शेयर करोॅ</string>
-  <string name="gaming_vertical_menu_option_2">होम स्क्रीन पर शॉर्टकट बनाबोॅ</string>
-  <string name="gaming_vertical_menu_option_3">लिस्ट से हटाबोॅ</string>
-  <string name="gaming_vertical_genre_3">मेरा खेल</string>
   <string name="onboarding_2_smart_shopping_search_title">स्मार्ट खरीदारी खोज</string>
   <string name="home_search_bar_text">खोजोॅ...</string>
   <string name="content_home_context_menu_add_to_home_screen">होम स्क्रीन में जोड़ोॅ</string>

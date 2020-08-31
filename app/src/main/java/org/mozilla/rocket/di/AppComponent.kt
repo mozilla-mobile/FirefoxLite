@@ -35,10 +35,6 @@ import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
-import org.mozilla.rocket.content.game.ui.DownloadGameFragment
-import org.mozilla.rocket.content.game.ui.GameActivity
-import org.mozilla.rocket.content.game.ui.GameModeActivity
-import org.mozilla.rocket.content.game.ui.InstantGameFragment
 import org.mozilla.rocket.content.news.ui.NewsActivity
 import org.mozilla.rocket.content.news.ui.NewsFragment
 import org.mozilla.rocket.content.news.ui.NewsLanguageSettingFragment
@@ -120,10 +116,6 @@ interface AppComponent {
     fun inject(browserMenuDialog: BrowserMenuDialog)
     fun inject(browsingHistoryFragment: BrowsingHistoryFragment)
     fun inject(privateModeActivity: PrivateModeActivity)
-    fun inject(gameActivity: GameActivity)
-    fun inject(gameModeActivity: GameModeActivity)
-    fun inject(instantGameFragment: InstantGameFragment)
-    fun inject(downloadGameFragment: DownloadGameFragment)
     fun inject(contentTabActivity: ContentTabActivity)
     fun inject(contentTabFragment: ContentTabFragment)
     fun inject(newsActivity: NewsActivity)

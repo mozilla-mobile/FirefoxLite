@@ -29,7 +29,6 @@ class LaunchIntentDispatcher {
         EXTRA_BOOL_TEXT_SELECTION("text_selection"),
         EXTRA_BOOL_HOME_SCREEN_SHORTCUT("shortcut"),
         EXTRA_BOOL_PRIVATE_MODE_SHORTCUT("private_shortcut"),
-        EXTRA_BOOL_GAME_SHORTCUT("game_shortcut")
     }
 
     enum class Command(val value: String) {

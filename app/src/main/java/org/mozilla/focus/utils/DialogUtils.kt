@@ -363,44 +363,6 @@ object DialogUtils {
             .build()
             .also { it.show() }
 
-    fun showGameSpotlight(
-        activity: Activity,
-        targetView: View,
-        dismissListener: DialogInterface.OnDismissListener,
-        ok: View.OnClickListener?
-    ): Dialog = SpotlightDialog.Builder(activity, targetView)
-            .spotlightConfigs(
-                RectangleSpotlightConfigs(
-                    width = targetView.width,
-                    height = targetView.height,
-                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.game_focus_view_radius)
-                )
-            )
-            .setAttachedView(
-                activity.inflate(R.layout.onboarding_spotlight_game_recent_played_attached_view).apply {
-                    next.setOnClickListener(ok)
-                },
-                AttachedViewConfigs(
-                    position = AttachedPosition.BOTTOM,
-                    gravity = AttachedGravity.START
-                )
-            )
-            .addView(
-                activity.inflate(R.layout.onboarding_spotlight_game_recent_played_logo_man).apply {
-                    elevation = activity.dpToPx(4f).toFloat() // Make logo man on top of message dialog
-                },
-                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT).apply {
-                    // Root view in onboarding_spotlight_game_recent_played_attached_view.xml
-                    addRule(RelativeLayout.ABOVE, R.id.onboarding_dialog)
-                    addRule(RelativeLayout.ALIGN_END, R.id.onboarding_dialog)
-                    bottomMargin = activity.dpToPx(-32f)
-                }
-            )
-            .cancelOnTouchOutside(false)
-            .dismissListener(dismissListener)
-            .build()
-            .also { it.show() }
-
     fun showTravelDiscoverySearchOptionDialog(context: Context, viewModel: TravelCitySearchViewModel) {
         val data = CustomViewDialogData()
         data.drawable = ContextCompat.getDrawable(context, R.drawable.ic_search_option)

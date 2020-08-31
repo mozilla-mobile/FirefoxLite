@@ -763,38 +763,6 @@
     <!--Gaming Vertical-->
     <!--Gaming Home-->
     <string name="gaming_vertical_title">Game</string>
-    <string name="gaming_vertical_category_1">Instant play</string>
-    <string name="gaming_vertical_category_2">Download to play</string>
-    <!--"New" is a small tag to let users know that it is a new game.-->
-    <string name="gaming_vertical_new">New</string>
-    
-    <!--Gaming Contextual Hint-->
-    <string name="gaming_vertical_hint_title">Fast access to your favourite games</string>
-    <string name="gaming_vertical_hint_body">Long press to create a shortcut to your home screen.</string>
-    <string name="gaming_vertical_hint_button">OK</string>
-    <string name="gaming_vertical_shortcut_message">shortcut created.</string>
-    
-    <!--Gaming Longpress Menu-->
-    <string name="gaming_vertical_menu_option_1">Share game</string>
-    <string name="gaming_vertical_menu_option_2">Create shortcut on home screen</string>
-    <string name="gaming_vertical_menu_option_3">Remove from list</string>
-    
-    <!--Gaming Share Message. %1$s is the url of the game -->
-    <string name="gaming_vertical_share_message">I’m playing a really cool game. Check it out!\n%1$s</string>
-
-    <!--Gaming Genres-->
-    <string name="gaming_vertical_genre_1">Recently played</string>
-    <string name="gaming_vertical_genre_2">Game of the week</string>
-    <string name="gaming_vertical_genre_3">My game</string>
-    <string name="gaming_vertical_genre_4">Most played</string>
-    <string name="gaming_vertical_genre_5">Offline games</string>
-    <string name="gaming_vertical_genre_6">Strategy</string>
-    <string name="gaming_vertical_genre_7">Adventure</string>
-    <string name="gaming_vertical_genre_8">Action</string>
-    <string name="gaming_vertical_genre_9">Arcade</string>
-    <string name="gaming_vertical_genre_10">Puzzle &amp; Logic</string>
-    <string name="gaming_vertical_genre_11">Sports &amp; Racing</string>
-    <string name="gaming_vertical_genre_12">Girls</string>
 
     <!-- Onboarding for new users to introduce Rocket 2.0 -->
     <!-- Introduce Content & Services -->
