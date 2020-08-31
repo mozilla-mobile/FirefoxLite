@@ -308,9 +308,6 @@
   <string name="shopping_switch_ui_onboarding_button">సరే</string>
   <string name="shopping_closing_dialog_close">అన్నింటినీ మూసివేయి</string>
   <string name="shopping_closing_dialog_cancel">రద్దుచేయి</string>
-  <string name="shopping_vertical_category_1">బేరాలు</string>
-  <string name="shopping_coupon_expire_one">1 రోజు ఉంది</string>
-  <string name="shopping_coupon_expire_other">%1$d రోజులు ఉన్నాయి</string>
   <string name="gaming_vertical_title">ఆట</string>
   <string name="gaming_vertical_new">కొత్తది</string>
   <string name="gaming_vertical_hint_button">సరే</string>

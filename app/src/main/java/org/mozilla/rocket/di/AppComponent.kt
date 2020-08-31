@@ -35,10 +35,6 @@ import org.mozilla.rocket.chrome.di.ChromeModule
 import org.mozilla.rocket.content.common.ui.ContentTabActivity
 import org.mozilla.rocket.content.common.ui.ContentTabFragment
 import org.mozilla.rocket.content.di.ContentModule
-import org.mozilla.rocket.content.ecommerce.ui.CouponFragment
-import org.mozilla.rocket.content.ecommerce.ui.DealFragment
-import org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity
-import org.mozilla.rocket.content.ecommerce.ui.VoucherFragment
 import org.mozilla.rocket.content.game.ui.DownloadGameFragment
 import org.mozilla.rocket.content.game.ui.GameActivity
 import org.mozilla.rocket.content.game.ui.GameModeActivity
@@ -134,10 +130,6 @@ interface AppComponent {
     fun inject(shoppingSearchActivity: ShoppingSearchActivity)
     fun inject(shoppingSearchKeywordInputFragment: ShoppingSearchKeywordInputFragment)
     fun inject(shoppingSearchResultTabFragment: ShoppingSearchResultTabFragment)
-    fun inject(shoppingActivity: ShoppingActivity)
-    fun inject(dealFragment: DealFragment)
-    fun inject(couponFragment: CouponFragment)
-    fun inject(voucherFragment: VoucherFragment)
     fun inject(missionDetailFragment: MissionDetailFragment)
     fun inject(couponFragment: MissionCouponFragment)
     fun inject(rewardFragment: RewardFragment)

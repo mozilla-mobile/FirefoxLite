@@ -342,15 +342,6 @@
   <string name="shopping_closing_dialog_close">ปิดทั้งหมด</string>
   <string name="shopping_closing_dialog_cancel">ยกเลิก</string>
   <string name="shopping_closing_dialog_body">ปิดผลลัพธ์การค้นหาช็อปปิ้งทั้งหมด?</string>
-  <string name="shopping_vertical_title">ช็อปปิ้ง</string>
-  <string name="shopping_vertical_category_1">ข้อเสนอ</string>
-  <string name="shopping_vertical_category_2">คูปอง</string>
-  <string name="shopping_vertical_category_3">บัตรกำนัล</string>
-  <string name="shopping_deal_subcategory_1">ถูกจัดอันดับสูงสุด</string>
-  <string name="shopping_deal_subcategory_2">ขายดี</string>
-  <string name="shopping_coupon_expire_zero">หมดอายุแล้ว</string>
-  <string name="shopping_coupon_expire_one">เหลืออีก 1 วัน</string>
-  <string name="shopping_coupon_expire_other">เหลืออีก %1$d วัน</string>
   <string name="gaming_vertical_title">เกม</string>
   <string name="gaming_vertical_category_1">เล่นได้ทันที</string>
   <string name="gaming_vertical_category_2">ดาวน์โหลดเพื่อเล่น</string>

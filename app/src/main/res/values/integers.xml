@@ -4,5 +4,4 @@
     <integer name="tab_transition_time">250</integer>
     <integer name="tab_tray_transition_time">100</integer>
     <integer name="news_setting_category_column">2</integer>
-    <integer name="coupon_category_column">2</integer>
 </resources>

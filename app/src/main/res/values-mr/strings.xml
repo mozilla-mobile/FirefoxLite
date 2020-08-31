@@ -292,15 +292,6 @@
   <string name="shopping_closing_dialog_close">सर्व बंद करा</string>
   <string name="shopping_closing_dialog_cancel">रद्द करा</string>
   <string name="shopping_closing_dialog_body">सर्व खरेदी शोध परिणाम बंद करायचे?</string>
-  <string name="shopping_vertical_title">खरेदी</string>
-  <string name="shopping_vertical_category_1">सौदे</string>
-  <string name="shopping_vertical_category_2">कूपन</string>
-  <string name="shopping_vertical_category_3">व्हाउचर</string>
-  <string name="shopping_deal_subcategory_1">सर्वाधिक मानांकित</string>
-  <string name="shopping_deal_subcategory_2">सर्वाधिक खपणारे</string>
-  <string name="shopping_coupon_expire_zero">कालबाह्य</string>
-  <string name="shopping_coupon_expire_one">1 दिवस शिल्लक</string>
-  <string name="shopping_coupon_expire_other">%1$d दिवस शिल्लक</string>
   <string name="gaming_vertical_title">खेळ</string>
   <string name="gaming_vertical_category_1">त्वरित खेळ</string>
   <string name="gaming_vertical_category_2">खेळण्यास डाउनलोड करा</string>

@@ -342,15 +342,6 @@
   <string name="shopping_closing_dialog_close">Tutup kabéh</string>
   <string name="shopping_closing_dialog_cancel">Bolay</string>
   <string name="shopping_closing_dialog_body">Tutup sakabéh hasil maluruh balanja?</string>
-  <string name="shopping_vertical_title">Balanja</string>
-  <string name="shopping_vertical_category_1">Tawaran</string>
-  <string name="shopping_vertical_category_2">Kupon</string>
-  <string name="shopping_vertical_category_3">Pocer</string>
-  <string name="shopping_deal_subcategory_1">Barang Alus</string>
-  <string name="shopping_deal_subcategory_2">Pangpayuna</string>
-  <string name="shopping_coupon_expire_zero">Kadaluwarsa</string>
-  <string name="shopping_coupon_expire_one">1 poé deui</string>
-  <string name="shopping_coupon_expire_other">%1$d poé deui</string>
   <string name="gaming_vertical_title">Kaulinan</string>
   <string name="gaming_vertical_category_1">Maén saharita</string>
   <string name="gaming_vertical_category_2">Unduh pikeun maén</string>

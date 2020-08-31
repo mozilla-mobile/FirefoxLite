@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce.ui
+package org.mozilla.rocket.content.common.ui
 
 import android.graphics.Rect
 import android.view.View

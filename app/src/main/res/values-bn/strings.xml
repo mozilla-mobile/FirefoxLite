@@ -294,15 +294,6 @@
   <string name="shopping_closing_dialog_close">সব বন্ধ করুন</string>
   <string name="shopping_closing_dialog_cancel">বাতিল</string>
   <string name="shopping_closing_dialog_body">সকল কেনানাটা অনুসন্ধান ফলাফল বন্ধ করবেন?</string>
-  <string name="shopping_vertical_title">কেনাকাটা</string>
-  <string name="shopping_vertical_category_1">ডিল</string>
-  <string name="shopping_vertical_category_2">কুপন</string>
-  <string name="shopping_vertical_category_3">ভাউচার</string>
-  <string name="shopping_deal_subcategory_1">শীর্ষ রেটকৃত</string>
-  <string name="shopping_deal_subcategory_2">সর্বোচ্চ বিক্রেতা</string>
-  <string name="shopping_coupon_expire_zero">মেয়াদোত্তীর্ণ</string>
-  <string name="shopping_coupon_expire_one">1 দিন বাকি</string>
-  <string name="shopping_coupon_expire_other">%1$d দিন বাকি</string>
   <string name="gaming_vertical_title">খেলা</string>
   <string name="gaming_vertical_category_1">তাত্ক্ষণিক খেলা</string>
   <string name="gaming_vertical_category_2">খেলতে ডাউনলোড করুন</string>

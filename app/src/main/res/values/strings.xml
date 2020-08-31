@@ -756,20 +756,9 @@
     <!--Artboard Name: 4.1 Shopping Deals Overview-->
     <!--Shopping Home-->
     <string name="shopping_vertical_title">Shopping</string>
-    <string name="shopping_vertical_category_1">Deals</string>
-    <string name="shopping_vertical_category_2">Coupons</string>
-    <string name="shopping_vertical_category_3">Vouchers</string>
-    <!--Shopping Deals-->
-    <string name="shopping_deal_subcategory_1">Top Rated</string>
-    <string name="shopping_deal_subcategory_2">Best Sellers</string>
-
     <!--Artboard Name: 5.2 Shopping Coupons Update-->
     <!--Shopping Coupons-->
     <string name="shopping_coupon_expire_zero">Expired</string>
-    <string name="shopping_coupon_expire_one">1 day left</string>
-    <!--%1$d is the decimal for how many days left till the shopping coupon expired.-->
-    <string name="shopping_coupon_expire_other">%1$d days left</string>
-
 
     <!--Gaming Vertical-->
     <!--Gaming Home-->

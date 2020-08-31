@@ -297,12 +297,6 @@
             android:theme="@style/ContentTabTheme" />
 
         <activity
-            android:name="org.mozilla.rocket.content.ecommerce.ui.ShoppingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:taskAffinity=".content.ecommerce" />
-
-        <activity
             android:name="org.mozilla.rocket.content.news.ui.NewsActivity"
             android:exported="false"
             android:screenOrientation="portrait"

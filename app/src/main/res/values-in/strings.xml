@@ -342,15 +342,6 @@
   <string name="shopping_closing_dialog_close">Tutup Semua</string>
   <string name="shopping_closing_dialog_cancel">Batal</string>
   <string name="shopping_closing_dialog_body">Tutup semua hasil pencarian belanja?</string>
-  <string name="shopping_vertical_title">Belanja</string>
-  <string name="shopping_vertical_category_1">Penawaran</string>
-  <string name="shopping_vertical_category_2">Kupon</string>
-  <string name="shopping_vertical_category_3">Voucher</string>
-  <string name="shopping_deal_subcategory_1">Peringkat Teratas</string>
-  <string name="shopping_deal_subcategory_2">Penjualan Terbaik</string>
-  <string name="shopping_coupon_expire_zero">Kedaluwarsa</string>
-  <string name="shopping_coupon_expire_one">1 hari tersisa</string>
-  <string name="shopping_coupon_expire_other">%1$d hari tersisa</string>
   <string name="gaming_vertical_title">Permainan</string>
   <string name="gaming_vertical_category_1">Langsung dimainkan</string>
   <string name="gaming_vertical_category_2">Unduh untuk bermain</string>

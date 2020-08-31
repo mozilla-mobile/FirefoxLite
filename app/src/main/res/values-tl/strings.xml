@@ -299,15 +299,6 @@
   <string name="shopping_closing_dialog_close">Isarado Lahat</string>
   <string name="shopping_closing_dialog_cancel">Kanselahin</string>
   <string name="shopping_closing_dialog_body">Isara ang lahat ng mga resulta sa paghahanap sa pamimili?</string>
-  <string name="shopping_vertical_title">Pamimili</string>
-  <string name="shopping_vertical_category_1">Mga deal</string>
-  <string name="shopping_vertical_category_2">Mga kupon</string>
-  <string name="shopping_vertical_category_3">Mga voucher</string>
-  <string name="shopping_deal_subcategory_1">Nangungunang Rated</string>
-  <string name="shopping_deal_subcategory_2">Pinaka-mabenta</string>
-  <string name="shopping_coupon_expire_zero">Natapos na</string>
-  <string name="shopping_coupon_expire_one">1 araw naiwan</string>
-  <string name="shopping_coupon_expire_other">%1$d mga araw na naiwan</string>
   <string name="gaming_vertical_title">Laro</string>
   <string name="gaming_vertical_category_1">Agarang pag-laro</string>
   <string name="gaming_vertical_category_2">I-download para mag laro</string>

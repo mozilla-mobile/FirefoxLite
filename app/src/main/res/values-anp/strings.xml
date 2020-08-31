@@ -261,13 +261,6 @@
   <string name="shopping_switch_ui_tabtray_title_no_keyword">खरीदारी खोज</string>
   <string name="shopping_closing_dialog_close">सब बंद करोॅ</string>
   <string name="shopping_closing_dialog_cancel">रद्द करोॅ</string>
-  <string name="shopping_vertical_title">खरीदारी</string>
-  <string name="shopping_vertical_category_1">सौदा</string>
-  <string name="shopping_vertical_category_2">कूपन</string>
-  <string name="shopping_vertical_category_3">वाउचर</string>
-  <string name="shopping_coupon_expire_zero">समय सीमा खत्म</string>
-  <string name="shopping_coupon_expire_one">1 दिन बाकि</string>
-  <string name="shopping_coupon_expire_other">%1$d दिन बाकि</string>
   <string name="gaming_vertical_title">खेल</string>
   <string name="gaming_vertical_new">नया</string>
   <string name="gaming_vertical_hint_button">ठीक छै</string>

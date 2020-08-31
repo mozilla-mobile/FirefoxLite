@@ -342,15 +342,6 @@
   <string name="shopping_closing_dialog_close">关闭全部</string>
   <string name="shopping_closing_dialog_cancel">取消</string>
   <string name="shopping_closing_dialog_body">要关闭所有购物搜索结果吗？</string>
-  <string name="shopping_vertical_title">购物</string>
-  <string name="shopping_vertical_category_1">促销优惠</string>
-  <string name="shopping_vertical_category_2">优惠券</string>
-  <string name="shopping_vertical_category_3">代金券</string>
-  <string name="shopping_deal_subcategory_1">评分最高</string>
-  <string name="shopping_deal_subcategory_2">最畅销</string>
-  <string name="shopping_coupon_expire_zero">已过期</string>
-  <string name="shopping_coupon_expire_one">仅剩 1 天</string>
-  <string name="shopping_coupon_expire_other">还剩 %1$d 天</string>
   <string name="gaming_vertical_title">游戏</string>
   <string name="gaming_vertical_category_1">立刻玩</string>
   <string name="gaming_vertical_category_2">下载玩</string>

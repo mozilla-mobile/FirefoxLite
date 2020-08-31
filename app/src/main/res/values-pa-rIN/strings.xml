@@ -285,15 +285,6 @@
   <string name="shopping_closing_dialog_close">ਸਾਰੇ ਬੰਦ ਕਰੋ</string>
   <string name="shopping_closing_dialog_cancel">ਰੱਦ ਕਰੋ</string>
   <string name="shopping_closing_dialog_body">ਸਾਰੇ ਖਰੀਦਦਾਰੀ ਖੋਜ ਨਤੀਜੇ ਬੰਦ ਕਰੋ?</string>
-  <string name="shopping_vertical_title">ਖਰੀਦਦਾਰੀ</string>
-  <string name="shopping_vertical_category_1">ਡੀਲ</string>
-  <string name="shopping_vertical_category_2">ਕੂਪਨ</string>
-  <string name="shopping_vertical_category_3">ਵਾਊਚਰ</string>
-  <string name="shopping_deal_subcategory_1">ਚੋਟੀ ਦੇ ਦਰਜੇ ਵਾਲੇ</string>
-  <string name="shopping_deal_subcategory_2">ਸਭ ਤੋਂ ਵਿਕਣ ਵਾਲੇ</string>
-  <string name="shopping_coupon_expire_zero">ਮਿਆਦ ਪੁੱਗੀ</string>
-  <string name="shopping_coupon_expire_one">1 ਦਿਨ ਬਾਕੀ</string>
-  <string name="shopping_coupon_expire_other">%1$d ਦਿਨ ਬਾਕੀ</string>
   <string name="gaming_vertical_title">ਖੇਡ</string>
   <string name="gaming_vertical_category_1">ਤੁਰੰਤ ਖੇਡੋ</string>
   <string name="gaming_vertical_category_2">ਖੇਡਣ ਲਈ ਡਾਊਨਲੋਡ ਕਰੋ</string>

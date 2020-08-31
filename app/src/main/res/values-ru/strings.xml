@@ -342,15 +342,6 @@
   <string name="shopping_closing_dialog_close">Закрыть все</string>
   <string name="shopping_closing_dialog_cancel">Отмена</string>
   <string name="shopping_closing_dialog_body">Закрыть все результаты поиска покупок?</string>
-  <string name="shopping_vertical_title">Шоппинг</string>
-  <string name="shopping_vertical_category_1">Скидки</string>
-  <string name="shopping_vertical_category_2">Купоны</string>
-  <string name="shopping_vertical_category_3">Ваучеры</string>
-  <string name="shopping_deal_subcategory_1">Лидеры рейтинга</string>
-  <string name="shopping_deal_subcategory_2">Бестселлеры</string>
-  <string name="shopping_coupon_expire_zero">Просроченные</string>
-  <string name="shopping_coupon_expire_one">остался 1 день</string>
-  <string name="shopping_coupon_expire_other">осталось %1$d дней</string>
   <string name="gaming_vertical_title">Игра</string>
   <string name="gaming_vertical_category_1">Мгновенная игра</string>
   <string name="gaming_vertical_category_2">Загрузите, чтобы поиграть</string>

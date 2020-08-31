@@ -10,8 +10,8 @@ import org.mozilla.rocket.adapter.DelegateAdapter
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.common.ui.firstImpression
 import org.mozilla.rocket.content.common.ui.monitorScrollImpression
-import org.mozilla.rocket.content.ecommerce.StartSnapHelper
-import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
+import org.mozilla.rocket.content.common.ui.StartSnapHelper
+import org.mozilla.rocket.content.common.ui.HorizontalSpaceItemDecoration
 import org.mozilla.rocket.content.game.ui.DownloadGameViewModel
 import org.mozilla.rocket.content.game.ui.model.Game
 import org.mozilla.rocket.content.game.ui.model.GameCategory

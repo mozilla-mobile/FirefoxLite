@@ -342,15 +342,6 @@
   <string name="shopping_closing_dialog_close">Đóng tất cả</string>
   <string name="shopping_closing_dialog_cancel">Hủy bỏ</string>
   <string name="shopping_closing_dialog_body">Đóng tất cả các kết quả tìm kiếm mua sắm?</string>
-  <string name="shopping_vertical_title">Mua sắm</string>
-  <string name="shopping_vertical_category_1">Ưu đãi</string>
-  <string name="shopping_vertical_category_2">Phiếu giảm giá</string>
-  <string name="shopping_vertical_category_3">Phiếu mua hàng</string>
-  <string name="shopping_deal_subcategory_1">Xếp hạng hàng đầu</string>
-  <string name="shopping_deal_subcategory_2">Bán chạy nhất</string>
-  <string name="shopping_coupon_expire_zero">Đã hết hạn</string>
-  <string name="shopping_coupon_expire_one">Còn 1 ngày</string>
-  <string name="shopping_coupon_expire_other">Còn %1$d ngày</string>
   <string name="gaming_vertical_title">Trò chơi</string>
   <string name="gaming_vertical_category_1">Trò chơi tức thời</string>
   <string name="gaming_vertical_category_2">Tải xuống để chơi</string>

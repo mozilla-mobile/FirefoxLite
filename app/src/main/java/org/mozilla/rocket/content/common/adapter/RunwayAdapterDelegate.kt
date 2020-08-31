@@ -11,7 +11,7 @@ import org.mozilla.rocket.content.common.ui.RunwayViewModel
 import org.mozilla.rocket.content.common.ui.VerticalTelemetryViewModel
 import org.mozilla.rocket.content.common.ui.firstImpression
 import org.mozilla.rocket.content.common.ui.monitorScrollImpression
-import org.mozilla.rocket.content.ecommerce.ui.HorizontalSpaceItemDecoration
+import org.mozilla.rocket.content.common.ui.HorizontalSpaceItemDecoration
 
 class RunwayAdapterDelegate(
     private val runwayViewModel: RunwayViewModel,

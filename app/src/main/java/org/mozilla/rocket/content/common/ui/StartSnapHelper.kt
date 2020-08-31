@@ -1,4 +1,4 @@
-package org.mozilla.rocket.content.ecommerce
+package org.mozilla.rocket.content.common.ui
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
