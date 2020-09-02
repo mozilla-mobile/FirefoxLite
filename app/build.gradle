@@ -243,12 +243,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime-ktx:${Versions.paging}"
 
     implementation ("androidx.work:work-runtime:${Versions.arch_work}")
-    // to fix dependency conflicts between work-runtime and firebase-inappmessaging-display
-    implementation("com.google.guava:guava:${Versions.guava_android}") {
-        // has conflicts with existing library
-        exclude group: 'com.google.code.findbugs', module: 'jsr305'
-        exclude group: 'com.google.code.gson', module: 'gson'
-    }
 
     implementation("com.google.code.findbugs:annotations:${Versions.findbugs}", {
         // We really only need the SuppressFBWarnings annotation, everything else can be ignored.

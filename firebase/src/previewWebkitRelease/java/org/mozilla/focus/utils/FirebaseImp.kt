@@ -17,11 +17,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import com.google.firebase.perf.FirebasePerformance
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import org.mozilla.focus.inappmessage.InAppMessage
 import java.io.IOException
 import java.util.HashMap
 
@@ -229,20 +227,6 @@ open class FirebaseImp(fromResourceString: HashMap<String, Any>) : FirebaseContr
         } else {
             Log.d(TAG, "Disabling Crashlytics will need to restart the app")
             // see https://firebase.google.com/docs/crashlytics/customize-crash-reports?platform=android
-        }
-    }
-
-    override fun setIamMessagesSuppressed(suppressed: Boolean) {
-        FirebaseInAppMessaging.getInstance().setMessagesSuppressed(suppressed)
-    }
-
-    override fun addIamImpressionListener(impressionListener: (InAppMessage) -> Unit) {
-        FirebaseInAppMessaging.getInstance().addImpressionListener { impressionListener(InAppMessage(it)) }
-    }
-
-    override fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit) {
-        FirebaseInAppMessaging.getInstance().addClickListener { inAppMessage, action ->
-            clickListener(InAppMessage(inAppMessage), InAppMessage.Action(action))
         }
     }
 

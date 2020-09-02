@@ -451,7 +451,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             restoreStatusBarColor()
             shopping_button?.isVisible = currentShoppingBtnVisibleState
             private_mode_button?.isVisible = !currentShoppingBtnVisibleState
-            homeViewModel.onShoppingSearchOnboardingSpotlightDismiss()
         }
         shopping_button.post {
             if (isAdded) {

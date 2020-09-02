@@ -184,7 +184,6 @@ object TelemetryWrapper {
         internal const val SETTINGS_PRIVATE_SHORTCUT = "pref_private_shortcut"
         internal const val APPLY = "apply"
         internal const val FIRSTRUN = "firstrun"
-        internal const val IN_APP_MESSAGE = "in_app_message"
         internal const val VERTICAL = "vertical"
         internal const val TAB_SWIPE = "tab_swipe"
         internal const val OPEN_IN_BROWSER = "OPEN_IN_BROWSER"
@@ -255,7 +254,6 @@ object TelemetryWrapper {
         const val ITEM_NAME = "item_name"
         const val BACKGROUND = "background"
         const val CHALLENGE_NAME = "challenge_name"
-        const val BUTTON_TEXT = "button_text"
         const val PERSONALIZATION = "personalization"
         const val LANGUAGE = "language"
         const val KEYWORD = "keyword"
@@ -2502,38 +2500,6 @@ object TelemetryWrapper {
                 .extra(Extra.LINK, link ?: "null")
                 .extra(Extra.MESSAGE_ID, messageId)
                 .extra(Extra.BACKGROUND, background.toString())
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Show In-App Message",
-            category = Category.ACTION,
-            method = Method.SHOW,
-            `object` = Object.MESSAGE,
-            value = Value.IN_APP_MESSAGE,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "campaign name")
-            ])
-    fun showInAppMessage(campaignName: String?) {
-        EventBuilder(Category.ACTION, Method.SHOW, Object.MESSAGE, Value.IN_APP_MESSAGE)
-                .extra(Extra.MESSAGE_ID, campaignName ?: "null")
-                .queue()
-    }
-
-    @TelemetryDoc(
-            name = "Click In-App Message",
-            category = Category.ACTION,
-            method = Method.CLICK,
-            `object` = Object.MESSAGE,
-            value = Value.IN_APP_MESSAGE,
-            extras = [
-                TelemetryExtra(name = Extra.MESSAGE_ID, value = "campaign name")
-            ])
-    fun clickInAppMessage(campaignName: String?, buttonText: String?, link: String?) {
-        EventBuilder(Category.ACTION, Method.CLICK, Object.MESSAGE, Value.IN_APP_MESSAGE)
-                .extra(Extra.MESSAGE_ID, campaignName ?: "null")
-                .extra(Extra.BUTTON_TEXT, buttonText ?: "null")
-                .extra(Extra.LINK, link ?: "null")
                 .queue()
     }
 

@@ -89,12 +89,6 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:${Versions.firebase_auth}"
     previewImplementation 'com.google.firebase:firebase-perf:19.0.7'
     debugImplementation 'com.google.firebase:firebase-perf:19.0.7'
-    implementation ("com.google.firebase:firebase-inappmessaging-display:${Versions.firebase_iam}") {
-        // TODO: need to check if it can be moved to firebase module after this or worker manager libraries upgraded
-        // has conflicts with existing library
-        exclude group: 'com.google.code.findbugs', module: 'jsr305'
-        exclude group: 'com.google.code.gson', module: 'gson'
-    }
 }
 
 

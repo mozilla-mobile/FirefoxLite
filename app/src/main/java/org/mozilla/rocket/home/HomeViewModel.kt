@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.Settings
 import org.mozilla.rocket.chrome.domain.ShouldShowNewMenuItemHintUseCase
 import org.mozilla.rocket.download.SingleLiveEvent
@@ -132,13 +131,7 @@ class HomeViewModel(
         } else if (shouldShowShoppingSearchOnboardingUseCase()) {
             setShoppingSearchOnboardingIsShownUseCase()
             showShoppingSearchOnboardingSpotlight.call()
-            // To prevent showing in app message when onboarding
-            FirebaseHelper.getFirebase().setIamMessagesSuppressed(true)
         }
-    }
-
-    fun onShoppingSearchOnboardingSpotlightDismiss() {
-        FirebaseHelper.getFirebase().setIamMessagesSuppressed(false)
     }
 
     private fun initLogoManData() {

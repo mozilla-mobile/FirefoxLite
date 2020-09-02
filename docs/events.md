@@ -137,8 +137,6 @@
 |Dismiss D1 Notification|action|swipe|firstrun_push|"dismiss"|"link=url,deeplink,null,message_id=message_id,background=true|false," 
 |Open Notification|action|open|notification|""|"link=url,deeplink,null,message_id=messageId,background=true|false," 
 |Open D1 Notification|action|open|firstrun_push|""|"link=url,deeplink,null,message_id=message_id,background=true|false," 
-|Show In-App Message|action|show|message|"in_app_message"|"message_id=campaign name," 
-|Click In-App Message|action|click|message|"in_app_message"|"message_id=campaign name," 
 |Click Content Hub|action|click|content_hub|""|"vertical=shopping,lifestyle," 
 |Reload Content Home|action|reload|content_home|""|"vertical=shopping,lifestyle,category=category," 
 |Show Content Home Search Bar|action|show|search_bar|"content_home"|"vertical=shopping,lifestyle," 

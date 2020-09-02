@@ -161,8 +161,6 @@ SELECT
         WHEN (event_category IN ('action') ) AND (event_method IN ('swipe') ) AND (event_object IN ('firstrun_push') ) AND (event_value IN ('dismiss') ) THEN 'Rocket -  Dismiss D1 Notification' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('notification') ) AND event_value IS NULL THEN 'Rocket -  Open Notification' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('open') ) AND (event_object IN ('firstrun_push') ) AND event_value IS NULL THEN 'Rocket -  Open D1 Notification' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('message') ) AND (event_value IN ('in_app_message') ) THEN 'Rocket -  Show In-App Message' 
-        WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('message') ) AND (event_value IN ('in_app_message') ) THEN 'Rocket -  Click In-App Message' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('click') ) AND (event_object IN ('content_hub') ) AND event_value IS NULL THEN 'Rocket -  Click Content Hub' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('reload') ) AND (event_object IN ('content_home') ) AND event_value IS NULL THEN 'Rocket -  Reload Content Home' 
         WHEN (event_category IN ('action') ) AND (event_method IN ('show') ) AND (event_object IN ('search_bar') ) AND (event_value IN ('content_home') ) THEN 'Rocket -  Show Content Home Search Bar' 

@@ -150,8 +150,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
         NotificationUtil.init(this)
 
         monitorPrivateProcess()
-
-        registerCustomInAppMessagingListener()
     }
 
     /**
@@ -191,21 +189,6 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
                 }
             }
         })
-    }
-
-    private fun registerCustomInAppMessagingListener() {
-        if (!AppConstants.isBuiltWithFirebase()) return
-
-        FirebaseHelper.getFirebase().addIamImpressionListener { inAppMessage ->
-            val campaignName = inAppMessage.campaignMetadata?.campaignName
-            TelemetryWrapper.showInAppMessage(campaignName)
-        }
-        FirebaseHelper.getFirebase().addIamClickListener { inAppMessage, action ->
-            val campaignName = inAppMessage.campaignMetadata?.campaignName
-            val buttonText = action.buttonText
-            val actionUrl = action.actionUrl
-            TelemetryWrapper.clickInAppMessage(campaignName, buttonText, actionUrl)
-        }
     }
 
     private fun enableStrictMode() {

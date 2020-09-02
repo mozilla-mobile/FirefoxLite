@@ -3,7 +3,6 @@ package org.mozilla.focus.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import org.mozilla.focus.inappmessage.InAppMessage
 
 abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = HashMap()) {
 
@@ -71,12 +70,6 @@ abstract class FirebaseContract(var remoteConfigDefault: HashMap<String, Any> = 
     abstract fun refreshRemoteConfig(callback: (Boolean, e: Exception?) -> Unit)
 
     abstract fun enableCrashlytics(applicationContext: Context, enabled: Boolean)
-
-    abstract fun setIamMessagesSuppressed(suppressed: Boolean)
-
-    abstract fun addIamImpressionListener(impressionListener: (InAppMessage) -> Unit)
-
-    abstract fun addIamClickListener(clickListener: (InAppMessage, InAppMessage.Action) -> Unit)
 
     abstract fun enablePerformanceCollection(enabled: Boolean)
 
