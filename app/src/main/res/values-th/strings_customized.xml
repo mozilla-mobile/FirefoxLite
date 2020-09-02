@@ -1,22 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="travel_search_engine_fxlite">ดูผลลัพธ์ใน เสาะหาสิ่งใหม่จากการเดินทางด้วย %1$s</string>
-
-    <!--Dialog-->
-    <!--dialog title for introducing Rocket Travel Discovery-->
-    <!--dialog description for introducing the feature. The %1$s here is Rocket.-->
-    <string name="travel_dialog_1_description">สำรวจสิ่งต่างๆ ที่ทำได้ ที่พัก และอื่นๆ ใน Travel Discovery จาก %1$s</string>
-    <!--Action button for seeing the search result in Rocket Travel Discovery-->
-    <string name="travel_dialog_1_action_1">ลองใช้ TRAVEL DISCOVERY</string>
-    <!--Action button for dismissing this prompt-->
-    <!--dialog title for asking if users want to change default search engine-->
-    <string name="travel_dialog_2_title">สนุกกับการใช้ Travel Discovery ใช่ไหม</string>
-    <!--dialog description for introducing how it works. The %1$s here is Rocket.-->
-    <string name="travel_dialog_2_description">คุณสามารถใช้ Travel Discovery จาก %1$s เป็นเครื่องมือค้นหาเริ่มต้นสำหรับการเดินทางได้</string>
-    <!--checkbox for not showing this dialog again-->
-    <!--Action button for setting Travel Discovery as default search engine-->
-    <!--The product feature "Travel Discovery"-->
-    <string name="travel_discovery">เสาะหาสิ่งใหม่จากการเดินทาง</string>
     <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">สร้างสุดยอดประสบการณ์สำหรับคุณ...</string>
     <!-- Introduce personalized home to new users -->
@@ -25,4 +8,4 @@
     <string name="onboarding_transition_feature_2">เปิดใช้งานโหมดเทอร์โบ</string>
     <!-- Introduce tracking protection to new users -->
     <string name="onboarding_transition_feature_3">ตั้งค่าป้องกันการติดตาม</string>
-    </resources>
+</resources>

@@ -336,22 +336,5 @@
   <string name="msrp_reward_challenge_nointernet">Siguraduhing ikaw ay naka-connect sa Internet</string>
   <string name="msrp_reward_challenge_error_button">SUBUKAN MULI</string>
   <string name="msrp_reward_challenge_error">Oops! May mali</string>
-  <string name="travel_vertical_title">Lakbay</string>
-  <string name="travel_destination_subcategory_1">Maglakbay na pasok sa badyet</string>
-  <string name="travel_find_destination_title">Saan mo gustong pumunta?</string>
-  <string name="travel_detail_page_subcategory_hotel">Sikat na mga hotel</string>
-  <string name="travel_content_ig_link">#%1$s sa Instagram</string>
-  <string name="travel_content_yt_view_count">%1$s view</string>
-  <string name="travel_content_yt_view_count_single_view">1 view</string>
-  <string name="travel_content_wiki_source_name">Wikipedia</string>
-  <string name="travel_hotel_detail_1">Libreng Wi-Fi</string>
-  <string name="travel_hotel_detail_2">Hindi nangangailangan ng credit card</string>
-  <string name="travel_hotel_detail_3">Magbayad sa pag-check in</string>
-  <string name="travel_hotel_price_from">Mula</string>
-  <string name="travel_snack_bar_button">TINGNAN</string>
-  <string name="travel_onboarding_save_button">OK</string>
-  <string name="travel_search_engine_1">Tingnan ang mga resulta sa %1$s</string>
-  <string name="travel_dialog_1_action_2">HINDI, SALAMAT</string>
-  <string name="travel_dialog_2_checkbox">Huwag nang tanungin uli</string>
   <string name="travel_dialog_2_action">ITAKDA BILANG DEFAULT</string>
 </resources>

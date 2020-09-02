@@ -56,20 +56,6 @@
         android:textColor="@color/colorDownloadSubText"
         android:textSize="16sp" />
 
-    <CheckBox
-        android:id="@+id/do_not_ask_again_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:checked="false"
-        android:gravity="center_vertical"
-        android:text="@string/travel_dialog_2_checkbox"
-        android:textColor="@color/promotion_dialog_checkbox_color_selector"
-        android:textSize="14sp"
-        app:buttonTint="@color/promotion_dialog_checkbox_color_selector" />
-
     <View
         android:id="@+id/button_divider1"
         android:layout_width="match_parent"

@@ -1,7 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <!--The product feature "Travel Discovery"-->
-    <string name="travel_discovery">Penemuan Perjalanan</string>
     <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">Mengoptimalkan pengalaman untuk Anda…</string>
     <!-- Introduce personalized home to new users -->
@@ -10,5 +8,4 @@
     <string name="onboarding_transition_feature_2">Mengaktifkan Mode Turbo</string>
     <!-- Introduce tracking protection to new users -->
     <string name="onboarding_transition_feature_3">Mengatur perisai tracker</string>
-    
-	</resources>
+</resources>

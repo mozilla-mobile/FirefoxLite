@@ -92,9 +92,6 @@
 
     <dimen name="myshot_focus_view_radius">52dp</dimen>
 
-    <dimen name="card_padding">16dp</dimen>
-    <dimen name="card_space_width">4dp</dimen>
-
     <dimen name="item_news_inner_width">@dimen/item_news_inner_height</dimen>
     <dimen name="item_news_inner_height">84dp</dimen>
 
@@ -115,18 +112,6 @@
     <item name="msrp_mission_detail_day_radius" type="dimen">25dp</item>
     <item name="msrp_mission_detail_day_text_size" type="dimen">12sp</item>
     <item name="msrp_mission_detail_day_text_margin_top" type="dimen">4dp</item>
-
-    <!-- Travel - Hotel -->
-    <item name="travel_hotel_card_info_text_size" type="dimen">12sp</item>
-    <item name="travel_hotel_card_small_icon_width" type="dimen">14dp</item>
-
-    <!-- Travel - Explore -->
-    <item name="travel_explore_item_radius" type="dimen">4dp</item>
-
-    <!-- TravelCityActivity -->
-    <dimen name="travel_focus_view_radius">20dp</dimen>
-    <dimen name="travel_focus_view_height">48dp</dimen>
-    <dimen name="travel_focus_view_width">48dp</dimen>
 
     <!-- Shopping Search -->
     <dimen name="shopping_search_tab_bar_height">47dp</dimen>

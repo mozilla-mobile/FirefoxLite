@@ -177,9 +177,6 @@
     <color name="shoppingSearchIcon">#FF5654</color>
     <color name="shoppingSearchPreferencesToolbarBackground">#212121</color>
 
-    <!--  Travel -->
-    <color name="colorProductPrice">#EC6255</color>
-
     <!-- MSRP -->
     <color name="msrpMissionListBgColor">#FAFAFA</color>
     <color name="msrpMissionListSeparatorColor">#F0F0F0</color>

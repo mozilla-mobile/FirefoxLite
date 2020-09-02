@@ -302,18 +302,6 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name="org.mozilla.rocket.content.travel.ui.TravelActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:taskAffinity=".content.travel" />
-
-        <activity
-            android:name="org.mozilla.rocket.content.travel.ui.TravelCityActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:taskAffinity=".content.travel" />
-
-        <activity
             android:name="org.mozilla.rocket.fxa.ProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
@@ -322,12 +310,6 @@
             android:name="org.mozilla.rocket.debugging.DebugActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
-
-        <activity
-            android:name="org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:taskAffinity=".content.travel" />
 
         <activity
             android:name="org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity"

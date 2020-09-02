@@ -38,9 +38,6 @@ import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.myshot_onboarding.view.my_shot_category_learn_more
 import kotlinx.android.synthetic.main.onboarding_spotlight_content_services_request_click.view.content_services_plateform_onboarding_message
-import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.next
-import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_message
-import kotlinx.android.synthetic.main.onboarding_spotlight_travel.view.travel_details_onboarding_title
 import kotlinx.android.synthetic.main.spotlight_message.view.spotlight_message
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
@@ -55,8 +52,6 @@ import org.mozilla.focus.utils.SpotlightDialog.AttachedPosition
 import org.mozilla.focus.utils.SpotlightDialog.AttachedViewConfigs
 import org.mozilla.focus.utils.SpotlightDialog.SpotlightConfigs.CircleSpotlightConfigs
 import org.mozilla.focus.utils.SpotlightDialog.SpotlightConfigs.RectangleSpotlightConfigs
-import org.mozilla.rocket.content.travel.ui.TravelCitySearchViewModel
-import org.mozilla.rocket.content.travel.ui.TravelCityViewModel
 import org.mozilla.rocket.extension.dpToPx
 import org.mozilla.rocket.extension.inflate
 import org.mozilla.rocket.home.HomeViewModel
@@ -338,93 +333,6 @@ object DialogUtils {
             .dismissListener(dismissListener)
             .build()
             .also { it.show() }
-
-    fun showTravelSpotlight(
-        activity: Activity,
-        targetView: View,
-        cityName: String,
-        dismissListener: DialogInterface.OnDismissListener,
-        ok: View.OnClickListener?
-    ): Dialog = SpotlightDialog.Builder(activity, targetView)
-            .spotlightConfigs(
-                RectangleSpotlightConfigs(
-                    width = activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_width),
-                    height = activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_height),
-                    cornerRadius = activity.resources.getDimensionPixelSize(R.dimen.travel_focus_view_radius)
-                )
-            )
-            .addView(activity.inflate(R.layout.onboarding_spotlight_travel).apply {
-                travel_details_onboarding_title.text = activity.getString(R.string.travel_onboarding_save_title, cityName)
-                travel_details_onboarding_message.text = activity.getString(R.string.travel_onboarding_save_description, cityName)
-                next.setOnClickListener(ok)
-            })
-            .cancelOnTouchOutside(false)
-            .dismissListener(dismissListener)
-            .build()
-            .also { it.show() }
-
-    fun showTravelDiscoverySearchOptionDialog(context: Context, viewModel: TravelCitySearchViewModel) {
-        val data = CustomViewDialogData()
-        data.drawable = ContextCompat.getDrawable(context, R.drawable.ic_search_option)
-        val title = context.getString(R.string.travel_dialog_1_title)
-        data.title = title
-        val content = context.getString(
-                R.string.travel_dialog_1_description_new,
-                context.getString(R.string.app_name),
-                context.getString(R.string.travel_discovery)
-            )
-        data.description = content
-        val positiveText = context.getString(
-                R.string.travel_dialog_1_action_1_new,
-                context.getString(R.string.travel_discovery)
-            )
-        data.positiveText = positiveText
-        val negativeText = context.getString(R.string.travel_dialog_1_action_2)
-        data.negativeText = negativeText
-        val dialog = PromotionDialog(context, data)
-                .onPositive {
-                    viewModel.onSearchOptionClick(context, true)
-                }
-                .onNegative {
-                    viewModel.onSearchOptionClick(context, false)
-                }
-                .onCancel {
-                    viewModel.onDismissSearchOption()
-                }
-                .setCancellable(true)
-        dialog.show()
-    }
-
-    fun showChangeTravelSearchSettingDialog(context: Context, viewModel: TravelCityViewModel) {
-        val data = CustomViewDialogData()
-        data.drawable = ContextCompat.getDrawable(context, R.drawable.search_with_firefox)
-        val title = context.getString(
-                R.string.travel_dialog_2_title_new,
-                context.getString(R.string.travel_discovery)
-            )
-        data.title = title
-        val content = context.getString(
-                R.string.travel_dialog_2_description_new,
-                context.getString(R.string.app_name),
-                context.getString(R.string.travel_discovery)
-            )
-        data.description = content
-        val positiveText = context.getString(R.string.travel_dialog_2_action)
-        data.positiveText = positiveText
-        data.showCloseButton = true
-        data.showDoNotAskMeAgainButton = true
-        val dialog = PromotionDialog(context, data)
-                .onPositive {
-                    viewModel.onChangeSearchSettingAction(true)
-                }
-                .onClose {
-                    viewModel.onChangeSearchSettingAction(false)
-                }
-                .onDoNotAskMeAgain { isSelected: Boolean? ->
-                    viewModel.onDoNotAskMeAgainAction(isSelected!!)
-                }
-        dialog.show()
-    }
 
     fun showThemeSettingDialog(activity: FragmentActivity, homeViewModel: HomeViewModel) {
         ThemeSettingDialogBuilder(activity, homeViewModel).show()

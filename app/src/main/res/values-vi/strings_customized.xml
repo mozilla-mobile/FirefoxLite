@@ -1,7 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <!--The product feature "Travel Discovery"-->
-    <string name="travel_discovery">Du lịch Khám phá</string>
     <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">Tối ưu hóa trải nghiệm cho bạn…</string>
     <!-- Introduce personalized home to new users -->
@@ -10,4 +8,4 @@
     <string name="onboarding_transition_feature_2">Kích hoạt chế độ Turbo</string>
     <!-- Introduce tracking protection to new users -->
     <string name="onboarding_transition_feature_3">Cài đặt lá chắn theo dõi</string>
-	</resources>
+</resources>

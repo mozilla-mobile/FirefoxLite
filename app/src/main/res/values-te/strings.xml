@@ -325,19 +325,6 @@
   <string name="msrp_disqualification_title_3">ఖాతా అచేతనమయ్యింది</string>
   <string name="msrp_disqualification_button_3">మూసివేయి</string>
   <string name="msrp_reward_challenge_error_button">మళ్లీ ప్రయత్నించు</string>
-  <string name="travel_vertical_title">ప్రయాణం</string>
-  <string name="travel_detail_page_subcategory_hotel">ప్రాచుర్య హోటళ్ళు</string>
-  <string name="travel_more">మరిన్ని</string>
-  <string name="travel_content_wiki_source_name">వికీపీడియా</string>
-  <string name="travel_hotel_detail_1">ఉచిత వైఫై</string>
-  <string name="travel_hotel_detail_2">క్రెడిట్ కార్డులు అవసరం లేదు</string>
-  <string name="travel_onboarding_save_title">%1$s నచ్చిందా?</string>
-  <string name="travel_onboarding_save_button">సరే</string>
-  <string name="travel_no_result_state_text">మ్‌మ్. ఫలితాలు ఏమీ కనబడలేదు.</string>
-  <string name="travel_dialog_1_title">మరింత కనుగొనండి!</string>
-  <string name="travel_dialog_1_action_1_new">%1$s‌ను ప్రయత్నించండి</string>
-  <string name="travel_dialog_2_title_new">%1$s‌ని వాడటం ఆనందిస్తున్నారా?</string>
-  <string name="travel_dialog_2_checkbox">నన్ను మళ్లీ అడగవద్దు</string>
   <string name="travel_dialog_2_action">అప్రమేయంగా అమర్చు</string>
   <string name="awesomebar_open_link_clipboard">కాపీ అయిన లంకెను తెరువు</string>
 </resources>

@@ -41,11 +41,6 @@ import org.mozilla.rocket.content.news.ui.NewsLanguageSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsSettingFragment
 import org.mozilla.rocket.content.news.ui.NewsTabFragment
 import org.mozilla.rocket.content.news.ui.PersonalizedNewsOnboardingFragment
-import org.mozilla.rocket.content.travel.ui.TravelActivity
-import org.mozilla.rocket.content.travel.ui.TravelBucketListFragment
-import org.mozilla.rocket.content.travel.ui.TravelCityActivity
-import org.mozilla.rocket.content.travel.ui.TravelCitySearchActivity
-import org.mozilla.rocket.content.travel.ui.TravelExploreFragment
 import org.mozilla.rocket.download.data.DownloadCompleteReceiver
 import org.mozilla.rocket.download.data.RelocateService
 import org.mozilla.rocket.firstrun.FirstrunFragment
@@ -130,11 +125,6 @@ interface AppComponent {
     fun inject(shoppingSearchPreferencesActivity: ShoppingSearchPreferencesActivity)
     fun inject(rewardActivity: RewardActivity)
     fun inject(profileActivity: ProfileActivity)
-    fun inject(travelActivity: TravelActivity)
-    fun inject(travelCityActivity: TravelCityActivity)
-    fun inject(travelExploreFragment: TravelExploreFragment)
-    fun inject(travelCitySearchActivity: TravelCitySearchActivity)
-    fun inject(travelBucketListFragment: TravelBucketListFragment)
     fun inject(defaultBrowserPreference: DefaultBrowserPreference)
     fun inject(addNewTopSitesFragment: AddNewTopSitesFragment)
     fun inject(firstrunFragment: FirstrunFragment)

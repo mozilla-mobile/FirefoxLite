@@ -1,7 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <!--The product feature "Travel Discovery"-->
-    <string name="travel_discovery">ट्रैवल डिस्कवरी</string>
     <!-- Onboarding transition before getting into Rocket Home -->
     <string name="onboarding_transition_title">अनुभव को अपने अनुसार अनुकूलित करें...</string>
     <!-- Introduce personalized home to new users -->
@@ -10,5 +8,4 @@
     <string name="onboarding_transition_feature_2">टर्बो मोड सक्रिय करें</string>
     <!-- Introduce tracking protection to new users -->
     <string name="onboarding_transition_feature_3">ट्रैकर शील्ड सेट हो रहा है</string>
-
 </resources>

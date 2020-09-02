@@ -18,7 +18,6 @@ class PromotionDialog(
     private var onNegativeListener: (() -> Unit)? = null
     private var onCloseListener: (() -> Unit)? = null
     private var onCancelListener: (() -> Unit)? = null
-    private var onDoNotAskMeAgainListener: ((Boolean) -> Unit)? = null
 
     private val onShowListeners = mutableListOf<() -> Unit>()
     private val onDismissListeners = mutableListOf<() -> Unit>()
@@ -46,11 +45,6 @@ class PromotionDialog(
 
     fun onCancel(listener: () -> Unit): PromotionDialog {
         this.onCancelListener = listener
-        return this
-    }
-
-    fun onDoNotAskMeAgain(listener: (Boolean) -> Unit): PromotionDialog {
-        this.onDoNotAskMeAgainListener = listener
         return this
     }
 
@@ -113,12 +107,6 @@ class PromotionDialog(
         } else {
             View.GONE
         }
-
-        view.do_not_ask_again_checkbox.visibility = if (data.showDoNotAskMeAgainButton) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
     }
 
     private fun createDialog(): AlertDialog {
@@ -143,10 +131,6 @@ class PromotionDialog(
         view.close_button.setOnClickListener {
             dialog.dismiss()
             onCloseListener?.invoke()
-        }
-
-        view.do_not_ask_again_checkbox.setOnClickListener {
-            onDoNotAskMeAgainListener?.invoke(view.do_not_ask_again_checkbox.isChecked)
         }
 
         dialog.setOnShowListener {

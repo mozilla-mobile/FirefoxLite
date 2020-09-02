@@ -369,20 +369,5 @@
   <string name="msrp_reward_challenge_error">ওহ! কিছু একটা ভুল হয়েছে</string>
   <string name="msrp_activitykilled_snackbar_button">REDEEM</string>
   <string name="msrp_activitykilled_snackbar_body">আপনি একটি শপিং ভাউচার জিতেছেন!</string>
-  <string name="travel_detail_page_subcategory_hotel">জনপ্রিয় হোটেল সমূহ</string>
-  <string name="travel_more">আরও</string>
-  <string name="travel_content_yt_view_count">%1$sদেখুন</string>
-  <string name="travel_content_yt_view_count_single_view">1দেখুন</string>
-  <string name="travel_content_wiki_source_name">উইকিপিডিয়া</string>
-  <string name="travel_hotel_detail_1">বিনামূল্যে Wi-Fi</string>
-  <string name="travel_hotel_detail_2">কোনও ক্রেডিট কার্ডের প্রয়োজন নেই</string>
-  <string name="travel_empty_state_button">একটি শহর ঘুরুন</string>
-  <string name="travel_snack_bar_button">দেখুন</string>
-  <string name="travel_onboarding_save_button">ঠিক আছে</string>
-  <string name="travel_find_destination_placeholder_2">গন্তব্য লিখুন</string>
-  <string name="travel_search_engine_1">এ ফলাফল দেখুন%1$s</string>
-  <string name="travel_dialog_1_title">আরও আবিষ্কার করুন!</string>
-  <string name="travel_dialog_1_action_2">না, ধন্যবাদ</string>
-  <string name="travel_dialog_2_checkbox">পুনরায় আমাকে জিজ্ঞেস করবে না</string>
   <string name="travel_dialog_2_action">ডিফল্ট হিসেবে সেট করুন</string>
 </resources>

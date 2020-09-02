@@ -46,12 +46,4 @@
         <item>1</item>
         <item>2</item>
     </string-array>
-
-    <array name="travel_placeholders">
-        <item>@drawable/travel_card1</item>
-        <item>@drawable/travel_card2</item>
-        <item>@drawable/travel_card3</item>
-        <item>@drawable/travel_card4</item>
-        <item>@drawable/travel_card5</item>
-    </array>
 </resources>
