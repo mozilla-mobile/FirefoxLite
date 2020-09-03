@@ -1040,7 +1040,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         val webView = current as WebView
         val content = getPageBitmap(webView) ?: return false
         // Failed to capture
-        callback.onCaptureComplete(current.getTitle(), current.getUrl(), content)
+        callback.onCaptureComplete(current.title, current.url, content)
         return true
     }
 
