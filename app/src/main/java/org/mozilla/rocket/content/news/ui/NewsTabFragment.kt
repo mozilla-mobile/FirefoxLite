@@ -81,6 +81,10 @@ class NewsTabFragment : Fragment() {
                         View.VISIBLE
                     else
                         View.GONE
+                    news_refresh_button.visibility = if (it.hasRefreshButton)
+                        View.VISIBLE
+                    else
+                        View.GONE
                 }
             }
         })

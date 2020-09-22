@@ -36,6 +36,7 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
         cachedLanguage?.let {
             _uiModel.value = NewsTabUiModel(
                 Pair(it, emptyList()),
+                _uiModel.value?.hasRefreshButton ?: true,
                 _uiModel.value?.hasSettingsMenu ?: false
             )
             getNewsSettings()
@@ -50,6 +51,7 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
     private fun emitUiModel(newsSettings: NewsSettings) {
         _uiModel.value = NewsTabUiModel(
             Pair(newsSettings.newsLanguage, newsSettings.newsCategories.filter { it.isSelected }),
+            newsSettings.shouldEnableRefresh,
             newsSettings.shouldEnableNewsSettings
         )
         cachedLanguage = newsSettings.newsLanguage
@@ -58,5 +60,6 @@ class NewsTabViewModel(private val loadNewsSettingsUseCase: LoadNewsSettingsUseC
 
 data class NewsTabUiModel(
     val newsSettings: Pair<NewsLanguage, List<NewsCategory>>,
+    val hasRefreshButton: Boolean,
     val hasSettingsMenu: Boolean
 )
