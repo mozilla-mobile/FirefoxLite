@@ -74,6 +74,8 @@ class RssSettingsLocalDataSource(private val appContext: Context) : NewsSettings
 
     override fun getAdditionalSourceInfo(): NewsSourceInfo? = null
 
+    override fun shouldEnableRefresh() = true
+
     override fun shouldEnableNewsSettings() = false
 
     override fun shouldEnablePersonalizedNews(): Boolean {

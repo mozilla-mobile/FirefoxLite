@@ -123,6 +123,8 @@ class NewsPointSettingsLocalDataSource(private val appContext: Context) : NewsSe
 
     override fun getAdditionalSourceInfo(): NewsSourceInfo? = null
 
+    override fun shouldEnableRefresh() = true
+
     override fun shouldEnableNewsSettings() = true
 
     override fun shouldEnablePersonalizedNews(): Boolean {

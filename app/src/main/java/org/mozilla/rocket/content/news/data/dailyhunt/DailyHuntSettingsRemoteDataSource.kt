@@ -98,6 +98,10 @@ class DailyHuntSettingsRemoteDataSource(private val newsProvider: DailyHuntProvi
         throw UnsupportedOperationException("Can't get the additional source info from server")
     }
 
+    override fun shouldEnableRefresh(): Boolean {
+        throw UnsupportedOperationException("Can't get refresh setting from server")
+    }
+
     override fun shouldEnableNewsSettings(): Boolean {
         throw UnsupportedOperationException("Can't get menu setting from server")
     }
