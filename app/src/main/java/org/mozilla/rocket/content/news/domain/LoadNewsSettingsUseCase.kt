@@ -40,7 +40,7 @@ open class LoadNewsSettingsUseCase(private val repository: NewsSettingsRepositor
         return if (result.succeeded) {
             result
         } else {
-            Result.Success(NewsSettings(repository.getDefaultLanguage(), listOf(repository.getDefaultCategory()), false))
+            Result.Success(NewsSettings(repository.getDefaultLanguage(), listOf(repository.getDefaultCategory()), shouldEnableRefresh = true, shouldEnableNewsSettings = false))
         }
     }
 }

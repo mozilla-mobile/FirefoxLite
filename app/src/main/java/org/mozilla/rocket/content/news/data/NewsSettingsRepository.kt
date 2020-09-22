@@ -46,8 +46,9 @@ class NewsSettingsRepository(
         val categoriesByLanguageResult = getCategoriesByLanguage(userPreferenceLanguage.apiId)
         if (categoriesByLanguageResult is Result.Success && categoriesByLanguageResult.data.isNotEmpty()) {
             val supportCategories = categoriesByLanguageResult.data
+            val shouldEnableRefresh = localDataSource.shouldEnableRefresh()
             val shouldEnableNewsSettings = localDataSource.shouldEnableNewsSettings()
-            return Result.Success(NewsSettings(userPreferenceLanguage, supportCategories, shouldEnableNewsSettings))
+            return Result.Success(NewsSettings(userPreferenceLanguage, supportCategories, shouldEnableRefresh, shouldEnableNewsSettings))
         }
 
         return Result.Error(Exception("Fail to get news settings result"))

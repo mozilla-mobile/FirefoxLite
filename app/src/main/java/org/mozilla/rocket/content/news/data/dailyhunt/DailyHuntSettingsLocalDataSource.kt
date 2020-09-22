@@ -119,6 +119,8 @@ class DailyHuntSettingsLocalDataSource(private val appContext: Context) : NewsSe
 
     override fun getAdditionalSourceInfo() = NewsSourceInfo(R.drawable.ic_dailyhunt_logo)
 
+    override fun shouldEnableRefresh() = false
+
     override fun shouldEnableNewsSettings() = true
 
     override fun shouldEnablePersonalizedNews(): Boolean {
