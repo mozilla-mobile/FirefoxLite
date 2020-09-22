@@ -78,6 +78,14 @@ class NewsFragment : Fragment() {
         handleActions()
     }
 
+    @Suppress("DEPRECATION")
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) {
+            bindNewsListData()
+        }
+    }
+
     private fun initNewsList() {
         newsAdapter = object : DelegatePagedListAdapter(
             AdapterDelegatesManager().apply {
@@ -129,6 +137,11 @@ class NewsFragment : Fragment() {
     }
 
     private fun bindNewsListData() {
+        @Suppress("DEPRECATION")
+        if (!userVisibleHint || !this::newsAdapter.isInitialized || newsAdapter.itemCount != 0) {
+            return
+        }
+
         val newsLiveData: LiveData<PagedList<DelegateAdapter.UiModel>> =
             newsViewModel.startToObserveNews(getCategory(), getLanguage())
         newsLiveData.observe(viewLifecycleOwner, Observer { items ->
