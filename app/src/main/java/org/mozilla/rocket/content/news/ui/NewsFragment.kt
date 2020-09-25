@@ -138,7 +138,8 @@ class NewsFragment : Fragment() {
 
     private fun bindNewsListData() {
         @Suppress("DEPRECATION")
-        if (!userVisibleHint || !this::newsAdapter.isInitialized || newsAdapter.itemCount != 0) {
+        // Make sure the fragment is visible and its lifecycle is after onCreateView()
+        if (!userVisibleHint || view == null || !this::newsAdapter.isInitialized || newsAdapter.itemCount != 0) {
             return
         }
 
