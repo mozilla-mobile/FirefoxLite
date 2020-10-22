@@ -58,20 +58,12 @@ import org.mozilla.rocket.download.data.DownloadCompleteReceiver
 import org.mozilla.rocket.download.data.RelocateService
 import org.mozilla.rocket.firstrun.FirstrunFragment
 import org.mozilla.rocket.firstrun.di.FirstrunModule
-import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.HomeFragment
 import org.mozilla.rocket.home.di.HomeModule
 import org.mozilla.rocket.home.topsites.domain.GetTopSitesUseCase
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesFragment
 import org.mozilla.rocket.menu.BrowserMenuDialog
 import org.mozilla.rocket.menu.HomeMenuDialog
-import org.mozilla.rocket.msrp.di.MissionModule
-import org.mozilla.rocket.msrp.ui.ChallengeListFragment
-import org.mozilla.rocket.msrp.ui.MissionCouponFragment
-import org.mozilla.rocket.msrp.ui.MissionDetailFragment
-import org.mozilla.rocket.msrp.ui.RedeemListFragment
-import org.mozilla.rocket.msrp.ui.RewardActivity
-import org.mozilla.rocket.msrp.ui.RewardFragment
 import org.mozilla.rocket.privately.PrivateModeActivity
 import org.mozilla.rocket.privately.home.PrivateHomeFragment
 import org.mozilla.rocket.shopping.search.di.ShoppingSearchModule
@@ -97,7 +89,6 @@ import javax.inject.Singleton
         TabsModule::class,
         HomeModule::class,
         ShoppingSearchModule::class,
-        MissionModule::class,
         FirstrunModule::class
     ]
 )
@@ -138,14 +129,7 @@ interface AppComponent {
     fun inject(dealFragment: DealFragment)
     fun inject(couponFragment: CouponFragment)
     fun inject(voucherFragment: VoucherFragment)
-    fun inject(missionDetailFragment: MissionDetailFragment)
-    fun inject(couponFragment: MissionCouponFragment)
-    fun inject(rewardFragment: RewardFragment)
-    fun inject(challengeListFragment: ChallengeListFragment)
-    fun inject(redeemListFragment: RedeemListFragment)
     fun inject(shoppingSearchPreferencesActivity: ShoppingSearchPreferencesActivity)
-    fun inject(rewardActivity: RewardActivity)
-    fun inject(profileActivity: ProfileActivity)
     fun inject(travelActivity: TravelActivity)
     fun inject(travelCityActivity: TravelCityActivity)
     fun inject(travelExploreFragment: TravelExploreFragment)

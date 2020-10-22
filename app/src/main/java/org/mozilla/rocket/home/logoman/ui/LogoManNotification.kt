@@ -3,10 +3,7 @@ package org.mozilla.rocket.home.logoman.ui
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -15,11 +12,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.home_notification_board.notification_icon
 import kotlinx.android.synthetic.main.home_notification_board.notification_subtitle
 import kotlinx.android.synthetic.main.home_notification_board.notification_title
@@ -27,7 +19,6 @@ import kotlinx.android.synthetic.main.logo_man_notification.view.logo_man
 import kotlinx.android.synthetic.main.logo_man_notification.view.notification_board
 import org.mozilla.focus.R
 import org.mozilla.focus.glide.GlideApp
-import org.mozilla.focus.utils.DrawableUtils
 import org.mozilla.rocket.adapter.AdapterDelegate
 import org.mozilla.rocket.adapter.AdapterDelegatesManager
 import org.mozilla.rocket.adapter.DelegateAdapter
@@ -254,44 +245,6 @@ class LogoManNotification : FrameLayout {
                 notification_title.maxLines = 1
             }
             itemView.setOnClickListener { clickListener() }
-
-            val context = containerView.context
-            notification_icon.setImageResource(R.drawable.ic_reward_box)
-            Glide.with(context)
-                    .asBitmap()
-                    .load(uiModel.imageUrl)
-                    .apply(RequestOptions().transform(CircleCrop()))
-                    .into(object : SimpleTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>) {
-                            notification_icon.setImageBitmap(getRewardImage(context, imageSize, imageSize, resource))
-                        }
-                    })
-        }
-
-        private fun getRewardImage(context: Context, width: Int, height: Int, imageBitmap: Bitmap): Bitmap {
-            val imageSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 22f, context.resources.displayMetrics).toInt()
-            val shiftX = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5f, context.resources.displayMetrics).toInt()
-            val shiftY = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
-
-            val resultBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            val couponBitmap = DrawableUtils.getBitmap(context.getDrawable(R.drawable.ic_reward_box))
-            val canvas = Canvas(resultBitmap)
-            val paint = Paint()
-            canvas.drawBitmap(couponBitmap, 0f, 0f, paint)
-            val centerX = width / 2 + shiftX
-            val centerY = height / 2 + shiftY
-            val src = Rect(0, 0, imageBitmap.width, imageBitmap.height)
-            val target = Rect(
-                centerX - imageSize / 2,
-                centerY - imageSize / 2,
-                centerX + imageSize / 2,
-                centerY + imageSize / 2
-            )
-            canvas.drawBitmap(imageBitmap, src, target, paint)
-
-            couponBitmap.recycle()
-
-            return resultBitmap
         }
     }
 

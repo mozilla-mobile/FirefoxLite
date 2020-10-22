@@ -410,22 +410,6 @@ android.applicationVariants.all { variant ->
             }
         }
     }
-
-    // setup FxA end point
-    def fxaClientId = System.getenv("FXA_CLIENT_ID")
-    def fxaApiUrl = System.getenv("FXA_API_URL")
-    def fxaEmailVerifyUrl = System.getenv("FXA_EMAIL_VERIFY_URL")
-    def fxaSettingsUrl = System.getenv("FXA_SETTINGS_URL")
-    def isRelease = variantName.contains("Release")
-    // fxa related info is required in release build
-    if (isRelease && (fxaClientId == null || fxaApiUrl == null || fxaEmailVerifyUrl == null)) {
-        logger.warn("FXA Related Info Not set")
-    }
-    buildConfigField 'String', 'FXA_CLIENT_ID', '"' + fxaClientId + '"'
-    buildConfigField 'String', 'FXA_API_URL', '"' + fxaApiUrl + '"'
-    buildConfigField 'String', 'FXA_EMAIL_VERIFY_URL', '"' + fxaEmailVerifyUrl + '"'
-    buildConfigField 'String', 'FXA_SETTINGS_URL', '"' + fxaSettingsUrl + '"'
-
 }
 
 tasks.whenTaskAdded { task ->

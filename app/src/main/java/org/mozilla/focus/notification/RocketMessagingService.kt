@@ -23,14 +23,12 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import mozilla.components.concept.fetch.MutableHeaders
 import mozilla.components.concept.fetch.Request
-import mozilla.components.concept.fetch.interceptor.withInterceptors
 import mozilla.components.lib.fetch.httpurlconnection.HttpURLConnectionClient
 import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.telemetry.TelemetryWrapper.isTelemetryEnabled
 import org.mozilla.focus.utils.FirebaseHelper
 import org.mozilla.focus.utils.IntentUtils
 import org.mozilla.focus.utils.Settings
-import org.mozilla.rocket.msrp.data.LoggingInterceptor
 import org.mozilla.telemetry.TelemetryHolder
 import org.mozilla.threadutils.ThreadUtils
 import java.io.IOException
@@ -307,7 +305,6 @@ class RocketMessagingService : FirebaseMessagingServiceWrapper() {
             try {
 
                 HttpURLConnectionClient()
-                        .withInterceptors(LoggingInterceptor())
                         .fetch(request).use {
                             if (it.status == 200) {
                                 Settings.getInstance(applicationContext).setHashedFcmToken(fcmToken)

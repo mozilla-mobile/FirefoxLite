@@ -38,12 +38,9 @@ import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_tex
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_menu_button
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_tab_counter
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_title
-import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
 import kotlinx.android.synthetic.main.fragment_home.private_mode_button
-import kotlinx.android.synthetic.main.fragment_home.profile_button
-import kotlinx.android.synthetic.main.fragment_home.reward_button
 import kotlinx.android.synthetic.main.fragment_home.search_panel
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
@@ -67,9 +64,7 @@ import org.mozilla.rocket.content.travel.ui.TravelActivity
 import org.mozilla.rocket.download.DownloadIndicatorViewModel
 import org.mozilla.rocket.extension.showFxToast
 import org.mozilla.rocket.extension.switchMap
-import org.mozilla.rocket.fxa.ProfileActivity
 import org.mozilla.rocket.home.contenthub.ui.ContentHub
-import org.mozilla.rocket.home.logoman.ui.LogoManNotification
 import org.mozilla.rocket.home.topsites.domain.PinTopSiteUseCase
 import org.mozilla.rocket.home.topsites.ui.AddNewTopSitesActivity
 import org.mozilla.rocket.home.topsites.ui.Site
@@ -80,8 +75,6 @@ import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DEFAULT
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_DOWNLOADING
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_UNREAD
 import org.mozilla.rocket.home.ui.MenuButton.Companion.DOWNLOAD_STATE_WARNING
-import org.mozilla.rocket.msrp.data.Mission
-import org.mozilla.rocket.msrp.ui.RewardActivity
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserHelper
 import org.mozilla.rocket.settings.defaultbrowser.ui.DefaultBrowserPreferenceViewModel
 import org.mozilla.rocket.shopping.search.ui.ShoppingSearchActivity
@@ -142,8 +135,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initBackgroundView()
         initTopSites()
         initContentHub()
-        initFxaView()
-        initLogoManNotification()
         observeDarkTheme()
         initOnboardingSpotlight()
         observeAddNewTopSites()
@@ -328,20 +319,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
     }
 
-    private fun initFxaView() {
-        homeViewModel.isAccountLayerVisible.observe(viewLifecycleOwner, Observer {
-            account_layout.isVisible = it
-        })
-        homeViewModel.hasUnreadMissions.observe(viewLifecycleOwner, Observer {
-            reward_button.isActivated = it
-        })
-        homeViewModel.isFxAccount.observe(viewLifecycleOwner, Observer {
-            profile_button.isActivated = it
-        })
-        reward_button.setOnClickListener { homeViewModel.onRewardButtonClicked() }
-        profile_button.setOnClickListener { homeViewModel.onProfileButtonClicked() }
-    }
-
     private fun observeDarkTheme() {
         chromeViewModel.isDarkTheme.observe(viewLifecycleOwner, Observer { darkThemeEnable ->
             ViewUtils.updateStatusBarStyle(!darkThemeEnable, requireActivity().window)
@@ -470,35 +447,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         }
     }
 
-    private fun initLogoManNotification() {
-        homeViewModel.logoManNotification.observe(viewLifecycleOwner, Observer {
-            it?.let { (notification, animate) ->
-                showLogoManNotification(notification, animate)
-            }
-        })
-        homeViewModel.hideLogoManNotification.observe(viewLifecycleOwner, Observer {
-            hideLogoManNotification()
-        })
-        logo_man_notification.setNotificationActionListener(object : LogoManNotification.NotificationActionListener {
-            override fun onNotificationClick() {
-                homeViewModel.onLogoManNotificationClicked()
-            }
-
-            override fun onNotificationDismiss() {
-                homeViewModel.onLogoManDismissed()
-            }
-        })
-    }
-
-    private fun showLogoManNotification(notification: LogoManNotification.Notification, animate: Boolean) {
-        logo_man_notification.showNotification(notification, animate)
-        homeViewModel.onLogoManShown()
-    }
-
-    private fun hideLogoManNotification() {
-        logo_man_notification.isVisible = false
-    }
-
     private fun showShoppingSearchSpotlight() {
         val dismissListener = DialogInterface.OnDismissListener {
             restoreStatusBarColor()
@@ -585,23 +533,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
 
     private fun observeActions() {
         homeViewModel.showToast.observeForever(toastObserver)
-        homeViewModel.openRewardPage.observe(viewLifecycleOwner, Observer {
-            openRewardPage()
-        })
-        homeViewModel.openProfilePage.observe(viewLifecycleOwner, Observer {
-            openProfilePage()
-        })
-        homeViewModel.showMissionCompleteDialog.observe(viewLifecycleOwner, Observer { mission ->
-            showMissionCompleteDialog(mission)
-        })
         homeViewModel.executeUriAction.observe(viewLifecycleOwner, Observer { action ->
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action), appContext, RocketLauncherActivity::class.java))
-        })
-        homeViewModel.openMissionDetailPage.observe(viewLifecycleOwner, Observer { mission ->
-            openMissionDetailPage(mission)
-        })
-        homeViewModel.showContentHubClickOnboarding.observe(viewLifecycleOwner, Observer { couponName ->
-            showRequestClickContentHubOnboarding(couponName)
         })
         homeViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
             Looper.myQueue().addIdleHandler {
@@ -628,46 +561,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 )
             }
         })
-    }
-
-    private fun showMissionCompleteDialog(mission: Mission) {
-        DialogUtils.createMissionCompleteDialog(requireContext(), mission.imageUrl)
-                .onPositive {
-                    homeViewModel.onRedeemCompletedMissionButtonClicked(mission)
-                }
-                .onNegative {
-                    homeViewModel.onRedeemCompletedLaterButtonClicked()
-                }
-                .onClose {
-                    homeViewModel.onRedeemCompletedDialogClosed()
-                }
-                .show()
-    }
-
-    private fun showRequestClickContentHubOnboarding(couponName: String) {
-        val dismissListener = DialogInterface.OnDismissListener {
-            restoreStatusBarColor()
-            homeViewModel.onContentHubRequestClickHintDismissed()
-        }
-        content_hub.post {
-            if (isAdded) {
-                homeViewModel.onShowClickContentHubOnboarding()
-                setOnboardingStatusBarColor()
-                DialogUtils.showContentServiceRequestClickSpotlight(requireActivity(), content_hub, couponName, dismissListener)
-            }
-        }
-    }
-
-    private fun openRewardPage() {
-        startActivity(RewardActivity.getStartIntent(requireContext()))
-    }
-
-    private fun openProfilePage() {
-        startActivity(ProfileActivity.getStartIntent(requireContext()))
-    }
-
-    private fun openMissionDetailPage(mission: Mission) {
-        startActivity(RewardActivity.getStartIntent(requireContext(), RewardActivity.DeepLink.MissionDetailPage(mission)))
     }
 
     companion object {
