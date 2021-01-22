@@ -135,7 +135,8 @@ open class FocusApplication : LocaleAwareApplication(), LifecycleObserver {
 
         PreferenceManager.setDefaultValues(this, R.xml.settings, false)
 
-        enableStrictMode()
+        // Disabled - see https://github.com/mozilla-mobile/FirefoxLite/issues/5344
+        // enableStrictMode()
 
         SearchEngineManager.getInstance().init(this)
 
