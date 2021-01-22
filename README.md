@@ -1,3 +1,7 @@
+> **Notice** - Firefox Lite is currently in _Maintenance Mode_. No active feature is being done on the product. Older Pull Requests and Issues have been marked with the [archived](https://github.com/mozilla-mobile/FirefoxLite/issues?q=label%3Aarchived) label and have been closed. However, if you feel an issue is critical enough to be re-opened, please leave a note on the issue with an explanation.
+
+---
+
 # Firefox Lite
 [![Build Status](https://app.bitrise.io/app/2bee753c3b6709ca/status.svg?token=wKSNHE4YO8gQHd2W_I0tNg&branch=master)](https://app.bitrise.io/app/2bee753c3b6709ca)
 
