@@ -6,6 +6,7 @@
 package org.mozilla.focus.tabs.tabtray
 
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.view.View
@@ -32,8 +33,10 @@ import org.mozilla.rocket.tabs.TabViewProvider
 import org.mozilla.rocket.tabs.utils.TabUtil
 import org.mozilla.rocket.tabs.web.DownloadCallback
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP)
 class TabTrayPresenterTest {
 
     private lateinit var tabTrayPresenter: TabTrayPresenter

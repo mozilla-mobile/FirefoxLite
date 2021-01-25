@@ -6,6 +6,7 @@ package org.mozilla.focus.webkit.matcher;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 
@@ -32,7 +33,7 @@ import static junit.framework.Assert.assertTrue;
  * This test also verifies that the entity lists (whitelists for specific domains) actually work
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(packageName = "org.mozilla.focus")
+@Config(packageName = "org.mozilla.focus", maxSdk = Build.VERSION_CODES.P, minSdk = Build.VERSION_CODES.LOLLIPOP)
 public class DisconnectTest {
 
     @After
