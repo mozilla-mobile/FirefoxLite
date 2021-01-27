@@ -113,7 +113,8 @@ class DebugActivity : AppCompatActivity() {
 
     private fun copyToClipboard(label: String, text: String) {
         ContextCompat.getSystemService(applicationContext, ClipboardManager::class.java)?.run {
-            primaryClip = ClipData.newPlainText(label, text)
+            val clip = ClipData.newPlainText(label, text)
+            this.setPrimaryClip(clip)
         }
     }
 
