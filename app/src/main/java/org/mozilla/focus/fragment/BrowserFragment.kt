@@ -26,6 +26,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.ViewStub
@@ -946,7 +947,7 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
         isFromExternal: Boolean,
         onViewReadyCallback: Runnable?
     ) {
-        updateURL(url)
+        loadedUrl = url
         if (SupportUtils.isUrl(url)) {
             if (openNewTab) {
                 sessionManager.addTab(url, TabUtil.argument(null, isFromExternal, true))
@@ -1150,7 +1151,13 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
             if (!isForegroundSession(session)) {
                 return
             }
-            updateURL(url)
+            // Prevent updateURL when directly entering URL in the address bar.
+            if (chromeViewModel.openUrl.value?.url ?: "" != url) {
+                updateURL(url)
+            } else if (chromeViewModel.openUrl.value?.url ?: "" != "") {
+                chromeViewModel.openUrl.value!!.url = ""
+            }
+
             shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(url)
         }
 
@@ -1231,12 +1238,6 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
 
         override fun onTitleChanged(session: Session, title: String?) {
             chromeViewModel.onFocusedTitleChanged(title)
-            if (!isForegroundSession(session)) {
-                return
-            }
-            if (url != session.url) {
-                updateURL(session.url)
-            }
         }
 
         override fun onReceivedIcon(icon: Bitmap?) {}
@@ -1433,7 +1434,13 @@ class BrowserFragment : LocaleAwareFragment(), BrowserScreen, LifecycleOwner, Ba
             dismissGeoDialog()
             updateURL(tab.url)
             shoppingSearchPromptMessageViewModel.checkShoppingSearchPromptVisibility(tab.url)
-            progress_bar.progress = 0
+
+            if (tab.progress == 0 || tab.progress == 100) {
+                progress_bar.visibility = GONE
+            } else {
+                progress_bar.progress = tab.progress
+            }
+
             val identity = if (tab.securityInfo.secure) SITE_LOCK else SITE_GLOBE
             site_identity.setImageLevel(identity)
             hideFindInPage()

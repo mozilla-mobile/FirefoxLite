@@ -125,8 +125,8 @@ class TabViewEngineSession constructor(
 
     class ViewClient(private val es: TabViewEngineSession) : TabViewClient() {
         override fun onPageStarted(url: String?) {
-            es.notifyObservers { onLoadingStateChange(true) }
             url?.let { es.notifyObservers { onLocationChange(it) } }
+            es.notifyObservers { onLoadingStateChange(true) }
 
             es.tabView?.let {
                 es.notifyObservers {
@@ -196,7 +196,6 @@ class TabViewEngineSession constructor(
             }
             // This is a hack, Webview often doesn't give us the latest url even in OnPageLoaded
             // We utilize this callback which usually returns later as the last chance.
-            view.url?.let { es.notifyObservers { onLocationChange(it) } }
             es.notifyObservers {
                 onNavigationStateChange(view.canGoBack(), view.canGoForward())
             }
