@@ -90,6 +90,10 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    private String stripUnicodeControlCharacters(String s) {
+        return s.replaceAll("\\p{C}", "");
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
 
@@ -98,7 +102,7 @@ public class DownloadListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             DownloadInfo downloadInfo = mDownloadInfo.get(position);
 
             if (!TextUtils.isEmpty(downloadInfo.getFileName())) {
-                holder.title.setText(downloadInfo.getFileName());
+                holder.title.setText(stripUnicodeControlCharacters(downloadInfo.getFileName()));
             } else {
                 holder.title.setText(R.string.unknown);
             }
