@@ -327,6 +327,10 @@ public class DownloadInfoManager {
         return (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
     }
 
+    private String stripUnicodeControlCharacters(String s) {
+        return s.replaceAll("\\p{C}", "");
+    }
+
     public void showOpenDownloadSnackBar(final Long rowId, @NonNull final View container, final String logTag) {
         queryByRowId(rowId, downloadInfoList -> {
             final boolean existInLocalDB = downloadInfoList.size() > 0;
@@ -339,7 +343,7 @@ public class DownloadInfoManager {
             if (!existInDownloadManager) {
                 LoggerWrapper.throwOrWarn(logTag, "Download Completed with unknown DownloadManager id");
             }
-            String completedStr = container.getContext().getString(R.string.download_completed, downloadInfo.getFileName());
+            String completedStr = container.getContext().getString(R.string.download_completed, stripUnicodeControlCharacters(downloadInfo.getFileName()));
             final Snackbar snackbar = Snackbar.make(container, completedStr, Snackbar.LENGTH_LONG);
             // Set the open action only if we can.
             if (existInDownloadManager) {
