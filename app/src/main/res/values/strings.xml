@@ -1071,5 +1071,7 @@
     <!-- If the user had a url in his/her clipboard, the user  will see the URL in the first of the Awesome Bar suggestion -->
     <string name="awesomebar_open_link_clipboard">Open Copied Link</string>
 
-
+    <!-- For the EOL banner -->
+    <string name="eol_message"><![CDATA[Effective June 30, this app will no longer receive security or other updates. Get the official Firefox Android app now for a fast, private &amp; safe web browser. <a href="#">Learn more.</a>]]></string>
+    <string name="eol_download_button">DOWNLOAD FIREFOX</string>
 </resources>

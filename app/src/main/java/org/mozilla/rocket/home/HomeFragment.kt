@@ -3,16 +3,23 @@ package org.mozilla.rocket.home
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
+import android.text.Html
+import android.util.Log
 import android.view.GestureDetector
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -25,12 +32,9 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.snackbar.Snackbar
 import dagger.Lazy
 import kotlinx.android.synthetic.main.button_menu.menu_red_dot
-import kotlinx.android.synthetic.main.fragment_home.account_layout
+//import kotlinx.android.synthetic.main.fragment_home.account_layout
 import kotlinx.android.synthetic.main.fragment_home.arc_panel
 import kotlinx.android.synthetic.main.fragment_home.arc_view
-import kotlinx.android.synthetic.main.fragment_home.content_hub
-import kotlinx.android.synthetic.main.fragment_home.content_hub_layout
-import kotlinx.android.synthetic.main.fragment_home.content_hub_title
 import kotlinx.android.synthetic.main.fragment_home.home_background
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input
 import kotlinx.android.synthetic.main.fragment_home.home_fragment_fake_input_icon
@@ -42,8 +46,8 @@ import kotlinx.android.synthetic.main.fragment_home.logo_man_notification
 import kotlinx.android.synthetic.main.fragment_home.main_list
 import kotlinx.android.synthetic.main.fragment_home.page_indicator
 import kotlinx.android.synthetic.main.fragment_home.private_mode_button
-import kotlinx.android.synthetic.main.fragment_home.profile_button
-import kotlinx.android.synthetic.main.fragment_home.reward_button
+//import kotlinx.android.synthetic.main.fragment_home.profile_button
+//import kotlinx.android.synthetic.main.fragment_home.reward_button
 import kotlinx.android.synthetic.main.fragment_home.search_panel
 import kotlinx.android.synthetic.main.fragment_home.shopping_button
 import org.mozilla.focus.R
@@ -130,7 +134,42 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val messageView: TextView? = view.findViewById(R.id.eol_message)
+        if (messageView != null) {
+            @Suppress("DEPRECATION")
+            messageView.text = Html.fromHtml(getString(R.string.eol_message))
+
+            messageView.setOnClickListener {
+                val url = SupportUtils.getSumoURLForTopic(this.context, "firefox-lite-end-of-support")
+                ScreenNavigator.get(context).showBrowserScreen(url, true, false)
+            }
+        }
+
+        val downloadButton: Button? = view.findViewById(R.id.eol_download_fenix_button)
+        if (downloadButton != null) {
+            downloadButton.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=org.mozilla.firefox")
+                    setPackage("com.android.vending")
+                }
+                startActivity(intent)
+            }
+        }
+
+        if (Resources.getSystem().getDisplayMetrics().heightPixels <= 1280) {
+            val warningView: ImageView? = view.findViewById(R.id.eol_warning)
+            if (warningView != null) {
+                warningView.isVisible = false
+            }
+
+            if (messageView != null) {
+                messageView.textSize = 15F
+            }
+        }
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -139,7 +178,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         initSearchToolBar()
         initBackgroundView()
         initTopSites()
-        initContentHub()
         initFxaView()
         initLogoManNotification()
         observeDarkTheme()
@@ -281,58 +319,18 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         })
     }
 
-    private fun initContentHub() {
-        content_hub.setOnItemClickListener {
-            homeViewModel.onContentHubItemClicked(it)
-        }
-        homeViewModel.run {
-            shouldShowContentHubItemText.observe(viewLifecycleOwner, Observer {
-                content_hub.setShowText(it)
-            })
-            isContentHubEnabled.observe(viewLifecycleOwner, Observer { isEnabled ->
-                content_hub_layout.isVisible = isEnabled
-                home_fragment_title.apply {
-                    visibility = if (isEnabled) {
-                        resources.getVisibility(R.integer.home_firefox_logo_visibility)
-                    } else {
-                        View.VISIBLE
-                    }
-                    layoutParams = (layoutParams as ConstraintLayout.LayoutParams).apply {
-                        verticalBias = if (isEnabled) {
-                            TITLE_VERTICAL_BIAS_WITH_CONTENT_HUB
-                        } else {
-                            TITLE_VERTICAL_BIAS
-                        }
-                    }
-                }
-            })
-            contentHubItems.observe(viewLifecycleOwner, Observer { items ->
-                content_hub.setItems(items)
-            })
-            openContentPage.observe(viewLifecycleOwner, Observer {
-                val context = requireContext()
-                when (it) {
-                    is ContentHub.Item.Travel -> startActivity(TravelActivity.getStartIntent(context))
-                    is ContentHub.Item.Shopping -> startActivity(ShoppingActivity.getStartIntent(context))
-                    is ContentHub.Item.News -> startActivity(NewsActivity.getStartIntent(context))
-                    is ContentHub.Item.Games -> startActivity(GameActivity.getStartIntent(context))
-                }
-            })
-        }
-    }
-
     private fun initFxaView() {
-        homeViewModel.isAccountLayerVisible.observe(viewLifecycleOwner, Observer {
-            account_layout.isVisible = it
-        })
-        homeViewModel.hasUnreadMissions.observe(viewLifecycleOwner, Observer {
-            reward_button.isActivated = it
-        })
-        homeViewModel.isFxAccount.observe(viewLifecycleOwner, Observer {
-            profile_button.isActivated = it
-        })
-        reward_button.setOnClickListener { homeViewModel.onRewardButtonClicked() }
-        profile_button.setOnClickListener { homeViewModel.onProfileButtonClicked() }
+//        homeViewModel.isAccountLayerVisible.observe(viewLifecycleOwner, Observer {
+//            account_layout.isVisible = it
+//        })
+//        homeViewModel.hasUnreadMissions.observe(viewLifecycleOwner, Observer {
+//            reward_button.isActivated = it
+//        })
+//        homeViewModel.isFxAccount.observe(viewLifecycleOwner, Observer {
+//            profile_button.isActivated = it
+//        })
+//        reward_button.setOnClickListener { homeViewModel.onRewardButtonClicked() }
+//        profile_button.setOnClickListener { homeViewModel.onProfileButtonClicked() }
     }
 
     private fun observeDarkTheme() {
@@ -340,7 +338,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             ViewUtils.updateStatusBarStyle(!darkThemeEnable, requireActivity().window)
             topSitesAdapter.notifyDataSetChanged()
             home_background.setDarkTheme(darkThemeEnable)
-            content_hub_title.setDarkTheme(darkThemeEnable)
             arc_view.setDarkTheme(darkThemeEnable)
             arc_panel.setDarkTheme(darkThemeEnable)
             search_panel.setDarkTheme(darkThemeEnable)
@@ -349,7 +346,7 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
             home_fragment_fake_input_text.setDarkTheme(darkThemeEnable)
             home_fragment_tab_counter.setDarkTheme(darkThemeEnable)
             home_fragment_menu_button.setDarkTheme(darkThemeEnable)
-            account_layout.setDarkTheme(darkThemeEnable)
+            //account_layout.setDarkTheme(darkThemeEnable)
             shopping_button.setDarkTheme(darkThemeEnable)
             private_mode_button.setDarkTheme(darkThemeEnable)
         })
@@ -593,9 +590,6 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
         homeViewModel.openMissionDetailPage.observe(viewLifecycleOwner, Observer { mission ->
             openMissionDetailPage(mission)
         })
-        homeViewModel.showContentHubClickOnboarding.observe(viewLifecycleOwner, Observer { couponName ->
-            showRequestClickContentHubOnboarding(couponName)
-        })
         homeViewModel.showKeyboard.observe(viewLifecycleOwner, Observer {
             Looper.myQueue().addIdleHandler {
                 if (!isStateSaved) {
@@ -637,19 +631,8 @@ class HomeFragment : LocaleAwareFragment(), ScreenNavigator.HomeScreen {
                 .show()
     }
 
-    private fun showRequestClickContentHubOnboarding(couponName: String) {
-        val dismissListener = DialogInterface.OnDismissListener {
-            restoreStatusBarColor()
-            homeViewModel.onContentHubRequestClickHintDismissed()
-        }
-        content_hub.post {
-            if (isAdded) {
-                homeViewModel.onShowClickContentHubOnboarding()
-                setOnboardingStatusBarColor()
-                DialogUtils.showContentServiceRequestClickSpotlight(requireActivity(), content_hub, couponName, dismissListener)
-            }
-        }
-    }
+//    private fun showRequestClickContentHubOnboarding(_: String) {
+//    }
 
     private fun openRewardPage() {
         startActivity(RewardActivity.getStartIntent(requireContext()))
