@@ -494,4 +494,8 @@
   <string name="travel_dialog_2_checkbox">Jangan tanyakan lagi</string>
   <string name="travel_dialog_2_action">TETAPKAN SEBAGAI BAKU</string>
   <string name="awesomebar_open_link_clipboard">Buka Tautan di Papan Klip Anda</string>
+
+  <!-- For the EOL banner -->
+  <string name="eol_message"><![CDATA[Mulai 30 Juni, aplikasi ini akan berhenti mendapatkan pembaruan keamanan dan update lainnya. Untuk browsing yang lebih cepat, pribadi & aman, dapatkan aplikasi resmi Firefox Android sekarang juga. <a href="#">Pelajari lebih lanjut</a>]]></string>
+  <string name="eol_download_button">UNDUH FIREFOX</string>
 </resources>

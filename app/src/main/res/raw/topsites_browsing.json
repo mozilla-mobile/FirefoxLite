@@ -1,33 +1,5 @@
 [
   {
-    "id": -17,
-    "url": "https://frvr.com/mozilla/",
-    "title": "FRVR",
-    "favicon": "ic_frvr.webp",
-    "viewCount": 1000
-  },
-  {
-    "id": -18,
-    "url": "https://www.booking.com/index.html?aid=1873270;label=mozilla_mainlinkout",
-    "title": "Booking.com",
-    "favicon": "ic_booking.webp",
-    "viewCount": 995
-  },
-  {
-    "id": -19,
-    "url": "https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_pandemic",
-    "title": "COVID-19",
-    "favicon": "",
-    "viewCount": 990
-  },
-  {
-    "id": -20,
-    "url": "https://shopee.com",
-    "title": "Shopee",
-    "favicon": "ic_shopee.png",
-    "viewCount": 985
-  },
-  {
     "id": -21,
     "url": "https://m.youtube.com",
     "title": "Youtube",
