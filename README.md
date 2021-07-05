@@ -1,4 +1,18 @@
-> **Notice** - Firefox Lite is currently in _Maintenance Mode_. No active feature is being done on the product. Older Pull Requests and Issues have been marked with the [archived](https://github.com/mozilla-mobile/FirefoxLite/issues?q=label%3Aarchived) label and have been closed. However, if you feel an issue is critical enough to be re-opened, please leave a note on the issue with an explanation.
+## 🚨 Important notice about Firefox Lite
+
+Effective June 30, 2021, this app will no longer receive security or other updates. Download the official Firefox Android app now for a fast, private & safe web browser. 
+
+Learn more about the upcoming changes: 
+https://support.mozilla.org/en-US/kb/end-support-firefox-lite
+
+Download Firefox Android: 
+https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en_US
+
+Privacy Notice:
+https://www.mozilla.org/privacy/firefox-lite/
+
+### About Mozilla
+Mozilla exists to build the Internet as a public resource accessible to all because we believe open and free is better than closed and controlled. We build products like Firefox to promote choice and transparency and give people more control over their lives online. Learn more at https://www.mozilla.org
 
 ---
 
