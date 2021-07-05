@@ -1,6 +1,6 @@
 ## 🚨 Important notice about Firefox Lite
 
-Effective June 30, 2021, this app will no longer receive security or other updates. Download the official Firefox Android app now for a fast, private & safe web browser. 
+Effective June 30, 2021, this app will no longer receive security or other updates. [Download the official Firefox Android](https://play.google.com/store/apps/details?id=org.mozilla.firefox) app now for a fast, private & safe web browser. 
 
 Learn more about the upcoming changes: 
 https://support.mozilla.org/en-US/kb/end-support-firefox-lite
